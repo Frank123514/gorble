@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_slab",
+  "category": "building",
+  "pattern": [
+    "aaa"
+  ],
+  "key": {
+    "a": "got:ironwood_planks"
+  },
+  "result": {
+    "id": "got:ironwood_slab",
+    "count": 6
+  }
+}

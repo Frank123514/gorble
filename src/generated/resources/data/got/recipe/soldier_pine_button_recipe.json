@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
+  "category": "redstone",
+  "ingredients": [
+    "got:soldier_pine_planks"
+  ],
+  "result": {
+    "id": "got:soldier_pine_button",
+    "count": 1
+  }
+}

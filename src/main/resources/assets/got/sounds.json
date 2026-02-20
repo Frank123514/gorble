@@ -1,0 +1,16 @@
+{
+  "wolf_howl2": {
+    "category": "ambient",
+    "subtitles": "sounds.got:wolf_howl2",
+    "sounds": [
+      "got:wolf_howl2"
+    ]
+  },
+  "windy_forest": {
+    "category": "ambient",
+    "subtitles": "sounds.got:windy_forest",
+    "sounds": [
+      "got:windy_forest"
+    ]
+  }
+}

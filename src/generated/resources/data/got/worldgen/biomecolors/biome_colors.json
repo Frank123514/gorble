@@ -1,0 +1,22 @@
+{
+  "#949038": {
+    "biome": "got:north",
+    "terrain_modifier": 10.0
+  },
+  "#02450D": {
+    "biome": "got:ironwood",
+    "terrain_modifier": 50.0
+  },
+  "#047D17": {
+    "biome": "got:wolfswood",
+    "terrain_modifier": 10.0
+  },
+  "#015582": {
+    "biome": "minecraft:ocean",
+    "terrain_modifier": 10.0
+  },
+  "#014B75": {
+    "biome": "minecraft:deep_ocean",
+    "terrain_modifier": 20.0
+  }
+}

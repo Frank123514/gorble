@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "category": "building",
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "key": {
+    "a": "got:sentinal_log"
+  },
+  "result": {
+    "id": "got:sentinal_wood",
+    "count": 3
+  }
+}

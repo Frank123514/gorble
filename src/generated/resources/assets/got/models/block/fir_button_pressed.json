@@ -1,0 +1,8 @@
+{
+  "parent": "block/button_pressed",
+  "textures": {
+    "particle": "got:block/fir_planks",
+    "texture": "got:block/fir_planks"
+  },
+  "render_type": "solid"
+}

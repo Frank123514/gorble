@@ -1,0 +1,15 @@
+{
+  "dimensions": {
+    "minecraft:overworld": {
+      "type": "got:overworld",
+      "generator": {
+        "type": "got:chunk_generator",
+        "biome_source": {
+          "type": "got:got_biome_source",
+          "preset": "got:overworld"
+        },
+        "settings": "minecraft:overworld"
+      }
+    }
+  }
+}

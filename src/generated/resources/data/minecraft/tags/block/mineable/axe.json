@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "got:aspen_planks",
+    "got:weirwood_wood",
+    "got:aspen_wood",
+    "got:weirwood_planks",
+    "got:weirwood_log",
+    "got:aspen_log"
+  ]
+}

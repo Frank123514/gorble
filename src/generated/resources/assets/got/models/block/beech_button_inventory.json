@@ -1,0 +1,8 @@
+{
+  "parent": "block/button_inventory",
+  "textures": {
+    "particle": "got:block/beech_planks",
+    "texture": "got:block/beech_planks"
+  },
+  "render_type": "solid"
+}

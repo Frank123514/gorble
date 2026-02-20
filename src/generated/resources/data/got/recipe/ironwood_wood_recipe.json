@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "category": "building",
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "key": {
+    "a": "got:ironwood_log"
+  },
+  "result": {
+    "id": "got:ironwood_wood",
+    "count": 3
+  }
+}

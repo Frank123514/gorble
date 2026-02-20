@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#got:weirwood_logs",
+      "required": false
+    },
+    {
+      "id": "#got:aspen_logs",
+      "required": false
+    }
+  ]
+}

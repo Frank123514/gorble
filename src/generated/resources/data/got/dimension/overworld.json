@@ -1,0 +1,30 @@
+{
+  "type": "got:overworld",
+  "generator": {
+    "type": "got:chunk_generator",
+    "biome_source": {
+      "type": "got:got_biome_source",
+      "preset": "got:overworld"
+    },
+    "settings": "minecraft:overworld",
+    "terrain_config": {
+      "blocks_per_pixel": 10.0,
+      "world_min_y": 40.0,
+      "world_max_y": 220.0,
+
+      "continent_scale": 160.0,
+      "continent_amplitude": 12.0,
+
+      "detail_scale": 24.0,
+      "detail_amplitude": 3.0,
+
+      "biome_height_influence": 1.0,
+      "max_slope": 4,
+
+      "enable_caves": true,
+      "enable_surface_rules": true,
+      "enable_features": true,
+      "transition": 16
+    }
+  }
+}

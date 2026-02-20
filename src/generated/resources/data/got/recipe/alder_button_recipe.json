@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
+  "category": "redstone",
+  "ingredients": [
+    "got:alder_planks"
+  ],
+  "result": {
+    "id": "got:alder_button",
+    "count": 1
+  }
+}
