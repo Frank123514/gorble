@@ -43,28 +43,23 @@ public final class GotMod {
     /* ---------------------------- */
 
     public GotMod() {
-        // Mod event bus (NOT the NeoForge bus)
         IEventBus modBus = ModLoadingContext
                 .get()
                 .getActiveContainer()
                 .getEventBus();
 
-        /* ---------- Lifecycle ---------- */
         assert modBus != null;
         modBus.addListener(this::commonSetup);
         modBus.addListener(this::registerNetworking);
 
-        /* ---------- Registries ---------- */
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
         GotModTabs.REGISTRY.register(modBus);
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
 
-        /* ---------- Runtime events ---------- */
         NeoForge.EVENT_BUS.register(this);
 
-        /* ---------- Client bootstrap ---------- */
         if (FMLEnvironment.dist == Dist.CLIENT) {
             GotClient.init();
         }
@@ -117,9 +112,7 @@ public final class GotMod {
 
         for (Tuple<Runnable, Integer> t : WORK_QUEUE) {
             t.setB(t.getB() - 1);
-            if (t.getB() <= 0) {
-                ready.add(t);
-            }
+            if (t.getB() <= 0) ready.add(t);
         }
 
         ready.forEach(t -> t.getA().run());
@@ -127,7 +120,7 @@ public final class GotMod {
     }
 
     /* ---------------------------- */
-    /* Utilities                    */
+    /* Server Start — preload maps  */
     /* ---------------------------- */
 
     @SubscribeEvent
@@ -144,10 +137,10 @@ public final class GotMod {
             BiomeMapLoader.loadBiomeMap(bm);
             BiomeMapLoader.finishLoading();
 
-            System.out.println("[GoT] Biome maps preloaded at server start");
+            System.out.println("[GoT] Biome map preloaded at server start");
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to preload biome maps", e);
+            throw new RuntimeException("Failed to preload biome map", e);
         }
     }
 

@@ -11,12 +11,14 @@ import org.slf4j.Logger;
 
 import java.io.InputStream;
 
+/**
+ * Loads the biome map PNG and biome_colors.json on server/datapack reload.
+ * The heightmap PNG is NOT used — terrain height comes entirely from the
+ * base_height / height_variation values in biome_colors.json.
+ */
 public class MapReloadListener extends SimplePreparableReloadListener<Void> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
-
-    private static final ResourceLocation HEIGHTMAP =
-            ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/heightmap.png");
 
     private static final ResourceLocation BIOME_MAP =
             ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/biome_map.png");
@@ -27,28 +29,22 @@ public class MapReloadListener extends SimplePreparableReloadListener<Void> {
     @Override
     protected @NotNull Void prepare(@NotNull ResourceManager manager, @NotNull ProfilerFiller profiler) {
         try {
-            // Load heightmap
-            Resource height = manager.getResourceOrThrow(HEIGHTMAP);
-            try (InputStream h = height.open()) {
-                HeightmapLoader.load(h);
-            }
-
-            // Load biome colors (must be before biome map)
+            // Load biome colors (must come before biome map)
             Resource biomeColors = manager.getResourceOrThrow(BIOME_COLORS);
             try (InputStream bc = biomeColors.open()) {
                 BiomeMapLoader.loadBiomeColors(bc);
             }
 
-            // Load biome map
+            // Load biome map PNG
             Resource biomeMap = manager.getResourceOrThrow(BIOME_MAP);
             try (InputStream bm = biomeMap.open()) {
                 BiomeMapLoader.loadBiomeMap(bm);
             }
 
-            // Finish loading (validates alignment)
+            // Finalize
             BiomeMapLoader.finishLoading();
 
-            LOGGER.info("[GoT Worldgen] All maps loaded successfully");
+            LOGGER.info("[GoT Worldgen] Biome map loaded successfully (biome-driven heights)");
 
         } catch (Exception e) {
             LOGGER.error("[GoT Worldgen] Failed to load worldgen maps: {}", e.getMessage());
@@ -60,6 +56,6 @@ public class MapReloadListener extends SimplePreparableReloadListener<Void> {
 
     @Override
     protected void apply(@NotNull Void object, @NotNull ResourceManager manager, @NotNull ProfilerFiller profiler) {
-        // Nothing else required
+        // Nothing extra required
     }
 }

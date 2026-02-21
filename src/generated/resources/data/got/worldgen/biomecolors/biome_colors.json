@@ -1,22 +1,37 @@
 {
   "#949038": {
     "biome": "got:north",
-    "terrain_modifier": 10.0
+    "base_height": 68.0,
+    "height_variation": 6.0
+  },
+  "#ADA942": {
+    "biome": "got:barrowlands",
+    "base_height": 75.0,
+    "height_variation": 15.0
   },
   "#02450D": {
     "biome": "got:ironwood",
-    "terrain_modifier": 50.0
+    "base_height": 72.0,
+    "height_variation": 10.0
   },
   "#047D17": {
     "biome": "got:wolfswood",
-    "terrain_modifier": 10.0
+    "base_height": 70.0,
+    "height_variation": 8.0
   },
-  "#015582": {
+  "#367CB5": {
+    "biome": "got:river",
+    "base_height": 50.0,
+    "height_variation": 4.0
+  },
+  "#036799": {
     "biome": "minecraft:ocean",
-    "terrain_modifier": 10.0
+    "base_height": 40.0,
+    "height_variation": 4.0
   },
-  "#014B75": {
+  "#024166": {
     "biome": "minecraft:deep_ocean",
-    "terrain_modifier": 20.0
+    "base_height": 28.0,
+    "height_variation": 4.0
   }
 }
