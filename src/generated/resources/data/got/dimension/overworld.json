@@ -3,8 +3,8 @@
   "generator": {
     "type": "got:chunk_generator",
     "biome_source": {
-      "type": "got:got_biome_source",
-      "preset": "got:overworld"
+      "type": "minecraft:fixed",
+      "biome": "minecraft:plains"
     },
     "settings": "minecraft:overworld",
     "terrain_config": {

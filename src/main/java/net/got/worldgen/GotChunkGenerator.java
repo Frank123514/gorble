@@ -25,24 +25,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * LOTR-inspired chunk generator.
- *
- * Terrain height is driven entirely by biome map data:
- *   - Each biome color has a base_height and height_variation.
- *   - Bilinear interpolation is used between grid points for smooth transitions.
- *   - Two octaves of Perlin-simplex noise add detail on top.
- *
- * HeightmapLoader is NOT used at all.
- */
 public final class GotChunkGenerator extends ChunkGenerator {
 
     /* ============================================================= */
-    /* CODEC                                                         */
+    /* VANILLA SETTINGS + DELEGATE                                   */
     /* ============================================================= */
 
     private final Holder<NoiseGeneratorSettings> settings;
     private final NoiseBasedChunkGenerator vanilla;
+
+    /* ============================================================= */
+    /* NOISE                                                        */
+    /* ============================================================= */
+
+    private PerlinSimplexNoise continentNoise;
+    private PerlinSimplexNoise detailNoise;
+
+    /* ============================================================= */
+    /* CODEC                                                        */
+    /* ============================================================= */
 
     public static final MapCodec<GotChunkGenerator> CODEC =
             RecordCodecBuilder.mapCodec(i -> i.group(
@@ -55,105 +56,33 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public GotChunkGenerator(BiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings) {
         super(biomeSource);
         this.settings = settings;
-        this.vanilla  = new NoiseBasedChunkGenerator(biomeSource, settings);
+
+        // 🔑 Vanilla delegate (NEVER call fillFromNoise on this)
+        this.vanilla = new NoiseBasedChunkGenerator(biomeSource, settings);
     }
 
     @Override
-    protected @NotNull MapCodec<? extends ChunkGenerator> codec() { return CODEC; }
+    protected @NotNull MapCodec<? extends ChunkGenerator> codec() {
+        return CODEC;
+    }
 
     /* ============================================================= */
-    /* NOISE (lazy init)                                             */
+    /* NOISE INIT                                                   */
     /* ============================================================= */
-
-    private PerlinSimplexNoise continentNoise;
-    private PerlinSimplexNoise detailNoise;
-
-    /** Transition size for bilinear interpolation between biome values. */
-    private static final int TRANSITION_SIZE = 32; // This can be configurable later
-    
-    private static double smoothStep(double t) {
-        return t * t * (3 - 2 * t);
-    }
-    
-    private double getValueWithTransition(int x, int y, java.util.function.Function<Double, Double> function) {
-        // Determine the base coordinates for the current grid
-        int baseX = (x / TRANSITION_SIZE) * TRANSITION_SIZE;
-        int baseY = (y / TRANSITION_SIZE) * TRANSITION_SIZE;
-    
-        // Adjust base coordinates for negative values
-        if (x < 0) baseX -= TRANSITION_SIZE;
-        if (y < 0) baseY -= TRANSITION_SIZE;
-    
-        // Get biome values at the four corners of the grid
-        double value00 = function.apply(BiomeMapLoader.getBaseHeight(baseX, baseY));      // Top-left
-        double value10 = function.apply(BiomeMapLoader.getBaseHeight(baseX + TRANSITION_SIZE, baseY));      // Top-right
-        double value01 = function.apply(BiomeMapLoader.getBaseHeight(baseX, baseY + TRANSITION_SIZE));      // Bottom-left
-        double value11 = function.apply(BiomeMapLoader.getBaseHeight(baseX + TRANSITION_SIZE, baseY + TRANSITION_SIZE)); // Bottom-right
-    
-        // Calculate the fractional positions within the grid, relative to base coordinates
-        double xPercent = (double) (x - baseX) / TRANSITION_SIZE;
-        double yPercent = (double) (y - baseY) / TRANSITION_SIZE;
-    
-        // Ensure fractional values are within [0, 1] (handling negative values)
-        xPercent = Math.abs(xPercent);
-        yPercent = Math.abs(yPercent);
-    
-        // Introduce cubic-like transitions based on weight differences
-        xPercent = smoothStep(xPercent);
-        yPercent = smoothStep(yPercent);
-    
-        // Calculate bi-linear interpolation
-        return (value00 * (1 - xPercent) * (1 - yPercent)) +
-                (value10 * xPercent * (1 - yPercent)) +
-                (value01 * (1 - xPercent) * yPercent) +
-                (value11 * xPercent * yPercent);
-    }
-    
-    private double getValueWithTransitionForVariation(int x, int y) {
-        // Determine the base coordinates for the current grid
-        int baseX = (x / TRANSITION_SIZE) * TRANSITION_SIZE;
-        int baseY = (y / TRANSITION_SIZE) * TRANSITION_SIZE;
-    
-        // Adjust base coordinates for negative values
-        if (x < 0) baseX -= TRANSITION_SIZE;
-        if (y < 0) baseY -= TRANSITION_SIZE;
-    
-        // Get biome variation values at the four corners of the grid
-        double value00 = BiomeMapLoader.getHeightVariation(baseX, baseY);      // Top-left
-        double value10 = BiomeMapLoader.getHeightVariation(baseX + TRANSITION_SIZE, baseY);      // Top-right
-        double value01 = BiomeMapLoader.getHeightVariation(baseX, baseY + TRANSITION_SIZE);      // Bottom-left
-        double value11 = BiomeMapLoader.getHeightVariation(baseX + TRANSITION_SIZE, baseY + TRANSITION_SIZE); // Bottom-right
-    
-        // Calculate the fractional positions within the grid, relative to base coordinates
-        double xPercent = (double) (x - baseX) / TRANSITION_SIZE;
-        double yPercent = (double) (y - baseY) / TRANSITION_SIZE;
-    
-        // Ensure fractional values are within [0, 1] (handling negative values)
-        xPercent = Math.abs(xPercent);
-        yPercent = Math.abs(yPercent);
-    
-        // Introduce cubic-like transitions based on weight differences
-        xPercent = smoothStep(xPercent);
-        yPercent = smoothStep(yPercent);
-    
-        // Calculate bi-linear interpolation
-        return (value00 * (1 - xPercent) * (1 - yPercent)) +
-                (value10 * xPercent * (1 - yPercent)) +
-                (value01 * (1 - xPercent) * yPercent) +
-                (value11 * xPercent * yPercent);
-    }
 
     private void ensureNoise(RandomState state) {
         if (continentNoise != null) return;
+
         RandomSource rand = state.getOrCreateRandomFactory(
                 ResourceLocation.fromNamespaceAndPath("got", "terrain")
         ).at(0, 0, 0);
+
         continentNoise = new PerlinSimplexNoise(rand, List.of(-6));
         detailNoise    = new PerlinSimplexNoise(rand, List.of(-2));
     }
 
     /* ============================================================= */
-    /* TERRAIN FILL                                                   */
+    /* TERRAIN FILL (YOU OWN THIS)                                  */
     /* ============================================================= */
 
     @Override
@@ -174,16 +103,24 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
+
                 int wx = pos.getBlockX(x);
                 int wz = pos.getBlockZ(z);
-                int h  = computeTerrainHeight(wx, wz);
+                int height = getTerrainHeight(wx, wz);
 
                 for (int y = minY; y < maxY; y++) {
                     BlockState state =
-                            y <= h   ? Blocks.STONE.defaultBlockState()
-                                    : y <= sea ? settings.value().defaultFluid()
+                            y <= height
+                                    ? Blocks.STONE.defaultBlockState()
+                                    : y <= sea
+                                    ? settings.value().defaultFluid()
                                     : Blocks.AIR.defaultBlockState();
-                    chunk.setBlockState(new BlockPos(x, y, z), state, false);
+
+                    chunk.setBlockState(
+                            new BlockPos(x, y, z),
+                            state,
+                            false
+                    );
                 }
             }
         }
@@ -191,45 +128,41 @@ public final class GotChunkGenerator extends ChunkGenerator {
         return CompletableFuture.completedFuture(chunk);
     }
 
-    /* ============================================================= */
-    /* LOTR-STYLE BIOME-BLENDED HEIGHT                               */
-    /* ============================================================= */
+    @Override
+    public int getSeaLevel() {
+        return settings.value().seaLevel();
+    }
 
-    /**
-     * Use bilinear interpolation to smoothly transition between biome heights,
-     * then add two noise octaves for surface detail.
-     */
-    private int computeTerrainHeight(int wx, int wz) {
-        // --- 1. Get base height and variation using bilinear interpolation ---
-        double blendedBase = getValueWithTransition(wx, wz, value -> value);
-        
-        // For height variation, we need to interpolate the variation values
-        double blendedVar = getValueWithTransitionForVariation(wx, wz);
-
-        // --- 2. Continent noise (large scale) ---
-        double continent = continentNoise.getValue(wx / 160.0, wz / 160.0, false)
-                * blendedVar * 0.8;
-
-        // --- 3. Detail noise (small scale) ---
-        double detail = detailNoise.getValue(wx / 24.0, wz / 24.0, false)
-                * blendedVar * 0.2;
-
-        return Mth.floor(blendedBase + continent + detail);
+    @Override
+    public int getMinY() {
+        return settings.value().noiseSettings().minY();
     }
 
     /* ============================================================= */
-    /* VANILLA DELEGATES                                             */
+    /* VANILLA SYSTEMS (DELEGATED)                                  */
     /* ============================================================= */
 
     @Override
-    public void applyCarvers(WorldGenRegion region, long seed, RandomState random,
-                             BiomeManager biomeManager, StructureManager structures, ChunkAccess chunk) {
+    public void applyCarvers(
+            WorldGenRegion region,
+            long seed,
+            RandomState random,
+            BiomeManager biomeManager,
+            StructureManager structures,
+            ChunkAccess chunk
+    ) {
+        // ✔️ Vanilla caves + aquifers
         vanilla.applyCarvers(region, seed, random, biomeManager, structures, chunk);
     }
 
     @Override
-    public void buildSurface(WorldGenRegion region, StructureManager structures,
-                             RandomState random, ChunkAccess chunk) {
+    public void buildSurface(
+            WorldGenRegion region,
+            StructureManager structures,
+            RandomState random,
+            ChunkAccess chunk
+    ) {
+        // ✔️ Vanilla surface rules (grass, sand, snow, etc)
         vanilla.buildSurface(region, structures, random, chunk);
     }
 
@@ -237,56 +170,110 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public void spawnOriginalMobs(@NotNull WorldGenRegion region) {
         ChunkPos pos = region.getCenter();
         Holder<Biome> biome = region.getBiome(
-                pos.getWorldPosition().atY(region.getMaxY() - 1));
+                pos.getWorldPosition().atY(region.getMaxY() - 1)
+        );
+
         WorldgenRandom rand = new WorldgenRandom(RandomSource.create());
-        rand.setDecorationSeed(region.getSeed(), pos.getMinBlockX(), pos.getMinBlockZ());
+        rand.setDecorationSeed(
+                region.getSeed(),
+                pos.getMinBlockX(),
+                pos.getMinBlockZ()
+        );
+
         NaturalSpawner.spawnMobsForChunkGeneration(region, biome, pos, rand);
     }
 
+    @Override
+    public int getGenDepth() {
+        return settings.value().noiseSettings().height();
+    }
+
     /* ============================================================= */
-    /* HEIGHT QUERIES (used by structures & features)               */
+    /* HEIGHT QUERIES (STRUCTURES / FEATURES)                        */
     /* ============================================================= */
 
     @Override
-    public int getSeaLevel() { return settings.value().seaLevel(); }
-
-    @Override
-    public int getMinY() { return settings.value().noiseSettings().minY(); }
-
-    @Override
-    public int getGenDepth() { return settings.value().noiseSettings().height(); }
-
-    @Override
-    public int getBaseHeight(int x, int z, Heightmap.@NotNull Types type,
-                             @NotNull LevelHeightAccessor level, @NotNull RandomState random) {
+    public int getBaseHeight(
+            int x,
+            int z,
+            Heightmap.@NotNull Types type,
+            @NotNull LevelHeightAccessor level,
+            @NotNull RandomState random
+    ) {
         ensureNoise(random);
-        return computeTerrainHeight(x, z);
+        return getTerrainHeight(x, z);
     }
 
     @Override
-    public @NotNull NoiseColumn getBaseColumn(int x, int z,
-                                              @NotNull LevelHeightAccessor level,
-                                              @NotNull RandomState random) {
+    public @NotNull NoiseColumn getBaseColumn(
+            int x,
+            int z,
+            @NotNull LevelHeightAccessor level,
+            @NotNull RandomState random
+    ) {
         ensureNoise(random);
-        int minY  = level.getMinY();
-        int h     = computeTerrainHeight(x, z);
-        int sea   = getSeaLevel();
+
+        int minY = level.getMinY();
+        int height = getTerrainHeight(x, z);
+        int sea = getSeaLevel();
+
         BlockState[] states = new BlockState[level.getHeight()];
+
         for (int i = 0; i < states.length; i++) {
             int y = minY + i;
-            states[i] = y <= h   ? Blocks.STONE.defaultBlockState()
-                    : y <= sea ? settings.value().defaultFluid()
-                    : Blocks.AIR.defaultBlockState();
+            states[i] =
+                    y <= height
+                            ? Blocks.STONE.defaultBlockState()
+                            : y <= sea
+                            ? settings.value().defaultFluid()
+                            : Blocks.AIR.defaultBlockState();
         }
+
         return new NoiseColumn(minY, states);
     }
 
     @Override
     public void addDebugScreenInfo(List<String> info, RandomState random, BlockPos pos) {
-        ensureNoise(random);
-        int h = computeTerrainHeight(pos.getX(), pos.getZ());
-        info.add("[GoT] terrain_y=" + h
-                + " base=" + String.format("%.1f", BiomeMapLoader.getBaseHeight(pos.getX(), pos.getZ()))
-                + " var=" + String.format("%.1f", BiomeMapLoader.getHeightVariation(pos.getX(), pos.getZ())));
+
+    }
+
+    /* ============================================================= */
+    /* TERRAIN SHAPE                                                */
+    /* ============================================================= */
+
+    private int getTerrainHeight(int x, int z) {
+        // 1️⃣ Sample heightmap (pixel space)
+        float raw = HeightmapLoader.getHeightAtWorld(x, z);
+
+        // 2️⃣ Normalize heightmap value (0–1)
+        float t = Mth.clamp(
+                (raw - HeightmapLoader.getMinHeight()) /
+                        (HeightmapLoader.getMaxHeight() - HeightmapLoader.getMinHeight()),
+                0f,
+                1f
+        );
+
+        // 3️⃣ Map to world Y range (THIS IS THE FIX)
+        int minLand = 64;    // plains baseline
+        int maxLand = 220;   // mountain max
+
+        double baseHeight = Mth.lerp(t, minLand, maxLand);
+
+        // 4️⃣ Apply noise as DETAIL, not base
+        double continent =
+                continentNoise.getValue(
+                        x / 160.0,
+                        z / 160.0,
+                        false
+                ) * 12.0;
+
+        double detail =
+                detailNoise.getValue(
+                        x / 24.0,
+                        z / 24.0,
+                        false
+                ) * 3.0;
+
+        return Mth.floor(baseHeight + continent + detail);
     }
 }
