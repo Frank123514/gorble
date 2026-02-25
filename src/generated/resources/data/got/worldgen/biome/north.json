@@ -38,9 +38,12 @@
     [],
     [
       "minecraft:glow_lichen",
-      "got:aspen_sparse",
+      "minecraft:patch_tall_grass_2",
+      "minecraft:patch_grass_plain",
+      "got:hawthorn_sparse",
+      "got:ash_sparse",
+      "got:beech_sparse",
       "got:fir_sparse",
-      "got:pine_sparse",
       "got:shrub"
     ],
     [

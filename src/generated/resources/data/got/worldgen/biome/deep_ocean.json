@@ -31,11 +31,18 @@
       "minecraft:ore_diorite_lower",
       "minecraft:ore_andesite_upper",
       "minecraft:ore_andesite_lower",
-      "minecraft:ore_tuff"
+      "minecraft:ore_tuff",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
     ],
     [],
     [],
-    [],
+    [
+      "minecraft:glow_lichen",
+      "minecraft:seagrass_normal",
+      "minecraft:kelp_cold"
+    ],
     [
       "minecraft:freeze_top_layer"
     ]

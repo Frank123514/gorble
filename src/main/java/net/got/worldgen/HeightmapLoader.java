@@ -21,7 +21,7 @@ import java.io.InputStream;
 public final class HeightmapLoader {
 
     /** 1 pixel = 100 world blocks. */
-    public static final int MAP_SCALE = 100;
+    public static final int MAP_SCALE = 28;
 
     private static final float H_SEA_LEVEL = 0.49f;
     private static final float H_PEAK      = 0.02f;

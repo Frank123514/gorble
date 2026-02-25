@@ -44,6 +44,16 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static final int OCEAN_FLOOR = 40;
 
     /**
+     * Underwater shelf end (normalized 0..1 from deep-ocean pixel to coastline).
+     *
+     * Smaller values keep the bed flatter for longer before the bank rises.
+     */
+    private static final float UNDERWATER_SHELF_T = 0.72f;
+
+    /** Y at the end of the flatter underwater shelf, before the steep bank. */
+    private static final int UNDERWATER_SHELF_Y = 50;
+
+    /**
      * Elevation fraction that marks the end of the beach zone.
      * Land at 0 < t ≤ BEACH_T slopes gently from sea level to LAND_MIN_Y.
      */
@@ -154,7 +164,17 @@ public final class GotChunkGenerator extends ChunkGenerator {
         final float OV = HeightmapLoader.OCEAN_VALUE; // -0.05
 
         if (t <= OV)      return OCEAN_FLOOR;
-        if (t <= 0f)      return Mth.floor(Mth.lerp((t - OV) / -OV,       OCEAN_FLOOR, SEA_LEVEL));
+        if (t <= 0f) {
+            float u = (t - OV) / -OV; // 0 = deep channel, 1 = coastline
+
+            // Keep channels flatter, then raise quickly into the shoreline bank.
+            if (u <= UNDERWATER_SHELF_T) {
+                return Mth.floor(Mth.lerp(u / UNDERWATER_SHELF_T, OCEAN_FLOOR, UNDERWATER_SHELF_Y));
+            }
+
+            float bankU = (u - UNDERWATER_SHELF_T) / (1f - UNDERWATER_SHELF_T);
+            return Mth.floor(Mth.lerp(bankU, UNDERWATER_SHELF_Y, SEA_LEVEL));
+        }
         if (t <= BEACH_T) return Mth.floor(Mth.lerp(t / BEACH_T,           SEA_LEVEL,   LAND_MIN_Y));
         return                   Mth.floor(Mth.lerp((t - BEACH_T) / (1f - BEACH_T), LAND_MIN_Y, LAND_MAX_Y));
     }

@@ -18,7 +18,7 @@ import java.io.InputStream;
 public final class BiomemapLoader {
 
     /** World blocks per pixel — must match the map art's scale. */
-    public static final int MAP_SCALE = 100;
+    public static final int MAP_SCALE = 28;
 
     private static int   imageWidth;
     private static int   imageHeight;

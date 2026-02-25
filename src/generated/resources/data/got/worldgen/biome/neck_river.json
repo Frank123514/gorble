@@ -36,7 +36,9 @@
     [],
     [],
     [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "minecraft:seagrass_normal",
+      "minecraft:kelp_cold"
     ],
     [
       "minecraft:freeze_top_layer"

@@ -35,8 +35,8 @@ public class GotMapWidget extends AbstractWidget {
     private static final double MAX_ZOOM = 10.0;
 
     // 1 pixel = 100 blocks
-    private static final float BLOCKS_PER_PIXEL = 100.0f;
-    private static final float WORLD_SIZE_BLOCKS = 200000f;
+    private static final float BLOCKS_PER_PIXEL = 28.0f;
+    private static final float WORLD_SIZE_BLOCKS = 56000f;
 
     /* ============================================================= */
 
