@@ -1,14 +1,10 @@
 package net.got.worldgen;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.world.level.biome.Biome;
-
-import java.util.Set;
+import net.minecraft.world.level.levelgen.RandomState;
+import org.jetbrains.annotations.NotNull;
 
 public interface GotBiome {
-    void collectPossibleBiomes(
-            HolderGetter<Biome> lookup,
-            Set<Holder<Biome>> set
-    );
+    @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, @NotNull RandomState random);
 }

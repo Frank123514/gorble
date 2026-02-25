@@ -1,0 +1,10 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "particle": "got:block/hawthorn_planks",
+    "bottom": "got:block/hawthorn_planks",
+    "top": "got:block/hawthorn_planks",
+    "side": "got:block/hawthorn_planks"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/weirwood_planks",
+    "bottom": "got:block/weirwood_planks",
+    "top": "got:block/weirwood_planks",
+    "side": "got:block/weirwood_planks"
+  },
+  "render_type": "solid"
+}

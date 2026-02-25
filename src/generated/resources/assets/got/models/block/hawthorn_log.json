@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/hawthorn_log_top",
+    "up": "got:block/hawthorn_log_top",
+    "north": "got:block/hawthorn_log_side",
+    "east": "got:block/hawthorn_log_side",
+    "south": "got:block/hawthorn_log_side",
+    "west": "got:block/hawthorn_log_side",
+    "particle": "got:block/hawthorn_log_top"
+  },
+  "render_type": "solid"
+}

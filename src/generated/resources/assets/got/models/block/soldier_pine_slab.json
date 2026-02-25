@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/soldier_pine_planks",
+    "bottom": "got:block/soldier_pine_planks",
+    "top": "got:block/soldier_pine_planks",
+    "side": "got:block/soldier_pine_planks"
+  },
+  "render_type": "solid"
+}

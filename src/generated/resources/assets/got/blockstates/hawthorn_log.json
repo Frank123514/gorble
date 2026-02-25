@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "got:block/hawthorn_log",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "got:block/hawthorn_log"
+    },
+    "axis=z": {
+      "model": "got:block/hawthorn_log",
+      "x": 90
+    }
+  }
+}

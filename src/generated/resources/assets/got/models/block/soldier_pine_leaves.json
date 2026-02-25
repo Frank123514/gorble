@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "got:block/soldier_pine_leaves",
+    "particle": "got:block/soldier_pine_leaves"
+  }
+}

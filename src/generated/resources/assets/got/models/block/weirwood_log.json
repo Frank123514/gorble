@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/weirwood_log_top",
+    "up": "got:block/weirwood_log_top",
+    "north": "got:block/weirwood_log_side",
+    "east": "got:block/weirwood_log_side",
+    "south": "got:block/weirwood_log_side",
+    "west": "got:block/weirwood_log_side",
+    "particle": "got:block/weirwood_log_top"
+  },
+  "render_type": "solid"
+}
