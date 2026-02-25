@@ -12,7 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class PinePressurePlateBlock extends PressurePlateBlock {
-	public PinePressurePlateBlock(BlockBehaviour.Properties properties) {
+	public PinePressurePlateBlock(Properties properties) {
 		super(BlockSetType.OAK, properties.sound(SoundType.WOOD).strength(2f, 3f).noCollission().pushReaction(PushReaction.DESTROY).ignitedByLava().instrument(NoteBlockInstrument.HARP).forceSolidOn());
 	}
 

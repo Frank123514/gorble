@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class BeechFenceBlock extends FenceBlock {
-	public BeechFenceBlock(BlockBehaviour.Properties properties) {
+	public BeechFenceBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().forceSolidOn());
 	}
 

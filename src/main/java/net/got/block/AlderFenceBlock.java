@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class AlderFenceBlock extends FenceBlock {
-	public AlderFenceBlock(BlockBehaviour.Properties properties) {
+	public AlderFenceBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().forceSolidOn());
 	}
 

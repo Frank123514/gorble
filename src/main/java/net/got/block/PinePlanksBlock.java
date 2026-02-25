@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class PinePlanksBlock extends Block {
-	public PinePlanksBlock(BlockBehaviour.Properties properties) {
+	public PinePlanksBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava());
 	}
 

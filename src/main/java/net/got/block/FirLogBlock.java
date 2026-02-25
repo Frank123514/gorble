@@ -18,7 +18,7 @@ import net.minecraft.core.BlockPos;
 public class FirLogBlock extends Block {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public FirLogBlock(BlockBehaviour.Properties properties) {
+	public FirLogBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f).ignitedByLava().instrument(NoteBlockInstrument.HARP));
 		this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
 	}

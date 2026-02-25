@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class WeirwoodFenceGateBlock extends FenceGateBlock {
-    public WeirwoodFenceGateBlock(BlockBehaviour.Properties properties) {
+    public WeirwoodFenceGateBlock(Properties properties) {
         super(WoodType.OAK, properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().forceSolidOn());
     }
 

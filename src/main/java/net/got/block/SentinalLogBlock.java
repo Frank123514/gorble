@@ -17,7 +17,7 @@ import net.minecraft.core.BlockPos;
 public class SentinalLogBlock extends Block {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public SentinalLogBlock(BlockBehaviour.Properties properties) {
+	public SentinalLogBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f).ignitedByLava());
 		this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
 	}

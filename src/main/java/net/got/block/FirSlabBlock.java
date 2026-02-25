@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class FirSlabBlock extends SlabBlock {
-	public FirSlabBlock(BlockBehaviour.Properties properties) {
+	public FirSlabBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava());
 	}
 

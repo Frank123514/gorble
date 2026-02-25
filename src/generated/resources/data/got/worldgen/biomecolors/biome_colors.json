@@ -1,22 +1,17 @@
 {
-  "#949038": {
-    "biome": "got:north",
-    "terrain_modifier": 10.0
-  },
-  "#02450D": {
-    "biome": "got:ironwood",
-    "terrain_modifier": 50.0
-  },
-  "#047D17": {
-    "biome": "got:wolfswood",
-    "terrain_modifier": 10.0
-  },
-  "#015582": {
-    "biome": "minecraft:ocean",
-    "terrain_modifier": 10.0
-  },
-  "#014B75": {
-    "biome": "minecraft:deep_ocean",
-    "terrain_modifier": 20.0
-  }
+  "#949038": "got:north",
+  "#ADA942": "got:barrowlands",
+  "#92B0AC": "got:stony_shore",
+  "#808F81": "got:north_hills",
+  "#2F4A33": "got:neck",
+  "#02450D": "got:ironwood",
+  "#047D17": "got:wolfswood",
+  "#00229D": "got:ocean",
+  "#110751": "got:deep_ocean",
+  "#2D6796": "got:river",
+  "#35A180": "got:neck_river",
+  "#4B91E6": "got:frozen_river",
+  "#BBCCCD": "got:frostfangs",
+  "#FFFFFF": "got:always_winter",
+  "#A5B7B9": "got:north_mountains"
 }

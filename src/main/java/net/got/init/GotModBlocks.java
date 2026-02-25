@@ -104,6 +104,26 @@ public class GotModBlocks {
 	public static final DeferredBlock<Block> SOLDIER_PINE_FENCE_GATE = register("soldier_pine_fence_gate", SoldierPineFenceGateBlock::new);
 	public static final DeferredBlock<Block> SOLDIER_PINE_PRESSURE_PLATE = register("soldier_pine_pressure_plate", SoldierPinePressurePlateBlock::new);
 	public static final DeferredBlock<Block> SOLDIER_PINE_BUTTON = register("soldier_pine_button", SoldierPineButtonBlock::new);
+    public static final DeferredBlock<Block> ASH_LOG = register("ash_log", AshLogBlock::new);
+    public static final DeferredBlock<Block> ASH_WOOD = register("ash_wood", AshWoodBlock::new);
+    public static final DeferredBlock<Block> ASH_PLANKS = register("ash_planks", AshPlanksBlock::new);
+    public static final DeferredBlock<Block> ASH_LEAVES = register("ash_leaves", AshLeavesBlock::new);
+    public static final DeferredBlock<Block> ASH_STAIRS = register("ash_stairs", AshStairsBlock::new);
+    public static final DeferredBlock<Block> ASH_SLAB = register("ash_slab", AshSlabBlock::new);
+    public static final DeferredBlock<Block> ASH_FENCE = register("ash_fence", AshFenceBlock::new);
+    public static final DeferredBlock<Block> ASH_FENCE_GATE = register("ash_fence_gate", AshFenceGateBlock::new);
+    public static final DeferredBlock<Block> ASH_PRESSURE_PLATE = register("ash_pressure_plate", AshPressurePlateBlock::new);
+    public static final DeferredBlock<Block> ASH_BUTTON = register("ash_button", AshButtonBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_LOG = register("hawthorn_log", HawthornLogBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_WOOD = register("hawthorn_wood", HawthornWoodBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_PLANKS = register("hawthorn_planks", HawthornPlanksBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_LEAVES = register("hawthorn_leaves", HawthornLeavesBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_STAIRS = register("hawthorn_stairs", HawthornStairsBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_SLAB = register("hawthorn_slab", HawthornSlabBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_FENCE = register("hawthorn_fence", HawthornFenceBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_FENCE_GATE = register("hawthorn_fence_gate", HawthornFenceGateBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_PRESSURE_PLATE = register("hawthorn_pressure_plate", HawthornPressurePlateBlock::new);
+    public static final DeferredBlock<Block> HAWTHORN_BUTTON = register("hawthorn_button", HawthornButtonBlock::new);
     private static <B extends Block> DeferredBlock<B> register(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.of());
     }

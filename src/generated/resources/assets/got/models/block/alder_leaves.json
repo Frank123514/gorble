@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/alder_leaves",
-    "particle": "got:block/alder_leaves"
-  }
-}

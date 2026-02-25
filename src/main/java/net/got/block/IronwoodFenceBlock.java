@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class IronwoodFenceBlock extends FenceBlock {
-	public IronwoodFenceBlock(BlockBehaviour.Properties properties) {
+	public IronwoodFenceBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().instrument(NoteBlockInstrument.HARP).forceSolidOn());
 	}
 

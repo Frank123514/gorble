@@ -23,8 +23,8 @@ public class GotMapScreen extends Screen {
             ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/map_background.png");
 
     // Must match PNG resolution exactly
-    private static final int MAP_PIXEL_WIDTH = 3520;
-    private static final int MAP_PIXEL_HEIGHT = 3520;
+    private static final int MAP_PIXEL_WIDTH = 2000;
+    private static final int MAP_PIXEL_HEIGHT = 2000;
 
     private GotMapWidget mapWidget;
     private Button backButton;

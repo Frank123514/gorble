@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class AlderFenceGateBlock extends FenceGateBlock {
-	public AlderFenceGateBlock(BlockBehaviour.Properties properties) {
+	public AlderFenceGateBlock(Properties properties) {
 		super(WoodType.OAK, properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().forceSolidOn());
 	}
 

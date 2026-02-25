@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class FirStairsBlock extends StairBlock {
-	public FirStairsBlock(BlockBehaviour.Properties properties) {
+	public FirStairsBlock(Properties properties) {
 		super(Blocks.AIR.defaultBlockState(), properties.sound(SoundType.WOOD).strength(3f, 2f).ignitedByLava());
 	}
 

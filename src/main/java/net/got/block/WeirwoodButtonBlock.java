@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class WeirwoodButtonBlock extends ButtonBlock {
-    public WeirwoodButtonBlock(BlockBehaviour.Properties properties) {
+    public WeirwoodButtonBlock(Properties properties) {
         super(BlockSetType.OAK, 30, properties.sound(SoundType.WOOD).strength(2f, 3f).pushReaction(PushReaction.DESTROY));
     }
 

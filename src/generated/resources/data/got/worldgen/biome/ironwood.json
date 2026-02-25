@@ -8,7 +8,7 @@
   "effects": {
     "ambient_sound": "got:wolf_howl2",
     "fog_color": 12638463,
-    "grass_color": 294167,
+    "grass_color": 2391380,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -79,15 +79,16 @@
     ],
     [
       "minecraft:glow_lichen",
+      "minecraft:spruce",
+      "minecraft:oak",
       "got:aspen",
       "got:ironwood",
       "got:sentinal",
       "got:pine",
       "got:fir",
       "got:soldier_pine",
+      "got:hawthorn",
       "got:weirwood",
-      "minecraft:spruce",
-      "minecraft:oak",
       "minecraft:patch_large_fern",
       "minecraft:flower_default",
       "minecraft:patch_grass_taiga",
@@ -97,8 +98,7 @@
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:patch_pumpkin",
-      "minecraft:patch_berry_common",
-      "got:patch_coarse_dirt"
+      "minecraft:patch_berry_common"
     ],
     [
       "minecraft:freeze_top_layer"

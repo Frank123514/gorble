@@ -104,6 +104,26 @@ public class GotModItems {
 	public static final DeferredItem<Item> SOLDIER_PINE_FENCE_GATE = block(GotModBlocks.SOLDIER_PINE_FENCE_GATE);
 	public static final DeferredItem<Item> SOLDIER_PINE_PRESSURE_PLATE = block(GotModBlocks.SOLDIER_PINE_PRESSURE_PLATE);
 	public static final DeferredItem<Item> SOLDIER_PINE_BUTTON = block(GotModBlocks.SOLDIER_PINE_BUTTON);
+    public static final DeferredItem<Item> ASH_LOG = block(GotModBlocks.ASH_LOG);
+    public static final DeferredItem<Item> ASH_WOOD = block(GotModBlocks.ASH_WOOD);
+    public static final DeferredItem<Item> ASH_PLANKS = block(GotModBlocks.ASH_PLANKS);
+    public static final DeferredItem<Item> ASH_LEAVES = block(GotModBlocks.ASH_LEAVES);
+    public static final DeferredItem<Item> ASH_STAIRS = block(GotModBlocks.ASH_STAIRS);
+    public static final DeferredItem<Item> ASH_SLAB = block(GotModBlocks.ASH_SLAB);
+    public static final DeferredItem<Item> ASH_FENCE = block(GotModBlocks.ASH_FENCE);
+    public static final DeferredItem<Item> ASH_FENCE_GATE = block(GotModBlocks.ASH_FENCE_GATE);
+    public static final DeferredItem<Item> ASH_PRESSURE_PLATE = block(GotModBlocks.ASH_PRESSURE_PLATE);
+    public static final DeferredItem<Item> ASH_BUTTON = block(GotModBlocks.ASH_BUTTON);
+    public static final DeferredItem<Item> HAWTHORN_LOG = block(GotModBlocks.HAWTHORN_LOG);
+    public static final DeferredItem<Item> HAWTHORN_WOOD = block(GotModBlocks.HAWTHORN_WOOD);
+    public static final DeferredItem<Item> HAWTHORN_PLANKS = block(GotModBlocks.HAWTHORN_PLANKS);
+    public static final DeferredItem<Item> HAWTHORN_LEAVES = block(GotModBlocks.HAWTHORN_LEAVES);
+    public static final DeferredItem<Item> HAWTHORN_STAIRS = block(GotModBlocks.HAWTHORN_STAIRS);
+    public static final DeferredItem<Item> HAWTHORN_SLAB = block(GotModBlocks.HAWTHORN_SLAB);
+    public static final DeferredItem<Item> HAWTHORN_FENCE = block(GotModBlocks.HAWTHORN_FENCE);
+    public static final DeferredItem<Item> HAWTHORN_FENCE_GATE = block(GotModBlocks.HAWTHORN_FENCE_GATE);
+    public static final DeferredItem<Item> HAWTHORN_PRESSURE_PLATE = block(GotModBlocks.HAWTHORN_PRESSURE_PLATE);
+    public static final DeferredItem<Item> HAWTHORN_BUTTON = block(GotModBlocks.HAWTHORN_BUTTON);
 
     private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, ? extends I> supplier) {
         return REGISTRY.registerItem(name, supplier, new Item.Properties());

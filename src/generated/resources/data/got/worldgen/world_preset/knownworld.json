@@ -8,7 +8,7 @@
           "type": "minecraft:fixed",
           "biome": "minecraft:plains"
         },
-        "settings": "minecraft:overworld"
+        "settings": "got:overworld"
       }
     }
   }

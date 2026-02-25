@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/beech_leaves",
-    "particle": "got:block/beech_leaves"
-  }
-}

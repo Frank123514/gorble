@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class IronwoodButtonBlock extends ButtonBlock {
-	public IronwoodButtonBlock(BlockBehaviour.Properties properties) {
+	public IronwoodButtonBlock(Properties properties) {
 		super(BlockSetType.OAK, 30, properties.sound(SoundType.WOOD).strength(2f, 3f).noCollission().pushReaction(PushReaction.DESTROY));
 	}
 

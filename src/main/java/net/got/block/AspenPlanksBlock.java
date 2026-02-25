@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class AspenPlanksBlock extends Block {
-    public AspenPlanksBlock(BlockBehaviour.Properties properties) {
+    public AspenPlanksBlock(Properties properties) {
         super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava());
     }
 

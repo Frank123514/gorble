@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class SoldierPineFenceBlock extends FenceBlock {
-	public SoldierPineFenceBlock(BlockBehaviour.Properties properties) {
+	public SoldierPineFenceBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().forceSolidOn());
 	}
 

@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class PineStairsBlock extends StairBlock {
-	public PineStairsBlock(BlockBehaviour.Properties properties) {
+	public PineStairsBlock(Properties properties) {
 		super(Blocks.AIR.defaultBlockState(), properties.sound(SoundType.WOOD).strength(3f, 2f).ignitedByLava());
 	}
 

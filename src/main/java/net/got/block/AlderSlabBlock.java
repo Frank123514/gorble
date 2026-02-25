@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class AlderSlabBlock extends SlabBlock {
-	public AlderSlabBlock(BlockBehaviour.Properties properties) {
+	public AlderSlabBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava());
 	}
 

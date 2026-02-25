@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class SentinalSlabBlock extends SlabBlock {
-	public SentinalSlabBlock(BlockBehaviour.Properties properties) {
+	public SentinalSlabBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava());
 	}
 

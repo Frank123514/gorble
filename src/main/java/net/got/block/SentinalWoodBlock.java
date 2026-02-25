@@ -17,7 +17,7 @@ import net.minecraft.core.BlockPos;
 public class SentinalWoodBlock extends Block {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public SentinalWoodBlock(BlockBehaviour.Properties properties) {
+	public SentinalWoodBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f).ignitedByLava());
 		this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
 	}

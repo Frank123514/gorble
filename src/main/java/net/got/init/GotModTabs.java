@@ -98,6 +98,24 @@ public class GotModTabs {
 			tabData.accept(GotModBlocks.SOLDIER_PINE_FENCE_GATE.get().asItem());
 			tabData.accept(GotModBlocks.SOLDIER_PINE_PRESSURE_PLATE.get().asItem());
 			tabData.accept(GotModBlocks.SOLDIER_PINE_BUTTON.get().asItem());
+            tabData.accept(GotModBlocks.ASH_LOG.get().asItem());
+            tabData.accept(GotModBlocks.ASH_WOOD.get().asItem());
+            tabData.accept(GotModBlocks.ASH_PLANKS.get().asItem());
+            tabData.accept(GotModBlocks.ASH_STAIRS.get().asItem());
+            tabData.accept(GotModBlocks.ASH_SLAB.get().asItem());
+            tabData.accept(GotModBlocks.ASH_FENCE.get().asItem());
+            tabData.accept(GotModBlocks.ASH_FENCE_GATE.get().asItem());
+            tabData.accept(GotModBlocks.ASH_PRESSURE_PLATE.get().asItem());
+            tabData.accept(GotModBlocks.ASH_BUTTON.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_LOG.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_WOOD.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_BUTTON.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_PLANKS.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_STAIRS.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_SLAB.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_FENCE.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_FENCE_GATE.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_PRESSURE_PLATE.get().asItem());
         } else if (tabData.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             tabData.accept(GotModBlocks.WEIRWOOD_LEAVES.get().asItem());
             tabData.accept(GotModBlocks.ASPEN_LEAVES.get().asItem());
@@ -108,6 +126,8 @@ public class GotModTabs {
 			tabData.accept(GotModBlocks.IRONWOOD_LEAVES.get().asItem());
             tabData.accept(GotModBlocks.BEECH_LEAVES.get().asItem());
 			tabData.accept(GotModBlocks.SOLDIER_PINE_LEAVES.get().asItem());
+            tabData.accept(GotModBlocks.ASH_LEAVES.get().asItem());
+            tabData.accept(GotModBlocks.HAWTHORN_LEAVES.get().asItem());
         }
     }
 }

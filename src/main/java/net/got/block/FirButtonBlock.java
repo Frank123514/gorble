@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class FirButtonBlock extends ButtonBlock {
-	public FirButtonBlock(BlockBehaviour.Properties properties) {
+	public FirButtonBlock(Properties properties) {
 		super(BlockSetType.OAK, 30, properties.sound(SoundType.WOOD).strength(2f, 3f).noCollission().pushReaction(PushReaction.DESTROY));
 	}
 

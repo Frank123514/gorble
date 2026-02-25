@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class AspenButtonBlock extends ButtonBlock {
-    public AspenButtonBlock(BlockBehaviour.Properties properties) {
+    public AspenButtonBlock(Properties properties) {
         super(BlockSetType.OAK, 30, properties.sound(SoundType.WOOD).strength(2f, 3f).pushReaction(PushReaction.DESTROY));
     }
 

@@ -9,7 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class BeechSlabBlock extends SlabBlock {
-	public BeechSlabBlock(BlockBehaviour.Properties properties) {
+	public BeechSlabBlock(Properties properties) {
 		super(properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava());
 	}
 

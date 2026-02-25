@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class SentinalFenceGateBlock extends FenceGateBlock {
-	public SentinalFenceGateBlock(BlockBehaviour.Properties properties) {
+	public SentinalFenceGateBlock(Properties properties) {
 		super(WoodType.OAK, properties.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().instrument(NoteBlockInstrument.HARP).forceSolidOn());
 	}
 

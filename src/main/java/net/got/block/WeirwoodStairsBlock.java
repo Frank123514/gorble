@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class WeirwoodStairsBlock extends StairBlock {
-    public WeirwoodStairsBlock(BlockBehaviour.Properties properties) {
+    public WeirwoodStairsBlock(Properties properties) {
         super(Blocks.AIR.defaultBlockState(), properties.sound(SoundType.WOOD).strength(3f, 2f).ignitedByLava());
     }
 

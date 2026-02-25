@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class IronwoodLeavesBlock extends LeavesBlock {
-	public IronwoodLeavesBlock(BlockBehaviour.Properties properties) {
+	public IronwoodLeavesBlock(Properties properties) {
 		super(properties.sound(SoundType.GRASS).strength(0.2f).noOcclusion().pushReaction(PushReaction.DESTROY).isRedstoneConductor((bs, br, bp) -> false).ignitedByLava().isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false));
 	}
 
