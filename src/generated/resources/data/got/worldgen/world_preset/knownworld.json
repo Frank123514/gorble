@@ -5,28 +5,8 @@
       "generator": {
         "type": "got:chunk_generator",
         "biome_source": {
-          "type": "got:biome_source",
-          "biomes": [
-            "got:north",
-            "got:barrowlands",
-            "got:stony_shore",
-            "got:north_hills",
-            "got:neck",
-            "got:ironwood",
-            "got:wolfswood",
-            "got:ocean",
-            "got:deep_ocean",
-            "got:river",
-            "got:neck_river",
-            "got:frozen_river",
-            "got:frostfangs",
-            "got:always_winter",
-            "got:north_mountains",
-            "got:haunted_forest",
-            "got:frozen_lake",
-            "got:iron_hills",
-            "got:lake"
-          ]
+          "type": "minecraft:fixed",
+          "biome": "minecraft:plains"
         },
         "settings": "got:overworld"
       }
