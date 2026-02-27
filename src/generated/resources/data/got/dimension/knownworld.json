@@ -1,5 +1,5 @@
 {
-  "type": "got:overworld",
+  "type": "got:knownworld",
   "generator": {
     "type": "got:chunk_generator",
     "biome_source": {

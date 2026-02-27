@@ -37,7 +37,14 @@
     [],
     [],
     [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "minecraft:patch_tall_grass_2",
+      "minecraft:patch_grass_plain",
+      "got:ironwood_sparse",
+      "got:sentinal",
+      "got:soldier_pine",
+      "got:ash",
+      "got:weirwood"
     ],
     [
       "minecraft:freeze_top_layer"
