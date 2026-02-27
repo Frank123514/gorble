@@ -146,7 +146,8 @@ public class GotMapScreen extends Screen {
         if (mapWidget != null) {
             BlockPos pos = mapWidget.getHoveredWorldPos(mouseX, mouseY);
             if (pos != null) {
-                String text = "X: " + pos.getX() + "  Z: " + pos.getZ();
+                // Display coordinates in the format matching the new map system
+                String text = "World X: " + pos.getX() + "  World Z: " + pos.getZ();
 
                 int textWidth = font.width(text);
                 int x = (width - textWidth) / 2;

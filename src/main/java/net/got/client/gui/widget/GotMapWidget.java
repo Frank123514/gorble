@@ -34,9 +34,10 @@ public class GotMapWidget extends AbstractWidget {
     private static final double MIN_ZOOM = 0.25; // zoom WAY out
     private static final double MAX_ZOOM = 10.0;
 
-    // 1 pixel = 100 blocks
-    private static final float BLOCKS_PER_PIXEL = 28.0f;
-    private static final float WORLD_SIZE_BLOCKS = 56000f;
+    // 1 pixel = 20 blocks (matching world generation scale)
+    private static final float BLOCKS_PER_PIXEL = 56.0f;
+    private static final float WORLD_WIDTH_BLOCKS = 112000;  // 2000 * 28
+    private static final float WORLD_HEIGHT_BLOCKS = 112000; // 2000 * 28
 
     /* ============================================================= */
 
@@ -163,8 +164,10 @@ public class GotMapWidget extends AbstractWidget {
         Minecraft mc = Minecraft.getInstance();
         if (!(mc.player instanceof AbstractClientPlayer player)) return;
 
-        double worldX = player.getX() + WORLD_SIZE_BLOCKS / 2.0;
-        double worldZ = player.getZ() + WORLD_SIZE_BLOCKS / 2.0;
+        // Convert world coordinates to map pixel coordinates
+        // World origin (0,0) maps to center of the map
+        double worldX = player.getX() + WORLD_WIDTH_BLOCKS / 2.0;
+        double worldZ = player.getZ() + WORLD_HEIGHT_BLOCKS / 2.0;
 
         double pixelX = (worldX / BLOCKS_PER_PIXEL) * zoom;
         double pixelZ = (worldZ / BLOCKS_PER_PIXEL) * zoom;
@@ -254,7 +257,7 @@ public class GotMapWidget extends AbstractWidget {
         double localX = mouseX - getX();
         double localY = mouseY - getY();
 
-        // Apply pan
+        // Apply pan and zoom to get pixel coordinates in the map texture
         double mapX = (localX + panX) / zoom;
         double mapY = (localY + panY) / zoom;
 
@@ -263,9 +266,10 @@ public class GotMapWidget extends AbstractWidget {
             return null;
         }
 
-        // PNG pixel → world blocks (1px = 10 blocks)
-        int worldX = (int) (mapX * 10);
-        int worldZ = (int) (mapY * 10);
+        // Convert pixel coordinates to world coordinates
+        // Pixel (0,0) = world (-WORLD_WIDTH_BLOCKS/2, -WORLD_HEIGHT_BLOCKS/2)
+        int worldX = (int) ((mapX * BLOCKS_PER_PIXEL) - WORLD_WIDTH_BLOCKS / 2);
+        int worldZ = (int) ((mapY * BLOCKS_PER_PIXEL) - WORLD_HEIGHT_BLOCKS / 2);
 
         return new BlockPos(worldX, 0, worldZ);
     }
@@ -281,8 +285,10 @@ public class GotMapWidget extends AbstractWidget {
         double localX = (mouseX - getX() + panX) / zoom;
         double localY = (mouseY - getY() + panY) / zoom;
 
-        int blockX = (int) ((localX * BLOCKS_PER_PIXEL) - WORLD_SIZE_BLOCKS / 2);
-        int blockZ = (int) ((localY * BLOCKS_PER_PIXEL) - WORLD_SIZE_BLOCKS / 2);
+        // Convert pixel coordinates to world coordinates
+        // Pixel (0,0) = world (-WORLD_WIDTH/2, -WORLD_HEIGHT/2)
+        int blockX = (int) ((localX * BLOCKS_PER_PIXEL) - WORLD_WIDTH_BLOCKS / 2);
+        int blockZ = (int) ((localY * BLOCKS_PER_PIXEL) - WORLD_HEIGHT_BLOCKS / 2);
 
         if (mc.getConnection() != null) {
             mc.getConnection().send(new MapTeleportPayload(blockX, blockZ));
@@ -302,8 +308,9 @@ public class GotMapWidget extends AbstractWidget {
     }
 
     private void centerOnWorldOrigin() {
-        double centerX = (WORLD_SIZE_BLOCKS / 2 / BLOCKS_PER_PIXEL) * zoom;
-        double centerY = (WORLD_SIZE_BLOCKS / 2 / BLOCKS_PER_PIXEL) * zoom;
+        // Center on the middle of the rectangular map
+        double centerX = (textureWidth / 2.0) * zoom;
+        double centerY = (textureHeight / 2.0) * zoom;
 
         panX = centerX - width / 2.0;
         panY = centerY - height / 2.0;

@@ -7,21 +7,22 @@ import java.io.InputStream;
 /**
  * Loads the topographic colour heightmap PNG and decodes elevation from HSV hue.
  *
+ * <p>All pixel coordinate lookups go through {@link MapWarp#warp} so terrain
+ * elevation uses exactly the same organic distortion as the biome map in
+ * {@link BiomemapLoader}.  Keeping both maps on the same warp is essential —
+ * if they ever diverge, biome borders will misalign with terrain features.</p>
+ *
  * Colour → elevation:
- *   Ocean  (V < 0.25 AND H > 0.60)  →  OCEAN_VALUE (-0.05)
- *   Cyan   (H ≈ 0.49)               →  0.0   (sea-level coast)
- *   Red    (H ≈ 0.02)               →  1.0   (mountain peak)
- *
- * Using OCEAN_VALUE = -0.05 (not -1) means the bicubic curve smoothly crosses
- * zero between ocean and land pixels, placing the coastline exactly on the
- * smooth S-curve through the pixel grid — no staircase edges.
- *
- * 1 pixel = MAP_SCALE blocks (100).
+ * <ul>
+ *   <li>Ocean  (V &lt; 0.25 AND H &gt; 0.60) → {@link #OCEAN_VALUE} (−0.05)</li>
+ *   <li>Cyan   (H ≈ 0.49)                 → 0.0  (sea-level coast)</li>
+ *   <li>Red    (H ≈ 0.02)                 → 1.0  (mountain peak)</li>
+ * </ul>
  */
 public final class HeightmapLoader {
 
-    /** 1 pixel = 100 world blocks. */
-    public static final int MAP_SCALE = 28;
+    /** 1 pixel = 28 world blocks. Must match BiomemapLoader.MAP_SCALE. */
+    public static final int MAP_SCALE = 56;
 
     private static final float H_SEA_LEVEL = 0.49f;
     private static final float H_PEAK      = 0.02f;
@@ -30,14 +31,16 @@ public final class HeightmapLoader {
 
     /**
      * Value stored for ocean pixels.
-     * Small negative so the bicubic smoothly interpolates to 0 at coastlines.
-     * GotChunkGenerator uses this as the "deep ocean" threshold.
+     * Small negative so bicubic interpolation smoothly crosses 0 at coastlines.
      */
     public static final float OCEAN_VALUE = -0.05f;
 
+    /* ------------------------------------------------------------------ */
+    /* State                                                                */
+    /* ------------------------------------------------------------------ */
+
     private static int       imageWidth;
     private static int       imageHeight;
-    /** OCEAN_VALUE = ocean, [0,1] = land. */
     private static float[][] elev;
     private static boolean   loaded = false;
 
@@ -90,16 +93,62 @@ public final class HeightmapLoader {
     /* ------------------------------------------------------------------ */
 
     /**
-     * Returns interpolated elevation at world coordinates.
-     *  ≤ OCEAN_VALUE  → deep ocean
-     *  < 0            → shallow/coastal water
-     *  0–1            → land (0 = coast, 1 = peak)
+     * Returns bicubic-interpolated elevation at world coordinates after warping.
+     * ≤ OCEAN_VALUE → deep ocean | &lt; 0 → coastal water | 0–1 → land
      */
     public static float getElevationAtWorld(int worldX, int worldZ) {
         if (!loaded) return 0f;
-        float mapX = worldX / (float) MAP_SCALE + imageWidth  * 0.5f;
-        float mapZ = worldZ / (float) MAP_SCALE + imageHeight * 0.5f;
-        return bicubic(mapX, mapZ);
+        float[] wc = MapWarp.warp(worldX, worldZ, imageWidth, imageHeight);
+        return bicubic(wc[0], wc[1]);
+    }
+
+    /**
+     * Euclidean distance (in warped heightmap pixels) to the nearest land pixel.
+     *
+     * <p>Uses the same warp as {@link #getElevationAtWorld} so the distance field
+     * follows the same organic bank curves as the elevation field — the river-floor
+     * blending contours match the terrain precisely.</p>
+     *
+     * @param worldX    world block X
+     * @param worldZ    world block Z
+     * @param maxRadius maximum search radius in heightmap pixels
+     * @return warped pixel distance to nearest land, or {@code maxRadius+1f} if none found
+     */
+    public static float nearestLandDistanceF(int worldX, int worldZ, int maxRadius) {
+        if (!loaded) return maxRadius + 1f;
+
+        float[] wc = MapWarp.warp(worldX, worldZ, imageWidth, imageHeight);
+        float   fx = wc[0];
+        float   fz = wc[1];
+
+        float ox = fx - (float) Math.floor(fx);
+        float oz = fz - (float) Math.floor(fz);
+        int   px = (int) Math.floor(fx);
+        int   pz = (int) Math.floor(fz);
+
+        float   bestDist2 = (maxRadius + 1f) * (maxRadius + 1f);
+        boolean found     = false;
+
+        for (int r = 0; r <= maxRadius; r++) {
+            float ringStart = Math.max(0, r - 1);
+            if (found && ringStart * ringStart > bestDist2) break;
+
+            for (int dx = -r; dx <= r; dx++) {
+                for (int dz = -r; dz <= r; dz++) {
+                    if (r > 0 && Math.abs(dx) < r && Math.abs(dz) < r) continue;
+                    int nx = px + dx, nz = pz + dz;
+                    if (nx < 0 || nz < 0 || nx >= imageWidth || nz >= imageHeight) continue;
+                    if (elev[nx][nz] > 0f) {
+                        float ddx = dx - ox + 0.5f;
+                        float ddz = dz - oz + 0.5f;
+                        float d2  = ddx * ddx + ddz * ddz;
+                        if (d2 < bestDist2) { bestDist2 = d2; found = true; }
+                    }
+                }
+            }
+        }
+
+        return found ? (float) Math.sqrt(bestDist2) : maxRadius + 1f;
     }
 
     /* ------------------------------------------------------------------ */
@@ -112,7 +161,6 @@ public final class HeightmapLoader {
         float tx = mx - x1;
         float tz = mz - z1;
 
-        // Min/max of 4 central pixels — used to hard-clamp Runge overshoot
         float c00 = raw(x1,     z1);
         float c10 = raw(x1 + 1, z1);
         float c01 = raw(x1,     z1 + 1);
@@ -120,8 +168,6 @@ public final class HeightmapLoader {
         float lo  = Math.min(Math.min(c00, c10), Math.min(c01, c11));
         float hi  = Math.max(Math.max(c00, c10), Math.max(c01, c11));
 
-        // Full 4×4 Catmull-Rom (OCEAN_VALUE pixels participate directly —
-        // this is what makes coastlines smooth)
         float r0 = cubicRow(x1, z1 - 1, tx);
         float r1 = cubicRow(x1, z1,     tx);
         float r2 = cubicRow(x1, z1 + 1, tx);
@@ -135,13 +181,11 @@ public final class HeightmapLoader {
         return cubic(raw(x1-1,pz), raw(x1,pz), raw(x1+1,pz), raw(x1+2,pz), tx);
     }
 
-    /** Returns stored elevation; out-of-bounds → OCEAN_VALUE. */
     private static float raw(int px, int pz) {
         if (px < 0 || pz < 0 || px >= imageWidth || pz >= imageHeight) return OCEAN_VALUE;
         return elev[px][pz];
     }
 
-    /** Catmull-Rom cubic kernel. */
     private static float cubic(float a, float b, float c, float d, float t) {
         float t2 = t*t, t3 = t2*t;
         return (-0.5f*a + 1.5f*b - 1.5f*c + 0.5f*d)*t3
@@ -151,7 +195,7 @@ public final class HeightmapLoader {
     }
 
     /* ------------------------------------------------------------------ */
-    /* Colour helpers                                                        */
+    /* Colour helpers                                                       */
     /* ------------------------------------------------------------------ */
 
     private static float[] rgbToHsv(float r, float g, float b) {
