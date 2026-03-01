@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "got:north_brick",
+    "minecraft:moss_block"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:mossy_north_brick"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "###",
+    "# #",
+    "# #"
+  ],
+  "key": {
+    "#": "got:bronze_ingot"
+  },
+  "result": {
+    "count": 7,
+    "id": "got:bronze_leggings"
+  }
+}

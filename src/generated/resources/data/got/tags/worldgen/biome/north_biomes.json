@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "got:north",
+    "got:north_hills",
+    "got:north_mountains",
+    "got:always_winter",
+    "got:barrowlands",
+    "got:frostfangs",
+    "got:haunted_forest",
+    "got:ironwood",
+    "got:wolfswood",
+    "got:iron_hills",
+    "got:neck"
+  ]
+}

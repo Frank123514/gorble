@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": "got:raw_valyrian_steel",
+  "result": {
+    "count": 1,
+    "id": "got:valyrian_steel_ingot"
+  },
+  "experience": 2.0,
+  "cookingtime": 200
+}
