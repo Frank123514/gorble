@@ -6,6 +6,6 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class RegionalRockButtonBlock extends ButtonBlock {
     public RegionalRockButtonBlock(BlockBehaviour.Properties properties) {
-        super(BlockSetType.STONE, 20, properties.noCollission());
+        super(BlockSetType.STONE, 20, properties);
     }
 }

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:riverlands_rock",
+  "result": {
+    "id": "got:polished_riverlands_rock",
+    "count": 1
+  }
+}

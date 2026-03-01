@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "key": {
+    "X": "got:reach_rock"
+  },
+  "result": {
+    "id": "got:reach_pillar",
+    "count": 2
+  }
+}

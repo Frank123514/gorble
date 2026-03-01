@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:stormlands_cobblestone"
+  },
+  "result": {
+    "id": "got:stormlands_cobblestone_stairs",
+    "count": 4
+  }
+}

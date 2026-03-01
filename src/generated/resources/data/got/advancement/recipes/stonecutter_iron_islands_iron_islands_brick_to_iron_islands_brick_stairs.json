@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:iron_islands_brick",
+  "result": {
+    "id": "got:iron_islands_brick_stairs",
+    "count": 1
+  }
+}

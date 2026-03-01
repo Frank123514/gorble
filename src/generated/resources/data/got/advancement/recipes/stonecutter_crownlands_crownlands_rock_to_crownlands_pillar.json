@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:crownlands_rock",
+  "result": {
+    "id": "got:crownlands_pillar",
+    "count": 1
+  }
+}

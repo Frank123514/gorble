@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": "got:riverlands_rock"
+  },
+  "result": {
+    "id": "got:riverlands_brick",
+    "count": 4
+  }
+}

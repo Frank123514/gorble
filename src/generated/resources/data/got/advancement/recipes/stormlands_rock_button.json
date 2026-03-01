@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "got:stormlands_rock"
+  ],
+  "result": {
+    "id": "got:stormlands_rock_button",
+    "count": 1
+  }
+}

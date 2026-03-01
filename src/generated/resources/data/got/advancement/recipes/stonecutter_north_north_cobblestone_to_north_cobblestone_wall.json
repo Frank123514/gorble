@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:north_cobblestone",
+  "result": {
+    "id": "got:north_cobblestone_wall",
+    "count": 1
+  }
+}

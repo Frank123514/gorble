@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": "got:vale_rock",
+  "result": {
+    "id": "got:polished_vale_rock"
+  },
+  "experience": 0.1,
+  "cookingtime": 100
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:stormlands_rock"
+  },
+  "result": {
+    "id": "got:stormlands_rock_wall",
+    "count": 6
+  }
+}

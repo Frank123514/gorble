@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "got:vale_rock"
+  ],
+  "result": {
+    "id": "got:vale_rock_button",
+    "count": 1
+  }
+}

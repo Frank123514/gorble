@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "got:reach_brick",
+    "minecraft:vine"
+  ],
+  "result": {
+    "id": "got:mossy_reach_brick",
+    "count": 1
+  }
+}

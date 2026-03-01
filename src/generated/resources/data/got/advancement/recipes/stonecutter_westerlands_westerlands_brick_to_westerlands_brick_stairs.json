@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:westerlands_brick",
+  "result": {
+    "id": "got:westerlands_brick_stairs",
+    "count": 1
+  }
+}

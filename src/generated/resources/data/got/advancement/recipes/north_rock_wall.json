@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:north_rock"
+  },
+  "result": {
+    "id": "got:north_rock_wall",
+    "count": 6
+  }
+}

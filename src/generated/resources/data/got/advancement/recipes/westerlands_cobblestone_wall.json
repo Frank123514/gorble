@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:westerlands_cobblestone"
+  },
+  "result": {
+    "id": "got:westerlands_cobblestone_wall",
+    "count": 6
+  }
+}

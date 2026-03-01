@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "key": {
+    "X": "got:crownlands_rock"
+  },
+  "result": {
+    "id": "got:crownlands_pillar",
+    "count": 2
+  }
+}
