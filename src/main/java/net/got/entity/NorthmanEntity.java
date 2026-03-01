@@ -77,12 +77,13 @@ public class NorthmanEntity extends PathfinderMob implements NeutralMob {
     }
 
     @Override
-    public void hurtServer(ServerLevel level, DamageSource source, float amount) {
-        super.hurtServer(level, source, amount);
-        if (source.getEntity() instanceof Player player) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean result = super.hurtServer(level, source, amount);
+        if (result && source.getEntity() instanceof Player player) {
             this.startPersistentAngerTimer();
             this.setPersistentAngerTarget(player.getUUID());
         }
+        return result;
     }
 
     @Override

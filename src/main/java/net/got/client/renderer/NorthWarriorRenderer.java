@@ -25,10 +25,10 @@ public class NorthWarriorRenderer
         super(ctx,
                 new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE)),
                 0.5f);
-        this.addLayer(new HumanoidArmorLayer<NorthWarriorEntity, HumanoidModel<State>, State>(
+        this.addLayer(new HumanoidArmorLayer<State, HumanoidModel<State>, HumanoidModel<State>>(
                 this,
-                new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE_INNER_ARMOR)),
-                new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE_OUTER_ARMOR)),
+                new HumanoidModel<State>(ctx.bakeLayer(ModelLayers.ZOMBIE_INNER_ARMOR)),
+                new HumanoidModel<State>(ctx.bakeLayer(ModelLayers.ZOMBIE_OUTER_ARMOR)),
                 ctx.getEquipmentRenderer()
         ));
     }

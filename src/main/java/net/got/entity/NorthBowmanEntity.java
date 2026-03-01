@@ -95,12 +95,13 @@ public class NorthBowmanEntity extends PathfinderMob implements NeutralMob, Rang
 
     // 1.21.4: hurt() is final; override hurtServer() to hook into damage
     @Override
-    public void hurtServer(ServerLevel level, DamageSource source, float amount) {
-        super.hurtServer(level, source, amount);
-        if (source.getEntity() instanceof Player player) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        boolean result = super.hurtServer(level, source, amount);
+        if (result && source.getEntity() instanceof Player player) {
             this.startPersistentAngerTimer();
             this.setPersistentAngerTarget(player.getUUID());
         }
+        return result;
     }
 
     @Override
