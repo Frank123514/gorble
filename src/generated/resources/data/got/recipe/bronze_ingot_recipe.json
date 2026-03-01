@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "group": "bronze_ingot",
   "ingredients": [
     "got:copper_ingot",
     "got:copper_ingot",
     "got:tin_ingot"
   ],
   "result": {
-    "count": 3,
+    "count": 1,
     "id": "got:bronze_ingot"
   }
 }

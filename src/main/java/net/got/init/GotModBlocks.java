@@ -503,7 +503,43 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> POLISHED_WESTERLANDS_ROCK_SLAB = register("polished_westerlands_rock_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> POLISHED_WESTERLANDS_ROCK_STAIRS = register("polished_westerlands_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> POLISHED_WESTERLANDS_ROCK_WALL = register("polished_westerlands_rock_wall", RegionalRockWallBlock::new);
+    // ── Ores ──────────────────────────────────────────────────────────────
+    // Stone-tier ores (hardness 3, resistance 3) — copper, tin, amber, topaz
+    public static final DeferredBlock<Block> COPPER_ORE    = oreStone("copper_ore");
+    public static final DeferredBlock<Block> TIN_ORE       = oreStone("tin_ore");
+    public static final DeferredBlock<Block> AMBER_ORE     = oreStone("amber_ore");
+    public static final DeferredBlock<Block> TOPAZ_ORE     = oreStone("topaz_ore");
+    // Iron-tier ores (hardness 3, resistance 3, like vanilla iron ore) — silver, amethyst, opal, ruby, sapphire, dragonglass
+    public static final DeferredBlock<Block> SILVER_ORE      = oreIron("silver_ore");
+    public static final DeferredBlock<Block> AMETHYST_ORE    = oreIron("amethyst_ore");
+    public static final DeferredBlock<Block> OPAL_ORE        = oreIron("opal_ore");
+    public static final DeferredBlock<Block> RUBY_ORE        = oreIron("ruby_ore");
+    public static final DeferredBlock<Block> SAPPHIRE_ORE    = oreIron("sapphire_ore");
+    public static final DeferredBlock<Block> DRAGONGLASS_ORE = oreIron("dragonglass_ore");
+    // Diamond-tier ore (hardness 3, resistance 3, like vanilla diamond ore)
+    public static final DeferredBlock<Block> VALYRIAN_STEEL_ORE = oreDiamond("valyrian_steel_ore");
+
+    // ── Helpers ──────────────────────────────────────────────────────────
+
     private static <B extends Block> DeferredBlock<B> register(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
+    }
+
+    /** Stone-tier ore: hardness 3.0, resistance 3.0, requires stone pickaxe. */
+    private static DeferredBlock<Block> oreStone(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_ORE));
+    }
+
+    /** Iron-tier ore: hardness 3.0, resistance 3.0, requires iron pickaxe. */
+    private static DeferredBlock<Block> oreIron(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
+    }
+
+    /** Diamond-tier ore: hardness 3.0, resistance 3.0, requires diamond pickaxe. */
+    private static DeferredBlock<Block> oreDiamond(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE));
     }
 }

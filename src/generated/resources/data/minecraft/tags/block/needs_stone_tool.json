@@ -279,6 +279,10 @@
     "got:mossy_westerlands_cobblestone_wall",
     "got:polished_westerlands_rock_slab",
     "got:polished_westerlands_rock_stairs",
-    "got:polished_westerlands_rock_wall"
+    "got:polished_westerlands_rock_wall",
+    "got:amber_ore",
+    "got:copper_ore",
+    "got:topaz_ore",
+    "got:tin_ore"
   ]
 }

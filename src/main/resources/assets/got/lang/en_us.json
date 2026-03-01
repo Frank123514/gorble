@@ -102,7 +102,6 @@
   "item.got.hawthorn_fence_gate": "Hawthorn Fence Gate",
   "item.got.hawthorn_pressure_plate": "Hawthorn Pressure Plate",
   "item.got.hawthorn_button": "Hawthorn Button",
-
   "item.got.alder_log": "Alder Log",
   "item.got.alder_wood": "Alder Wood",
   "item.got.alder_planks": "Alder Planks",
@@ -113,9 +112,7 @@
   "item.got.alder_fence_gate": "Alder Fence Gate",
   "item.got.alder_pressure_plate": "Alder Pressure Plate",
   "item.got.alder_button": "Alder Button",
-
   "item.got.north_rock": "North Rock",
-
   "item.got.crownlands_rock": "Crownlands Rock",
   "item.got.crownlands_brick": "Crownlands Brick",
   "item.got.cracked_crownlands_brick": "Cracked Crownlands Brick",
@@ -159,7 +156,6 @@
   "item.got.polished_crownlands_rock_wall": "Polished Crownlands Rock Wall",
   "item.got.polished_crownlands_rock_button": "Polished Crownlands Rock Button",
   "item.got.polished_crownlands_rock_pressure_plate": "Polished Crownlands Rock Pressure Plate",
-
   "item.got.dorne_rock": "Dorne Rock",
   "item.got.dorne_brick": "Dorne Brick",
   "item.got.cracked_dorne_brick": "Cracked Dorne Brick",
@@ -203,7 +199,6 @@
   "item.got.polished_dorne_rock_wall": "Polished Dorne Rock Wall",
   "item.got.polished_dorne_rock_button": "Polished Dorne Rock Button",
   "item.got.polished_dorne_rock_pressure_plate": "Polished Dorne Rock Pressure Plate",
-
   "item.got.iron_islands_rock": "Iron Islands Rock",
   "item.got.iron_islands_brick": "Iron Islands Brick",
   "item.got.cracked_iron_islands_brick": "Cracked Iron Islands Brick",
@@ -247,7 +242,6 @@
   "item.got.polished_iron_islands_rock_wall": "Polished Iron Islands Rock Wall",
   "item.got.polished_iron_islands_rock_button": "Polished Iron Islands Rock Button",
   "item.got.polished_iron_islands_rock_pressure_plate": "Polished Iron Islands Rock Pressure Plate",
-
   "item.got.north_brick": "North Brick",
   "item.got.cracked_north_brick": "Cracked North Brick",
   "item.got.mossy_north_brick": "Mossy North Brick",
@@ -290,7 +284,6 @@
   "item.got.polished_north_rock_wall": "Polished North Rock Wall",
   "item.got.polished_north_rock_button": "Polished North Rock Button",
   "item.got.polished_north_rock_pressure_plate": "Polished North Rock Pressure Plate",
-
   "item.got.reach_rock": "Reach Rock",
   "item.got.reach_brick": "Reach Brick",
   "item.got.cracked_reach_brick": "Cracked Reach Brick",
@@ -334,7 +327,6 @@
   "item.got.polished_reach_rock_wall": "Polished Reach Rock Wall",
   "item.got.polished_reach_rock_button": "Polished Reach Rock Button",
   "item.got.polished_reach_rock_pressure_plate": "Polished Reach Rock Pressure Plate",
-
   "item.got.riverlands_rock": "Riverlands Rock",
   "item.got.riverlands_brick": "Riverlands Brick",
   "item.got.cracked_riverlands_brick": "Cracked Riverlands Brick",
@@ -378,7 +370,6 @@
   "item.got.polished_riverlands_rock_wall": "Polished Riverlands Rock Wall",
   "item.got.polished_riverlands_rock_button": "Polished Riverlands Rock Button",
   "item.got.polished_riverlands_rock_pressure_plate": "Polished Riverlands Rock Pressure Plate",
-
   "item.got.stormlands_rock": "Stormlands Rock",
   "item.got.stormlands_brick": "Stormlands Brick",
   "item.got.cracked_stormlands_brick": "Cracked Stormlands Brick",
@@ -422,7 +413,6 @@
   "item.got.polished_stormlands_rock_wall": "Polished Stormlands Rock Wall",
   "item.got.polished_stormlands_rock_button": "Polished Stormlands Rock Button",
   "item.got.polished_stormlands_rock_pressure_plate": "Polished Stormlands Rock Pressure Plate",
-
   "item.got.vale_rock": "Vale Rock",
   "item.got.vale_brick": "Vale Brick",
   "item.got.cracked_vale_brick": "Cracked Vale Brick",
@@ -466,7 +456,6 @@
   "item.got.polished_vale_rock_wall": "Polished Vale Rock Wall",
   "item.got.polished_vale_rock_button": "Polished Vale Rock Button",
   "item.got.polished_vale_rock_pressure_plate": "Polished Vale Rock Pressure Plate",
-
   "item.got.westerlands_rock": "Westerlands Rock",
   "item.got.westerlands_brick": "Westerlands Brick",
   "item.got.cracked_westerlands_brick": "Cracked Westerlands Brick",
@@ -510,7 +499,6 @@
   "item.got.polished_westerlands_rock_wall": "Polished Westerlands Rock Wall",
   "item.got.polished_westerlands_rock_button": "Polished Westerlands Rock Button",
   "item.got.polished_westerlands_rock_pressure_plate": "Polished Westerlands Rock Pressure Plate",
-
   "block.got.copper_ore": "Copper Ore",
   "block.got.tin_ore": "Tin Ore",
   "block.got.silver_ore": "Silver Ore",
@@ -555,5 +543,17 @@
   "item.got.bronze_pickaxe": "Bronze Pickaxe",
   "item.got.bronze_axe": "Bronze Axe",
   "item.got.bronze_shovel": "Bronze Shovel",
-  "item.got.bronze_hoe": "Bronze Hoe"
+  "item.got.bronze_hoe": "Bronze Hoe",
+  "itemGroup.got.got_materials": "GoT: Materials",
+  "item.got.amber_ore": "Amber Ore",
+  "item.got.amethyst_ore": "Amethyst Ore",
+  "item.got.copper_ore": "Copper Ore",
+  "item.got.dragonglass_ore": "Dragonglass Ore",
+  "item.got.opal_ore": "Opal Ore",
+  "item.got.ruby_ore": "Ruby Ore",
+  "item.got.sapphire_ore": "Sapphire Ore",
+  "item.got.silver_ore": "Silver Ore",
+  "item.got.tin_ore": "Tin Ore",
+  "item.got.topaz_ore": "Topaz Ore",
+  "item.got.valyrian_steel_ore": "Valyrian Steel Ore"
 }

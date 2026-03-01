@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.5,
+  "group": "valyrian_steel_ingot",
+  "ingredient": "got:valyrian_steel_ore",
+  "result": {
+    "id": "got:valyrian_steel_ingot"
+  }
+}

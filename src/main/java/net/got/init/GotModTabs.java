@@ -1,6 +1,8 @@
 package net.got.init;
 
 import net.got.GotMod;
+import net.got.init.GotModBlocks;
+import net.got.init.GotModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -509,6 +511,78 @@ public class GotModTabs {
 
                         // ── Westerlands ──────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WESTERLANDS_ROCK.get());
+                    })
+                    .build());
+
+    /* ─────────────────────────────────────────────────────────────────────
+     * TAB 3 — GOT: MATERIALS (ores, gems, ingots, tools, armour)
+     * ───────────────────────────────────────────────────────────────────── */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MATERIALS =
+            REGISTRY.register("got_materials", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.got.got_materials"))
+                    .icon(() -> new ItemStack(GotModItems.VALYRIAN_STEEL_INGOT.get()))
+                    .displayItems((params, output) -> {
+
+                        // ── Ore blocks ──────────────────────────────────
+                        output.accept(GotModItems.AMBER_ORE.get());
+                        output.accept(GotModItems.AMETHYST_ORE.get());
+                        output.accept(GotModItems.COPPER_ORE.get());
+                        output.accept(GotModItems.DRAGONGLASS_ORE.get());
+                        output.accept(GotModItems.OPAL_ORE.get());
+                        output.accept(GotModItems.RUBY_ORE.get());
+                        output.accept(GotModItems.SAPPHIRE_ORE.get());
+                        output.accept(GotModItems.SILVER_ORE.get());
+                        output.accept(GotModItems.TIN_ORE.get());
+                        output.accept(GotModItems.TOPAZ_ORE.get());
+                        output.accept(GotModItems.VALYRIAN_STEEL_ORE.get());
+
+                        // ── Gemstones ────────────────────────────────────
+                        output.accept(GotModItems.AMBER.get());
+                        output.accept(GotModItems.AMETHYST.get());
+                        output.accept(GotModItems.DRAGONGLASS_SHARD.get());
+                        output.accept(GotModItems.OPAL.get());
+                        output.accept(GotModItems.RUBY.get());
+                        output.accept(GotModItems.SAPPHIRE.get());
+                        output.accept(GotModItems.TOPAZ.get());
+
+                        // ── Raw ores ─────────────────────────────────────
+                        output.accept(GotModItems.RAW_COPPER.get());
+                        output.accept(GotModItems.RAW_SILVER.get());
+                        output.accept(GotModItems.RAW_TIN.get());
+                        output.accept(GotModItems.RAW_VALYRIAN_STEEL.get());
+
+                        // ── Ingots ───────────────────────────────────────
+                        output.accept(GotModItems.COPPER_INGOT.get());
+                        output.accept(GotModItems.SILVER_INGOT.get());
+                        output.accept(GotModItems.TIN_INGOT.get());
+                        output.accept(GotModItems.BRONZE_INGOT.get());
+                        output.accept(GotModItems.VALYRIAN_STEEL_INGOT.get());
+
+                        // ── Copper tools ─────────────────────────────────
+                        output.accept(GotModItems.COPPER_SWORD.get());
+                        output.accept(GotModItems.COPPER_PICKAXE.get());
+                        output.accept(GotModItems.COPPER_AXE.get());
+                        output.accept(GotModItems.COPPER_SHOVEL.get());
+                        output.accept(GotModItems.COPPER_HOE.get());
+
+                        // ── Copper armour ────────────────────────────────
+                        output.accept(GotModItems.COPPER_HELMET.get());
+                        output.accept(GotModItems.COPPER_CHESTPLATE.get());
+                        output.accept(GotModItems.COPPER_LEGGINGS.get());
+                        output.accept(GotModItems.COPPER_BOOTS.get());
+
+                        // ── Bronze tools ─────────────────────────────────
+                        output.accept(GotModItems.BRONZE_SWORD.get());
+                        output.accept(GotModItems.BRONZE_PICKAXE.get());
+                        output.accept(GotModItems.BRONZE_AXE.get());
+                        output.accept(GotModItems.BRONZE_SHOVEL.get());
+                        output.accept(GotModItems.BRONZE_HOE.get());
+
+                        // ── Bronze armour ────────────────────────────────
+                        output.accept(GotModItems.BRONZE_HELMET.get());
+                        output.accept(GotModItems.BRONZE_CHESTPLATE.get());
+                        output.accept(GotModItems.BRONZE_LEGGINGS.get());
+                        output.accept(GotModItems.BRONZE_BOOTS.get());
                     })
                     .build());
 

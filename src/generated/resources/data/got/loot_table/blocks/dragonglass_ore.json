@@ -10,7 +10,7 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "got:dragonglass_shard",
+              "name": "got:dragonglass_ore",
               "conditions": [
                 {
                   "condition": "minecraft:match_tool",
@@ -32,18 +32,12 @@
               "name": "got:dragonglass_shard",
               "functions": [
                 {
-                  "function": "minecraft:set_count",
-                  "count": {
-                    "type": "minecraft:uniform",
-                    "min": 2,
-                    "max": 6
-                  },
-                  "add": false
-                }
-              ],
-              "conditions": [
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
                 {
-                  "condition": "minecraft:survives_explosion"
+                  "function": "minecraft:explosion_decay"
                 }
               ]
             }

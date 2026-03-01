@@ -7,6 +7,13 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.equipment.ArmorType;
 
 import net.got.GotMod;
 
@@ -440,6 +447,92 @@ public class GotModItems {
     public static final DeferredItem<Item> POLISHED_WESTERLANDS_ROCK_STAIRS = block(GotModBlocks.POLISHED_WESTERLANDS_ROCK_STAIRS);
     public static final DeferredItem<Item> POLISHED_WESTERLANDS_ROCK_WALL = block(GotModBlocks.POLISHED_WESTERLANDS_ROCK_WALL);
 
+
+    // ── Ore block items ───────────────────────────────────────────────────
+    public static final DeferredItem<Item> AMBER_ORE          = block(GotModBlocks.AMBER_ORE);
+    public static final DeferredItem<Item> AMETHYST_ORE       = block(GotModBlocks.AMETHYST_ORE);
+    public static final DeferredItem<Item> COPPER_ORE         = block(GotModBlocks.COPPER_ORE);
+    public static final DeferredItem<Item> DRAGONGLASS_ORE    = block(GotModBlocks.DRAGONGLASS_ORE);
+    public static final DeferredItem<Item> OPAL_ORE           = block(GotModBlocks.OPAL_ORE);
+    public static final DeferredItem<Item> RUBY_ORE           = block(GotModBlocks.RUBY_ORE);
+    public static final DeferredItem<Item> SAPPHIRE_ORE       = block(GotModBlocks.SAPPHIRE_ORE);
+    public static final DeferredItem<Item> SILVER_ORE         = block(GotModBlocks.SILVER_ORE);
+    public static final DeferredItem<Item> TIN_ORE            = block(GotModBlocks.TIN_ORE);
+    public static final DeferredItem<Item> TOPAZ_ORE          = block(GotModBlocks.TOPAZ_ORE);
+    public static final DeferredItem<Item> VALYRIAN_STEEL_ORE = block(GotModBlocks.VALYRIAN_STEEL_ORE);
+
+    // ── Gemstones ─────────────────────────────────────────────────────────
+    public static final DeferredItem<Item> AMBER           = simple("amber");
+    public static final DeferredItem<Item> AMETHYST        = simple("amethyst");
+    public static final DeferredItem<Item> DRAGONGLASS_SHARD = simple("dragonglass_shard");
+    public static final DeferredItem<Item> OPAL            = simple("opal");
+    public static final DeferredItem<Item> RUBY            = simple("ruby");
+    public static final DeferredItem<Item> SAPPHIRE        = simple("sapphire");
+    public static final DeferredItem<Item> TOPAZ           = simple("topaz");
+
+    // ── Raw ores ──────────────────────────────────────────────────────────
+    public static final DeferredItem<Item> RAW_COPPER          = simple("raw_copper");
+    public static final DeferredItem<Item> RAW_SILVER          = simple("raw_silver");
+    public static final DeferredItem<Item> RAW_TIN             = simple("raw_tin");
+    public static final DeferredItem<Item> RAW_VALYRIAN_STEEL  = simple("raw_valyrian_steel");
+
+    // ── Ingots ────────────────────────────────────────────────────────────
+    public static final DeferredItem<Item> COPPER_INGOT         = simple("copper_ingot");
+    public static final DeferredItem<Item> SILVER_INGOT         = simple("silver_ingot");
+    public static final DeferredItem<Item> TIN_INGOT            = simple("tin_ingot");
+    public static final DeferredItem<Item> BRONZE_INGOT         = simple("bronze_ingot");
+    public static final DeferredItem<Item> VALYRIAN_STEEL_INGOT = simple("valyrian_steel_ingot");
+
+    // ── Copper tools ──────────────────────────────────────────────────────
+    // Constructors: ToolMaterial, float attackDamageBonus, float attackSpeed, Properties
+    public static final DeferredItem<SwordItem>  COPPER_SWORD    = REGISTRY.registerItem("copper_sword",
+            p -> new SwordItem(GotModTiers.COPPER, 3.0f, -2.4f, p));
+    public static final DeferredItem<PickaxeItem> COPPER_PICKAXE = REGISTRY.registerItem("copper_pickaxe",
+            p -> new PickaxeItem(GotModTiers.COPPER, 1.0f, -2.8f, p));
+    public static final DeferredItem<AxeItem>    COPPER_AXE      = REGISTRY.registerItem("copper_axe",
+            p -> new AxeItem(GotModTiers.COPPER, 6.0f, -3.1f, p));
+    public static final DeferredItem<ShovelItem> COPPER_SHOVEL   = REGISTRY.registerItem("copper_shovel",
+            p -> new ShovelItem(GotModTiers.COPPER, 1.5f, -3.0f, p));
+    public static final DeferredItem<HoeItem>    COPPER_HOE      = REGISTRY.registerItem("copper_hoe",
+            p -> new HoeItem(GotModTiers.COPPER, 0.0f, -3.0f, p));
+
+    // ── Bronze tools ──────────────────────────────────────────────────────
+    public static final DeferredItem<SwordItem>  BRONZE_SWORD    = REGISTRY.registerItem("bronze_sword",
+            p -> new SwordItem(GotModTiers.BRONZE, 4.0f, -2.4f, p));
+    public static final DeferredItem<PickaxeItem> BRONZE_PICKAXE = REGISTRY.registerItem("bronze_pickaxe",
+            p -> new PickaxeItem(GotModTiers.BRONZE, 1.0f, -2.8f, p));
+    public static final DeferredItem<AxeItem>    BRONZE_AXE      = REGISTRY.registerItem("bronze_axe",
+            p -> new AxeItem(GotModTiers.BRONZE, 7.0f, -3.1f, p));
+    public static final DeferredItem<ShovelItem> BRONZE_SHOVEL   = REGISTRY.registerItem("bronze_shovel",
+            p -> new ShovelItem(GotModTiers.BRONZE, 1.5f, -3.0f, p));
+    public static final DeferredItem<HoeItem>    BRONZE_HOE      = REGISTRY.registerItem("bronze_hoe",
+            p -> new HoeItem(GotModTiers.BRONZE, 0.0f, -3.0f, p));
+
+    // ── Copper armor ──────────────────────────────────────────────────────
+    public static final DeferredItem<ArmorItem> COPPER_HELMET     = REGISTRY.registerItem("copper_helmet",
+            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.HELMET, p));
+    public static final DeferredItem<ArmorItem> COPPER_CHESTPLATE = REGISTRY.registerItem("copper_chestplate",
+            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.CHESTPLATE, p));
+    public static final DeferredItem<ArmorItem> COPPER_LEGGINGS   = REGISTRY.registerItem("copper_leggings",
+            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.LEGGINGS, p));
+    public static final DeferredItem<ArmorItem> COPPER_BOOTS      = REGISTRY.registerItem("copper_boots",
+            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.BOOTS, p));
+
+    // ── Bronze armor ──────────────────────────────────────────────────────
+    public static final DeferredItem<ArmorItem> BRONZE_HELMET     = REGISTRY.registerItem("bronze_helmet",
+            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.HELMET, p));
+    public static final DeferredItem<ArmorItem> BRONZE_CHESTPLATE = REGISTRY.registerItem("bronze_chestplate",
+            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.CHESTPLATE, p));
+    public static final DeferredItem<ArmorItem> BRONZE_LEGGINGS   = REGISTRY.registerItem("bronze_leggings",
+            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS, p));
+    public static final DeferredItem<ArmorItem> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
+            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS, p));
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+
+    private static DeferredItem<Item> simple(String name) {
+        return REGISTRY.registerSimpleItem(name);
+    }
 
     private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, ? extends I> supplier) {
         return REGISTRY.registerItem(name, supplier, new Item.Properties());
