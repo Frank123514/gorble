@@ -1,0 +1,41 @@
+{
+  "_comment": [
+    "NeoForge biome modifier — northern NPC spawns.",
+    "File: data/got/neoforge/biome_modifier/northern_npc_spawns.json",
+    "",
+    "north_bowman   — rare loner / small pair:  weight 2,  1-2 per group",
+    "north_warrior  — common infantry patrol:   weight 5,  2-4 per group",
+    "northman       — prevalent smallfolk:      weight 8,  2-5 per group"
+  ],
+
+  "type": "neoforge:add_spawns",
+
+  "biomes": [
+    "got:north",
+    "got:barrowlands",
+    "got:north_hills",
+    "got:wolfswood",
+    "got:ironwood"
+  ],
+
+  "spawners": [
+    {
+      "type": "got:north_bowman",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 2
+    },
+    {
+      "type": "got:north_warrior",
+      "weight": 5,
+      "minCount": 2,
+      "maxCount": 4
+    },
+    {
+      "type": "got:northman",
+      "weight": 8,
+      "minCount": 2,
+      "maxCount": 5
+    }
+  ]
+}

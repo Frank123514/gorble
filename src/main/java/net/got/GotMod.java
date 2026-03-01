@@ -2,6 +2,7 @@ package net.got;
 
 import net.got.client.GotClient;
 import net.got.init.GotModBlocks;
+import net.got.init.GotModEntities;
 import net.got.init.GotModItems;
 import net.got.init.GotModTabs;
 import net.got.network.GotNetwork;
@@ -42,7 +43,6 @@ public final class GotMod {
     /* ---------------------------- */
 
     public GotMod() {
-        // Mod event bus (NOT the NeoForge bus)
         IEventBus modBus = ModLoadingContext
                 .get()
                 .getActiveContainer()
@@ -56,10 +56,13 @@ public final class GotMod {
         /* ---------- Registries ---------- */
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
-        // Register the new dedicated GoT creative tabs
         GotModTabs.register(modBus);
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
+
+        // ── NPC entities ────────────────────────────────────────────────
+        GotModEntities.REGISTRY.register(modBus);
+        // GotEntityEvents is @EventBusSubscriber(Bus.MOD) — auto-registered
 
         /* ---------- Runtime events ---------- */
         NeoForge.EVENT_BUS.register(this);
