@@ -1,7 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "got:block/north_rock"
-    }
+    "": { "model": "got:block/north_rock" }
   }
 }

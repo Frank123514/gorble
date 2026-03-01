@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "got:block/reach_pillar", "x": 90, "z": 90 },
+    "axis=y": { "model": "got:block/reach_pillar" },
+    "axis=z": { "model": "got:block/reach_pillar", "x": 90 }
+  }
+}

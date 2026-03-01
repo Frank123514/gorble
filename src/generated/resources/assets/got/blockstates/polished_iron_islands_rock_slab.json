@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/polished_iron_islands_rock_slab"
+    },
+    "type=double": {
+      "model": "got:block/polished_iron_islands_rock"
+    },
+    "type=top": {
+      "model": "got:block/polished_iron_islands_rock_slab_top"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/crownlands_rock_slab"
+    },
+    "type=double": {
+      "model": "got:block/crownlands_rock"
+    },
+    "type=top": {
+      "model": "got:block/crownlands_rock_slab_top"
+    }
+  }
+}

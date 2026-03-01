@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end":  "got:block/westerlands_pillar_top",
+    "side": "got:block/westerlands_pillar_side"
+  }
+}

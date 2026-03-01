@@ -1,13 +1,6 @@
 {
-  "parent": "block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "down": "got:block/north_rock",
-    "up": "got:block/north_rock",
-    "north": "got:block/north_rock",
-    "east": "got:block/north_rock",
-    "south": "got:block/north_rock",
-    "west": "got:block/north_rock",
-    "particle": "got:block/north_rock"
-  },
-  "render_type": "solid"
+    "all": "got:block/north_rock"
+  }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "got:block/mossy_stormlands_cobblestone",
+    "top": "got:block/mossy_stormlands_cobblestone",
+    "side": "got:block/mossy_stormlands_cobblestone"
+  }
+}

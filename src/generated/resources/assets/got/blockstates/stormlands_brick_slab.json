@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/stormlands_brick_slab"
+    },
+    "type=double": {
+      "model": "got:block/stormlands_brick"
+    },
+    "type=top": {
+      "model": "got:block/stormlands_brick_slab_top"
+    }
+  }
+}

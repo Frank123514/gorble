@@ -1,20 +1,8 @@
 {
   "type": "minecraft:block",
-  "random_sequence": "got:blocks/north_rock",
-  "pools": [
-    {
-      "rolls": 1.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "got:north_rock"
-        }
-      ]
-    }
-  ]
+  "pools": [{
+    "bonus_rolls": 0.0,
+    "entries": [{ "type": "minecraft:item", "name": "got:north_rock" }],
+    "rolls": 1.0
+  }]
 }

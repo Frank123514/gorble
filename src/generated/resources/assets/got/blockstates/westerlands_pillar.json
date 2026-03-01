@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "got:block/westerlands_pillar", "x": 90, "z": 90 },
+    "axis=y": { "model": "got:block/westerlands_pillar" },
+    "axis=z": { "model": "got:block/westerlands_pillar", "x": 90 }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/westerlands_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "got:block/westerlands_cobblestone"
+    },
+    "type=top": {
+      "model": "got:block/westerlands_cobblestone_slab_top"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/riverlands_rock_slab"
+    },
+    "type=double": {
+      "model": "got:block/riverlands_rock"
+    },
+    "type=top": {
+      "model": "got:block/riverlands_rock_slab_top"
+    }
+  }
+}
