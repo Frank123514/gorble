@@ -1,4 +1,7 @@
 {
+  "generator.got.knownworld": "Known World",
+  "itemGroup.got.got_building": "GoT: Building Blocks",
+  "itemGroup.got.got_nature": "GoT: Natural Blocks",
   "item.got.weirwood_log": "Weirwood Log",
   "item.got.weirwood_wood": "Weirwood Wood",
   "item.got.weirwood_planks": "Weirwood Planks",

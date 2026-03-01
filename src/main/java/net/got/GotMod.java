@@ -56,7 +56,8 @@ public final class GotMod {
         /* ---------- Registries ---------- */
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
-        GotModTabs.REGISTRY.register(modBus);
+        // Register the new dedicated GoT creative tabs
+        GotModTabs.register(modBus);
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
 
@@ -128,8 +129,6 @@ public final class GotMod {
     /* ---------------------------- */
     /* Utilities                    */
     /* ---------------------------- */
-
-
 
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);

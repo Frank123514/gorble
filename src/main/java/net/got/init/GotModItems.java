@@ -49,6 +49,7 @@ public class GotModItems {
 	public static final DeferredItem<Item> PINE_PLANKS = block(GotModBlocks.PINE_PLANKS);
 	public static final DeferredItem<Item> PINE_LEAVES = block(GotModBlocks.PINE_LEAVES);
 	public static final DeferredItem<Item> PINE_STAIRS = block(GotModBlocks.PINE_STAIRS);
+    public static final DeferredItem<Item> PINE_SLAB = block(GotModBlocks.PINE_SLAB);
 	public static final DeferredItem<Item> PINE_FENCE = block(GotModBlocks.PINE_FENCE);
 	public static final DeferredItem<Item> PINE_FENCE_GATE = block(GotModBlocks.PINE_FENCE_GATE);
 	public static final DeferredItem<Item> PINE_PRESSURE_PLATE = block(GotModBlocks.PINE_PRESSURE_PLATE);
