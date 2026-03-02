@@ -2,9 +2,9 @@
   "type": "minecraft:smelting",
   "category": "misc",
   "cookingtime": 200,
-  "experience": 1.5,
+  "experience": 0.5,
   "group": "dragonglass_shard",
-  "ingredient": "got:dragonglass_ore",
+  "ingredient": "got:raw_dragonglass",
   "result": {
     "id": "got:dragonglass_shard"
   }

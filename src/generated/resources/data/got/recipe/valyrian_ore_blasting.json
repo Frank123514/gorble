@@ -3,9 +3,9 @@
   "category": "misc",
   "cookingtime": 100,
   "experience": 1.5,
-  "group": "dragonglass_shard",
-  "ingredient": "got:dragonglass_ore",
+  "group": "valyrian_steel_ingot",
+  "ingredient": "got:valyrian_ore",
   "result": {
-    "id": "got:dragonglass_shard"
+    "id": "got:valyrian_steel_ingot"
   }
 }

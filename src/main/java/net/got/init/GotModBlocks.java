@@ -515,9 +515,9 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> OPAL_ORE        = oreIron("opal_ore");
     public static final DeferredBlock<Block> RUBY_ORE        = oreIron("ruby_ore");
     public static final DeferredBlock<Block> SAPPHIRE_ORE    = oreIron("sapphire_ore");
-    public static final DeferredBlock<Block> DRAGONGLASS_ORE = oreIron("dragonglass_ore");
+    public static final DeferredBlock<Block> DRAGONGLASS_ORE = oreIron("dragonglass");
     // Diamond-tier ore (hardness 3, resistance 3, like vanilla diamond ore)
-    public static final DeferredBlock<Block> VALYRIAN_STEEL_ORE = oreDiamond("valyrian_steel_ore");
+    public static final DeferredBlock<Block> VALYRIAN_STEEL_ORE = oreDiamond("valyrian_ore");
 
     // ── Helpers ──────────────────────────────────────────────────────────
 

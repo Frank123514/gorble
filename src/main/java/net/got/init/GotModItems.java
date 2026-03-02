@@ -459,7 +459,7 @@ public class GotModItems {
     public static final DeferredItem<Item> SILVER_ORE         = block(GotModBlocks.SILVER_ORE);
     public static final DeferredItem<Item> TIN_ORE            = block(GotModBlocks.TIN_ORE);
     public static final DeferredItem<Item> TOPAZ_ORE          = block(GotModBlocks.TOPAZ_ORE);
-    public static final DeferredItem<Item> VALYRIAN_STEEL_ORE = block(GotModBlocks.VALYRIAN_STEEL_ORE);
+    public static final DeferredItem<Item> VALYRIAN_STEEL_ORE = block(GotModBlocks.VALYRIAN_STEEL_ORE) /* valyrian_ore */;
 
     // ── Gemstones ─────────────────────────────────────────────────────────
     public static final DeferredItem<Item> AMBER           = simple("amber");

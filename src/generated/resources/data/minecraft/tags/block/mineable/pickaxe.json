@@ -283,13 +283,13 @@
     "got:amber_ore",
     "got:amethyst_ore",
     "got:copper_ore",
-    "got:dragonglass_ore",
+    "got:dragonglass",
     "got:opal_ore",
     "got:ruby_ore",
     "got:sapphire_ore",
     "got:silver_ore",
     "got:tin_ore",
     "got:topaz_ore",
-    "got:valyrian_steel_ore"
+    "got:valyrian_ore"
   ]
 }

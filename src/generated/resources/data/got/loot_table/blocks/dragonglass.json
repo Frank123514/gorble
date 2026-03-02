@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "got:topaz_ore"
+              "name": "got:dragonglass"
             },
             {
               "type": "minecraft:item",
@@ -40,7 +40,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "got:topaz"
+              "name": "got:dragonglass_shard"
             }
           ]
         }
@@ -48,5 +48,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "got:blocks/topaz_ore"
+  "random_sequence": "got:blocks/dragonglass"
 }

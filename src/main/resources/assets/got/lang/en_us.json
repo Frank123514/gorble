@@ -502,8 +502,8 @@
   "block.got.copper_ore": "Copper Ore",
   "block.got.tin_ore": "Tin Ore",
   "block.got.silver_ore": "Silver Ore",
-  "block.got.valyrian_steel_ore": "Valyrian Steel Ore",
-  "block.got.dragonglass_ore": "Dragonglass Ore",
+  "block.got.valyrian_ore": "Valyrian Ore",
+  "block.got.dragonglass": "Dragonglass",
   "block.got.amber_ore": "Amber Ore",
   "block.got.amethyst_ore": "Amethyst Ore",
   "block.got.opal_ore": "Opal Ore",
@@ -548,12 +548,12 @@
   "item.got.amber_ore": "Amber Ore",
   "item.got.amethyst_ore": "Amethyst Ore",
   "item.got.copper_ore": "Copper Ore",
-  "item.got.dragonglass_ore": "Dragonglass Ore",
+  "item.got.dragonglass": "Dragonglass",
   "item.got.opal_ore": "Opal Ore",
   "item.got.ruby_ore": "Ruby Ore",
   "item.got.sapphire_ore": "Sapphire Ore",
   "item.got.silver_ore": "Silver Ore",
   "item.got.tin_ore": "Tin Ore",
   "item.got.topaz_ore": "Topaz Ore",
-  "item.got.valyrian_steel_ore": "Valyrian Steel Ore"
+  "item.got.valyrian_ore": "Valyrian Ore"
 }
