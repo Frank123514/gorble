@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "got:block/bloodwood_planks",
+    "particle": "got:block/bloodwood_planks"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_fence_gate_wall_open",
+  "textures": {
+    "texture": "got:block/burl_planks",
+    "particle": "got:block/burl_planks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/fence_inventory",
+  "textures": {
+    "texture": "got:block/burl_planks",
+    "particle": "got:block/burl_planks"
+  }
+}

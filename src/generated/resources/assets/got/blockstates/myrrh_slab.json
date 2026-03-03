@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/myrrh_slab"
+    },
+    "type=top": {
+      "model": "got:block/myrrh_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/myrrh_slab_full"
+    }
+  }
+}

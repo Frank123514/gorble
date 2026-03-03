@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "particle": "got:block/redwood_planks",
+    "bottom": "got:block/redwood_planks",
+    "top": "got:block/redwood_planks",
+    "side": "got:block/redwood_planks"
+  }
+}

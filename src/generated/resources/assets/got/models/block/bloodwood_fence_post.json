@@ -1,0 +1,7 @@
+{
+  "parent": "block/fence_post",
+  "textures": {
+    "texture": "got:block/bloodwood_planks",
+    "particle": "got:block/bloodwood_planks"
+  }
+}

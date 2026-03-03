@@ -8,6 +8,126 @@
     {
       "id": "#got:aspen_logs",
       "required": false
+    },
+    {
+      "id": "#got:alder_logs",
+      "required": false
+    },
+    {
+      "id": "#got:pine_logs",
+      "required": false
+    },
+    {
+      "id": "#got:fir_logs",
+      "required": false
+    },
+    {
+      "id": "#got:sentinal_logs",
+      "required": false
+    },
+    {
+      "id": "#got:soldier_pine_logs",
+      "required": false
+    },
+    {
+      "id": "#got:ironwood_logs",
+      "required": false
+    },
+    {
+      "id": "#got:hawthorn_logs",
+      "required": false
+    },
+    {
+      "id": "#got:beech_logs",
+      "required": false
+    },
+    {
+      "id": "#got:blackbark_logs",
+      "required": false
+    },
+    {
+      "id": "#got:bloodwood_logs",
+      "required": false
+    },
+    {
+      "id": "#got:blue_mahoe_logs",
+      "required": false
+    },
+    {
+      "id": "#got:burl_logs",
+      "required": false
+    },
+    {
+      "id": "#got:cottonwood_logs",
+      "required": false
+    },
+    {
+      "id": "#got:black_cottonwood_logs",
+      "required": false
+    },
+    {
+      "id": "#got:cinnamon_logs",
+      "required": false
+    },
+    {
+      "id": "#got:clove_logs",
+      "required": false
+    },
+    {
+      "id": "#got:ebony_logs",
+      "required": false
+    },
+    {
+      "id": "#got:elm_logs",
+      "required": false
+    },
+    {
+      "id": "#got:cedar_logs",
+      "required": false
+    },
+    {
+      "id": "#got:apple_logs",
+      "required": false
+    },
+    {
+      "id": "#got:goldenheart_logs",
+      "required": false
+    },
+    {
+      "id": "#got:linden_logs",
+      "required": false
+    },
+    {
+      "id": "#got:mahogany_logs",
+      "required": false
+    },
+    {
+      "id": "#got:maple_logs",
+      "required": false
+    },
+    {
+      "id": "#got:myrrh_logs",
+      "required": false
+    },
+    {
+      "id": "#got:ash_logs",
+      "required": false
+    },
+    {
+      "id": "#got:redwood_logs",
+      "required": false
+    },
+    {
+      "id": "#got:chestnut_logs",
+      "required": false
+    },
+    {
+      "id": "#got:willow_logs",
+      "required": false
+    },
+    {
+      "id": "#got:wormtree_logs",
+      "required": false
     }
   ]
 }

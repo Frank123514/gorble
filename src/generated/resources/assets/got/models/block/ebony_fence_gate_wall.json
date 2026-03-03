@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_fence_gate_wall",
+  "textures": {
+    "texture": "got:block/ebony_planks",
+    "particle": "got:block/ebony_planks"
+  }
+}

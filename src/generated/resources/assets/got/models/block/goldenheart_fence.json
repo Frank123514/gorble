@@ -1,0 +1,7 @@
+{
+  "parent": "block/fence_side",
+  "textures": {
+    "texture": "got:block/goldenheart_planks",
+    "particle": "got:block/goldenheart_planks"
+  }
+}

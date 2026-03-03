@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/blackbark_planks",
+    "bottom": "got:block/blackbark_planks",
+    "top": "got:block/blackbark_planks",
+    "side": "got:block/blackbark_planks"
+  },
+  "render_type": "solid"
+}

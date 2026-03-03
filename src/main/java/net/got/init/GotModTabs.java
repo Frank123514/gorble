@@ -49,83 +49,50 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WEIRWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_PLANKS.get());
-                        safeAccept(output, GotModBlocks.WEIRWOOD_STAIRS.get());
-                        safeAccept(output, GotModBlocks.WEIRWOOD_SLAB.get());
-                        safeAccept(output, GotModBlocks.WEIRWOOD_FENCE.get());
-                        safeAccept(output, GotModBlocks.WEIRWOOD_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.WEIRWOOD_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.WEIRWOOD_BUTTON.get());
+                        safeAccept(output, GotModBlocks.WEIRWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.ASPEN_LEAVES.get());
+                        safeAccept(output, GotModBlocks.ALDER_LEAVES.get());
+                        safeAccept(output, GotModBlocks.PINE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.FIR_LEAVES.get());
+                        safeAccept(output, GotModBlocks.SENTINAL_LEAVES.get());
+                        safeAccept(output, GotModBlocks.IRONWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BEECH_LEAVES.get());
+                        safeAccept(output, GotModBlocks.SOLDIER_PINE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.ASH_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BURL_LEAVES.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CLOVE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.EBONY_LEAVES.get());
+                        safeAccept(output, GotModBlocks.ELM_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CEDAR_LEAVES.get());
+                        safeAccept(output, GotModBlocks.APPLE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_LEAVES.get());
+                        safeAccept(output, GotModBlocks.LINDEN_LEAVES.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_LEAVES.get());
+                        safeAccept(output, GotModBlocks.MAPLE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.MYRRH_LEAVES.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_LEAVES.get());
+                        safeAccept(output, GotModBlocks.WILLOW_LEAVES.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_STAIRS.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_SLAB.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_FENCE.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_BUTTON.get());
 
-                        // ── Aspen ─────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.ASPEN_LOG.get());
-                        safeAccept(output, GotModBlocks.ASPEN_WOOD.get());
-                        safeAccept(output, GotModBlocks.ASPEN_PLANKS.get());
-                        safeAccept(output, GotModBlocks.ASPEN_STAIRS.get());
-                        safeAccept(output, GotModBlocks.ASPEN_SLAB.get());
-                        safeAccept(output, GotModBlocks.ASPEN_FENCE.get());
-                        safeAccept(output, GotModBlocks.ASPEN_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.ASPEN_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.ASPEN_BUTTON.get());
-
-                        // ── Alder ─────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.ALDER_LOG.get());
-                        safeAccept(output, GotModBlocks.ALDER_WOOD.get());
-                        safeAccept(output, GotModBlocks.ALDER_PLANKS.get());
-                        safeAccept(output, GotModBlocks.ALDER_STAIRS.get());
-                        safeAccept(output, GotModBlocks.ALDER_SLAB.get());
-                        safeAccept(output, GotModBlocks.ALDER_FENCE.get());
-                        safeAccept(output, GotModBlocks.ALDER_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.ALDER_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.ALDER_BUTTON.get());
-
-                        // ── Pine ──────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.PINE_LOG.get());
-                        safeAccept(output, GotModBlocks.PINE_WOOD.get());
-                        safeAccept(output, GotModBlocks.PINE_PLANKS.get());
-                        safeAccept(output, GotModBlocks.PINE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.PINE_SLAB.get());
-                        safeAccept(output, GotModBlocks.PINE_FENCE.get());
-                        safeAccept(output, GotModBlocks.PINE_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.PINE_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.PINE_BUTTON.get());
-
-                        // ── Fir ───────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.FIR_LOG.get());
-                        safeAccept(output, GotModBlocks.FIR_WOOD.get());
-                        safeAccept(output, GotModBlocks.FIR_PLANKS.get());
-                        safeAccept(output, GotModBlocks.FIR_STAIRS.get());
-                        safeAccept(output, GotModBlocks.FIR_SLAB.get());
-                        safeAccept(output, GotModBlocks.FIR_FENCE.get());
-                        safeAccept(output, GotModBlocks.FIR_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.FIR_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.FIR_BUTTON.get());
-
-                        // ── Sentinal ──────────────────────────────────────
-                        safeAccept(output, GotModBlocks.SENTINAL_LOG.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_WOOD.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_PLANKS.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_SLAB.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_FENCE.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SENTINAL_BUTTON.get());
-
-                        // ── Ironwood ──────────────────────────────────────
-                        safeAccept(output, GotModBlocks.IRONWOOD_LOG.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_WOOD.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_PLANKS.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_STAIRS.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_SLAB.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_FENCE.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.IRONWOOD_BUTTON.get());
-
-                        // ── Beech ─────────────────────────────────────────
+                        // ── Beech
                         safeAccept(output, GotModBlocks.BEECH_LOG.get());
                         safeAccept(output, GotModBlocks.BEECH_WOOD.get());
                         safeAccept(output, GotModBlocks.BEECH_PLANKS.get());
+                        safeAccept(output, GotModBlocks.BEECH_LEAVES.get());
                         safeAccept(output, GotModBlocks.BEECH_STAIRS.get());
                         safeAccept(output, GotModBlocks.BEECH_SLAB.get());
                         safeAccept(output, GotModBlocks.BEECH_FENCE.get());
@@ -133,10 +100,11 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BEECH_PRESSURE_PLATE.get());
                         safeAccept(output, GotModBlocks.BEECH_BUTTON.get());
 
-                        // ── Soldier Pine ──────────────────────────────────
+                        // ── Soldier Pine
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_LOG.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_WOOD.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_PLANKS.get());
+                        safeAccept(output, GotModBlocks.SOLDIER_PINE_LEAVES.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_STAIRS.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_SLAB.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_FENCE.get());
@@ -144,10 +112,11 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_PRESSURE_PLATE.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_BUTTON.get());
 
-                        // ── Ash ───────────────────────────────────────────
+                        // ── Ash
                         safeAccept(output, GotModBlocks.ASH_LOG.get());
                         safeAccept(output, GotModBlocks.ASH_WOOD.get());
                         safeAccept(output, GotModBlocks.ASH_PLANKS.get());
+                        safeAccept(output, GotModBlocks.ASH_LEAVES.get());
                         safeAccept(output, GotModBlocks.ASH_STAIRS.get());
                         safeAccept(output, GotModBlocks.ASH_SLAB.get());
                         safeAccept(output, GotModBlocks.ASH_FENCE.get());
@@ -155,16 +124,257 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASH_PRESSURE_PLATE.get());
                         safeAccept(output, GotModBlocks.ASH_BUTTON.get());
 
-                        // ── Hawthorn ──────────────────────────────────────
-                        safeAccept(output, GotModBlocks.HAWTHORN_LOG.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_WOOD.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_PLANKS.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_STAIRS.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_SLAB.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_FENCE.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.HAWTHORN_BUTTON.get());
+                        // ── Black-Barked
+                        safeAccept(output, GotModBlocks.BLACKBARK_LOG.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_PLANKS.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_FENCE.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_BUTTON.get());
+
+                        // ── Bloodwood
+                        safeAccept(output, GotModBlocks.BLOODWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_PLANKS.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_FENCE.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_BUTTON.get());
+
+                        // ── Blue Mahoe
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_LOG.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_PLANKS.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_FENCE.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_BUTTON.get());
+
+                        // ── Burl
+                        safeAccept(output, GotModBlocks.BURL_LOG.get());
+                        safeAccept(output, GotModBlocks.BURL_WOOD.get());
+                        safeAccept(output, GotModBlocks.BURL_PLANKS.get());
+                        safeAccept(output, GotModBlocks.BURL_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BURL_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BURL_SLAB.get());
+                        safeAccept(output, GotModBlocks.BURL_FENCE.get());
+                        safeAccept(output, GotModBlocks.BURL_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.BURL_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.BURL_BUTTON.get());
+
+                        // ── Cottonwood
+                        safeAccept(output, GotModBlocks.COTTONWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_PLANKS.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_FENCE.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_BUTTON.get());
+
+                        // ── Black Cottonwood
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_PLANKS.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_FENCE.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_BUTTON.get());
+
+                        // ── Cinnamon
+                        safeAccept(output, GotModBlocks.CINNAMON_LOG.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_WOOD.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_PLANKS.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_SLAB.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_FENCE.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_BUTTON.get());
+
+                        // ── Clove
+                        safeAccept(output, GotModBlocks.CLOVE_LOG.get());
+                        safeAccept(output, GotModBlocks.CLOVE_WOOD.get());
+                        safeAccept(output, GotModBlocks.CLOVE_PLANKS.get());
+                        safeAccept(output, GotModBlocks.CLOVE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CLOVE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CLOVE_SLAB.get());
+                        safeAccept(output, GotModBlocks.CLOVE_FENCE.get());
+                        safeAccept(output, GotModBlocks.CLOVE_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.CLOVE_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.CLOVE_BUTTON.get());
+
+                        // ── Ebony
+                        safeAccept(output, GotModBlocks.EBONY_LOG.get());
+                        safeAccept(output, GotModBlocks.EBONY_WOOD.get());
+                        safeAccept(output, GotModBlocks.EBONY_PLANKS.get());
+                        safeAccept(output, GotModBlocks.EBONY_LEAVES.get());
+                        safeAccept(output, GotModBlocks.EBONY_STAIRS.get());
+                        safeAccept(output, GotModBlocks.EBONY_SLAB.get());
+                        safeAccept(output, GotModBlocks.EBONY_FENCE.get());
+                        safeAccept(output, GotModBlocks.EBONY_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.EBONY_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.EBONY_BUTTON.get());
+
+                        // ── Elm
+                        safeAccept(output, GotModBlocks.ELM_LOG.get());
+                        safeAccept(output, GotModBlocks.ELM_WOOD.get());
+                        safeAccept(output, GotModBlocks.ELM_PLANKS.get());
+                        safeAccept(output, GotModBlocks.ELM_LEAVES.get());
+                        safeAccept(output, GotModBlocks.ELM_STAIRS.get());
+                        safeAccept(output, GotModBlocks.ELM_SLAB.get());
+                        safeAccept(output, GotModBlocks.ELM_FENCE.get());
+                        safeAccept(output, GotModBlocks.ELM_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.ELM_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.ELM_BUTTON.get());
+
+                        // ── Cedar
+                        safeAccept(output, GotModBlocks.CEDAR_LOG.get());
+                        safeAccept(output, GotModBlocks.CEDAR_WOOD.get());
+                        safeAccept(output, GotModBlocks.CEDAR_PLANKS.get());
+                        safeAccept(output, GotModBlocks.CEDAR_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CEDAR_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CEDAR_SLAB.get());
+                        safeAccept(output, GotModBlocks.CEDAR_FENCE.get());
+                        safeAccept(output, GotModBlocks.CEDAR_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.CEDAR_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.CEDAR_BUTTON.get());
+
+                        // ── Apple
+                        safeAccept(output, GotModBlocks.APPLE_LOG.get());
+                        safeAccept(output, GotModBlocks.APPLE_WOOD.get());
+                        safeAccept(output, GotModBlocks.APPLE_PLANKS.get());
+                        safeAccept(output, GotModBlocks.APPLE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.APPLE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.APPLE_SLAB.get());
+                        safeAccept(output, GotModBlocks.APPLE_FENCE.get());
+                        safeAccept(output, GotModBlocks.APPLE_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.APPLE_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.APPLE_BUTTON.get());
+
+                        // ── Goldenheart
+                        safeAccept(output, GotModBlocks.GOLDENHEART_LOG.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_WOOD.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_PLANKS.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_LEAVES.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_STAIRS.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_SLAB.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_FENCE.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_BUTTON.get());
+
+                        // ── Linden
+                        safeAccept(output, GotModBlocks.LINDEN_LOG.get());
+                        safeAccept(output, GotModBlocks.LINDEN_WOOD.get());
+                        safeAccept(output, GotModBlocks.LINDEN_PLANKS.get());
+                        safeAccept(output, GotModBlocks.LINDEN_LEAVES.get());
+                        safeAccept(output, GotModBlocks.LINDEN_STAIRS.get());
+                        safeAccept(output, GotModBlocks.LINDEN_SLAB.get());
+                        safeAccept(output, GotModBlocks.LINDEN_FENCE.get());
+                        safeAccept(output, GotModBlocks.LINDEN_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.LINDEN_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.LINDEN_BUTTON.get());
+
+                        // ── Mahogany
+                        safeAccept(output, GotModBlocks.MAHOGANY_LOG.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_WOOD.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_PLANKS.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_LEAVES.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_SLAB.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_FENCE.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_BUTTON.get());
+
+                        // ── Maple
+                        safeAccept(output, GotModBlocks.MAPLE_LOG.get());
+                        safeAccept(output, GotModBlocks.MAPLE_WOOD.get());
+                        safeAccept(output, GotModBlocks.MAPLE_PLANKS.get());
+                        safeAccept(output, GotModBlocks.MAPLE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.MAPLE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MAPLE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MAPLE_FENCE.get());
+                        safeAccept(output, GotModBlocks.MAPLE_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.MAPLE_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.MAPLE_BUTTON.get());
+
+                        // ── Myrrh
+                        safeAccept(output, GotModBlocks.MYRRH_LOG.get());
+                        safeAccept(output, GotModBlocks.MYRRH_WOOD.get());
+                        safeAccept(output, GotModBlocks.MYRRH_PLANKS.get());
+                        safeAccept(output, GotModBlocks.MYRRH_LEAVES.get());
+                        safeAccept(output, GotModBlocks.MYRRH_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MYRRH_SLAB.get());
+                        safeAccept(output, GotModBlocks.MYRRH_FENCE.get());
+                        safeAccept(output, GotModBlocks.MYRRH_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.MYRRH_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.MYRRH_BUTTON.get());
+
+                        // ── Redwood
+                        safeAccept(output, GotModBlocks.REDWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_PLANKS.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_LEAVES.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_FENCE.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_BUTTON.get());
+
+                        // ── Chestnut
+                        safeAccept(output, GotModBlocks.CHESTNUT_LOG.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_WOOD.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_PLANKS.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_LEAVES.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_SLAB.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_FENCE.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_BUTTON.get());
+
+                        // ── Willow
+                        safeAccept(output, GotModBlocks.WILLOW_LOG.get());
+                        safeAccept(output, GotModBlocks.WILLOW_WOOD.get());
+                        safeAccept(output, GotModBlocks.WILLOW_PLANKS.get());
+                        safeAccept(output, GotModBlocks.WILLOW_LEAVES.get());
+                        safeAccept(output, GotModBlocks.WILLOW_STAIRS.get());
+                        safeAccept(output, GotModBlocks.WILLOW_SLAB.get());
+                        safeAccept(output, GotModBlocks.WILLOW_FENCE.get());
+                        safeAccept(output, GotModBlocks.WILLOW_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.WILLOW_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.WILLOW_BUTTON.get());
+
+                        // ── Wormtree
+                        safeAccept(output, GotModBlocks.WORMTREE_LOG.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_WOOD.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_PLANKS.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_LEAVES.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_SLAB.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_FENCE.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_FENCE_GATE.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_BUTTON.get());
 
                         // ── Crownlands
                         safeAccept(output, GotModBlocks.CROWNLANDS_ROCK.get());

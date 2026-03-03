@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/redwood_log_top",
+    "up": "got:block/redwood_log_top",
+    "north": "got:block/redwood_log_side",
+    "east": "got:block/redwood_log_side",
+    "south": "got:block/redwood_log_side",
+    "west": "got:block/redwood_log_side",
+    "particle": "got:block/redwood_log_top"
+  },
+  "render_type": "solid"
+}

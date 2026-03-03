@@ -132,7 +132,259 @@ public class GotModItems {
     public static final DeferredItem<Item> HAWTHORN_PRESSURE_PLATE = block(GotModBlocks.HAWTHORN_PRESSURE_PLATE);
     public static final DeferredItem<Item> HAWTHORN_BUTTON = block(GotModBlocks.HAWTHORN_BUTTON);
 
-    // ── Crownlands ──────────────────────────────────────────────────────
+    // ── Blackbark Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> BLACKBARK_LOG            = block(GotModBlocks.BLACKBARK_LOG);
+    public static final DeferredItem<Item> BLACKBARK_WOOD           = block(GotModBlocks.BLACKBARK_WOOD);
+    public static final DeferredItem<Item> BLACKBARK_PLANKS         = block(GotModBlocks.BLACKBARK_PLANKS);
+    public static final DeferredItem<Item> BLACKBARK_LEAVES         = block(GotModBlocks.BLACKBARK_LEAVES);
+    public static final DeferredItem<Item> BLACKBARK_STAIRS         = block(GotModBlocks.BLACKBARK_STAIRS);
+    public static final DeferredItem<Item> BLACKBARK_SLAB           = block(GotModBlocks.BLACKBARK_SLAB);
+    public static final DeferredItem<Item> BLACKBARK_FENCE          = block(GotModBlocks.BLACKBARK_FENCE);
+    public static final DeferredItem<Item> BLACKBARK_FENCE_GATE     = block(GotModBlocks.BLACKBARK_FENCE_GATE);
+    public static final DeferredItem<Item> BLACKBARK_PRESSURE_PLATE = block(GotModBlocks.BLACKBARK_PRESSURE_PLATE);
+    public static final DeferredItem<Item> BLACKBARK_BUTTON         = block(GotModBlocks.BLACKBARK_BUTTON);
+
+    // ── Bloodwood Tree ───────────────────────────────────────────
+    public static final DeferredItem<Item> BLOODWOOD_LOG            = block(GotModBlocks.BLOODWOOD_LOG);
+    public static final DeferredItem<Item> BLOODWOOD_WOOD           = block(GotModBlocks.BLOODWOOD_WOOD);
+    public static final DeferredItem<Item> BLOODWOOD_PLANKS         = block(GotModBlocks.BLOODWOOD_PLANKS);
+    public static final DeferredItem<Item> BLOODWOOD_LEAVES         = block(GotModBlocks.BLOODWOOD_LEAVES);
+    public static final DeferredItem<Item> BLOODWOOD_STAIRS         = block(GotModBlocks.BLOODWOOD_STAIRS);
+    public static final DeferredItem<Item> BLOODWOOD_SLAB           = block(GotModBlocks.BLOODWOOD_SLAB);
+    public static final DeferredItem<Item> BLOODWOOD_FENCE          = block(GotModBlocks.BLOODWOOD_FENCE);
+    public static final DeferredItem<Item> BLOODWOOD_FENCE_GATE     = block(GotModBlocks.BLOODWOOD_FENCE_GATE);
+    public static final DeferredItem<Item> BLOODWOOD_PRESSURE_PLATE = block(GotModBlocks.BLOODWOOD_PRESSURE_PLATE);
+    public static final DeferredItem<Item> BLOODWOOD_BUTTON         = block(GotModBlocks.BLOODWOOD_BUTTON);
+
+    // ── Blue Mahoe Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> BLUE_MAHOE_LOG            = block(GotModBlocks.BLUE_MAHOE_LOG);
+    public static final DeferredItem<Item> BLUE_MAHOE_WOOD           = block(GotModBlocks.BLUE_MAHOE_WOOD);
+    public static final DeferredItem<Item> BLUE_MAHOE_PLANKS         = block(GotModBlocks.BLUE_MAHOE_PLANKS);
+    public static final DeferredItem<Item> BLUE_MAHOE_LEAVES         = block(GotModBlocks.BLUE_MAHOE_LEAVES);
+    public static final DeferredItem<Item> BLUE_MAHOE_STAIRS         = block(GotModBlocks.BLUE_MAHOE_STAIRS);
+    public static final DeferredItem<Item> BLUE_MAHOE_SLAB           = block(GotModBlocks.BLUE_MAHOE_SLAB);
+    public static final DeferredItem<Item> BLUE_MAHOE_FENCE          = block(GotModBlocks.BLUE_MAHOE_FENCE);
+    public static final DeferredItem<Item> BLUE_MAHOE_FENCE_GATE     = block(GotModBlocks.BLUE_MAHOE_FENCE_GATE);
+    public static final DeferredItem<Item> BLUE_MAHOE_PRESSURE_PLATE = block(GotModBlocks.BLUE_MAHOE_PRESSURE_PLATE);
+    public static final DeferredItem<Item> BLUE_MAHOE_BUTTON         = block(GotModBlocks.BLUE_MAHOE_BUTTON);
+
+    // ── Burl Tree ──────────────────────────────────────────────────────
+    public static final DeferredItem<Item> BURL_LOG            = block(GotModBlocks.BURL_LOG);
+    public static final DeferredItem<Item> BURL_WOOD           = block(GotModBlocks.BURL_WOOD);
+    public static final DeferredItem<Item> BURL_PLANKS         = block(GotModBlocks.BURL_PLANKS);
+    public static final DeferredItem<Item> BURL_LEAVES         = block(GotModBlocks.BURL_LEAVES);
+    public static final DeferredItem<Item> BURL_STAIRS         = block(GotModBlocks.BURL_STAIRS);
+    public static final DeferredItem<Item> BURL_SLAB           = block(GotModBlocks.BURL_SLAB);
+    public static final DeferredItem<Item> BURL_FENCE          = block(GotModBlocks.BURL_FENCE);
+    public static final DeferredItem<Item> BURL_FENCE_GATE     = block(GotModBlocks.BURL_FENCE_GATE);
+    public static final DeferredItem<Item> BURL_PRESSURE_PLATE = block(GotModBlocks.BURL_PRESSURE_PLATE);
+    public static final DeferredItem<Item> BURL_BUTTON         = block(GotModBlocks.BURL_BUTTON);
+
+    // ── Cottonwood Tree ───────────────────────────────────────────
+    public static final DeferredItem<Item> COTTONWOOD_LOG            = block(GotModBlocks.COTTONWOOD_LOG);
+    public static final DeferredItem<Item> COTTONWOOD_WOOD           = block(GotModBlocks.COTTONWOOD_WOOD);
+    public static final DeferredItem<Item> COTTONWOOD_PLANKS         = block(GotModBlocks.COTTONWOOD_PLANKS);
+    public static final DeferredItem<Item> COTTONWOOD_LEAVES         = block(GotModBlocks.COTTONWOOD_LEAVES);
+    public static final DeferredItem<Item> COTTONWOOD_STAIRS         = block(GotModBlocks.COTTONWOOD_STAIRS);
+    public static final DeferredItem<Item> COTTONWOOD_SLAB           = block(GotModBlocks.COTTONWOOD_SLAB);
+    public static final DeferredItem<Item> COTTONWOOD_FENCE          = block(GotModBlocks.COTTONWOOD_FENCE);
+    public static final DeferredItem<Item> COTTONWOOD_FENCE_GATE     = block(GotModBlocks.COTTONWOOD_FENCE_GATE);
+    public static final DeferredItem<Item> COTTONWOOD_PRESSURE_PLATE = block(GotModBlocks.COTTONWOOD_PRESSURE_PLATE);
+    public static final DeferredItem<Item> COTTONWOOD_BUTTON         = block(GotModBlocks.COTTONWOOD_BUTTON);
+
+
+    // ── BlackCottonwood Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_LOG            = block(GotModBlocks.BLACK_COTTONWOOD_LOG);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_WOOD           = block(GotModBlocks.BLACK_COTTONWOOD_WOOD);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_PLANKS         = block(GotModBlocks.BLACK_COTTONWOOD_PLANKS);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_LEAVES         = block(GotModBlocks.BLACK_COTTONWOOD_LEAVES);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_STAIRS         = block(GotModBlocks.BLACK_COTTONWOOD_STAIRS);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_SLAB           = block(GotModBlocks.BLACK_COTTONWOOD_SLAB);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_FENCE          = block(GotModBlocks.BLACK_COTTONWOOD_FENCE);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_FENCE_GATE     = block(GotModBlocks.BLACK_COTTONWOOD_FENCE_GATE);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_PRESSURE_PLATE = block(GotModBlocks.BLACK_COTTONWOOD_PRESSURE_PLATE);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_BUTTON         = block(GotModBlocks.BLACK_COTTONWOOD_BUTTON);
+
+    // ── Cinnamon Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> CINNAMON_LOG            = block(GotModBlocks.CINNAMON_LOG);
+    public static final DeferredItem<Item> CINNAMON_WOOD           = block(GotModBlocks.CINNAMON_WOOD);
+    public static final DeferredItem<Item> CINNAMON_PLANKS         = block(GotModBlocks.CINNAMON_PLANKS);
+    public static final DeferredItem<Item> CINNAMON_LEAVES         = block(GotModBlocks.CINNAMON_LEAVES);
+    public static final DeferredItem<Item> CINNAMON_STAIRS         = block(GotModBlocks.CINNAMON_STAIRS);
+    public static final DeferredItem<Item> CINNAMON_SLAB           = block(GotModBlocks.CINNAMON_SLAB);
+    public static final DeferredItem<Item> CINNAMON_FENCE          = block(GotModBlocks.CINNAMON_FENCE);
+    public static final DeferredItem<Item> CINNAMON_FENCE_GATE     = block(GotModBlocks.CINNAMON_FENCE_GATE);
+    public static final DeferredItem<Item> CINNAMON_PRESSURE_PLATE = block(GotModBlocks.CINNAMON_PRESSURE_PLATE);
+    public static final DeferredItem<Item> CINNAMON_BUTTON         = block(GotModBlocks.CINNAMON_BUTTON);
+
+    // ── Clove Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> CLOVE_LOG            = block(GotModBlocks.CLOVE_LOG);
+    public static final DeferredItem<Item> CLOVE_WOOD           = block(GotModBlocks.CLOVE_WOOD);
+    public static final DeferredItem<Item> CLOVE_PLANKS         = block(GotModBlocks.CLOVE_PLANKS);
+    public static final DeferredItem<Item> CLOVE_LEAVES         = block(GotModBlocks.CLOVE_LEAVES);
+    public static final DeferredItem<Item> CLOVE_STAIRS         = block(GotModBlocks.CLOVE_STAIRS);
+    public static final DeferredItem<Item> CLOVE_SLAB           = block(GotModBlocks.CLOVE_SLAB);
+    public static final DeferredItem<Item> CLOVE_FENCE          = block(GotModBlocks.CLOVE_FENCE);
+    public static final DeferredItem<Item> CLOVE_FENCE_GATE     = block(GotModBlocks.CLOVE_FENCE_GATE);
+    public static final DeferredItem<Item> CLOVE_PRESSURE_PLATE = block(GotModBlocks.CLOVE_PRESSURE_PLATE);
+    public static final DeferredItem<Item> CLOVE_BUTTON         = block(GotModBlocks.CLOVE_BUTTON);
+
+    // ── Ebony Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> EBONY_LOG            = block(GotModBlocks.EBONY_LOG);
+    public static final DeferredItem<Item> EBONY_WOOD           = block(GotModBlocks.EBONY_WOOD);
+    public static final DeferredItem<Item> EBONY_PLANKS         = block(GotModBlocks.EBONY_PLANKS);
+    public static final DeferredItem<Item> EBONY_LEAVES         = block(GotModBlocks.EBONY_LEAVES);
+    public static final DeferredItem<Item> EBONY_STAIRS         = block(GotModBlocks.EBONY_STAIRS);
+    public static final DeferredItem<Item> EBONY_SLAB           = block(GotModBlocks.EBONY_SLAB);
+    public static final DeferredItem<Item> EBONY_FENCE          = block(GotModBlocks.EBONY_FENCE);
+    public static final DeferredItem<Item> EBONY_FENCE_GATE     = block(GotModBlocks.EBONY_FENCE_GATE);
+    public static final DeferredItem<Item> EBONY_PRESSURE_PLATE = block(GotModBlocks.EBONY_PRESSURE_PLATE);
+    public static final DeferredItem<Item> EBONY_BUTTON         = block(GotModBlocks.EBONY_BUTTON);
+
+    // ── Elm Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> ELM_LOG            = block(GotModBlocks.ELM_LOG);
+    public static final DeferredItem<Item> ELM_WOOD           = block(GotModBlocks.ELM_WOOD);
+    public static final DeferredItem<Item> ELM_PLANKS         = block(GotModBlocks.ELM_PLANKS);
+    public static final DeferredItem<Item> ELM_LEAVES         = block(GotModBlocks.ELM_LEAVES);
+    public static final DeferredItem<Item> ELM_STAIRS         = block(GotModBlocks.ELM_STAIRS);
+    public static final DeferredItem<Item> ELM_SLAB           = block(GotModBlocks.ELM_SLAB);
+    public static final DeferredItem<Item> ELM_FENCE          = block(GotModBlocks.ELM_FENCE);
+    public static final DeferredItem<Item> ELM_FENCE_GATE     = block(GotModBlocks.ELM_FENCE_GATE);
+    public static final DeferredItem<Item> ELM_PRESSURE_PLATE = block(GotModBlocks.ELM_PRESSURE_PLATE);
+    public static final DeferredItem<Item> ELM_BUTTON         = block(GotModBlocks.ELM_BUTTON);
+
+    // ── Cedar Tree ──────────────────────────────────────────
+    public static final DeferredItem<Item> CEDAR_LOG            = block(GotModBlocks.CEDAR_LOG);
+    public static final DeferredItem<Item> CEDAR_WOOD           = block(GotModBlocks.CEDAR_WOOD);
+    public static final DeferredItem<Item> CEDAR_PLANKS         = block(GotModBlocks.CEDAR_PLANKS);
+    public static final DeferredItem<Item> CEDAR_LEAVES         = block(GotModBlocks.CEDAR_LEAVES);
+    public static final DeferredItem<Item> CEDAR_STAIRS         = block(GotModBlocks.CEDAR_STAIRS);
+    public static final DeferredItem<Item> CEDAR_SLAB           = block(GotModBlocks.CEDAR_SLAB);
+    public static final DeferredItem<Item> CEDAR_FENCE          = block(GotModBlocks.CEDAR_FENCE);
+    public static final DeferredItem<Item> CEDAR_FENCE_GATE     = block(GotModBlocks.CEDAR_FENCE_GATE);
+    public static final DeferredItem<Item> CEDAR_PRESSURE_PLATE = block(GotModBlocks.CEDAR_PRESSURE_PLATE);
+    public static final DeferredItem<Item> CEDAR_BUTTON         = block(GotModBlocks.CEDAR_BUTTON);
+
+    // ── Apple Tree
+    public static final DeferredItem<Item> APPLE_LOG            = block(GotModBlocks.APPLE_LOG);
+    public static final DeferredItem<Item> APPLE_WOOD           = block(GotModBlocks.APPLE_WOOD);
+    public static final DeferredItem<Item> APPLE_PLANKS         = block(GotModBlocks.APPLE_PLANKS);
+    public static final DeferredItem<Item> APPLE_LEAVES         = block(GotModBlocks.APPLE_LEAVES);
+    public static final DeferredItem<Item> APPLE_STAIRS         = block(GotModBlocks.APPLE_STAIRS);
+    public static final DeferredItem<Item> APPLE_SLAB           = block(GotModBlocks.APPLE_SLAB);
+    public static final DeferredItem<Item> APPLE_FENCE          = block(GotModBlocks.APPLE_FENCE);
+    public static final DeferredItem<Item> APPLE_FENCE_GATE     = block(GotModBlocks.APPLE_FENCE_GATE);
+    public static final DeferredItem<Item> APPLE_PRESSURE_PLATE = block(GotModBlocks.APPLE_PRESSURE_PLATE);
+    public static final DeferredItem<Item> APPLE_BUTTON         = block(GotModBlocks.APPLE_BUTTON);
+
+    // ── Goldenheart Tree
+    public static final DeferredItem<Item> GOLDENHEART_LOG            = block(GotModBlocks.GOLDENHEART_LOG);
+    public static final DeferredItem<Item> GOLDENHEART_WOOD           = block(GotModBlocks.GOLDENHEART_WOOD);
+    public static final DeferredItem<Item> GOLDENHEART_PLANKS         = block(GotModBlocks.GOLDENHEART_PLANKS);
+    public static final DeferredItem<Item> GOLDENHEART_LEAVES         = block(GotModBlocks.GOLDENHEART_LEAVES);
+    public static final DeferredItem<Item> GOLDENHEART_STAIRS         = block(GotModBlocks.GOLDENHEART_STAIRS);
+    public static final DeferredItem<Item> GOLDENHEART_SLAB           = block(GotModBlocks.GOLDENHEART_SLAB);
+    public static final DeferredItem<Item> GOLDENHEART_FENCE          = block(GotModBlocks.GOLDENHEART_FENCE);
+    public static final DeferredItem<Item> GOLDENHEART_FENCE_GATE     = block(GotModBlocks.GOLDENHEART_FENCE_GATE);
+    public static final DeferredItem<Item> GOLDENHEART_PRESSURE_PLATE = block(GotModBlocks.GOLDENHEART_PRESSURE_PLATE);
+    public static final DeferredItem<Item> GOLDENHEART_BUTTON         = block(GotModBlocks.GOLDENHEART_BUTTON);
+
+    // ── Linden Tree
+    public static final DeferredItem<Item> LINDEN_LOG            = block(GotModBlocks.LINDEN_LOG);
+    public static final DeferredItem<Item> LINDEN_WOOD           = block(GotModBlocks.LINDEN_WOOD);
+    public static final DeferredItem<Item> LINDEN_PLANKS         = block(GotModBlocks.LINDEN_PLANKS);
+    public static final DeferredItem<Item> LINDEN_LEAVES         = block(GotModBlocks.LINDEN_LEAVES);
+    public static final DeferredItem<Item> LINDEN_STAIRS         = block(GotModBlocks.LINDEN_STAIRS);
+    public static final DeferredItem<Item> LINDEN_SLAB           = block(GotModBlocks.LINDEN_SLAB);
+    public static final DeferredItem<Item> LINDEN_FENCE          = block(GotModBlocks.LINDEN_FENCE);
+    public static final DeferredItem<Item> LINDEN_FENCE_GATE     = block(GotModBlocks.LINDEN_FENCE_GATE);
+    public static final DeferredItem<Item> LINDEN_PRESSURE_PLATE = block(GotModBlocks.LINDEN_PRESSURE_PLATE);
+    public static final DeferredItem<Item> LINDEN_BUTTON         = block(GotModBlocks.LINDEN_BUTTON);
+
+    // ── Mahogany Tree
+    public static final DeferredItem<Item> MAHOGANY_LOG            = block(GotModBlocks.MAHOGANY_LOG);
+    public static final DeferredItem<Item> MAHOGANY_WOOD           = block(GotModBlocks.MAHOGANY_WOOD);
+    public static final DeferredItem<Item> MAHOGANY_PLANKS         = block(GotModBlocks.MAHOGANY_PLANKS);
+    public static final DeferredItem<Item> MAHOGANY_LEAVES         = block(GotModBlocks.MAHOGANY_LEAVES);
+    public static final DeferredItem<Item> MAHOGANY_STAIRS         = block(GotModBlocks.MAHOGANY_STAIRS);
+    public static final DeferredItem<Item> MAHOGANY_SLAB           = block(GotModBlocks.MAHOGANY_SLAB);
+    public static final DeferredItem<Item> MAHOGANY_FENCE          = block(GotModBlocks.MAHOGANY_FENCE);
+    public static final DeferredItem<Item> MAHOGANY_FENCE_GATE     = block(GotModBlocks.MAHOGANY_FENCE_GATE);
+    public static final DeferredItem<Item> MAHOGANY_PRESSURE_PLATE = block(GotModBlocks.MAHOGANY_PRESSURE_PLATE);
+    public static final DeferredItem<Item> MAHOGANY_BUTTON         = block(GotModBlocks.MAHOGANY_BUTTON);
+
+    // ── Maple Tree
+    public static final DeferredItem<Item> MAPLE_LOG            = block(GotModBlocks.MAPLE_LOG);
+    public static final DeferredItem<Item> MAPLE_WOOD           = block(GotModBlocks.MAPLE_WOOD);
+    public static final DeferredItem<Item> MAPLE_PLANKS         = block(GotModBlocks.MAPLE_PLANKS);
+    public static final DeferredItem<Item> MAPLE_LEAVES         = block(GotModBlocks.MAPLE_LEAVES);
+    public static final DeferredItem<Item> MAPLE_STAIRS         = block(GotModBlocks.MAPLE_STAIRS);
+    public static final DeferredItem<Item> MAPLE_SLAB           = block(GotModBlocks.MAPLE_SLAB);
+    public static final DeferredItem<Item> MAPLE_FENCE          = block(GotModBlocks.MAPLE_FENCE);
+    public static final DeferredItem<Item> MAPLE_FENCE_GATE     = block(GotModBlocks.MAPLE_FENCE_GATE);
+    public static final DeferredItem<Item> MAPLE_PRESSURE_PLATE = block(GotModBlocks.MAPLE_PRESSURE_PLATE);
+    public static final DeferredItem<Item> MAPLE_BUTTON         = block(GotModBlocks.MAPLE_BUTTON);
+
+    // ── Myrrh Tree
+    public static final DeferredItem<Item> MYRRH_LOG            = block(GotModBlocks.MYRRH_LOG);
+    public static final DeferredItem<Item> MYRRH_WOOD           = block(GotModBlocks.MYRRH_WOOD);
+    public static final DeferredItem<Item> MYRRH_PLANKS         = block(GotModBlocks.MYRRH_PLANKS);
+    public static final DeferredItem<Item> MYRRH_LEAVES         = block(GotModBlocks.MYRRH_LEAVES);
+    public static final DeferredItem<Item> MYRRH_STAIRS         = block(GotModBlocks.MYRRH_STAIRS);
+    public static final DeferredItem<Item> MYRRH_SLAB           = block(GotModBlocks.MYRRH_SLAB);
+    public static final DeferredItem<Item> MYRRH_FENCE          = block(GotModBlocks.MYRRH_FENCE);
+    public static final DeferredItem<Item> MYRRH_FENCE_GATE     = block(GotModBlocks.MYRRH_FENCE_GATE);
+    public static final DeferredItem<Item> MYRRH_PRESSURE_PLATE = block(GotModBlocks.MYRRH_PRESSURE_PLATE);
+    public static final DeferredItem<Item> MYRRH_BUTTON         = block(GotModBlocks.MYRRH_BUTTON);
+    // ── Redwood Tree
+    public static final DeferredItem<Item> REDWOOD_LOG            = block(GotModBlocks.REDWOOD_LOG);
+    public static final DeferredItem<Item> REDWOOD_WOOD           = block(GotModBlocks.REDWOOD_WOOD);
+    public static final DeferredItem<Item> REDWOOD_PLANKS         = block(GotModBlocks.REDWOOD_PLANKS);
+    public static final DeferredItem<Item> REDWOOD_LEAVES         = block(GotModBlocks.REDWOOD_LEAVES);
+    public static final DeferredItem<Item> REDWOOD_STAIRS         = block(GotModBlocks.REDWOOD_STAIRS);
+    public static final DeferredItem<Item> REDWOOD_SLAB           = block(GotModBlocks.REDWOOD_SLAB);
+    public static final DeferredItem<Item> REDWOOD_FENCE          = block(GotModBlocks.REDWOOD_FENCE);
+    public static final DeferredItem<Item> REDWOOD_FENCE_GATE     = block(GotModBlocks.REDWOOD_FENCE_GATE);
+    public static final DeferredItem<Item> REDWOOD_PRESSURE_PLATE = block(GotModBlocks.REDWOOD_PRESSURE_PLATE);
+    public static final DeferredItem<Item> REDWOOD_BUTTON         = block(GotModBlocks.REDWOOD_BUTTON);
+
+    // ── Chestnut Tree
+    public static final DeferredItem<Item> CHESTNUT_LOG            = block(GotModBlocks.CHESTNUT_LOG);
+    public static final DeferredItem<Item> CHESTNUT_WOOD           = block(GotModBlocks.CHESTNUT_WOOD);
+    public static final DeferredItem<Item> CHESTNUT_PLANKS         = block(GotModBlocks.CHESTNUT_PLANKS);
+    public static final DeferredItem<Item> CHESTNUT_LEAVES         = block(GotModBlocks.CHESTNUT_LEAVES);
+    public static final DeferredItem<Item> CHESTNUT_STAIRS         = block(GotModBlocks.CHESTNUT_STAIRS);
+    public static final DeferredItem<Item> CHESTNUT_SLAB           = block(GotModBlocks.CHESTNUT_SLAB);
+    public static final DeferredItem<Item> CHESTNUT_FENCE          = block(GotModBlocks.CHESTNUT_FENCE);
+    public static final DeferredItem<Item> CHESTNUT_FENCE_GATE     = block(GotModBlocks.CHESTNUT_FENCE_GATE);
+    public static final DeferredItem<Item> CHESTNUT_PRESSURE_PLATE = block(GotModBlocks.CHESTNUT_PRESSURE_PLATE);
+    public static final DeferredItem<Item> CHESTNUT_BUTTON         = block(GotModBlocks.CHESTNUT_BUTTON);
+
+    // ── Willow Tree
+    public static final DeferredItem<Item> WILLOW_LOG            = block(GotModBlocks.WILLOW_LOG);
+    public static final DeferredItem<Item> WILLOW_WOOD           = block(GotModBlocks.WILLOW_WOOD);
+    public static final DeferredItem<Item> WILLOW_PLANKS         = block(GotModBlocks.WILLOW_PLANKS);
+    public static final DeferredItem<Item> WILLOW_LEAVES         = block(GotModBlocks.WILLOW_LEAVES);
+    public static final DeferredItem<Item> WILLOW_STAIRS         = block(GotModBlocks.WILLOW_STAIRS);
+    public static final DeferredItem<Item> WILLOW_SLAB           = block(GotModBlocks.WILLOW_SLAB);
+    public static final DeferredItem<Item> WILLOW_FENCE          = block(GotModBlocks.WILLOW_FENCE);
+    public static final DeferredItem<Item> WILLOW_FENCE_GATE     = block(GotModBlocks.WILLOW_FENCE_GATE);
+    public static final DeferredItem<Item> WILLOW_PRESSURE_PLATE = block(GotModBlocks.WILLOW_PRESSURE_PLATE);
+    public static final DeferredItem<Item> WILLOW_BUTTON         = block(GotModBlocks.WILLOW_BUTTON);
+
+    // ── Wormtree Tree
+    public static final DeferredItem<Item> WORMTREE_LOG            = block(GotModBlocks.WORMTREE_LOG);
+    public static final DeferredItem<Item> WORMTREE_WOOD           = block(GotModBlocks.WORMTREE_WOOD);
+    public static final DeferredItem<Item> WORMTREE_PLANKS         = block(GotModBlocks.WORMTREE_PLANKS);
+    public static final DeferredItem<Item> WORMTREE_LEAVES         = block(GotModBlocks.WORMTREE_LEAVES);
+    public static final DeferredItem<Item> WORMTREE_STAIRS         = block(GotModBlocks.WORMTREE_STAIRS);
+    public static final DeferredItem<Item> WORMTREE_SLAB           = block(GotModBlocks.WORMTREE_SLAB);
+    public static final DeferredItem<Item> WORMTREE_FENCE          = block(GotModBlocks.WORMTREE_FENCE);
+    public static final DeferredItem<Item> WORMTREE_FENCE_GATE     = block(GotModBlocks.WORMTREE_FENCE_GATE);
+    public static final DeferredItem<Item> WORMTREE_PRESSURE_PLATE = block(GotModBlocks.WORMTREE_PRESSURE_PLATE);
+    public static final DeferredItem<Item> WORMTREE_BUTTON         = block(GotModBlocks.WORMTREE_BUTTON);
+
+    // ── Crownlands
     public static final DeferredItem<Item> CROWNLANDS_ROCK = block(GotModBlocks.CROWNLANDS_ROCK);
     public static final DeferredItem<Item> CROWNLANDS_BRICK = block(GotModBlocks.CROWNLANDS_BRICK);
     public static final DeferredItem<Item> CRACKED_CROWNLANDS_BRICK = block(GotModBlocks.CRACKED_CROWNLANDS_BRICK);
@@ -222,7 +474,7 @@ public class GotModItems {
     public static final DeferredItem<Item> POLISHED_WESTERLANDS_ROCK = block(GotModBlocks.POLISHED_WESTERLANDS_ROCK);
     public static final DeferredItem<Item> WESTERLANDS_PILLAR = block(GotModBlocks.WESTERLANDS_PILLAR);
 
-    // ── Crownlands ─────────────────────────────────────────
+    // ── Crownlands
     public static final DeferredItem<Item> CROWNLANDS_ROCK_SLAB = block(GotModBlocks.CROWNLANDS_ROCK_SLAB);
     public static final DeferredItem<Item> CROWNLANDS_ROCK_STAIRS = block(GotModBlocks.CROWNLANDS_ROCK_STAIRS);
     public static final DeferredItem<Item> CROWNLANDS_ROCK_WALL = block(GotModBlocks.CROWNLANDS_ROCK_WALL);

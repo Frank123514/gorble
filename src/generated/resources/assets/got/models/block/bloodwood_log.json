@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/bloodwood_log_top",
+    "up": "got:block/bloodwood_log_top",
+    "north": "got:block/bloodwood_log_side",
+    "east": "got:block/bloodwood_log_side",
+    "south": "got:block/bloodwood_log_side",
+    "west": "got:block/bloodwood_log_side",
+    "particle": "got:block/bloodwood_log_top"
+  },
+  "render_type": "solid"
+}

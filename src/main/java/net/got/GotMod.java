@@ -2,6 +2,7 @@ package net.got;
 
 import net.got.client.GotClient;
 import net.got.init.GotModBlocks;
+import net.got.init.GotWoodTypes;
 import net.got.init.GotModEntities;
 import net.got.init.GotModItems;
 import net.got.init.GotModTabs;
@@ -54,6 +55,7 @@ public final class GotMod {
         modBus.addListener(this::registerNetworking);
 
         /* ---------- Registries ---------- */
+        GotWoodTypes.init();
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
         GotModTabs.register(modBus);

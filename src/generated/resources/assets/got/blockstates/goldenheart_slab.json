@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/goldenheart_slab"
+    },
+    "type=top": {
+      "model": "got:block/goldenheart_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/goldenheart_slab_full"
+    }
+  }
+}

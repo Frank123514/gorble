@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "got:block/mahogany_leaves",
+    "particle": "got:block/mahogany_leaves"
+  },
+  "render_type": "cutout_mipped"
+}
