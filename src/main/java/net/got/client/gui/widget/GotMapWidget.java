@@ -47,14 +47,10 @@ public class GotMapWidget extends AbstractWidget {
     private static final float COMPASS_FRACTION        = 0.12f;
     private static final float COMPASS_MARGIN_FRACTION = 0.015f;
 
-    private static final double[] ZOOM_MULTIPLIERS = { 1.0, 2.0, 4.0, 7.0, 12.0, 20.0 };
-    private static final float    ANIM_SPEED        = 4.0f;
-    private static final double   ZOOM_SNAP_EPSILON = 0.0001;
-    private static final double   PAN_SNAP_EPSILON  = 0.05;
-    private static final float    BLOCKS_PER_PIXEL  = 56.0f;
+    private static final double[] ZOOM_MULTIPLIERS    = { 1.0, 2.0, 4.0, 7.0, 12.0, 20.0 };
+    private static final float    BLOCKS_PER_PIXEL    = 56.0f;
     private static final float    WORLD_WIDTH_BLOCKS  = 112000f;
     private static final float    WORLD_HEIGHT_BLOCKS = 112000f;
-    private static final long     ZOOM_COOLDOWN_MS    = 400L;
 
     /* ============================================================= */
     /* ========================== STATE ============================ */
@@ -65,12 +61,10 @@ public class GotMapWidget extends AbstractWidget {
     private final int textureHeight;
 
     private double zoom, panX, panY;
-    private double targetZoom, targetPanX, targetPanY;
     private int    zoomIndex = 0;
 
-    private boolean dragging     = false;
-    private long lastNanoTime    = -1L;
-    private long lastZoomTimeMs  = 0L;
+    private boolean dragging = false;
+    private long lastZoomTimeMs = 0L;
 
     /* ============================================================= */
     /* ======================== CONSTRUCTOR ======================== */
@@ -84,12 +78,9 @@ public class GotMapWidget extends AbstractWidget {
         this.textureWidth  = textureWidth;
         this.textureHeight = textureHeight;
 
-        this.targetZoom = zoomForLevel(0);
-        this.zoom       = targetZoom;
+        this.zoom = zoomForLevel(0);
 
         snapPanToPlayer();
-        this.panX = targetPanX;
-        this.panY = targetPanY;
     }
 
     /* ============================================================= */
@@ -112,18 +103,18 @@ public class GotMapWidget extends AbstractWidget {
             cx = (p.getX() + WORLD_WIDTH_BLOCKS  / 2.0) / BLOCKS_PER_PIXEL;
             cz = (p.getZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
         }
-        targetPanX = cx * targetZoom - width  / 2.0;
-        targetPanY = cz * targetZoom - height / 2.0;
-        clampTargetPan();
+        panX = cx * zoom - width  / 2.0;
+        panY = cz * zoom - height / 2.0;
+        clampPan();
     }
 
     private void zoomAroundCanvasCentre(double newZoom) {
         double cx = (panX + width  / 2.0) / zoom;
         double cz = (panY + height / 2.0) / zoom;
-        targetPanX = cx * newZoom - width  / 2.0;
-        targetPanY = cz * newZoom - height / 2.0;
-        targetZoom = newZoom;
-        clampTargetPan();
+        zoom = newZoom;
+        panX = cx * zoom - width  / 2.0;
+        panY = cz * zoom - height / 2.0;
+        clampPan();
     }
 
     /* ============================================================= */
@@ -132,13 +123,6 @@ public class GotMapWidget extends AbstractWidget {
 
     @Override
     public void renderWidget(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-
-        // Tick animation
-        long now = System.nanoTime();
-        if (lastNanoTime < 0) lastNanoTime = now;
-        float dt = Math.min((now - lastNanoTime) / 1_000_000_000f, 0.1f);
-        lastNanoTime = now;
-        tickAnimation(dt);
 
         // Canvas background
         gfx.fill(getX(), getY(), getX() + width, getY() + height, CANVAS_BG_COLOR);
@@ -173,20 +157,6 @@ public class GotMapWidget extends AbstractWidget {
         drawIronBorder(gfx);
 
         drawZoomLabel(gfx);
-    }
-
-    /* ------------------------------------------------------------ */
-    /* Animation                                                     */
-    /* ------------------------------------------------------------ */
-
-    private void tickAnimation(float dt) {
-        float f = 1f - (float) Math.exp(-ANIM_SPEED * dt);
-        zoom = Mth.lerp(f, zoom, targetZoom);
-        panX = Mth.lerp(f, panX, targetPanX);
-        panY = Mth.lerp(f, panY, targetPanY);
-        if (Math.abs(zoom - targetZoom) < ZOOM_SNAP_EPSILON) zoom = targetZoom;
-        if (Math.abs(panX - targetPanX) < PAN_SNAP_EPSILON)  panX = targetPanX;
-        if (Math.abs(panY - targetPanY) < PAN_SNAP_EPSILON)  panY = targetPanY;
     }
 
     /* ------------------------------------------------------------ */
@@ -267,7 +237,7 @@ public class GotMapWidget extends AbstractWidget {
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
         if (!isMouseOver(mouseX, mouseY)) return false;
         long now = System.currentTimeMillis();
-        if (now - lastZoomTimeMs < ZOOM_COOLDOWN_MS) return true;
+        if (now - lastZoomTimeMs < 100L) return true;
         int prev = zoomIndex;
         if (deltaY > 0) zoomIndex = Math.min(zoomIndex + 1, ZOOM_MULTIPLIERS.length - 1);
         else            zoomIndex = Math.max(zoomIndex - 1, 0);
@@ -287,8 +257,7 @@ public class GotMapWidget extends AbstractWidget {
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
         if (!dragging) return false;
         panX -= dx; panY -= dy;
-        targetPanX -= dx; targetPanY -= dy;
-        clampPan(); clampTargetPan();
+        clampPan();
         return true;
     }
 
@@ -336,13 +305,6 @@ public class GotMapWidget extends AbstractWidget {
         int zH = (int) (textureHeight * zoom);
         panX = Mth.clamp(panX, 0, Math.max(0, zW - width));
         panY = Mth.clamp(panY, 0, Math.max(0, zH - height));
-    }
-
-    private void clampTargetPan() {
-        int zW = (int) (textureWidth  * targetZoom);
-        int zH = (int) (textureHeight * targetZoom);
-        targetPanX = Mth.clamp(targetPanX, 0, Math.max(0, zW - width));
-        targetPanY = Mth.clamp(targetPanY, 0, Math.max(0, zH - height));
     }
 
     @Override

@@ -101,7 +101,7 @@ public class GotMapScreen extends Screen {
         // Title
         String title  = "The Lands of Ice and Fire";
         int    titleX = (width - font.width(title)) / 2;
-        int    titleY = MAP_BORDER + 2;
+        int    titleY = MAP_BORDER - 4;
         gfx.drawString(font, title, titleX, titleY, 0xFFE8C060, false);
 
         // Coordinates
@@ -110,7 +110,7 @@ public class GotMapScreen extends Screen {
             if (pos != null) {
                 String text = "x: " + pos.getX() + "  z: " + pos.getZ();
                 int    tx   = (width - font.width(text)) / 2;
-                int    ty   = canvasY + canvasH + 2;
+                int    ty   = canvasY + canvasH + 8;
                 gfx.drawString(font, text, tx, ty, 0xFFFFFFFF, false);
             }
         }

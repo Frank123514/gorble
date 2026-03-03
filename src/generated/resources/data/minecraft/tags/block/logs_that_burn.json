@@ -54,10 +54,6 @@
       "required": false
     },
     {
-      "id": "#got:burl_logs",
-      "required": false
-    },
-    {
       "id": "#got:cottonwood_logs",
       "required": false
     },

@@ -168,18 +168,6 @@ public class GotModItems {
     public static final DeferredItem<Item> BLUE_MAHOE_PRESSURE_PLATE = block(GotModBlocks.BLUE_MAHOE_PRESSURE_PLATE);
     public static final DeferredItem<Item> BLUE_MAHOE_BUTTON         = block(GotModBlocks.BLUE_MAHOE_BUTTON);
 
-    // ── Burl Tree ──────────────────────────────────────────────────────
-    public static final DeferredItem<Item> BURL_LOG            = block(GotModBlocks.BURL_LOG);
-    public static final DeferredItem<Item> BURL_WOOD           = block(GotModBlocks.BURL_WOOD);
-    public static final DeferredItem<Item> BURL_PLANKS         = block(GotModBlocks.BURL_PLANKS);
-    public static final DeferredItem<Item> BURL_LEAVES         = block(GotModBlocks.BURL_LEAVES);
-    public static final DeferredItem<Item> BURL_STAIRS         = block(GotModBlocks.BURL_STAIRS);
-    public static final DeferredItem<Item> BURL_SLAB           = block(GotModBlocks.BURL_SLAB);
-    public static final DeferredItem<Item> BURL_FENCE          = block(GotModBlocks.BURL_FENCE);
-    public static final DeferredItem<Item> BURL_FENCE_GATE     = block(GotModBlocks.BURL_FENCE_GATE);
-    public static final DeferredItem<Item> BURL_PRESSURE_PLATE = block(GotModBlocks.BURL_PRESSURE_PLATE);
-    public static final DeferredItem<Item> BURL_BUTTON         = block(GotModBlocks.BURL_BUTTON);
-
     // ── Cottonwood Tree ───────────────────────────────────────────
     public static final DeferredItem<Item> COTTONWOOD_LOG            = block(GotModBlocks.COTTONWOOD_LOG);
     public static final DeferredItem<Item> COTTONWOOD_WOOD           = block(GotModBlocks.COTTONWOOD_WOOD);

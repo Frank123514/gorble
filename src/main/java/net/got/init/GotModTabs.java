@@ -63,7 +63,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACKBARK_LEAVES.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_LEAVES.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_LEAVES.get());
-                        safeAccept(output, GotModBlocks.BURL_LEAVES.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_LEAVES.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_LEAVES.get());
                         safeAccept(output, GotModBlocks.CINNAMON_LEAVES.get());
@@ -159,18 +158,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_FENCE_GATE.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_PRESSURE_PLATE.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_BUTTON.get());
-
-                        // ── Burl
-                        safeAccept(output, GotModBlocks.BURL_LOG.get());
-                        safeAccept(output, GotModBlocks.BURL_WOOD.get());
-                        safeAccept(output, GotModBlocks.BURL_PLANKS.get());
-                        safeAccept(output, GotModBlocks.BURL_LEAVES.get());
-                        safeAccept(output, GotModBlocks.BURL_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BURL_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_FENCE.get());
-                        safeAccept(output, GotModBlocks.BURL_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.BURL_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.BURL_BUTTON.get());
 
                         // ── Cottonwood
                         safeAccept(output, GotModBlocks.COTTONWOOD_LOG.get());

@@ -540,18 +540,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLUE_MAHOE_PRESSURE_PLATE = register("blue_mahoe_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.BLUE_MAHOE_SET, p));
     public static final DeferredBlock<Block> BLUE_MAHOE_BUTTON         = register("blue_mahoe_button",         p -> new GotButtonBlock(GotWoodTypes.BLUE_MAHOE_SET, p));
 
-    // ── Burl Tree ─────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> BURL_LOG            = register("burl_log",            BurlLogBlock::new);
-    public static final DeferredBlock<Block> BURL_WOOD           = register("burl_wood",           BurlWoodBlock::new);
-    public static final DeferredBlock<Block> BURL_PLANKS         = register("burl_planks",         BurlPlanksBlock::new);
-    public static final DeferredBlock<Block> BURL_LEAVES         = register("burl_leaves",         BurlLeavesBlock::new);
-    public static final DeferredBlock<Block> BURL_STAIRS         = register("burl_stairs",         BurlStairsBlock::new);
-    public static final DeferredBlock<Block> BURL_SLAB           = register("burl_slab",           BurlSlabBlock::new);
-    public static final DeferredBlock<Block> BURL_FENCE          = register("burl_fence",          BurlFenceBlock::new);
-    public static final DeferredBlock<Block> BURL_FENCE_GATE     = register("burl_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.BURL, p));
-    public static final DeferredBlock<Block> BURL_PRESSURE_PLATE = register("burl_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.BURL_SET, p));
-    public static final DeferredBlock<Block> BURL_BUTTON         = register("burl_button",         p -> new GotButtonBlock(GotWoodTypes.BURL_SET, p));
-
     // ── Cottonwood Tree ───────────────────────────────────────────────────
     public static final DeferredBlock<Block> COTTONWOOD_LOG            = register("cottonwood_log",            CottonwoodLogBlock::new);
     public static final DeferredBlock<Block> COTTONWOOD_WOOD           = register("cottonwood_wood",           CottonwoodWoodBlock::new);
