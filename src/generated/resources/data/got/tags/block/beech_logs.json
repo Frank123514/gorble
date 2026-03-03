@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:beech_log",
-    "got:beech_wood"
+    "got:beech_wood",
+    "got:stripped_beech_log"
   ]
 }

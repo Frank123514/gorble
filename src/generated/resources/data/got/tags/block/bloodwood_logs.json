@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:bloodwood_log",
-    "got:bloodwood_wood"
+    "got:bloodwood_wood",
+    "got:stripped_bloodwood_log"
   ]
 }

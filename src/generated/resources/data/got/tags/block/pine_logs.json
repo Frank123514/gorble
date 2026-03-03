@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:pine_log",
-    "got:pine_wood"
+    "got:pine_wood",
+    "got:stripped_pine_log"
   ]
 }

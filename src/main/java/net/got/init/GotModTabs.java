@@ -47,6 +47,40 @@ public class GotModTabs {
 
                         // ── Weirwood ──────────────────────────────────────
                         safeAccept(output, GotModBlocks.WEIRWOOD_LOG.get());
+
+                        // ── Stripped Logs ────────────────────────────────
+                        safeAccept(output, GotModBlocks.STRIPPED_WEIRWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASPEN_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALDER_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINE_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIR_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SENTINAL_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_IRONWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BEECH_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SOLDIER_PINE_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASH_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HAWTHORN_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKBARK_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_COTTONWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_COTTONWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CINNAMON_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CLOVE_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_EBONY_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ELM_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CEDAR_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APPLE_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_GOLDENHEART_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LINDEN_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAHOGANY_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAPLE_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MYRRH_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_REDWOOD_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WILLOW_LOG.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WORMTREE_LOG.get());
+
                         safeAccept(output, GotModBlocks.WEIRWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_LEAVES.get());
@@ -681,6 +715,39 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_LEAVES.get());
                         safeAccept(output, GotModBlocks.ASH_LEAVES.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_LEAVES.get());
+                        // ── Saplings ────────────────────────────────
+                        safeAccept(output, GotModBlocks.WEIRWOOD_SAPLING.get());
+                        safeAccept(output, GotModBlocks.ASPEN_SAPLING.get());
+                        safeAccept(output, GotModBlocks.ALDER_SAPLING.get());
+                        safeAccept(output, GotModBlocks.PINE_SAPLING.get());
+                        safeAccept(output, GotModBlocks.FIR_SAPLING.get());
+                        safeAccept(output, GotModBlocks.SENTINAL_SAPLING.get());
+                        safeAccept(output, GotModBlocks.IRONWOOD_SAPLING.get());
+                        safeAccept(output, GotModBlocks.BEECH_SAPLING.get());
+                        safeAccept(output, GotModBlocks.SOLDIER_PINE_SAPLING.get());
+                        safeAccept(output, GotModBlocks.ASH_SAPLING.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_SAPLING.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_SAPLING.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_SAPLING.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_SAPLING.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_SAPLING.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_SAPLING.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_SAPLING.get());
+                        safeAccept(output, GotModBlocks.CLOVE_SAPLING.get());
+                        safeAccept(output, GotModBlocks.EBONY_SAPLING.get());
+                        safeAccept(output, GotModBlocks.ELM_SAPLING.get());
+                        safeAccept(output, GotModBlocks.CEDAR_SAPLING.get());
+                        safeAccept(output, GotModBlocks.APPLE_SAPLING.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_SAPLING.get());
+                        safeAccept(output, GotModBlocks.LINDEN_SAPLING.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_SAPLING.get());
+                        safeAccept(output, GotModBlocks.MAPLE_SAPLING.get());
+                        safeAccept(output, GotModBlocks.MYRRH_SAPLING.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_SAPLING.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_SAPLING.get());
+                        safeAccept(output, GotModBlocks.WILLOW_SAPLING.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_SAPLING.get());
+
                         safeAccept(output, GotModBlocks.NORTH_ROCK.get());
                         // ── Crownlands ──────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CROWNLANDS_ROCK.get());

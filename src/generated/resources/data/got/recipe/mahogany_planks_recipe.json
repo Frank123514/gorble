@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "category": "building",
+  "ingredients": [
+    "#got:mahogany_logs"
+  ],
+  "result": {
+    "id": "got:mahogany_planks",
+    "count": 4
+  }
+}

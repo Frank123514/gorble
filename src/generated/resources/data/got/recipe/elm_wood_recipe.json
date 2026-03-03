@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "category": "building",
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "key": {
+    "a": "got:elm_log"
+  },
+  "result": {
+    "id": "got:elm_wood",
+    "count": 3
+  }
+}

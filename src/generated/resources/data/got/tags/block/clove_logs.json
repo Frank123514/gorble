@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:clove_log",
-    "got:clove_wood"
+    "got:clove_wood",
+    "got:stripped_clove_log"
   ]
 }

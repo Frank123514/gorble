@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "category": "building",
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "key": {
+    "a": "got:mahogany_log"
+  },
+  "result": {
+    "id": "got:mahogany_wood",
+    "count": 3
+  }
+}

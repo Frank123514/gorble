@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:wormtree_log",
-    "got:wormtree_wood"
+    "got:wormtree_wood",
+    "got:stripped_wormtree_log"
   ]
 }

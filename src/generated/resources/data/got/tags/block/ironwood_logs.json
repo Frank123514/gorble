@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:ironwood_log",
-    "got:ironwood_wood"
+    "got:ironwood_wood",
+    "got:stripped_ironwood_log"
   ]
 }

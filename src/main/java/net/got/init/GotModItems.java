@@ -723,6 +723,74 @@ public class GotModItems {
     public static final DeferredItem<Item> BRONZE_INGOT         = simple("bronze_ingot");
     public static final DeferredItem<Item> VALYRIAN_STEEL_INGOT = simple("valyrian_steel_ingot");
 
+
+
+    // ── Stripped Logs ────────────────────────────────────────────────────
+    public static final DeferredItem<Item> STRIPPED_WEIRWOOD_LOG = block(GotModBlocks.STRIPPED_WEIRWOOD_LOG);
+    public static final DeferredItem<Item> STRIPPED_ASPEN_LOG = block(GotModBlocks.STRIPPED_ASPEN_LOG);
+    public static final DeferredItem<Item> STRIPPED_ALDER_LOG = block(GotModBlocks.STRIPPED_ALDER_LOG);
+    public static final DeferredItem<Item> STRIPPED_PINE_LOG = block(GotModBlocks.STRIPPED_PINE_LOG);
+    public static final DeferredItem<Item> STRIPPED_FIR_LOG = block(GotModBlocks.STRIPPED_FIR_LOG);
+    public static final DeferredItem<Item> STRIPPED_SENTINAL_LOG = block(GotModBlocks.STRIPPED_SENTINAL_LOG);
+    public static final DeferredItem<Item> STRIPPED_IRONWOOD_LOG = block(GotModBlocks.STRIPPED_IRONWOOD_LOG);
+    public static final DeferredItem<Item> STRIPPED_BEECH_LOG = block(GotModBlocks.STRIPPED_BEECH_LOG);
+    public static final DeferredItem<Item> STRIPPED_SOLDIER_PINE_LOG = block(GotModBlocks.STRIPPED_SOLDIER_PINE_LOG);
+    public static final DeferredItem<Item> STRIPPED_ASH_LOG = block(GotModBlocks.STRIPPED_ASH_LOG);
+    public static final DeferredItem<Item> STRIPPED_HAWTHORN_LOG = block(GotModBlocks.STRIPPED_HAWTHORN_LOG);
+    public static final DeferredItem<Item> STRIPPED_BLACKBARK_LOG = block(GotModBlocks.STRIPPED_BLACKBARK_LOG);
+    public static final DeferredItem<Item> STRIPPED_BLOODWOOD_LOG = block(GotModBlocks.STRIPPED_BLOODWOOD_LOG);
+    public static final DeferredItem<Item> STRIPPED_BLUE_MAHOE_LOG = block(GotModBlocks.STRIPPED_BLUE_MAHOE_LOG);
+    public static final DeferredItem<Item> STRIPPED_COTTONWOOD_LOG = block(GotModBlocks.STRIPPED_COTTONWOOD_LOG);
+    public static final DeferredItem<Item> STRIPPED_BLACK_COTTONWOOD_LOG = block(GotModBlocks.STRIPPED_BLACK_COTTONWOOD_LOG);
+    public static final DeferredItem<Item> STRIPPED_CINNAMON_LOG = block(GotModBlocks.STRIPPED_CINNAMON_LOG);
+    public static final DeferredItem<Item> STRIPPED_CLOVE_LOG = block(GotModBlocks.STRIPPED_CLOVE_LOG);
+    public static final DeferredItem<Item> STRIPPED_EBONY_LOG = block(GotModBlocks.STRIPPED_EBONY_LOG);
+    public static final DeferredItem<Item> STRIPPED_ELM_LOG = block(GotModBlocks.STRIPPED_ELM_LOG);
+    public static final DeferredItem<Item> STRIPPED_CEDAR_LOG = block(GotModBlocks.STRIPPED_CEDAR_LOG);
+    public static final DeferredItem<Item> STRIPPED_APPLE_LOG = block(GotModBlocks.STRIPPED_APPLE_LOG);
+    public static final DeferredItem<Item> STRIPPED_GOLDENHEART_LOG = block(GotModBlocks.STRIPPED_GOLDENHEART_LOG);
+    public static final DeferredItem<Item> STRIPPED_LINDEN_LOG = block(GotModBlocks.STRIPPED_LINDEN_LOG);
+    public static final DeferredItem<Item> STRIPPED_MAHOGANY_LOG = block(GotModBlocks.STRIPPED_MAHOGANY_LOG);
+    public static final DeferredItem<Item> STRIPPED_MAPLE_LOG = block(GotModBlocks.STRIPPED_MAPLE_LOG);
+    public static final DeferredItem<Item> STRIPPED_MYRRH_LOG = block(GotModBlocks.STRIPPED_MYRRH_LOG);
+    public static final DeferredItem<Item> STRIPPED_REDWOOD_LOG = block(GotModBlocks.STRIPPED_REDWOOD_LOG);
+    public static final DeferredItem<Item> STRIPPED_CHESTNUT_LOG = block(GotModBlocks.STRIPPED_CHESTNUT_LOG);
+    public static final DeferredItem<Item> STRIPPED_WILLOW_LOG = block(GotModBlocks.STRIPPED_WILLOW_LOG);
+    public static final DeferredItem<Item> STRIPPED_WORMTREE_LOG = block(GotModBlocks.STRIPPED_WORMTREE_LOG);
+
+    // ── Saplings ─────────────────────────────────────────────────────────
+    public static final DeferredItem<Item> WEIRWOOD_SAPLING = block(GotModBlocks.WEIRWOOD_SAPLING);
+    public static final DeferredItem<Item> ASPEN_SAPLING = block(GotModBlocks.ASPEN_SAPLING);
+    public static final DeferredItem<Item> ALDER_SAPLING = block(GotModBlocks.ALDER_SAPLING);
+    public static final DeferredItem<Item> PINE_SAPLING = block(GotModBlocks.PINE_SAPLING);
+    public static final DeferredItem<Item> FIR_SAPLING = block(GotModBlocks.FIR_SAPLING);
+    public static final DeferredItem<Item> SENTINAL_SAPLING = block(GotModBlocks.SENTINAL_SAPLING);
+    public static final DeferredItem<Item> IRONWOOD_SAPLING = block(GotModBlocks.IRONWOOD_SAPLING);
+    public static final DeferredItem<Item> BEECH_SAPLING = block(GotModBlocks.BEECH_SAPLING);
+    public static final DeferredItem<Item> SOLDIER_PINE_SAPLING = block(GotModBlocks.SOLDIER_PINE_SAPLING);
+    public static final DeferredItem<Item> ASH_SAPLING = block(GotModBlocks.ASH_SAPLING);
+    public static final DeferredItem<Item> HAWTHORN_SAPLING = block(GotModBlocks.HAWTHORN_SAPLING);
+    public static final DeferredItem<Item> BLACKBARK_SAPLING = block(GotModBlocks.BLACKBARK_SAPLING);
+    public static final DeferredItem<Item> BLOODWOOD_SAPLING = block(GotModBlocks.BLOODWOOD_SAPLING);
+    public static final DeferredItem<Item> BLUE_MAHOE_SAPLING = block(GotModBlocks.BLUE_MAHOE_SAPLING);
+    public static final DeferredItem<Item> COTTONWOOD_SAPLING = block(GotModBlocks.COTTONWOOD_SAPLING);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_SAPLING = block(GotModBlocks.BLACK_COTTONWOOD_SAPLING);
+    public static final DeferredItem<Item> CINNAMON_SAPLING = block(GotModBlocks.CINNAMON_SAPLING);
+    public static final DeferredItem<Item> CLOVE_SAPLING = block(GotModBlocks.CLOVE_SAPLING);
+    public static final DeferredItem<Item> EBONY_SAPLING = block(GotModBlocks.EBONY_SAPLING);
+    public static final DeferredItem<Item> ELM_SAPLING = block(GotModBlocks.ELM_SAPLING);
+    public static final DeferredItem<Item> CEDAR_SAPLING = block(GotModBlocks.CEDAR_SAPLING);
+    public static final DeferredItem<Item> APPLE_SAPLING = block(GotModBlocks.APPLE_SAPLING);
+    public static final DeferredItem<Item> GOLDENHEART_SAPLING = block(GotModBlocks.GOLDENHEART_SAPLING);
+    public static final DeferredItem<Item> LINDEN_SAPLING = block(GotModBlocks.LINDEN_SAPLING);
+    public static final DeferredItem<Item> MAHOGANY_SAPLING = block(GotModBlocks.MAHOGANY_SAPLING);
+    public static final DeferredItem<Item> MAPLE_SAPLING = block(GotModBlocks.MAPLE_SAPLING);
+    public static final DeferredItem<Item> MYRRH_SAPLING = block(GotModBlocks.MYRRH_SAPLING);
+    public static final DeferredItem<Item> REDWOOD_SAPLING = block(GotModBlocks.REDWOOD_SAPLING);
+    public static final DeferredItem<Item> CHESTNUT_SAPLING = block(GotModBlocks.CHESTNUT_SAPLING);
+    public static final DeferredItem<Item> WILLOW_SAPLING = block(GotModBlocks.WILLOW_SAPLING);
+    public static final DeferredItem<Item> WORMTREE_SAPLING = block(GotModBlocks.WORMTREE_SAPLING);
+
     // ── Copper tools ──────────────────────────────────────────────────────
     // Constructors: ToolMaterial, float attackDamageBonus, float attackSpeed, Properties
     public static final DeferredItem<SwordItem>  COPPER_SWORD    = REGISTRY.registerItem("copper_sword",

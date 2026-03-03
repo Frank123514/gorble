@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:hawthorn_log",
-    "got:hawthorn_wood"
+    "got:hawthorn_wood",
+    "got:stripped_hawthorn_log"
   ]
 }

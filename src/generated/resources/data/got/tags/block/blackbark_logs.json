@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:blackbark_log",
-    "got:blackbark_wood"
+    "got:blackbark_wood",
+    "got:stripped_blackbark_log"
   ]
 }

@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:willow_log",
-    "got:willow_wood"
+    "got:willow_wood",
+    "got:stripped_willow_log"
   ]
 }

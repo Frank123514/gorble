@@ -6,6 +6,7 @@ import net.got.init.GotWoodTypes;
 import net.got.init.GotModEntities;
 import net.got.init.GotModItems;
 import net.got.init.GotModTabs;
+import net.got.init.GotStrippingHelper;
 import net.got.network.GotNetwork;
 import net.got.registry.WorldgenRegistries;
 import net.got.sounds.ModSounds;
@@ -82,6 +83,7 @@ public final class GotMod {
     /* ---------------------------- */
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(GotStrippingHelper::registerAll);
         LOGGER.info("GoT common setup complete");
         GotNetwork.init();
     }

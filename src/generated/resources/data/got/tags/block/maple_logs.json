@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "got:maple_log",
-    "got:maple_wood"
+    "got:maple_wood",
+    "got:stripped_maple_log"
   ]
 }

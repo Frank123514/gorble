@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_slab",
+  "category": "building",
+  "pattern": [
+    "aaa"
+  ],
+  "key": {
+    "a": "got:chestnut_planks"
+  },
+  "result": {
+    "id": "got:chestnut_slab",
+    "count": 6
+  }
+}

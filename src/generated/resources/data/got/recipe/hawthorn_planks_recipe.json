@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "category": "building",
+  "ingredients": [
+    "#got:hawthorn_logs"
+  ],
+  "result": {
+    "id": "got:hawthorn_planks",
+    "count": 4
+  }
+}

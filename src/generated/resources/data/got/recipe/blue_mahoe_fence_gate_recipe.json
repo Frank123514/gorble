@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_fence_gate",
+  "category": "redstone",
+  "pattern": [
+    "aba",
+    "aba"
+  ],
+  "key": {
+    "a": "minecraft:stick",
+    "b": "got:blue_mahoe_planks"
+  },
+  "result": {
+    "id": "got:blue_mahoe_fence_gate",
+    "count": 1
+  }
+}
