@@ -53,6 +53,7 @@ public final class GotMod {
         /* ---------- Lifecycle ---------- */
         assert modBus != null;
         modBus.addListener(this::commonSetup);
+        modBus.register(GotStrippingHelper.class);
         modBus.addListener(this::registerNetworking);
 
         /* ---------- Registries ---------- */
@@ -83,7 +84,7 @@ public final class GotMod {
     /* ---------------------------- */
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(GotStrippingHelper::registerAll);
+
         LOGGER.info("GoT common setup complete");
         GotNetwork.init();
     }
