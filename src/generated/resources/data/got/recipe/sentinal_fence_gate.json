@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "got:sentinal_planks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "SPS",
+    "SPS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:sentinal_fence_gate"
+  }
+}

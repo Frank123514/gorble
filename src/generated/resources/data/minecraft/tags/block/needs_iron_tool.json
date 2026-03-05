@@ -1,11 +1,10 @@
 {
-  "replace": false,
   "values": [
+    "got:silver_ore",
     "got:amethyst_ore",
-    "got:dragonglass",
     "got:opal_ore",
     "got:ruby_ore",
     "got:sapphire_ore",
-    "got:silver_ore"
+    "got:dragonglass"
   ]
 }

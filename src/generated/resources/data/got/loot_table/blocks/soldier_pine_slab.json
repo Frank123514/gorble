@@ -1,19 +1,18 @@
 {
   "type": "minecraft:block",
-  "random_sequence": "got:blocks/soldier_pine_slab",
   "pools": [
     {
-      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "got:soldier_pine_slab",
           "functions": [
             {
+              "add": false,
               "conditions": [
                 {
-                  "condition": "minecraft:block_state_property",
                   "block": "got:soldier_pine_slab",
+                  "condition": "minecraft:block_state_property",
                   "properties": {
                     "type": "double"
                   }
@@ -25,9 +24,12 @@
             {
               "function": "minecraft:explosion_decay"
             }
-          ]
+          ],
+          "name": "got:soldier_pine_slab"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "got:blocks/soldier_pine_slab"
 }

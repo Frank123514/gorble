@@ -1,6 +1,7 @@
 package net.got.datagen;
 
 import net.got.GotMod;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.minecraft.core.Direction;
 
 import java.util.Objects;
 
@@ -66,6 +66,9 @@ public class GotBlockStateProvider extends BlockStateProvider {
             gotAxisBlock("stripped_" + w + "_log",
                     gotBlock("stripped_" + w + "_log"),
                     gotBlock("stripped_" + w + "_log_top"));
+            gotAxisBlock("stripped_" + w + "_wood",
+                    gotBlock("stripped_" + w + "_log"),
+                    gotBlock("stripped_" + w + "_log"));  // bark all sides: side == top
 
             simpleBlock(block(w + "_planks"),
                     models().cubeAll(w + "_planks", gotBlock(w + "_planks")));
@@ -87,6 +90,12 @@ public class GotBlockStateProvider extends BlockStateProvider {
             pressurePlateBlock((PressurePlateBlock) block(w + "_pressure_plate"), gotBlock(w + "_planks"));
             buttonBlock((ButtonBlock) block(w + "_button"),       gotBlock(w + "_planks"));
             itemModels().buttonInventory(w + "_button", gotBlock(w + "_planks"));
+
+            doorBlockWithRenderType((DoorBlock) block(w + "_door"),
+                    gotBlock(w + "_door_bottom"), gotBlock(w + "_door_top"), "cutout");
+
+            trapdoorBlockWithRenderType((TrapDoorBlock) block(w + "_trapdoor"),
+                    gotBlock(w + "_trapdoor"), true, "cutout");
         }
     }
 

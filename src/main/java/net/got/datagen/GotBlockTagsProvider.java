@@ -45,7 +45,8 @@ public class GotBlockTagsProvider extends BlockTagsProvider {
         // Collect block arrays per category
         Block[] logs = stream(woods, w -> block(w + "_log"),
                 w -> block(w + "_wood"),
-                w -> block("stripped_" + w + "_log")).toArray(Block[]::new);
+                w -> block("stripped_" + w + "_log"),
+                w -> block("stripped_" + w + "_wood")).toArray(Block[]::new);
         Block[] planks          = blocks(woods, w -> block(w + "_planks"));
         Block[] leaves          = blocks(woods, w -> block(w + "_leaves"));
         Block[] saplings        = blocks(woods, w -> block(w + "_sapling"));
@@ -55,6 +56,8 @@ public class GotBlockTagsProvider extends BlockTagsProvider {
         Block[] fenceGates      = blocks(woods, w -> block(w + "_fence_gate"));
         Block[] pressurePlates  = blocks(woods, w -> block(w + "_pressure_plate"));
         Block[] buttons         = blocks(woods, w -> block(w + "_button"));
+        Block[] doors           = blocks(woods, w -> block(w + "_door"));
+        Block[] trapdoors       = blocks(woods, w -> block(w + "_trapdoor"));
 
         tag(BlockTags.LOGS).add(logs);
         tag(BlockTags.LOGS_THAT_BURN).add(logs);
@@ -67,10 +70,12 @@ public class GotBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.FENCE_GATES).add(fenceGates);
         tag(BlockTags.WOODEN_PRESSURE_PLATES).add(pressurePlates);
         tag(BlockTags.WOODEN_BUTTONS).add(buttons);
+        tag(BlockTags.WOODEN_DOORS).add(doors);
+        tag(BlockTags.WOODEN_TRAPDOORS).add(trapdoors);
 
         // Mineable
         Block[] allWoodBlocks = concat(logs, planks, leaves, saplings, stairs, slabs,
-                fences, fenceGates, pressurePlates, buttons);
+                fences, fenceGates, pressurePlates, buttons, doors, trapdoors);
         tag(BlockTags.MINEABLE_WITH_AXE).add(allWoodBlocks);
     }
 

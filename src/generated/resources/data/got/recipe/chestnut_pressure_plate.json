@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "got:chestnut_planks"
+  },
+  "pattern": [
+    "PP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:chestnut_pressure_plate"
+  }
+}

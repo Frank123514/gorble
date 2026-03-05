@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "got:myrrh_planks"
+  },
+  "pattern": [
+    "PP",
+    "PP",
+    "PP"
+  ],
+  "result": {
+    "count": 3,
+    "id": "got:myrrh_door"
+  }
+}

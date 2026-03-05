@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "got:cottonwood_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "got:cottonwood_button"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "got:cottonwood_button"
+    ]
+  }
+}

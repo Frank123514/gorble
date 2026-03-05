@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.AxeItem;
@@ -758,6 +759,105 @@ public class GotModItems {
     public static final DeferredItem<Item> STRIPPED_WILLOW_LOG = block(GotModBlocks.STRIPPED_WILLOW_LOG);
     public static final DeferredItem<Item> STRIPPED_WORMTREE_LOG = block(GotModBlocks.STRIPPED_WORMTREE_LOG);
 
+    // ── Stripped Woods ────────────────────────────────────────────────────
+    public static final DeferredItem<Item> STRIPPED_WEIRWOOD_WOOD         = block(GotModBlocks.STRIPPED_WEIRWOOD_WOOD);
+    public static final DeferredItem<Item> STRIPPED_ASPEN_WOOD            = block(GotModBlocks.STRIPPED_ASPEN_WOOD);
+    public static final DeferredItem<Item> STRIPPED_ALDER_WOOD            = block(GotModBlocks.STRIPPED_ALDER_WOOD);
+    public static final DeferredItem<Item> STRIPPED_PINE_WOOD             = block(GotModBlocks.STRIPPED_PINE_WOOD);
+    public static final DeferredItem<Item> STRIPPED_FIR_WOOD              = block(GotModBlocks.STRIPPED_FIR_WOOD);
+    public static final DeferredItem<Item> STRIPPED_SENTINAL_WOOD         = block(GotModBlocks.STRIPPED_SENTINAL_WOOD);
+    public static final DeferredItem<Item> STRIPPED_IRONWOOD_WOOD         = block(GotModBlocks.STRIPPED_IRONWOOD_WOOD);
+    public static final DeferredItem<Item> STRIPPED_BEECH_WOOD            = block(GotModBlocks.STRIPPED_BEECH_WOOD);
+    public static final DeferredItem<Item> STRIPPED_SOLDIER_PINE_WOOD     = block(GotModBlocks.STRIPPED_SOLDIER_PINE_WOOD);
+    public static final DeferredItem<Item> STRIPPED_ASH_WOOD              = block(GotModBlocks.STRIPPED_ASH_WOOD);
+    public static final DeferredItem<Item> STRIPPED_HAWTHORN_WOOD         = block(GotModBlocks.STRIPPED_HAWTHORN_WOOD);
+    public static final DeferredItem<Item> STRIPPED_BLACKBARK_WOOD        = block(GotModBlocks.STRIPPED_BLACKBARK_WOOD);
+    public static final DeferredItem<Item> STRIPPED_BLOODWOOD_WOOD        = block(GotModBlocks.STRIPPED_BLOODWOOD_WOOD);
+    public static final DeferredItem<Item> STRIPPED_BLUE_MAHOE_WOOD       = block(GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD);
+    public static final DeferredItem<Item> STRIPPED_COTTONWOOD_WOOD       = block(GotModBlocks.STRIPPED_COTTONWOOD_WOOD);
+    public static final DeferredItem<Item> STRIPPED_BLACK_COTTONWOOD_WOOD = block(GotModBlocks.STRIPPED_BLACK_COTTONWOOD_WOOD);
+    public static final DeferredItem<Item> STRIPPED_CINNAMON_WOOD         = block(GotModBlocks.STRIPPED_CINNAMON_WOOD);
+    public static final DeferredItem<Item> STRIPPED_CLOVE_WOOD            = block(GotModBlocks.STRIPPED_CLOVE_WOOD);
+    public static final DeferredItem<Item> STRIPPED_EBONY_WOOD            = block(GotModBlocks.STRIPPED_EBONY_WOOD);
+    public static final DeferredItem<Item> STRIPPED_ELM_WOOD              = block(GotModBlocks.STRIPPED_ELM_WOOD);
+    public static final DeferredItem<Item> STRIPPED_CEDAR_WOOD            = block(GotModBlocks.STRIPPED_CEDAR_WOOD);
+    public static final DeferredItem<Item> STRIPPED_APPLE_WOOD            = block(GotModBlocks.STRIPPED_APPLE_WOOD);
+    public static final DeferredItem<Item> STRIPPED_GOLDENHEART_WOOD      = block(GotModBlocks.STRIPPED_GOLDENHEART_WOOD);
+    public static final DeferredItem<Item> STRIPPED_LINDEN_WOOD           = block(GotModBlocks.STRIPPED_LINDEN_WOOD);
+    public static final DeferredItem<Item> STRIPPED_MAHOGANY_WOOD         = block(GotModBlocks.STRIPPED_MAHOGANY_WOOD);
+    public static final DeferredItem<Item> STRIPPED_MAPLE_WOOD            = block(GotModBlocks.STRIPPED_MAPLE_WOOD);
+    public static final DeferredItem<Item> STRIPPED_MYRRH_WOOD            = block(GotModBlocks.STRIPPED_MYRRH_WOOD);
+    public static final DeferredItem<Item> STRIPPED_REDWOOD_WOOD          = block(GotModBlocks.STRIPPED_REDWOOD_WOOD);
+    public static final DeferredItem<Item> STRIPPED_CHESTNUT_WOOD         = block(GotModBlocks.STRIPPED_CHESTNUT_WOOD);
+    public static final DeferredItem<Item> STRIPPED_WILLOW_WOOD           = block(GotModBlocks.STRIPPED_WILLOW_WOOD);
+    public static final DeferredItem<Item> STRIPPED_WORMTREE_WOOD         = block(GotModBlocks.STRIPPED_WORMTREE_WOOD);
+
+    // ── Doors (DoubleHighBlockItem so they place correctly) ───────────────
+    public static final DeferredItem<Item> WEIRWOOD_DOOR             = door(GotModBlocks.WEIRWOOD_DOOR);
+    public static final DeferredItem<Item> ASPEN_DOOR                = door(GotModBlocks.ASPEN_DOOR);
+    public static final DeferredItem<Item> ALDER_DOOR                = door(GotModBlocks.ALDER_DOOR);
+    public static final DeferredItem<Item> PINE_DOOR                 = door(GotModBlocks.PINE_DOOR);
+    public static final DeferredItem<Item> FIR_DOOR                  = door(GotModBlocks.FIR_DOOR);
+    public static final DeferredItem<Item> SENTINAL_DOOR             = door(GotModBlocks.SENTINAL_DOOR);
+    public static final DeferredItem<Item> IRONWOOD_DOOR             = door(GotModBlocks.IRONWOOD_DOOR);
+    public static final DeferredItem<Item> BEECH_DOOR                = door(GotModBlocks.BEECH_DOOR);
+    public static final DeferredItem<Item> SOLDIER_PINE_DOOR         = door(GotModBlocks.SOLDIER_PINE_DOOR);
+    public static final DeferredItem<Item> ASH_DOOR                  = door(GotModBlocks.ASH_DOOR);
+    public static final DeferredItem<Item> HAWTHORN_DOOR             = door(GotModBlocks.HAWTHORN_DOOR);
+    public static final DeferredItem<Item> BLACKBARK_DOOR            = door(GotModBlocks.BLACKBARK_DOOR);
+    public static final DeferredItem<Item> BLOODWOOD_DOOR            = door(GotModBlocks.BLOODWOOD_DOOR);
+    public static final DeferredItem<Item> BLUE_MAHOE_DOOR           = door(GotModBlocks.BLUE_MAHOE_DOOR);
+    public static final DeferredItem<Item> COTTONWOOD_DOOR           = door(GotModBlocks.COTTONWOOD_DOOR);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_DOOR     = door(GotModBlocks.BLACK_COTTONWOOD_DOOR);
+    public static final DeferredItem<Item> CINNAMON_DOOR             = door(GotModBlocks.CINNAMON_DOOR);
+    public static final DeferredItem<Item> CLOVE_DOOR                = door(GotModBlocks.CLOVE_DOOR);
+    public static final DeferredItem<Item> EBONY_DOOR                = door(GotModBlocks.EBONY_DOOR);
+    public static final DeferredItem<Item> ELM_DOOR                  = door(GotModBlocks.ELM_DOOR);
+    public static final DeferredItem<Item> CEDAR_DOOR                = door(GotModBlocks.CEDAR_DOOR);
+    public static final DeferredItem<Item> APPLE_DOOR                = door(GotModBlocks.APPLE_DOOR);
+    public static final DeferredItem<Item> GOLDENHEART_DOOR          = door(GotModBlocks.GOLDENHEART_DOOR);
+    public static final DeferredItem<Item> LINDEN_DOOR               = door(GotModBlocks.LINDEN_DOOR);
+    public static final DeferredItem<Item> MAHOGANY_DOOR             = door(GotModBlocks.MAHOGANY_DOOR);
+    public static final DeferredItem<Item> MAPLE_DOOR                = door(GotModBlocks.MAPLE_DOOR);
+    public static final DeferredItem<Item> MYRRH_DOOR                = door(GotModBlocks.MYRRH_DOOR);
+    public static final DeferredItem<Item> REDWOOD_DOOR              = door(GotModBlocks.REDWOOD_DOOR);
+    public static final DeferredItem<Item> CHESTNUT_DOOR             = door(GotModBlocks.CHESTNUT_DOOR);
+    public static final DeferredItem<Item> WILLOW_DOOR               = door(GotModBlocks.WILLOW_DOOR);
+    public static final DeferredItem<Item> WORMTREE_DOOR             = door(GotModBlocks.WORMTREE_DOOR);
+
+    // ── Trapdoors ─────────────────────────────────────────────────────────
+    public static final DeferredItem<Item> WEIRWOOD_TRAPDOOR         = block(GotModBlocks.WEIRWOOD_TRAPDOOR);
+    public static final DeferredItem<Item> ASPEN_TRAPDOOR            = block(GotModBlocks.ASPEN_TRAPDOOR);
+    public static final DeferredItem<Item> ALDER_TRAPDOOR            = block(GotModBlocks.ALDER_TRAPDOOR);
+    public static final DeferredItem<Item> PINE_TRAPDOOR             = block(GotModBlocks.PINE_TRAPDOOR);
+    public static final DeferredItem<Item> FIR_TRAPDOOR              = block(GotModBlocks.FIR_TRAPDOOR);
+    public static final DeferredItem<Item> SENTINAL_TRAPDOOR         = block(GotModBlocks.SENTINAL_TRAPDOOR);
+    public static final DeferredItem<Item> IRONWOOD_TRAPDOOR         = block(GotModBlocks.IRONWOOD_TRAPDOOR);
+    public static final DeferredItem<Item> BEECH_TRAPDOOR            = block(GotModBlocks.BEECH_TRAPDOOR);
+    public static final DeferredItem<Item> SOLDIER_PINE_TRAPDOOR     = block(GotModBlocks.SOLDIER_PINE_TRAPDOOR);
+    public static final DeferredItem<Item> ASH_TRAPDOOR              = block(GotModBlocks.ASH_TRAPDOOR);
+    public static final DeferredItem<Item> HAWTHORN_TRAPDOOR         = block(GotModBlocks.HAWTHORN_TRAPDOOR);
+    public static final DeferredItem<Item> BLACKBARK_TRAPDOOR        = block(GotModBlocks.BLACKBARK_TRAPDOOR);
+    public static final DeferredItem<Item> BLOODWOOD_TRAPDOOR        = block(GotModBlocks.BLOODWOOD_TRAPDOOR);
+    public static final DeferredItem<Item> BLUE_MAHOE_TRAPDOOR       = block(GotModBlocks.BLUE_MAHOE_TRAPDOOR);
+    public static final DeferredItem<Item> COTTONWOOD_TRAPDOOR       = block(GotModBlocks.COTTONWOOD_TRAPDOOR);
+    public static final DeferredItem<Item> BLACK_COTTONWOOD_TRAPDOOR = block(GotModBlocks.BLACK_COTTONWOOD_TRAPDOOR);
+    public static final DeferredItem<Item> CINNAMON_TRAPDOOR         = block(GotModBlocks.CINNAMON_TRAPDOOR);
+    public static final DeferredItem<Item> CLOVE_TRAPDOOR            = block(GotModBlocks.CLOVE_TRAPDOOR);
+    public static final DeferredItem<Item> EBONY_TRAPDOOR            = block(GotModBlocks.EBONY_TRAPDOOR);
+    public static final DeferredItem<Item> ELM_TRAPDOOR              = block(GotModBlocks.ELM_TRAPDOOR);
+    public static final DeferredItem<Item> CEDAR_TRAPDOOR            = block(GotModBlocks.CEDAR_TRAPDOOR);
+    public static final DeferredItem<Item> APPLE_TRAPDOOR            = block(GotModBlocks.APPLE_TRAPDOOR);
+    public static final DeferredItem<Item> GOLDENHEART_TRAPDOOR      = block(GotModBlocks.GOLDENHEART_TRAPDOOR);
+    public static final DeferredItem<Item> LINDEN_TRAPDOOR           = block(GotModBlocks.LINDEN_TRAPDOOR);
+    public static final DeferredItem<Item> MAHOGANY_TRAPDOOR         = block(GotModBlocks.MAHOGANY_TRAPDOOR);
+    public static final DeferredItem<Item> MAPLE_TRAPDOOR            = block(GotModBlocks.MAPLE_TRAPDOOR);
+    public static final DeferredItem<Item> MYRRH_TRAPDOOR            = block(GotModBlocks.MYRRH_TRAPDOOR);
+    public static final DeferredItem<Item> REDWOOD_TRAPDOOR          = block(GotModBlocks.REDWOOD_TRAPDOOR);
+    public static final DeferredItem<Item> CHESTNUT_TRAPDOOR         = block(GotModBlocks.CHESTNUT_TRAPDOOR);
+    public static final DeferredItem<Item> WILLOW_TRAPDOOR           = block(GotModBlocks.WILLOW_TRAPDOOR);
+    public static final DeferredItem<Item> WORMTREE_TRAPDOOR         = block(GotModBlocks.WORMTREE_TRAPDOOR);
+
     // ── Saplings ─────────────────────────────────────────────────────────
     public static final DeferredItem<Item> WEIRWOOD_SAPLING = block(GotModBlocks.WEIRWOOD_SAPLING);
     public static final DeferredItem<Item> ASPEN_SAPLING = block(GotModBlocks.ASPEN_SAPLING);
@@ -852,5 +952,11 @@ public class GotModItems {
 
     private static DeferredItem<Item> block(DeferredHolder<Block, Block> block, Item.Properties properties) {
         return REGISTRY.registerItem(block.getId().getPath(), prop -> new BlockItem(block.get(), prop), properties);
+    }
+
+    /** Doors are two blocks tall — must use DoubleHighBlockItem. */
+    private static DeferredItem<Item> door(DeferredHolder<Block, Block> block) {
+        return REGISTRY.registerItem(block.getId().getPath(),
+                prop -> new DoubleHighBlockItem(block.get(), prop), new Item.Properties());
     }
 }

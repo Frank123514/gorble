@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "got:redwood_planks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "SPS",
+    "SPS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:redwood_fence_gate"
+  }
+}

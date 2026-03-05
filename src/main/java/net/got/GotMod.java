@@ -6,7 +6,6 @@ import net.got.init.GotWoodTypes;
 import net.got.init.GotModEntities;
 import net.got.init.GotModItems;
 import net.got.init.GotModTabs;
-import net.got.init.GotStrippingHelper;
 import net.got.network.GotNetwork;
 import net.got.registry.WorldgenRegistries;
 import net.got.sounds.ModSounds;
@@ -24,7 +23,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
@@ -53,7 +51,6 @@ public final class GotMod {
         /* ---------- Lifecycle ---------- */
         assert modBus != null;
         modBus.addListener(this::commonSetup);
-        modBus.register(GotStrippingHelper.class);
         modBus.addListener(this::registerNetworking);
 
         /* ---------- Registries ---------- */

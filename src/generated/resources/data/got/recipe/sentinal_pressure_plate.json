@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "got:sentinal_planks"
+  },
+  "pattern": [
+    "PP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:sentinal_pressure_plate"
+  }
+}

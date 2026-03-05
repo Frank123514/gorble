@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "got:stripped_cedar_log"
+  ],
+  "result": {
+    "count": 4,
+    "id": "got:cedar_planks"
+  }
+}

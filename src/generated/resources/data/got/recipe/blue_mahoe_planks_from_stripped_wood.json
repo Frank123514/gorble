@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "got:stripped_blue_mahoe_wood"
+  ],
+  "result": {
+    "count": 4,
+    "id": "got:blue_mahoe_planks"
+  }
+}

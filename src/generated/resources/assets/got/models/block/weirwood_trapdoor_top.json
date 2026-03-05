@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_trapdoor_top",
+  "textures": {
+    "texture": "got:block/weirwood_trapdoor"
+  },
+  "render_type": "cutout"
+}

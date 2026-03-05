@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "got:block/stripped_wormtree_log_side",
+    "side": "got:block/stripped_wormtree_log_side"
+  },
+  "render_type": "solid"
+}

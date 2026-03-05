@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_trapdoor_open",
+  "textures": {
+    "texture": "got:block/blue_mahoe_trapdoor"
+  },
+  "render_type": "cutout"
+}

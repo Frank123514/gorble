@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "got:weirwood_fence",
     "got:aspen_fence",
@@ -8,10 +7,10 @@
     "got:fir_fence",
     "got:sentinal_fence",
     "got:ironwood_fence",
-    "got:hawthorn_fence",
     "got:beech_fence",
     "got:soldier_pine_fence",
     "got:ash_fence",
+    "got:hawthorn_fence",
     "got:blackbark_fence",
     "got:bloodwood_fence",
     "got:blue_mahoe_fence",

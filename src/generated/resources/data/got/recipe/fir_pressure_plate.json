@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "got:fir_planks"
+  },
+  "pattern": [
+    "PP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:fir_pressure_plate"
+  }
+}

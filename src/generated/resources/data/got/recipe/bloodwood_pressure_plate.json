@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "got:bloodwood_planks"
+  },
+  "pattern": [
+    "PP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:bloodwood_pressure_plate"
+  }
+}

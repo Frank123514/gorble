@@ -32,6 +32,7 @@ public class GotItemModelProvider extends ItemModelProvider {
             blockItem(w + "_log");
             blockItem(w + "_wood");
             blockItem("stripped_" + w + "_log");
+            blockItem("stripped_" + w + "_wood");
             blockItem(w + "_planks");
             blockItem(w + "_leaves");
             blockItem(w + "_sapling");
@@ -41,6 +42,13 @@ public class GotItemModelProvider extends ItemModelProvider {
             blockItem(w + "_fence_gate");
             blockItem(w + "_pressure_plate");
             withExistingParent(w + "_button", modLoc("block/" + w + "_button_inventory"));
+
+            // Doors: flat 2D generated item using textures/item/{w}_door.png
+            withExistingParent(w + "_door", ResourceLocation.withDefaultNamespace("item/generated"))
+                    .texture("layer0", modLoc("item/" + w + "_door"));
+
+            // Trapdoors: reuse the bottom block model as the item icon
+            withExistingParent(w + "_trapdoor", modLoc("block/" + w + "_trapdoor_bottom"));
         }
     }
 

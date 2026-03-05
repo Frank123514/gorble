@@ -12,11 +12,25 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -68,6 +82,7 @@ public class GotLootTableProvider extends LootTableProvider {
                 dropSelf(block(w + "_log"));
                 dropSelf(block(w + "_wood"));
                 dropSelf(block("stripped_" + w + "_log"));
+                dropSelf(block("stripped_" + w + "_wood"));
                 dropSelf(block(w + "_planks"));
                 dropSelf(block(w + "_sapling"));
                 dropSelf(block(w + "_stairs"));
@@ -79,7 +94,13 @@ public class GotLootTableProvider extends LootTableProvider {
                 // Slab: drops 1 or 2 depending on block-half state
                 add(block(w + "_slab"), this::createSlabItemTable);
 
-                // Leaves: chance-based sapling drop + silk-touch self
+                // Door: drops itself as item
+                add(block(w + "_door"), this::createDoorTable);
+
+                // Trapdoor: drops itself
+                dropSelf(block(w + "_trapdoor"));
+
+                // Leaves: drop self with silk touch/shears, otherwise chance sapling + sticks
                 add(block(w + "_leaves"),
                         b -> createLeavesDrops(b, block(w + "_sapling"),
                                 NORMAL_LEAVES_SAPLING_CHANCES));
@@ -132,6 +153,18 @@ public class GotLootTableProvider extends LootTableProvider {
         }
 
         // ── Helpers ───────────────────────────────────────────────────
+
+        /** Doors drop only from the lower half (vanilla behaviour). */
+        public LootTable.Builder createDoorTable(Block block) {
+            return LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties()
+                                            .hasProperty(DoorBlock.HALF, DoubleBlockHalf.LOWER)))
+                            .add(LootItem.lootTableItem(block))
+                            .when(ExplosionCondition.survivesExplosion()));
+        }
 
         private Block block(String name) {
             return Objects.requireNonNull(

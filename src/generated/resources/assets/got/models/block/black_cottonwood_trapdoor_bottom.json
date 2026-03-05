@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_trapdoor_bottom",
+  "textures": {
+    "texture": "got:block/black_cottonwood_trapdoor"
+  },
+  "render_type": "cutout"
+}

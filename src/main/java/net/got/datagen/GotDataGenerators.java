@@ -50,6 +50,7 @@ public final class GotDataGenerators {
         // ── Client-side ────────────────────────────────────────────────
         gen.addProvider(event.includeClient(), new GotBlockStateProvider(output, efh));
         gen.addProvider(event.includeClient(), new GotItemModelProvider(output, efh));
+        gen.addProvider(event.includeClient(), new GotLanguageProvider(output));
     }
 
     private GotDataGenerators() {}

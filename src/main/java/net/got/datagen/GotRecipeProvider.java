@@ -51,31 +51,69 @@ public class GotRecipeProvider extends RecipeProvider {
 
     private void buildWoodRecipes(HolderGetter<Item> items) {
         for (String w : GotBlockStateProvider.WOOD_TYPES) {
-            Item log    = item(w + "_log");
-            Item wood   = item(w + "_wood");
-            Item planks = item(w + "_planks");
-            Item slab   = item(w + "_slab");
-            Item stick  = Items.STICK;
+            Item log         = item(w + "_log");
+            Item wood        = item(w + "_wood");
+            Item strippedLog = item("stripped_" + w + "_log");
+            Item strippedWood= item("stripped_" + w + "_wood");
+            Item planks      = item(w + "_planks");
+            Item slab        = item(w + "_slab");
+            Item stick       = Items.STICK;
 
-            // Log → 4 planks
+            // ── Regular log/wood → planks ─────────────────────────────
             ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, planks, 4)
                     .requires(log)
                     .unlockedBy("has_log", has(log))
                     .save(this.output, rk(w + "_planks_from_log"));
 
-            // Wood (bark) → 4 planks
             ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, planks, 4)
                     .requires(wood)
                     .unlockedBy("has_wood", has(wood))
                     .save(this.output, rk(w + "_planks_from_wood"));
 
             // 4 logs → 3 wood (bark block)
-            ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, wood, 3)
+            ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, item(w + "_wood"), 3)
                     .define('L', log)
                     .pattern("LL")
                     .pattern("LL")
                     .unlockedBy("has_log", has(log))
                     .save(this.output, rk(w + "_wood"));
+
+            // ── Stripped log/wood → planks ────────────────────────────
+            ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, planks, 4)
+                    .requires(strippedLog)
+                    .unlockedBy("has_stripped_log", has(strippedLog))
+                    .save(this.output, rk(w + "_planks_from_stripped_log"));
+
+            ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, planks, 4)
+                    .requires(strippedWood)
+                    .unlockedBy("has_stripped_wood", has(strippedWood))
+                    .save(this.output, rk(w + "_planks_from_stripped_wood"));
+
+            // 4 stripped logs → 3 stripped wood
+            ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, item("stripped_" + w + "_wood"), 3)
+                    .define('L', strippedLog)
+                    .pattern("LL")
+                    .pattern("LL")
+                    .unlockedBy("has_stripped_log", has(strippedLog))
+                    .save(this.output, rk("stripped_" + w + "_wood"));
+
+            // ── Doors & trapdoors ─────────────────────────────────────
+            // 6 planks → 3 doors
+            ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, item(w + "_door"), 3)
+                    .define('P', planks)
+                    .pattern("PP")
+                    .pattern("PP")
+                    .pattern("PP")
+                    .unlockedBy("has_planks", has(planks))
+                    .save(this.output, rk(w + "_door"));
+
+            // 6 planks → 2 trapdoors
+            ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, item(w + "_trapdoor"), 2)
+                    .define('P', planks)
+                    .pattern("PPP")
+                    .pattern("PPP")
+                    .unlockedBy("has_planks", has(planks))
+                    .save(this.output, rk(w + "_trapdoor"));
 
             // 6 planks → 4 stairs
             ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, item(w + "_stairs"), 4)
