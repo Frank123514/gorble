@@ -65,6 +65,14 @@ public class GotLanguageProvider extends LanguageProvider {
         addStoneRegion("vale",        "Vale");
         addStoneRegion("westerlands", "Westerlands");
 
+        // ── Natural stone types ───────────────────────────────────────────
+        addStoneRegion("basalt",        "Basalt");
+        addStoneRegion("granite",       "Granite");
+        addStoneRegion("limestone",     "Limestone");
+        addStoneRegion("sandstone",     "Sandstone");
+        addStoneRegion("red_sandstone", "Red Sandstone");
+        addStoneRegion("slate",         "Slate");
+
         // ── Ores & raw materials ──────────────────────────────────────
         block("copper_ore",           "Copper Ore");
         block("tin_ore",              "Tin Ore");
