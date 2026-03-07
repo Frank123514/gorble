@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": "got:iron_islands_rock",
-  "result": {
-    "id": "got:polished_iron_islands_rock"
-  },
-  "experience": 0.1,
-  "cookingtime": 100
-}

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:reach_rock",
-  "result": {
-    "id": "got:reach_rock_wall",
-    "count": 1
-  }
-}

@@ -27,15 +27,15 @@ public class GotBlockStateProvider extends BlockStateProvider {
     };
 
     static final String[] STONE_REGIONS = {
-            "crownlands", "dorne", "iron_islands", "north", "reach",
-            "riverlands", "stormlands", "vale", "westerlands",
             // ── Natural stone types ─────────────────────────────────────
-            "basalt", "granite", "limestone", "sandstone", "red_sandstone", "slate"
+            "basalt", "granite", "limestone", "sandstone", "red_sandstone", "slate",
+            // ── Special stone types ─────────────────────────────────────
+            "oily_black", "fused_black", "marble"
     };
 
     private static final String[] STONE_SUBTYPES = {
             "{r}_rock", "{r}_brick", "cracked_{r}_brick", "mossy_{r}_brick",
-            "{r}_cobblestone", "mossy_{r}_cobblestone", "polished_{r}_rock"
+            "{r}_cobblestone", "mossy_{r}_cobblestone", "smooth_{r}_rock"
     };
 
     private static final String[] ORES = {

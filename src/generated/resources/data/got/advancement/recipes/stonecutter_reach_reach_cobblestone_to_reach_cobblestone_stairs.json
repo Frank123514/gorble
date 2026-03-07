@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:reach_cobblestone",
-  "result": {
-    "id": "got:reach_cobblestone_stairs",
-    "count": 1
-  }
-}

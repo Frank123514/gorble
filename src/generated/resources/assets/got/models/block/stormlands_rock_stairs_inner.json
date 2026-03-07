@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "got:block/stormlands_rock",
-    "top": "got:block/stormlands_rock",
-    "side": "got:block/stormlands_rock"
-  }
-}

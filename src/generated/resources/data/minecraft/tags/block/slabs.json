@@ -31,6 +31,27 @@
     "got:redwood_slab",
     "got:chestnut_slab",
     "got:willow_slab",
-    "got:wormtree_slab"
+    "got:wormtree_slab",
+    "got:oily_black_rock_slab",
+    "got:oily_black_brick_slab",
+    "got:cracked_oily_black_brick_slab",
+    "got:mossy_oily_black_brick_slab",
+    "got:oily_black_cobblestone_slab",
+    "got:mossy_oily_black_cobblestone_slab",
+    "got:smooth_oily_black_rock_slab",
+    "got:fused_black_rock_slab",
+    "got:fused_black_brick_slab",
+    "got:cracked_fused_black_brick_slab",
+    "got:mossy_fused_black_brick_slab",
+    "got:fused_black_cobblestone_slab",
+    "got:mossy_fused_black_cobblestone_slab",
+    "got:smooth_fused_black_rock_slab",
+    "got:marble_rock_slab",
+    "got:marble_brick_slab",
+    "got:cracked_marble_brick_slab",
+    "got:mossy_marble_brick_slab",
+    "got:marble_cobblestone_slab",
+    "got:mossy_marble_cobblestone_slab",
+    "got:smooth_marble_rock_slab"
   ]
 }

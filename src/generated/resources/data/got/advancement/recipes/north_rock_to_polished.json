@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": "got:north_rock",
-  "result": {
-    "id": "got:polished_north_rock"
-  },
-  "experience": 0.1,
-  "cookingtime": 100
-}

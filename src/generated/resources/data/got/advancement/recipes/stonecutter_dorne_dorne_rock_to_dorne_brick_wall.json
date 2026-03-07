@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:dorne_rock",
-  "result": {
-    "id": "got:dorne_brick_wall",
-    "count": 1
-  }
-}

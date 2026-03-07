@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:north_brick",
-  "result": {
-    "id": "got:north_brick_wall",
-    "count": 1
-  }
-}

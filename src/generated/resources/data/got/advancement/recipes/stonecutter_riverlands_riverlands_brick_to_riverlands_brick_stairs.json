@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:riverlands_brick",
-  "result": {
-    "id": "got:riverlands_brick_stairs",
-    "count": 1
-  }
-}

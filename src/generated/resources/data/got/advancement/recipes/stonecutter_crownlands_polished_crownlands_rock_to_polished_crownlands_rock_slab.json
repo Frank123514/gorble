@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:polished_crownlands_rock",
-  "result": {
-    "id": "got:polished_crownlands_rock_slab",
-    "count": 2
-  }
-}

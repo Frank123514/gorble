@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": "got:reach_cobblestone",
-  "result": {
-    "id": "got:reach_rock"
-  },
-  "experience": 0.1,
-  "cookingtime": 200
-}

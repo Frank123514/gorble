@@ -1,14 +1,4 @@
 {
   "replace": false,
-  "values": [
-    "got:crownlands_rock_button",
-    "got:dorne_rock_button",
-    "got:iron_islands_rock_button",
-    "got:north_rock_button",
-    "got:reach_rock_button",
-    "got:riverlands_rock_button",
-    "got:stormlands_rock_button",
-    "got:vale_rock_button",
-    "got:westerlands_rock_button"
-  ]
+  "values": []
 }

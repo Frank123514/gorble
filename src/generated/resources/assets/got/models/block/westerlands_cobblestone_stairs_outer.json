@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "got:block/westerlands_cobblestone",
-    "top": "got:block/westerlands_cobblestone",
-    "side": "got:block/westerlands_cobblestone"
-  }
-}

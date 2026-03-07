@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:iron_islands_cobblestone",
-  "result": {
-    "id": "got:iron_islands_cobblestone_slab",
-    "count": 2
-  }
-}

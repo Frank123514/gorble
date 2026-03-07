@@ -31,6 +31,27 @@
     "got:redwood_stairs",
     "got:chestnut_stairs",
     "got:willow_stairs",
-    "got:wormtree_stairs"
+    "got:wormtree_stairs",
+    "got:oily_black_rock_stairs",
+    "got:oily_black_brick_stairs",
+    "got:cracked_oily_black_brick_stairs",
+    "got:mossy_oily_black_brick_stairs",
+    "got:oily_black_cobblestone_stairs",
+    "got:mossy_oily_black_cobblestone_stairs",
+    "got:smooth_oily_black_rock_stairs",
+    "got:fused_black_rock_stairs",
+    "got:fused_black_brick_stairs",
+    "got:cracked_fused_black_brick_stairs",
+    "got:mossy_fused_black_brick_stairs",
+    "got:fused_black_cobblestone_stairs",
+    "got:mossy_fused_black_cobblestone_stairs",
+    "got:smooth_fused_black_rock_stairs",
+    "got:marble_rock_stairs",
+    "got:marble_brick_stairs",
+    "got:cracked_marble_brick_stairs",
+    "got:mossy_marble_brick_stairs",
+    "got:marble_cobblestone_stairs",
+    "got:mossy_marble_cobblestone_stairs",
+    "got:smooth_marble_rock_stairs"
   ]
 }
