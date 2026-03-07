@@ -129,8 +129,15 @@ public class GotLanguageProvider extends LanguageProvider {
         block(id + "_fence_gate",       name + " Fence Gate");
         block(id + "_pressure_plate",   name + " Pressure Plate");
         block(id + "_button",           name + " Button");
-        block(id + "_door",             name + " Door");
-        block(id + "_trapdoor",         name + " Trapdoor");
+        item(id + "_door",             name + " Door");
+        item(id + "_trapdoor",         name + " Trapdoor");
+        item(id + "_branch",           name + " Branch");
+        item(id + "_sign",             name + " Sign");
+        item(id + "_wall_sign",        name + " Wall Sign");
+        item(id + "_hanging_sign",     name + " Hanging Sign");
+        item(id + "_wall_hanging_sign",name + " Wall Hanging Sign");
+        item(id + "_boat",              name + " Boat");
+        item(id + "_chest_boat",        name + " Boat with Chest");
     }
 
     // ── Stone region helper ───────────────────────────────────────────
