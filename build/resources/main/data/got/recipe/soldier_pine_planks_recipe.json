@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "category": "building",
+  "ingredients": [
+    "#got:soldier_pine_logs"
+  ],
+  "result": {
+    "id": "got:soldier_pine_planks",
+    "count": 4
+  }
+}

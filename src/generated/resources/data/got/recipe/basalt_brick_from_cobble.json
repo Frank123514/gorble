@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "result": {
+    "id": "got:basalt_brick",
+    "count": 4
+  },
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "key": {
+    "C": {
+      "item": "got:basalt_cobblestone"
+    }
+  }
+}

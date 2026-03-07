@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/fused_black_cobblestone",
+    "side": "got:block/fused_black_cobblestone",
+    "top": "got:block/fused_black_cobblestone"
+  }
+}

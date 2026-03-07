@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "got:block/cracked_reach_brick",
-    "top": "got:block/cracked_reach_brick",
-    "side": "got:block/cracked_reach_brick"
-  }
-}

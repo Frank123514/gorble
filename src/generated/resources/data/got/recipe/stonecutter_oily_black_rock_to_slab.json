@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:oily_black_rock"
+  },
+  "result": {
+    "id": "got:oily_black_rock_slab",
+    "count": 2
+  }
+}

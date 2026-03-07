@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:cracked_fused_black_brick"
+  },
+  "result": {
+    "id": "got:cracked_fused_black_brick_slab",
+    "count": 2
+  }
+}

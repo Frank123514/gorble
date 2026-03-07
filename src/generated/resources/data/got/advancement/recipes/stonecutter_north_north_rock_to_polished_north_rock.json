@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:north_rock",
-  "result": {
-    "id": "got:polished_north_rock",
-    "count": 1
-  }
-}

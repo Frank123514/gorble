@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:oily_black_cobblestone",
+  "result": {
+    "id": "got:oily_black_cobblestone_slab",
+    "count": 2
+  }
+}

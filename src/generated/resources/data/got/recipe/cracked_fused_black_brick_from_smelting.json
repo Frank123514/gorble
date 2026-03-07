@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "got:fused_black_brick",
+  "result": {
+    "id": "got:cracked_fused_black_brick"
+  }
+}

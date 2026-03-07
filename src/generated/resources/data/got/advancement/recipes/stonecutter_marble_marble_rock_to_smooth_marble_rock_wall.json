@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:marble_rock",
+  "result": {
+    "id": "got:smooth_marble_rock_wall",
+    "count": 1
+  }
+}

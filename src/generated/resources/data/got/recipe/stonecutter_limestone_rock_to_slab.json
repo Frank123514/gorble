@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:limestone_rock"
+  },
+  "result": {
+    "id": "got:limestone_rock_slab",
+    "count": 2
+  }
+}

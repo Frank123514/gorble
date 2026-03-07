@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "result": {
+    "id": "got:oily_black_brick",
+    "count": 4
+  },
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "key": {
+    "C": {
+      "item": "got:oily_black_cobblestone"
+    }
+  }
+}

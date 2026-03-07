@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:smooth_slate_rock"
+  },
+  "result": {
+    "id": "got:smooth_slate_rock_stairs",
+    "count": 1
+  }
+}

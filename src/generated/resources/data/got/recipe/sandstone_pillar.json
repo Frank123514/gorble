@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "P": "got:smooth_sandstone_rock"
+  },
+  "pattern": [
+    "P",
+    "P"
+  ],
+  "result": {
+    "count": 2,
+    "id": "got:sandstone_pillar"
+  }
+}

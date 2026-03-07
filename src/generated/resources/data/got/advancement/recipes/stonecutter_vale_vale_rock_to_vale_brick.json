@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:vale_rock",
-  "result": {
-    "id": "got:vale_brick",
-    "count": 1
-  }
-}

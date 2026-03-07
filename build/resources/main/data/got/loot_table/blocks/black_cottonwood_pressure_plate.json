@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "got:black_cottonwood_pressure_plate"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "got:blocks/black_cottonwood_pressure_plate"
+}

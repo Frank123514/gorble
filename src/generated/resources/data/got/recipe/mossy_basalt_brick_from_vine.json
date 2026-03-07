@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "result": {
+    "id": "got:mossy_basalt_brick",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "got:basalt_brick"
+    },
+    {
+      "item": "minecraft:vine"
+    }
+  ]
+}

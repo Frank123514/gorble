@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "got:blocks/smooth_marble_rock_stairs",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "got:smooth_marble_rock_stairs"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

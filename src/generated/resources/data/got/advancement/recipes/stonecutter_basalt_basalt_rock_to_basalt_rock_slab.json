@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:basalt_rock",
+  "result": {
+    "id": "got:basalt_rock_slab",
+    "count": 2
+  }
+}

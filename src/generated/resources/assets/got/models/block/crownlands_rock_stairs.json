@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "got:block/crownlands_rock",
-    "top": "got:block/crownlands_rock",
-    "side": "got:block/crownlands_rock"
-  }
-}

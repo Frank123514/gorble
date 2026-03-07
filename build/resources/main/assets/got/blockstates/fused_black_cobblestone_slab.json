@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/fused_black_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "got:block/fused_black_cobblestone"
+    },
+    "type=top": {
+      "model": "got:block/fused_black_cobblestone_slab_top"
+    }
+  }
+}

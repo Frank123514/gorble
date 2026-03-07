@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:fused_black_rock"
+  },
+  "result": {
+    "id": "got:fused_black_rock_stairs",
+    "count": 1
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": "got:dorne_rock",
-  "result": {
-    "id": "got:polished_dorne_rock"
-  },
-  "experience": 0.1,
-  "cookingtime": 100
-}

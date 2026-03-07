@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:granite_rock",
+  "result": {
+    "id": "got:granite_cobblestone",
+    "count": 1
+  }
+}

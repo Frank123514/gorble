@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:fused_black_brick",
+  "result": {
+    "id": "got:fused_black_brick_stairs",
+    "count": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:smooth_granite_rock",
+  "result": {
+    "id": "got:smooth_granite_rock_slab",
+    "count": 2
+  }
+}

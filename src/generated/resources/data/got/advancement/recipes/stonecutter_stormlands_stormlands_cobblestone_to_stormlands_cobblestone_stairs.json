@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:stormlands_cobblestone",
-  "result": {
-    "id": "got:stormlands_cobblestone_stairs",
-    "count": 1
-  }
-}

@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "got:block/cottonwood_leaves",
+    "particle": "got:block/cottonwood_leaves"
+  },
+  "render_type": "cutout_mipped"
+}

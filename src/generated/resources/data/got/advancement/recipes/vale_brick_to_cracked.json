@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": "got:vale_brick",
-  "result": {
-    "id": "got:cracked_vale_brick"
-  },
-  "experience": 0.1,
-  "cookingtime": 200
-}

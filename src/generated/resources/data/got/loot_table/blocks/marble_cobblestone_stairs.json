@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "got:blocks/marble_cobblestone_stairs",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "got:marble_cobblestone_stairs"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "got:block/vale_rock",
-    "top": "got:block/vale_rock",
-    "side": "got:block/vale_rock"
-  }
-}

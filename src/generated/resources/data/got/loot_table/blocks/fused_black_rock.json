@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "got:blocks/fused_black_rock",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "got:fused_black_rock"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

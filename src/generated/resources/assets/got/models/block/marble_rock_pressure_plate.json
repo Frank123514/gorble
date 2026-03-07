@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pressure_plate",
+  "textures": {
+    "texture": "got:block/marble_pressure_plate"
+  }
+}

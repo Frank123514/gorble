@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "got:block/reach_cobblestone",
-    "top": "got:block/reach_cobblestone",
-    "side": "got:block/reach_cobblestone"
-  }
-}

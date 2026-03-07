@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": "got:crownlands_rock",
-  "result": {
-    "id": "got:polished_crownlands_rock"
-  },
-  "experience": 0.1,
-  "cookingtime": 100
-}

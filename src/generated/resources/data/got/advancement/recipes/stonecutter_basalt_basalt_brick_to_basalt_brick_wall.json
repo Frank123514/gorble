@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:basalt_brick",
+  "result": {
+    "id": "got:basalt_brick_wall",
+    "count": 1
+  }
+}

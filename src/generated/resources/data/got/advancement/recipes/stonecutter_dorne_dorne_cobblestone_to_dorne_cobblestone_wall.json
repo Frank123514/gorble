@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:dorne_cobblestone",
-  "result": {
-    "id": "got:dorne_cobblestone_wall",
-    "count": 1
-  }
-}

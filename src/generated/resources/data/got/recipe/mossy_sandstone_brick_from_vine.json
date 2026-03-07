@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "result": {
+    "id": "got:mossy_sandstone_brick",
+    "count": 1
+  },
+  "ingredients": [
+    {
+      "item": "got:sandstone_brick"
+    },
+    {
+      "item": "minecraft:vine"
+    }
+  ]
+}

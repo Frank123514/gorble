@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:dorne_rock",
-  "result": {
-    "id": "got:polished_dorne_rock_stairs",
-    "count": 1
-  }
-}

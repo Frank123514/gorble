@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/goldenheart_log_top",
+    "up": "got:block/goldenheart_log_top",
+    "north": "got:block/goldenheart_log_side",
+    "east": "got:block/goldenheart_log_side",
+    "south": "got:block/goldenheart_log_side",
+    "west": "got:block/goldenheart_log_side",
+    "particle": "got:block/goldenheart_log_top"
+  },
+  "render_type": "solid"
+}

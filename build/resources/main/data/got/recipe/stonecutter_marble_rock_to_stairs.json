@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:marble_rock"
+  },
+  "result": {
+    "id": "got:marble_rock_stairs",
+    "count": 1
+  }
+}

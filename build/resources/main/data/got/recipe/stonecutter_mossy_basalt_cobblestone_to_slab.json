@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:mossy_basalt_cobblestone"
+  },
+  "result": {
+    "id": "got:mossy_basalt_cobblestone_slab",
+    "count": 2
+  }
+}

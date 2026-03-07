@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "got:smooth_sandstone_rock"
+  },
+  "result": {
+    "id": "got:sandstone_pillar",
+    "count": 1
+  }
+}
