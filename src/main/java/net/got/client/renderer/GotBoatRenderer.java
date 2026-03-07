@@ -11,26 +11,25 @@ import net.minecraft.world.entity.vehicle.AbstractBoat;
 /**
  * Renderer for all GoT custom boat types.
  *
- * In 1.21.3, BoatRenderer uses ModelLayerLocation to determine the texture path.
- * The texture is loaded from: assets/<namespace>/textures/entity/<path>.png
- * where <path> is from the ModelLayerLocation.
+ * Borrows vanilla's oak boat/chest_boat model layers (always registered by MC itself)
+ * since all boat types share identical geometry. The texture is swapped per wood type
+ * via getTextureLocation().
  */
 public class GotBoatRenderer extends BoatRenderer implements GotBoatRender {
     private final ResourceLocation textureLocation;
 
+    // Vanilla always registers these for oak boats — borrow them for the geometry.
+    private static final ModelLayerLocation VANILLA_BOAT =
+            new ModelLayerLocation(ResourceLocation.withDefaultNamespace("boat/oak"), "main");
+    private static final ModelLayerLocation VANILLA_CHEST_BOAT =
+            new ModelLayerLocation(ResourceLocation.withDefaultNamespace("chest_boat/oak"), "main");
+
     public GotBoatRenderer(EntityRendererProvider.Context ctx, boolean isChestBoat, String woodType) {
-        super(ctx, new ModelLayerLocation(
-                ResourceLocation.fromNamespaceAndPath("got", isChestBoat ? "chest_boat/" + woodType : "boat/" + woodType),
-                "main"
-        ));
-        // The texture location follows the ModelLayerLocation path
-        this.textureLocation = ResourceLocation.fromNamespaceAndPath("got", "entity/" + (isChestBoat ? "chest_boat/" + woodType : "boat/" + woodType));
+        super(ctx, isChestBoat ? VANILLA_CHEST_BOAT : VANILLA_BOAT);
+        this.textureLocation = ResourceLocation.fromNamespaceAndPath("got",
+                "textures/entity/" + (isChestBoat ? "chest_boat/" + woodType : "boat/" + woodType) + ".png");
     }
 
-    /**
-     * Override getTextureLocation to return our custom texture.
-     * In 1.21.3, this method signature takes the render state or entity type.
-     */
     @Override
     public ResourceLocation getTextureLocation(AbstractBoat entity) {
         if (entity instanceof GotBoat got) {

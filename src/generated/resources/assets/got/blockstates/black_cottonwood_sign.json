@@ -1,0 +1,76 @@
+{
+  "variants": {
+    "rotation=0": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=15": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=30": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=45": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=60": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=75": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=90": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=105": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=120": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=135": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=150": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=165": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=180": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=195": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=210": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=225": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=240": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=255": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=270": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=285": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=300": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=315": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=330": {
+      "model": "minecraft:block/oak_sign"
+    },
+    "rotation=345": {
+      "model": "minecraft:block/oak_sign"
+    }
+  }
+}

@@ -1,8 +1,6 @@
 package net.got.init;
 
 import net.got.GotMod;
-import net.got.init.GotModBlocks;
-import net.got.init.GotModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

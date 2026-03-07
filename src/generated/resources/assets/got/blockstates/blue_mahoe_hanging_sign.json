@@ -1,0 +1,148 @@
+{
+  "variants": {
+    "attached=false,rotation=0": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=15": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=30": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=45": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=60": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=75": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=90": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=105": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=120": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=135": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=150": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=165": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=180": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=195": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=210": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=225": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=240": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=255": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=270": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=285": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=300": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=315": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=330": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=false,rotation=345": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=0": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=15": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=30": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=45": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=60": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=75": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=90": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=105": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=120": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=135": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=150": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=165": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=180": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=195": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=210": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=225": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=240": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=255": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=270": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=285": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=300": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=315": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=330": {
+      "model": "minecraft:block/oak_hanging_sign"
+    },
+    "attached=true,rotation=345": {
+      "model": "minecraft:block/oak_hanging_sign"
+    }
+  }
+}

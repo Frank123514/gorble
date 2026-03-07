@@ -1,5 +1,6 @@
 package net.got.init;
 
+import net.got.GotMod;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -18,9 +19,6 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.BoatItem;
-
-import net.got.GotMod;
-import net.got.init.GotModBoatEntities;
 
 import java.util.function.Function;
 

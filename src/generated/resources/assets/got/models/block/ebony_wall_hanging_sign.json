@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_hanging_sign",
+  "textures": {
+    "texture": "got:block/ebony_planks"
+  }
+}

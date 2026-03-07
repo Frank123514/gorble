@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/hanging_sign",
+  "textures": {
+    "texture": "got:block/sentinal_planks"
+  }
+}

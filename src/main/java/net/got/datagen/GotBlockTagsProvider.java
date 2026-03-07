@@ -1,7 +1,6 @@
 package net.got.datagen;
 
 import net.got.GotMod;
-import net.got.init.GotModBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
