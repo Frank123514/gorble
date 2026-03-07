@@ -55,17 +55,23 @@ public class GotLanguageProvider extends LanguageProvider {
         addWood("wormtree",         "Wormtree");
 
         // ── Stone regions ─────────────────────────────────────────────
+        addStoneRegion("crownlands",  "Crownlands");
+        addStoneRegion("dorne",       "Dorne");
+        addStoneRegion("iron_islands","Iron Islands");
+        addStoneRegion("north",       "North");
+        addStoneRegion("reach",       "Reach");
+        addStoneRegion("riverlands",  "Riverlands");
+        addStoneRegion("stormlands",  "Stormlands");
+        addStoneRegion("vale",        "Vale");
+        addStoneRegion("westerlands", "Westerlands");
 
         // ── Natural stone types ───────────────────────────────────────────
-        addStoneRegion("basalt",            "Basalt");
-        addStoneRegion("granite",           "Granite");
-        addStoneRegion("limestone",         "Limestone");
-        addStoneRegion("sandstone",         "Sandstone");
-        addStoneRegion("red_sandstone",     "Red Sandstone");
-        addStoneRegion("slate",             "Slate");
-        addStoneRegion("oily_black",  "Oily Black Stone");
-        addStoneRegion("fused_black", "Fused Black Stone");
-        addStoneRegion("marble",            "Marble");
+        addStoneRegion("basalt",        "Basalt");
+        addStoneRegion("granite",       "Granite");
+        addStoneRegion("limestone",     "Limestone");
+        addStoneRegion("sandstone",     "Sandstone");
+        addStoneRegion("red_sandstone", "Red Sandstone");
+        addStoneRegion("slate",         "Slate");
 
         // ── Ores & raw materials ──────────────────────────────────────
         block("copper_ore",           "Copper Ore");
@@ -143,13 +149,13 @@ public class GotLanguageProvider extends LanguageProvider {
         block("mossy_" + id + "_brick",   "Mossy " + name + " Brick");
         block(id + "_cobblestone",        name + " Cobblestone");
         block("mossy_" + id + "_cobblestone", "Mossy " + name + " Cobblestone");
-        block("smooth_" + id + "_rock", "Smooth " + name + " Rock");
+        block("polished_" + id + "_rock", "Polished " + name + " Rock");
         // Slabs, stairs, walls
         for (String base : new String[]{
                 id + "_rock", id + "_brick",
                 "cracked_" + id + "_brick", "mossy_" + id + "_brick",
                 id + "_cobblestone", "mossy_" + id + "_cobblestone",
-                "smooth_" + id + "_rock"}) {
+                "polished_" + id + "_rock"}) {
             block(base + "_slab",   toTitle(base) + " Slab");
             block(base + "_stairs", toTitle(base) + " Stairs");
             block(base + "_wall",   toTitle(base) + " Wall");

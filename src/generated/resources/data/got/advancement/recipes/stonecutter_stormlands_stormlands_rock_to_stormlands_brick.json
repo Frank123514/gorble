@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:stormlands_rock",
+  "result": {
+    "id": "got:stormlands_brick",
+    "count": 1
+  }
+}

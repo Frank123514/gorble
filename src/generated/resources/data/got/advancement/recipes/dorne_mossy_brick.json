@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "got:dorne_brick",
+    "minecraft:vine"
+  ],
+  "result": {
+    "id": "got:mossy_dorne_brick",
+    "count": 1
+  }
+}

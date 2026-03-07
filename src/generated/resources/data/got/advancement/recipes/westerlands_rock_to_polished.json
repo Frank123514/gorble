@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": "got:westerlands_rock",
+  "result": {
+    "id": "got:polished_westerlands_rock"
+  },
+  "experience": 0.1,
+  "cookingtime": 100
+}

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:oily_black_rock",
-  "result": {
-    "id": "got:smooth_oily_black_rock_slab",
-    "count": 2
-  }
-}

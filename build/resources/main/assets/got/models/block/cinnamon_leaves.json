@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/cinnamon_leaves",
-    "particle": "got:block/cinnamon_leaves"
-  },
-  "render_type": "cutout_mipped"
-}

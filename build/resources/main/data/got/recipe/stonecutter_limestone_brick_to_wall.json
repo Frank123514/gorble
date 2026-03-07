@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:limestone_brick",
-  "result": {
-    "count": 1,
-    "id": "got:limestone_brick_wall"
-  }
-}

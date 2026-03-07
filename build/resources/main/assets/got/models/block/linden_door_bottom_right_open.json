@@ -1,8 +1,0 @@
-{
-  "parent": "block/door_bottom_right_open",
-  "textures": {
-    "bottom": "got:block/linden_door_bottom",
-    "top": "got:block/linden_door_top"
-  },
-  "render_type": "cutout"
-}

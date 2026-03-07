@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:iron_islands_brick"
+  },
+  "result": {
+    "id": "got:iron_islands_brick_wall",
+    "count": 6
+  }
+}

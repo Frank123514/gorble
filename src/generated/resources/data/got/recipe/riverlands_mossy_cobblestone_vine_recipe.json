@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "got:riverlands_cobblestone",
+    "minecraft:vine"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:mossy_riverlands_cobblestone"
+  }
+}

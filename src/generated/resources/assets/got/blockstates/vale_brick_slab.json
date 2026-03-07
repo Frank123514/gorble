@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/vale_brick_slab"
+    },
+    "type=double": {
+      "model": "got:block/vale_brick"
+    },
+    "type=top": {
+      "model": "got:block/vale_brick_slab_top"
+    }
+  }
+}

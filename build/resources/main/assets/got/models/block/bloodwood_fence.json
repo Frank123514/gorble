@@ -1,7 +1,0 @@
-{
-  "parent": "block/fence_side",
-  "textures": {
-    "texture": "got:block/bloodwood_planks",
-    "particle": "got:block/bloodwood_planks"
-  }
-}

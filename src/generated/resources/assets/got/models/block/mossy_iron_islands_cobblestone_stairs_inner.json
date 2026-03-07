@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "got:block/mossy_iron_islands_cobblestone",
+    "top": "got:block/mossy_iron_islands_cobblestone",
+    "side": "got:block/mossy_iron_islands_cobblestone"
+  }
+}

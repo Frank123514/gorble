@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/hawthorn_planks",
-    "particle": "got:block/hawthorn_planks"
-  },
-  "render_type": "solid"
-}

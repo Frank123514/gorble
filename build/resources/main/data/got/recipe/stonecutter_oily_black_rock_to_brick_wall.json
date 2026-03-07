@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:oily_black_rock",
-  "result": {
-    "count": 1,
-    "id": "got:oily_black_brick_wall"
-  }
-}

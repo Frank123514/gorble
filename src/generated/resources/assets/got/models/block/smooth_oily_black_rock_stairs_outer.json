@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "got:block/smooth_oily_black_rock",
-    "side": "got:block/smooth_oily_black_rock",
-    "top": "got:block/smooth_oily_black_rock"
-  }
-}

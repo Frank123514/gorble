@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/mossy_iron_islands_brick",
+    "top": "got:block/mossy_iron_islands_brick",
+    "side": "got:block/mossy_iron_islands_brick"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "got:westerlands_rock"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:westerlands_rock_button"
+  }
+}

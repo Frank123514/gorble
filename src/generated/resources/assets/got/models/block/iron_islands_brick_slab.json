@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/iron_islands_brick",
+    "top": "got:block/iron_islands_brick",
+    "side": "got:block/iron_islands_brick"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end":  "got:block/riverlands_pillar_top",
+    "side": "got:block/riverlands_pillar_side"
+  }
+}

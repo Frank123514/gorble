@@ -1,8 +1,0 @@
-{
-  "parent": "block/door_bottom_right",
-  "textures": {
-    "bottom": "got:block/ebony_door_bottom",
-    "top": "got:block/ebony_door_top"
-  },
-  "render_type": "cutout"
-}

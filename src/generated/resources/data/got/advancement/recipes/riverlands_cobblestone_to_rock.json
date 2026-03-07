@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": "got:riverlands_cobblestone",
+  "result": {
+    "id": "got:riverlands_rock"
+  },
+  "experience": 0.1,
+  "cookingtime": 200
+}

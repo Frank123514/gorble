@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": "got:vale_rock"
+  },
+  "result": {
+    "id": "got:vale_rock_slab",
+    "count": 6
+  }
+}

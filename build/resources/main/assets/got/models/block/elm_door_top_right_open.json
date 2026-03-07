@@ -1,8 +1,0 @@
-{
-  "parent": "block/door_top_right_open",
-  "textures": {
-    "bottom": "got:block/elm_door_bottom",
-    "top": "got:block/elm_door_top"
-  },
-  "render_type": "cutout"
-}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/polished_westerlands_rock",
+    "top": "got:block/polished_westerlands_rock",
+    "side": "got:block/polished_westerlands_rock"
+  }
+}

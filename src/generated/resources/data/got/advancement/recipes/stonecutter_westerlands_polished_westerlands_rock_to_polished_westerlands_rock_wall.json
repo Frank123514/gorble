@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:polished_westerlands_rock",
+  "result": {
+    "id": "got:polished_westerlands_rock_wall",
+    "count": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "ingredient": "got:stormlands_cobblestone",
+  "result": {
+    "count": 1,
+    "id": "got:stormlands_rock"
+  },
+  "experience": 0.1,
+  "cookingtime": 200
+}

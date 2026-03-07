@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "got:block/dorne_cobblestone",
+    "top": "got:block/dorne_cobblestone",
+    "side": "got:block/dorne_cobblestone"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:slate_rock",
-  "result": {
-    "id": "got:slate_brick",
-    "count": 1
-  }
-}

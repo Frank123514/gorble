@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "particle": "got:block/wormtree_planks",
-    "bottom": "got:block/wormtree_planks",
-    "top": "got:block/wormtree_planks",
-    "side": "got:block/wormtree_planks"
-  }
-}

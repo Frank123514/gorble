@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/mossy_reach_cobblestone",
+    "top": "got:block/mossy_reach_cobblestone",
+    "side": "got:block/mossy_reach_cobblestone"
+  }
+}

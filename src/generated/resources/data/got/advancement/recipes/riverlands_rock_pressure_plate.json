@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX"
+  ],
+  "key": {
+    "X": "got:riverlands_rock"
+  },
+  "result": {
+    "id": "got:riverlands_rock_pressure_plate",
+    "count": 1
+  }
+}

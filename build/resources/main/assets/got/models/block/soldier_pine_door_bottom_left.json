@@ -1,8 +1,0 @@
-{
-  "parent": "block/door_bottom_left",
-  "textures": {
-    "bottom": "got:block/soldier_pine_door_bottom",
-    "top": "got:block/soldier_pine_door_top"
-  },
-  "render_type": "cutout"
-}

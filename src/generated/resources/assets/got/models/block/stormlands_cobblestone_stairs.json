@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/stormlands_cobblestone",
+    "top": "got:block/stormlands_cobblestone",
+    "side": "got:block/stormlands_cobblestone"
+  }
+}

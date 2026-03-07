@@ -1,4 +1,14 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "got:crownlands_rock_pressure_plate",
+    "got:dorne_rock_pressure_plate",
+    "got:iron_islands_rock_pressure_plate",
+    "got:north_rock_pressure_plate",
+    "got:reach_rock_pressure_plate",
+    "got:riverlands_rock_pressure_plate",
+    "got:stormlands_rock_pressure_plate",
+    "got:vale_rock_pressure_plate",
+    "got:westerlands_rock_pressure_plate"
+  ]
 }

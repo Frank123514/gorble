@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:reach_rock",
+  "result": {
+    "id": "got:reach_brick_slab",
+    "count": 2
+  }
+}

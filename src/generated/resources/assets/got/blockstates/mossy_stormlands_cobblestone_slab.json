@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/mossy_stormlands_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "got:block/mossy_stormlands_cobblestone"
+    },
+    "type=top": {
+      "model": "got:block/mossy_stormlands_cobblestone_slab_top"
+    }
+  }
+}

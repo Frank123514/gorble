@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:iron_islands_rock",
+  "result": {
+    "id": "got:polished_iron_islands_rock_slab",
+    "count": 2
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "key": {
+    "X": "got:westerlands_rock"
+  },
+  "result": {
+    "id": "got:westerlands_pillar",
+    "count": 2
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/north_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "got:block/north_cobblestone"
+    },
+    "type=top": {
+      "model": "got:block/north_cobblestone_slab_top"
+    }
+  }
+}

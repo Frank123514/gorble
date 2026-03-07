@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/cedar_planks",
-    "particle": "got:block/cedar_planks"
-  },
-  "render_type": "solid"
-}

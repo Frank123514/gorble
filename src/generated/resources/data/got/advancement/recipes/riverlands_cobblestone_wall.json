@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:riverlands_cobblestone"
+  },
+  "result": {
+    "id": "got:riverlands_cobblestone_wall",
+    "count": 6
+  }
+}

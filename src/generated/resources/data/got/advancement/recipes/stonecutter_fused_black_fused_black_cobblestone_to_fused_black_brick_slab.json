@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "got:fused_black_cobblestone",
-  "result": {
-    "id": "got:fused_black_brick_slab",
-    "count": 2
-  }
-}

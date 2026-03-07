@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": "got:polished_dorne_rock"
+  },
+  "result": {
+    "id": "got:polished_dorne_rock_stairs",
+    "count": 4
+  }
+}
