@@ -13,7 +13,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
  * Run with: ./gradlew runData
  * Output: src/generated/resources/
  */
-@EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = GotMod.MODID)
 public final class GotDataGenerators {
 
     @SubscribeEvent

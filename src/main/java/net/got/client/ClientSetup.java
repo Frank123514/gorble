@@ -2,10 +2,12 @@ package net.got.client;
 
 import net.got.GotMod;
 import net.got.client.input.GotKeybinds;
+import net.got.client.renderer.GotBoatRenderer;
 import net.got.client.renderer.NorthBowmanRenderer;
 import net.got.client.renderer.NorthmanRenderer;
 import net.got.client.renderer.NorthWarriorRenderer;
 import net.got.init.GotModBlockEntities;
+import net.got.init.GotModBoatEntities;
 import net.got.init.GotModEntities;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -35,6 +37,71 @@ public final class ClientSetup {
                 ctx -> new NorthWarriorRenderer(ctx));
         event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),
                 ctx -> new NorthmanRenderer(ctx));
+
+        // ── Boat renderers ───────────────────────────────────────────────
+// In your client setup event:
+        event.registerEntityRenderer(GotModBoatEntities.WEIRWOOD_BOAT.get(), ctx -> new GotBoatRenderer(ctx, false, "weirwood"));
+        event.registerEntityRenderer(GotModBoatEntities.WEIRWOOD_CHEST_BOAT.get(), ctx -> new GotBoatRenderer(ctx, true, "weirwood"));
+        event.registerEntityRenderer(GotModBoatEntities.ASPEN_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "aspen"));
+        event.registerEntityRenderer(GotModBoatEntities.ASPEN_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "aspen"));
+        event.registerEntityRenderer(GotModBoatEntities.ALDER_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "alder"));
+        event.registerEntityRenderer(GotModBoatEntities.ALDER_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "alder"));
+        event.registerEntityRenderer(GotModBoatEntities.PINE_BOAT.get(),               ctx -> new GotBoatRenderer(ctx, false, "pine"));
+        event.registerEntityRenderer(GotModBoatEntities.PINE_CHEST_BOAT.get(),         ctx -> new GotBoatRenderer(ctx, true, "pine"));
+        event.registerEntityRenderer(GotModBoatEntities.FIR_BOAT.get(),                ctx -> new GotBoatRenderer(ctx, false, "fir"));
+        event.registerEntityRenderer(GotModBoatEntities.FIR_CHEST_BOAT.get(),          ctx -> new GotBoatRenderer(ctx, true, "fir"));
+        event.registerEntityRenderer(GotModBoatEntities.SENTINAL_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "sentinal"));
+        event.registerEntityRenderer(GotModBoatEntities.SENTINAL_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "sentinal"));
+        event.registerEntityRenderer(GotModBoatEntities.IRONWOOD_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "ironwood"));
+        event.registerEntityRenderer(GotModBoatEntities.IRONWOOD_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "ironwood"));
+        event.registerEntityRenderer(GotModBoatEntities.BEECH_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "beech"));
+        event.registerEntityRenderer(GotModBoatEntities.BEECH_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "beech"));
+        event.registerEntityRenderer(GotModBoatEntities.SOLDIER_PINE_BOAT.get(),       ctx -> new GotBoatRenderer(ctx, false, "soldier_pine"));
+        event.registerEntityRenderer(GotModBoatEntities.SOLDIER_PINE_CHEST_BOAT.get(), ctx -> new GotBoatRenderer(ctx, true, "soldier_pine"));
+        event.registerEntityRenderer(GotModBoatEntities.ASH_BOAT.get(),                ctx -> new GotBoatRenderer(ctx, false, "ash"));
+        event.registerEntityRenderer(GotModBoatEntities.ASH_CHEST_BOAT.get(),          ctx -> new GotBoatRenderer(ctx, true, "ash"));
+        event.registerEntityRenderer(GotModBoatEntities.HAWTHORN_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "hawthorn"));
+        event.registerEntityRenderer(GotModBoatEntities.HAWTHORN_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "hawthorn"));
+        event.registerEntityRenderer(GotModBoatEntities.BLACKBARK_BOAT.get(),          ctx -> new GotBoatRenderer(ctx, false, "blackbark"));
+        event.registerEntityRenderer(GotModBoatEntities.BLACKBARK_CHEST_BOAT.get(),    ctx -> new GotBoatRenderer(ctx, true, "blackbark"));
+        event.registerEntityRenderer(GotModBoatEntities.BLOODWOOD_BOAT.get(),          ctx -> new GotBoatRenderer(ctx, false, "bloodwood"));
+        event.registerEntityRenderer(GotModBoatEntities.BLOODWOOD_CHEST_BOAT.get(),    ctx -> new GotBoatRenderer(ctx, true, "bloodwood"));
+        event.registerEntityRenderer(GotModBoatEntities.BLUE_MAHOE_BOAT.get(),         ctx -> new GotBoatRenderer(ctx, false, "blue_maho"));
+        event.registerEntityRenderer(GotModBoatEntities.BLUE_MAHOE_CHEST_BOAT.get(),   ctx -> new GotBoatRenderer(ctx, true, "blue_maho"));
+        event.registerEntityRenderer(GotModBoatEntities.COTTONWOOD_BOAT.get(),         ctx -> new GotBoatRenderer(ctx, false, "cottonwood"));
+        event.registerEntityRenderer(GotModBoatEntities.COTTONWOOD_CHEST_BOAT.get(),   ctx -> new GotBoatRenderer(ctx, true, "cottonwood"));
+        event.registerEntityRenderer(GotModBoatEntities.BLACK_COTTONWOOD_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, false, "black_cottonwood"));
+        event.registerEntityRenderer(GotModBoatEntities.BLACK_COTTONWOOD_CHEST_BOAT.get(),  ctx -> new GotBoatRenderer(ctx, true, "black_cottonwood"));
+        event.registerEntityRenderer(GotModBoatEntities.CINNAMON_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "cinnamon"));
+        event.registerEntityRenderer(GotModBoatEntities.CINNAMON_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "cinnamon"));
+        event.registerEntityRenderer(GotModBoatEntities.CLOVE_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "clove"));
+        event.registerEntityRenderer(GotModBoatEntities.CLOVE_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "clove"));
+        event.registerEntityRenderer(GotModBoatEntities.EBONY_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "ebony"));
+        event.registerEntityRenderer(GotModBoatEntities.EBONY_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "ebony"));
+        event.registerEntityRenderer(GotModBoatEntities.ELM_BOAT.get(),                ctx -> new GotBoatRenderer(ctx, false, "elm"));
+        event.registerEntityRenderer(GotModBoatEntities.ELM_CHEST_BOAT.get(),          ctx -> new GotBoatRenderer(ctx, true, "elm"));
+        event.registerEntityRenderer(GotModBoatEntities.CEDAR_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "cedar"));
+        event.registerEntityRenderer(GotModBoatEntities.CEDAR_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "cedar"));
+        event.registerEntityRenderer(GotModBoatEntities.APPLE_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "apple"));
+        event.registerEntityRenderer(GotModBoatEntities.APPLE_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "apple"));
+        event.registerEntityRenderer(GotModBoatEntities.GOLDENHEART_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, false, "goldenheart"));
+        event.registerEntityRenderer(GotModBoatEntities.GOLDENHEART_CHEST_BOAT.get(),  ctx -> new GotBoatRenderer(ctx, true, "goldenheart"));
+        event.registerEntityRenderer(GotModBoatEntities.LINDEN_BOAT.get(),             ctx -> new GotBoatRenderer(ctx, false, "linden"));
+        event.registerEntityRenderer(GotModBoatEntities.LINDEN_CHEST_BOAT.get(),       ctx -> new GotBoatRenderer(ctx, true, "linden"));
+        event.registerEntityRenderer(GotModBoatEntities.MAHOGANY_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "mahogany"));
+        event.registerEntityRenderer(GotModBoatEntities.MAHOGANY_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "mahogany"));
+        event.registerEntityRenderer(GotModBoatEntities.MAPLE_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "maple"));
+        event.registerEntityRenderer(GotModBoatEntities.MAPLE_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "maple"));
+        event.registerEntityRenderer(GotModBoatEntities.MYRRH_BOAT.get(),              ctx -> new GotBoatRenderer(ctx, false, "myrrh"));
+        event.registerEntityRenderer(GotModBoatEntities.MYRRH_CHEST_BOAT.get(),        ctx -> new GotBoatRenderer(ctx, true, "myrrh"));
+        event.registerEntityRenderer(GotModBoatEntities.REDWOOD_BOAT.get(),            ctx -> new GotBoatRenderer(ctx, false, "redwood"));
+        event.registerEntityRenderer(GotModBoatEntities.REDWOOD_CHEST_BOAT.get(),      ctx -> new GotBoatRenderer(ctx, true, "redwood"));
+        event.registerEntityRenderer(GotModBoatEntities.CHESTNUT_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "chestnut"));
+        event.registerEntityRenderer(GotModBoatEntities.CHESTNUT_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "chestnut"));
+        event.registerEntityRenderer(GotModBoatEntities.WILLOW_BOAT.get(),             ctx -> new GotBoatRenderer(ctx, false, "willow"));
+        event.registerEntityRenderer(GotModBoatEntities.WILLOW_CHEST_BOAT.get(),       ctx -> new GotBoatRenderer(ctx, true, "willow"));
+        event.registerEntityRenderer(GotModBoatEntities.WORMTREE_BOAT.get(),           ctx -> new GotBoatRenderer(ctx, false, "wormtree"));
+        event.registerEntityRenderer(GotModBoatEntities.WORMTREE_CHEST_BOAT.get(),     ctx -> new GotBoatRenderer(ctx, true, "wormtree"));
     }
 
     @SubscribeEvent
