@@ -1,8 +1,7 @@
 {
-  "parent": "block/door_bottom_left",
+  "parent": "minecraft:block/door_bottom_left",
   "textures": {
     "bottom": "got:block/fir_door_bottom",
     "top": "got:block/fir_door_top"
-  },
-  "render_type": "cutout"
+  }
 }

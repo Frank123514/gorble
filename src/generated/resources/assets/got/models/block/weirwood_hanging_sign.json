@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/hanging_sign",
   "textures": {
-    "texture": "got:block/weirwood_planks"
+    "particle": "got:block/stripped_weirwood_log"
   }
 }

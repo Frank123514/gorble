@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/wall_sign",
   "textures": {
-    "texture": "got:block/clove_planks"
+    "particle": "got:block/clove_planks"
   }
 }

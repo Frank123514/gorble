@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/sign",
   "textures": {
-    "texture": "got:block/soldier_pine_planks"
+    "particle": "got:block/soldier_pine_planks"
   }
 }

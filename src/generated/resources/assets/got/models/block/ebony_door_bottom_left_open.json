@@ -1,8 +1,7 @@
 {
-  "parent": "block/door_bottom_left_open",
+  "parent": "minecraft:block/door_bottom_left_open",
   "textures": {
     "bottom": "got:block/ebony_door_bottom",
     "top": "got:block/ebony_door_top"
-  },
-  "render_type": "cutout"
+  }
 }

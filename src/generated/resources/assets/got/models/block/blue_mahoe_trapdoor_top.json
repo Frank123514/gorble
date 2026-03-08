@@ -1,7 +1,6 @@
 {
-  "parent": "block/template_trapdoor_top",
+  "parent": "minecraft:block/template_orientable_trapdoor_top",
   "textures": {
     "texture": "got:block/blue_mahoe_trapdoor"
-  },
-  "render_type": "cutout"
+  }
 }

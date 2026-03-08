@@ -54,8 +54,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WEIRWOOD_SLAB = woodBlock("weirwood_slab", WeirwoodSlabBlock::new);
     public static final DeferredBlock<Block> WEIRWOOD_FENCE = woodBlock("weirwood_fence", WeirwoodFenceBlock::new);
     public static final DeferredBlock<Block> WEIRWOOD_FENCE_GATE = woodBlock("weirwood_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.WEIRWOOD, p));
-    public static final DeferredBlock<Block> WEIRWOOD_PRESSURE_PLATE = woodBlock("weirwood_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.WEIRWOOD_SET, p));
-    public static final DeferredBlock<Block> WEIRWOOD_BUTTON = woodBlock("weirwood_button", p -> new GotButtonBlock(GotWoodTypes.WEIRWOOD_SET, p));
+    public static final DeferredBlock<Block> WEIRWOOD_PRESSURE_PLATE = woodBlock("weirwood_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WEIRWOOD_BUTTON = woodBlock("weirwood_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> ASPEN_LOG = logBlock("aspen_log", AspenLogBlock::new);
     public static final DeferredBlock<Block> ASPEN_WOOD = logBlock("aspen_wood", AspenWoodBlock::new);
     public static final DeferredBlock<Block> ASPEN_PLANKS = woodBlock("aspen_planks", AspenPlanksBlock::new);
@@ -64,8 +64,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> ASPEN_SLAB = woodBlock("aspen_slab", AspenSlabBlock::new);
     public static final DeferredBlock<Block> ASPEN_FENCE = woodBlock("aspen_fence", AspenFenceBlock::new);
     public static final DeferredBlock<Block> ASPEN_FENCE_GATE = woodBlock("aspen_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.ASPEN, p));
-    public static final DeferredBlock<Block> ASPEN_PRESSURE_PLATE = woodBlock("aspen_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.ASPEN_SET, p));
-    public static final DeferredBlock<Block> ASPEN_BUTTON = woodBlock("aspen_button", p -> new GotButtonBlock(GotWoodTypes.ASPEN_SET, p));
+    public static final DeferredBlock<Block> ASPEN_PRESSURE_PLATE = woodBlock("aspen_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ASPEN_BUTTON = woodBlock("aspen_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> ALDER_LOG = logBlock("alder_log", AlderLogBlock::new);
     public static final DeferredBlock<Block> ALDER_WOOD = logBlock("alder_wood", AlderWoodBlock::new);
     public static final DeferredBlock<Block> ALDER_PLANKS = woodBlock("alder_planks", AlderPlanksBlock::new);
@@ -74,8 +74,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> ALDER_SLAB = woodBlock("alder_slab", AlderSlabBlock::new);
     public static final DeferredBlock<Block> ALDER_FENCE = woodBlock("alder_fence", AlderFenceBlock::new);
     public static final DeferredBlock<Block> ALDER_FENCE_GATE = woodBlock("alder_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.ALDER, p));
-    public static final DeferredBlock<Block> ALDER_PRESSURE_PLATE = woodBlock("alder_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.ALDER_SET, p));
-    public static final DeferredBlock<Block> ALDER_BUTTON = woodBlock("alder_button", p -> new GotButtonBlock(GotWoodTypes.ALDER_SET, p));
+    public static final DeferredBlock<Block> ALDER_PRESSURE_PLATE = woodBlock("alder_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ALDER_BUTTON = woodBlock("alder_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> PINE_LOG = logBlock("pine_log", PineLogBlock::new);
     public static final DeferredBlock<Block> PINE_WOOD = logBlock("pine_wood", PineWoodBlock::new);
     public static final DeferredBlock<Block> PINE_PLANKS = woodBlock("pine_planks", PinePlanksBlock::new);
@@ -84,8 +84,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> PINE_SLAB = woodBlock("pine_slab", PineSlabBlock::new);
     public static final DeferredBlock<Block> PINE_FENCE = woodBlock("pine_fence", PineFenceBlock::new);
     public static final DeferredBlock<Block> PINE_FENCE_GATE = woodBlock("pine_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.PINE, p));
-    public static final DeferredBlock<Block> PINE_PRESSURE_PLATE = woodBlock("pine_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.PINE_SET, p));
-    public static final DeferredBlock<Block> PINE_BUTTON = woodBlock("pine_button", p -> new GotButtonBlock(GotWoodTypes.PINE_SET, p));
+    public static final DeferredBlock<Block> PINE_PRESSURE_PLATE = woodBlock("pine_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> PINE_BUTTON = woodBlock("pine_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> FIR_LOG = logBlock("fir_log", FirLogBlock::new);
     public static final DeferredBlock<Block> FIR_WOOD = logBlock("fir_wood", FirWoodBlock::new);
     public static final DeferredBlock<Block> FIR_PLANKS = woodBlock("fir_planks", FirPlanksBlock::new);
@@ -94,8 +94,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> FIR_SLAB = woodBlock("fir_slab", FirSlabBlock::new);
     public static final DeferredBlock<Block> FIR_FENCE = woodBlock("fir_fence", FirFenceBlock::new);
     public static final DeferredBlock<Block> FIR_FENCE_GATE = woodBlock("fir_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.FIR, p));
-    public static final DeferredBlock<Block> FIR_PRESSURE_PLATE = woodBlock("fir_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.FIR_SET, p));
-    public static final DeferredBlock<Block> FIR_BUTTON = woodBlock("fir_button", p -> new GotButtonBlock(GotWoodTypes.FIR_SET, p));
+    public static final DeferredBlock<Block> FIR_PRESSURE_PLATE = woodBlock("fir_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> FIR_BUTTON = woodBlock("fir_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> SENTINAL_LOG = logBlock("sentinal_log", SentinalLogBlock::new);
     public static final DeferredBlock<Block> SENTINAL_WOOD = logBlock("sentinal_wood", SentinalWoodBlock::new);
     public static final DeferredBlock<Block> SENTINAL_PLANKS = woodBlock("sentinal_planks", SentinalPlanksBlock::new);
@@ -104,8 +104,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> SENTINAL_SLAB = woodBlock("sentinal_slab", SentinalSlabBlock::new);
     public static final DeferredBlock<Block> SENTINAL_FENCE = woodBlock("sentinal_fence", SentinalFenceBlock::new);
     public static final DeferredBlock<Block> SENTINAL_FENCE_GATE = woodBlock("sentinal_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.SENTINAL, p));
-    public static final DeferredBlock<Block> SENTINAL_PRESSURE_PLATE = woodBlock("sentinal_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.SENTINAL_SET, p));
-    public static final DeferredBlock<Block> SENTINAL_BUTTON = woodBlock("sentinal_button", p -> new GotButtonBlock(GotWoodTypes.SENTINAL_SET, p));
+    public static final DeferredBlock<Block> SENTINAL_PRESSURE_PLATE = woodBlock("sentinal_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> SENTINAL_BUTTON = woodBlock("sentinal_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> IRONWOOD_LOG = logBlock("ironwood_log", IronwoodLogBlock::new);
     public static final DeferredBlock<Block> IRONWOOD_WOOD = logBlock("ironwood_wood", IronwoodWoodBlock::new);
     public static final DeferredBlock<Block> IRONWOOD_PLANKS = woodBlock("ironwood_planks", IronwoodPlanksBlock::new);
@@ -114,8 +114,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> IRONWOOD_SLAB = woodBlock("ironwood_slab", IronwoodSlabBlock::new);
     public static final DeferredBlock<Block> IRONWOOD_FENCE = woodBlock("ironwood_fence", IronwoodFenceBlock::new);
     public static final DeferredBlock<Block> IRONWOOD_FENCE_GATE = woodBlock("ironwood_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.IRONWOOD, p));
-    public static final DeferredBlock<Block> IRONWOOD_PRESSURE_PLATE = woodBlock("ironwood_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.IRONWOOD_SET, p));
-    public static final DeferredBlock<Block> IRONWOOD_BUTTON = woodBlock("ironwood_button", p -> new GotButtonBlock(GotWoodTypes.IRONWOOD_SET, p));
+    public static final DeferredBlock<Block> IRONWOOD_PRESSURE_PLATE = woodBlock("ironwood_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> IRONWOOD_BUTTON = woodBlock("ironwood_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> BEECH_LOG = logBlock("beech_log", BeechLogBlock::new);
     public static final DeferredBlock<Block> BEECH_WOOD = logBlock("beech_wood", BeechWoodBlock::new);
     public static final DeferredBlock<Block> BEECH_PLANKS = woodBlock("beech_planks", BeechPlanksBlock::new);
@@ -124,8 +124,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BEECH_SLAB = woodBlock("beech_slab", BeechSlabBlock::new);
     public static final DeferredBlock<Block> BEECH_FENCE = woodBlock("beech_fence", BeechFenceBlock::new);
     public static final DeferredBlock<Block> BEECH_FENCE_GATE = woodBlock("beech_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.BEECH, p));
-    public static final DeferredBlock<Block> BEECH_PRESSURE_PLATE = woodBlock("beech_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.BEECH_SET, p));
-    public static final DeferredBlock<Block> BEECH_BUTTON = woodBlock("beech_button", p -> new GotButtonBlock(GotWoodTypes.BEECH_SET, p));
+    public static final DeferredBlock<Block> BEECH_PRESSURE_PLATE = woodBlock("beech_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BEECH_BUTTON = woodBlock("beech_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> SOLDIER_PINE_LOG = logBlock("soldier_pine_log", SoldierPineLogBlock::new);
     public static final DeferredBlock<Block> SOLDIER_PINE_WOOD = logBlock("soldier_pine_wood", SoldierPineWoodBlock::new);
     public static final DeferredBlock<Block> SOLDIER_PINE_PLANKS = woodBlock("soldier_pine_planks", SoldierPinePlanksBlock::new);
@@ -134,8 +134,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> SOLDIER_PINE_SLAB = woodBlock("soldier_pine_slab", SoldierPineSlabBlock::new);
     public static final DeferredBlock<Block> SOLDIER_PINE_FENCE = woodBlock("soldier_pine_fence", SoldierPineFenceBlock::new);
     public static final DeferredBlock<Block> SOLDIER_PINE_FENCE_GATE = woodBlock("soldier_pine_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.PINE, p));
-    public static final DeferredBlock<Block> SOLDIER_PINE_PRESSURE_PLATE = woodBlock("soldier_pine_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.PINE_SET, p));
-    public static final DeferredBlock<Block> SOLDIER_PINE_BUTTON = woodBlock("soldier_pine_button", p -> new GotButtonBlock(GotWoodTypes.PINE_SET, p));
+    public static final DeferredBlock<Block> SOLDIER_PINE_PRESSURE_PLATE = woodBlock("soldier_pine_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> SOLDIER_PINE_BUTTON = woodBlock("soldier_pine_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> ASH_LOG = logBlock("ash_log", AshLogBlock::new);
     public static final DeferredBlock<Block> ASH_WOOD = logBlock("ash_wood", AshWoodBlock::new);
     public static final DeferredBlock<Block> ASH_PLANKS = woodBlock("ash_planks", AshPlanksBlock::new);
@@ -144,8 +144,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> ASH_SLAB = woodBlock("ash_slab", AshSlabBlock::new);
     public static final DeferredBlock<Block> ASH_FENCE = woodBlock("ash_fence", AshFenceBlock::new);
     public static final DeferredBlock<Block> ASH_FENCE_GATE = woodBlock("ash_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.ASH, p));
-    public static final DeferredBlock<Block> ASH_PRESSURE_PLATE = woodBlock("ash_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.ASH_SET, p));
-    public static final DeferredBlock<Block> ASH_BUTTON = woodBlock("ash_button", p -> new GotButtonBlock(GotWoodTypes.ASH_SET, p));
+    public static final DeferredBlock<Block> ASH_PRESSURE_PLATE = woodBlock("ash_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ASH_BUTTON = woodBlock("ash_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     public static final DeferredBlock<Block> HAWTHORN_LOG = logBlock("hawthorn_log", HawthornLogBlock::new);
     public static final DeferredBlock<Block> HAWTHORN_WOOD = logBlock("hawthorn_wood", HawthornWoodBlock::new);
     public static final DeferredBlock<Block> HAWTHORN_PLANKS = woodBlock("hawthorn_planks", HawthornPlanksBlock::new);
@@ -154,8 +154,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> HAWTHORN_SLAB = woodBlock("hawthorn_slab", HawthornSlabBlock::new);
     public static final DeferredBlock<Block> HAWTHORN_FENCE = woodBlock("hawthorn_fence", HawthornFenceBlock::new);
     public static final DeferredBlock<Block> HAWTHORN_FENCE_GATE = woodBlock("hawthorn_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.HAWTHORN, p));
-    public static final DeferredBlock<Block> HAWTHORN_PRESSURE_PLATE = woodBlock("hawthorn_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.HAWTHORN_SET, p));
-    public static final DeferredBlock<Block> HAWTHORN_BUTTON = woodBlock("hawthorn_button", p -> new GotButtonBlock(GotWoodTypes.HAWTHORN_SET, p));
+    public static final DeferredBlock<Block> HAWTHORN_PRESSURE_PLATE = woodBlock("hawthorn_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> HAWTHORN_BUTTON = woodBlock("hawthorn_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Crownlands ──────────────────────────────────────────────────────
 
@@ -255,8 +255,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLACKBARK_SLAB           = woodBlock("blackbark_slab",           BlackbarkSlabBlock::new);
     public static final DeferredBlock<Block> BLACKBARK_FENCE          = woodBlock("blackbark_fence",          BlackbarkFenceBlock::new);
     public static final DeferredBlock<Block> BLACKBARK_FENCE_GATE     = woodBlock("blackbark_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.BLACKBARK, p));
-    public static final DeferredBlock<Block> BLACKBARK_PRESSURE_PLATE = woodBlock("blackbark_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.BLACKBARK_SET, p));
-    public static final DeferredBlock<Block> BLACKBARK_BUTTON         = woodBlock("blackbark_button",         p -> new GotButtonBlock(GotWoodTypes.BLACKBARK_SET, p));
+    public static final DeferredBlock<Block> BLACKBARK_PRESSURE_PLATE = woodBlock("blackbark_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACKBARK_BUTTON         = woodBlock("blackbark_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Bloodwood Tree ────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BLOODWOOD_LOG            = logBlock("bloodwood_log",            BloodwoodLogBlock::new);
@@ -267,8 +267,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLOODWOOD_SLAB           = woodBlock("bloodwood_slab",           BloodwoodSlabBlock::new);
     public static final DeferredBlock<Block> BLOODWOOD_FENCE          = woodBlock("bloodwood_fence",          BloodwoodFenceBlock::new);
     public static final DeferredBlock<Block> BLOODWOOD_FENCE_GATE     = woodBlock("bloodwood_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.BLOODWOOD, p));
-    public static final DeferredBlock<Block> BLOODWOOD_PRESSURE_PLATE = woodBlock("bloodwood_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.BLOODWOOD_SET, p));
-    public static final DeferredBlock<Block> BLOODWOOD_BUTTON         = woodBlock("bloodwood_button",         p -> new GotButtonBlock(GotWoodTypes.BLOODWOOD_SET, p));
+    public static final DeferredBlock<Block> BLOODWOOD_PRESSURE_PLATE = woodBlock("bloodwood_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLOODWOOD_BUTTON         = woodBlock("bloodwood_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Blue Mahoe Tree ───────────────────────────────────────────────────
     public static final DeferredBlock<Block> BLUE_MAHOE_LOG            = logBlock("blue_mahoe_log",            BlueMahoeLogBlock::new);
@@ -279,8 +279,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLUE_MAHOE_SLAB           = woodBlock("blue_mahoe_slab",           BlueMahoeSlabBlock::new);
     public static final DeferredBlock<Block> BLUE_MAHOE_FENCE          = woodBlock("blue_mahoe_fence",          BlueMahoeFenceBlock::new);
     public static final DeferredBlock<Block> BLUE_MAHOE_FENCE_GATE     = woodBlock("blue_mahoe_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.BLUE_MAHOE, p));
-    public static final DeferredBlock<Block> BLUE_MAHOE_PRESSURE_PLATE = woodBlock("blue_mahoe_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.BLUE_MAHOE_SET, p));
-    public static final DeferredBlock<Block> BLUE_MAHOE_BUTTON         = woodBlock("blue_mahoe_button",         p -> new GotButtonBlock(GotWoodTypes.BLUE_MAHOE_SET, p));
+    public static final DeferredBlock<Block> BLUE_MAHOE_PRESSURE_PLATE = woodBlock("blue_mahoe_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLUE_MAHOE_BUTTON         = woodBlock("blue_mahoe_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Cottonwood Tree ───────────────────────────────────────────────────
     public static final DeferredBlock<Block> COTTONWOOD_LOG            = logBlock("cottonwood_log",            CottonwoodLogBlock::new);
@@ -291,8 +291,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> COTTONWOOD_SLAB           = woodBlock("cottonwood_slab",           CottonwoodSlabBlock::new);
     public static final DeferredBlock<Block> COTTONWOOD_FENCE          = woodBlock("cottonwood_fence",          CottonwoodFenceBlock::new);
     public static final DeferredBlock<Block> COTTONWOOD_FENCE_GATE     = woodBlock("cottonwood_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.COTTONWOOD, p));
-    public static final DeferredBlock<Block> COTTONWOOD_PRESSURE_PLATE = woodBlock("cottonwood_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.COTTONWOOD_SET, p));
-    public static final DeferredBlock<Block> COTTONWOOD_BUTTON         = woodBlock("cottonwood_button",         p -> new GotButtonBlock(GotWoodTypes.COTTONWOOD_SET, p));
+    public static final DeferredBlock<Block> COTTONWOOD_PRESSURE_PLATE = woodBlock("cottonwood_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> COTTONWOOD_BUTTON         = woodBlock("cottonwood_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
 
     // ── BlackCottonwood Tree ──────────────────────────────────────────
@@ -304,8 +304,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLACK_COTTONWOOD_SLAB           = woodBlock("black_cottonwood_slab",           BlackCottonwoodSlabBlock::new);
     public static final DeferredBlock<Block> BLACK_COTTONWOOD_FENCE          = woodBlock("black_cottonwood_fence",          BlackCottonwoodFenceBlock::new);
     public static final DeferredBlock<Block> BLACK_COTTONWOOD_FENCE_GATE     = woodBlock("black_cottonwood_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.COTTONWOOD, p));
-    public static final DeferredBlock<Block> BLACK_COTTONWOOD_PRESSURE_PLATE = woodBlock("black_cottonwood_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.COTTONWOOD_SET, p));
-    public static final DeferredBlock<Block> BLACK_COTTONWOOD_BUTTON         = woodBlock("black_cottonwood_button",         p -> new GotButtonBlock(GotWoodTypes.COTTONWOOD_SET, p));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_PRESSURE_PLATE = woodBlock("black_cottonwood_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_BUTTON         = woodBlock("black_cottonwood_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Cinnamon Tree ──────────────────────────────────────────
     public static final DeferredBlock<Block> CINNAMON_LOG            = logBlock("cinnamon_log",            CinnamonLogBlock::new);
@@ -316,8 +316,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> CINNAMON_SLAB           = woodBlock("cinnamon_slab",           CinnamonSlabBlock::new);
     public static final DeferredBlock<Block> CINNAMON_FENCE          = woodBlock("cinnamon_fence",          CinnamonFenceBlock::new);
     public static final DeferredBlock<Block> CINNAMON_FENCE_GATE     = woodBlock("cinnamon_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.CINNAMON, p));
-    public static final DeferredBlock<Block> CINNAMON_PRESSURE_PLATE = woodBlock("cinnamon_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.CINNAMON_SET, p));
-    public static final DeferredBlock<Block> CINNAMON_BUTTON         = woodBlock("cinnamon_button",         p -> new GotButtonBlock(GotWoodTypes.CINNAMON_SET, p));
+    public static final DeferredBlock<Block> CINNAMON_PRESSURE_PLATE = woodBlock("cinnamon_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CINNAMON_BUTTON         = woodBlock("cinnamon_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Clove Tree ──────────────────────────────────────────
     public static final DeferredBlock<Block> CLOVE_LOG            = logBlock("clove_log",            CloveLogBlock::new);
@@ -328,8 +328,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> CLOVE_SLAB           = woodBlock("clove_slab",           CloveSlabBlock::new);
     public static final DeferredBlock<Block> CLOVE_FENCE          = woodBlock("clove_fence",          CloveFenceBlock::new);
     public static final DeferredBlock<Block> CLOVE_FENCE_GATE     = woodBlock("clove_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.CLOVE, p));
-    public static final DeferredBlock<Block> CLOVE_PRESSURE_PLATE = woodBlock("clove_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.CLOVE_SET, p));
-    public static final DeferredBlock<Block> CLOVE_BUTTON         = woodBlock("clove_button",         p -> new GotButtonBlock(GotWoodTypes.CLOVE_SET, p));
+    public static final DeferredBlock<Block> CLOVE_PRESSURE_PLATE = woodBlock("clove_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CLOVE_BUTTON         = woodBlock("clove_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Ebony Tree ──────────────────────────────────────────
     public static final DeferredBlock<Block> EBONY_LOG            = logBlock("ebony_log",            EbonyLogBlock::new);
@@ -340,8 +340,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> EBONY_SLAB           = woodBlock("ebony_slab",           EbonySlabBlock::new);
     public static final DeferredBlock<Block> EBONY_FENCE          = woodBlock("ebony_fence",          EbonyFenceBlock::new);
     public static final DeferredBlock<Block> EBONY_FENCE_GATE     = woodBlock("ebony_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.EBONY, p));
-    public static final DeferredBlock<Block> EBONY_PRESSURE_PLATE = woodBlock("ebony_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.EBONY_SET, p));
-    public static final DeferredBlock<Block> EBONY_BUTTON         = woodBlock("ebony_button",         p -> new GotButtonBlock(GotWoodTypes.EBONY_SET, p));
+    public static final DeferredBlock<Block> EBONY_PRESSURE_PLATE = woodBlock("ebony_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> EBONY_BUTTON         = woodBlock("ebony_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Elm Tree ──────────────────────────────────────────
     public static final DeferredBlock<Block> ELM_LOG            = logBlock("elm_log",            ElmLogBlock::new);
@@ -352,8 +352,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> ELM_SLAB           = woodBlock("elm_slab",           ElmSlabBlock::new);
     public static final DeferredBlock<Block> ELM_FENCE          = woodBlock("elm_fence",          ElmFenceBlock::new);
     public static final DeferredBlock<Block> ELM_FENCE_GATE     = woodBlock("elm_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.ELM, p));
-    public static final DeferredBlock<Block> ELM_PRESSURE_PLATE = woodBlock("elm_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.ELM_SET, p));
-    public static final DeferredBlock<Block> ELM_BUTTON         = woodBlock("elm_button",         p -> new GotButtonBlock(GotWoodTypes.ELM_SET, p));
+    public static final DeferredBlock<Block> ELM_PRESSURE_PLATE = woodBlock("elm_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ELM_BUTTON         = woodBlock("elm_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Cedar Tree ──────────────────────────────────────────
     public static final DeferredBlock<Block> CEDAR_LOG            = logBlock("cedar_log",            CedarLogBlock::new);
@@ -364,8 +364,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> CEDAR_SLAB           = woodBlock("cedar_slab",           CedarSlabBlock::new);
     public static final DeferredBlock<Block> CEDAR_FENCE          = woodBlock("cedar_fence",          CedarFenceBlock::new);
     public static final DeferredBlock<Block> CEDAR_FENCE_GATE     = woodBlock("cedar_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.CEDAR, p));
-    public static final DeferredBlock<Block> CEDAR_PRESSURE_PLATE = woodBlock("cedar_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.CEDAR_SET, p));
-    public static final DeferredBlock<Block> CEDAR_BUTTON         = woodBlock("cedar_button",         p -> new GotButtonBlock(GotWoodTypes.CEDAR_SET, p));
+    public static final DeferredBlock<Block> CEDAR_PRESSURE_PLATE = woodBlock("cedar_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CEDAR_BUTTON         = woodBlock("cedar_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
 
 
@@ -531,70 +531,70 @@ public class GotModBlocks {
 
 
     // ── Doors ────────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> WEIRWOOD_DOOR             = woodBlock("weirwood_door",             p -> new GotDoorBlock(GotWoodTypes.WEIRWOOD_SET, p));
-    public static final DeferredBlock<Block> ASPEN_DOOR                = woodBlock("aspen_door",                p -> new GotDoorBlock(GotWoodTypes.ASPEN_SET, p));
-    public static final DeferredBlock<Block> ALDER_DOOR                = woodBlock("alder_door",                p -> new GotDoorBlock(GotWoodTypes.ALDER_SET, p));
-    public static final DeferredBlock<Block> PINE_DOOR                 = woodBlock("pine_door",                 p -> new GotDoorBlock(GotWoodTypes.PINE_SET, p));
-    public static final DeferredBlock<Block> FIR_DOOR                  = woodBlock("fir_door",                  p -> new GotDoorBlock(GotWoodTypes.FIR_SET, p));
-    public static final DeferredBlock<Block> SENTINAL_DOOR             = woodBlock("sentinal_door",             p -> new GotDoorBlock(GotWoodTypes.SENTINAL_SET, p));
-    public static final DeferredBlock<Block> IRONWOOD_DOOR             = woodBlock("ironwood_door",             p -> new GotDoorBlock(GotWoodTypes.IRONWOOD_SET, p));
-    public static final DeferredBlock<Block> BEECH_DOOR                = woodBlock("beech_door",                p -> new GotDoorBlock(GotWoodTypes.BEECH_SET, p));
-    public static final DeferredBlock<Block> SOLDIER_PINE_DOOR         = woodBlock("soldier_pine_door",         p -> new GotDoorBlock(GotWoodTypes.SOLDIER_PINE_SET, p));
-    public static final DeferredBlock<Block> ASH_DOOR                  = woodBlock("ash_door",                  p -> new GotDoorBlock(GotWoodTypes.ASH_SET, p));
-    public static final DeferredBlock<Block> HAWTHORN_DOOR             = woodBlock("hawthorn_door",             p -> new GotDoorBlock(GotWoodTypes.HAWTHORN_SET, p));
-    public static final DeferredBlock<Block> BLACKBARK_DOOR            = woodBlock("blackbark_door",            p -> new GotDoorBlock(GotWoodTypes.BLACKBARK_SET, p));
-    public static final DeferredBlock<Block> BLOODWOOD_DOOR            = woodBlock("bloodwood_door",            p -> new GotDoorBlock(GotWoodTypes.BLOODWOOD_SET, p));
-    public static final DeferredBlock<Block> BLUE_MAHOE_DOOR           = woodBlock("blue_mahoe_door",           p -> new GotDoorBlock(GotWoodTypes.BLUE_MAHOE_SET, p));
-    public static final DeferredBlock<Block> COTTONWOOD_DOOR           = woodBlock("cottonwood_door",           p -> new GotDoorBlock(GotWoodTypes.COTTONWOOD_SET, p));
-    public static final DeferredBlock<Block> BLACK_COTTONWOOD_DOOR     = woodBlock("black_cottonwood_door",     p -> new GotDoorBlock(GotWoodTypes.BLACK_COTTONWOOD_SET, p));
-    public static final DeferredBlock<Block> CINNAMON_DOOR             = woodBlock("cinnamon_door",             p -> new GotDoorBlock(GotWoodTypes.CINNAMON_SET, p));
-    public static final DeferredBlock<Block> CLOVE_DOOR                = woodBlock("clove_door",                p -> new GotDoorBlock(GotWoodTypes.CLOVE_SET, p));
-    public static final DeferredBlock<Block> EBONY_DOOR                = woodBlock("ebony_door",                p -> new GotDoorBlock(GotWoodTypes.EBONY_SET, p));
-    public static final DeferredBlock<Block> ELM_DOOR                  = woodBlock("elm_door",                  p -> new GotDoorBlock(GotWoodTypes.ELM_SET, p));
-    public static final DeferredBlock<Block> CEDAR_DOOR                = woodBlock("cedar_door",                p -> new GotDoorBlock(GotWoodTypes.CEDAR_SET, p));
-    public static final DeferredBlock<Block> APPLE_DOOR                = woodBlock("apple_door",                p -> new GotDoorBlock(GotWoodTypes.APPLE_SET, p));
-    public static final DeferredBlock<Block> GOLDENHEART_DOOR          = woodBlock("goldenheart_door",          p -> new GotDoorBlock(GotWoodTypes.GOLDENHEART_SET, p));
-    public static final DeferredBlock<Block> LINDEN_DOOR               = woodBlock("linden_door",               p -> new GotDoorBlock(GotWoodTypes.LINDEN_SET, p));
-    public static final DeferredBlock<Block> MAHOGANY_DOOR             = woodBlock("mahogany_door",             p -> new GotDoorBlock(GotWoodTypes.MAHOGANY_SET, p));
-    public static final DeferredBlock<Block> MAPLE_DOOR                = woodBlock("maple_door",                p -> new GotDoorBlock(GotWoodTypes.MAPLE_SET, p));
-    public static final DeferredBlock<Block> MYRRH_DOOR                = woodBlock("myrrh_door",                p -> new GotDoorBlock(GotWoodTypes.MYRRH_SET, p));
-    public static final DeferredBlock<Block> REDWOOD_DOOR              = woodBlock("redwood_door",              p -> new GotDoorBlock(GotWoodTypes.REDWOOD_SET, p));
-    public static final DeferredBlock<Block> CHESTNUT_DOOR             = woodBlock("chestnut_door",             p -> new GotDoorBlock(GotWoodTypes.CHESTNUT_SET, p));
-    public static final DeferredBlock<Block> WILLOW_DOOR               = woodBlock("willow_door",               p -> new GotDoorBlock(GotWoodTypes.WILLOW_SET, p));
-    public static final DeferredBlock<Block> WORMTREE_DOOR             = woodBlock("wormtree_door",             p -> new GotDoorBlock(GotWoodTypes.WORMTREE_SET, p));
+    public static final DeferredBlock<Block> WEIRWOOD_DOOR             = doorBlock("weirwood_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ASPEN_DOOR                = doorBlock("aspen_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ALDER_DOOR                = doorBlock("alder_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> PINE_DOOR                 = doorBlock("pine_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> FIR_DOOR                  = doorBlock("fir_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> SENTINAL_DOOR             = doorBlock("sentinal_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> IRONWOOD_DOOR             = doorBlock("ironwood_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BEECH_DOOR                = doorBlock("beech_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> SOLDIER_PINE_DOOR         = doorBlock("soldier_pine_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ASH_DOOR                  = doorBlock("ash_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> HAWTHORN_DOOR             = doorBlock("hawthorn_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACKBARK_DOOR            = doorBlock("blackbark_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLOODWOOD_DOOR            = doorBlock("bloodwood_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLUE_MAHOE_DOOR           = doorBlock("blue_mahoe_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> COTTONWOOD_DOOR           = doorBlock("cottonwood_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_DOOR     = doorBlock("black_cottonwood_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CINNAMON_DOOR             = doorBlock("cinnamon_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CLOVE_DOOR                = doorBlock("clove_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> EBONY_DOOR                = doorBlock("ebony_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ELM_DOOR                  = doorBlock("elm_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CEDAR_DOOR                = doorBlock("cedar_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> APPLE_DOOR                = doorBlock("apple_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> GOLDENHEART_DOOR          = doorBlock("goldenheart_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> LINDEN_DOOR               = doorBlock("linden_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MAHOGANY_DOOR             = doorBlock("mahogany_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MAPLE_DOOR                = doorBlock("maple_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MYRRH_DOOR                = doorBlock("myrrh_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> REDWOOD_DOOR              = doorBlock("redwood_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CHESTNUT_DOOR             = doorBlock("chestnut_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WILLOW_DOOR               = doorBlock("willow_door", p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WORMTREE_DOOR             = doorBlock("wormtree_door", p -> new DoorBlock(BlockSetType.OAK, p));
 
     // ── Trapdoors ────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> WEIRWOOD_TRAPDOOR         = woodBlock("weirwood_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.WEIRWOOD_SET, p));
-    public static final DeferredBlock<Block> ASPEN_TRAPDOOR            = woodBlock("aspen_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.ASPEN_SET, p));
-    public static final DeferredBlock<Block> ALDER_TRAPDOOR            = woodBlock("alder_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.ALDER_SET, p));
-    public static final DeferredBlock<Block> PINE_TRAPDOOR             = woodBlock("pine_trapdoor",             p -> new GotTrapDoorBlock(GotWoodTypes.PINE_SET, p));
-    public static final DeferredBlock<Block> FIR_TRAPDOOR              = woodBlock("fir_trapdoor",              p -> new GotTrapDoorBlock(GotWoodTypes.FIR_SET, p));
-    public static final DeferredBlock<Block> SENTINAL_TRAPDOOR         = woodBlock("sentinal_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.SENTINAL_SET, p));
-    public static final DeferredBlock<Block> IRONWOOD_TRAPDOOR         = woodBlock("ironwood_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.IRONWOOD_SET, p));
-    public static final DeferredBlock<Block> BEECH_TRAPDOOR            = woodBlock("beech_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.BEECH_SET, p));
-    public static final DeferredBlock<Block> SOLDIER_PINE_TRAPDOOR     = woodBlock("soldier_pine_trapdoor",     p -> new GotTrapDoorBlock(GotWoodTypes.SOLDIER_PINE_SET, p));
-    public static final DeferredBlock<Block> ASH_TRAPDOOR              = woodBlock("ash_trapdoor",              p -> new GotTrapDoorBlock(GotWoodTypes.ASH_SET, p));
-    public static final DeferredBlock<Block> HAWTHORN_TRAPDOOR         = woodBlock("hawthorn_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.HAWTHORN_SET, p));
-    public static final DeferredBlock<Block> BLACKBARK_TRAPDOOR        = woodBlock("blackbark_trapdoor",        p -> new GotTrapDoorBlock(GotWoodTypes.BLACKBARK_SET, p));
-    public static final DeferredBlock<Block> BLOODWOOD_TRAPDOOR        = woodBlock("bloodwood_trapdoor",        p -> new GotTrapDoorBlock(GotWoodTypes.BLOODWOOD_SET, p));
-    public static final DeferredBlock<Block> BLUE_MAHOE_TRAPDOOR       = woodBlock("blue_mahoe_trapdoor",       p -> new GotTrapDoorBlock(GotWoodTypes.BLUE_MAHOE_SET, p));
-    public static final DeferredBlock<Block> COTTONWOOD_TRAPDOOR       = woodBlock("cottonwood_trapdoor",       p -> new GotTrapDoorBlock(GotWoodTypes.COTTONWOOD_SET, p));
-    public static final DeferredBlock<Block> BLACK_COTTONWOOD_TRAPDOOR = woodBlock("black_cottonwood_trapdoor", p -> new GotTrapDoorBlock(GotWoodTypes.BLACK_COTTONWOOD_SET, p));
-    public static final DeferredBlock<Block> CINNAMON_TRAPDOOR         = woodBlock("cinnamon_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.CINNAMON_SET, p));
-    public static final DeferredBlock<Block> CLOVE_TRAPDOOR            = woodBlock("clove_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.CLOVE_SET, p));
-    public static final DeferredBlock<Block> EBONY_TRAPDOOR            = woodBlock("ebony_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.EBONY_SET, p));
-    public static final DeferredBlock<Block> ELM_TRAPDOOR              = woodBlock("elm_trapdoor",              p -> new GotTrapDoorBlock(GotWoodTypes.ELM_SET, p));
-    public static final DeferredBlock<Block> CEDAR_TRAPDOOR            = woodBlock("cedar_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.CEDAR_SET, p));
-    public static final DeferredBlock<Block> APPLE_TRAPDOOR            = woodBlock("apple_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.APPLE_SET, p));
-    public static final DeferredBlock<Block> GOLDENHEART_TRAPDOOR      = woodBlock("goldenheart_trapdoor",      p -> new GotTrapDoorBlock(GotWoodTypes.GOLDENHEART_SET, p));
-    public static final DeferredBlock<Block> LINDEN_TRAPDOOR           = woodBlock("linden_trapdoor",           p -> new GotTrapDoorBlock(GotWoodTypes.LINDEN_SET, p));
-    public static final DeferredBlock<Block> MAHOGANY_TRAPDOOR         = woodBlock("mahogany_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.MAHOGANY_SET, p));
-    public static final DeferredBlock<Block> MAPLE_TRAPDOOR            = woodBlock("maple_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.MAPLE_SET, p));
-    public static final DeferredBlock<Block> MYRRH_TRAPDOOR            = woodBlock("myrrh_trapdoor",            p -> new GotTrapDoorBlock(GotWoodTypes.MYRRH_SET, p));
-    public static final DeferredBlock<Block> REDWOOD_TRAPDOOR          = woodBlock("redwood_trapdoor",          p -> new GotTrapDoorBlock(GotWoodTypes.REDWOOD_SET, p));
-    public static final DeferredBlock<Block> CHESTNUT_TRAPDOOR         = woodBlock("chestnut_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.CHESTNUT_SET, p));
-    public static final DeferredBlock<Block> WILLOW_TRAPDOOR           = woodBlock("willow_trapdoor",           p -> new GotTrapDoorBlock(GotWoodTypes.WILLOW_SET, p));
-    public static final DeferredBlock<Block> WORMTREE_TRAPDOOR         = woodBlock("wormtree_trapdoor",         p -> new GotTrapDoorBlock(GotWoodTypes.WORMTREE_SET, p));
+    public static final DeferredBlock<Block> WEIRWOOD_TRAPDOOR         = trapdoorBlock("weirwood_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ASPEN_TRAPDOOR            = trapdoorBlock("aspen_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ALDER_TRAPDOOR            = trapdoorBlock("alder_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> PINE_TRAPDOOR             = trapdoorBlock("pine_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> FIR_TRAPDOOR              = trapdoorBlock("fir_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> SENTINAL_TRAPDOOR         = trapdoorBlock("sentinal_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> IRONWOOD_TRAPDOOR         = trapdoorBlock("ironwood_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BEECH_TRAPDOOR            = trapdoorBlock("beech_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> SOLDIER_PINE_TRAPDOOR     = trapdoorBlock("soldier_pine_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ASH_TRAPDOOR              = trapdoorBlock("ash_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> HAWTHORN_TRAPDOOR         = trapdoorBlock("hawthorn_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACKBARK_TRAPDOOR        = trapdoorBlock("blackbark_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLOODWOOD_TRAPDOOR        = trapdoorBlock("bloodwood_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLUE_MAHOE_TRAPDOOR       = trapdoorBlock("blue_mahoe_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> COTTONWOOD_TRAPDOOR       = trapdoorBlock("cottonwood_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_TRAPDOOR = trapdoorBlock("black_cottonwood_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CINNAMON_TRAPDOOR         = trapdoorBlock("cinnamon_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CLOVE_TRAPDOOR            = trapdoorBlock("clove_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> EBONY_TRAPDOOR            = trapdoorBlock("ebony_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> ELM_TRAPDOOR              = trapdoorBlock("elm_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CEDAR_TRAPDOOR            = trapdoorBlock("cedar_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> APPLE_TRAPDOOR            = trapdoorBlock("apple_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> GOLDENHEART_TRAPDOOR      = trapdoorBlock("goldenheart_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> LINDEN_TRAPDOOR           = trapdoorBlock("linden_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MAHOGANY_TRAPDOOR         = trapdoorBlock("mahogany_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MAPLE_TRAPDOOR            = trapdoorBlock("maple_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MYRRH_TRAPDOOR            = trapdoorBlock("myrrh_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> REDWOOD_TRAPDOOR          = trapdoorBlock("redwood_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CHESTNUT_TRAPDOOR         = trapdoorBlock("chestnut_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WILLOW_TRAPDOOR           = trapdoorBlock("willow_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WORMTREE_TRAPDOOR         = trapdoorBlock("wormtree_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
 
     // ── Stripped Logs ────────────────────────────────────────────────────
     public static final DeferredBlock<Block> STRIPPED_WEIRWOOD_LOG = logBlock("stripped_weirwood_log", GotStrippedLogBlock::new);
@@ -720,8 +720,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> APPLE_SLAB           = woodBlock("apple_slab",           AppleSlabBlock::new);
     public static final DeferredBlock<Block> APPLE_FENCE          = woodBlock("apple_fence",          AppleFenceBlock::new);
     public static final DeferredBlock<Block> APPLE_FENCE_GATE     = woodBlock("apple_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.APPLE, p));
-    public static final DeferredBlock<Block> APPLE_PRESSURE_PLATE = woodBlock("apple_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.APPLE_SET, p));
-    public static final DeferredBlock<Block> APPLE_BUTTON         = woodBlock("apple_button",         p -> new GotButtonBlock(GotWoodTypes.APPLE_SET, p));
+    public static final DeferredBlock<Block> APPLE_PRESSURE_PLATE = woodBlock("apple_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> APPLE_BUTTON         = woodBlock("apple_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Goldenheart Tree
     public static final DeferredBlock<Block> GOLDENHEART_LOG            = logBlock("goldenheart_log",            GoldenheartLogBlock::new);
@@ -732,8 +732,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> GOLDENHEART_SLAB           = woodBlock("goldenheart_slab",           GoldenheartSlabBlock::new);
     public static final DeferredBlock<Block> GOLDENHEART_FENCE          = woodBlock("goldenheart_fence",          GoldenheartFenceBlock::new);
     public static final DeferredBlock<Block> GOLDENHEART_FENCE_GATE     = woodBlock("goldenheart_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.GOLDENHEART, p));
-    public static final DeferredBlock<Block> GOLDENHEART_PRESSURE_PLATE = woodBlock("goldenheart_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.GOLDENHEART_SET, p));
-    public static final DeferredBlock<Block> GOLDENHEART_BUTTON         = woodBlock("goldenheart_button",         p -> new GotButtonBlock(GotWoodTypes.GOLDENHEART_SET, p));
+    public static final DeferredBlock<Block> GOLDENHEART_PRESSURE_PLATE = woodBlock("goldenheart_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> GOLDENHEART_BUTTON         = woodBlock("goldenheart_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Linden Tree
     public static final DeferredBlock<Block> LINDEN_LOG            = logBlock("linden_log",            LindenLogBlock::new);
@@ -744,8 +744,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> LINDEN_SLAB           = woodBlock("linden_slab",           LindenSlabBlock::new);
     public static final DeferredBlock<Block> LINDEN_FENCE          = woodBlock("linden_fence",          LindenFenceBlock::new);
     public static final DeferredBlock<Block> LINDEN_FENCE_GATE     = woodBlock("linden_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.LINDEN, p));
-    public static final DeferredBlock<Block> LINDEN_PRESSURE_PLATE = woodBlock("linden_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.LINDEN_SET, p));
-    public static final DeferredBlock<Block> LINDEN_BUTTON         = woodBlock("linden_button",         p -> new GotButtonBlock(GotWoodTypes.LINDEN_SET, p));
+    public static final DeferredBlock<Block> LINDEN_PRESSURE_PLATE = woodBlock("linden_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> LINDEN_BUTTON         = woodBlock("linden_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Mahogany Tree
     public static final DeferredBlock<Block> MAHOGANY_LOG            = logBlock("mahogany_log",            MahoganyLogBlock::new);
@@ -756,8 +756,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> MAHOGANY_SLAB           = woodBlock("mahogany_slab",           MahoganySlabBlock::new);
     public static final DeferredBlock<Block> MAHOGANY_FENCE          = woodBlock("mahogany_fence",          MahoganyFenceBlock::new);
     public static final DeferredBlock<Block> MAHOGANY_FENCE_GATE     = woodBlock("mahogany_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.MAHOGANY, p));
-    public static final DeferredBlock<Block> MAHOGANY_PRESSURE_PLATE = woodBlock("mahogany_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.MAHOGANY_SET, p));
-    public static final DeferredBlock<Block> MAHOGANY_BUTTON         = woodBlock("mahogany_button",         p -> new GotButtonBlock(GotWoodTypes.MAHOGANY_SET, p));
+    public static final DeferredBlock<Block> MAHOGANY_PRESSURE_PLATE = woodBlock("mahogany_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MAHOGANY_BUTTON         = woodBlock("mahogany_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Maple Tree
     public static final DeferredBlock<Block> MAPLE_LOG            = logBlock("maple_log",            MapleLogBlock::new);
@@ -768,8 +768,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> MAPLE_SLAB           = woodBlock("maple_slab",           MapleSlabBlock::new);
     public static final DeferredBlock<Block> MAPLE_FENCE          = woodBlock("maple_fence",          MapleFenceBlock::new);
     public static final DeferredBlock<Block> MAPLE_FENCE_GATE     = woodBlock("maple_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.MAPLE, p));
-    public static final DeferredBlock<Block> MAPLE_PRESSURE_PLATE = woodBlock("maple_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.MAPLE_SET, p));
-    public static final DeferredBlock<Block> MAPLE_BUTTON         = woodBlock("maple_button",         p -> new GotButtonBlock(GotWoodTypes.MAPLE_SET, p));
+    public static final DeferredBlock<Block> MAPLE_PRESSURE_PLATE = woodBlock("maple_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MAPLE_BUTTON         = woodBlock("maple_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Myrrh Tree
     public static final DeferredBlock<Block> MYRRH_LOG            = logBlock("myrrh_log",            MyrrhLogBlock::new);
@@ -780,8 +780,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> MYRRH_SLAB           = woodBlock("myrrh_slab",           MyrrhSlabBlock::new);
     public static final DeferredBlock<Block> MYRRH_FENCE          = woodBlock("myrrh_fence",          MyrrhFenceBlock::new);
     public static final DeferredBlock<Block> MYRRH_FENCE_GATE     = woodBlock("myrrh_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.MYRRH, p));
-    public static final DeferredBlock<Block> MYRRH_PRESSURE_PLATE = woodBlock("myrrh_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.MYRRH_SET, p));
-    public static final DeferredBlock<Block> MYRRH_BUTTON         = woodBlock("myrrh_button",         p -> new GotButtonBlock(GotWoodTypes.MYRRH_SET, p));
+    public static final DeferredBlock<Block> MYRRH_PRESSURE_PLATE = woodBlock("myrrh_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> MYRRH_BUTTON         = woodBlock("myrrh_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
     // ── Redwood Tree
     public static final DeferredBlock<Block> REDWOOD_LOG            = logBlock("redwood_log",            RedwoodLogBlock::new);
     public static final DeferredBlock<Block> REDWOOD_WOOD           = logBlock("redwood_wood",           RedwoodWoodBlock::new);
@@ -791,8 +791,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> REDWOOD_SLAB           = woodBlock("redwood_slab",           RedwoodSlabBlock::new);
     public static final DeferredBlock<Block> REDWOOD_FENCE          = woodBlock("redwood_fence",          RedwoodFenceBlock::new);
     public static final DeferredBlock<Block> REDWOOD_FENCE_GATE     = woodBlock("redwood_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.REDWOOD, p));
-    public static final DeferredBlock<Block> REDWOOD_PRESSURE_PLATE = woodBlock("redwood_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.REDWOOD_SET, p));
-    public static final DeferredBlock<Block> REDWOOD_BUTTON         = woodBlock("redwood_button",         p -> new GotButtonBlock(GotWoodTypes.REDWOOD_SET, p));
+    public static final DeferredBlock<Block> REDWOOD_PRESSURE_PLATE = woodBlock("redwood_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> REDWOOD_BUTTON         = woodBlock("redwood_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Chestnut Tree
     public static final DeferredBlock<Block> CHESTNUT_LOG            = logBlock("chestnut_log",            ChestnutLogBlock::new);
@@ -803,8 +803,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> CHESTNUT_SLAB           = woodBlock("chestnut_slab",           ChestnutSlabBlock::new);
     public static final DeferredBlock<Block> CHESTNUT_FENCE          = woodBlock("chestnut_fence",          ChestnutFenceBlock::new);
     public static final DeferredBlock<Block> CHESTNUT_FENCE_GATE     = woodBlock("chestnut_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.CHESTNUT, p));
-    public static final DeferredBlock<Block> CHESTNUT_PRESSURE_PLATE = woodBlock("chestnut_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.CHESTNUT_SET, p));
-    public static final DeferredBlock<Block> CHESTNUT_BUTTON         = woodBlock("chestnut_button",         p -> new GotButtonBlock(GotWoodTypes.CHESTNUT_SET, p));
+    public static final DeferredBlock<Block> CHESTNUT_PRESSURE_PLATE = woodBlock("chestnut_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> CHESTNUT_BUTTON         = woodBlock("chestnut_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Willow Tree
     public static final DeferredBlock<Block> WILLOW_LOG            = logBlock("willow_log",            WillowLogBlock::new);
@@ -815,8 +815,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILLOW_SLAB           = woodBlock("willow_slab",           WillowSlabBlock::new);
     public static final DeferredBlock<Block> WILLOW_FENCE          = woodBlock("willow_fence",          WillowFenceBlock::new);
     public static final DeferredBlock<Block> WILLOW_FENCE_GATE     = woodBlock("willow_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.WILLOW, p));
-    public static final DeferredBlock<Block> WILLOW_PRESSURE_PLATE = woodBlock("willow_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.WILLOW_SET, p));
-    public static final DeferredBlock<Block> WILLOW_BUTTON         = woodBlock("willow_button",         p -> new GotButtonBlock(GotWoodTypes.WILLOW_SET, p));
+    public static final DeferredBlock<Block> WILLOW_PRESSURE_PLATE = woodBlock("willow_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WILLOW_BUTTON         = woodBlock("willow_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Wormtree Tree
     public static final DeferredBlock<Block> WORMTREE_LOG            = logBlock("wormtree_log",            WormtreeLogBlock::new);
@@ -827,8 +827,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WORMTREE_SLAB           = woodBlock("wormtree_slab",           WormtreeSlabBlock::new);
     public static final DeferredBlock<Block> WORMTREE_FENCE          = woodBlock("wormtree_fence",          WormtreeFenceBlock::new);
     public static final DeferredBlock<Block> WORMTREE_FENCE_GATE     = woodBlock("wormtree_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.WORMTREE, p));
-    public static final DeferredBlock<Block> WORMTREE_PRESSURE_PLATE = woodBlock("wormtree_pressure_plate", p -> new GotPressurePlateBlock(GotWoodTypes.WORMTREE_SET, p));
-    public static final DeferredBlock<Block> WORMTREE_BUTTON         = woodBlock("wormtree_button",         p -> new GotButtonBlock(GotWoodTypes.WORMTREE_SET, p));
+    public static final DeferredBlock<Block> WORMTREE_PRESSURE_PLATE = woodBlock("wormtree_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WORMTREE_BUTTON         = woodBlock("wormtree_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Basalt ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BASALT_ROCK = register("basalt_rock", RegionalRockBlock::new);
@@ -1266,6 +1266,22 @@ public class GotModBlocks {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
     }
 
+    /**
+     * Door block: copies from OAK_DOOR exactly — matching how the reference mod registers
+     * doors (vanilla DoorBlock + ofFullCopy(Blocks.OAK_DOOR), no extra mutations).
+     */
+    private static <B extends Block> DeferredBlock<B> doorBlock(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR));
+    }
+
+    /**
+     * Trapdoor block: copies from OAK_TRAPDOOR exactly — matching how the reference mod
+     * registers trapdoors (vanilla TrapDoorBlock + ofFullCopy(Blocks.OAK_TRAPDOOR), no extra mutations).
+     */
+    private static <B extends Block> DeferredBlock<B> trapdoorBlock(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR));
+    }
+
     /** Log/wood variant: copies OAK_LOG (hardness 2, resistance 2, ignitedByLava). */
     private static <B extends Block> DeferredBlock<B> logBlock(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG));
@@ -1294,4 +1310,3 @@ public class GotModBlocks {
     }
 
 }
-// This file is appended by a generation script - do not edit manually past this point

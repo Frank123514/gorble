@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/wall_hanging_sign",
   "textures": {
-    "texture": "got:block/hawthorn_planks"
+    "particle": "got:block/stripped_hawthorn_log"
   }
 }

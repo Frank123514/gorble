@@ -1,8 +1,7 @@
 {
-  "parent": "block/door_top_right",
+  "parent": "minecraft:block/door_top_right",
   "textures": {
     "bottom": "got:block/chestnut_door_bottom",
     "top": "got:block/chestnut_door_top"
-  },
-  "render_type": "cutout"
+  }
 }

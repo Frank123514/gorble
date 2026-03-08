@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/hanging_sign",
   "textures": {
-    "texture": "got:block/clove_planks"
+    "particle": "got:block/stripped_clove_log"
   }
 }

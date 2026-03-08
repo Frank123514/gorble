@@ -1,8 +1,7 @@
 {
-  "parent": "block/door_top_right_open",
+  "parent": "minecraft:block/door_top_right_open",
   "textures": {
     "bottom": "got:block/sentinal_door_bottom",
     "top": "got:block/sentinal_door_top"
-  },
-  "render_type": "cutout"
+  }
 }

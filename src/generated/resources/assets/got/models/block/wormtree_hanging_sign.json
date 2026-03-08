@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/hanging_sign",
   "textures": {
-    "texture": "got:block/wormtree_planks"
+    "particle": "got:block/stripped_wormtree_log"
   }
 }

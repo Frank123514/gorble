@@ -1,8 +1,7 @@
 {
-  "parent": "block/door_top_left",
+  "parent": "minecraft:block/door_top_left",
   "textures": {
     "bottom": "got:block/weirwood_door_bottom",
     "top": "got:block/weirwood_door_top"
-  },
-  "render_type": "cutout"
+  }
 }

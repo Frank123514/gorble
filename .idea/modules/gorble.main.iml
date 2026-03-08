@@ -6,9 +6,16 @@
         <autoDetectTypes>
           <platformType>MIXIN</platformType>
           <platformType>NEOFORGE</platformType>
+          <platformType>MCP</platformType>
         </autoDetectTypes>
         <projectReimportVersion>1</projectReimportVersion>
       </configuration>
     </facet>
+  </component>
+  <component name="McpModuleSettings">
+    <option name="mappingFile" value="D:\neoforgeNOVO\gorble\build\neoForm\neoFormJoined1.21.3-20241023.131943\steps\mergeMappings\outputs.tsrg" />
+    <option name="minecraftVersion" value="1.21.3" />
+    <option name="platformVersion" value="21.3.95" />
+    <option name="srgType" value="TSRG" />
   </component>
 </module>
