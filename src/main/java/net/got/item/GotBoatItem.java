@@ -1,19 +1,18 @@
 package net.got.item;
 
-import net.got.entity.GotBoat;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.minecraft.world.item.BoatItem;
 
 /**
- * Custom BoatItem for GoT wood types.
+ * Custom BoatItem for GoT wood types — works for both regular and chest boats.
  *
- * Extends vanilla BoatItem but supplies our custom EntityType at construction,
- * bypassing any vanilla hardcoded oak-variant assumptions in BoatItem.
- * The entity type is stored in the parent and used when the item is right-clicked.
+ * In NeoForge 1.21.3, BoatItem's constructor takes EntityType<? extends AbstractBoat>,
+ * so the same item class can be used for both GotBoat and GotChestBoat entity types.
  */
 public class GotBoatItem extends BoatItem {
 
-    public GotBoatItem(EntityType<GotBoat> entityType, Properties properties) {
+    public GotBoatItem(EntityType<? extends AbstractBoat> entityType, Properties properties) {
         super(entityType, properties);
     }
 }

@@ -1,62 +1,60 @@
 package net.got.client.renderer;
 
-import net.got.entity.GotBoat;
-import net.got.entity.GotChestBoat;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.renderer.entity.BoatRenderer;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.AbstractBoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.BoatRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.vehicle.AbstractBoat;
 
-/**
- * Renderer for all GoT custom boat types.
- *
- * In 1.21.3, EntityRenderer uses the render-state pattern:
- *   extractRenderState() copies entity data -> state
- *   getTextureLocation(state) reads the texture back
- *
- * We extend BoatRenderState to carry a boatTexture field, inject it in
- * extractRenderState(), and return it from getTextureLocation().
- */
-public class GotBoatRenderer extends BoatRenderer {
+public class GotBoatRenderer extends AbstractBoatRenderer implements GotBoat {
 
-    private static final ModelLayerLocation VANILLA_BOAT =
-            new ModelLayerLocation(ResourceLocation.withDefaultNamespace("boat/oak"), "main");
-    private static final ModelLayerLocation VANILLA_CHEST_BOAT =
-            new ModelLayerLocation(ResourceLocation.withDefaultNamespace("chest_boat/oak"), "main");
-
-    private final ResourceLocation fallbackTexture;
+    private final ResourceLocation texture;
+    private final EntityModel<BoatRenderState> model;
+    private final RenderType renderType;
+    private final ModelPart waterPatch;
 
     public GotBoatRenderer(EntityRendererProvider.Context ctx, boolean isChestBoat, String woodType) {
-        super(ctx, isChestBoat ? VANILLA_CHEST_BOAT : VANILLA_BOAT);
-        this.fallbackTexture = ResourceLocation.fromNamespaceAndPath("got",
-                "textures/entity/boat/" + woodType + (isChestBoat ? "_chest_boat" : "") + ".png");
+        super(ctx);
+        this.texture = isChestBoat
+                ? ResourceLocation.fromNamespaceAndPath("got", "textures/entity/chest_boat/" + woodType + ".png")
+                : ResourceLocation.fromNamespaceAndPath("got", "textures/entity/boat/" + woodType + ".png");
+
+        ModelLayerLocation layerLocation = new ModelLayerLocation(
+                ResourceLocation.withDefaultNamespace(isChestBoat ? "chest_boat/oak" : "boat/oak"),
+                "main"
+        );
+
+        ModelPart root = ctx.bakeLayer(layerLocation);
+
+        net.minecraft.client.model.BoatModel boatModel = new net.minecraft.client.model.BoatModel(root);
+        this.model = boatModel;
+        this.renderType = this.model.renderType(this.texture);
+
+// Get the water patch directly from the baked model parts
+        root = ctx.bakeLayer(layerLocation);
+        this.waterPatch = root.getChild("bottom");
     }
 
     @Override
-    public GotBoatRenderState createRenderState() {
-        return new GotBoatRenderState();
+    public ResourceLocation getTextureLocation(BoatRenderState state) {
+        return this.texture;
     }
 
     @Override
-    public void extractRenderState(AbstractBoat entity,
-                                   net.minecraft.client.renderer.entity.state.BoatRenderState state,
-                                   float partialTick) {
-        super.extractRenderState(entity, state, partialTick);
-        if (state instanceof GotBoatRenderState got) {
-            if (entity instanceof GotBoat boat) {
-                got.boatTexture = boat.getBoatTexture();
-            } else if (entity instanceof GotChestBoat boat) {
-                got.boatTexture = boat.getBoatTexture();
-            }
-        }
+    protected EntityModel<BoatRenderState> model() {
+        return this.model;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(net.minecraft.client.renderer.entity.state.BoatRenderState state) {
-        if (state instanceof GotBoatRenderState got && got.boatTexture != null) {
-            return got.boatTexture;
-        }
-        return fallbackTexture;
+    protected RenderType renderType() {
+        return this.renderType;
+    }
+
+    @Override
+    public ModelPart createWaterPatch() {
+        return this.waterPatch;
     }
 }
