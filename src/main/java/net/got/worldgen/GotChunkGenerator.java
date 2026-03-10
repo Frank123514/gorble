@@ -78,6 +78,51 @@ public final class GotChunkGenerator extends ChunkGenerator {
     /** Micro layer: surface roughness / contour steps. ~22 block wavelength. */
     private static final float NOISE_FREQ_MICRO     = 1f / 22f;
 
+    // ── Valley / pass system ─────────────────────────────────────────────
+
+    /**
+     * Long-wavelength ridge noise that defines valley axes (~300 block spacing).
+     * Lower = wider valleys (more of the ridge set becomes valley floor).
+     */
+    private static final float VALLEY_FREQ_PRIMARY  = 1f / 300f;
+
+    /**
+     * Secondary ridge at a slightly different scale gives forking and
+     * irregular width variation.
+     */
+    private static final float VALLEY_FREQ_SECONDARY = 1f / 220f;
+
+    /**
+     * Domain-warp amplitude (in blocks) applied before sampling the ridge noise.
+     * Causes valley axes to snake rather than run straight.
+     */
+    private static final float VALLEY_WARP_AMP      = 60f;
+
+    /** Frequency of the domain-warp noise itself (~180 block wavelength). */
+    private static final float VALLEY_WARP_FREQ     = 1f / 180f;
+
+    /**
+     * Width threshold: the ridge field is in [-1,1]; any location where
+     * |ridge| < VALLEY_THRESHOLD is considered inside a valley.
+     * 0.30 ≈ roughly 30% of the space becomes valley corridor.
+     */
+    private static final float VALLEY_THRESHOLD     = 0.30f;
+
+    /**
+     * Maximum Y blocks carved out at the valley floor (at the deepest point).
+     * Combined with the elevation ramp this produces ~40–65 block passes.
+     */
+    private static final float VALLEY_MAX_DEPTH     = 55f;
+
+    /** Elevation at which valley carving starts fading in (was flat plains below). */
+    private static final float VALLEY_ELEV_MIN      = 0.26f;
+
+    /** Elevation at which valley carving fades out again (near peak, keep silhouette). */
+    private static final float VALLEY_ELEV_MAX      = 0.80f;
+
+    /** Width of the fade zone at both ends of the elevation envelope. */
+    private static final float VALLEY_ELEV_FADE     = 0.10f;
+
     private final Holder<NoiseGeneratorSettings> settings;
     private final NoiseBasedChunkGenerator vanilla;
 
@@ -178,14 +223,17 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float baseY = Mth.lerp(smoothstep((t - BEACH_T) / (1f - BEACH_T)), BEACH_TOP_Y, LAND_MAX_Y);
 
         float amp = noiseAmplitude(t);
+        float noiseOffset = 0f;
         if (amp > 0.5f) {
-            float noise = terrainNoise(worldX, worldZ);
-            float finalY = baseY + noise * amp;
-            finalY = Math.max(finalY, BEACH_TOP_Y + 1f);
-            return Mth.floor(finalY);
+            noiseOffset = terrainNoise(worldX, worldZ) * amp;
         }
 
-        return Mth.floor(baseY);
+        // Valley / pass carving — snaking corridors between mountain flanks
+        float valleyCarve = valleyDepression(worldX, worldZ, t);
+
+        float finalY = baseY + noiseOffset - valleyCarve;
+        finalY = Math.max(finalY, BEACH_TOP_Y + 1f);
+        return Mth.floor(finalY);
     }
 
     /**
@@ -244,6 +292,81 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 worldZ * NOISE_FREQ_MICRO + 57.9f,   0xA18C55);
 
         return med * 0.40f + fine * 0.35f + micro * 0.25f;
+    }
+
+    /**
+     * Computes how many Y-blocks to carve downward at (worldX, worldZ) for
+     * the valley / mountain-pass system.
+     *
+     * <p>Algorithm:
+     * <ol>
+     *   <li>Domain-warp the sample point using low-frequency noise so valley
+     *       axes curve and snake rather than run straight.</li>
+     *   <li>Sample two overlapping ridge noise fields (|noise| → ridgeline).
+     *       Valley floors sit where a ridge field is near zero.</li>
+     *   <li>Blend the two ridges: taking the max valley signal allows the two
+     *       systems to produce both parallel runs and forking junctions.</li>
+     *   <li>Apply a smooth U-shaped cross-section profile so valley floors are
+     *       flat and sides taper gradually into the mountain slope.</li>
+     *   <li>Ramp in/out with elevation so valleys only appear on mountain flanks
+     *       (not in plains or at peaks where the painted silhouette should
+     *       dominate).</li>
+     * </ol>
+     *
+     * @param t elevation fraction [0,1] from HeightmapLoader
+     * @return blocks to subtract from baseY (≥ 0)
+     */
+    private static float valleyDepression(int worldX, int worldZ, float t) {
+        // Only carve on mid-elevation terrain — mountain flanks only
+        if (t <= VALLEY_ELEV_MIN || t >= VALLEY_ELEV_MAX) return 0f;
+
+        // ── Domain warp: displace sample coords so valleys snake ─────────
+        float wx = valueNoise(worldX * VALLEY_WARP_FREQ,
+                worldZ * VALLEY_WARP_FREQ + 5.3f,  0x2C1A9E) * VALLEY_WARP_AMP;
+        float wz = valueNoise(worldX * VALLEY_WARP_FREQ + 19.7f,
+                worldZ * VALLEY_WARP_FREQ + 34.1f, 0x8E3B7C) * VALLEY_WARP_AMP;
+
+        float sx = (worldX + wx) * VALLEY_FREQ_PRIMARY;
+        float sz = (worldZ + wz) * VALLEY_FREQ_PRIMARY;
+
+        // ── Primary ridge: abs(noise) → 0 at ridge axis, 1 at flanks ────
+        float r1 = Math.abs(valueNoise(sx, sz, 0xC7A241));
+
+        // ── Secondary ridge: different scale + offset for forks ──────────
+        float sx2 = (worldX + wz * 0.7f) * VALLEY_FREQ_SECONDARY + 73.9f;
+        float sz2 = (worldZ + wx * 0.7f) * VALLEY_FREQ_SECONDARY + 51.3f;
+        float r2  = Math.abs(valueNoise(sx2, sz2, 0x4E8FB3));
+
+        // ── Valley signal: positive where inside a valley corridor ───────
+        // Use the minimum of both ridge values so corridors can follow
+        // either system (taking min keeps both sets of valleys active)
+        float ridgeMin = Math.min(r1, r2);
+
+        float raw = VALLEY_THRESHOLD - ridgeMin;         // >0 inside valley
+        if (raw <= 0f) return 0f;
+
+        // Normalise to [0,1] across the valley width
+        float normalized = raw / VALLEY_THRESHOLD;
+
+        // Smooth U-shaped cross section: flat floor, gradual shoulder taper.
+        // smoothstep³ gives a flat centre and steep-then-gentle sides.
+        float profile = smoothstep(smoothstep(normalized));
+
+        // ── Elevation envelope: fade in at VALLEY_ELEV_MIN, fade out at VALLEY_ELEV_MAX
+        float elevFade;
+        if (t < VALLEY_ELEV_MIN + VALLEY_ELEV_FADE) {
+            elevFade = smoothstep((t - VALLEY_ELEV_MIN) / VALLEY_ELEV_FADE);
+        } else if (t > VALLEY_ELEV_MAX - VALLEY_ELEV_FADE) {
+            elevFade = smoothstep((VALLEY_ELEV_MAX - t) / VALLEY_ELEV_FADE);
+        } else {
+            elevFade = 1f;
+        }
+
+        // ── Elevation-scaling: deeper carve at higher elevations so passes
+        //    through tall mountains are dramatic, lowland valleys are gentle.
+        float elevScale = smoothstep((t - VALLEY_ELEV_MIN) / (VALLEY_ELEV_MAX - VALLEY_ELEV_MIN));
+
+        return profile * elevFade * (0.4f + elevScale * 0.6f) * VALLEY_MAX_DEPTH;
     }
 
     /** Smooth 2D value noise, bilinearly interpolated with smoothstep. [-1, 1]. */
@@ -332,7 +455,8 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float elev = HeightmapLoader.getElevationAtWorld(pos.getX(), pos.getZ());
         float amp  = noiseAmplitude(elev);
         float dist = HeightmapLoader.nearestLandDistanceF(pos.getX(), pos.getZ(), RIVER_PROX_RADIUS);
-        info.add(String.format("[GoT] elev=%.3f  Y=%d  sea=%d  noiseAmp=%.1f  landDist=%.1fpx",
-                elev, elevToY(elev, pos.getX(), pos.getZ()), SEA_LEVEL, amp, dist));
+        float valley = valleyDepression(pos.getX(), pos.getZ(), elev);
+        info.add(String.format("[GoT] elev=%.3f  Y=%d  sea=%d  noiseAmp=%.1f  valleyCarve=%.1f  landDist=%.1fpx",
+                elev, elevToY(elev, pos.getX(), pos.getZ()), SEA_LEVEL, amp, valley, dist));
     }
 }

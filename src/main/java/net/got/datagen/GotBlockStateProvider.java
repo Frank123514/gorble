@@ -28,7 +28,7 @@ public class GotBlockStateProvider extends BlockStateProvider {
 
     static final String[] STONE_REGIONS = {
             // ── Natural stone types ─────────────────────────────────────
-            "basalt", "granite", "limestone", "sandstone", "red_sandstone", "slate",
+            "basalt", "grey_granite", "limestone", "sandstone", "red_sandstone", "slate", "flint",
             // ── Special stone types ─────────────────────────────────────
             "oily_black", "fused_black", "marble"
     };

@@ -58,11 +58,12 @@ public class GotLanguageProvider extends LanguageProvider {
 
         // ── Natural stone types ───────────────────────────────────────────
         addStoneRegion("basalt",            "Basalt");
-        addStoneRegion("granite",           "Granite");
+        addStoneRegion("grey_granite",      "Grey Granite");
         addStoneRegion("limestone",         "Limestone");
         addStoneRegion("sandstone",         "Sandstone");
         addStoneRegion("red_sandstone",     "Red Sandstone");
         addStoneRegion("slate",             "Slate");
+        addStoneRegion("flint",             "Flint");
         addStoneRegion("oily_black",  "Oily Black Stone");
         addStoneRegion("fused_black", "Fused Black Stone");
         addStoneRegion("marble",            "Marble");
