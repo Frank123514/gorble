@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "got:block/smooth_oily_black_rock",
+    "top": "got:block/smooth_oily_black_rock",
+    "side": "got:block/smooth_oily_black_rock"
+  }
+}
