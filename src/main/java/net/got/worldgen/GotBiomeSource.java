@@ -7,6 +7,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
@@ -17,28 +18,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Custom {@link BiomeSource} that reads biome placement from a hand-painted
- * PNG ({@code got:worldgen/map/biomemap.png}) using the colour palette defined
- * in {@code biome_colors.json}.
+ * Custom BiomeSource that uses bicubic interpolation for water boundaries
+ * to stay perfectly synchronized with GotChunkGenerator terrain.
  *
- * <h3>Elevation cross-check — bidirectional</h3>
- * The domain warp applied to both maps can cause a small misalignment between
- * what the biomemap says and what the heightmap carved:
- *
- * <ul>
- *   <li><b>Water carved but biomemap says land</b> — pick a contextual water biome
- *       so carved river channels are always filled with a river/ocean biome.</li>
- *   <li><b>Biomemap says water but terrain is land</b> — pick a contextual land biome
- *       so river/ocean pixels that warped onto land don't leak the water biome.</li>
- * </ul>
+ * <p>Hard guarantee: waterFrac >= 0.5 returns ONLY water biomes,
+ * waterFrac < 0.5 returns ONLY land biomes. No leaks.
  */
 public final class GotBiomeSource extends BiomeSource {
 
-    /* ------------------------------------------------------------------ */
-    /* Palette — mirrors biome_colors.json exactly                         */
-    /* ------------------------------------------------------------------ */
-
     private static final Map<Integer, ResourceLocation> PALETTE;
+    private static final Set<ResourceLocation> WATER_BIOMES;
+
     static {
         Map<Integer, ResourceLocation> m = new LinkedHashMap<>();
         m.put(0x949038, rl("north"));
@@ -58,21 +48,19 @@ public final class GotBiomeSource extends BiomeSource {
         m.put(0xFFFFFF, rl("always_winter"));
         m.put(0xA5B7B9, rl("north_mountains"));
         PALETTE = Collections.unmodifiableMap(m);
-    }
 
-    /** Water-type biomes — used for the elevation cross-check. */
-    private static final Set<String> WATER_BIOME_PATHS = Set.of(
-            "river", "neck_river", "frozen_river", "ocean", "deep_ocean",
-            "frozen_lake", "lake"
-    );
+        Set<ResourceLocation> w = new HashSet<>();
+        w.add(rl("ocean"));
+        w.add(rl("deep_ocean"));
+        w.add(rl("river"));
+        w.add(rl("neck_river"));
+        w.add(rl("frozen_river"));
+        WATER_BIOMES = Collections.unmodifiableSet(w);
+    }
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath("got", path);
     }
-
-    /* ------------------------------------------------------------------ */
-    /* Codec                                                                */
-    /* ------------------------------------------------------------------ */
 
     public static final MapCodec<GotBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -84,17 +72,9 @@ public final class GotBiomeSource extends BiomeSource {
             ))
     );
 
-    /* ------------------------------------------------------------------ */
-    /* State                                                                */
-    /* ------------------------------------------------------------------ */
-
     private final List<Holder<Biome>> biomes;
     private final Map<ResourceLocation, Holder<Biome>> locationToHolder;
     private final Holder<Biome> fallback;
-
-    /* ------------------------------------------------------------------ */
-    /* Constructor                                                          */
-    /* ------------------------------------------------------------------ */
 
     public GotBiomeSource(List<Holder<Biome>> biomes) {
         this.biomes = List.copyOf(biomes);
@@ -110,10 +90,6 @@ public final class GotBiomeSource extends BiomeSource {
         this.fallback = Objects.requireNonNull(fb, "GotBiomeSource: biome list is empty!");
     }
 
-    /* ------------------------------------------------------------------ */
-    /* BiomeSource overrides                                                */
-    /* ------------------------------------------------------------------ */
-
     @Override
     protected @NotNull MapCodec<? extends BiomeSource> codec() {
         return CODEC;
@@ -125,165 +101,134 @@ public final class GotBiomeSource extends BiomeSource {
     }
 
     /**
-     * Returns a biome holder for the given noise coordinates.
-     *
-     * After resolving the biomemap colour, the result is cross-checked against
-     * the heightmap elevation to catch warp-induced mismatches:
-     *
+     * Hard boundary guarantee:
      * <ul>
-     *   <li>If terrain is carved below sea level (elev ≤ 0) but the biomemap
-     *       resolved to a land biome → pick a contextual water biome.</li>
-     *   <li>If the biomemap resolved to a water biome but terrain is land
-     *       (elev &gt; 0) → scan nearby pixels for a land biome, preventing
-     *       water-biome "leaks" onto land.</li>
+     *   <li>If bicubic interpolation says water (>= 0.5), returns ONLY water biomes</li>
+     *   <li>If bicubic interpolation says land (< 0.5), returns ONLY land biomes</li>
      * </ul>
+     * Searches 5x5 neighbourhood to find nearest matching biome type.
      */
     @Override
-    public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NotNull Sampler sampler) {
+    public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z,
+                                                Climate.@NotNull Sampler sampler) {
         int worldX = x << 2;
         int worldZ = z << 2;
 
-        // Sample biomemap (warped the same way as the heightmap)
-        int color = BiomemapLoader.getColorAtWorld(worldX, worldZ);
-        ResourceLocation loc = closestPaletteMatch(color);
+        // Domain-warp the pixel coordinate — identical call to GotChunkGenerator
+        // so biome boundaries and terrain features are always co-located.
+        float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getWidth()  * 0.5f;
+        float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getHeight() * 0.5f;
+        float[] warped = GotChunkGenerator.warpPixelCoord(rawCx, rawCz);
+        float cx = warped[0];
+        float cz = warped[1];
 
-        // Sample heightmap elevation for cross-check.
-        // Use actual block Y rather than raw float to avoid the elev=0.0 boundary
-        // case where Y=61=sea level gets grass but still passes as "water terrain".
-        float elev = HeightmapLoader.getElevationAtWorld(worldX, worldZ);
-        int blockY = GotChunkGenerator.elevToY(elev, worldX, worldZ);
-        boolean terrainIsWater = blockY < GotChunkGenerator.SEA_LEVEL;
-        boolean biomeIsWater   = loc != null && isWaterBiome(loc);
+        float waterFrac = bicubicWaterFraction(cx, cz);
 
-        // ── Case 1: terrain carved water but biomemap says land ───────────
-        if (terrainIsWater && !biomeIsWater) {
-            loc = pickWaterBiomeForContext(worldX, worldZ, loc);
+        if (waterFrac >= GotChunkGenerator.WATER_THRESHOLD) {
+            // FORCE water biome - search for nearest water pixel
+            return findNearestBiome(cx, cz, true);
+        } else {
+            // FORCE land biome - search for nearest land pixel
+            return findNearestBiome(cx, cz, false);
         }
+    }
 
-        // ── Case 2: biomemap says water but terrain is land ───────────────
-        // The domain warp shifted the lookup onto a painted river/ocean pixel.
-        // Bypass warp entirely: do a raw unwarped pixel lookup to get what is
-        // actually painted at this world position, then if it's still water
-        // fall back to the nearest non-water neighbour in raw image space.
-        else if (!terrainIsWater && biomeIsWater) {
-            int[] rawPx = BiomemapLoader.getWarpedPixel(worldX, worldZ);
-            // Walk outward from the warped pixel in raw image space until we
-            // find a non-water pixel — guaranteed to terminate since land
-            // surrounds every river channel.
-            ResourceLocation landLoc = null;
-            outer:
-            for (int r = 1; r <= 12; r++) {
-                for (int dx = -r; dx <= r; dx++) {
-                    for (int dz = -r; dz <= r; dz++) {
-                        if (Math.abs(dx) < r && Math.abs(dz) < r) continue;
-                        int c2 = BiomemapLoader.getRawPixel(rawPx[0] + dx, rawPx[1] + dz);
-                        ResourceLocation cand = closestPaletteMatch(c2);
-                        if (cand != null && !isWaterBiome(cand)) {
-                            landLoc = cand;
-                            break outer;
-                        }
-                    }
+    /**
+     * Finds the nearest biome of the specified type (water or land) within
+     * a 5x5 pixel neighbourhood. Guarantees type consistency with terrain.
+     */
+    private Holder<Biome> findNearestBiome(float cx, float cz, boolean wantWater) {
+        int icx = (int) Math.floor(cx);
+        int icz = (int) Math.floor(cz);
+        float subX = cx - icx; // fractional offset within pixel
+        float subZ = cz - icz;
+
+        Holder<Biome> best = null;
+        float bestDist = Float.MAX_VALUE;
+
+        // Search 5x5 grid - large enough to handle interpolation mismatches
+        for (int dz = -2; dz <= 2; dz++) {
+            for (int dx = -2; dx <= 2; dx++) {
+                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz);
+                ResourceLocation loc = closestPaletteMatch(color);
+                if (loc == null) continue;
+
+                boolean isWater = WATER_BIOMES.contains(loc);
+                if (wantWater != isWater) continue; // Skip wrong type
+
+                // Calculate distance from sample point to this pixel center
+                float px = dx + 0.5f - subX;
+                float pz = dz + 0.5f - subZ;
+                float dist = px * px + pz * pz;
+
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    Holder<Biome> h = locationToHolder.get(loc);
+                    if (h != null) best = h;
                 }
             }
-            loc = (landLoc != null) ? landLoc : rl("north");
         }
 
-        if (loc != null) {
-            Holder<Biome> h = locationToHolder.get(loc);
-            if (h != null) return h;
-        }
+        if (best != null) return best;
 
+        // Emergency fallback - should never happen if map has both types
+        if (wantWater) {
+            for (String name : new String[]{"river", "ocean", "deep_ocean", "frozen_river"}) {
+                Holder<Biome> h = locationToHolder.get(rl(name));
+                if (h != null) return h;
+            }
+        } else {
+            for (String name : new String[]{"north", "barrowlands", "stony_shore", "wolfswood"}) {
+                Holder<Biome> h = locationToHolder.get(rl(name));
+                if (h != null) return h;
+            }
+        }
         return fallback;
     }
 
     /* ------------------------------------------------------------------ */
-    /* Water-biome helpers                                                  */
+    /* Bicubic interpolation — identical to GotChunkGenerator             */
     /* ------------------------------------------------------------------ */
 
-    private static boolean isWaterBiome(ResourceLocation loc) {
-        return WATER_BIOME_PATHS.contains(loc.getPath());
-    }
+    private static float bicubicWaterFraction(float cx, float cz) {
+        int ix = (int) Math.floor(cx);
+        int iz = (int) Math.floor(cz);
+        float fx = cx - ix;
+        float fz = cz - iz;
 
-    /**
-     * Picks the most contextually correct water biome for a position that the
-     * heightmap carved below sea level but whose biomemap pixel is land.
-     *
-     * Scans outward in rings for a nearby painted water biome (respects the
-     * artist's river/neck_river/frozen_river intent), then falls back to
-     * heuristics based on the surrounding land biome name.
-     */
-    private ResourceLocation pickWaterBiomeForContext(int worldX, int worldZ,
-                                                      ResourceLocation nearbyLand) {
-        // Scan in raw image-pixel space to avoid re-warping neighbour lookups.
-        int[] origin = BiomemapLoader.getWarpedPixel(worldX, worldZ);
-        int opx = origin[0];
-        int opz = origin[1];
-        int range = 5;
-
-        for (int r = 1; r <= range; r++) {
-            for (int dx = -r; dx <= r; dx++) {
-                for (int dz = -r; dz <= r; dz++) {
-                    if (Math.abs(dx) < r && Math.abs(dz) < r) continue;
-                    int c = BiomemapLoader.getRawPixel(opx + dx, opz + dz);
-                    ResourceLocation nearby = closestPaletteMatch(c);
-                    if (nearby != null && isWaterBiome(nearby)) return nearby;
-                }
+        float[][] grid = new float[4][4];
+        for (int dz = 0; dz < 4; dz++) {
+            for (int dx = 0; dx < 4; dx++) {
+                int color = BiomemapLoader.getRawPixel(ix - 1 + dx, iz - 1 + dz);
+                grid[dz][dx] = isWaterColor(color) ? 1.0f : 0.0f;
             }
         }
 
-        // Heuristic fallback based on surrounding land context
-        if (nearbyLand != null) {
-            String path = nearbyLand.getPath();
-            if (path.equals("neck")) return rl("neck_river");
-            if (path.equals("frostfangs") || path.equals("always_winter")
-                    || path.equals("north_mountains") || path.equals("haunted_forest")) {
-                return rl("frozen_river");
-            }
+        float[] rowVals = new float[4];
+        for (int dz = 0; dz < 4; dz++) {
+            rowVals[dz] = catmullRom(fx, grid[dz][0], grid[dz][1], grid[dz][2], grid[dz][3]);
         }
-
-        return rl("river");
+        return Mth.clamp(catmullRom(fz, rowVals[0], rowVals[1], rowVals[2], rowVals[3]), 0f, 1f);
     }
 
-    /* ------------------------------------------------------------------ */
-    /* Land-biome helpers                                                   */
-    /* ------------------------------------------------------------------ */
-
-    /**
-     * Picks the most contextually correct land biome for a position whose
-     * biomemap pixel warped onto a painted water tile but whose terrain is
-     * actually above sea level (elev &gt; 0).
-     *
-     * Scans outward in rings, returning the first non-water biome found whose
-     * own heightmap elevation also agrees it is land — this double-check prevents
-     * picking another warped-water pixel as the "land" representative.
-     */
-    private ResourceLocation pickLandBiomeForContext(int worldX, int worldZ) {
-        // Convert the problem position to unwarped image-pixel coords.
-        // Scanning via getColorAtWorld() would re-warp every neighbour lookup,
-        // curving each step back onto the same river pixel — use raw pixels instead.
-        int[] origin = BiomemapLoader.getWarpedPixel(worldX, worldZ);
-        int opx = origin[0];
-        int opz = origin[1];
-
-        int range = 8; // 8 px covers full warp displacement (~2.8 px) with margin
-
-        for (int r = 1; r <= range; r++) {
-            for (int dx = -r; dx <= r; dx++) {
-                for (int dz = -r; dz <= r; dz++) {
-                    if (Math.abs(dx) < r && Math.abs(dz) < r) continue; // ring only
-                    int c = BiomemapLoader.getRawPixel(opx + dx, opz + dz);
-                    ResourceLocation nearby = closestPaletteMatch(c);
-                    if (nearby != null && !isWaterBiome(nearby)) return nearby;
-                }
-            }
-        }
-
-        return rl("north"); // safe fallback
+    private static float catmullRom(float t, float p0, float p1, float p2, float p3) {
+        float t2 = t * t;
+        float t3 = t2 * t;
+        return 0.5f * (
+                (2f * p1) +
+                        (-p0 + p2) * t +
+                        (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
+                        (-p0 + 3f * p1 - 3f * p2 + p3) * t3
+        );
     }
 
-    /* ------------------------------------------------------------------ */
-    /* Colour matching                                                      */
-    /* ------------------------------------------------------------------ */
+    private static boolean isWaterColor(int color) {
+        ResourceLocation loc = PALETTE.get(color);
+        if (loc != null) return WATER_BIOMES.contains(loc);
+        return WATER_BIOMES.contains(closestPaletteMatch(color));
+    }
 
     private static ResourceLocation closestPaletteMatch(int color) {
         ResourceLocation exact = PALETTE.get(color);

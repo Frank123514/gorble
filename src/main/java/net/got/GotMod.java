@@ -9,6 +9,8 @@ import net.got.init.GotModBoatEntities;
 import net.got.init.GotWoodTypes;
 import net.got.init.GotModEntities;
 import net.got.init.GotModItems;
+import net.got.init.GotModMenus;
+import net.got.init.GotModRecipeTypes;
 import net.got.init.GotModTabs;
 import net.got.network.GotNetwork;
 import net.got.registry.WorldgenRegistries;
@@ -59,6 +61,8 @@ public final class GotMod {
 
         /* ---------- Registries ---------- */
         GotWoodTypes.init();
+        GotModMenus.REGISTRY.register(modBus);
+        GotModRecipeTypes.REGISTRY.register(modBus);
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
         GotModBlockEntities.REGISTRY.register(modBus);

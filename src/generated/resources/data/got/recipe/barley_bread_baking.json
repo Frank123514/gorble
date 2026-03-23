@@ -1,0 +1,11 @@
+{
+  "type": "got:baking",
+  "ingredient": {
+    "item": "got:barley_dough"
+  },
+  "result": {
+    "id": "got:barley_bread"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

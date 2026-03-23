@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "got:block/flint_pillar",
+      "x": 90,
+      "z": 90
+    },
+    "axis=y": {
+      "model": "got:block/flint_pillar"
+    },
+    "axis=z": {
+      "model": "got:block/flint_pillar",
+      "x": 90
+    }
+  }
+}

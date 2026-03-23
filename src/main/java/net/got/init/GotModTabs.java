@@ -987,6 +987,38 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_SLAB.get());
                         safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_STAIRS.get());
                         safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_WALL.get());
+                        // ── Flint ──────────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.FLINT_ROCK.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK.get());
+                        safeAccept(output, GotModBlocks.FLINT_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FLINT_ROCK.get());
+                        safeAccept(output, GotModBlocks.FLINT_PILLAR.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.FLINT_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.FLINT_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FLINT_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FLINT_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FLINT_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FLINT_ROCK_WALL.get());
                     })
                     .build());
 
@@ -1063,6 +1095,93 @@ public class GotModTabs {
 
                         // ── Stormlands ──────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.SLATE_ROCK.get());
+
+                        // ── Flint ────────────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.FLINT_ROCK.get());
+                        // ── Flowers ──────────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.BELLFLOWER.get());
+                        safeAccept(output, GotModBlocks.BLACK_LOTUS.get());
+                        safeAccept(output, GotModBlocks.BLOOD_BLOOM.get());
+                        safeAccept(output, GotModBlocks.COLDSNAPS.get());
+                        safeAccept(output, GotModBlocks.DRAGONS_BREATH.get());
+                        safeAccept(output, GotModBlocks.EVENING_STAR.get());
+                        safeAccept(output, GotModBlocks.FORGET_ME_NOT.get());
+                        safeAccept(output, GotModBlocks.FROSTFIRES.get());
+                        safeAccept(output, GotModBlocks.GILLYFLOWER.get());
+                        safeAccept(output, GotModBlocks.GINGER.get());
+                        safeAccept(output, GotModBlocks.GOATHEAD.get());
+                        safeAccept(output, GotModBlocks.GOLDENCUP.get());
+                        safeAccept(output, GotModBlocks.GOLDENROD.get());
+                        safeAccept(output, GotModBlocks.GORSE.get());
+                        safeAccept(output, GotModBlocks.LADYS_LACE.get());
+                        safeAccept(output, GotModBlocks.LAVENDER.get());
+                        safeAccept(output, GotModBlocks.LILAC_FLOWER.get());
+                        safeAccept(output, GotModBlocks.LIVERWORT.get());
+                        safeAccept(output, GotModBlocks.LUNGWORT.get());
+                        safeAccept(output, GotModBlocks.MOONBLOOM.get());
+                        safeAccept(output, GotModBlocks.NIGHTSHADE.get());
+                        safeAccept(output, GotModBlocks.PENNYROYAL.get());
+                        safeAccept(output, GotModBlocks.POISON_KISSES.get());
+                        safeAccept(output, GotModBlocks.THORNBUSH.get());
+                        safeAccept(output, GotModBlocks.OPIUM_POPPY.get());
+                        safeAccept(output, GotModBlocks.GOLDEN_ROSE.get());
+                        safeAccept(output, GotModBlocks.RED_ROSE.get());
+                        safeAccept(output, GotModBlocks.WHITE_ROSE.get());
+                        safeAccept(output, GotModBlocks.WINTER_ROSE.get());
+                        safeAccept(output, GotModBlocks.SAFFRON_CROCUS.get());
+                        safeAccept(output, GotModBlocks.SEDGE.get());
+                        safeAccept(output, GotModBlocks.SPICEFLOWER.get());
+                        safeAccept(output, GotModBlocks.TANSY.get());
+                        safeAccept(output, GotModBlocks.THISTLE.get());
+                        safeAccept(output, GotModBlocks.WILD_RADISH.get());
+                        // ── Grasses ───────────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.DEVILGRASS.get());
+                        safeAccept(output, GotModBlocks.GHOST_GRASS.get());
+                        safeAccept(output, GotModBlocks.HRANNA.get());
+                        safeAccept(output, GotModBlocks.PIPERS_GRASS.get());
+
+                        // ── Wild Crops ───────────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.WILD_WHEAT.get());
+                        safeAccept(output, GotModBlocks.WILD_OAT.get());
+                        safeAccept(output, GotModBlocks.WILD_RYE.get());
+                        safeAccept(output, GotModBlocks.WILD_BARLEY.get());
+                        safeAccept(output, GotModBlocks.WILD_BEETROOT.get());
+                        safeAccept(output, GotModBlocks.WILD_COTTON.get());
+                        safeAccept(output, GotModBlocks.WILD_PEPPERCORN.get());
+                        safeAccept(output, GotModBlocks.WILD_CARROT.get());
+                        safeAccept(output, GotModBlocks.WILD_PARSNIP.get());
+                        safeAccept(output, GotModBlocks.WILD_ONION.get());
+                        safeAccept(output, GotModBlocks.WILD_TURNIP.get());
+                        safeAccept(output, GotModBlocks.WILD_NEEP.get());
+                        safeAccept(output, GotModBlocks.WILD_PEAS.get());
+                        safeAccept(output, GotModBlocks.WILD_CABBAGE.get());
+                        safeAccept(output, GotModBlocks.WILD_GARLIC.get());
+                        safeAccept(output, GotModBlocks.WILD_HORSERADISH.get());
+                        safeAccept(output, GotModBlocks.WILD_LEEK.get());
+
+                        // ── Oven
+                        safeAccept(output, GotModBlocks.OVEN.get());
+                        // ── Crops (wild/planted blocks) ───────────────────────────────────────
+                        safeAccept(output, GotModBlocks.OAT_CROP.get());
+                        safeAccept(output, GotModBlocks.RYE_CROP.get());
+                        safeAccept(output, GotModBlocks.BARLEY_CROP.get());
+                        safeAccept(output, GotModBlocks.COTTON_CROP.get());
+                        safeAccept(output, GotModBlocks.CARROT_CROP.get());
+                        safeAccept(output, GotModBlocks.PARSNIP_CROP.get());
+                        safeAccept(output, GotModBlocks.ONION_CROP.get());
+                        safeAccept(output, GotModBlocks.TURNIP_CROP.get());
+                        safeAccept(output, GotModBlocks.PEAS_CROP.get());
+                        safeAccept(output, GotModBlocks.CABBAGE_CROP.get());
+                        safeAccept(output, GotModBlocks.GARLIC_CROP.get());
+                        safeAccept(output, GotModBlocks.NEEP_CROP.get());
+                        safeAccept(output, GotModBlocks.HORSERADISH_CROP.get());
+                        safeAccept(output, GotModBlocks.LEEK_CROP.get());
+                        safeAccept(output, GotModBlocks.PEPPERCORN_CROP.get());
+                        // ── Berry Bushes ──────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.BLACKBERRY_BUSH.get());
+                        safeAccept(output, GotModBlocks.BLUEBERRY_BUSH.get());
+                        safeAccept(output, GotModBlocks.RASPBERRY_BUSH.get());
+                        safeAccept(output, GotModBlocks.STRAWBERRY_BUSH.get());
                     })
                     .build());
 
@@ -1075,6 +1194,47 @@ public class GotModTabs {
                     .icon(() -> new ItemStack(GotModItems.VALYRIAN_STEEL_INGOT.get()))
                     .displayItems((params, output) -> {
 
+                        // ── Ore blocks ──────────────────────────────────
+                        // ── Seeds ────────────────────────────────────────
+                        output.accept(GotModItems.OAT_SEEDS.get());
+                        output.accept(GotModItems.RYE_SEEDS.get());
+                        output.accept(GotModItems.BARLEY_SEEDS.get());
+                        output.accept(GotModItems.COTTON_SEEDS.get());
+                        output.accept(GotModItems.PEPPERCORN_SEEDS.get());
+                        // ── Crop produce ──────────────────────────────────
+                        output.accept(GotModItems.OAT.get());
+                        output.accept(GotModItems.RYE.get());
+                        output.accept(GotModItems.BARLEY.get());
+                        output.accept(GotModItems.COTTON.get());
+                        output.accept(GotModItems.PEPPERCORN.get());
+                        // ── Flour, Dough, Bread ──────────────────────────────────────────────
+                        output.accept(GotModItems.WHEAT_FLOUR.get());
+                        output.accept(GotModItems.WHEAT_DOUGH.get());
+                        output.accept(GotModItems.OAT_FLOUR.get());
+                        output.accept(GotModItems.OAT_DOUGH.get());
+                        output.accept(GotModItems.OAT_BREAD.get());
+                        output.accept(GotModItems.RYE_FLOUR.get());
+                        output.accept(GotModItems.RYE_DOUGH.get());
+                        output.accept(GotModItems.RYE_BREAD.get());
+                        output.accept(GotModItems.BARLEY_FLOUR.get());
+                        output.accept(GotModItems.BARLEY_DOUGH.get());
+                        output.accept(GotModItems.BARLEY_BREAD.get());
+
+                        output.accept(GotModItems.CARROT.get());
+                        output.accept(GotModItems.PARSNIP.get());
+                        output.accept(GotModItems.ONION.get());
+                        output.accept(GotModItems.TURNIP.get());
+                        output.accept(GotModItems.PEAS.get());
+                        output.accept(GotModItems.CABBAGE.get());
+                        output.accept(GotModItems.GARLIC.get());
+                        output.accept(GotModItems.NEEP.get());
+                        output.accept(GotModItems.HORSERADISH.get());
+                        output.accept(GotModItems.LEEK.get());
+                        // ── Berries ────────────────────────────────────────
+                        output.accept(GotModItems.BLACKBERRIES.get());
+                        output.accept(GotModItems.BLUEBERRIES.get());
+                        output.accept(GotModItems.RASPBERRIES.get());
+                        output.accept(GotModItems.STRAWBERRIES.get());
                         // ── Ore blocks ──────────────────────────────────
                         output.accept(GotModItems.AMBER_ORE.get());
                         output.accept(GotModItems.AMETHYST_ORE.get());

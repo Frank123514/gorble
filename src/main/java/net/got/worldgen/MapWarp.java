@@ -4,7 +4,7 @@ package net.got.worldgen;
  * Shared fBm double-pass domain warp used by EVERY map-pixel lookup in the mod.
  *
  * <h3>Why this class exists</h3>
- * Both {@link HeightmapLoader} (terrain elevation) and {@link BiomemapLoader}
+ * Both {@link BiomemapLoader}
  * (biome colours) must warp their pixel coordinates with the <em>same</em>
  * function, using the <em>same</em> parameters.  If either class uses different
  * warp settings, biome borders will no longer line up with terrain features —
@@ -60,7 +60,7 @@ public final class MapWarp {
 
     /**
      * Final displacement amplitude in heightmap/biomemap pixels.
-     * One pixel = {@value HeightmapLoader#MAP_SCALE} world blocks.
+     * One pixel = {@value BiomemapLoader#MAP_SCALE} world blocks.
      * 2.8 px ≈ 78 blocks of organic bank / border shift.
      *
      * Increase for more dramatic meandering.
@@ -83,10 +83,10 @@ public final class MapWarp {
     /**
      * Returns warped pixel coordinates for a world-block position.
      *
-     * <p>Both the elevation lookup in {@link HeightmapLoader} and the colour
+     * <p>Both colour
      * lookup in {@link BiomemapLoader} must call this method with their own
      * {@code imageWidth}/{@code imageHeight} values.  Because both maps share
-     * the same scale ({@value HeightmapLoader#MAP_SCALE} blocks per pixel) and
+     * the same scale ({@value BiomemapLoader#MAP_SCALE} blocks per pixel) and
      * the same warp parameters, their warped pixel coordinates will be
      * numerically identical, keeping terrain and biomes perfectly aligned.</p>
      *
@@ -99,8 +99,8 @@ public final class MapWarp {
     public static float[] warp(int worldX, int worldZ,
                                int imageWidth, int imageHeight) {
         // Raw (un-warped) pixel coordinates
-        float rawX = worldX / (float) HeightmapLoader.MAP_SCALE + imageWidth  * 0.5f;
-        float rawZ = worldZ / (float) HeightmapLoader.MAP_SCALE + imageHeight * 0.5f;
+        float rawX = worldX / (float) BiomemapLoader.MAP_SCALE + imageWidth  * 0.5f;
+        float rawZ = worldZ / (float) BiomemapLoader.MAP_SCALE + imageHeight * 0.5f;
 
         // Scale to fBm frequency domain
         float px = rawX * FBM_BASE_FREQ;

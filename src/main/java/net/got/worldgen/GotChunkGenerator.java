@@ -22,106 +22,293 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Chunk generator for the GoT mod.
+ *
+ * <h3>Algorithm</h3>
+ * <ol>
+ *   <li>Convert the world column to <em>float</em> pixel-space coordinates
+ *       (no domain warp).</li>
+ *   <li>Compute a <b>bicubic (Catmull-Rom) water fraction</b> by interpolating
+ *       the binary water/land mask over the 4×4 pixel neighbourhood.  This
+ *       produces a smooth, C¹-continuous value in [0,1] whose isolines are
+ *       gently curved — eliminating the staircase edges of raw pixel checks.
+ *       <ul>
+ *         <li>fraction ≥ 0.99 → fully inside river/ocean → flat {@code baseY},
+ *             no noise.</li>
+ *         <li>fraction 0.01..0.99 → riverbank transition → Gaussian land height
+ *             blended down toward the water-bed Y.</li>
+ *         <li>fraction ≤ 0.01 → fully on land → normal Gaussian blend.</li>
+ *       </ul></li>
+ *   <li>The water-bed Y (river bed / ocean floor / deep ocean floor) is itself
+ *       bicubically interpolated across the 4×4 pixel grid rather than averaged,
+ *       so river→ocean and ocean→deep-ocean boundaries slope smoothly instead
+ *       of snapping between discrete depth values.</li>
+ *   <li>For the land path, sample a (2×{@value SAMPLE_RADIUS}+1)² pixel grid.
+ *       Weight each non-water neighbour by a <b>Gaussian</b>
+ *       {@code exp(−dist² / (2σ²))} where dist is the <em>continuous float</em>
+ *       distance from the sample point to the pixel centre.
+ *       Gaussian weighting gives the smoothest possible transition —
+ *       no terracing, no snap artefacts, C∞ continuity.</li>
+ *   <li>Evaluate three-octave smooth fBm noise and add the scaled result
+ *       to the blended baseY.</li>
+ * </ol>
+ *
+ * <h3>Noise frequencies</h3>
+ * <pre>
+ *   Smooth coarse  1/185  — broad landscape undulation
+ *   Smooth mid     1/90   — hill-scale bumps
+ *   Smooth fine    1/38   — surface roughness
+ * </pre>
+ */
 public final class GotChunkGenerator extends ChunkGenerator {
 
     public static final int SEA_LEVEL = 61;
-    private static final int OCEAN_FLOOR = 40;
-    private static final int RIVER_FLOOR_Y = 55;
-    private static final int RIVER_PROX_RADIUS = 14;
-    private static final float COASTAL_EASE_POWER = 3.0f;
 
-    private static final float BEACH_T     = 0.01f;
-    private static final int   BEACH_TOP_Y = 63;
-    private static final int   LAND_MAX_Y  = 280;
-
-    // ── Terrain detail noise ─────────────────────────────────────────────
+    // ── Neighbour sampling ────────────────────────────────────────────────
 
     /**
-     * Base amplitude applied to all land above the coastal ramp.
-     * Raised from 11 → 16 so already-hilly areas carved by the elevation map
-     * get noticeably more dramatic relief on top of their painted shape.
+     * Pixel radius of the Gaussian sample window.
+     * 1 pixel = {@value BiomemapLoader#MAP_SCALE} world blocks.
+     * Radius 5 → ±280 blocks; with σ=1.2 px this still covers the full
+     * relevant falloff while keeping the sharp σ meaningful.
      */
-    private static final float NOISE_AMP_BASE       = 16f;
+    private static final int   SAMPLE_RADIUS = 5;
 
     /**
-     * Extra amplitude bonus on flat lowland (small t values).
-     * Raised from 4 → 7 so plains get meaningful rolling variation.
-     * Total flat amplitude = NOISE_AMP_BASE + NOISE_AMP_FLAT_BONUS = 23 blocks.
+     * Gaussian standard deviation for land↔land blending, in pixels.
+     * σ=1.6 → weight falls off over ~2-3 pixels (≈180-270 blocks at MAP_SCALE=56).
+     * Wider than before — lets mountain biomes blend into adjacent hills/plains,
+     * producing the sloping flanks and natural valley floors of real alpine terrain
+     * rather than hard biome walls.
      */
-    private static final float NOISE_AMP_FLAT_BONUS = 7f;
+    private static final float GAUSSIAN_SIGMA   = 1.6f;
+    private static final float GAUSSIAN_INV_2S2 = 1f / (2f * GAUSSIAN_SIGMA * GAUSSIAN_SIGMA);
 
     /**
-     * Elevation fraction at which the flat bonus has fully faded.
-     * Kept at 0.12 — bonus is lowland-only.
+     * Height-stretch exponent applied to each Gaussian land-blend weight.
+     * 1.5 lets neighbouring biomes contribute meaningfully to the blended height —
+     * this is what allows valleys to form between two mountain masses.
+     * At 4.0 the dominant biome always won, producing flat-topped plateaus.
+     * At 1.5 the blending is genuinely weighted, so terrain naturally sags
+     * between peaks and rises toward their centres — passes and cols emerge
+     * from the blend itself without any special-casing.
      */
-    private static final float NOISE_FLAT_FADE_T    = 0.12f;
+    private static final float HEIGHT_STRETCH = 1.5f;
 
     /**
-     * Width of the coastal noise ramp above BEACH_T.
-     * Noise stays at zero here so the beach/shore stays clean.
-     * Kept at 0.07 — this is what fixed the cliff edges.
+     * Bicubic water-fraction threshold that determines where the terrain switches
+     * from land to water bed.  The same constant is used in {@link GotBiomeSource}
+     * so biome boundaries and terrain boundaries are always in sync.
+     *
+     * <p>0.5 = water biome fills exactly the painted pixel area.
+     * Lowering this value expands water biomes outward into the surrounding land
+     * pixels — useful to widen rivers so the river biome fills the full carved bed
+     * rather than stopping at the raw pixel edge.
+     *
+     * <ul>
+     *   <li>0.50 — biome matches painted pixel exactly</li>
+     *   <li>0.38 — river biome widens by ~½ pixel (≈64 blocks at MAP_SCALE=128)</li>
+     *   <li>0.25 — river biome widens by ~1 full pixel (≈128 blocks)</li>
+     * </ul>
      */
-    private static final float NOISE_RAMP_WIDTH     = 0.07f;
+    public static final float WATER_THRESHOLD = 0.38f;
+
+    // ── Terrain noise parameters ──────────────────────────────────────────
+    // Five octaves of fBm give a natural rough-to-fine hierarchy.
+    // The coarse octave uses ridged noise (1 - |n|) to produce sharper
+    // ridgelines and valley floors rather than soft rounded bumps.
+    // Quintic interpolation (6t⁵-15t⁴+10t³) zero-clamps both the first AND
+    // second derivatives at lattice edges, breaking up the subtle grid
+    // regularity that smooth (3t²-2t³) interpolation leaves behind.
+
+    private static final float NZ_COARSE_FREQ  = 1f / 280f;  // broad landscape — longer wavelength for wider mountain bases
+    private static final float NZ_MID_FREQ     = 1f / 110f;  // hill-scale — slightly longer for smoother faces
+    private static final float NZ_DETAIL_FREQ  = 1f / 52f;   // face detail — pulled back for less jaggedness
+    private static final float NZ_FINE_FREQ    = 1f / 24f;   // rock-scale bumps — softer
+    private static final float NZ_MICRO_FREQ   = 1f / 12f;   // surface roughness — coarser than before
+
+    // Octave weights — sum to 1.0. Shifted toward coarse/mid, fine/micro pulled way back
+    private static final float W_COARSE  = 0.45f;
+    private static final float W_MID     = 0.32f;
+    private static final float W_DETAIL  = 0.14f;
+    private static final float W_FINE    = 0.06f;
+    private static final float W_MICRO   = 0.03f;
+
+    // ── Valley carving noise ──────────────────────────────────────────────
+    // A separate low-frequency noise is used to carve valleys and passes into
+    // mountain terrain.  Where this noise is negative (roughly half the area)
+    // the terrain is pushed downward, creating the snaking valleys and saddle
+    // passes seen in real alpine ranges.  The carving is scaled by how high
+    // the blended terrain already is — flat lowlands are barely touched,
+    // while mountain peaks are carved most aggressively.
+    //
+    // VALLEY_FREQ controls how wide the valleys are.  1/320 → valleys
+    // roughly 160-400 blocks across, consistent with a plausible mountain pass.
+    // VALLEY_DEPTH is the maximum downward carve in blocks when noise = -1.
+    // VALLEY_THRESHOLD is how low the noise must go before carving begins —
+    // 0.0 means exactly half the terrain is carved (valley floors and ridges
+    // appear in roughly equal measure, as in image 2/3).
+
+    private static final float VALLEY_FREQ      = 1f / 320f;
+    private static final float VALLEY_DEPTH     = 115f;  // max carve depth in blocks (was 85)
+    private static final float VALLEY_THRESHOLD = 0.05f; // noise above this = ridge; below = valley
+
+    // ── Domain warp parameters ────────────────────────────────────────────
+    // Two-octave warp displaces the pixel-space coordinate before any biomemap
+    // lookup — terrain height AND biome assignment both call warpPixelCoord()
+    // so they always use the identical displaced position and stay in sync.
+    //
+    // Amplitudes are in *pixel* units (1 px = MAP_SCALE blocks).
+    // Coarse warp: broad landscape distortion (~1 800 blocks / cycle).
+    // Fine warp:   medium-scale edge roughness (~600 blocks / cycle).
+    // Total max displacement ≈ 1.1 + 0.4 = 1.5 px ≈ 192 blocks — enough to
+    // visibly curve biome edges and break grid alignment without
+    // grossly relocating features.
+
+    private static final float WARP_COARSE_AMP  = 0.85f;  // reduced — wider σ needs less warp to avoid over-scrambling biome edges
+    private static final float WARP_COARSE_FREQ = 1f / 14f;   // in pixel space
+    private static final float WARP_FINE_AMP    = 0.30f;
+    private static final float WARP_FINE_FREQ   = 1f / 4.5f;  // in pixel space
+
+    // ── Water-bed noise parameters ────────────────────────────────────────
+    // Low-amplitude noise added to the bicubic waterY so river beds and ocean
+    // floors have gentle undulation instead of being dead flat.
+    // Amplitude is intentionally small — rivers ±3 blocks, oceans ±5 blocks.
+
+    private static final float WB_FREQ = 1f / 55f;   // world-space frequency
+    private static final float WB_AMP  = 4.5f;       // blocks of vertical variation
+
+    // ── Multi-octave fBm ──────────────────────────────────────────────────
 
     /**
-     * Noise fades to zero above this — high peaks keep their painted silhouette.
-     * Kept at 0.85.
+     * Five-octave fBm terrain noise.
+     *
+     * <p>Coarse octave is <em>ridged</em> ({@code 1 - |n|}) to produce sharp
+     * ridgelines and defined valley floors — natural-looking rather than the
+     * soft sinusoidal hills that standard value noise tends to produce.
+     * Remaining octaves add progressive detail down to single-block roughness.
+     *
+     * @return noise in approximately [−1, 1]
      */
-    private static final float NOISE_FADE_T         = 0.85f;
+    private static float terrainNoise(int x, int z) {
+        // Ridged coarse — maps [-1,1] → [0,1] with a sharp peak at 0
+        float coarse = quinticNoise(x * NZ_COARSE_FREQ,            z * NZ_COARSE_FREQ,            0x3F9A1B);
+        float ridged = 1f - Math.abs(coarse);          // sharp ridgelines
+        ridged = ridged * 2f - 1f;                     // re-centre to [-1,1]
 
-    /** Medium layer: broad smooth rolling bumps. ~110 block wavelength. */
-    private static final float NOISE_FREQ_MED       = 1f / 110f;
+        float mid    = quinticNoise(x * NZ_MID_FREQ    + 31.7f,    z * NZ_MID_FREQ    + 17.3f,    0x7C4D2E);
+        float detail = quinticNoise(x * NZ_DETAIL_FREQ + 93.1f,    z * NZ_DETAIL_FREQ + 57.9f,    0xA18C55);
+        float fine   = quinticNoise(x * NZ_FINE_FREQ   + 214.3f,   z * NZ_FINE_FREQ   + 138.7f,   0xD3621F);
+        float micro  = quinticNoise(x * NZ_MICRO_FREQ  + 407.9f,   z * NZ_MICRO_FREQ  + 293.5f,   0x4E8B3C);
 
-    /** Fine layer: mid-scale knolls and hollows. ~50 block wavelength. */
-    private static final float NOISE_FREQ_FINE      = 1f / 50f;
+        return ridged * W_COARSE
+                + mid    * W_MID
+                + detail * W_DETAIL
+                + fine   * W_FINE
+                + micro  * W_MICRO;
+    }
 
-    /** Micro layer: surface roughness / contour steps. ~22 block wavelength. */
-    private static final float NOISE_FREQ_MICRO     = 1f / 22f;
-
-    // ── Valley / pass system ─────────────────────────────────────────────
+    // ── Domain warp ───────────────────────────────────────────────────────
 
     /**
-     * Long-wavelength ridge noise that defines valley axes (~300 block spacing).
-     * Lower = wider valleys (more of the ridge set becomes valley floor).
+     * Displaces a float pixel-space coordinate {@code (cx, cz)} using
+     * two-octave domain warp before any biomemap lookup.
+     *
+     * <p>Both {@link #computeSurfaceY} (terrain) and {@link GotBiomeSource}
+     * (biome assignment) must call this with the same pixel coordinate so
+     * that biome boundaries and terrain features are always co-located.
+     *
+     * @return float[2] { warpedCx, warpedCz }
      */
-    private static final float VALLEY_FREQ_PRIMARY  = 1f / 300f;
+    public static float[] warpPixelCoord(float cx, float cz) {
+        float wx = WARP_COARSE_AMP * quinticNoise(cx * WARP_COARSE_FREQ,          cz * WARP_COARSE_FREQ,          0x2B8F4A)
+                + WARP_FINE_AMP   * quinticNoise(cx * WARP_FINE_FREQ   + 17.3f,  cz * WARP_FINE_FREQ   + 53.1f,  0xC74E1D);
+        float wz = WARP_COARSE_AMP * quinticNoise(cx * WARP_COARSE_FREQ +  5.7f,  cz * WARP_COARSE_FREQ + 89.2f,  0x6A3FB8)
+                + WARP_FINE_AMP   * quinticNoise(cx * WARP_FINE_FREQ   + 71.5f,  cz * WARP_FINE_FREQ   + 28.9f,  0xF0A235);
+        return new float[]{ cx + wx, cz + wz };
+    }
+
+    // ── Water-bed noise ───────────────────────────────────────────────────
 
     /**
-     * Secondary ridge at a slightly different scale gives forking and
-     * irregular width variation.
+     * Small-amplitude noise added to the bicubic waterY so river beds and
+     * ocean floors have gentle undulation instead of being perfectly flat.
+     * Uses a single mid-frequency quintic octave — coarser and quieter than
+     * the land noise so water still reads as water.
+     *
+     * @return offset in blocks, roughly in [−{@value WB_AMP}, +{@value WB_AMP}]
      */
-    private static final float VALLEY_FREQ_SECONDARY = 1f / 220f;
+    private static float waterBedNoise(int worldX, int worldZ) {
+        float n = quinticNoise(worldX * WB_FREQ + 155.3f, worldZ * WB_FREQ + 211.7f, 0x8D5C29);
+        // Second octave for a little more character
+        n += 0.4f * quinticNoise(worldX * WB_FREQ * 2.3f + 73.1f, worldZ * WB_FREQ * 2.3f + 44.6f, 0x3E7F51);
+        n /= 1.4f; // normalise back to [-1, 1]
+        return n * WB_AMP;
+    }
+
+
 
     /**
-     * Domain-warp amplitude (in blocks) applied before sampling the ridge noise.
-     * Causes valley axes to snake rather than run straight.
+     * Valley carving noise in [−1, 1].
+     *
+     * <p>Two-octave fBm at low frequency.  The second octave is offset and
+     * rotated (swapped x/z) to break symmetry — otherwise valleys would run
+     * in axis-aligned corridors.  The result has natural-feeling meandering
+     * valley lines that cross each other at oblique angles, producing the
+     * snaking pass network seen in real mountain ranges.
+     *
+     * <p>Where the result is negative the caller subtracts a height contribution
+     * proportional to how far below zero the value is, scaled by terrain height.
+     * Positive values are left alone — ridges are shaped entirely by the main
+     * fBm, only valleys are actively carved.
      */
-    private static final float VALLEY_WARP_AMP      = 60f;
-
-    /** Frequency of the domain-warp noise itself (~180 block wavelength). */
-    private static final float VALLEY_WARP_FREQ     = 1f / 180f;
+    private static float valleyNoise(int x, int z) {
+        float n1 = quinticNoise(x * VALLEY_FREQ          + 503.7f, z * VALLEY_FREQ          + 119.3f, 0x2C5F8A);
+        // Second octave: swap x/z so valley lines run at oblique angles
+        float n2 = quinticNoise(z * VALLEY_FREQ * 1.37f  + 201.1f, x * VALLEY_FREQ * 1.37f  + 378.5f, 0xB14E0D);
+        return (n1 * 0.65f + n2 * 0.35f);
+    }
 
     /**
-     * Width threshold: the ridge field is in [-1,1]; any location where
-     * |ridge| < VALLEY_THRESHOLD is considered inside a valley.
-     * 0.30 ≈ roughly 30% of the space becomes valley corridor.
+     * 2D value noise in [−1, 1] using <em>quintic</em> interpolation
+     * ({@code 6t⁵ − 15t⁴ + 10t³}).
+     *
+     * <p>Quintic curves zero both the first and second derivatives at lattice
+     * boundaries, eliminating the faint grid-aligned ridges and flat spots that
+     * smoothstep (3t²−2t³) leaves in multi-octave terrain.
      */
-    private static final float VALLEY_THRESHOLD     = 0.30f;
+    static float quinticNoise(float x, float z, int seed) {
+        int   ix = (int) Math.floor(x);
+        int   iz = (int) Math.floor(z);
+        float fx = x - ix;
+        float fz = z - iz;
+        // Quintic fade — C² continuity, no second-derivative kink at grid edges
+        float ux = fx * fx * fx * (fx * (fx * 6f - 15f) + 10f);
+        float uz = fz * fz * fz * (fz * (fz * 6f - 15f) + 10f);
+        float v00 = noiseHash(ix,     iz,     seed);
+        float v10 = noiseHash(ix + 1, iz,     seed);
+        float v01 = noiseHash(ix,     iz + 1, seed);
+        float v11 = noiseHash(ix + 1, iz + 1, seed);
+        return lerp(uz, lerp(ux, v00, v10), lerp(ux, v01, v11));
+    }
 
-    /**
-     * Maximum Y blocks carved out at the valley floor (at the deepest point).
-     * Combined with the elevation ramp this produces ~40–65 block passes.
-     */
-    private static final float VALLEY_MAX_DEPTH     = 55f;
+    /** Keep the old smoothstep version; used by nothing now but available for reference. */
+    static float valueNoise(float x, float z, int seed) {
+        int   ix = (int) Math.floor(x);
+        int   iz = (int) Math.floor(z);
+        float fx = x - ix;
+        float fz = z - iz;
+        float ux = fx * fx * (3f - 2f * fx);
+        float uz = fz * fz * (3f - 2f * fz);
+        float v00 = noiseHash(ix,     iz,     seed);
+        float v10 = noiseHash(ix + 1, iz,     seed);
+        float v01 = noiseHash(ix,     iz + 1, seed);
+        float v11 = noiseHash(ix + 1, iz + 1, seed);
+        return lerp(uz, lerp(ux, v00, v10), lerp(ux, v01, v11));
+    }
 
-    /** Elevation at which valley carving starts fading in (was flat plains below). */
-    private static final float VALLEY_ELEV_MIN      = 0.26f;
-
-    /** Elevation at which valley carving fades out again (near peak, keep silhouette). */
-    private static final float VALLEY_ELEV_MAX      = 0.80f;
-
-    /** Width of the fade zone at both ends of the elevation envelope. */
-    private static final float VALLEY_ELEV_FADE     = 0.10f;
+    // ── Codec / vanilla delegate ──────────────────────────────────────────
 
     private final Holder<NoiseGeneratorSettings> settings;
     private final NoiseBasedChunkGenerator vanilla;
@@ -144,10 +331,13 @@ public final class GotChunkGenerator extends ChunkGenerator {
     @Override
     protected @NotNull MapCodec<? extends ChunkGenerator> codec() { return CODEC; }
 
+    // ── Block fill ────────────────────────────────────────────────────────
+
     @Override
     public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(
             @NotNull Blender blender, @NotNull RandomState random,
             @NotNull StructureManager structures, @NotNull ChunkAccess chunk) {
+
         NoiseSettings noise = settings.value().noiseSettings();
         int minY = noise.minY();
         int maxY = minY + noise.height();
@@ -158,7 +348,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
             for (int lz = 0; lz < 16; lz++) {
                 int wx = pos.getBlockX(lx);
                 int wz = pos.getBlockZ(lz);
-                int surfaceY = elevToY(HeightmapLoader.getElevationAtWorld(wx, wz), wx, wz);
+                int surfaceY = computeSurfaceY(wx, wz);
 
                 for (int y = minY; y < maxY; y++) {
                     BlockState state;
@@ -178,216 +368,221 @@ public final class GotChunkGenerator extends ChunkGenerator {
         vanilla.buildSurface(region, structures, random, chunk);
     }
 
-    /**
-     * Zone layout:
-     *   t <= -0.05          Zone 1  ocean floor        (Y 40–55)
-     *   -0.05 < t <= 0      Zone 2  coastal blend      (Y 40–61)
-     *   0 < t <= BEACH_T    Zone 3  beach              (Y 61–63)
-     *   BEACH_T < t <= 1    Zone 4  land               (Y 63–280) + terrain noise
-     *
-     * Noise amplitude summary:
-     *   Coast buffer (BEACH_T..BEACH_T+0.07) → 0   (clean shore, no cliff steps)
-     *   Flat lowland (t < 0.12)              → up to 23 blocks
-     *   Mid slopes   (0.12 .. 0.85)          → 16 blocks
-     *   High peaks   (> 0.85)                → fades to 0
-     */
-    static int elevToY(float t, int worldX, int worldZ) {
-        final float OV = HeightmapLoader.OCEAN_VALUE; // -0.05
 
-        // Zone 1 — ocean floor, raised near land for river shallows
-        if (t <= OV) {
-            float dist = HeightmapLoader.nearestLandDistanceF(worldX, worldZ, RIVER_PROX_RADIUS);
-            if (dist <= RIVER_PROX_RADIUS) {
-                float proximity = smoothstep(1f - dist / RIVER_PROX_RADIUS);
-                return Mth.floor(Mth.lerp(proximity, OCEAN_FLOOR, RIVER_FLOOR_Y));
+    // ── Surface Y computation ─────────────────────────────────────────────
+
+    /**
+     * Computes the terrain surface Y at (worldX, worldZ).
+     *
+     * <p><b>Water path</b>: Uses Catmull-Rom bicubic interpolation over the 4×4
+     * pixel neighbourhood to decide if a position is inside a river/ocean.
+     * The 0.5 threshold on the interpolated value gives smooth, curved edges
+     * instead of blocky pixel-aligned rectangles.  Returns flat water-bed Y.
+     *
+     * <p><b>Land path</b>: Gaussian-weighted blend over a (2×{@value SAMPLE_RADIUS}+1)²
+     * pixel window, land neighbours only, with {@link #HEIGHT_STRETCH} applied.
+     */
+    public static int computeSurfaceY(int worldX, int worldZ) {
+        if (!BiomemapLoader.isLoaded()) return SEA_LEVEL;
+
+        // Raw pixel coord, then domain-warped so terrain and biome boundaries
+        // are organically curved and always in sync (GotBiomeSource uses the
+        // identical warpPixelCoord call).
+        float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getWidth()  * 0.5f;
+        float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getHeight() * 0.5f;
+        float[] warped = warpPixelCoord(rawCx, rawCz);
+        float cx = warped[0];
+        float cz = warped[1];
+        int icx = (int) Math.floor(cx);
+        int icz = (int) Math.floor(cz);
+
+        // Bicubic water check: interpolate water/land mask over a 4x4 pixel grid
+        // using Catmull-Rom splines so river boundaries are smooth curves,
+        // not pixel staircases.  Threshold at 0.5 = same area, smooth edges.
+        float[] waterResult = bicubicWaterFraction(cx, cz);
+        float waterFrac = waterResult[0];
+        float waterY    = waterResult[1];
+        if (waterFrac >= WATER_THRESHOLD) {
+            // Add gentle undulation to river beds and ocean floors.
+            float bedNoise = waterBedNoise(worldX, worldZ);
+            return Mth.floor(Mth.clamp(waterY + bedNoise, 10f, SEA_LEVEL - 1f));
+        }
+
+        // Land path: steep Gaussian blend
+        float totalBaseY  = 0f;
+        float totalScale  = 0f;
+        float totalWeight = 0f;
+
+        for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx++) {
+            for (int dz = -SAMPLE_RADIUS; dz <= SAMPLE_RADIUS; dz++) {
+                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz);
+                GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
+                if (p.isWater) continue;
+
+                float ddx   = (icx + dx) - cx;
+                float ddz   = (icz + dz) - cz;
+                float dist2 = ddx * ddx + ddz * ddz;
+                float w = (float) Math.exp(-dist2 * GAUSSIAN_INV_2S2);
+                w = (float) Math.pow(w, HEIGHT_STRETCH);
+
+                totalBaseY  += p.baseY * w;
+                totalScale  += p.scale * w;
+                totalWeight += w;
             }
-            return OCEAN_FLOOR;
         }
 
-        // Zone 2 — coastal ease-in
-        if (t <= 0f) {
-            float u = (t - OV) / -OV;
-            float dist = HeightmapLoader.nearestLandDistanceF(worldX, worldZ, RIVER_PROX_RADIUS);
-            float zoneOneFloor = (dist <= RIVER_PROX_RADIUS)
-                    ? Mth.lerp(smoothstep(1f - dist / RIVER_PROX_RADIUS), OCEAN_FLOOR, RIVER_FLOOR_Y)
-                    : OCEAN_FLOOR;
-            return Mth.floor(Mth.lerp(easeIn(u, COASTAL_EASE_POWER), zoneOneFloor, SEA_LEVEL));
+        if (totalWeight <= 0f) return SEA_LEVEL;
+
+        float blendedBaseY = totalBaseY / totalWeight;
+        float blendedScale = totalScale / totalWeight;
+        float noise = terrainNoise(worldX, worldZ);
+        float landY = blendedBaseY + noise * blendedScale * GotBiomeTerrainParams.AMP_SMOOTH;
+
+        // Valley carving — only meaningful in elevated terrain.
+        // valleyNoise returns [-1, 1].  Where it dips below VALLEY_THRESHOLD,
+        // terrain is pushed downward proportional to (a) how negative the noise is
+        // and (b) how high above sea level the current terrain is.
+        // This means lowlands and plains are barely affected (they're already near
+        // sea level so there's little height to remove), while mountain terrain is
+        // actively carved into ridges, faces, and saddle passes.
+        // The Gaussian blend (σ=1.6) ensures the carved valleys naturally continue
+        // through biome boundaries — a valley in north_mountains transitions
+        // smoothly into a valley in the adjacent north_hills or frostfangs without
+        // any seam.
+        float vn = valleyNoise(worldX, worldZ);
+        if (vn < VALLEY_THRESHOLD) {
+            // How deep into "valley territory" are we?  0 at threshold, 1 at noise=-1.
+            float valleyT = (VALLEY_THRESHOLD - vn) / (1f + VALLEY_THRESHOLD);
+            // Smoothstep for a gentler valley floor / less knife-edge transition
+            valleyT = valleyT * valleyT * (3f - 2f * valleyT);
+            // Height above sea — carving scales with elevation, so flatlands unchanged
+            float heightAboveSea = Math.max(0f, landY - SEA_LEVEL);
+            // Carve fraction: max out at 1.0 for very high terrain, taper to 0 near sea
+            float carveFrac = Math.min(1f, heightAboveSea / 80f);
+            landY -= valleyT * VALLEY_DEPTH * carveFrac;
         }
 
-        // Zone 3 — beach
-        if (t <= BEACH_T) {
-            return Mth.floor(Mth.lerp(smoothstep(t / BEACH_T), SEA_LEVEL, BEACH_TOP_Y));
+        // Height-proportional steepness — the higher the terrain the more aggressively
+        // the noise amplitude is amplified.  Below sea level nothing changes; above it
+        // a smooth ramp multiplies the noise contribution so high peaks are sharp and
+        // craggy while lowlands stay gently rolling.
+        // elevFrac: 0 at sea level, 1 at baseY+100 (into mountain territory).
+        // extraAmp at elevFrac=1 → noise scaled up by an additional 85 blocks,
+        // giving high ridges a noticeably steeper, more angular profile (was 55).
+        float elevFrac = Math.min(1f, Math.max(0f, (landY - SEA_LEVEL) / 100f));
+        elevFrac = elevFrac * elevFrac; // quadratic — effect kicks in harder at real altitude
+        landY += noise * blendedScale * elevFrac * 85f;
+
+        // Bank slope: blend land height down toward waterY as we approach the water
+        // boundary.  waterFrac runs 0 (pure land) to WATER_THRESHOLD (water edge).
+        // We start pulling the terrain down at BANK_START and reach waterY exactly
+        // at WATER_THRESHOLD.  This produces a natural sloping bank.
+        //
+        // BANK_START is set well below WATER_THRESHOLD so the slope is gradual enough
+        // that Mth.floor() doesn't produce visible stair-steps in the transition zone.
+        final float BANK_START = WATER_THRESHOLD - 0.23f; // begin slope ~0.23 frac units before water edge
+        if (waterFrac > BANK_START) {
+            // t goes 0->1 as waterFrac goes BANK_START->WATER_THRESHOLD
+            float t = (waterFrac - BANK_START) / (WATER_THRESHOLD - BANK_START);
+            // Smoothstep so the transition is gentle at both ends
+            t = t * t * (3f - 2f * t);
+            landY = landY + t * (waterY - landY);
         }
 
-        // Zone 4 — land
-        float baseY = Mth.lerp(smoothstep((t - BEACH_T) / (1f - BEACH_T)), BEACH_TOP_Y, LAND_MAX_Y);
+        return Mth.floor(landY);
+    }
 
-        float amp = noiseAmplitude(t);
-        float noiseOffset = 0f;
-        if (amp > 0.5f) {
-            noiseOffset = terrainNoise(worldX, worldZ) * amp;
+    // ── Bicubic water-fraction helpers ────────────────────────────────────
+
+    /**
+     * Computes a smooth, continuous water fraction and interpolated water-bed Y
+     * for position {@code (cx, cz)} using <em>Catmull-Rom bicubic interpolation</em>
+     * over the 4×4 pixel neighbourhood of the biomemap.
+     *
+     * <p><b>Water fraction</b>: Each pixel is treated as 0 (land) or 1 (water).
+     * Catmull-Rom interpolation produces smooth, curved river/ocean boundaries.
+     *
+     * <p><b>Water-bed Y</b>: Rather than averaging all nearby water pixels
+     * (which causes hard cliffs at river→ocean and ocean→deep-ocean transitions),
+     * we bicubically interpolate the actual {@code baseY} of water pixels
+     * exactly like the water-fraction mask. This means the sea floor slopes
+     * smoothly between river bed (Y≈54), ocean (Y≈36), and deep ocean (Y≈22),
+     * eliminating the terracing and abrupt depth changes visible in-game.
+     *
+     * @return float[2]: [waterFraction ∈ [0,1], bicubic-interpolated waterBedY]
+     */
+    private static float[] bicubicWaterFraction(float cx, float cz) {
+        int ix = (int) Math.floor(cx);
+        int iz = (int) Math.floor(cz);
+        // Sub-pixel offset within the current pixel (0..1).
+        float fx = cx - ix;
+        float fz = cz - iz;
+
+        // Sample 4×4 grid: columns ix-1..ix+2, rows iz-1..iz+2
+        // For each cell store both the water mask (0 or 1) and the water-bed Y.
+        // Land pixels contribute 0 to the water mask and SEA_LEVEL to the Y grid
+        // (their Y is irrelevant where waterFrac < 0.5, but a neutral value avoids
+        // pulling the interpolated Y down at the very edge of a bank).
+        float[][] waterGrid = new float[4][4];
+        float[][] yGrid     = new float[4][4];
+        for (int dz = 0; dz < 4; dz++) {
+            for (int dx = 0; dx < 4; dx++) {
+                int color = BiomemapLoader.getRawPixel(ix - 1 + dx, iz - 1 + dz);
+                GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
+                waterGrid[dz][dx] = p.isWater ? 1.0f : 0.0f;
+                // For water pixels use actual bed Y; for land use SEA_LEVEL so the
+                // bicubic Y interpolation stays at a sensible neutral near shore.
+                yGrid[dz][dx] = p.isWater ? p.baseY : (float) SEA_LEVEL;
+            }
         }
 
-        // Valley / pass carving — snaking corridors between mountain flanks
-        float valleyCarve = valleyDepression(worldX, worldZ, t);
+        // Bicubic interpolation of the water-mask fraction.
+        float[] rowFrac = new float[4];
+        for (int dz = 0; dz < 4; dz++) {
+            rowFrac[dz] = catmullRom(fx,
+                    waterGrid[dz][0], waterGrid[dz][1],
+                    waterGrid[dz][2], waterGrid[dz][3]);
+        }
+        float frac = Mth.clamp(catmullRom(fz,
+                rowFrac[0], rowFrac[1], rowFrac[2], rowFrac[3]), 0f, 1f);
 
-        float finalY = baseY + noiseOffset - valleyCarve;
-        finalY = Math.max(finalY, BEACH_TOP_Y + 1f);
-        return Mth.floor(finalY);
+        // Bicubic interpolation of the water-bed Y.
+        // This smoothly transitions the sea floor between river, ocean, and deep ocean
+        // pixels rather than snapping between their discrete baseY values.
+        float[] rowY = new float[4];
+        for (int dz = 0; dz < 4; dz++) {
+            rowY[dz] = catmullRom(fx,
+                    yGrid[dz][0], yGrid[dz][1],
+                    yGrid[dz][2], yGrid[dz][3]);
+        }
+        float waterY = catmullRom(fz, rowY[0], rowY[1], rowY[2], rowY[3]);
+        // Clamp to valid underground range (deep ocean floor to sea level).
+        waterY = Mth.clamp(waterY, 10f, (float) SEA_LEVEL);
+
+        return new float[]{ frac, waterY };
     }
 
     /**
-     * Noise amplitude envelope:
+     * Catmull-Rom spline evaluation at parameter {@code t} ∈ [0, 1].
      *
-     *   [BEACH_T .. BEACH_T + NOISE_RAMP_WIDTH]  smoothstep ramp 0 → full
-     *   [rampEnd .. NOISE_FLAT_FADE_T]            NOISE_AMP_BASE + NOISE_AMP_FLAT_BONUS (23)
-     *   [NOISE_FLAT_FADE_T .. NOISE_FADE_T]       NOISE_AMP_BASE (16)
-     *   [NOISE_FADE_T .. 1.0]                     smoothstep fade to 0
+     * <p>p1 and p2 are the two surrounding knot values; p0 and p3 are the
+     * outer neighbours used to compute tangents.  This gives C¹ continuity
+     * at knot boundaries, producing smooth curves without requiring explicit
+     * tangent specification.
      */
-    private static float noiseAmplitude(float t) {
-        if (t <= BEACH_T) return 0f;
-        if (t >= 1.0f)    return 0f;
-
-        // Coastal ramp-in
-        float rampEnd = BEACH_T + NOISE_RAMP_WIDTH;
-        float rampFactor;
-        if (t < rampEnd) {
-            float u = (t - BEACH_T) / NOISE_RAMP_WIDTH;
-            rampFactor = smoothstep(u);
-        } else {
-            rampFactor = 1f;
-        }
-
-        // Peak fade-out
-        float fadeFactor;
-        if (t >= NOISE_FADE_T) {
-            float u = (t - NOISE_FADE_T) / (1f - NOISE_FADE_T);
-            fadeFactor = 1f - smoothstep(u);
-        } else {
-            fadeFactor = 1f;
-        }
-
-        // Flat-terrain bonus — fades out above NOISE_FLAT_FADE_T
-        float bonus = 0f;
-        if (t < NOISE_FLAT_FADE_T) {
-            float u = 1f - (t - BEACH_T) / (NOISE_FLAT_FADE_T - BEACH_T);
-            u = Math.max(0f, u);
-            bonus = smoothstep(u) * NOISE_AMP_FLAT_BONUS;
-        }
-
-        return (NOISE_AMP_BASE + bonus) * rampFactor * fadeFactor;
+    private static float catmullRom(float t, float p0, float p1, float p2, float p3) {
+        float t2 = t * t;
+        float t3 = t2 * t;
+        return 0.5f * (
+                (2f * p1)
+                        + (-p0 + p2)           * t
+                        + (2f*p0 - 5f*p1 + 4f*p2 - p3) * t2
+                        + (-p0 + 3f*p1 - 3f*p2 + p3)   * t3
+        );
     }
 
-    /**
-     * Three-layer value noise. Returns approximately [-1, 1].
-     */
-    private static float terrainNoise(int worldX, int worldZ) {
-        float med   = valueNoise(worldX * NOISE_FREQ_MED,
-                worldZ * NOISE_FREQ_MED,    0x3F9A1B);
-
-        float fine  = valueNoise(worldX * NOISE_FREQ_FINE  + 31.7f,
-                worldZ * NOISE_FREQ_FINE  + 17.3f,   0x7C4D2E);
-
-        float micro = valueNoise(worldX * NOISE_FREQ_MICRO + 93.1f,
-                worldZ * NOISE_FREQ_MICRO + 57.9f,   0xA18C55);
-
-        return med * 0.40f + fine * 0.35f + micro * 0.25f;
-    }
-
-    /**
-     * Computes how many Y-blocks to carve downward at (worldX, worldZ) for
-     * the valley / mountain-pass system.
-     *
-     * <p>Algorithm:
-     * <ol>
-     *   <li>Domain-warp the sample point using low-frequency noise so valley
-     *       axes curve and snake rather than run straight.</li>
-     *   <li>Sample two overlapping ridge noise fields (|noise| → ridgeline).
-     *       Valley floors sit where a ridge field is near zero.</li>
-     *   <li>Blend the two ridges: taking the max valley signal allows the two
-     *       systems to produce both parallel runs and forking junctions.</li>
-     *   <li>Apply a smooth U-shaped cross-section profile so valley floors are
-     *       flat and sides taper gradually into the mountain slope.</li>
-     *   <li>Ramp in/out with elevation so valleys only appear on mountain flanks
-     *       (not in plains or at peaks where the painted silhouette should
-     *       dominate).</li>
-     * </ol>
-     *
-     * @param t elevation fraction [0,1] from HeightmapLoader
-     * @return blocks to subtract from baseY (≥ 0)
-     */
-    private static float valleyDepression(int worldX, int worldZ, float t) {
-        // Only carve on mid-elevation terrain — mountain flanks only
-        if (t <= VALLEY_ELEV_MIN || t >= VALLEY_ELEV_MAX) return 0f;
-
-        // ── Domain warp: displace sample coords so valleys snake ─────────
-        float wx = valueNoise(worldX * VALLEY_WARP_FREQ,
-                worldZ * VALLEY_WARP_FREQ + 5.3f,  0x2C1A9E) * VALLEY_WARP_AMP;
-        float wz = valueNoise(worldX * VALLEY_WARP_FREQ + 19.7f,
-                worldZ * VALLEY_WARP_FREQ + 34.1f, 0x8E3B7C) * VALLEY_WARP_AMP;
-
-        float sx = (worldX + wx) * VALLEY_FREQ_PRIMARY;
-        float sz = (worldZ + wz) * VALLEY_FREQ_PRIMARY;
-
-        // ── Primary ridge: abs(noise) → 0 at ridge axis, 1 at flanks ────
-        float r1 = Math.abs(valueNoise(sx, sz, 0xC7A241));
-
-        // ── Secondary ridge: different scale + offset for forks ──────────
-        float sx2 = (worldX + wz * 0.7f) * VALLEY_FREQ_SECONDARY + 73.9f;
-        float sz2 = (worldZ + wx * 0.7f) * VALLEY_FREQ_SECONDARY + 51.3f;
-        float r2  = Math.abs(valueNoise(sx2, sz2, 0x4E8FB3));
-
-        // ── Valley signal: positive where inside a valley corridor ───────
-        // Use the minimum of both ridge values so corridors can follow
-        // either system (taking min keeps both sets of valleys active)
-        float ridgeMin = Math.min(r1, r2);
-
-        float raw = VALLEY_THRESHOLD - ridgeMin;         // >0 inside valley
-        if (raw <= 0f) return 0f;
-
-        // Normalise to [0,1] across the valley width
-        float normalized = raw / VALLEY_THRESHOLD;
-
-        // Smooth U-shaped cross section: flat floor, gradual shoulder taper.
-        // smoothstep³ gives a flat centre and steep-then-gentle sides.
-        float profile = smoothstep(smoothstep(normalized));
-
-        // ── Elevation envelope: fade in at VALLEY_ELEV_MIN, fade out at VALLEY_ELEV_MAX
-        float elevFade;
-        if (t < VALLEY_ELEV_MIN + VALLEY_ELEV_FADE) {
-            elevFade = smoothstep((t - VALLEY_ELEV_MIN) / VALLEY_ELEV_FADE);
-        } else if (t > VALLEY_ELEV_MAX - VALLEY_ELEV_FADE) {
-            elevFade = smoothstep((VALLEY_ELEV_MAX - t) / VALLEY_ELEV_FADE);
-        } else {
-            elevFade = 1f;
-        }
-
-        // ── Elevation-scaling: deeper carve at higher elevations so passes
-        //    through tall mountains are dramatic, lowland valleys are gentle.
-        float elevScale = smoothstep((t - VALLEY_ELEV_MIN) / (VALLEY_ELEV_MAX - VALLEY_ELEV_MIN));
-
-        return profile * elevFade * (0.4f + elevScale * 0.6f) * VALLEY_MAX_DEPTH;
-    }
-
-    /** Smooth 2D value noise, bilinearly interpolated with smoothstep. [-1, 1]. */
-    private static float valueNoise(float x, float z, int seed) {
-        int   ix = (int) Math.floor(x);
-        int   iz = (int) Math.floor(z);
-        float fx = x - ix;
-        float fz = z - iz;
-
-        float ux = fx * fx * (3f - 2f * fx);
-        float uz = fz * fz * (3f - 2f * fz);
-
-        float v00 = noiseHash(ix,     iz,     seed);
-        float v10 = noiseHash(ix + 1, iz,     seed);
-        float v01 = noiseHash(ix,     iz + 1, seed);
-        float v11 = noiseHash(ix + 1, iz + 1, seed);
-
-        return lerp(uz, lerp(ux, v00, v10), lerp(ux, v01, v11));
-    }
-
-    /** Deterministic integer hash → [-1, 1]. */
     private static float noiseHash(int x, int z, int seed) {
         int n = x * 1619 + z * 31337 + seed * 6971;
         n = (n << 13) ^ n;
@@ -397,27 +592,21 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     private static float lerp(float t, float a, float b) { return a + t * (b - a); }
 
-    private static float easeIn(float t, float power) {
-        t = Mth.clamp(t, 0f, 1f);
-        return (float) Math.pow(t, power);
-    }
-
-    private static float smoothstep(float t) {
-        t = Mth.clamp(t, 0f, 1f);
-        return t * t * (3f - 2f * t);
-    }
+    // ── ChunkGenerator boilerplate ────────────────────────────────────────
 
     @Override
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Types type,
-                             @NotNull LevelHeightAccessor level, @NotNull RandomState random) {
-        return elevToY(HeightmapLoader.getElevationAtWorld(x, z), x, z);
+                             @NotNull LevelHeightAccessor level,
+                             @NotNull RandomState random) {
+        return computeSurfaceY(x, z);
     }
 
     @Override
-    public @NotNull NoiseColumn getBaseColumn(int x, int z, @NotNull LevelHeightAccessor level,
+    public @NotNull NoiseColumn getBaseColumn(int x, int z,
+                                              @NotNull LevelHeightAccessor level,
                                               @NotNull RandomState random) {
         int minY    = level.getMinY();
-        int surface = elevToY(HeightmapLoader.getElevationAtWorld(x, z), x, z);
+        int surface = computeSurfaceY(x, z);
         int sea     = getSeaLevel();
         BlockState[] states = new BlockState[level.getHeight()];
         for (int i = 0; i < states.length; i++) {
@@ -430,9 +619,11 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public void applyCarvers(WorldGenRegion region, long seed, RandomState random,
-                             BiomeManager biomeManager, StructureManager structures,
-                             ChunkAccess chunk) {
+    public void applyCarvers(@NotNull WorldGenRegion region, long seed,
+                             @NotNull RandomState random,
+                             @NotNull BiomeManager biomeManager,
+                             @NotNull StructureManager structures,
+                             @NotNull ChunkAccess chunk) {
         vanilla.applyCarvers(region, seed, random, biomeManager, structures, chunk);
     }
 
@@ -452,11 +643,19 @@ public final class GotChunkGenerator extends ChunkGenerator {
     @Override
     public void addDebugScreenInfo(java.util.List<String> info,
                                    RandomState random, BlockPos pos) {
-        float elev = HeightmapLoader.getElevationAtWorld(pos.getX(), pos.getZ());
-        float amp  = noiseAmplitude(elev);
-        float dist = HeightmapLoader.nearestLandDistanceF(pos.getX(), pos.getZ(), RIVER_PROX_RADIUS);
-        float valley = valleyDepression(pos.getX(), pos.getZ(), elev);
-        info.add(String.format("[GoT] elev=%.3f  Y=%d  sea=%d  noiseAmp=%.1f  valleyCarve=%.1f  landDist=%.1fpx",
-                elev, elevToY(elev, pos.getX(), pos.getZ()), SEA_LEVEL, amp, valley, dist));
+        if (!BiomemapLoader.isLoaded()) return;
+
+        int cx = Math.round(pos.getX() / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getWidth()  * 0.5f);
+        int cz = Math.round(pos.getZ() / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getHeight() * 0.5f);
+        int color = BiomemapLoader.getRawPixel(cx, cz);
+        GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
+        int surfY = computeSurfaceY(pos.getX(), pos.getZ());
+
+        info.add(String.format(
+                "[GoT] Y=%d  base=%.0f  scale=%.2f  %s  sea=%d  px=(%d,%d)  σ=%.1f  stretch=%.1f",
+                surfY, p.baseY, p.scale, p.isWater ? "WATER" : "land",
+                SEA_LEVEL, cx, cz, GAUSSIAN_SIGMA, HEIGHT_STRETCH));
     }
 }

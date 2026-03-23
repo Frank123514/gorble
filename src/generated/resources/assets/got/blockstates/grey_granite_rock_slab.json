@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/grey_granite_rock_slab"
+    },
+    "type=double": {
+      "model": "got:block/grey_granite_rock"
+    },
+    "type=top": {
+      "model": "got:block/grey_granite_rock_slab_top"
+    }
+  }
+}

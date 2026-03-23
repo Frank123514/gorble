@@ -12,6 +12,14 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.effect.MobEffects;
+import net.got.block.GotSeedCropBlock;
+import net.got.block.GotProduceCropBlock;
+import net.got.block.GotBerryBushBlock;
+import net.got.block.OvenBlock;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -695,6 +703,103 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILLOW_SAPLING = woodBlock("willow_sapling", p -> new GotSaplingBlock(GotTreeGrowers.WILLOW, p));
     public static final DeferredBlock<Block> WORMTREE_SAPLING = woodBlock("wormtree_sapling", p -> new GotSaplingBlock(GotTreeGrowers.WORMTREE, p));
 
+    // ── Flowers ──────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> BELLFLOWER         = flowerBlock("bellflower");
+    public static final DeferredBlock<Block> BLACK_LOTUS        = flowerBlock("black_lotus");
+    public static final DeferredBlock<Block> BLOOD_BLOOM        = flowerBlock("blood_bloom");
+    public static final DeferredBlock<Block> COLDSNAPS          = flowerBlock("coldsnaps");
+    public static final DeferredBlock<Block> DRAGONS_BREATH     = flowerBlock("dragons_breath");
+    public static final DeferredBlock<Block> EVENING_STAR       = flowerBlock("evening_star");
+    public static final DeferredBlock<Block> FORGET_ME_NOT      = flowerBlock("forget_me_not");
+    public static final DeferredBlock<Block> FROSTFIRES         = flowerBlock("frostfires");
+    public static final DeferredBlock<Block> GILLYFLOWER        = flowerBlock("gillyflower");
+    public static final DeferredBlock<Block> GINGER             = flowerBlock("ginger");
+    public static final DeferredBlock<Block> GOATHEAD           = flowerBlock("goathead");
+    public static final DeferredBlock<Block> GOLDENCUP          = flowerBlock("goldencup");
+    public static final DeferredBlock<Block> GOLDENROD          = flowerBlock("goldenrod");
+    public static final DeferredBlock<Block> GORSE              = flowerBlock("gorse");
+    public static final DeferredBlock<Block> LADYS_LACE         = flowerBlock("ladys_lace");
+    public static final DeferredBlock<Block> LAVENDER           = flowerBlock("lavender");
+    public static final DeferredBlock<Block> LILAC_FLOWER       = flowerBlock("lilac_flower");
+    public static final DeferredBlock<Block> LIVERWORT          = flowerBlock("liverwort");
+    public static final DeferredBlock<Block> LUNGWORT           = flowerBlock("lungwort");
+    public static final DeferredBlock<Block> MOONBLOOM          = flowerBlock("moonbloom");
+    public static final DeferredBlock<Block> NIGHTSHADE         = flowerBlock("nightshade");
+    public static final DeferredBlock<Block> PENNYROYAL         = flowerBlock("pennyroyal");
+    public static final DeferredBlock<Block> POISON_KISSES      = flowerBlock("poison_kisses");
+    public static final DeferredBlock<Block> THORNBUSH          = flowerBlock("thornbush");
+    public static final DeferredBlock<Block> OPIUM_POPPY        = flowerBlock("opium_poppy");
+    public static final DeferredBlock<Block> GOLDEN_ROSE        = flowerBlock("golden_rose");
+    public static final DeferredBlock<Block> RED_ROSE           = flowerBlock("red_rose");
+    public static final DeferredBlock<Block> WHITE_ROSE         = flowerBlock("white_rose");
+    public static final DeferredBlock<Block> WINTER_ROSE        = flowerBlock("winter_rose");
+    public static final DeferredBlock<Block> SAFFRON_CROCUS     = flowerBlock("saffron_crocus");
+    public static final DeferredBlock<Block> SEDGE              = flowerBlock("sedge");
+    public static final DeferredBlock<Block> SPICEFLOWER        = flowerBlock("spiceflower");
+    public static final DeferredBlock<Block> TANSY              = flowerBlock("tansy");
+    public static final DeferredBlock<Block> THISTLE            = flowerBlock("thistle");
+    public static final DeferredBlock<Block> WILD_RADISH        = flowerBlock("wild_radish");
+
+
+    // ── Oven ──────────────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> OVEN = REGISTRY.registerBlock("oven",
+            p -> new OvenBlock(p),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
+
+    // ── Grasses ──────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> DEVILGRASS         = flowerBlock("devilgrass");
+    public static final DeferredBlock<Block> GHOST_GRASS        = flowerBlock("ghost_grass");
+    public static final DeferredBlock<Block> HRANNA             = flowerBlock("hranna");
+    public static final DeferredBlock<Block> PIPERS_GRASS       = flowerBlock("pipers_grass");
+
+    // ── Wild Crops (naturally spawning, drop seeds/produce when broken) ─────
+    public static final DeferredBlock<Block> WILD_WHEAT = flowerBlock("wild_wheat");
+    public static final DeferredBlock<Block> WILD_OAT = flowerBlock("wild_oat");
+    public static final DeferredBlock<Block> WILD_RYE = flowerBlock("wild_rye");
+    public static final DeferredBlock<Block> WILD_BARLEY = flowerBlock("wild_barley");
+    public static final DeferredBlock<Block> WILD_BEETROOT = flowerBlock("wild_beetroot");
+    public static final DeferredBlock<Block> WILD_COTTON = flowerBlock("wild_cotton");
+    public static final DeferredBlock<Block> WILD_PEPPERCORN = flowerBlock("wild_peppercorn");
+
+    public static final DeferredBlock<Block> WILD_CARROT = flowerBlock("wild_carrot");
+    public static final DeferredBlock<Block> WILD_PARSNIP = flowerBlock("wild_parsnip");
+    public static final DeferredBlock<Block> WILD_ONION = flowerBlock("wild_onion");
+    public static final DeferredBlock<Block> WILD_TURNIP = flowerBlock("wild_turnip");
+    public static final DeferredBlock<Block> WILD_NEEP = flowerBlock("wild_neep");
+    public static final DeferredBlock<Block> WILD_PEAS = flowerBlock("wild_peas");
+    public static final DeferredBlock<Block> WILD_CABBAGE = flowerBlock("wild_cabbage");
+    public static final DeferredBlock<Block> WILD_GARLIC = flowerBlock("wild_garlic");
+    public static final DeferredBlock<Block> WILD_HORSERADISH = flowerBlock("wild_horseradish");
+    public static final DeferredBlock<Block> WILD_LEEK = flowerBlock("wild_leek");
+
+
+
+    // ── Crops — Seed-type (planted with seed, harvests crop + seeds) ──────
+    // Block registered first; seed item wired in via supplier after items load.
+    public static final DeferredBlock<Block> OAT_CROP      = seedCropBlock("oat_crop",      () -> GotModItems.OAT_SEEDS.get());
+    public static final DeferredBlock<Block> RYE_CROP      = seedCropBlock("rye_crop",      () -> GotModItems.RYE_SEEDS.get());
+    public static final DeferredBlock<Block> BARLEY_CROP   = seedCropBlock("barley_crop",   () -> GotModItems.BARLEY_SEEDS.get());
+    public static final DeferredBlock<Block> COTTON_CROP      = seedCropBlock("cotton_crop",      () -> GotModItems.COTTON_SEEDS.get());
+    public static final DeferredBlock<Block> PEPPERCORN_CROP  = seedCropBlock("peppercorn_crop",  () -> GotModItems.PEPPERCORN_SEEDS.get());
+
+    // ── Crops — Produce-type (planted with produce, harvests more produce) ─
+    public static final DeferredBlock<Block> CARROT_CROP  = produceCropBlock("carrot_crop",  () -> GotModItems.CARROT.get());
+    public static final DeferredBlock<Block> PARSNIP_CROP = produceCropBlock("parsnip_crop", () -> GotModItems.PARSNIP.get());
+    public static final DeferredBlock<Block> ONION_CROP   = produceCropBlock("onion_crop",   () -> GotModItems.ONION.get());
+    public static final DeferredBlock<Block> TURNIP_CROP  = produceCropBlock("turnip_crop",  () -> GotModItems.TURNIP.get());
+    public static final DeferredBlock<Block> PEAS_CROP    = produceCropBlock("peas_crop",    () -> GotModItems.PEAS.get());
+    public static final DeferredBlock<Block> CABBAGE_CROP = produceCropBlock("cabbage_crop", () -> GotModItems.CABBAGE.get());
+    public static final DeferredBlock<Block> GARLIC_CROP      = produceCropBlock("garlic_crop",      () -> GotModItems.GARLIC.get());
+    public static final DeferredBlock<Block> NEEP_CROP        = produceCropBlock("neep_crop",        () -> GotModItems.NEEP.get());
+    public static final DeferredBlock<Block> HORSERADISH_CROP = produceCropBlock("horseradish_crop", () -> GotModItems.HORSERADISH.get());
+    public static final DeferredBlock<Block> LEEK_CROP        = produceCropBlock("leek_crop",        () -> GotModItems.LEEK.get());
+
+    // ── Berry Bushes ──────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> BLACKBERRY_BUSH  = berryBushBlock("blackberry_bush",  () -> GotModItems.BLACKBERRIES.get());
+    public static final DeferredBlock<Block> BLUEBERRY_BUSH   = berryBushBlock("blueberry_bush",   () -> GotModItems.BLUEBERRIES.get());
+    public static final DeferredBlock<Block> RASPBERRY_BUSH   = berryBushBlock("raspberry_bush",   () -> GotModItems.RASPBERRIES.get());
+    public static final DeferredBlock<Block> STRAWBERRY_BUSH  = berryBushBlock("strawberry_bush",  () -> GotModItems.STRAWBERRIES.get());
+
     // ── Ores
     // Stone-tier ores (hardness 3, resistance 3) — copper, tin, amber, topaz
     public static final DeferredBlock<Block> COPPER_ORE    = oreStone("copper_ore");
@@ -1297,6 +1402,50 @@ public class GotModBlocks {
     /** Wood block: copies from OAK_PLANKS so no tool requirement, proper wood map-colour etc. */
     private static <B extends Block> DeferredBlock<B> woodBlock(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    }
+
+    /**
+     * Flower block: non-solid, no collision, requires dirt/grass below.
+     * Uses FlowerBlock with no potion effect (MobEffects.ABSORPTION, 0 seconds).
+     */
+    private static DeferredBlock<Block> flowerBlock(String name) {
+        return REGISTRY.registerBlock(name,
+            p -> new FlowerBlock(MobEffects.ABSORPTION, 0, p),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
+    }
+
+    /**
+     * Berry bush (blackberry, blueberry, raspberry, strawberry).
+     * Grows through 4 ages (0-3); ripe at 3. Right-click to harvest without breaking.
+     * Copies properties from vanilla SWEET_BERRY_BUSH.
+     */
+    private static DeferredBlock<Block> berryBushBlock(String name, java.util.function.Supplier<Item> berry) {
+        return REGISTRY.registerBlock(name,
+            p -> new GotBerryBushBlock(berry, p),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH));
+    }
+
+    /**
+     * Seed-type crop (wheat, oat, rye, barley, beetroot, cotton).
+     * Copies properties from vanilla WHEAT — farmland requirement, no collision,
+     * cutout render, instabreak. The seed supplier is resolved lazily so that
+     * the item registry is fully populated before it is first accessed.
+     */
+    private static DeferredBlock<Block> seedCropBlock(String name, java.util.function.Supplier<Item> seed) {
+        return REGISTRY.registerBlock(name,
+            p -> new GotSeedCropBlock(seed, p),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
+    }
+
+    /**
+     * Produce-type crop (carrot, parsnip, onion, turnip, peas, cabbage, garlic).
+     * Same farmland/no-collision properties as vanilla carrots/potatoes. The
+     * produce item is used both as the seed and as the harvest drop.
+     */
+    private static DeferredBlock<Block> produceCropBlock(String name, java.util.function.Supplier<Item> produce) {
+        return REGISTRY.registerBlock(name,
+            p -> new GotProduceCropBlock(produce, p),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS));
     }
 
     /**

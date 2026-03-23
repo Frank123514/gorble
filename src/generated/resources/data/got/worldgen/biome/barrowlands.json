@@ -38,7 +38,11 @@
       "minecraft:ore_diorite_lower",
       "minecraft:ore_andesite_upper",
       "minecraft:ore_andesite_lower",
-      "minecraft:ore_tuff"
+      "minecraft:ore_tuff",
+      "got:ore_grey_granite_rock",
+      "got:ore_limestone_rock",
+      "got:ore_flint_rock",
+      "got:ore_slate_rock"
     ],
     [],
     [],
@@ -51,7 +55,21 @@
       "got:beech_sparse",
       "got:pine_sparse",
       "got:shrub",
-      "got:boulder"
+      "got:boulder",
+      "got:limestone_boulder",
+      "got:grey_granite_boulder",
+      "got:slate_boulder",
+      "got:wild_barley",
+      "got:wild_cotton",
+      "got:wild_rye",
+      "got:wild_wheat",
+      "got:wild_oat",
+      "got:wild_onion",
+      "got:wild_garlic",
+      "got:wild_carrot",
+      "got:wild_cabbage",
+      "got:blackberry_bush"
+
     ],
     [
       "minecraft:freeze_top_layer"

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "got:rye_seeds"
+    }
+  ],
+  "result": {
+    "id": "got:rye_flour",
+    "count": 1
+  }
+}

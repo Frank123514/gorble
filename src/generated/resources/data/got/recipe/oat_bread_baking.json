@@ -1,0 +1,11 @@
+{
+  "type": "got:baking",
+  "ingredient": {
+    "item": "got:oat_dough"
+  },
+  "result": {
+    "id": "got:oat_bread"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}
