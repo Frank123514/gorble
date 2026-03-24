@@ -1215,5 +1215,6 @@
   "item.got.wheat_dough": "Wheat Dough",
   "block.got.oven": "Oven",
   "item.got.oven": "Oven",
-  "container.got.oven": "Oven"
+  "container.got.oven": "Oven",
+  "jei.got.category.baking": "Oven Baking"
 }

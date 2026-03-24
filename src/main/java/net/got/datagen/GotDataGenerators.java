@@ -10,28 +10,33 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 /**
  * Entry point for all GOT data generators.
- * Run with: ./gradlew runData
- * Output: src/generated/resources/
+ *
+ * NeoForge 21.4 (MC 1.21.4) changes from earlier 21.x:
+ *  - GatherDataEvent split into GatherDataEvent.Client / GatherDataEvent.Server.
+ *  - Model providers are registered via event.createProvider(Constructor::new),
+ *    NOT gen.addProvider(bool, instance) — the old addProvider overload that
+ *    accepted a DataProvider instance no longer accepts ModelProvider subclasses
+ *    because ModelProvider is no longer a DataProvider directly.
+ *  - ExistingFileHelper is gone entirely from the datagen API.
+ *
+ * Run with: ./gradlew runClientData
+ * Output:   src/generated/resources/
  */
-@EventBusSubscriber(modid = GotMod.MODID)
+@EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class GotDataGenerators {
 
+    // ── Client data run ───────────────────────────────────────────────
+
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
+    public static void gatherClientData(GatherDataEvent.Client event) {
         var gen    = event.getGenerator();
         var output = gen.getPackOutput();
-        var efh    = event.getExistingFileHelper();
         var lookup = event.getLookupProvider();
 
-        // ── Server-side ────────────────────────────────────────────────
-        // In NeoForge 1.21.3, RecipeProvider is NOT a DataProvider itself.
-        // RecipeProvider.Runner is the DataProvider wrapper; override
-        // createRecipeProvider() to supply our subclass.
-        gen.addProvider(event.includeServer(), new RecipeProvider.Runner(output, lookup) {
+        // ── Server-side data (recipes, tags, loot) ────────────────────
+        gen.addProvider(true, new RecipeProvider.Runner(output, lookup) {
             @Override
-            public String getName() {
-                return "";
-            }
+            public String getName() { return "GoT Recipes"; }
 
             @Override
             protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries,
@@ -40,17 +45,48 @@ public final class GotDataGenerators {
             }
         });
 
-        var blockTags = new GotBlockTagsProvider(output, lookup, efh);
-        gen.addProvider(event.includeServer(), blockTags);
-        gen.addProvider(event.includeServer(),
-                new GotItemTagsProvider(output, lookup, blockTags.contentsGetter(), efh));
+        var blockTags = new GotBlockTagsProvider(output, lookup);
+        gen.addProvider(true, blockTags);
+        gen.addProvider(true,
+                new GotItemTagsProvider(output, lookup, blockTags.contentsGetter()));
 
-        gen.addProvider(event.includeServer(), new GotLootTableProvider(output, lookup));
+        gen.addProvider(true, new GotLootTableProvider(output, lookup));
 
-        // ── Client-side ────────────────────────────────────────────────
-        gen.addProvider(event.includeClient(), new GotBlockStateProvider(output, efh));
-        gen.addProvider(event.includeClient(), new GotItemModelProvider(output, efh));
-        gen.addProvider(event.includeClient(), new GotLanguageProvider(output));
+        // ── Client-side assets (blockstates + models) ─────────────────
+        // ModelProvider subclasses must be registered via createProvider(),
+        // not addProvider() — this is the API change in NeoForge 21.4.
+        event.createProvider(GotBlockStateProvider::new);
+        event.createProvider(GotItemModelProvider::new);
+
+        // Language file (LanguageProvider is still a plain DataProvider)
+        gen.addProvider(true, new GotLanguageProvider(output));
+    }
+
+    // ── Server data run ───────────────────────────────────────────────
+
+    @SubscribeEvent
+    public static void gatherServerData(GatherDataEvent.Server event) {
+        var gen    = event.getGenerator();
+        var output = gen.getPackOutput();
+        var lookup = event.getLookupProvider();
+
+        gen.addProvider(true, new RecipeProvider.Runner(output, lookup) {
+            @Override
+            public String getName() { return "GoT Recipes (server)"; }
+
+            @Override
+            protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries,
+                                                          RecipeOutput recipeOutput) {
+                return new GotRecipeProvider(registries, recipeOutput);
+            }
+        });
+
+        var blockTags = new GotBlockTagsProvider(output, lookup);
+        gen.addProvider(true, blockTags);
+        gen.addProvider(true,
+                new GotItemTagsProvider(output, lookup, blockTags.contentsGetter()));
+
+        gen.addProvider(true, new GotLootTableProvider(output, lookup));
     }
 
     private GotDataGenerators() {}

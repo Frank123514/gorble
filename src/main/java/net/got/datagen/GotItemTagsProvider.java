@@ -10,7 +10,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -23,9 +22,8 @@ public class GotItemTagsProvider extends ItemTagsProvider {
 
     public GotItemTagsProvider(PackOutput output,
                                CompletableFuture<HolderLookup.Provider> lookupProvider,
-                               CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider,
-                               ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, blockTagProvider, GotMod.MODID, existingFileHelper);
+                               CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider) {
+        super(output, lookupProvider, blockTagProvider, GotMod.MODID);
     }
 
     @Override

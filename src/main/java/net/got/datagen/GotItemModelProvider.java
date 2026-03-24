@@ -1,134 +1,102 @@
 package net.got.datagen;
 
 import net.got.GotMod;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.world.item.Item;
+
+import java.util.Objects;
 
 /**
  * Generates item model JSONs for every GOT item.
+ *
+ * NeoForge 21.4 (MC 1.21.4): ItemModelProvider from
+ * net.neoforged.neoforge.client.model.generators is gone.
+ * We now extend ModelProvider and use ItemModelGenerators.
+ *
+ * NOTE: Block-item models for blocks that have an associated BlockItem are
+ * generated automatically by ModelProvider using the block model as parent,
+ * so most block items do NOT need to be listed here.  Only items that need
+ * a custom model (flat, handheld, doors, etc.) are registered explicitly.
  */
-public class GotItemModelProvider extends ItemModelProvider {
+public class GotItemModelProvider extends ModelProvider {
 
-    public GotItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, GotMod.MODID, existingFileHelper);
+    public GotItemModelProvider(PackOutput output) {
+        super(output, GotMod.MODID);
     }
 
     @Override
-    protected void registerModels() {
-        registerWoodBlockItems();
-        registerStoneBlockItems();
-        registerOreBlockItems();
-        registerToolItems();
-        registerArmorItems();
-        registerSimpleItems();
+    protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators g) {
+        registerWoodItems(g);
+        registerToolItems(g);
+        registerArmorItems(g);
+        registerSimpleItems(g);
     }
 
-    // ── Block items ───────────────────────────────────────────────────
+    // ── Wood items that need non-standard models ───────────────────────
 
-    private void registerWoodBlockItems() {
+    private void registerWoodItems(ItemModelGenerators g) {
         for (String w : GotBlockStateProvider.WOOD_TYPES) {
-            blockItem(w + "_log");
-            blockItem(w + "_wood");
-            blockItem("stripped_" + w + "_log");
-            blockItem("stripped_" + w + "_wood");
-            blockItem(w + "_planks");
-            blockItem(w + "_leaves");
-            blockItem(w + "_sapling");
-            blockItem(w + "_stairs");
-            blockItem(w + "_slab");
-            withExistingParent(w + "_fence", modLoc("block/" + w + "_fence_inventory"));
-            blockItem(w + "_fence_gate");
-            blockItem(w + "_pressure_plate");
-            withExistingParent(w + "_button", modLoc("block/" + w + "_button_inventory"));
+            // Doors: flat item/generated with textures/item/{w}_door.png
+            g.generateFlatItem(item(w + "_door"), ModelTemplates.FLAT_ITEM);
 
-            // Doors: flat 2D generated item using textures/item/{w}_door.png
-            withExistingParent(w + "_door", ResourceLocation.withDefaultNamespace("item/generated"))
-                    .texture("layer0", modLoc("item/" + w + "_door"));
-
-            // Trapdoors: reuse the bottom block model as the item icon
-            withExistingParent(w + "_trapdoor", modLoc("block/" + w + "_trapdoor_bottom"));
-        }
-    }
-
-    private void registerStoneBlockItems() {
-        for (String region : GotBlockStateProvider.STONE_REGIONS) {
-            blockItem(region + "_pillar");
-            withExistingParent(region + "_rock_button",
-                    modLoc("block/" + region + "_rock_button_inventory"));
-            blockItem(region + "_rock_pressure_plate");
-
-            String[] patterns = {
-                    "{r}_rock", "{r}_brick", "cracked_{r}_brick", "mossy_{r}_brick",
-                    "{r}_cobblestone", "mossy_{r}_cobblestone", "polished_{r}_rock"
-            };
-            for (String pat : patterns) {
-                String base = pat.replace("{r}", region);
-                blockItem(base);
-                blockItem(base + "_slab");
-                blockItem(base + "_stairs");
-                withExistingParent(base + "_wall", modLoc("block/" + base + "_wall_inventory"));
-            }
-        }
-    }
-
-    private void registerOreBlockItems() {
-        for (String ore : new String[]{
-                "copper_ore", "tin_ore", "amber_ore", "topaz_ore",
-                "silver_ore", "amethyst_ore", "opal_ore", "ruby_ore",
-                "sapphire_ore", "dragonglass", "valyrian_ore"}) {
-            blockItem(ore);
+            // Branches, signs, boats — simple flat items
+            g.generateFlatItem(item(w + "_branch"),           ModelTemplates.FLAT_ITEM);
+            g.generateFlatItem(item(w + "_sign"),             ModelTemplates.FLAT_ITEM);
+            g.generateFlatItem(item(w + "_hanging_sign"),     ModelTemplates.FLAT_ITEM);
+            g.generateFlatItem(item(w + "_boat"),             ModelTemplates.FLAT_ITEM);
+            g.generateFlatItem(item(w + "_chest_boat"),       ModelTemplates.FLAT_ITEM);
         }
     }
 
     // ── Tools ─────────────────────────────────────────────────────────
 
-    private void registerToolItems() {
+    private void registerToolItems(ItemModelGenerators g) {
         for (String tier : new String[]{"copper", "bronze"}) {
             for (String tool : new String[]{"sword", "pickaxe", "axe", "shovel", "hoe"}) {
-                handheld(tier + "_" + tool);
+                g.generateFlatItem(item(tier + "_" + tool), ModelTemplates.FLAT_HANDHELD_ITEM);
             }
         }
     }
 
     // ── Armour ────────────────────────────────────────────────────────
 
-    private void registerArmorItems() {
+    private void registerArmorItems(ItemModelGenerators g) {
         for (String tier : new String[]{"copper", "bronze"}) {
             for (String piece : new String[]{"helmet", "chestplate", "leggings", "boots"}) {
-                generatedItem(tier + "_" + piece);
+                g.generateFlatItem(item(tier + "_" + piece), ModelTemplates.FLAT_ITEM);
             }
         }
     }
 
     // ── Simple items ──────────────────────────────────────────────────
 
-    private void registerSimpleItems() {
-        for (String gem : new String[]{"amber","amethyst","dragonglass_shard","opal","ruby","sapphire","topaz"}) {
-            generatedItem(gem);
+    private void registerSimpleItems(ItemModelGenerators g) {
+        for (String gem : new String[]{
+                "amber", "amethyst", "dragonglass_shard", "opal", "ruby", "sapphire", "topaz"}) {
+            g.generateFlatItem(item(gem), ModelTemplates.FLAT_ITEM);
         }
-        for (String raw : new String[]{"raw_copper","raw_silver","raw_tin","raw_valyrian_steel"}) {
-            generatedItem(raw);
+        for (String raw : new String[]{
+                "raw_copper", "raw_silver", "raw_tin", "raw_valyrian_steel"}) {
+            g.generateFlatItem(item(raw), ModelTemplates.FLAT_ITEM);
         }
-        for (String ingot : new String[]{"copper_ingot","silver_ingot","tin_ingot","bronze_ingot","valyrian_steel_ingot"}) {
-            generatedItem(ingot);
+        for (String ingot : new String[]{
+                "copper_ingot", "silver_ingot", "tin_ingot", "bronze_ingot", "valyrian_steel_ingot"}) {
+            g.generateFlatItem(item(ingot), ModelTemplates.FLAT_ITEM);
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────
+    // ── Helper ────────────────────────────────────────────────────────
 
-    private void blockItem(String name) {
-        withExistingParent(name, modLoc("block/" + name));
-    }
-
-    private void handheld(String name) {
-        withExistingParent(name, ResourceLocation.withDefaultNamespace("item/handheld"))
-                .texture("layer0", modLoc("item/" + name));
-    }
-
-    private void generatedItem(String name) {
-        withExistingParent(name, ResourceLocation.withDefaultNamespace("item/generated"))
-                .texture("layer0", modLoc("item/" + name));
+    private Item item(String name) {
+        return Objects.requireNonNull(
+                BuiltInRegistries.ITEM.getValue(
+                        ResourceLocation.fromNamespaceAndPath(GotMod.MODID, name)),
+                "Unknown GOT item: " + name);
     }
 }

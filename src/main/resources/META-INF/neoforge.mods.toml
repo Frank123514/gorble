@@ -20,18 +20,24 @@ authors="MCreator"
 [[dependencies.got]]
     modId="neoforge"
     type="required"
-    versionRange="[21.3.95]"
+    versionRange="[21.4,)"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.got]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.3]"
+    versionRange="[1.21.4]"
     ordering="AFTER"
     side="BOTH"
 
 
 
 # Start of user code block dependencies configuration
+[[dependencies.got]]
+    modId="jei"
+    type="optional"
+    versionRange="[20.0.0,)"
+    ordering="NONE"
+    side="CLIENT"
 # End of user code block dependencies configuration

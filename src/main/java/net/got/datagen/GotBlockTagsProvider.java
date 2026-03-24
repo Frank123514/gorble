@@ -9,7 +9,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -22,9 +21,8 @@ import java.util.stream.Stream;
 public class GotBlockTagsProvider extends BlockTagsProvider {
 
     public GotBlockTagsProvider(PackOutput output,
-                                CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, GotMod.MODID, existingFileHelper);
+                                CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, GotMod.MODID);
     }
 
     @Override

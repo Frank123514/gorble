@@ -1,22 +1,32 @@
 package net.got.datagen;
 
 import net.got.GotMod;
-import net.minecraft.core.Direction;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.Objects;
 
 /**
- * Generates block state JSONs and block model JSONs for every GOT block.
+ * Generates blockstate JSONs and block/item model JSONs for every GOT block.
+ *
+ * NeoForge 21.4 (MC 1.21.4): the old neoforge BlockStateProvider and
+ * ItemModelProvider from net.neoforged.neoforge.client.model.generators are
+ * completely removed. Everything now goes through the vanilla
+ * net.minecraft.client.data.models.ModelProvider with its
+ * registerModels(BlockModelGenerators, ItemModelGenerators) callback.
+ *
+ * Item model generation (previously GotItemModelProvider) is folded into this
+ * class via the itemModels parameter — see registerWoodItems() etc.
  */
-public class GotBlockStateProvider extends BlockStateProvider {
+public class GotBlockStateProvider extends ModelProvider {
 
     static final String[] WOOD_TYPES = {
             "weirwood", "aspen", "alder", "pine", "fir", "sentinal", "ironwood",
@@ -27,9 +37,7 @@ public class GotBlockStateProvider extends BlockStateProvider {
     };
 
     static final String[] STONE_REGIONS = {
-            // ── Natural stone types ─────────────────────────────────────
             "basalt", "grey_granite", "limestone", "sandstone", "red_sandstone", "slate", "flint",
-            // ── Special stone types ─────────────────────────────────────
             "oily_black", "fused_black", "marble"
     };
 
@@ -44,126 +52,135 @@ public class GotBlockStateProvider extends BlockStateProvider {
             "sapphire_ore", "dragonglass", "valyrian_ore"
     };
 
-    public GotBlockStateProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, GotMod.MODID, existingFileHelper);
+    public GotBlockStateProvider(PackOutput output) {
+        super(output, GotMod.MODID);
     }
 
     @Override
-    protected void registerStatesAndModels() {
-        registerWoodBlocks();
-        registerStoneBlocks();
-        registerOres();
+    protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        registerWoodBlocks(blockModels);
+        registerStoneBlocks(blockModels);
+        registerOres(blockModels);
     }
 
     // ── Wood blocks ───────────────────────────────────────────────────
 
-    private void registerWoodBlocks() {
+    private void registerWoodBlocks(BlockModelGenerators g) {
         for (String w : WOOD_TYPES) {
-            gotAxisBlock(w + "_log",
-                    gotBlock(w + "_log"),
-                    gotBlock(w + "_log_top"));
-            gotAxisBlock(w + "_wood",
-                    gotBlock(w + "_log"),
-                    gotBlock(w + "_log"));          // bark: side == top
-            gotAxisBlock("stripped_" + w + "_log",
-                    gotBlock("stripped_" + w + "_log"),
-                    gotBlock("stripped_" + w + "_log_top"));
-            gotAxisBlock("stripped_" + w + "_wood",
-                    gotBlock("stripped_" + w + "_log"),
-                    gotBlock("stripped_" + w + "_log"));  // bark all sides: side == top
+            // Logs: side texture = {w}_log, end = {w}_log_top
+            g.createRotatedPillarWithHorizontalVariant(
+                    block(w + "_log"),
+                    ModelTemplates.CUBE_COLUMN,
+                    ModelTemplates.CUBE_COLUMN_HORIZONTAL,
+                    new TextureMapping()
+                            .put(TextureSlot.SIDE, modBlock(w + "_log"))
+                            .put(TextureSlot.END, modBlock(w + "_log_top"))
+            );
+            // Wood (bark): side == end == {w}_log (same texture all round)
+            g.createRotatedPillarWithHorizontalVariant(
+                    block(w + "_wood"),
+                    ModelTemplates.CUBE_COLUMN,
+                    ModelTemplates.CUBE_COLUMN_HORIZONTAL,
+                    new TextureMapping()
+                            .put(TextureSlot.SIDE, modBlock(w + "_log"))
+                            .put(TextureSlot.END, modBlock(w + "_log"))
+            );
+            // Stripped log
+            g.createRotatedPillarWithHorizontalVariant(
+                    block("stripped_" + w + "_log"),
+                    ModelTemplates.CUBE_COLUMN,
+                    ModelTemplates.CUBE_COLUMN_HORIZONTAL,
+                    new TextureMapping()
+                            .put(TextureSlot.SIDE, modBlock("stripped_" + w + "_log"))
+                            .put(TextureSlot.END, modBlock("stripped_" + w + "_log_top"))
+            );
+            // Stripped wood (bark all sides)
+            g.createRotatedPillarWithHorizontalVariant(
+                    block("stripped_" + w + "_wood"),
+                    ModelTemplates.CUBE_COLUMN,
+                    ModelTemplates.CUBE_COLUMN_HORIZONTAL,
+                    new TextureMapping()
+                            .put(TextureSlot.SIDE, modBlock("stripped_" + w + "_log"))
+                            .put(TextureSlot.END, modBlock("stripped_" + w + "_log"))
+            );
 
-            simpleBlock(block(w + "_planks"),
-                    models().cubeAll(w + "_planks", gotBlock(w + "_planks")));
+            // Planks, leaves, sapling
+            g.createTrivialCube(block(w + "_planks"));
+            g.createTrivialBlock(block(w + "_leaves"), TexturedModel.LEAVES);
+            g.createPlant(block(w + "_sapling"), block(w + "_sapling"),
+                    BlockModelGenerators.TintState.NOT_TINTED);
 
-            simpleBlock(block(w + "_leaves"),
-                    models().singleTexture(w + "_leaves",
-                            mcLoc("block/leaves"),
-                            "all", gotBlock(w + "_leaves")));
+            // Stairs, slab
+            g.createStairs(block(w + "_stairs"),
+                    modBlock(w + "_planks"), modBlock(w + "_planks"), modBlock(w + "_planks"));
+            g.createSlab(block(w + "_slab"),
+                    modBlock(w + "_planks"), modBlock(w + "_planks"), modBlock(w + "_planks"));
 
-            simpleBlock(block(w + "_sapling"),
-                    models().cross(w + "_sapling", gotBlock(w + "_sapling"))
-                            .renderType("cutout"));
+            // Fence, fence gate
+            g.createFence(block(w + "_fence"), block(w + "_planks"));
+            g.createFenceGate(block(w + "_fence_gate"), block(w + "_planks"));
 
-            stairsBlock((StairBlock)  block(w + "_stairs"),       gotBlock(w + "_planks"));
-            slabBlock  ((SlabBlock)   block(w + "_slab"),         gotBlock(w + "_planks"), gotBlock(w + "_planks"));
-            fenceBlock ((FenceBlock)  block(w + "_fence"),        gotBlock(w + "_planks"));
-            itemModels().fenceInventory(w + "_fence", gotBlock(w + "_planks"));
-            fenceGateBlock((FenceGateBlock)     block(w + "_fence_gate"),     gotBlock(w + "_planks"));
-            pressurePlateBlock((PressurePlateBlock) block(w + "_pressure_plate"), gotBlock(w + "_planks"));
-            buttonBlock((ButtonBlock) block(w + "_button"),       gotBlock(w + "_planks"));
-            itemModels().buttonInventory(w + "_button", gotBlock(w + "_planks"));
+            // Pressure plate, button
+            g.createPressurePlate(block(w + "_pressure_plate"), block(w + "_planks"));
+            g.createSimpleButton(block(w + "_button"), block(w + "_planks"));
 
-            doorBlockWithRenderType((DoorBlock) block(w + "_door"),
-                    gotBlock(w + "_door_bottom"), gotBlock(w + "_door_top"), "cutout");
-
-            trapdoorBlockWithRenderType((TrapDoorBlock) block(w + "_trapdoor"),
-                    gotBlock(w + "_trapdoor"), true, "cutout");
+            // Door, trapdoor
+            g.createDoor(block(w + "_door"));
+            g.createTrapdoor(block(w + "_trapdoor"));
         }
     }
 
     // ── Stone blocks ──────────────────────────────────────────────────
 
-    private void registerStoneBlocks() {
+    private void registerStoneBlocks(BlockModelGenerators g) {
         for (String region : STONE_REGIONS) {
-            // Pillar — RotatedPillarBlock, textures must be named {region}_pillar and {region}_pillar_top
-            // logBlock(RotatedPillarBlock) auto-derives textures from block name: side=block_name, end=block_name_top
-            logBlock((RotatedPillarBlock) block(region + "_pillar"));
+            // Pillar (RotatedPillarBlock): side = {region}_pillar, end = {region}_pillar_top
+            g.createRotatedPillarWithHorizontalVariant(
+                    block(region + "_pillar"),
+                    ModelTemplates.CUBE_COLUMN,
+                    ModelTemplates.CUBE_COLUMN_HORIZONTAL,
+                    new TextureMapping()
+                            .put(TextureSlot.SIDE, modBlock(region + "_pillar"))
+                            .put(TextureSlot.END, modBlock(region + "_pillar_top"))
+            );
 
-            // Rock-only: button + pressure plate
+            // Rock: button + pressure plate only
             String rock = region + "_rock";
-            buttonBlock((ButtonBlock)       block(rock + "_button"),         gotBlock(rock));
-            itemModels().buttonInventory(rock + "_button", gotBlock(rock));
-            pressurePlateBlock((PressurePlateBlock) block(rock + "_pressure_plate"), gotBlock(rock));
+            g.createSimpleButton(block(rock + "_button"), block(rock));
+            g.createPressurePlate(block(rock + "_pressure_plate"), block(rock));
 
-            // All solid base subtypes + their derived slab / stairs / wall
+            // All solid base subtypes + slab / stairs / wall
             for (String pattern : STONE_SUBTYPES) {
                 String base = pattern.replace("{r}", region);
-                simpleBlock(block(base));
-                slabBlock  ((SlabBlock)  block(base + "_slab"),   gotBlock(base), gotBlock(base));
-                stairsBlock((StairBlock) block(base + "_stairs"), gotBlock(base));
-                wallBlock  ((WallBlock)  block(base + "_wall"),   gotBlock(base));
-                itemModels().wallInventory(base + "_wall", gotBlock(base));
+                g.createTrivialCube(block(base));
+                g.createSlab(block(base + "_slab"),
+                        modBlock(base), modBlock(base), modBlock(base));
+                g.createStairs(block(base + "_stairs"),
+                        modBlock(base), modBlock(base), modBlock(base));
+                g.createWall(block(base + "_wall"), modBlock(base));
             }
         }
     }
 
     // ── Ores ──────────────────────────────────────────────────────────
 
-    private void registerOres() {
+    private void registerOres(BlockModelGenerators g) {
         for (String ore : ORES) {
-            simpleBlock(block(ore));
+            g.createTrivialCube(block(ore));
         }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────
 
-    /**
-     * Axis-rotating block (log / wood / stripped log).
-     * These extend Block (not RotatedPillarBlock) and have their own AXIS property.
-     */
-    private void gotAxisBlock(String name, ResourceLocation side, ResourceLocation end) {
-        Block     b  = block(name);
-        ModelFile mY = models().cubeColumn(name, side, end);
-        ModelFile mH = models().cubeColumnHorizontal(name + "_horizontal", side, end);
-
-        getVariantBuilder(b)
-                .partialState().with(BlockStateProperties.AXIS, Direction.Axis.Y)
-                .modelForState().modelFile(mY).addModel()
-                .partialState().with(BlockStateProperties.AXIS, Direction.Axis.X)
-                .modelForState().modelFile(mH).rotationY(90).addModel()
-                .partialState().with(BlockStateProperties.AXIS, Direction.Axis.Z)
-                .modelForState().modelFile(mH).addModel();
-    }
-
     private Block block(String name) {
         return Objects.requireNonNull(
                 BuiltInRegistries.BLOCK.getValue(
                         ResourceLocation.fromNamespaceAndPath(GotMod.MODID, name)),
-                "Unknown block: " + name);
+                "Unknown GOT block: " + name);
     }
 
-    /** Returns a got: block texture path. */
-    private ResourceLocation gotBlock(String name) {
+    /** Returns a ResourceLocation for a GOT block texture: got:block/{name} */
+    private static ResourceLocation modBlock(String name) {
         return ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "block/" + name);
     }
 }

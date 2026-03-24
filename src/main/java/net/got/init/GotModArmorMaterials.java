@@ -3,27 +3,36 @@ package net.got.init;
 import net.got.GotMod;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 
 import java.util.Map;
 
 /**
- * Armor materials for GoT custom metals (MC 1.21.3 / NeoForge 21.3.x).
+ * Armor materials for GoT custom metals (MC 1.21.4 / NeoForge 21.4.x).
  *
- * ArmorMaterial record constructor (exact signature from compiler error):
- *   (int durability, Map<ArmorType,Integer> defense, int enchantability,
- *    Holder<SoundEvent> equipSound, float toughness, float knockbackResistance,
- *    TagKey<Item> repairTag, ResourceLocation textureLocation)
+ * The last constructor parameter of ArmorMaterial changed from ResourceLocation
+ * to ResourceKey<EquipmentAsset> in 1.21.4.  Use ResourceKey.create() with
+ * EquipmentAssets.ROOT_ID as the registry key.
  */
 public class GotModArmorMaterials {
 
     private static TagKey<Item> repairTag(String path) {
         return TagKey.create(Registries.ITEM, ResourceLocation.withDefaultNamespace(path));
+    }
+
+    private static ResourceKey<EquipmentAsset> equipmentKey(String path) {
+        return ResourceKey.create(
+                EquipmentAssets.ROOT_ID,
+                ResourceLocation.fromNamespaceAndPath(GotMod.MODID, path)
+        );
     }
 
     /**
@@ -43,7 +52,7 @@ public class GotModArmorMaterials {
                     0.0f,
                     0.0f,
                     repairTag("repairs_copper_armor"),
-                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "copper")
+                    equipmentKey("copper")  // ← ResourceKey<EquipmentAsset>, not ResourceLocation
             )
     );
 
@@ -64,7 +73,7 @@ public class GotModArmorMaterials {
                     0.5f,
                     0.0f,
                     repairTag("repairs_bronze_armor"),
-                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "bronze")
+                    equipmentKey("bronze")  // ← ResourceKey<EquipmentAsset>, not ResourceLocation
             )
     );
 }

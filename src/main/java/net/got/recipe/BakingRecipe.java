@@ -32,6 +32,13 @@ public class BakingRecipe implements Recipe<SingleRecipeInput> {
     public float      getExperience()  { return experience; }
     public int        getCookingTime() { return cookingTime; }
 
+    /**
+     * Returns a copy of the result stack.
+     * Used by JEI display (OvenRecipeCategory) since Recipe.getResultItem()
+     * was removed in 1.21.4.
+     */
+    public ItemStack getResult() { return result.copy(); }
+
     // ── Recipe interface ───────────────────────────────────────────────────
 
     @Override

@@ -29,7 +29,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;  // ← renamed in 21.4
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
@@ -155,8 +155,11 @@ public final class GotMod {
     /* ---------------------------- */
 
     @SubscribeEvent
-    public void onAddReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(new MapReloadListener());
+    public void onAddReloadListeners(AddServerReloadListenersEvent event) {  // ← renamed
+        event.addListener(
+                ResourceLocation.fromNamespaceAndPath(MODID, "map_reload"),  // ← id required in 21.4
+                new MapReloadListener()
+        );
         LOGGER.info("Registered GoT map reload listener");
     }
 
