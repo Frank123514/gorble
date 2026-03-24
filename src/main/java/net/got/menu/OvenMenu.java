@@ -1,17 +1,20 @@
 package net.got.menu;
 
 import net.got.init.GotModMenus;
+import net.got.init.GotModRecipeTypes;
+import net.got.recipe.BakingRecipe;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.NonNullList;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
 import java.util.Optional;
 
@@ -28,26 +31,27 @@ public class OvenMenu extends AbstractContainerMenu {
     private final Level level;
 
     public OvenMenu(int id, Inventory playerInventory) {
-        this(id, playerInventory, new SimpleContainer(TOTAL_SLOTS), new SimpleContainerData(2));
+        this(id, playerInventory, new SimpleContainer(TOTAL_SLOTS), new SimpleContainerData(3));
     }
 
     public OvenMenu(int id, Inventory playerInventory, Container container, ContainerData data) {
         super(GotModMenus.OVEN.get(), id);
         checkContainerSize(container, TOTAL_SLOTS);
-        checkContainerDataCount(data, 2);
+        checkContainerDataCount(data, 3);
         this.container = container;
-        this.data = data;
-        this.level = playerInventory.player.level();
+        this.data      = data;
+        this.level     = playerInventory.player.level();
 
-        // Fuel slot — plain slot, accepts any fuel item
+        // Fuel slot
         this.addSlot(new Slot(container, FUEL_SLOT, 14, 54) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return net.neoforged.neoforge.common.CommonHooks.getBurnTime(stack, null) > 0;
+                if (stack.isEmpty()) return false;
+                return stack.getItemHolder().getData(NeoForgeDataMaps.FURNACE_FUELS) != null;
             }
         });
 
-        // 3x3 crafting grid
+        // 3×3 input grid
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 this.addSlot(new Slot(container, GRID_START + row * 3 + col,
@@ -55,14 +59,15 @@ public class OvenMenu extends AbstractContainerMenu {
             }
         }
 
-        // Output slot
+        // Output slot — read-only, consumes grid items on take
         this.addSlot(new Slot(container, OUTPUT_SLOT, 137, 36) {
             @Override public boolean mayPlace(ItemStack stack) { return false; }
+
             @Override
             public void onTake(Player player, ItemStack stack) {
-                for (int i = GRID_START; i < GRID_START + GRID_SIZE; i++) {
-                    container.removeItem(i, 1);
-                }
+                // Taking the output counts as consuming slot GRID_START only
+                // (the actual shrink is handled by OvenBlockEntity; this covers
+                //  edge cases where the player takes mid-cook from a synced menu)
                 slotsChanged(container);
                 super.onTake(player, stack);
             }
@@ -83,13 +88,7 @@ public class OvenMenu extends AbstractContainerMenu {
         this.addDataSlots(data);
     }
 
-    private CraftingInput getCraftingInput() {
-        NonNullList<ItemStack> items = NonNullList.withSize(9, ItemStack.EMPTY);
-        for (int i = 0; i < 9; i++) {
-            items.set(i, container.getItem(GRID_START + i));
-        }
-        return CraftingInput.of(3, 3, items);
-    }
+    // ── Slots-changed callback ─────────────────────────────────────────────
 
     @Override
     public void slotsChanged(Container c) {
@@ -97,23 +96,41 @@ public class OvenMenu extends AbstractContainerMenu {
         if (!level.isClientSide) updateResult();
     }
 
+    /**
+     * Previews the baking result in the output slot.
+     *
+     * FIX: the original queried RecipeType.CRAFTING with a 3×3 CraftingInput,
+     * which never matches a got:baking recipe.  We now look up got:baking with
+     * a SingleRecipeInput from slot GRID_START only.
+     */
     private void updateResult() {
-        CraftingInput input = getCraftingInput();
+        ItemStack inputStack = container.getItem(GRID_START);
         boolean hasFuel = !container.getItem(FUEL_SLOT).isEmpty() || data.get(0) > 0;
-        Optional<RecipeHolder<CraftingRecipe>> recipe =
-                level.recipeAccess().getRecipeFor(
-                        net.minecraft.world.item.crafting.RecipeType.CRAFTING, input, level);
-        if (recipe.isPresent() && hasFuel) {
-            container.setItem(OUTPUT_SLOT,
-                    recipe.get().value().assemble(input, level.registryAccess()));
-        } else {
-            container.setItem(OUTPUT_SLOT, ItemStack.EMPTY);
+
+        if (!inputStack.isEmpty() && hasFuel) {
+            ServerLevel serverLevel = (ServerLevel) level;
+            SingleRecipeInput recipeInput = new SingleRecipeInput(inputStack);
+            Optional<RecipeHolder<BakingRecipe>> recipe =
+                    serverLevel.getServer().getRecipeManager()
+                            .getRecipeFor(GotModRecipeTypes.BAKING.get(), recipeInput, serverLevel);
+
+            if (recipe.isPresent()) {
+                container.setItem(OUTPUT_SLOT,
+                        recipe.get().value().assemble(recipeInput, level.registryAccess()));
+                return;
+            }
         }
+        container.setItem(OUTPUT_SLOT, ItemStack.EMPTY);
     }
 
-    public int getBurnTime()     { return data.get(0); }
-    public int getBurnDuration() { return data.get(1); }
-    public boolean isLit()       { return getBurnTime() > 0; }
+    // ── Data accessors (forwarded to ContainerData) ────────────────────────
+
+    public int  getBurnTime()      { return data.get(0); }
+    public int  getBurnDuration()  { return data.get(1); }
+    public int  getCookingProgress(){ return data.get(2); }
+    public boolean isLit()         { return getBurnTime() > 0; }
+
+    // ── AbstractContainerMenu ─────────────────────────────────────────────
 
     @Override
     public boolean stillValid(Player player) { return container.stillValid(player); }

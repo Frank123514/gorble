@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "got:oat_seeds"
+      "item": "got:oat"
     }
   ],
   "result": {

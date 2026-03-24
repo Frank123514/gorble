@@ -10,6 +10,7 @@ import net.got.init.GotWoodTypes;
 import net.got.init.GotModEntities;
 import net.got.init.GotModItems;
 import net.got.init.GotModMenus;
+import net.got.init.GotModRecipeSerializers;
 import net.got.init.GotModRecipeTypes;
 import net.got.init.GotModTabs;
 import net.got.network.GotNetwork;
@@ -63,6 +64,9 @@ public final class GotMod {
         GotWoodTypes.init();
         GotModMenus.REGISTRY.register(modBus);
         GotModRecipeTypes.REGISTRY.register(modBus);
+        // FIX: register the baking recipe serializer and its recipe book category
+        GotModRecipeSerializers.REGISTRY.register(modBus);
+        GotModRecipeSerializers.CATEGORY_REGISTRY.register(modBus);
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
         GotModBlockEntities.REGISTRY.register(modBus);
