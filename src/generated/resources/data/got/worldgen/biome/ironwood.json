@@ -2,7 +2,6 @@
   "has_precipitation": true,
   "downfall": 0.8,
   "effects": {
-    "ambient_sound": "got:wolf_howl2",
     "fog_color": 12638463,
     "grass_color": 2391380,
     "mood_sound": {
@@ -11,12 +10,17 @@
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "music": {
-      "max_delay": 24000,
-      "min_delay": 12000,
-      "replace_current_music": false,
-      "sound": "got:windy_forest"
-    },
+    "music": [
+      {
+        "weight": 1,
+        "data": {
+          "max_delay": 24000,
+          "min_delay": 12000,
+          "replace_current_music": false,
+          "sound": "got:windy_forest"
+        }
+      }
+    ],
     "sky_color": 8233983,
     "water_color": 4159204,
     "water_fog_color": 329011
@@ -25,7 +29,8 @@
     [],
     [],
     [
-      "minecraft:amethyst_geode"],
+      "minecraft:amethyst_geode"
+    ],
     [],
     [],
     [],
