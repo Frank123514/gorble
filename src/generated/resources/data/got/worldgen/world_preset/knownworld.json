@@ -4,6 +4,10 @@
       "type": "got:knownworld",
       "generator": {
         "type": "got:chunk_generator",
+
+        "spawn_pixel_x": 1500,
+        "spawn_pixel_z": 677,
+
         "biome_source": {
           "type": "got:biome_source",
           "biomes": [

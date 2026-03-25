@@ -313,20 +313,58 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private final Holder<NoiseGeneratorSettings> settings;
     private final NoiseBasedChunkGenerator vanilla;
 
+    /**
+     * Configured spawn pixel X from the world-preset JSON.
+     * -1 means "use map centre" (world X = 0).
+     * Updated whenever the chunk generator is deserialised from the preset.
+     */
+    private final int spawnPixelX;
+
+    /**
+     * Configured spawn pixel Z from the world-preset JSON.
+     * -1 means "use map centre" (world Z = 0).
+     * Updated whenever the chunk generator is deserialised from the preset.
+     */
+    private final int spawnPixelZ;
+
+    // Static copies so the LevelEvent handler in GotMod can read them without
+    // needing a reference to the chunk generator instance.
+    private static int configuredSpawnPixelX = -1;
+    private static int configuredSpawnPixelZ = -1;
+
     public static final MapCodec<GotChunkGenerator> CODEC =
             RecordCodecBuilder.mapCodec(i -> i.group(
                     BiomeSource.CODEC.fieldOf("biome_source")
                             .forGetter(ChunkGenerator::getBiomeSource),
                     NoiseGeneratorSettings.CODEC.fieldOf("settings")
-                            .forGetter(g -> g.settings)
+                            .forGetter(g -> g.settings),
+                    com.mojang.serialization.Codec.INT
+                            .optionalFieldOf("spawn_pixel_x", -1)
+                            .forGetter(g -> g.spawnPixelX),
+                    com.mojang.serialization.Codec.INT
+                            .optionalFieldOf("spawn_pixel_z", -1)
+                            .forGetter(g -> g.spawnPixelZ)
             ).apply(i, GotChunkGenerator::new));
 
     public GotChunkGenerator(BiomeSource biomeSource,
-                             Holder<NoiseGeneratorSettings> settings) {
+                             Holder<NoiseGeneratorSettings> settings,
+                             int spawnPixelX,
+                             int spawnPixelZ) {
         super(biomeSource);
-        this.settings = settings;
-        this.vanilla  = new NoiseBasedChunkGenerator(biomeSource, settings);
+        this.settings     = settings;
+        this.spawnPixelX  = spawnPixelX;
+        this.spawnPixelZ  = spawnPixelZ;
+        this.vanilla      = new NoiseBasedChunkGenerator(biomeSource, settings);
+        // Publish to static fields so the event handler can read them.
+        configuredSpawnPixelX = spawnPixelX;
+        configuredSpawnPixelZ = spawnPixelZ;
     }
+
+    /** Returns the pixel-X configured in the world-preset JSON (-1 = map centre). */
+    public static int getConfiguredSpawnPixelX() { return configuredSpawnPixelX; }
+
+    /** Returns the pixel-Z configured in the world-preset JSON (-1 = map centre). */
+    public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     @Override
     protected @NotNull MapCodec<? extends ChunkGenerator> codec() { return CODEC; }
