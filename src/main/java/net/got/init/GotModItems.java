@@ -1117,8 +1117,6 @@ public class GotModItems {
     // ── Flour, Dough, Bread ──────────────────────────────────────────────────
     public static final DeferredItem<Item> WHEAT_FLOUR  = simple("wheat_flour");
     public static final DeferredItem<Item> WHEAT_DOUGH  = simple("wheat_dough");
-    // FIX: WHEAT_BREAD was never registered — the baking recipe JSON targets got:wheat_bread
-    public static final DeferredItem<Item> WHEAT_BREAD  = REGISTRY.registerItem("wheat_bread",  p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6f).build()));
     public static final DeferredItem<Item> OAT_FLOUR  = simple("oat_flour");
     public static final DeferredItem<Item> OAT_DOUGH  = simple("oat_dough");
     public static final DeferredItem<Item> OAT_BREAD  = REGISTRY.registerItem("oat_bread",  p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6f).build()));
@@ -1131,7 +1129,6 @@ public class GotModItems {
 
 
     // ── Crop produce (produce-type crops — also the planting item) ────────
-    public static final DeferredItem<Item> CARROT      = REGISTRY.registerItem("carrot",      p -> new BlockItem(GotModBlocks.CARROT_CROP.get(),      p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.6f).build()));
     public static final DeferredItem<Item> PARSNIP     = REGISTRY.registerItem("parsnip",     p -> new BlockItem(GotModBlocks.PARSNIP_CROP.get(),     p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.6f).build()));
     public static final DeferredItem<Item> ONION       = REGISTRY.registerItem("onion",       p -> new BlockItem(GotModBlocks.ONION_CROP.get(),       p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.5f).build()));
     public static final DeferredItem<Item> TURNIP      = REGISTRY.registerItem("turnip",      p -> new BlockItem(GotModBlocks.TURNIP_CROP.get(),      p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.5f).build()));

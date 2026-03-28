@@ -783,7 +783,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> PEPPERCORN_CROP  = seedCropBlock("peppercorn_crop",  () -> GotModItems.PEPPERCORN_SEEDS.get());
 
     // ── Crops — Produce-type (planted with produce, harvests more produce) ─
-    public static final DeferredBlock<Block> CARROT_CROP  = produceCropBlock("carrot_crop",  () -> GotModItems.CARROT.get());
     public static final DeferredBlock<Block> PARSNIP_CROP = produceCropBlock("parsnip_crop", () -> GotModItems.PARSNIP.get());
     public static final DeferredBlock<Block> ONION_CROP   = produceCropBlock("onion_crop",   () -> GotModItems.ONION.get());
     public static final DeferredBlock<Block> TURNIP_CROP  = produceCropBlock("turnip_crop",  () -> GotModItems.TURNIP.get());

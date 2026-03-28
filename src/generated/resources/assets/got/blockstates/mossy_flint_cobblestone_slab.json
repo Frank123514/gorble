@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "got:block/mossy_flint_cobblestone_slab_slab"
-    },
-    "type=double": {
       "model": "got:block/mossy_flint_cobblestone_slab"
     },
+    "type=double": {
+      "model": "got:block/mossy_flint_cobblestone"
+    },
     "type=top": {
-      "model": "got:block/mossy_flint_cobblestone_slab_slab_top"
+      "model": "got:block/mossy_flint_cobblestone_slab_top"
     }
   }
 }

@@ -70,32 +70,32 @@ public final class GotBiomeTerrainParams {
         // Mountains — baseY raised slightly since σ=1.6 blending spreads height
         // into surrounding pixels; scale reduced from 2.5 as AMP_SMOOTH is now 42.
         // Net peak height stays roughly the same; slopes are gradual rather than cliffs.
-        put("north_mountains", 100f, 1.15f);
+        put("north_mountains", 115f, 1.15f);
         put("frostfangs",      120f, 1.70f);
         put("always_winter",   76f, 0.65f);
 
         // Hills / forest
         put("north_hills",     85f, 0.75f);
         put("barrowlands",     76f, 0.65f); // baseY +10
-        put("stony_shore",     63f, 0.55f);
+        put("stony_shore",     75f, 0.35f);
         put("ironwood",        70f, 0.70f);
         put("wolfswood",       69f, 0.65f);
         put("haunted_forest",  67f, 0.60f);
 
         // Plains
-        put("north",           68f, 0.25f); // baseY +5
+        put("north",           68f, 0.35f); // baseY +5
 
         // Wetlands
         put("neck",            54f, 0.10f);
 
         // Rivers — water, flat, no noise
-        putWater("river",        50f);
-        putWater("neck_river",   50f);
-        putWater("frozen_river", 50f);
+        putWater("river",        55f);
+        putWater("neck_river",   55f);
+        putWater("frozen_river", 55f);
 
         // Ocean — water, flat, no noise
-        putWater("ocean",      36f);
-        putWater("deep_ocean", 22f);
+        putWater("ocean",      45f);
+        putWater("deep_ocean", 35f);
     }
 
     private static void put(String name, float baseY, float scale) {

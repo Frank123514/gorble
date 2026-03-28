@@ -1166,7 +1166,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.RYE_CROP.get());
                         safeAccept(output, GotModBlocks.BARLEY_CROP.get());
                         safeAccept(output, GotModBlocks.COTTON_CROP.get());
-                        safeAccept(output, GotModBlocks.CARROT_CROP.get());
                         safeAccept(output, GotModBlocks.PARSNIP_CROP.get());
                         safeAccept(output, GotModBlocks.ONION_CROP.get());
                         safeAccept(output, GotModBlocks.TURNIP_CROP.get());
@@ -1220,7 +1219,6 @@ public class GotModTabs {
                         output.accept(GotModItems.BARLEY_DOUGH.get());
                         output.accept(GotModItems.BARLEY_BREAD.get());
 
-                        output.accept(GotModItems.CARROT.get());
                         output.accept(GotModItems.PARSNIP.get());
                         output.accept(GotModItems.ONION.get());
                         output.accept(GotModItems.TURNIP.get());

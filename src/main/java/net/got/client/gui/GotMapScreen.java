@@ -24,8 +24,8 @@ public class GotMapScreen extends Screen {
     private static final int BUTTON_V_NORMAL  = 0;
     private static final int BUTTON_V_HOVERED = 22;
 
-    private static final int MAP_PIXEL_WIDTH  = 2000;
-    private static final int MAP_PIXEL_HEIGHT = 2000;
+    private static final int MAP_PIXEL_WIDTH  = 2513;
+    private static final int MAP_PIXEL_HEIGHT = 1962;
 
     private static final int MAP_BORDER = 20;
 

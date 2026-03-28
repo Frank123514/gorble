@@ -412,20 +412,28 @@ public final class GotChunkGenerator extends ChunkGenerator {
     /**
      * Computes the terrain surface Y at (worldX, worldZ).
      *
-     * <p><b>Water path</b>: Uses Catmull-Rom bicubic interpolation over the 4×4
-     * pixel neighbourhood to decide if a position is inside a river/ocean.
-     * The 0.5 threshold on the interpolated value gives smooth, curved edges
-     * instead of blocky pixel-aligned rectangles.  Returns flat water-bed Y.
+     * <h3>Unified blending approach</h3>
+     * <p>Rather than a hard branch between a "water path" and a "land path"
+     * (which inevitably produces a seam where the two functions disagree),
+     * this method always computes <em>both</em> the water-bed Y and the land
+     * terrain Y, then blends between them using the continuous {@code waterFrac}
+     * value from the bicubic interpolator.
      *
-     * <p><b>Land path</b>: Gaussian-weighted blend over a (2×{@value SAMPLE_RADIUS}+1)²
-     * pixel window, land neighbours only, with {@link #HEIGHT_STRETCH} applied.
+     * <pre>
+     *   waterFrac ≥ WATER_FULL   → pure river/ocean bed (flat + gentle undulation)
+     *   waterFrac ∈ BLEND zone   → smooth cosine blend: bed → land
+     *   waterFrac ≤ SHORE_END    → pure land, but still slopes toward shore
+     * </pre>
+     *
+     * <p>Because both sides are evaluated at every column and blended with the
+     * same continuous weight function, the river-bed surface and the bank surface
+     * are mathematically guaranteed to meet at the same Y with the same slope,
+     * eliminating the cliff / staircase artefact visible in the previous version.
      */
     public static int computeSurfaceY(int worldX, int worldZ) {
         if (!BiomemapLoader.isLoaded()) return SEA_LEVEL;
 
-        // Raw pixel coord, then domain-warped so terrain and biome boundaries
-        // are organically curved and always in sync (GotBiomeSource uses the
-        // identical warpPixelCoord call).
+        // ── Pixel-space coordinate (domain-warped) ────────────────────────────
         float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE
                 + BiomemapLoader.getWidth()  * 0.5f;
         float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE
@@ -436,19 +444,16 @@ public final class GotChunkGenerator extends ChunkGenerator {
         int icx = (int) Math.floor(cx);
         int icz = (int) Math.floor(cz);
 
-        // Bicubic water check: interpolate water/land mask over a 4x4 pixel grid
-        // using Catmull-Rom splines so river boundaries are smooth curves,
-        // not pixel staircases.  Threshold at 0.5 = same area, smooth edges.
+        // ── Water fraction + bed Y (bicubic, always computed) ─────────────────
         float[] waterResult = bicubicWaterFraction(cx, cz);
         float waterFrac = waterResult[0];
-        float waterY    = waterResult[1];
-        if (waterFrac >= WATER_THRESHOLD) {
-            // Add gentle undulation to river beds and ocean floors.
-            float bedNoise = waterBedNoise(worldX, worldZ);
-            return Mth.floor(Mth.clamp(waterY + bedNoise, 10f, SEA_LEVEL - 1f));
-        }
+        float waterY    = waterResult[1];                  // river/ocean bed height
 
-        // Land path: steep Gaussian blend
+        // Add gentle undulation to bed (used whether or not we're fully in water).
+        float bedNoise = waterBedNoise(worldX, worldZ);
+        float bedY = Mth.clamp(waterY + bedNoise, 10f, (float) SEA_LEVEL - 1f);
+
+        // ── Land terrain Y (Gaussian blend, always computed) ──────────────────
         float totalBaseY  = 0f;
         float totalScale  = 0f;
         float totalWeight = 0f;
@@ -471,65 +476,80 @@ public final class GotChunkGenerator extends ChunkGenerator {
             }
         }
 
-        if (totalWeight <= 0f) return SEA_LEVEL;
+        // Fallback: no land neighbours found (position deep inside water body).
+        if (totalWeight <= 0f) return Mth.floor(bedY);
 
         float blendedBaseY = totalBaseY / totalWeight;
         float blendedScale = totalScale / totalWeight;
         float noise = terrainNoise(worldX, worldZ);
         float landY = blendedBaseY + noise * blendedScale * GotBiomeTerrainParams.AMP_SMOOTH;
 
-        // Valley carving — only meaningful in elevated terrain.
-        // valleyNoise returns [-1, 1].  Where it dips below VALLEY_THRESHOLD,
-        // terrain is pushed downward proportional to (a) how negative the noise is
-        // and (b) how high above sea level the current terrain is.
-        // This means lowlands and plains are barely affected (they're already near
-        // sea level so there's little height to remove), while mountain terrain is
-        // actively carved into ridges, faces, and saddle passes.
-        // The Gaussian blend (σ=1.6) ensures the carved valleys naturally continue
-        // through biome boundaries — a valley in north_mountains transitions
-        // smoothly into a valley in the adjacent north_hills or frostfangs without
-        // any seam.
+        // Valley carving (elevation-proportional, unchanged from original).
         float vn = valleyNoise(worldX, worldZ);
         if (vn < VALLEY_THRESHOLD) {
-            // How deep into "valley territory" are we?  0 at threshold, 1 at noise=-1.
             float valleyT = (VALLEY_THRESHOLD - vn) / (1f + VALLEY_THRESHOLD);
-            // Smoothstep for a gentler valley floor / less knife-edge transition
             valleyT = valleyT * valleyT * (3f - 2f * valleyT);
-            // Height above sea — carving scales with elevation, so flatlands unchanged
             float heightAboveSea = Math.max(0f, landY - SEA_LEVEL);
-            // Carve fraction: max out at 1.0 for very high terrain, taper to 0 near sea
             float carveFrac = Math.min(1f, heightAboveSea / 80f);
             landY -= valleyT * VALLEY_DEPTH * carveFrac;
         }
 
-        // Height-proportional steepness — the higher the terrain the more aggressively
-        // the noise amplitude is amplified.  Below sea level nothing changes; above it
-        // a smooth ramp multiplies the noise contribution so high peaks are sharp and
-        // craggy while lowlands stay gently rolling.
-        // elevFrac: 0 at sea level, 1 at baseY+100 (into mountain territory).
-        // extraAmp at elevFrac=1 → noise scaled up by an additional 85 blocks,
-        // giving high ridges a noticeably steeper, more angular profile (was 55).
+        // Height-proportional steepness (unchanged from original).
         float elevFrac = Math.min(1f, Math.max(0f, (landY - SEA_LEVEL) / 100f));
-        elevFrac = elevFrac * elevFrac; // quadratic — effect kicks in harder at real altitude
+        elevFrac = elevFrac * elevFrac;
         landY += noise * blendedScale * elevFrac * 85f;
 
-        // Bank slope: blend land height down toward waterY as we approach the water
-        // boundary.  waterFrac runs 0 (pure land) to WATER_THRESHOLD (water edge).
-        // We start pulling the terrain down at BANK_START and reach waterY exactly
-        // at WATER_THRESHOLD.  This produces a natural sloping bank.
+        // ── Unified water↔land blend ──────────────────────────────────────────
         //
-        // BANK_START is set well below WATER_THRESHOLD so the slope is gradual enough
-        // that Mth.floor() doesn't produce visible stair-steps in the transition zone.
-        final float BANK_START = WATER_THRESHOLD - 0.23f; // begin slope ~0.23 frac units before water edge
-        if (waterFrac > BANK_START) {
-            // t goes 0->1 as waterFrac goes BANK_START->WATER_THRESHOLD
-            float t = (waterFrac - BANK_START) / (WATER_THRESHOLD - BANK_START);
-            // Smoothstep so the transition is gentle at both ends
-            t = t * t * (3f - 2f * t);
-            landY = landY + t * (waterY - landY);
+        // We define three waterFrac thresholds that carve the space into zones:
+        //
+        //   WATER_FULL   (e.g. 0.55)  — fully inside water body; pure bedY
+        //   WATER_THRESHOLD (0.38)    — the nominal water/land boundary pixel
+        //   SHORE_END    (e.g. 0.10)  — land terrain reaches full height here;
+        //                               between SHORE_END and WATER_THRESHOLD the
+        //                               land surface is still being pulled toward
+        //                               the shore, creating the beach/bank slope.
+        //
+        // A single continuous blend weight drives both sides:
+        //
+        //   blendT = 0  →  pure land (landY)
+        //   blendT = 1  →  pure bed  (bedY)
+        //
+        // This guarantees that at every waterFrac value the surface Y is a
+        // weighted average of the same two quantities — there is no seam,
+        // no cliff, and no staircase.
+        //
+        // The shore slope on the land side is achieved by making the blend
+        // start earlier (at SHORE_END, well into land territory) and using a
+        // smoothstep so the transition is gentle at both endpoints.
+
+        // How far the blend extends into land territory past the water edge.
+        // Larger = wider beach / bank zone.
+        // BLEND_WIDTH in waterFrac units.  At MAP_SCALE=56 blocks/px and
+        // σ≈0.5 px for the bicubic, 0.45 frac ≈ ~1 px ≈ 56 blocks of shore slope.
+        final float WATER_FULL  = WATER_THRESHOLD + 0.18f;  // fully submerged beyond this
+        final float BLEND_WIDTH = 0.55f;                    // frac units of shore slope on land side
+        final float SHORE_END   = WATER_THRESHOLD - BLEND_WIDTH;
+
+        float blendT;
+        if (waterFrac >= WATER_FULL) {
+            // Deep in water body — pure bed, no land influence.
+            blendT = 1f;
+        } else if (waterFrac <= SHORE_END) {
+            // Far from water — pure land, full terrain height.
+            blendT = 0f;
+        } else {
+            // Transition zone spanning SHORE_END → WATER_FULL.
+            // Map waterFrac linearly into [0,1] then apply smoothstep.
+            float raw = (waterFrac - SHORE_END) / (WATER_FULL - SHORE_END);
+            // Smootherstep (quintic) — zero first AND second derivative at endpoints,
+            // so the slope is tangent-matched at both the land side and the bed side.
+            // This is what makes the river bed and bank meet as one continuous surface.
+            blendT = raw * raw * raw * (raw * (raw * 6f - 15f) + 10f);
         }
 
-        return Mth.floor(landY);
+        float finalY = landY + blendT * (bedY - landY);
+        return Mth.floor(finalY);
     }
 
     // ── Bicubic water-fraction helpers ────────────────────────────────────

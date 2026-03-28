@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "got:block/flint_brick_slab_slab"
-    },
-    "type=double": {
       "model": "got:block/flint_brick_slab"
     },
+    "type=double": {
+      "model": "got:block/flint_brick"
+    },
     "type=top": {
-      "model": "got:block/flint_brick_slab_slab_top"
+      "model": "got:block/flint_brick_slab_top"
     }
   }
 }
