@@ -442,6 +442,39 @@ public class GotModItems {
     public static final DeferredItem<Item> SMOOTH_GREY_GRANITE_ROCK_STAIRS = block(GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_GREY_GRANITE_ROCK_WALL = block(GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_WALL);
 
+    // ── Flint items ──────────────────────────────────────────────────────
+    public static final DeferredItem<Item> FLINT_ROCK = block(GotModBlocks.FLINT_ROCK);
+    public static final DeferredItem<Item> FLINT_BRICK = block(GotModBlocks.FLINT_BRICK);
+    public static final DeferredItem<Item> CRACKED_FLINT_BRICK = block(GotModBlocks.CRACKED_FLINT_BRICK);
+    public static final DeferredItem<Item> MOSSY_FLINT_BRICK = block(GotModBlocks.MOSSY_FLINT_BRICK);
+    public static final DeferredItem<Item> FLINT_COBBLESTONE = block(GotModBlocks.FLINT_COBBLESTONE);
+    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE);
+    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK = block(GotModBlocks.SMOOTH_FLINT_ROCK);
+    public static final DeferredItem<Item> FLINT_PILLAR = block(GotModBlocks.FLINT_PILLAR);
+    public static final DeferredItem<Item> FLINT_ROCK_SLAB = block(GotModBlocks.FLINT_ROCK_SLAB);
+    public static final DeferredItem<Item> FLINT_ROCK_STAIRS = block(GotModBlocks.FLINT_ROCK_STAIRS);
+    public static final DeferredItem<Item> FLINT_ROCK_WALL = block(GotModBlocks.FLINT_ROCK_WALL);
+    public static final DeferredItem<Item> FLINT_ROCK_BUTTON = block(GotModBlocks.FLINT_ROCK_BUTTON);
+    public static final DeferredItem<Item> FLINT_ROCK_PRESSURE_PLATE = block(GotModBlocks.FLINT_ROCK_PRESSURE_PLATE);
+    public static final DeferredItem<Item> FLINT_BRICK_SLAB = block(GotModBlocks.FLINT_BRICK_SLAB);
+    public static final DeferredItem<Item> FLINT_BRICK_STAIRS = block(GotModBlocks.FLINT_BRICK_STAIRS);
+    public static final DeferredItem<Item> FLINT_BRICK_WALL = block(GotModBlocks.FLINT_BRICK_WALL);
+    public static final DeferredItem<Item> CRACKED_FLINT_BRICK_SLAB = block(GotModBlocks.CRACKED_FLINT_BRICK_SLAB);
+    public static final DeferredItem<Item> CRACKED_FLINT_BRICK_STAIRS = block(GotModBlocks.CRACKED_FLINT_BRICK_STAIRS);
+    public static final DeferredItem<Item> CRACKED_FLINT_BRICK_WALL = block(GotModBlocks.CRACKED_FLINT_BRICK_WALL);
+    public static final DeferredItem<Item> MOSSY_FLINT_BRICK_SLAB = block(GotModBlocks.MOSSY_FLINT_BRICK_SLAB);
+    public static final DeferredItem<Item> MOSSY_FLINT_BRICK_STAIRS = block(GotModBlocks.MOSSY_FLINT_BRICK_STAIRS);
+    public static final DeferredItem<Item> MOSSY_FLINT_BRICK_WALL = block(GotModBlocks.MOSSY_FLINT_BRICK_WALL);
+    public static final DeferredItem<Item> FLINT_COBBLESTONE_SLAB = block(GotModBlocks.FLINT_COBBLESTONE_SLAB);
+    public static final DeferredItem<Item> FLINT_COBBLESTONE_STAIRS = block(GotModBlocks.FLINT_COBBLESTONE_STAIRS);
+    public static final DeferredItem<Item> FLINT_COBBLESTONE_WALL = block(GotModBlocks.FLINT_COBBLESTONE_WALL);
+    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE_SLAB = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE_SLAB);
+    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE_STAIRS = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE_STAIRS);
+    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE_WALL = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE_WALL);
+    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK_SLAB = block(GotModBlocks.SMOOTH_FLINT_ROCK_SLAB);
+    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK_STAIRS = block(GotModBlocks.SMOOTH_FLINT_ROCK_STAIRS);
+    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK_WALL = block(GotModBlocks.SMOOTH_FLINT_ROCK_WALL);
+
     // ── Limestone items ──────────────────────────────────────────────────────
     public static final DeferredItem<Item> LIMESTONE_ROCK = block(GotModBlocks.LIMESTONE_ROCK);
     public static final DeferredItem<Item> LIMESTONE_BRICK = block(GotModBlocks.LIMESTONE_BRICK);

@@ -64,7 +64,7 @@ public final class GotMod {
         GotWoodTypes.init();
         GotModMenus.REGISTRY.register(modBus);
         GotModRecipeTypes.REGISTRY.register(modBus);
-        // FIX: register the baking recipe serializer and its recipe book category
+        // Register the oven recipe serializer and its recipe book category
         GotModRecipeSerializers.REGISTRY.register(modBus);
         GotModRecipeSerializers.CATEGORY_REGISTRY.register(modBus);
         GotModBlocks.REGISTRY.register(modBus);
@@ -101,7 +101,7 @@ public final class GotMod {
         event.enqueueWork(() -> {
             HashSet<net.minecraft.world.level.block.Block> blocks =
                     new HashSet<>(BlockEntityType.HANGING_SIGN.validBlocks);
-            java.util.Arrays.asList(
+            Arrays.asList(
                     GotModBlocks.WEIRWOOD_HANGING_SIGN.get(), GotModBlocks.WEIRWOOD_WALL_HANGING_SIGN.get(),
                     GotModBlocks.ASPEN_HANGING_SIGN.get(), GotModBlocks.ASPEN_WALL_HANGING_SIGN.get(),
                     GotModBlocks.ALDER_HANGING_SIGN.get(), GotModBlocks.ALDER_WALL_HANGING_SIGN.get(),

@@ -7,7 +7,6 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
@@ -18,16 +17,48 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Custom BiomeSource that uses bicubic interpolation for water boundaries
- * to stay perfectly synchronized with GotChunkGenerator terrain.
+ * Custom BiomeSource that stays in lock-step with {@link GotChunkGenerator}.
  *
- * <p>Hard guarantee: waterFrac >= 0.5 returns ONLY water biomes,
- * waterFrac < 0.5 returns ONLY land biomes. No leaks.
+ * <h2>Horizontal sync (XZ)</h2>
+ * <p>Both the terrain generator and this source derive biome boundaries from the
+ * same underlying operation: <em>bilinear interpolation of the four nearest
+ * biomemap pixels</em>.  This means a column the terrain generator has carved
+ * into a river bed (because a low-{@code depth} river pixel dominates the bilinear
+ * blend) will also receive the river biome here — there is no independent
+ * palette lookup that could disagree.
+ *
+ * <h2>Vertical sync (Y — water biomes)</h2>
+ * <p>Minecraft assigns biomes in 4 × 4 × 4 noise cells.  Without Y awareness,
+ * a cell the terrain carved into open water could still receive a land biome
+ * because an adjacent land pixel outweighs the river/ocean pixel at that XZ
+ * position.  This would create a block-level mismatch: water blocks sitting in
+ * a land biome, showing wrong foliage colour and affecting mob spawning.
+ *
+ * <p>To eliminate this mismatch, {@link #getNoiseBiome} evaluates the exact
+ * terrain density at every noise cell that is at or below sea level (using
+ * {@link GotChunkGenerator#evalDensity} with the shared {@link GotChunkGenerator#sharedNoiseSeed}).
+ * If the density is ≤ 0 (open, filled with water by the generator) the method
+ * returns the <em>water</em> biome carrying the highest pixel weight — making
+ * biome assignment block-for-block identical to the carved terrain for rivers,
+ * oceans, and deep oceans alike.
+ *
+ * <h2>Biome selection (XZ)</h2>
+ * <ol>
+ *   <li>Convert the noise-space coordinate to world blocks ({@code x &lt;&lt; 2}).</li>
+ *   <li>Compute the float pixel-space coordinate, identical to
+ *       {@link GotChunkGenerator#bilinearBlend}.</li>
+ *   <li>For the four surrounding pixels compute the same bilinear weights
+ *       {@code (1-tx)(1-tz)}, {@code tx(1-tz)}, etc.</li>
+ *   <li>Accumulate each weight into a per-{@link ResourceLocation} total.</li>
+ *   <li>If the cell is open water (Y-sync check passes), return the highest-weight
+ *       water biome; otherwise return the highest-weight biome overall.</li>
+ * </ol>
  */
 public final class GotBiomeSource extends BiomeSource {
 
+    // ── Colour → registry path palette ───────────────────────────────────
+
     private static final Map<Integer, ResourceLocation> PALETTE;
-    private static final Set<ResourceLocation> WATER_BIOMES;
 
     static {
         Map<Integer, ResourceLocation> m = new LinkedHashMap<>();
@@ -48,19 +79,13 @@ public final class GotBiomeSource extends BiomeSource {
         m.put(0xFFFFFF, rl("always_winter"));
         m.put(0xA5B7B9, rl("north_mountains"));
         PALETTE = Collections.unmodifiableMap(m);
-
-        Set<ResourceLocation> w = new HashSet<>();
-        w.add(rl("ocean"));
-        w.add(rl("deep_ocean"));
-        w.add(rl("river"));
-        w.add(rl("neck_river"));
-        w.add(rl("frozen_river"));
-        WATER_BIOMES = Collections.unmodifiableSet(w);
     }
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath("got", path);
     }
+
+    // ── Codec ─────────────────────────────────────────────────────────────
 
     public static final MapCodec<GotBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -72,6 +97,8 @@ public final class GotBiomeSource extends BiomeSource {
             ))
     );
 
+    // ── Fields ────────────────────────────────────────────────────────────
+
     private final List<Holder<Biome>> biomes;
     private final Map<ResourceLocation, Holder<Biome>> locationToHolder;
     private final Holder<Biome> fallback;
@@ -79,181 +106,179 @@ public final class GotBiomeSource extends BiomeSource {
     public GotBiomeSource(List<Holder<Biome>> biomes) {
         this.biomes = List.copyOf(biomes);
         this.locationToHolder = new HashMap<>(biomes.size() * 2);
-
         for (Holder<Biome> h : biomes) {
             h.unwrapKey().ifPresent(key -> locationToHolder.put(key.location(), h));
         }
-
         Holder<Biome> fb = locationToHolder.get(rl("north"));
         if (fb == null) fb = locationToHolder.get(rl("ocean"));
         if (fb == null && !biomes.isEmpty()) fb = biomes.get(0);
         this.fallback = Objects.requireNonNull(fb, "GotBiomeSource: biome list is empty!");
     }
 
-    @Override
-    protected @NotNull MapCodec<? extends BiomeSource> codec() {
-        return CODEC;
-    }
+    // ── BiomeSource overrides ─────────────────────────────────────────────
 
     @Override
-    protected @NotNull Stream<Holder<Biome>> collectPossibleBiomes() {
-        return biomes.stream();
-    }
+    protected @NotNull MapCodec<? extends BiomeSource> codec() { return CODEC; }
+
+    @Override
+    protected @NotNull Stream<Holder<Biome>> collectPossibleBiomes() { return biomes.stream(); }
 
     /**
-     * Hard boundary guarantee:
-     * <ul>
-     *   <li>If bicubic interpolation says water (>= 0.5), returns ONLY water biomes</li>
-     *   <li>If bicubic interpolation says land (< 0.5), returns ONLY land biomes</li>
-     * </ul>
-     * Searches 5x5 neighbourhood to find nearest matching biome type.
+     * Returns the biome for the given noise-space coordinate.
+     *
+     * <h3>Horizontal sync (XZ)</h3>
+     * <p>Bilinear interpolation of the four surrounding biomemap pixels —
+     * identical to {@link GotChunkGenerator#bilinearBlend} — is used to
+     * accumulate per-biome weights.  The dominant weight (nearest pixel centre)
+     * wins, keeping XZ biome boundaries exactly where the terrain blend
+     * transitions.
+     *
+     * <h3>Vertical sync (Y — water biomes)</h3>
+     * <p>Minecraft assigns biomes in 4 × 4 × 4 noise cells (noise coords × 4 =
+     * world blocks).  Without Y awareness a cell that the terrain carved into
+     * open water could still receive a land biome because the adjacent land
+     * pixel outweighs the river/ocean pixel at that XZ.  This creates a
+     * block-level mismatch: water in a "north" biome, grass-coloured and
+     * wrongly affecting spawns.
+     *
+     * <p>To fix this, for every noise cell whose bottom edge ({@code worldY})
+     * is at or below {@link GotChunkGenerator#SEA_LEVEL} this method evaluates
+     * the terrain density at that point using {@link GotChunkGenerator#evalDensity}
+     * — the exact same formula the chunk generator uses.  If the density is
+     * ≤ 0 (open, filled with water by the generator) the method returns the
+     * <em>water</em> biome with the highest accumulated pixel weight instead of
+     * the overall dominant biome, making the biome assignment block-for-block
+     * identical to the carved terrain.
      */
     @Override
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z,
                                                 Climate.@NotNull Sampler sampler) {
+        // Noise coords are in 4-block units; shift back to world blocks.
         int worldX = x << 2;
+        int worldY = y << 2;
         int worldZ = z << 2;
 
-        // Domain-warp the pixel coordinate — identical call to GotChunkGenerator
-        // so biome boundaries and terrain features are always co-located.
-        float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE
-                + BiomemapLoader.getWidth()  * 0.5f;
-        float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE
-                + BiomemapLoader.getHeight() * 0.5f;
-        float[] warped = GotChunkGenerator.warpPixelCoord(rawCx, rawCz);
-        float cx = warped[0];
-        float cz = warped[1];
+        if (!BiomemapLoader.isLoaded()) return fallback;
 
-        float waterFrac = bicubicWaterFraction(cx, cz);
+        // Float pixel-space coordinate — identical formula to bilinearBlend().
+        float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
-        if (waterFrac >= GotChunkGenerator.WATER_THRESHOLD) {
-            // FORCE water biome - search for nearest water pixel
-            return findNearestBiome(cx, cz, true);
-        } else {
-            // FORCE land biome - search for nearest land pixel
-            return findNearestBiome(cx, cz, false);
+        int   px0 = (int) Math.floor(cx);
+        int   pz0 = (int) Math.floor(cz);
+        float tx  = cx - px0;
+        float tz  = cz - pz0;
+
+        float w00 = (1f - tx) * (1f - tz);
+        float w10 = tx        * (1f - tz);
+        float w01 = (1f - tx) * tz;
+        float w11 = tx        * tz;
+
+        // Accumulate weight per biome ResourceLocation.
+        Map<ResourceLocation, Float> weights = new HashMap<>(8);
+        addPixelWeight(weights, px0,     pz0,     w00);
+        addPixelWeight(weights, px0 + 1, pz0,     w10);
+        addPixelWeight(weights, px0,     pz0 + 1, w01);
+        addPixelWeight(weights, px0 + 1, pz0 + 1, w11);
+
+        // ── Y-aware water biome sync ──────────────────────────────────────
+        // If the bottom of this 4-block noise cell is at or below sea level,
+        // check whether the terrain density says this cell is open (water).
+        // If it is, return the dominant *water* biome so every water block
+        // sits in a water biome — block-for-block sync with the carved terrain.
+        if (worldY <= GotChunkGenerator.SEA_LEVEL) {
+            float[] bp      = GotChunkGenerator.bilinearBlend(worldX, worldZ);
+            float   density = GotChunkGenerator.evalDensity(worldX, worldY, worldZ, bp[0], bp[1]);
+
+            if (density <= 0f) {
+                // Find the water biome carrying the largest pixel weight.
+                ResourceLocation bestWater = null;
+                float            bestW     = -1f;
+                for (Map.Entry<ResourceLocation, Float> e : weights.entrySet()) {
+                    if (isWaterBiome(e.getKey()) && e.getValue() > bestW) {
+                        bestW     = e.getValue();
+                        bestWater = e.getKey();
+                    }
+                }
+                if (bestWater != null) {
+                    Holder<Biome> wh = locationToHolder.get(bestWater);
+                    if (wh != null) return wh;
+                }
+                // No water pixel contributes weight here (e.g. a surface dip on
+                // flat land that happens to go slightly below sea level).
+                // Fall through to normal dominant-weight logic so we don't
+                // incorrectly force a water biome onto what is terrain border.
+            }
         }
+
+        // ── Normal dominant-weight logic ──────────────────────────────────
+        // Pick the biome whose pixel centre is nearest to this query point.
+        ResourceLocation bestLoc    = null;
+        float            bestWeight = -1f;
+        for (Map.Entry<ResourceLocation, Float> e : weights.entrySet()) {
+            if (e.getValue() > bestWeight) {
+                bestWeight = e.getValue();
+                bestLoc    = e.getKey();
+            }
+        }
+
+        if (bestLoc == null) return fallback;
+        Holder<Biome> h = locationToHolder.get(bestLoc);
+        return h != null ? h : fallback;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+
+    /**
+     * Looks up the pixel colour at {@code (px, pz)}, resolves it to a
+     * {@link ResourceLocation} via nearest-palette-distance, and adds
+     * {@code weight} to that location's running total in {@code acc}.
+     */
+    private static void addPixelWeight(Map<ResourceLocation, Float> acc,
+                                       int px, int pz, float weight) {
+        if (weight <= 0f) return;
+        int color = BiomemapLoader.getRawPixel(px, pz);
+        ResourceLocation loc = closestPaletteMatch(color);
+        if (loc != null) acc.merge(loc, weight, Float::sum);
     }
 
     /**
-     * Finds the nearest biome of the specified type (water or land) within
-     * a 5x5 pixel neighbourhood. Guarantees type consistency with terrain.
+     * Returns the palette {@link ResourceLocation} whose RGB is nearest (by
+     * squared Euclidean distance in RGB space) to the given 24-bit colour.
+     * Handles minor PNG compression artefacts at pixel boundaries.
      */
-    private Holder<Biome> findNearestBiome(float cx, float cz, boolean wantWater) {
-        int icx = (int) Math.floor(cx);
-        int icz = (int) Math.floor(cz);
-        float subX = cx - icx; // fractional offset within pixel
-        float subZ = cz - icz;
-
-        Holder<Biome> best = null;
-        float bestDist = Float.MAX_VALUE;
-
-        // Search 5x5 grid - large enough to handle interpolation mismatches
-        for (int dz = -2; dz <= 2; dz++) {
-            for (int dx = -2; dx <= 2; dx++) {
-                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz);
-                ResourceLocation loc = closestPaletteMatch(color);
-                if (loc == null) continue;
-
-                boolean isWater = WATER_BIOMES.contains(loc);
-                if (wantWater != isWater) continue; // Skip wrong type
-
-                // Calculate distance from sample point to this pixel center
-                float px = dx + 0.5f - subX;
-                float pz = dz + 0.5f - subZ;
-                float dist = px * px + pz * pz;
-
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    Holder<Biome> h = locationToHolder.get(loc);
-                    if (h != null) best = h;
-                }
-            }
-        }
-
-        if (best != null) return best;
-
-        // Emergency fallback - should never happen if map has both types
-        if (wantWater) {
-            for (String name : new String[]{"river", "ocean", "deep_ocean", "frozen_river"}) {
-                Holder<Biome> h = locationToHolder.get(rl(name));
-                if (h != null) return h;
-            }
-        } else {
-            for (String name : new String[]{"north", "barrowlands", "stony_shore", "wolfswood"}) {
-                Holder<Biome> h = locationToHolder.get(rl(name));
-                if (h != null) return h;
-            }
-        }
-        return fallback;
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* Bicubic interpolation — identical to GotChunkGenerator             */
-    /* ------------------------------------------------------------------ */
-
-    private static float bicubicWaterFraction(float cx, float cz) {
-        int ix = (int) Math.floor(cx);
-        int iz = (int) Math.floor(cz);
-        float fx = cx - ix;
-        float fz = cz - iz;
-
-        float[][] grid = new float[4][4];
-        for (int dz = 0; dz < 4; dz++) {
-            for (int dx = 0; dx < 4; dx++) {
-                int color = BiomemapLoader.getRawPixel(ix - 1 + dx, iz - 1 + dz);
-                grid[dz][dx] = isWaterColor(color) ? 1.0f : 0.0f;
-            }
-        }
-
-        float[] rowVals = new float[4];
-        for (int dz = 0; dz < 4; dz++) {
-            rowVals[dz] = catmullRom(fx, grid[dz][0], grid[dz][1], grid[dz][2], grid[dz][3]);
-        }
-        return Mth.clamp(catmullRom(fz, rowVals[0], rowVals[1], rowVals[2], rowVals[3]), 0f, 1f);
-    }
-
-    private static float catmullRom(float t, float p0, float p1, float p2, float p3) {
-        float t2 = t * t;
-        float t3 = t2 * t;
-        return 0.5f * (
-                (2f * p1) +
-                        (-p0 + p2) * t +
-                        (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
-                        (-p0 + 3f * p1 - 3f * p2 + p3) * t3
-        );
-    }
-
-    private static boolean isWaterColor(int color) {
-        ResourceLocation loc = PALETTE.get(color);
-        if (loc != null) return WATER_BIOMES.contains(loc);
-        return WATER_BIOMES.contains(closestPaletteMatch(color));
-    }
-
     private static ResourceLocation closestPaletteMatch(int color) {
         ResourceLocation exact = PALETTE.get(color);
         if (exact != null) return exact;
 
         int r = (color >> 16) & 0xFF;
-        int g = (color >> 8)  & 0xFF;
+        int g = (color >>  8) & 0xFF;
         int b =  color        & 0xFF;
 
-        int bestDist = Integer.MAX_VALUE;
-        ResourceLocation bestLoc = null;
+        int              bestDist = Integer.MAX_VALUE;
+        ResourceLocation bestLoc  = null;
 
         for (Map.Entry<Integer, ResourceLocation> entry : PALETTE.entrySet()) {
             int c  = entry.getKey();
             int dr = ((c >> 16) & 0xFF) - r;
-            int dg = ((c >> 8)  & 0xFF) - g;
+            int dg = ((c >>  8) & 0xFF) - g;
             int db = ( c        & 0xFF) - b;
-            int dist = dr * dr + dg * dg + db * db;
-
-            if (dist < bestDist) {
-                bestDist = dist;
-                bestLoc  = entry.getValue();
-            }
+            int d  = dr * dr + dg * dg + db * db;
+            if (d < bestDist) { bestDist = d; bestLoc = entry.getValue(); }
         }
 
         return bestLoc;
+    }
+
+    /**
+     * Returns {@code true} if the biome identified by {@code loc} is a water
+     * biome (river, ocean, deep ocean, etc.) as declared in
+     * {@link GotBiomeDensityParams}.  Used by the Y-aware water-sync logic to
+     * prefer the correct water biome over a dominant land biome when a noise
+     * cell is open water in the generated terrain.
+     */
+    private static boolean isWaterBiome(ResourceLocation loc) {
+        GotBiomeDensityParams.Params p = GotBiomeDensityParams.forName(loc.getPath());
+        return p != null && p.isWater;
     }
 }

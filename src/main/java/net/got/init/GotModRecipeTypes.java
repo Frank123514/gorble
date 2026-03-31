@@ -1,7 +1,7 @@
 package net.got.init;
 
 import net.got.GotMod;
-import net.got.recipe.BakingRecipe;
+import net.got.recipe.OvenRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -13,10 +13,11 @@ public class GotModRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> REGISTRY =
             DeferredRegister.create(Registries.RECIPE_TYPE, GotMod.MODID);
 
-    // FIX: was typed as RecipeType<AbstractCookingRecipe>, which is wrong because
-    //      AbstractCookingRecipe requires a CookingBookCategory in its constructor
-    //      and our BakingRecipe does not extend it. Type it as BakingRecipe instead.
-    public static final DeferredHolder<RecipeType<?>, RecipeType<BakingRecipe>> BAKING =
-            REGISTRY.register("baking", () -> RecipeType.simple(
-                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "baking")));
+    /**
+     * The shaped-cooking recipe type for the Oven.
+     * Recipe JSON must use "type": "got:oven".
+     */
+    public static final DeferredHolder<RecipeType<?>, RecipeType<OvenRecipe>> OVEN =
+            REGISTRY.register("oven", () -> RecipeType.simple(
+                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "oven")));
 }
