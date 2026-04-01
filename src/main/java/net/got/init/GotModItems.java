@@ -1125,6 +1125,21 @@ public class GotModItems {
     public static final DeferredItem<Item> WILD_HORSERADISH = block(GotModBlocks.WILD_HORSERADISH);
     public static final DeferredItem<Item> WILD_LEEK = block(GotModBlocks.WILD_LEEK);
 
+    // ── Wetland plants ─────────────────────────────────────────────────────────
+    /** Wheatgrass — block item that places the wheatgrass plant. */
+    public static final DeferredItem<Item> WHEATGRASS = block(GotModBlocks.WHEATGRASS);
+
+    /**
+     * Reeds — block item that places the reeds plant.
+     * Functions identically to vanilla sugar cane: right-click a valid ground
+     * block adjacent to water to plant it.
+     */
+    public static final DeferredItem<Item> REEDS =
+            REGISTRY.registerItem("reeds", p -> new BlockItem(GotModBlocks.REEDS.get(), p));
+
+    // ── Quagmire ────────────────────────────────────────────────────────────────
+    /** Quagmire block item — can be placed as a terrain block. */
+    public static final DeferredItem<Item> QUAGMIRE = block(GotModBlocks.QUAGMIRE);
 
     // ── Crop seeds (seed-type crops) ──────────────────────────────────────
     public static final DeferredItem<Item> OAT_SEEDS     = REGISTRY.registerItem("oat_seeds",     p -> new BlockItem(GotModBlocks.OAT_CROP.get(),      p));

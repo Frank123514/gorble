@@ -772,7 +772,34 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILD_HORSERADISH = flowerBlock("wild_horseradish");
     public static final DeferredBlock<Block> WILD_LEEK = flowerBlock("wild_leek");
 
+    // ── Wetland plants ────────────────────────────────────────────────────────
+    /**
+     * Wheatgrass — a slender wetland grass.  Registers as a flower-type plant
+     * (no collision, cross model, requires dirt/grass below).
+     */
+    public static final DeferredBlock<Block> WHEATGRASS = flowerBlock("wheatgrass");
 
+    /**
+     * Reeds — a tall aquatic plant that grows near water (up to 3 blocks).
+     * Uses {@link net.got.block.ReedsBlock} for growth / survival logic.
+     */
+    public static final DeferredBlock<Block> REEDS = REGISTRY.registerBlock(
+            "reeds",
+            net.got.block.ReedsBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SUGAR_CANE));
+
+    // ── Quagmire ──────────────────────────────────────────────────────────────
+    /**
+     * Quagmire block — a boggy mud-terrain block that causes entities to sink
+     * slowly (like powder snow but at roughly half the rate) and applies
+     * Slowness II.  No freeze damage.
+     */
+    public static final DeferredBlock<Block> QUAGMIRE = REGISTRY.registerBlock(
+            "quagmire",
+            net.got.block.QuagmireBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.POWDER_SNOW)
+                    .strength(0.4f)
+                    .sound(net.minecraft.world.level.block.SoundType.MUD));
 
     // ── Crops — Seed-type (planted with seed, harvests crop + seeds) ──────
     // Block registered first; seed item wired in via supplier after items load.
@@ -935,335 +962,335 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WORMTREE_BUTTON         = woodBlock("wormtree_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
 
     // ── Basalt ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> BASALT_ROCK = register("basalt_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> BASALT_BRICK = register("basalt_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK = register("cracked_basalt_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK = register("mossy_basalt_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> BASALT_COBBLESTONE = register("basalt_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE = register("mossy_basalt_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK = register("smooth_basalt_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> BASALT_PILLAR = register("basalt_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> BASALT_ROCK_SLAB = register("basalt_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> BASALT_ROCK_STAIRS = register("basalt_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> BASALT_ROCK_WALL = register("basalt_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> BASALT_ROCK_BUTTON = register("basalt_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> BASALT_ROCK_PRESSURE_PLATE = register("basalt_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> BASALT_BRICK_SLAB = register("basalt_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> BASALT_BRICK_STAIRS = register("basalt_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> BASALT_BRICK_WALL = register("basalt_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK_SLAB = register("cracked_basalt_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK_STAIRS = register("cracked_basalt_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK_WALL = register("cracked_basalt_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK_SLAB = register("mossy_basalt_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK_STAIRS = register("mossy_basalt_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK_WALL = register("mossy_basalt_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> BASALT_COBBLESTONE_SLAB = register("basalt_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> BASALT_COBBLESTONE_STAIRS = register("basalt_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> BASALT_COBBLESTONE_WALL = register("basalt_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE_SLAB = register("mossy_basalt_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE_STAIRS = register("mossy_basalt_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE_WALL = register("mossy_basalt_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_SLAB = register("smooth_basalt_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_STAIRS = register("smooth_basalt_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_WALL = register("smooth_basalt_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> BASALT_ROCK = registerBasalt("basalt_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> BASALT_BRICK = registerBasalt("basalt_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK = registerBasalt("cracked_basalt_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK = registerBasalt("mossy_basalt_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> BASALT_COBBLESTONE = registerBasalt("basalt_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE = registerBasalt("mossy_basalt_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK = registerBasalt("smooth_basalt_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> BASALT_PILLAR = registerBasalt("basalt_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> BASALT_ROCK_SLAB = registerBasalt("basalt_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> BASALT_ROCK_STAIRS = registerBasalt("basalt_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> BASALT_ROCK_WALL = registerBasalt("basalt_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> BASALT_ROCK_BUTTON = registerBasalt("basalt_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> BASALT_ROCK_PRESSURE_PLATE = registerBasalt("basalt_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> BASALT_BRICK_SLAB = registerBasalt("basalt_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> BASALT_BRICK_STAIRS = registerBasalt("basalt_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> BASALT_BRICK_WALL = registerBasalt("basalt_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK_SLAB = registerBasalt("cracked_basalt_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK_STAIRS = registerBasalt("cracked_basalt_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_BASALT_BRICK_WALL = registerBasalt("cracked_basalt_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK_SLAB = registerBasalt("mossy_basalt_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK_STAIRS = registerBasalt("mossy_basalt_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_BRICK_WALL = registerBasalt("mossy_basalt_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> BASALT_COBBLESTONE_SLAB = registerBasalt("basalt_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> BASALT_COBBLESTONE_STAIRS = registerBasalt("basalt_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> BASALT_COBBLESTONE_WALL = registerBasalt("basalt_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE_SLAB = registerBasalt("mossy_basalt_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE_STAIRS = registerBasalt("mossy_basalt_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE_WALL = registerBasalt("mossy_basalt_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_SLAB = registerBasalt("smooth_basalt_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_STAIRS = registerBasalt("smooth_basalt_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_WALL = registerBasalt("smooth_basalt_rock_wall", RegionalRockWallBlock::new);
 
     // ── Grey Granite ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> GREY_GRANITE_ROCK = register("grey_granite_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_BRICK = register("grey_granite_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK = register("cracked_grey_granite_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK = register("mossy_grey_granite_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE = register("grey_granite_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE = register("mossy_grey_granite_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK = register("smooth_grey_granite_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_PILLAR = register("grey_granite_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_SLAB = register("grey_granite_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_STAIRS = register("grey_granite_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_WALL = register("grey_granite_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_BUTTON = register("grey_granite_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_PRESSURE_PLATE = register("grey_granite_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_BRICK_SLAB = register("grey_granite_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_BRICK_STAIRS = register("grey_granite_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_BRICK_WALL = register("grey_granite_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK_SLAB = register("cracked_grey_granite_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK_STAIRS = register("cracked_grey_granite_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK_WALL = register("cracked_grey_granite_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK_SLAB = register("mossy_grey_granite_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK_STAIRS = register("mossy_grey_granite_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK_WALL = register("mossy_grey_granite_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE_SLAB = register("grey_granite_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE_STAIRS = register("grey_granite_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE_WALL = register("grey_granite_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE_SLAB = register("mossy_grey_granite_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE_STAIRS = register("mossy_grey_granite_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE_WALL = register("mossy_grey_granite_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK_SLAB = register("smooth_grey_granite_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK_STAIRS = register("smooth_grey_granite_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK_WALL = register("smooth_grey_granite_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_ROCK = registerGranite("grey_granite_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_BRICK = registerGranite("grey_granite_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK = registerGranite("cracked_grey_granite_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK = registerGranite("mossy_grey_granite_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE = registerGranite("grey_granite_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE = registerGranite("mossy_grey_granite_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK = registerGranite("smooth_grey_granite_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_PILLAR = registerGranite("grey_granite_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_SLAB = registerGranite("grey_granite_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_STAIRS = registerGranite("grey_granite_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_WALL = registerGranite("grey_granite_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_BUTTON = registerGranite("grey_granite_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_ROCK_PRESSURE_PLATE = registerGranite("grey_granite_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_BRICK_SLAB = registerGranite("grey_granite_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_BRICK_STAIRS = registerGranite("grey_granite_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_BRICK_WALL = registerGranite("grey_granite_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK_SLAB = registerGranite("cracked_grey_granite_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK_STAIRS = registerGranite("cracked_grey_granite_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_GREY_GRANITE_BRICK_WALL = registerGranite("cracked_grey_granite_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK_SLAB = registerGranite("mossy_grey_granite_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK_STAIRS = registerGranite("mossy_grey_granite_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_BRICK_WALL = registerGranite("mossy_grey_granite_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE_SLAB = registerGranite("grey_granite_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE_STAIRS = registerGranite("grey_granite_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> GREY_GRANITE_COBBLESTONE_WALL = registerGranite("grey_granite_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE_SLAB = registerGranite("mossy_grey_granite_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE_STAIRS = registerGranite("mossy_grey_granite_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_GREY_GRANITE_COBBLESTONE_WALL = registerGranite("mossy_grey_granite_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK_SLAB = registerGranite("smooth_grey_granite_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK_STAIRS = registerGranite("smooth_grey_granite_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_GREY_GRANITE_ROCK_WALL = registerGranite("smooth_grey_granite_rock_wall", RegionalRockWallBlock::new);
 
     // ── Flint ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> FLINT_ROCK = register("flint_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FLINT_BRICK = register("flint_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK = register("cracked_flint_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK = register("mossy_flint_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE = register("flint_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE = register("mossy_flint_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK = register("smooth_flint_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FLINT_PILLAR = register("flint_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> FLINT_ROCK_SLAB = register("flint_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FLINT_ROCK_STAIRS = register("flint_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FLINT_ROCK_WALL = register("flint_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> FLINT_ROCK_BUTTON = register("flint_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> FLINT_ROCK_PRESSURE_PLATE = register("flint_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> FLINT_BRICK_SLAB = register("flint_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FLINT_BRICK_STAIRS = register("flint_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FLINT_BRICK_WALL = register("flint_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK_SLAB = register("cracked_flint_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK_STAIRS = register("cracked_flint_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK_WALL = register("cracked_flint_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_SLAB = register("mossy_flint_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_STAIRS = register("mossy_flint_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_WALL = register("mossy_flint_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE_SLAB = register("flint_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE_STAIRS = register("flint_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE_WALL = register("flint_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_SLAB = register("mossy_flint_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_STAIRS = register("mossy_flint_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_WALL = register("mossy_flint_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_SLAB = register("smooth_flint_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_STAIRS = register("smooth_flint_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_WALL = register("smooth_flint_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FLINT_ROCK = registerFlint("flint_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FLINT_BRICK = registerFlint("flint_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK = registerFlint("cracked_flint_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK = registerFlint("mossy_flint_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FLINT_COBBLESTONE = registerFlint("flint_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE = registerFlint("mossy_flint_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK = registerFlint("smooth_flint_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FLINT_PILLAR = registerFlint("flint_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> FLINT_ROCK_SLAB = registerFlint("flint_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FLINT_ROCK_STAIRS = registerFlint("flint_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FLINT_ROCK_WALL = registerFlint("flint_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FLINT_ROCK_BUTTON = registerFlint("flint_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> FLINT_ROCK_PRESSURE_PLATE = registerFlint("flint_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> FLINT_BRICK_SLAB = registerFlint("flint_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FLINT_BRICK_STAIRS = registerFlint("flint_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FLINT_BRICK_WALL = registerFlint("flint_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK_SLAB = registerFlint("cracked_flint_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK_STAIRS = registerFlint("cracked_flint_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FLINT_BRICK_WALL = registerFlint("cracked_flint_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_SLAB = registerFlint("mossy_flint_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_STAIRS = registerFlint("mossy_flint_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_WALL = registerFlint("mossy_flint_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FLINT_COBBLESTONE_SLAB = registerFlint("flint_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FLINT_COBBLESTONE_STAIRS = registerFlint("flint_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FLINT_COBBLESTONE_WALL = registerFlint("flint_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_SLAB = registerFlint("mossy_flint_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_STAIRS = registerFlint("mossy_flint_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_WALL = registerFlint("mossy_flint_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_SLAB = registerFlint("smooth_flint_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_STAIRS = registerFlint("smooth_flint_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_WALL = registerFlint("smooth_flint_rock_wall", RegionalRockWallBlock::new);
 
     // ── Limestone ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> LIMESTONE_ROCK = register("limestone_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_BRICK = register("limestone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK = register("cracked_limestone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK = register("mossy_limestone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE = register("limestone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE = register("mossy_limestone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK = register("smooth_limestone_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_PILLAR = register("limestone_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_ROCK_SLAB = register("limestone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_ROCK_STAIRS = register("limestone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_ROCK_WALL = register("limestone_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_ROCK_BUTTON = register("limestone_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_ROCK_PRESSURE_PLATE = register("limestone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_BRICK_SLAB = register("limestone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_BRICK_STAIRS = register("limestone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_BRICK_WALL = register("limestone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK_SLAB = register("cracked_limestone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK_STAIRS = register("cracked_limestone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK_WALL = register("cracked_limestone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK_SLAB = register("mossy_limestone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK_STAIRS = register("mossy_limestone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK_WALL = register("mossy_limestone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE_SLAB = register("limestone_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE_STAIRS = register("limestone_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE_WALL = register("limestone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE_SLAB = register("mossy_limestone_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE_STAIRS = register("mossy_limestone_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE_WALL = register("mossy_limestone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_SLAB = register("smooth_limestone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_STAIRS = register("smooth_limestone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_WALL = register("smooth_limestone_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_ROCK = registerLimestone("limestone_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_BRICK = registerLimestone("limestone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK = registerLimestone("cracked_limestone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK = registerLimestone("mossy_limestone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE = registerLimestone("limestone_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE = registerLimestone("mossy_limestone_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK = registerLimestone("smooth_limestone_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_PILLAR = registerLimestone("limestone_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_ROCK_SLAB = registerLimestone("limestone_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_ROCK_STAIRS = registerLimestone("limestone_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_ROCK_WALL = registerLimestone("limestone_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_ROCK_BUTTON = registerLimestone("limestone_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_ROCK_PRESSURE_PLATE = registerLimestone("limestone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_BRICK_SLAB = registerLimestone("limestone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_BRICK_STAIRS = registerLimestone("limestone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_BRICK_WALL = registerLimestone("limestone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK_SLAB = registerLimestone("cracked_limestone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK_STAIRS = registerLimestone("cracked_limestone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_LIMESTONE_BRICK_WALL = registerLimestone("cracked_limestone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK_SLAB = registerLimestone("mossy_limestone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK_STAIRS = registerLimestone("mossy_limestone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_BRICK_WALL = registerLimestone("mossy_limestone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE_SLAB = registerLimestone("limestone_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE_STAIRS = registerLimestone("limestone_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> LIMESTONE_COBBLESTONE_WALL = registerLimestone("limestone_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE_SLAB = registerLimestone("mossy_limestone_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE_STAIRS = registerLimestone("mossy_limestone_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_LIMESTONE_COBBLESTONE_WALL = registerLimestone("mossy_limestone_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_SLAB = registerLimestone("smooth_limestone_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_STAIRS = registerLimestone("smooth_limestone_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_WALL = registerLimestone("smooth_limestone_rock_wall", RegionalRockWallBlock::new);
 
     // ── Sandstone ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> SANDSTONE_ROCK = register("sandstone_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_BRICK = register("sandstone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK = register("cracked_sandstone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK = register("mossy_sandstone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE = register("sandstone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE = register("mossy_sandstone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK = register("smooth_sandstone_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_PILLAR = register("sandstone_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_SLAB = register("sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_STAIRS = register("sandstone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_WALL = register("sandstone_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_BUTTON = register("sandstone_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_PRESSURE_PLATE = register("sandstone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_BRICK_SLAB = register("sandstone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_BRICK_STAIRS = register("sandstone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_BRICK_WALL = register("sandstone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK_SLAB = register("cracked_sandstone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK_STAIRS = register("cracked_sandstone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK_WALL = register("cracked_sandstone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK_SLAB = register("mossy_sandstone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK_STAIRS = register("mossy_sandstone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK_WALL = register("mossy_sandstone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE_SLAB = register("sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE_STAIRS = register("sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE_WALL = register("sandstone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_SLAB = register("mossy_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_STAIRS = register("mossy_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_WALL = register("mossy_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_SLAB = register("smooth_sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_STAIRS = register("smooth_sandstone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_WALL = register("smooth_sandstone_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_ROCK = registerSandstone("sandstone_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_BRICK = registerSandstone("sandstone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK = registerSandstone("cracked_sandstone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK = registerSandstone("mossy_sandstone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE = registerSandstone("sandstone_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE = registerSandstone("mossy_sandstone_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK = registerSandstone("smooth_sandstone_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_PILLAR = registerSandstone("sandstone_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_ROCK_SLAB = registerSandstone("sandstone_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_ROCK_STAIRS = registerSandstone("sandstone_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_ROCK_WALL = registerSandstone("sandstone_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_ROCK_BUTTON = registerSandstone("sandstone_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_ROCK_PRESSURE_PLATE = registerSandstone("sandstone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_BRICK_SLAB = registerSandstone("sandstone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_BRICK_STAIRS = registerSandstone("sandstone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_BRICK_WALL = registerSandstone("sandstone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK_SLAB = registerSandstone("cracked_sandstone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK_STAIRS = registerSandstone("cracked_sandstone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK_WALL = registerSandstone("cracked_sandstone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK_SLAB = registerSandstone("mossy_sandstone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK_STAIRS = registerSandstone("mossy_sandstone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK_WALL = registerSandstone("mossy_sandstone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE_SLAB = registerSandstone("sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE_STAIRS = registerSandstone("sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE_WALL = registerSandstone("sandstone_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_SLAB = registerSandstone("mossy_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_STAIRS = registerSandstone("mossy_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_WALL = registerSandstone("mossy_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_SLAB = registerSandstone("smooth_sandstone_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_STAIRS = registerSandstone("smooth_sandstone_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_WALL = registerSandstone("smooth_sandstone_rock_wall", RegionalRockWallBlock::new);
 
     // ── Red Sandstone ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK = register("red_sandstone_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK = register("red_sandstone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK = register("cracked_red_sandstone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK = register("mossy_red_sandstone_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE = register("red_sandstone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE = register("mossy_red_sandstone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK = register("smooth_red_sandstone_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_PILLAR = register("red_sandstone_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_SLAB = register("red_sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_STAIRS = register("red_sandstone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_WALL = register("red_sandstone_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_BUTTON = register("red_sandstone_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_PRESSURE_PLATE = register("red_sandstone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_SLAB = register("red_sandstone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_STAIRS = register("red_sandstone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_WALL = register("red_sandstone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK_SLAB = register("cracked_red_sandstone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK_STAIRS = register("cracked_red_sandstone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK_WALL = register("cracked_red_sandstone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK_SLAB = register("mossy_red_sandstone_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK_STAIRS = register("mossy_red_sandstone_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK_WALL = register("mossy_red_sandstone_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE_SLAB = register("red_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE_STAIRS = register("red_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE_WALL = register("red_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB = register("mossy_red_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS = register("mossy_red_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_WALL = register("mossy_red_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_SLAB = register("smooth_red_sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_STAIRS = register("smooth_red_sandstone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_WALL = register("smooth_red_sandstone_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK = registerRedSandstone("red_sandstone_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK = registerRedSandstone("red_sandstone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK = registerRedSandstone("cracked_red_sandstone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK = registerRedSandstone("mossy_red_sandstone_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE = registerRedSandstone("red_sandstone_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE = registerRedSandstone("mossy_red_sandstone_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK = registerRedSandstone("smooth_red_sandstone_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_PILLAR = registerRedSandstone("red_sandstone_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_SLAB = registerRedSandstone("red_sandstone_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_STAIRS = registerRedSandstone("red_sandstone_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_WALL = registerRedSandstone("red_sandstone_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_BUTTON = registerRedSandstone("red_sandstone_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_PRESSURE_PLATE = registerRedSandstone("red_sandstone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_SLAB = registerRedSandstone("red_sandstone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_STAIRS = registerRedSandstone("red_sandstone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_WALL = registerRedSandstone("red_sandstone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK_SLAB = registerRedSandstone("cracked_red_sandstone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK_STAIRS = registerRedSandstone("cracked_red_sandstone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK_WALL = registerRedSandstone("cracked_red_sandstone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK_SLAB = registerRedSandstone("mossy_red_sandstone_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK_STAIRS = registerRedSandstone("mossy_red_sandstone_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK_WALL = registerRedSandstone("mossy_red_sandstone_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE_SLAB = registerRedSandstone("red_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE_STAIRS = registerRedSandstone("red_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE_WALL = registerRedSandstone("red_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB = registerRedSandstone("mossy_red_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS = registerRedSandstone("mossy_red_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_WALL = registerRedSandstone("mossy_red_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_SLAB = registerRedSandstone("smooth_red_sandstone_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_STAIRS = registerRedSandstone("smooth_red_sandstone_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_WALL = registerRedSandstone("smooth_red_sandstone_rock_wall", RegionalRockWallBlock::new);
 
     // ── Slate ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> SLATE_ROCK = register("slate_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SLATE_BRICK = register("slate_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK = register("cracked_slate_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK = register("mossy_slate_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SLATE_COBBLESTONE = register("slate_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE = register("mossy_slate_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK = register("smooth_slate_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SLATE_PILLAR = register("slate_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> SLATE_ROCK_SLAB = register("slate_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SLATE_ROCK_STAIRS = register("slate_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SLATE_ROCK_WALL = register("slate_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SLATE_ROCK_BUTTON = register("slate_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> SLATE_ROCK_PRESSURE_PLATE = register("slate_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> SLATE_BRICK_SLAB = register("slate_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SLATE_BRICK_STAIRS = register("slate_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SLATE_BRICK_WALL = register("slate_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK_SLAB = register("cracked_slate_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK_STAIRS = register("cracked_slate_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK_WALL = register("cracked_slate_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK_SLAB = register("mossy_slate_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK_STAIRS = register("mossy_slate_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK_WALL = register("mossy_slate_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SLATE_COBBLESTONE_SLAB = register("slate_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SLATE_COBBLESTONE_STAIRS = register("slate_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SLATE_COBBLESTONE_WALL = register("slate_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE_SLAB = register("mossy_slate_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE_STAIRS = register("mossy_slate_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE_WALL = register("mossy_slate_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_SLAB = register("smooth_slate_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_STAIRS = register("smooth_slate_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_WALL = register("smooth_slate_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SLATE_SHINGLES = register("slate_shingles", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SLATE_ROCK = registerSlate("slate_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SLATE_BRICK = registerSlate("slate_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK = registerSlate("cracked_slate_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK = registerSlate("mossy_slate_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SLATE_COBBLESTONE = registerSlate("slate_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE = registerSlate("mossy_slate_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK = registerSlate("smooth_slate_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SLATE_PILLAR = registerSlate("slate_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> SLATE_ROCK_SLAB = registerSlate("slate_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SLATE_ROCK_STAIRS = registerSlate("slate_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SLATE_ROCK_WALL = registerSlate("slate_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SLATE_ROCK_BUTTON = registerSlate("slate_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> SLATE_ROCK_PRESSURE_PLATE = registerSlate("slate_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> SLATE_BRICK_SLAB = registerSlate("slate_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SLATE_BRICK_STAIRS = registerSlate("slate_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SLATE_BRICK_WALL = registerSlate("slate_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK_SLAB = registerSlate("cracked_slate_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK_STAIRS = registerSlate("cracked_slate_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_SLATE_BRICK_WALL = registerSlate("cracked_slate_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK_SLAB = registerSlate("mossy_slate_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK_STAIRS = registerSlate("mossy_slate_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_BRICK_WALL = registerSlate("mossy_slate_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SLATE_COBBLESTONE_SLAB = registerSlate("slate_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SLATE_COBBLESTONE_STAIRS = registerSlate("slate_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SLATE_COBBLESTONE_WALL = registerSlate("slate_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE_SLAB = registerSlate("mossy_slate_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE_STAIRS = registerSlate("mossy_slate_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_SLATE_COBBLESTONE_WALL = registerSlate("mossy_slate_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_SLAB = registerSlate("smooth_slate_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_STAIRS = registerSlate("smooth_slate_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_WALL = registerSlate("smooth_slate_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SLATE_SHINGLES = registerSlate("slate_shingles", RegionalRockBlock::new);
 
     // ── Oily Black Stone blocks ───────────────────────────────────────────────
-    public static final DeferredBlock<Block> OILY_BLACK_ROCK = register("oily_black_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_BRICK = register("oily_black_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK = register("cracked_oily_black_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK = register("mossy_oily_black_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE = register("oily_black_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE = register("mossy_oily_black_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK = register("smooth_oily_black_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_PILLAR = register("oily_black_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_ROCK_SLAB = register("oily_black_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_ROCK_STAIRS = register("oily_black_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_ROCK_WALL = register("oily_black_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_ROCK_BUTTON = register("oily_black_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_ROCK_PRESSURE_PLATE = register("oily_black_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_BRICK_SLAB = register("oily_black_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_BRICK_STAIRS = register("oily_black_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_BRICK_WALL = register("oily_black_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK_SLAB = register("cracked_oily_black_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK_STAIRS = register("cracked_oily_black_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK_WALL = register("cracked_oily_black_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK_SLAB = register("mossy_oily_black_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK_STAIRS = register("mossy_oily_black_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK_WALL = register("mossy_oily_black_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE_SLAB = register("oily_black_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE_STAIRS = register("oily_black_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE_WALL = register("oily_black_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE_SLAB = register("mossy_oily_black_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE_STAIRS = register("mossy_oily_black_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE_WALL = register("mossy_oily_black_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK_SLAB = register("smooth_oily_black_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK_STAIRS = register("smooth_oily_black_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK_WALL = register("smooth_oily_black_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_ROCK = registerOilyBlack("oily_black_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_BRICK = registerOilyBlack("oily_black_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK = registerOilyBlack("cracked_oily_black_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK = registerOilyBlack("mossy_oily_black_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE = registerOilyBlack("oily_black_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE = registerOilyBlack("mossy_oily_black_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK = registerOilyBlack("smooth_oily_black_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_PILLAR = registerOilyBlack("oily_black_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_ROCK_SLAB = registerOilyBlack("oily_black_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_ROCK_STAIRS = registerOilyBlack("oily_black_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_ROCK_WALL = registerOilyBlack("oily_black_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_ROCK_BUTTON = registerOilyBlack("oily_black_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_ROCK_PRESSURE_PLATE = registerOilyBlack("oily_black_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_BRICK_SLAB = registerOilyBlack("oily_black_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_BRICK_STAIRS = registerOilyBlack("oily_black_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_BRICK_WALL = registerOilyBlack("oily_black_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK_SLAB = registerOilyBlack("cracked_oily_black_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK_STAIRS = registerOilyBlack("cracked_oily_black_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_OILY_BLACK_BRICK_WALL = registerOilyBlack("cracked_oily_black_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK_SLAB = registerOilyBlack("mossy_oily_black_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK_STAIRS = registerOilyBlack("mossy_oily_black_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_BRICK_WALL = registerOilyBlack("mossy_oily_black_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE_SLAB = registerOilyBlack("oily_black_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE_STAIRS = registerOilyBlack("oily_black_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> OILY_BLACK_COBBLESTONE_WALL = registerOilyBlack("oily_black_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE_SLAB = registerOilyBlack("mossy_oily_black_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE_STAIRS = registerOilyBlack("mossy_oily_black_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_OILY_BLACK_COBBLESTONE_WALL = registerOilyBlack("mossy_oily_black_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK_SLAB = registerOilyBlack("smooth_oily_black_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK_STAIRS = registerOilyBlack("smooth_oily_black_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_OILY_BLACK_ROCK_WALL = registerOilyBlack("smooth_oily_black_rock_wall", RegionalRockWallBlock::new);
 
     // ── Fused Black Stone blocks ──────────────────────────────────────────────
-    public static final DeferredBlock<Block> FUSED_BLACK_ROCK = register("fused_black_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_BRICK = register("fused_black_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK = register("cracked_fused_black_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK = register("mossy_fused_black_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE = register("fused_black_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE = register("mossy_fused_black_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK = register("smooth_fused_black_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_PILLAR = register("fused_black_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_SLAB = register("fused_black_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_STAIRS = register("fused_black_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_WALL = register("fused_black_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_BUTTON = register("fused_black_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_PRESSURE_PLATE = register("fused_black_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_BRICK_SLAB = register("fused_black_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_BRICK_STAIRS = register("fused_black_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_BRICK_WALL = register("fused_black_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK_SLAB = register("cracked_fused_black_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK_STAIRS = register("cracked_fused_black_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK_WALL = register("cracked_fused_black_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK_SLAB = register("mossy_fused_black_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK_STAIRS = register("mossy_fused_black_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK_WALL = register("mossy_fused_black_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE_SLAB = register("fused_black_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE_STAIRS = register("fused_black_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE_WALL = register("fused_black_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE_SLAB = register("mossy_fused_black_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE_STAIRS = register("mossy_fused_black_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE_WALL = register("mossy_fused_black_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK_SLAB = register("smooth_fused_black_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK_STAIRS = register("smooth_fused_black_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK_WALL = register("smooth_fused_black_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_ROCK = registerFusedBlack("fused_black_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_BRICK = registerFusedBlack("fused_black_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK = registerFusedBlack("cracked_fused_black_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK = registerFusedBlack("mossy_fused_black_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE = registerFusedBlack("fused_black_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE = registerFusedBlack("mossy_fused_black_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK = registerFusedBlack("smooth_fused_black_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_PILLAR = registerFusedBlack("fused_black_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_SLAB = registerFusedBlack("fused_black_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_STAIRS = registerFusedBlack("fused_black_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_WALL = registerFusedBlack("fused_black_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_BUTTON = registerFusedBlack("fused_black_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_ROCK_PRESSURE_PLATE = registerFusedBlack("fused_black_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_BRICK_SLAB = registerFusedBlack("fused_black_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_BRICK_STAIRS = registerFusedBlack("fused_black_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_BRICK_WALL = registerFusedBlack("fused_black_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK_SLAB = registerFusedBlack("cracked_fused_black_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK_STAIRS = registerFusedBlack("cracked_fused_black_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_FUSED_BLACK_BRICK_WALL = registerFusedBlack("cracked_fused_black_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK_SLAB = registerFusedBlack("mossy_fused_black_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK_STAIRS = registerFusedBlack("mossy_fused_black_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_BRICK_WALL = registerFusedBlack("mossy_fused_black_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE_SLAB = registerFusedBlack("fused_black_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE_STAIRS = registerFusedBlack("fused_black_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FUSED_BLACK_COBBLESTONE_WALL = registerFusedBlack("fused_black_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE_SLAB = registerFusedBlack("mossy_fused_black_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE_STAIRS = registerFusedBlack("mossy_fused_black_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_FUSED_BLACK_COBBLESTONE_WALL = registerFusedBlack("mossy_fused_black_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK_SLAB = registerFusedBlack("smooth_fused_black_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK_STAIRS = registerFusedBlack("smooth_fused_black_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_FUSED_BLACK_ROCK_WALL = registerFusedBlack("smooth_fused_black_rock_wall", RegionalRockWallBlock::new);
 
     // ── Marble blocks ─────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> MARBLE_ROCK = register("marble_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MARBLE_BRICK = register("marble_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK = register("cracked_marble_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK = register("mossy_marble_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MARBLE_COBBLESTONE = register("marble_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE = register("mossy_marble_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK = register("smooth_marble_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MARBLE_PILLAR = register("marble_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> MARBLE_ROCK_SLAB = register("marble_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MARBLE_ROCK_STAIRS = register("marble_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MARBLE_ROCK_WALL = register("marble_rock_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MARBLE_ROCK_BUTTON = register("marble_rock_button", RegionalRockButtonBlock::new);
-    public static final DeferredBlock<Block> MARBLE_ROCK_PRESSURE_PLATE = register("marble_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
-    public static final DeferredBlock<Block> MARBLE_BRICK_SLAB = register("marble_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MARBLE_BRICK_STAIRS = register("marble_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MARBLE_BRICK_WALL = register("marble_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK_SLAB = register("cracked_marble_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK_STAIRS = register("cracked_marble_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK_WALL = register("cracked_marble_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK_SLAB = register("mossy_marble_brick_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK_STAIRS = register("mossy_marble_brick_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK_WALL = register("mossy_marble_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MARBLE_COBBLESTONE_SLAB = register("marble_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MARBLE_COBBLESTONE_STAIRS = register("marble_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MARBLE_COBBLESTONE_WALL = register("marble_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE_SLAB = register("mossy_marble_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE_STAIRS = register("mossy_marble_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE_WALL = register("mossy_marble_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_SLAB = register("smooth_marble_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_STAIRS = register("smooth_marble_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_WALL = register("smooth_marble_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MARBLE_ROCK = registerMarble("marble_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MARBLE_BRICK = registerMarble("marble_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK = registerMarble("cracked_marble_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK = registerMarble("mossy_marble_brick", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MARBLE_COBBLESTONE = registerMarble("marble_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE = registerMarble("mossy_marble_cobblestone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK = registerMarble("smooth_marble_rock", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> MARBLE_PILLAR = registerMarble("marble_pillar", RegionalRockPillarBlock::new);
+    public static final DeferredBlock<Block> MARBLE_ROCK_SLAB = registerMarble("marble_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MARBLE_ROCK_STAIRS = registerMarble("marble_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MARBLE_ROCK_WALL = registerMarble("marble_rock_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MARBLE_ROCK_BUTTON = registerMarble("marble_rock_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> MARBLE_ROCK_PRESSURE_PLATE = registerMarble("marble_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
+    public static final DeferredBlock<Block> MARBLE_BRICK_SLAB = registerMarble("marble_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MARBLE_BRICK_STAIRS = registerMarble("marble_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MARBLE_BRICK_WALL = registerMarble("marble_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK_SLAB = registerMarble("cracked_marble_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK_STAIRS = registerMarble("cracked_marble_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICK_WALL = registerMarble("cracked_marble_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK_SLAB = registerMarble("mossy_marble_brick_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK_STAIRS = registerMarble("mossy_marble_brick_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_BRICK_WALL = registerMarble("mossy_marble_brick_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MARBLE_COBBLESTONE_SLAB = registerMarble("marble_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MARBLE_COBBLESTONE_STAIRS = registerMarble("marble_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MARBLE_COBBLESTONE_WALL = registerMarble("marble_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE_SLAB = registerMarble("mossy_marble_cobblestone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE_STAIRS = registerMarble("mossy_marble_cobblestone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> MOSSY_MARBLE_COBBLESTONE_WALL = registerMarble("mossy_marble_cobblestone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_SLAB = registerMarble("smooth_marble_rock_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_STAIRS = registerMarble("smooth_marble_rock_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_WALL = registerMarble("smooth_marble_rock_wall", RegionalRockWallBlock::new);
 
     // ── Log / Stripped-log maps (used by GotFlammableRotatedPillarBlock for axe stripping) ──
     static {
@@ -1409,8 +1436,8 @@ public class GotModBlocks {
      */
     private static DeferredBlock<Block> flowerBlock(String name) {
         return REGISTRY.registerBlock(name,
-            p -> new FlowerBlock(MobEffects.ABSORPTION, 0, p),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
+                p -> new FlowerBlock(MobEffects.ABSORPTION, 0, p),
+                BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
     }
 
     /**
@@ -1420,8 +1447,8 @@ public class GotModBlocks {
      */
     private static DeferredBlock<Block> berryBushBlock(String name, java.util.function.Supplier<Item> berry) {
         return REGISTRY.registerBlock(name,
-            p -> new GotBerryBushBlock(berry, p),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH));
+                p -> new GotBerryBushBlock(berry, p),
+                BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH));
     }
 
     /**
@@ -1432,8 +1459,8 @@ public class GotModBlocks {
      */
     private static DeferredBlock<Block> seedCropBlock(String name, java.util.function.Supplier<Item> seed) {
         return REGISTRY.registerBlock(name,
-            p -> new GotSeedCropBlock(seed, p),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
+                p -> new GotSeedCropBlock(seed, p),
+                BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
     }
 
     /**
@@ -1443,8 +1470,8 @@ public class GotModBlocks {
      */
     private static DeferredBlock<Block> produceCropBlock(String name, java.util.function.Supplier<Item> produce) {
         return REGISTRY.registerBlock(name,
-            p -> new GotProduceCropBlock(produce, p),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS));
+                p -> new GotProduceCropBlock(produce, p),
+                BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS));
     }
 
     /**
@@ -1470,6 +1497,61 @@ public class GotModBlocks {
 
     private static <B extends Block> DeferredBlock<B> register(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
+    }
+
+    // ── Per-stone-type helpers ────────────────────────────────────────────────
+    // Each helper copies from the most appropriate vanilla base block so that
+    // hardness, blast-resistance, map-colour, and sound are all correct for
+    // the stone family, instead of every variant silently inheriting STONE.
+
+    /** Basalt: hardness 1.25, resistance 4.2, BASALT sound, dark grey map colour. */
+    private static <B extends Block> DeferredBlock<B> registerBasalt(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT));
+    }
+
+    /** Grey Granite: hardness 1.5, resistance 6.0, STONE sound, pink-grey map colour. */
+    private static <B extends Block> DeferredBlock<B> registerGranite(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.GRANITE));
+    }
+
+    /** Limestone: hardness 1.5, resistance 3.0 (softer than granite), STONE sound. */
+    private static <B extends Block> DeferredBlock<B> registerLimestone(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(1.5f, 3.0f));
+    }
+
+    /** Sandstone: hardness 0.8, resistance 0.8, STONE sound – copies vanilla SANDSTONE. */
+    private static <B extends Block> DeferredBlock<B> registerSandstone(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE));
+    }
+
+    /** Red Sandstone: hardness 0.8, resistance 0.8, STONE sound – copies vanilla RED_SANDSTONE. */
+    private static <B extends Block> DeferredBlock<B> registerRedSandstone(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.RED_SANDSTONE));
+    }
+
+    /** Slate: hardness 2.0, resistance 4.0, STONE sound – slightly harder and denser than stone. */
+    private static <B extends Block> DeferredBlock<B> registerSlate(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(2.0f, 4.0f));
+    }
+
+    /** Flint: hardness 2.0, resistance 6.0, STONE sound – hard and brittle. */
+    private static <B extends Block> DeferredBlock<B> registerFlint(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(2.0f, 6.0f));
+    }
+
+    /** Oily Black Stone: hardness 1.5, resistance 5.0, STONE sound – dense and smooth. */
+    private static <B extends Block> DeferredBlock<B> registerOilyBlack(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(1.5f, 5.0f));
+    }
+
+    /** Fused Black Stone: hardness 2.5, resistance 6.0, DEEPSLATE sound – volcanic and extremely tough. */
+    private static <B extends Block> DeferredBlock<B> registerFusedBlack(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(2.5f, 6.0f));
+    }
+
+    /** Marble: hardness 0.75, resistance 0.75, CALCITE sound – elegant but brittle, copies vanilla CALCITE. */
+    private static <B extends Block> DeferredBlock<B> registerMarble(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.CALCITE));
     }
 
     /** Stone-tier ore: hardness 3.0, resistance 3.0, requires stone pickaxe. */

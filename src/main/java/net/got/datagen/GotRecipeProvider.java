@@ -205,7 +205,7 @@ public class GotRecipeProvider extends RecipeProvider {
     private void buildStoneRecipes(HolderGetter<Item> items) {
         for (String r : GotBlockStateProvider.STONE_REGIONS) {
             Item rock        = item(r + "_rock");
-            Item polished    = item("polished_" + r + "_rock");
+            Item smooth      = item("smooth_" + r + "_rock");
             Item brick       = item(r + "_brick");
             Item crackedBrick= item("cracked_" + r + "_brick");
             Item mossyBrick  = item("mossy_" + r + "_brick");
@@ -214,17 +214,12 @@ public class GotRecipeProvider extends RecipeProvider {
             Item vine        = Items.VINE;
 
             // ── Crafting table recipes ─────────────────────────────────
+
             // 2x2 rock → 4 bricks
             ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, brick, 4)
                     .define('R', rock).pattern("RR").pattern("RR")
                     .unlockedBy("has_rock", has(rock))
                     .save(this.output, rk(r + "_brick_from_rock"));
-
-            // 2x2 rock → 4 polished rock
-            ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, polished, 4)
-                    .define('R', rock).pattern("RR").pattern("RR")
-                    .unlockedBy("has_rock", has(rock))
-                    .save(this.output, rk("polished_" + r + "_rock_from_rock"));
 
             // 2x2 rock → 4 cobblestone
             ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, cobble, 4)
@@ -244,19 +239,39 @@ public class GotRecipeProvider extends RecipeProvider {
                     .unlockedBy("has_cobble", has(cobble))
                     .save(this.output, rk("mossy_" + r + "_cobblestone"));
 
-            // Slabs, stairs, walls from each sub-type
-            String[][] subs = {
-                { r + "_rock",              r + "_rock" },
-                { r + "_brick",             r + "_brick" },
-                { "cracked_" + r + "_brick","cracked_" + r + "_brick" },
-                { "mossy_" + r + "_brick",  "mossy_" + r + "_brick" },
-                { r + "_cobblestone",       r + "_cobblestone" },
-                { "mossy_" + r + "_cobblestone", "mossy_" + r + "_cobblestone" },
-                { "polished_" + r + "_rock","polished_" + r + "_rock" },
+            // ── Furnace recipes ────────────────────────────────────────
+            // rock → smooth rock (smelting/blasting)
+            SimpleCookingRecipeBuilder
+                    .smelting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, smooth, 0.1f, 200)
+                    .unlockedBy("has_rock", has(rock))
+                    .save(this.output, rk(r + "_rock_to_smooth_smelting"));
+            SimpleCookingRecipeBuilder
+                    .blasting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, smooth, 0.1f, 100)
+                    .unlockedBy("has_rock", has(rock))
+                    .save(this.output, rk(r + "_rock_to_smooth_blasting"));
+
+            // brick → cracked brick (smelting/blasting)
+            SimpleCookingRecipeBuilder
+                    .smelting(Ingredient.of(brick), RecipeCategory.BUILDING_BLOCKS, crackedBrick, 0.1f, 200)
+                    .unlockedBy("has_brick", has(brick))
+                    .save(this.output, rk(r + "_brick_to_cracked_smelting"));
+            SimpleCookingRecipeBuilder
+                    .blasting(Ingredient.of(brick), RecipeCategory.BUILDING_BLOCKS, crackedBrick, 0.1f, 100)
+                    .unlockedBy("has_brick", has(brick))
+                    .save(this.output, rk(r + "_brick_to_cracked_blasting"));
+
+            // ── Slabs, stairs, walls ───────────────────────────────────
+            // Generated for each sub-variant of this stone type
+            String[] subs = {
+                r + "_rock",
+                r + "_brick",
+                "cracked_" + r + "_brick",
+                "mossy_"   + r + "_brick",
+                r + "_cobblestone",
+                "mossy_"   + r + "_cobblestone",
+                "smooth_"  + r + "_rock",
             };
-            for (String[] sub : subs) {
-                String id   = sub[0];
-                String key  = sub[1];
+            for (String id : subs) {
                 Item base   = item(id);
                 Item slab   = item(id + "_slab");
                 Item stairs = item(id + "_stairs");
@@ -265,51 +280,66 @@ public class GotRecipeProvider extends RecipeProvider {
                 // 3 in a row → 6 slabs
                 ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, slab, 6)
                         .define('B', base).pattern("BBB")
-                        .unlockedBy("has_" + key, has(base))
+                        .unlockedBy("has_" + id, has(base))
                         .save(this.output, rk(id + "_slab"));
 
                 // staircase → 4 stairs
                 ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, stairs, 4)
                         .define('B', base)
                         .pattern("B  ").pattern("BB ").pattern("BBB")
-                        .unlockedBy("has_" + key, has(base))
+                        .unlockedBy("has_" + id, has(base))
                         .save(this.output, rk(id + "_stairs"));
 
                 // 2x3 → 6 walls
                 ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, wall, 6)
                         .define('B', base).pattern("BBB").pattern("BBB")
-                        .unlockedBy("has_" + key, has(base))
+                        .unlockedBy("has_" + id, has(base))
                         .save(this.output, rk(id + "_wall"));
             }
 
-            // Button from 1 rock
+            // Button: 1 rock → 1 button (shapeless)
             ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, item(r + "_rock_button"))
                     .requires(rock)
                     .unlockedBy("has_rock", has(rock))
                     .save(this.output, rk(r + "_rock_button"));
 
-            // Pressure plate: 2 rock in a row
+            // Pressure plate: 2 rock in a row → 1
             ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, item(r + "_rock_pressure_plate"))
                     .define('R', rock).pattern("RR")
                     .unlockedBy("has_rock", has(rock))
                     .save(this.output, rk(r + "_rock_pressure_plate"));
 
-            // Pillar: 2 polished rock stacked
+            // Pillar: 2 smooth rock stacked → 2 pillars
             ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, item(r + "_pillar"), 2)
-                    .define('P', polished).pattern("P").pattern("P")
-                    .unlockedBy("has_polished", has(polished))
+                    .define('S', smooth).pattern("S").pattern("S")
+                    .unlockedBy("has_smooth", has(smooth))
                     .save(this.output, rk(r + "_pillar"));
 
+            // Slate shingles (slate only)
+            if (r.equals("slate")) {
+                Item shingles = item("slate_shingles");
+                ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, shingles, 4)
+                        .define('S', smooth).pattern("SS").pattern("SS")
+                        .unlockedBy("has_smooth_slate", has(smooth))
+                        .save(this.output, rk("slate_shingles"));
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, shingles)
+                        .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_slate_rock_to_shingles"));
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(smooth), RecipeCategory.BUILDING_BLOCKS, shingles)
+                        .unlockedBy("has_smooth", has(smooth)).save(this.output, rk("stonecutter_slate_smooth_to_shingles"));
+            }
+
             // ── Stonecutter recipes ────────────────────────────────────
-            // rock → each derived form (1:1 except slabs give 2)
+            // rock → all derived forms
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, brick)
                     .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_brick"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, crackedBrick)
                     .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_cracked_brick"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, cobble)
                     .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_cobblestone"));
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, polished)
-                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_polished"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, smooth)
+                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_smooth"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item(r + "_pillar"))
+                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_pillar"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item(r + "_rock_slab"), 2)
                     .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_rock_slab"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item(r + "_rock_stairs"))
@@ -322,14 +352,14 @@ public class GotRecipeProvider extends RecipeProvider {
                     .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_brick_stairs"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item(r + "_brick_wall"))
                     .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_brick_wall"));
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item("polished_" + r + "_rock_slab"), 2)
-                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_polished_slab"));
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item("polished_" + r + "_rock_stairs"))
-                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_polished_stairs"));
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item("polished_" + r + "_rock_wall"))
-                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_polished_wall"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item("smooth_" + r + "_rock_slab"), 2)
+                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_smooth_slab"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item("smooth_" + r + "_rock_stairs"))
+                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_smooth_stairs"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(rock), RecipeCategory.BUILDING_BLOCKS, item("smooth_" + r + "_rock_wall"))
+                    .unlockedBy("has_rock", has(rock)).save(this.output, rk("stonecutter_" + r + "_rock_to_smooth_wall"));
 
-            // brick → slab/stairs/wall
+            // brick → slab / stairs / wall
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(brick), RecipeCategory.BUILDING_BLOCKS, item(r + "_brick_slab"), 2)
                     .unlockedBy("has_brick", has(brick)).save(this.output, rk("stonecutter_" + r + "_brick_to_brick_slab"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(brick), RecipeCategory.BUILDING_BLOCKS, item(r + "_brick_stairs"))
@@ -337,7 +367,7 @@ public class GotRecipeProvider extends RecipeProvider {
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(brick), RecipeCategory.BUILDING_BLOCKS, item(r + "_brick_wall"))
                     .unlockedBy("has_brick", has(brick)).save(this.output, rk("stonecutter_" + r + "_brick_to_brick_wall"));
 
-            // cobble → slab/stairs/wall
+            // cobble → slab / stairs / wall
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(cobble), RecipeCategory.BUILDING_BLOCKS, item(r + "_cobblestone_slab"), 2)
                     .unlockedBy("has_cobble", has(cobble)).save(this.output, rk("stonecutter_" + r + "_cobble_to_cobble_slab"));
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(cobble), RecipeCategory.BUILDING_BLOCKS, item(r + "_cobblestone_stairs"))
@@ -345,13 +375,15 @@ public class GotRecipeProvider extends RecipeProvider {
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(cobble), RecipeCategory.BUILDING_BLOCKS, item(r + "_cobblestone_wall"))
                     .unlockedBy("has_cobble", has(cobble)).save(this.output, rk("stonecutter_" + r + "_cobble_to_cobble_wall"));
 
-            // polished → slab/stairs/wall
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(polished), RecipeCategory.BUILDING_BLOCKS, item("polished_" + r + "_rock_slab"), 2)
-                    .unlockedBy("has_polished", has(polished)).save(this.output, rk("stonecutter_" + r + "_polished_to_polished_slab"));
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(polished), RecipeCategory.BUILDING_BLOCKS, item("polished_" + r + "_rock_stairs"))
-                    .unlockedBy("has_polished", has(polished)).save(this.output, rk("stonecutter_" + r + "_polished_to_polished_stairs"));
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(polished), RecipeCategory.BUILDING_BLOCKS, item("polished_" + r + "_rock_wall"))
-                    .unlockedBy("has_polished", has(polished)).save(this.output, rk("stonecutter_" + r + "_polished_to_polished_wall"));
+            // smooth → slab / stairs / wall / pillar
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(smooth), RecipeCategory.BUILDING_BLOCKS, item("smooth_" + r + "_rock_slab"), 2)
+                    .unlockedBy("has_smooth", has(smooth)).save(this.output, rk("stonecutter_" + r + "_smooth_to_smooth_slab"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(smooth), RecipeCategory.BUILDING_BLOCKS, item("smooth_" + r + "_rock_stairs"))
+                    .unlockedBy("has_smooth", has(smooth)).save(this.output, rk("stonecutter_" + r + "_smooth_to_smooth_stairs"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(smooth), RecipeCategory.BUILDING_BLOCKS, item("smooth_" + r + "_rock_wall"))
+                    .unlockedBy("has_smooth", has(smooth)).save(this.output, rk("stonecutter_" + r + "_smooth_to_smooth_wall"));
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(smooth), RecipeCategory.BUILDING_BLOCKS, item(r + "_pillar"))
+                    .unlockedBy("has_smooth", has(smooth)).save(this.output, rk("stonecutter_" + r + "_smooth_to_pillar"));
         }
     }
 

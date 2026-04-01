@@ -5,7 +5,7 @@
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:dirt"
+        "Name": "minecraft:grass_block"
       }
     },
     "foliage_placer": {
@@ -33,14 +33,14 @@
     "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
-      "limit": 2,
+      "limit": 1,
       "lower_size": 0,
       "upper_size": 2
     },
     "trunk_placer": {
       "type": "minecraft:straight_trunk_placer",
-      "base_height": 6,
-      "height_rand_a": 4,
+      "base_height": 14,
+      "height_rand_a": 3,
       "height_rand_b": 0
     },
     "trunk_provider": {

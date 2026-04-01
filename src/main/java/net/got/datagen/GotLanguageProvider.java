@@ -112,6 +112,11 @@ public class GotLanguageProvider extends LanguageProvider {
             item(tier + "_leggings",  t + " Leggings");
             item(tier + "_boots",     t + " Boots");
         }
+
+        // ── Wetland plants & terrain ──────────────────────────────────────────
+        block("wheatgrass",  "Wheatgrass");
+        block("reeds",       "Reeds");
+        block("quagmire",    "Quagmire");
     }
 
     // ── Wood helper ───────────────────────────────────────────────────

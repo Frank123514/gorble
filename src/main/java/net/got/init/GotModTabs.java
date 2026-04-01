@@ -1139,6 +1139,12 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.GHOST_GRASS.get());
                         safeAccept(output, GotModBlocks.HRANNA.get());
                         safeAccept(output, GotModBlocks.PIPERS_GRASS.get());
+                        safeAccept(output, GotModBlocks.WHEATGRASS.get());
+
+                        // ── Wetland plants ───────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.REEDS.get());
+                        safeAccept(output, Block.byItem(GotModItems.REEDS.get()));   // reeds as placeable item
+                        safeAccept(output, GotModBlocks.QUAGMIRE.get());
 
                         // ── Wild Crops ───────────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WILD_WHEAT.get());

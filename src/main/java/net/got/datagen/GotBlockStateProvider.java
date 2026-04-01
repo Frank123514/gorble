@@ -62,6 +62,7 @@ public class GotBlockStateProvider extends ModelProvider {
         registerWoodBlocks(blockModels);
         registerStoneBlocks(blockModels);
         registerOres(blockModels);
+        registerWetlandBlocks(blockModels);
     }
 
     // ── Wood blocks ───────────────────────────────────────────────────
@@ -195,6 +196,33 @@ public class GotBlockStateProvider extends ModelProvider {
         for (String ore : ORES) {
             g.createTrivialCube(block(ore));
         }
+    }
+
+    // ── Wetland plants & terrain ───────────────────────────────────────
+
+    /**
+     * Registers block-state / model JSON entries for the three new wetland
+     * additions: wheatgrass, reeds, and quagmire.
+     *
+     * <ul>
+     *   <li><b>Wheatgrass</b> — cross-model plant (same as sapling/flower).</li>
+     *   <li><b>Reeds</b> — cross-model plant; age is internal-only so a single
+     *       model variant covers all 16 ages (identical to vanilla sugar cane).</li>
+     *   <li><b>Quagmire</b> — simple full-cube block.</li>
+     * </ul>
+     */
+    private void registerWetlandBlocks(BlockModelGenerators g) {
+        // Wheatgrass — plain cross-model plant, not tinted.
+        g.createPlant(block("wheatgrass"), block("wheatgrass"),
+                BlockModelGenerators.PlantType.NOT_TINTED);
+
+        // Reeds — cross-model plant.  All 16 age values share the same model,
+        // so we register the block-state once and suppress per-age variants.
+        g.createPlant(block("reeds"), block("reeds"),
+                BlockModelGenerators.PlantType.NOT_TINTED);
+
+        // Quagmire — full opaque cube; textures provided by the resource pack.
+        g.createTrivialCube(block("quagmire"));
     }
 
     // ── Helpers ───────────────────────────────────────────────────────

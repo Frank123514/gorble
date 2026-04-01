@@ -4,7 +4,7 @@ import net.got.GotMod;
 import net.got.init.GotModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;      // correct package in 1.21.3
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -31,6 +31,8 @@ public class GotItemTagsProvider extends ItemTagsProvider {
         copyWoodTags();
         copyOreTags();
         addMaterialTags();
+        // Note: ItemTags.FLOWERS does not exist in vanilla Minecraft.
+        // Create a custom tag if you need flower items tagged.
     }
 
     private void copyWoodTags() {

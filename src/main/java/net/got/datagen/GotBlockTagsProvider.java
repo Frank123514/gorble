@@ -30,6 +30,7 @@ public class GotBlockTagsProvider extends BlockTagsProvider {
         addWoodTags();
         addStoneTags();
         addOreTags();
+        addWetlandTags();
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -152,6 +153,25 @@ public class GotBlockTagsProvider extends BlockTagsProvider {
                         block("opal_ore"),    block("ruby_ore"),
                         block("sapphire_ore"),block("dragonglass"),
                         block("valyrian_ore"));
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Wetland plants & terrain tags
+    // ─────────────────────────────────────────────────────────────────
+
+    private void addWetlandTags() {
+        // Wheatgrass — a small plant; treated like vanilla flowers for tool purposes.
+        tag(BlockTags.FLOWERS).add(block("wheatgrass"));
+
+        // Reeds — must be replaceable so other blocks can push past a column,
+        // and must survive on dirt/similar ground (handled via canSurvive in block).
+        // Sugar-cane is not tagged with any vanilla tool tag — reeds follow suit.
+
+        // Quagmire — mineable with a shovel (bog/mud terrain).
+        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block("quagmire"));
+
+        // Quagmire behaves like mud/snow: not mineable with pickaxe, not stone.
+        // No harvest requirement — any shovel (or bare hands) works.
     }
 
     // ─────────────────────────────────────────────────────────────────

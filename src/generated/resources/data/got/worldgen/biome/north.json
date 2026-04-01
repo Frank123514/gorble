@@ -39,17 +39,7 @@
       "got:ore_grey_granite_rock",
       "got:ore_limestone_rock",
       "got:ore_flint_rock",
-      "got:ore_slate_rock",
-      "got:wild_barley",
-      "got:wild_cotton",
-      "got:wild_rye",
-      "got:wild_wheat",
-      "got:wild_oat",
-      "got:wild_onion",
-      "got:wild_garlic",
-      "got:wild_carrot",
-      "got:wild_cabbage",
-      "got:blackberry_bush"
+      "got:ore_slate_rock"
     ],
     [],
     [],
@@ -65,7 +55,18 @@
       "got:boulder",
       "got:limestone_boulder",
       "got:grey_granite_boulder",
-      "got:slate_boulder"
+      "got:slate_boulder",
+      "got:wild_barley",
+      "got:wild_cotton",
+      "got:wild_rye",
+      "got:wild_wheat",
+      "got:wild_oat",
+      "got:wild_onion",
+      "got:wild_garlic",
+      "got:wild_carrot",
+      "got:wild_cabbage",
+      "got:blackberry_bush",
+      "got:patch_leaves"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -94,6 +95,48 @@
         "weight": 4,
         "minCount": 1,
         "maxCount": 2
+      },
+      {
+        "type": "minecraft:rabbit",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 4
+      },
+      {
+        "type": "minecraft:sheep",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 12
+      },
+      {
+        "type": "minecraft:pig",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:chicken",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:cow",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 8
+      },
+      {
+        "type": "minecraft:horse",
+        "maxCount": 6,
+        "minCount": 2,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:donkey",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 1
       }
     ],
     "misc": [],

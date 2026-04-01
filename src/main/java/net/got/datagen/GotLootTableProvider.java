@@ -65,6 +65,7 @@ public class GotLootTableProvider extends LootTableProvider {
             generateWoodLoot();
             generateStoneLoot();
             generateOreLoot();
+            generateWetlandLoot();
         }
 
         // ── Wood ──────────────────────────────────────────────────────
@@ -143,6 +144,17 @@ public class GotLootTableProvider extends LootTableProvider {
             add(block("ruby_ore"),     b -> createOreDrop(b, GotModItems.RUBY.get()));
             add(block("sapphire_ore"), b -> createOreDrop(b, GotModItems.SAPPHIRE.get()));
             add(block("dragonglass"),  b -> createOreDrop(b, GotModItems.DRAGONGLASS_SHARD.get()));
+        }
+
+        // ── Wetland plants & terrain ──────────────────────────────────────────
+
+        private void generateWetlandLoot() {
+            // Wheatgrass: drop self (like vanilla dandelion)
+            dropSelf(block("wheatgrass"));
+            // Reeds: drop self (the block item — identical to vanilla sugar cane)
+            dropSelf(block("reeds"));
+            // Quagmire: drop self (players can collect and relocate the block)
+            dropSelf(block("quagmire"));
         }
 
         // ── Helpers ───────────────────────────────────────────────────
