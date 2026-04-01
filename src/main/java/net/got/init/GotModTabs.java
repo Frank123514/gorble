@@ -1293,6 +1293,11 @@ public class GotModTabs {
                         output.accept(GotModItems.BRONZE_CHESTPLATE.get());
                         output.accept(GotModItems.BRONZE_LEGGINGS.get());
                         output.accept(GotModItems.BRONZE_BOOTS.get());
+
+                        // ── Spawn Eggs ───────────────────────────────────
+                        output.accept(GotModItems.NORTHMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.NORTH_WARRIOR_SPAWN_EGG.get());
+                        output.accept(GotModItems.NORTH_BOWMAN_SPAWN_EGG.get());
                     })
                     .build());
 

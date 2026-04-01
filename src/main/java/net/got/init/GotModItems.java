@@ -1,24 +1,14 @@
 package net.got.init;
 
 import net.got.GotMod;
+import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.item.SignItem;
-import net.minecraft.world.item.HangingSignItem;
 import net.got.item.GotBoatItem;
 
 import java.util.function.Function;
@@ -1230,6 +1220,14 @@ public class GotModItems {
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS, p));
     public static final DeferredItem<ArmorItem> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS, p));
+
+    // ── North NPC Spawn Eggs ─────────────────────────────────────────────
+    public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
+            "northman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTHMAN.get(), p));
+    public static final DeferredItem<SpawnEggItem> NORTH_WARRIOR_SPAWN_EGG = REGISTRY.registerItem(
+            "north_warrior_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTH_WARRIOR.get(), p));
+    public static final DeferredItem<SpawnEggItem> NORTH_BOWMAN_SPAWN_EGG = REGISTRY.registerItem(
+            "north_bowman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTH_BOWMAN.get(), p));
 
     // ── Helpers ───────────────────────────────────────────────────────────
 

@@ -25,13 +25,29 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.got.entity.NpcNameHelper;
 
+/**
+ * North Bowman NPC — ranged archer.
+ *
+ * <h3>Variant / gender layout</h3>
+ * <pre>
+ *   variant 0-1  →  MALE    (north_bowman_male_1, north_bowman_male_2)
+ *   variant 2-3  →  FEMALE  (north_bowman_female_1, north_bowman_female_2)
+ * </pre>
+ */
 public class NorthBowmanEntity extends PathfinderMob implements NeutralMob, RangedAttackMob {
 
+    public static final int VARIANT_COUNT       = 4;  // 2 male + 2 female
+    public static final int VARIANTS_PER_GENDER = VARIANT_COUNT / NpcGender.COUNT; // 2
+
+    private static final String NBT_VARIANT  = "GotVariant";
+    private static final String NBT_NPC_NAME = "GotNpcName";
     private static final UniformInt ANGER_RANGE = TimeUtil.rangeOfSeconds(20, 39);
-    private static final String NBT_VARIANT = "GotVariant";
 
     private int variant = 0;
+    private NpcGender gender = NpcGender.MALE;
+    private String npcName = "";
     private int angerTime;
     @Nullable private UUID angerTarget;
 
@@ -69,13 +85,13 @@ public class NorthBowmanEntity extends PathfinderMob implements NeutralMob, Rang
 
     @Override
     public void performRangedAttack(LivingEntity target, float power) {
-        ItemStack bowStack = new ItemStack(Items.BOW);
+        ItemStack bowStack   = new ItemStack(Items.BOW);
         ItemStack arrowStack = new ItemStack(Items.ARROW);
-        AbstractArrow arrow = ProjectileUtil.getMobArrow(this, arrowStack, power, bowStack);
+        AbstractArrow arrow  = ProjectileUtil.getMobArrow(this, arrowStack, power, bowStack);
 
-        double dx = target.getX() - this.getX();
-        double dy = target.getY(0.3333) - arrow.getY();
-        double dz = target.getZ() - this.getZ();
+        double dx   = target.getX() - this.getX();
+        double dy   = target.getY(0.3333) - arrow.getY();
+        double dz   = target.getZ() - this.getZ();
         double dist = Math.sqrt(dx * dx + dz * dz);
 
         arrow.shoot(dx, dy + dist * 0.20f, dz, 1.6f,
@@ -84,16 +100,25 @@ public class NorthBowmanEntity extends PathfinderMob implements NeutralMob, Rang
     }
 
     public int getVariant() { return variant; }
+    public NpcGender getGender() { return gender; }
+    public String getNpcName() { return npcName; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         EntitySpawnReason spawnType, @Nullable SpawnGroupData groupData) {
-        this.variant = this.random.nextInt(2);
+        // 1. Pick gender (50 / 50).
+        this.gender = NpcGender.values()[this.random.nextInt(NpcGender.COUNT)];
+        // 2. Pick a skin within that gender's range: male → 0-1, female → 2-3.
+        int baseOffset = this.gender.ordinal() * VARIANTS_PER_GENDER;
+        this.variant = baseOffset + this.random.nextInt(VARIANTS_PER_GENDER);
+        // 3. Assign a random name from the gender-appropriate name list.
+        this.npcName = NpcNameHelper.randomName(this.gender, this.random);
+        this.setCustomName(net.minecraft.network.chat.Component.literal(this.npcName));
+        this.setCustomNameVisible(true);
         populateDefaultEquipmentSlots(this.random, difficulty);
         return super.finalizeSpawn(level, difficulty, spawnType, groupData);
     }
 
-    // 1.21.4: hurt() is final; override hurtServer() to hook into damage
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         boolean result = super.hurtServer(level, source, amount);
@@ -125,13 +150,21 @@ public class NorthBowmanEntity extends PathfinderMob implements NeutralMob, Rang
         super.readAdditionalSaveData(tag);
         this.readPersistentAngerSaveData(this.level(), tag);
         this.variant = tag.getInt(NBT_VARIANT);
+        this.gender  = NpcGender.fromByte(tag.getByte(NpcGender.NBT_KEY));
+        if (tag.contains(NBT_NPC_NAME)) {
+            this.npcName = tag.getString(NBT_NPC_NAME);
+            this.setCustomName(net.minecraft.network.chat.Component.literal(this.npcName));
+            this.setCustomNameVisible(true);
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         this.addPersistentAngerSaveData(tag);
-        tag.putInt(NBT_VARIANT, this.variant);
+        tag.putInt(NBT_VARIANT,        this.variant);
+        tag.putByte(NpcGender.NBT_KEY, this.gender.toByte());
+        tag.putString(NBT_NPC_NAME,    this.npcName);
     }
 
     public static boolean checkSpawnRules(EntityType<NorthBowmanEntity> type,

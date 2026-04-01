@@ -23,14 +23,33 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.got.entity.NpcNameHelper;
 
+/**
+ * Northman smallfolk NPC.
+ *
+ * <h3>Variant / gender layout</h3>
+ * <pre>
+ *   variant 0-3  →  MALE    (northman_male_1 … northman_male_4)
+ *   variant 4-7  →  FEMALE  (northman_female_1 … northman_female_4)
+ * </pre>
+ * Gender is stored explicitly in NBT under {@link NpcGender#NBT_KEY} so that
+ * it can be queried without recomputing it from the variant index.
+ */
 public class NorthmanEntity extends PathfinderMob implements NeutralMob {
 
+    /** Total texture count (4 male + 4 female). */
     public static final int VARIANT_COUNT = 8;
-    private static final String NBT_VARIANT = "GotVariant";
+    /** Number of skin variants per gender. */
+    public static final int VARIANTS_PER_GENDER = VARIANT_COUNT / NpcGender.COUNT; // 4
+
+    private static final String NBT_VARIANT  = "GotVariant";
+    private static final String NBT_NPC_NAME = "GotNpcName";
     private static final UniformInt ANGER_RANGE = TimeUtil.rangeOfSeconds(20, 39);
 
     private int variant = 0;
+    private NpcGender gender = NpcGender.MALE;
+    private String npcName = "";
     private int angerTime;
     @Nullable private UUID angerTarget;
 
@@ -67,11 +86,21 @@ public class NorthmanEntity extends PathfinderMob implements NeutralMob {
     }
 
     public int getVariant() { return variant; }
+    public NpcGender getGender() { return gender; }
+    public String getNpcName() { return npcName; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         EntitySpawnReason spawnType, @Nullable SpawnGroupData groupData) {
-        this.variant = this.random.nextInt(VARIANT_COUNT);
+        // 1. Pick gender (50 / 50).
+        this.gender = NpcGender.values()[this.random.nextInt(NpcGender.COUNT)];
+        // 2. Pick a skin within that gender's range: male → 0-3, female → 4-7.
+        int baseOffset = this.gender.ordinal() * VARIANTS_PER_GENDER;
+        this.variant = baseOffset + this.random.nextInt(VARIANTS_PER_GENDER);
+        // 3. Assign a random name from the gender-appropriate name list.
+        this.npcName = NpcNameHelper.randomName(this.gender, this.random);
+        this.setCustomName(net.minecraft.network.chat.Component.literal(this.npcName));
+        this.setCustomNameVisible(true);
         populateDefaultEquipmentSlots(this.random, difficulty);
         return super.finalizeSpawn(level, difficulty, spawnType, groupData);
     }
@@ -107,13 +136,21 @@ public class NorthmanEntity extends PathfinderMob implements NeutralMob {
         super.readAdditionalSaveData(tag);
         this.readPersistentAngerSaveData(this.level(), tag);
         this.variant = tag.getInt(NBT_VARIANT);
+        this.gender  = NpcGender.fromByte(tag.getByte(NpcGender.NBT_KEY));
+        if (tag.contains(NBT_NPC_NAME)) {
+            this.npcName = tag.getString(NBT_NPC_NAME);
+            this.setCustomName(net.minecraft.network.chat.Component.literal(this.npcName));
+            this.setCustomNameVisible(true);
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         this.addPersistentAngerSaveData(tag);
-        tag.putInt(NBT_VARIANT, this.variant);
+        tag.putInt(NBT_VARIANT,        this.variant);
+        tag.putByte(NpcGender.NBT_KEY, this.gender.toByte());
+        tag.putString(NBT_NPC_NAME,    this.npcName);
     }
 
     public static boolean checkSpawnRules(EntityType<NorthmanEntity> type,

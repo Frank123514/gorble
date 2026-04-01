@@ -22,13 +22,29 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import net.got.entity.NpcNameHelper;
 
+/**
+ * North Warrior NPC — heavily-armed melee fighter.
+ *
+ * <h3>Variant / gender layout</h3>
+ * <pre>
+ *   variant 0-1  →  MALE    (north_warrior_male_1, north_warrior_male_2)
+ *   variant 2-3  →  FEMALE  (north_warrior_female_1, north_warrior_female_2)
+ * </pre>
+ */
 public class NorthWarriorEntity extends PathfinderMob implements NeutralMob {
 
+    public static final int VARIANT_COUNT       = 4;  // 2 male + 2 female
+    public static final int VARIANTS_PER_GENDER = VARIANT_COUNT / NpcGender.COUNT; // 2
+
+    private static final String NBT_VARIANT  = "GotVariant";
+    private static final String NBT_NPC_NAME = "GotNpcName";
     private static final UniformInt ANGER_RANGE = TimeUtil.rangeOfSeconds(20, 39);
-    private static final String NBT_VARIANT = "GotVariant";
 
     private int variant = 0;
+    private NpcGender gender = NpcGender.MALE;
+    private String npcName = "";
     private int angerTime;
     @Nullable private UUID angerTarget;
 
@@ -72,11 +88,21 @@ public class NorthWarriorEntity extends PathfinderMob implements NeutralMob {
     }
 
     public int getVariant() { return variant; }
+    public NpcGender getGender() { return gender; }
+    public String getNpcName() { return npcName; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         EntitySpawnReason spawnType, @Nullable SpawnGroupData groupData) {
-        this.variant = this.random.nextInt(2);
+        // 1. Pick gender (50 / 50).
+        this.gender = NpcGender.values()[this.random.nextInt(NpcGender.COUNT)];
+        // 2. Pick a skin within that gender's range: male → 0-1, female → 2-3.
+        int baseOffset = this.gender.ordinal() * VARIANTS_PER_GENDER;
+        this.variant = baseOffset + this.random.nextInt(VARIANTS_PER_GENDER);
+        // 3. Assign a random name from the gender-appropriate name list.
+        this.npcName = NpcNameHelper.randomName(this.gender, this.random);
+        this.setCustomName(net.minecraft.network.chat.Component.literal(this.npcName));
+        this.setCustomNameVisible(true);
         populateDefaultEquipmentSlots(this.random, difficulty);
         return super.finalizeSpawn(level, difficulty, spawnType, groupData);
     }
@@ -112,13 +138,21 @@ public class NorthWarriorEntity extends PathfinderMob implements NeutralMob {
         super.readAdditionalSaveData(tag);
         this.readPersistentAngerSaveData(this.level(), tag);
         this.variant = tag.getInt(NBT_VARIANT);
+        this.gender  = NpcGender.fromByte(tag.getByte(NpcGender.NBT_KEY));
+        if (tag.contains(NBT_NPC_NAME)) {
+            this.npcName = tag.getString(NBT_NPC_NAME);
+            this.setCustomName(net.minecraft.network.chat.Component.literal(this.npcName));
+            this.setCustomNameVisible(true);
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         this.addPersistentAngerSaveData(tag);
-        tag.putInt(NBT_VARIANT, this.variant);
+        tag.putInt(NBT_VARIANT,        this.variant);
+        tag.putByte(NpcGender.NBT_KEY, this.gender.toByte());
+        tag.putString(NBT_NPC_NAME,    this.npcName);
     }
 
     public static boolean checkSpawnRules(EntityType<NorthWarriorEntity> type,

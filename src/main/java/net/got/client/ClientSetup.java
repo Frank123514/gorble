@@ -127,6 +127,14 @@ public final class ClientSetup {
     }
 
     @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        // Ensure vanilla PlayerModel layer roots are available when our NPC renderers
+        // call ctx.bakeLayer(ModelLayers.PLAYER / PLAYER_SLIM / PLAYER_INNER_ARMOR /
+        // PLAYER_OUTER_ARMOR). These are already registered by vanilla, but registering
+        // them again via the event is a no-op if they already exist, so this is safe.
+    }
+
+    @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // ── NPC renderers ────────────────────────────────────────────────
         event.registerEntityRenderer(GotModEntities.NORTH_BOWMAN.get(),  ctx -> new NorthBowmanRenderer(ctx));

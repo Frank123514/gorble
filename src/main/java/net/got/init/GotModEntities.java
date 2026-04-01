@@ -20,7 +20,7 @@ public class GotModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<NorthBowmanEntity>> NORTH_BOWMAN =
             REGISTRY.register("north_bowman", () ->
                     EntityType.Builder.<NorthBowmanEntity>of(NorthBowmanEntity::new, MobCategory.CREATURE)
-                            .sized(0.6f, 1.99f)
+                            .sized(0.6f, 1.8f)
                             .clientTrackingRange(8)
                             .updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
@@ -29,7 +29,7 @@ public class GotModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<NorthWarriorEntity>> NORTH_WARRIOR =
             REGISTRY.register("north_warrior", () ->
                     EntityType.Builder.<NorthWarriorEntity>of(NorthWarriorEntity::new, MobCategory.CREATURE)
-                            .sized(0.6f, 1.99f)
+                            .sized(0.6f, 1.8f)
                             .clientTrackingRange(8)
                             .updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
@@ -38,7 +38,7 @@ public class GotModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<NorthmanEntity>> NORTHMAN =
             REGISTRY.register("northman", () ->
                     EntityType.Builder.<NorthmanEntity>of(NorthmanEntity::new, MobCategory.CREATURE)
-                            .sized(0.6f, 1.99f)
+                            .sized(0.6f, 1.8f)
                             .clientTrackingRange(8)
                             .updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
