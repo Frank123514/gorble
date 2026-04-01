@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
+
     "FFF",
     "FWF",
     "FFF"
@@ -11,10 +12,11 @@
     },
     "W": {
       "item": "minecraft:water_bucket"
+
     }
   },
   "result": {
-    "id": "got:rye_dough",
-    "count": 1
+    "item": "got:rye_dough",
+    "count": 8
   }
 }

@@ -1,73 +1,114 @@
 package net.got.init;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.block.grower.TreeGrower;
+import net.got.worldgen.biome.GotConfiguredFeatures;
 
 import java.util.Optional;
 
 /**
- * Holds a {@link TreeGrower} instance for every GOT wood type.
- * Each grower references the mod's own configured_feature JSON by ResourceKey,
- * so saplings grow into the correct species-specific tree.
+ * Holds a {@link TreeGrower} instance for every GOT sapling.
+ *
+ * <h3>NeoForge / MC 1.21.4 pattern</h3>
+ * <p>{@link TreeGrower} is a record that binds a sapling to its tree shape via a
+ * {@link net.minecraft.resources.ResourceKey ResourceKey}{@code <ConfiguredFeature>}.
+ * The constructor signature is:
+ * <pre>{@code
+ * TreeGrower(
+ *   String                                        name,                 // unique id used in logging
+ *   Optional<Float>                               secondaryChance,      // chance of alternate variant
+ *   Optional<ResourceKey<ConfiguredFeature<?,?>>> primaryFeature,       // standard tree
+ *   Optional<ResourceKey<ConfiguredFeature<?,?>>> primaryFlowerFeature  // flower-decorated variant
+ * )
+ * }</pre>
+ *
+ * <p>All GOT saplings produce a single tree variant with no mega or flower form,
+ * so the secondary-chance and flower-feature slots are always {@link Optional#empty()}.
+ *
+ * <p>Each key resolves to a JSON file under
+ * {@code data/got/worldgen/configured_feature/<n>.json}. The constants come from
+ * {@link GotConfiguredFeatures}, so any mis-spelled name is a compile error rather
+ * than a silent missing-feature warning at runtime.
  */
 public final class GotTreeGrowers {
 
-    private static TreeGrower of(String woodName) {
-        ResourceKey<ConfiguredFeature<?, ?>> key = ResourceKey.create(
-                Registries.CONFIGURED_FEATURE,
-                ResourceLocation.fromNamespaceAndPath("got", woodName)
-        );
+    // ─────────────────────────────────────────────────────────────────────────
+    // Factory helper
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Builds a {@link TreeGrower} whose only variant is the supplied configured
+     * feature key.  The string id follows the convention {@code "got.<name>"} so
+     * that Minecraft's internal logging can identify the grower unambiguously.
+     */
+    private static TreeGrower simple(
+            String name,
+            net.minecraft.resources.ResourceKey<
+                    net.minecraft.world.level.levelgen.feature.ConfiguredFeature<?, ?>> feature) {
         return new TreeGrower(
-                "got." + woodName,
-                Optional.empty(),   // no 2×2 mega-tree variant
-                Optional.empty(),   // no flower-triggered mega-tree
-                Optional.of(key)    // normal single tree
+                "got." + name,
+                Optional.empty(),      // no secondary (mega-tree) variant
+                Optional.of(feature),  // primary / normal tree
+                Optional.empty()       // no flower-decorated variant
         );
     }
 
-    // ── Temperate broadleaf ───────────────────────────────────────────────
-    public static final TreeGrower ALDER        = of("alder");
-    public static final TreeGrower ASH          = of("ash");
-    public static final TreeGrower ASPEN        = of("aspen");
-    public static final TreeGrower BEECH        = of("beech");
-    public static final TreeGrower CHESTNUT     = of("chestnut");
-    public static final TreeGrower ELM          = of("elm");
-    public static final TreeGrower HAWTHORN     = of("hawthorn");
-    public static final TreeGrower LINDEN       = of("linden");
-    public static final TreeGrower MAPLE        = of("maple");
-    public static final TreeGrower WILLOW       = of("willow");
+    // ─────────────────────────────────────────────────────────────────────────
+    // Temperate broadleaf
+    // ─────────────────────────────────────────────────────────────────────────
 
-    // ── Conifers ──────────────────────────────────────────────────────────
-    public static final TreeGrower CEDAR        = of("cedar");
-    public static final TreeGrower FIR          = of("fir");
-    public static final TreeGrower PINE         = of("pine");
-    public static final TreeGrower REDWOOD      = of("redwood");
-    public static final TreeGrower SENTINAL     = of("sentinal");
-    public static final TreeGrower SOLDIER_PINE = of("soldier_pine");
+    public static final TreeGrower ALDER    = simple("alder",    GotConfiguredFeatures.ALDER);
+    public static final TreeGrower APPLE    = simple("apple",    GotConfiguredFeatures.APPLE);
+    public static final TreeGrower ASH      = simple("ash",      GotConfiguredFeatures.ASH);
+    public static final TreeGrower ASPEN    = simple("aspen",    GotConfiguredFeatures.ASPEN);
+    public static final TreeGrower BEECH    = simple("beech",    GotConfiguredFeatures.BEECH);
+    public static final TreeGrower CHESTNUT = simple("chestnut", GotConfiguredFeatures.CHESTNUT);
+    public static final TreeGrower ELM      = simple("elm",      GotConfiguredFeatures.ELM);
+    public static final TreeGrower HAWTHORN = simple("hawthorn", GotConfiguredFeatures.HAWTHORN);
+    public static final TreeGrower LINDEN   = simple("linden",   GotConfiguredFeatures.LINDEN);
+    public static final TreeGrower MAPLE    = simple("maple",    GotConfiguredFeatures.MAPLE);
+    public static final TreeGrower WILLOW   = simple("willow",   GotConfiguredFeatures.WILLOW);
 
-    // ── Exotic / tropical ─────────────────────────────────────────────────
-    public static final TreeGrower BLUE_MAHOE   = of("blue_mahoe");
-    public static final TreeGrower CINNAMON     = of("cinnamon");
-    public static final TreeGrower CLOVE        = of("clove");
-    public static final TreeGrower EBONY        = of("ebony");
-    public static final TreeGrower GOLDENHEART  = of("goldenheart");
-    public static final TreeGrower MAHOGANY     = of("mahogany");
-    public static final TreeGrower MYRRH        = of("myrrh");
+    // ─────────────────────────────────────────────────────────────────────────
+    // Conifers
+    // ─────────────────────────────────────────────────────────────────────────
 
-    // ── Wetland / riverside ───────────────────────────────────────────────
-    public static final TreeGrower BLACK_COTTONWOOD = of("black_cottonwood");
-    public static final TreeGrower COTTONWOOD   = of("cottonwood");
+    public static final TreeGrower CEDAR        = simple("cedar",        GotConfiguredFeatures.CEDAR);
+    public static final TreeGrower FIR          = simple("fir",          GotConfiguredFeatures.FIR);
+    public static final TreeGrower PINE         = simple("pine",         GotConfiguredFeatures.PINE);
+    public static final TreeGrower REDWOOD      = simple("redwood",      GotConfiguredFeatures.REDWOOD);
+    public static final TreeGrower SENTINAL     = simple("sentinal",     GotConfiguredFeatures.SENTINAL);
+    public static final TreeGrower SOLDIER_PINE = simple("soldier_pine", GotConfiguredFeatures.SOLDIER_PINE);
 
-    // ── Dark / special ────────────────────────────────────────────────────
-    public static final TreeGrower APPLE        = of("apple");
-    public static final TreeGrower BLACKBARK    = of("blackbark");
-    public static final TreeGrower BLOODWOOD    = of("bloodwood");
-    public static final TreeGrower IRONWOOD     = of("ironwood");
-    public static final TreeGrower WEIRWOOD     = of("weirwood");
-    public static final TreeGrower WORMTREE     = of("wormtree");
+    // ─────────────────────────────────────────────────────────────────────────
+    // Exotic / tropical
+    // ─────────────────────────────────────────────────────────────────────────
+
+    public static final TreeGrower BLUE_MAHOE  = simple("blue_mahoe",  GotConfiguredFeatures.BLUE_MAHOE);
+    public static final TreeGrower CINNAMON    = simple("cinnamon",    GotConfiguredFeatures.CINNAMON);
+    public static final TreeGrower CLOVE       = simple("clove",       GotConfiguredFeatures.CLOVE);
+    public static final TreeGrower EBONY       = simple("ebony",       GotConfiguredFeatures.EBONY);
+    public static final TreeGrower GOLDENHEART = simple("goldenheart", GotConfiguredFeatures.GOLDENHEART);
+    public static final TreeGrower MAHOGANY    = simple("mahogany",    GotConfiguredFeatures.MAHOGANY);
+    public static final TreeGrower MYRRH       = simple("myrrh",       GotConfiguredFeatures.MYRRH);
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Wetland / riverside
+    // ─────────────────────────────────────────────────────────────────────────
+
+    public static final TreeGrower BLACK_COTTONWOOD = simple("black_cottonwood", GotConfiguredFeatures.BLACK_COTTONWOOD);
+    public static final TreeGrower COTTONWOOD       = simple("cottonwood",       GotConfiguredFeatures.COTTONWOOD);
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Dark / special
+    // ─────────────────────────────────────────────────────────────────────────
+
+    public static final TreeGrower BLACKBARK = simple("blackbark", GotConfiguredFeatures.BLACKBARK);
+    public static final TreeGrower BLOODWOOD = simple("bloodwood", GotConfiguredFeatures.BLOODWOOD);
+    public static final TreeGrower IRONWOOD  = simple("ironwood",  GotConfiguredFeatures.IRONWOOD);
+    public static final TreeGrower WEIRWOOD  = simple("weirwood",  GotConfiguredFeatures.WEIRWOOD);
+    public static final TreeGrower WORMTREE  = simple("wormtree",  GotConfiguredFeatures.WORMTREE);
+
+    // ─────────────────────────────────────────────────────────────────────────
 
     private GotTreeGrowers() {}
 }

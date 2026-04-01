@@ -1109,6 +1109,8 @@ public class GotModItems {
 
     // ── Oven ──────────────────────────────────────────────────────────────────
     public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);
+
+    // ── Grasses ───────────────────────────────────────────────────────────
     public static final DeferredItem<Item> DEVILGRASS         = block(GotModBlocks.DEVILGRASS);
     public static final DeferredItem<Item> GHOST_GRASS        = block(GotModBlocks.GHOST_GRASS);
     public static final DeferredItem<Item> HRANNA             = block(GotModBlocks.HRANNA);
