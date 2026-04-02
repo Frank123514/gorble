@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "S": "got:smooth_grey_granite_rock"
+  },
+  "pattern": [
+    "S",
+    "S"
+  ],
+  "result": {
+    "count": 2,
+    "id": "got:grey_granite_pillar"
+  }
+}

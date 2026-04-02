@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "S": "got:smooth_fused_black_rock"
+  },
+  "pattern": [
+    "S",
+    "S"
+  ],
+  "result": {
+    "count": 2,
+    "id": "got:fused_black_pillar"
+  }
+}

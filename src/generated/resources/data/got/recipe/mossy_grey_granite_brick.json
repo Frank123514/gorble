@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "got:grey_granite_brick",
+    "minecraft:vine"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:mossy_grey_granite_brick"
+  }
+}

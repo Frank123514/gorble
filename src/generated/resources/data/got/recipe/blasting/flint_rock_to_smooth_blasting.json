@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "building",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": "got:flint_rock",
+  "result": {
+    "id": "got:smooth_flint_rock"
+  }
+}
