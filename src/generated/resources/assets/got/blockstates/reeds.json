@@ -1,7 +1,6 @@
 {
   "variants": {
-    "": {
-      "model": "got:block/reeds"
-    }
+    "half=lower": { "model": "got:block/reeds_bottom" },
+    "half=upper": { "model": "got:block/reeds_top" }
   }
 }

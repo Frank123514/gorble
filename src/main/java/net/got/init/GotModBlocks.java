@@ -5,32 +5,22 @@ import net.got.block.GotSaplingBlock;
 import net.got.block.GotStrippedLogBlock;
 import net.got.block.RegionalRockBlock;
 import net.got.block.RegionalRockPillarBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.effect.MobEffects;
 import net.got.block.GotSeedCropBlock;
 import net.got.block.GotProduceCropBlock;
 import net.got.block.GotBerryBushBlock;
 import net.got.block.OvenBlock;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
 import net.got.block.GotStandingSignBlock;
 import net.got.block.GotWallSignBlock;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.got.block.ReedsBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 import net.got.GotMod;
@@ -42,6 +32,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.Function;
+
+import static net.minecraft.world.item.Items.registerBlock;
 
 public class GotModBlocks {
     public static final DeferredRegister.Blocks REGISTRY = DeferredRegister.createBlocks(GotMod.MODID);
@@ -164,95 +156,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> HAWTHORN_FENCE_GATE = woodBlock("hawthorn_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.HAWTHORN, p));
     public static final DeferredBlock<Block> HAWTHORN_PRESSURE_PLATE = woodBlock("hawthorn_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
     public static final DeferredBlock<Block> HAWTHORN_BUTTON = woodBlock("hawthorn_button", p -> new ButtonBlock(BlockSetType.OAK, 10, p));
-
-    // ── Crownlands ──────────────────────────────────────────────────────
-
-    // ── Dorne ──────────────────────────────────────────────────────
-
-    // ── Iron Islands ──────────────────────────────────────────────────────
-
-    // ── North ──────────────────────────────────────────────────────
-
-    // ── Reach ──────────────────────────────────────────────────────
-
-    // ── Riverlands ──────────────────────────────────────────────────────
-
-    // ── Stormlands ──────────────────────────────────────────────────────
-
-    // ── Vale ──────────────────────────────────────────────────────
-
-    // ── Westerlands ──────────────────────────────────────────────────────
-
-    // ── Crownlands ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Dorne ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Iron Islands ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── North ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Reach ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Riverlands ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Stormlands ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Vale ─────────────────────────────────────────
-
-
-
-
-
-
-
-    // ── Westerlands ─────────────────────────────────────────
-
-
-
-
-
 
     // ── Blackbark Tree ────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BLACKBARK_LOG            = logBlock("blackbark_log",            BlackbarkLogBlock::new);
@@ -751,6 +654,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> GHOST_GRASS        = flowerBlock("ghost_grass");
     public static final DeferredBlock<Block> HRANNA             = flowerBlock("hranna");
     public static final DeferredBlock<Block> PIPERS_GRASS       = flowerBlock("pipers_grass");
+    public static final DeferredBlock<Block> WHEATGRASS      = flowerBlock("wheatgrass");
+    
 
     // ── Wild Crops (naturally spawning, drop seeds/produce when broken) ─────
     public static final DeferredBlock<Block> WILD_WHEAT = flowerBlock("wild_wheat");
@@ -772,34 +677,28 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILD_HORSERADISH = flowerBlock("wild_horseradish");
     public static final DeferredBlock<Block> WILD_LEEK = flowerBlock("wild_leek");
 
-    // ── Wetland plants ────────────────────────────────────────────────────────
-    /**
-     * Wheatgrass — a slender wetland grass.  Registers as a flower-type plant
-     * (no collision, cross model, requires dirt/grass below).
-     */
-    public static final DeferredBlock<Block> WHEATGRASS = flowerBlock("wheatgrass");
-
-    /**
-     * Reeds — a tall aquatic plant that grows near water (up to 3 blocks).
-     * Uses {@link net.got.block.ReedsBlock} for growth / survival logic.
-     */
-    public static final DeferredBlock<Block> REEDS = REGISTRY.registerBlock(
-            "reeds",
-            net.got.block.ReedsBlock::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.SUGAR_CANE));
-
     // ── Quagmire ──────────────────────────────────────────────────────────────
     /**
      * Quagmire block — a boggy mud-terrain block that causes entities to sink
      * slowly (like powder snow but at roughly half the rate) and applies
      * Slowness II.  No freeze damage.
      */
-    public static final DeferredBlock<Block> QUAGMIRE = REGISTRY.registerBlock(
-            "quagmire",
-            net.got.block.QuagmireBlock::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.POWDER_SNOW)
-                    .strength(0.4f)
-                    .sound(net.minecraft.world.level.block.SoundType.MUD));
+    public static final DeferredBlock<Block> QUAGMIRE = REGISTRY.registerBlock("quagmire",
+            properties -> new QuagmireBlock(properties),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SNOW_BLOCK)
+                    .sound(SoundType.MUD)
+                    .friction(0.8F)
+                    .speedFactor(0.1F)
+                    .strength(6f)
+                    .noOcclusion()
+                    .isValidSpawn((state, level, pos, type) -> false)
+                    .pushReaction(PushReaction.BLOCK));
+
+
+    // ── Reeds ──────────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> REEDS = REGISTRY.registerBlock("reeds",
+            ReedsBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion());
 
     // ── Crops — Seed-type (planted with seed, harvests crop + seeds) ──────
     // Block registered first; seed item wired in via supplier after items load.

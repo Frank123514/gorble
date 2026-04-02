@@ -101,11 +101,11 @@ public final class GotBiomeDensityParams {
 
         // ── Water biomes ──────────────────────────────────────────────────
         //                            depth   scale
-        water("river",                50f,     3f);   // shallow carved bed
-        water("neck_river",           50f,     3f);   // neck wetland channels
-        water("frozen_river",         50f,     3f);   // frozen river bed
-        water("ocean",                40f,     5f);   // open ocean floor
-        water("deep_ocean",           30f,     6f);   // abyssal depths
+        water("river",                55f,     3f);   // shallow carved bed
+        water("neck_river",           55f,     3f);   // neck wetland channels
+        water("frozen_river",         55f,     3f);   // frozen river bed
+        water("ocean",                45f,     5f);   // open ocean floor
+        water("deep_ocean",           35f,     6f);   // abyssal depths
 
         // ── Colour palette (must mirror GotBiomeSource exactly) ───────────
         BY_COLOR.put(0x949038, BY_NAME.get("north"));

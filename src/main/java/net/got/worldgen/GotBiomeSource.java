@@ -153,28 +153,28 @@ public final class GotBiomeSource extends BiomeSource {
     @Override
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z,
                                                 Climate.@NotNull Sampler sampler) {
-        // Noise coords are in 4-block units; shift back to world blocks.
         int worldX = x << 2;
         int worldY = y << 2;
         int worldZ = z << 2;
 
         if (!BiomemapLoader.isLoaded()) return fallback;
 
-        // Float pixel-space coordinate — identical formula to bilinearBlend().
         float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
         int   px0 = (int) Math.floor(cx);
         int   pz0 = (int) Math.floor(cz);
-        float tx  = cx - px0;
-        float tz  = cz - pz0;
+
+        // ↓ Apply the same double-smoothstep sharpening as GotChunkGenerator
+        //   so biome weights transition in the same narrow band as the terrain.
+        float tx  = GotChunkGenerator.sharpenBlend(cx - px0);
+        float tz  = GotChunkGenerator.sharpenBlend(cz - pz0);
 
         float w00 = (1f - tx) * (1f - tz);
         float w10 = tx        * (1f - tz);
         float w01 = (1f - tx) * tz;
         float w11 = tx        * tz;
 
-        // Accumulate weight per biome ResourceLocation.
         Map<ResourceLocation, Float> weights = new HashMap<>(8);
         addPixelWeight(weights, px0,     pz0,     w00);
         addPixelWeight(weights, px0 + 1, pz0,     w10);
@@ -182,16 +182,18 @@ public final class GotBiomeSource extends BiomeSource {
         addPixelWeight(weights, px0 + 1, pz0 + 1, w11);
 
         // ── Y-aware water biome sync ──────────────────────────────────────
-        // If the bottom of this 4-block noise cell is at or below sea level,
-        // check whether the terrain density says this cell is open (water).
-        // If it is, return the dominant *water* biome so every water block
-        // sits in a water biome — block-for-block sync with the carved terrain.
+        // Track whether this 4-block noise cell is genuinely open water.
+        // Used below to decide whether water biomes are eligible candidates.
+        boolean cellIsOpenWater = false;
+
         if (worldY <= GotChunkGenerator.SEA_LEVEL) {
             float[] bp      = GotChunkGenerator.bilinearBlend(worldX, worldZ);
             float   density = GotChunkGenerator.evalDensity(worldX, worldY, worldZ, bp[0], bp[1]);
 
             if (density <= 0f) {
-                // Find the water biome carrying the largest pixel weight.
+                cellIsOpenWater = true;
+
+                // Return the water biome carrying the largest pixel weight.
                 ResourceLocation bestWater = null;
                 float            bestW     = -1f;
                 for (Map.Entry<ResourceLocation, Float> e : weights.entrySet()) {
@@ -204,21 +206,39 @@ public final class GotBiomeSource extends BiomeSource {
                     Holder<Biome> wh = locationToHolder.get(bestWater);
                     if (wh != null) return wh;
                 }
-                // No water pixel contributes weight here (e.g. a surface dip on
-                // flat land that happens to go slightly below sea level).
-                // Fall through to normal dominant-weight logic so we don't
-                // incorrectly force a water biome onto what is terrain border.
+                // Fell through: density <= 0 (open water) but no water pixel
+                // contributes weight here.  We keep cellIsOpenWater = true so
+                // the dominant-weight pass below can still pick a water biome
+                // if one happens to be in the weight map via another path.
             }
         }
 
-        // ── Normal dominant-weight logic ──────────────────────────────────
-        // Pick the biome whose pixel centre is nearest to this query point.
+        // ── Dominant-weight biome selection ───────────────────────────────
+        // FIX: Water biomes (river, ocean, deep_ocean) are only eligible when
+        // the cell is confirmed open water.  Without this guard, a river pixel
+        // that is the nearest neighbour to a land column could win the weight
+        // comparison and assign a river biome to solid ground — causing wrong
+        // foliage colours and spawn behaviour along riverbanks.
         ResourceLocation bestLoc    = null;
         float            bestWeight = -1f;
         for (Map.Entry<ResourceLocation, Float> e : weights.entrySet()) {
+            // Skip water biomes for solid/above-sea-level cells.
+            if (!cellIsOpenWater && isWaterBiome(e.getKey())) continue;
             if (e.getValue() > bestWeight) {
                 bestWeight = e.getValue();
                 bestLoc    = e.getKey();
+            }
+        }
+
+        // If every candidate was a water biome (edge case: cell is above sea
+        // level but all four surrounding pixels are ocean), fall back to the
+        // nearest overall winner including water biomes.
+        if (bestLoc == null) {
+            for (Map.Entry<ResourceLocation, Float> e : weights.entrySet()) {
+                if (e.getValue() > bestWeight) {
+                    bestWeight = e.getValue();
+                    bestLoc    = e.getKey();
+                }
             }
         }
 

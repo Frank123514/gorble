@@ -353,14 +353,26 @@ public final class GotChunkGenerator extends ChunkGenerator {
      *
      * @return float[2] { blendedDepth, blendedScale }
      */
+    static float sharpenBlend(float t) {
+        // First smoothstep pass
+        t = t * t * (3f - 2f * t);
+        // Second smoothstep pass — steeper plateau + sharper transition zone
+        t = t * t * (3f - 2f * t);
+        return t;
+    }
+
+// ─── REPLACE the existing bilinearBlend() method with this version ───
+//     (only change: sharpenBlend() applied to tx and tz)
+
     static float[] bilinearBlend(int wx, int wz) {
         float cx = wx / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
         float cz = wz / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
         int   px0 = (int) Math.floor(cx);
         int   pz0 = (int) Math.floor(cz);
-        float tx  = cx - px0;   // 0 .. 1
-        float tz  = cz - pz0;
+        // ↓ sharpen: replaces the old linear (cx - px0) / (cz - pz0) fractions
+        float tx  = sharpenBlend(cx - px0);
+        float tz  = sharpenBlend(cz - pz0);
 
         GotBiomeDensityParams.Params p00 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0));
         GotBiomeDensityParams.Params p10 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0));

@@ -1143,7 +1143,7 @@ public class GotModTabs {
 
                         // ── Wetland plants ───────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.REEDS.get());
-                        safeAccept(output, Block.byItem(GotModItems.REEDS.get()));   // reeds as placeable item
+
                         safeAccept(output, GotModBlocks.QUAGMIRE.get());
 
                         // ── Wild Crops ───────────────────────────────────────────────────────────

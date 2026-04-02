@@ -1,9 +1,16 @@
 {
   "type": "minecraft:block",
+  "random_sequence": "got:blocks/reeds",
   "pools": [
     {
+      "rolls": 1,
       "bonus_rolls": 0.0,
       "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "got:reeds",
+          "properties": { "half": "lower" }
+        },
         {
           "condition": "minecraft:survives_explosion"
         }
@@ -13,9 +20,7 @@
           "type": "minecraft:item",
           "name": "got:reeds"
         }
-      ],
-      "rolls": 1.0
+      ]
     }
-  ],
-  "random_sequence": "got:blocks/reeds"
+  ]
 }
