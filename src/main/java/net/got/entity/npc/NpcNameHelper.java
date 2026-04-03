@@ -1,4 +1,4 @@
-package net.got.entity;
+package net.got.entity.npc;
 
 import net.minecraft.util.RandomSource;
 
@@ -14,36 +14,24 @@ import java.util.List;
  * Loads gender-specific name pools from text files bundled in the mod's
  * resource pack and exposes a thread-safe way to pick a random name.
  *
- * <p>Files are at:
+ * <p>Files live at:
  * <ul>
  *   <li>{@code assets/got/names_male.txt}</li>
  *   <li>{@code assets/got/names_female.txt}</li>
  * </ul>
- *
- * <p>Each file contains one name per line; blank lines and lines starting
- * with {@code #} are ignored.  The lists are loaded lazily the first time
- * {@link #randomName} is called.
+ * Each file contains one name per line; blank lines and lines starting
+ * with {@code #} are ignored.
  */
 public final class NpcNameHelper {
 
     private static final String MALE_RESOURCE   = "/assets/got/names_male.txt";
     private static final String FEMALE_RESOURCE = "/assets/got/names_female.txt";
 
-    // Lazy-loaded, immutable after first load
     private static volatile List<String> MALE_NAMES   = null;
     private static volatile List<String> FEMALE_NAMES = null;
 
     private NpcNameHelper() {}
 
-    /**
-     * Returns a random name appropriate for the given gender, chosen with
-     * the entity's own {@link RandomSource} so it is deterministic and
-     * reproducible across game restarts given the same seed.
-     *
-     * @param gender the gender to draw from
-     * @param random the entity's random source
-     * @return a name string, never {@code null}
-     */
     public static String randomName(NpcGender gender, RandomSource random) {
         List<String> pool = (gender == NpcGender.FEMALE) ? getFemaleNames() : getMaleNames();
         if (pool.isEmpty()) {
@@ -52,14 +40,10 @@ public final class NpcNameHelper {
         return pool.get(random.nextInt(pool.size()));
     }
 
-    // ── Private helpers ────────────────────────────────────────────────
-
     private static List<String> getMaleNames() {
         if (MALE_NAMES == null) {
             synchronized (NpcNameHelper.class) {
-                if (MALE_NAMES == null) {
-                    MALE_NAMES = Collections.unmodifiableList(loadNames(MALE_RESOURCE));
-                }
+                if (MALE_NAMES == null) MALE_NAMES = Collections.unmodifiableList(loadNames(MALE_RESOURCE));
             }
         }
         return MALE_NAMES;
@@ -68,9 +52,7 @@ public final class NpcNameHelper {
     private static List<String> getFemaleNames() {
         if (FEMALE_NAMES == null) {
             synchronized (NpcNameHelper.class) {
-                if (FEMALE_NAMES == null) {
-                    FEMALE_NAMES = Collections.unmodifiableList(loadNames(FEMALE_RESOURCE));
-                }
+                if (FEMALE_NAMES == null) FEMALE_NAMES = Collections.unmodifiableList(loadNames(FEMALE_RESOURCE));
             }
         }
         return FEMALE_NAMES;
@@ -88,9 +70,7 @@ public final class NpcNameHelper {
                 String line;
                 while ((line = br.readLine()) != null) {
                     line = line.strip();
-                    if (!line.isEmpty() && !line.startsWith("#")) {
-                        names.add(line);
-                    }
+                    if (!line.isEmpty() && !line.startsWith("#")) names.add(line);
                 }
             }
         } catch (Exception e) {

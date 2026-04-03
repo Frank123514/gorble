@@ -12,6 +12,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.got.init.GotModBlocks;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -285,6 +286,112 @@ public final class GotChunkGenerator extends ChunkGenerator {
                              @NotNull RandomState random,
                              @NotNull ChunkAccess chunk) {
         vanilla.buildSurface(region, structures, random, chunk);
+        if (BiomemapLoader.isLoaded()) {
+            applyCoastalMud(chunk);
+        }
+    }
+
+    // ── Coastal mud / quagmire pass ───────────────────────────────────────
+    //
+    // After the vanilla surface pass has placed grass/dirt/sand/gravel etc.,
+    // we scan every column in the chunk and — where the solid floor is near
+    // sea level AND close to open water — place Quagmire (on land) or Mud
+    // (on the submerged floor) using Perlin noise to shape organic patches.
+    //
+    // "Near water" is detected mathematically: we evaluate the terrain density
+    // at sea level for four neighbouring positions.  If any neighbour returns
+    // density ≤ 0 (i.e. would be open water) the current column is coastal.
+    // Using evalDensity instead of reading live blocks avoids any dependency
+    // on neighbouring chunk state at this generation stage.
+
+    // ── Coastal mud / quagmire constants ─────────────────────────────────
+    //
+    // Two independent noise fields:
+    //   PATCH  — decides whether a block is inside a mud/quagmire patch at all.
+    //            Medium frequency (~40-block blobs) gives patches the size seen
+    //            in-game (a few blocks to ~15 blocks across).
+    //   MIX    — inside a patch, decides per-block whether to place Mud or
+    //            Quagmire.  Higher frequency (~8-block period) creates the
+    //            salt-and-pepper mix of the two blocks visible in the reference
+    //            screenshot.  Mud wins unless MIX is above 0.25 (~65/35 split).
+
+    private static final float MUD_PATCH_FREQ = 1f / 40f;
+    private static final float MUD_MIX_FREQ   = 1f /  8f;
+    private static final int   MUD_SEED_PATCH = 0xB0_0B_1E50;
+    private static final int   MUD_SEED_MIX   = 0x57AC_E0FF;
+
+    /** Columns within this many blocks above or below sea level are eligible. */
+    private static final int MUD_ALTITUDE_RANGE = 5;
+
+    /** Cardinal + diagonal unit offsets for the near-water scan. */
+    private static final int[][] SHORE_DIRS = {
+            { 1, 0}, {-1, 0}, { 0, 1}, { 0,-1},
+            { 1, 1}, { 1,-1}, {-1, 1}, {-1,-1}
+    };
+
+    private void applyCoastalMud(ChunkAccess chunk) {
+        ChunkPos pos = chunk.getPos();
+        int chunkX   = pos.getMinBlockX();
+        int chunkZ   = pos.getMinBlockZ();
+
+        for (int lx = 0; lx < 16; lx++) {
+            for (int lz = 0; lz < 16; lz++) {
+                int wx = chunkX + lx;
+                int wz = chunkZ + lz;
+
+                // Fast altitude cull using the blended depth approximation.
+                float depth = bilinearBlend(wx, wz)[0];
+                if (depth < SEA_LEVEL - MUD_ALTITUDE_RANGE - 2
+                        || depth > SEA_LEVEL + MUD_ALTITUDE_RANGE + 2) continue;
+
+                // Is there open water within 8 blocks?
+                boolean nearWater = false;
+                outer:
+                for (int r = 4; r <= 8; r += 4) {
+                    for (int[] d : SHORE_DIRS) {
+                        int nx = wx + d[0] * r;
+                        int nz = wz + d[1] * r;
+                        float[] nbp = bilinearBlend(nx, nz);
+                        if (evalDensity(nx, SEA_LEVEL, nz, nbp[0], nbp[1]) <= 0f) {
+                            nearWater = true;
+                            break outer;
+                        }
+                    }
+                }
+                if (!nearWater) continue;
+
+                // PATCH noise: are we inside a mud/quagmire patch?
+                float patch = GotPerlinNoise.sample(
+                        wx * MUD_PATCH_FREQ, 0f, wz * MUD_PATCH_FREQ, MUD_SEED_PATCH);
+                if (patch < 0.05f) continue;
+
+                // Solid floor — valid regardless of whether the column is flooded.
+                int floorY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, lx, lz);
+                if (Math.abs(floorY - SEA_LEVEL) > MUD_ALTITUDE_RANGE) continue;
+
+                BlockPos floorPos = new BlockPos(lx, floorY, lz);
+                if (!isMudReplaceable(chunk.getBlockState(floorPos))) continue;
+
+                // MIX noise: mud or quagmire?  Mud wins ~65% of the time.
+                float mix = GotPerlinNoise.sample(
+                        wx * MUD_MIX_FREQ, 0f, wz * MUD_MIX_FREQ, MUD_SEED_MIX);
+                BlockState place = (mix > 0.25f)
+                        ? GotModBlocks.QUAGMIRE.get().defaultBlockState()
+                        : Blocks.MUD.defaultBlockState();
+
+                chunk.setBlockState(floorPos, place, false);
+            }
+        }
+    }
+
+    /** Blocks that mud and quagmire are allowed to replace. */
+    private static boolean isMudReplaceable(BlockState s) {
+        return s.is(Blocks.GRASS_BLOCK)
+                || s.is(Blocks.DIRT)
+                || s.is(Blocks.SAND)
+                || s.is(Blocks.GRAVEL)
+                || s.is(Blocks.CLAY)
+                || s.is(Blocks.STONE);
     }
 
     // ── Density evaluation ────────────────────────────────────────────────
@@ -333,6 +440,45 @@ public final class GotChunkGenerator extends ChunkGenerator {
         return cornerDensity(wx, wy, wz, depth, scale, sharedNoiseSeed);
     }
 
+    // ── Domain warp ───────────────────────────────────────────────────────
+    //
+    // Before the pixel-space lookup we displace the world coordinates with a
+    // pair of low-frequency Perlin fields.  This bends the otherwise perfectly
+    // axis-aligned pixel-grid boundaries into organic, wavy curves — eliminating
+    // the visible "generated from squares" artefact shown in the river and biome
+    // boundary screenshots.
+    //
+    // WARP_FREQ   — low frequency so the warp creates broad, sweeping curves
+    //               rather than jittery noise.  At 1/400 one full warp cycle
+    //               spans ≈400 blocks, well above the 128-block pixel size.
+    // WARP_AMP    — displacement in world blocks.  64 = half a pixel width,
+    //               enough to noticeably curve boundaries without wildly
+    //               distorting the overall map layout.
+    // WARP_SEED_* — fixed constants (not world-seed-dependent) so that biome
+    //               placement is reproducible across all world seeds, matching
+    //               the static biomemap art.
+
+    private static final float WARP_FREQ   = 3f / 400f;
+    private static final float WARP_AMP    = 64f;
+    private static final int   WARP_SEED_X = 0xAB12_34CD;
+    private static final int   WARP_SEED_Z = 0xEF56_78AB;
+
+    /**
+     * Applies domain warp to a world (wx, wz) position.
+     *
+     * <p>Two independent Perlin samples displace the X and Z axes separately,
+     * breaking up the rectilinear pixel-grid layout into organic curves.  Both
+     * {@link #bilinearBlend} and {@link GotBiomeSource#getNoiseBiome} call this
+     * helper so that terrain and biome boundaries are always in perfect sync.
+     *
+     * @return float[2] { warpedWorldX, warpedWorldZ }
+     */
+    static float[] warpCoordinates(float wx, float wz) {
+        float dx = GotPerlinNoise.sample(wx * WARP_FREQ, 0f, wz * WARP_FREQ, WARP_SEED_X);
+        float dz = GotPerlinNoise.sample(wx * WARP_FREQ, 0f, wz * WARP_FREQ, WARP_SEED_Z);
+        return new float[]{ wx + dx * WARP_AMP, wz + dz * WARP_AMP };
+    }
+
     // ── Biomemap bilinear blend ───────────────────────────────────────────
 
     /**
@@ -365,8 +511,11 @@ public final class GotChunkGenerator extends ChunkGenerator {
 //     (only change: sharpenBlend() applied to tx and tz)
 
     static float[] bilinearBlend(int wx, int wz) {
-        float cx = wx / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
-        float cz = wz / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+        // Apply domain warp so the pixel-grid boundary lines become organic curves
+        // instead of axis-aligned straight edges.
+        float[] warped = warpCoordinates(wx, wz);
+        float cx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float cz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
         int   px0 = (int) Math.floor(cx);
         int   pz0 = (int) Math.floor(cz);

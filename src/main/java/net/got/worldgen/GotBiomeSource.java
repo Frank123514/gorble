@@ -159,8 +159,11 @@ public final class GotBiomeSource extends BiomeSource {
 
         if (!BiomemapLoader.isLoaded()) return fallback;
 
-        float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
-        float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+        // Apply the same domain warp as GotChunkGenerator.bilinearBlend so that
+        // biome boundaries follow the same organic curves as the terrain shape.
+        float[] warped = GotChunkGenerator.warpCoordinates(worldX, worldZ);
+        float cx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float cz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
         int   px0 = (int) Math.floor(cx);
         int   pz0 = (int) Math.floor(cz);

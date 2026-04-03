@@ -2,9 +2,9 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
-import net.got.client.renderer.NorthBowmanRenderer;
-import net.got.client.renderer.NorthmanRenderer;
-import net.got.client.renderer.NorthWarriorRenderer;
+import net.got.entity.client.npc.smallfolk.northmen.NorthBowmanRenderer;
+import net.got.entity.client.npc.smallfolk.northmen.NorthWarriorRenderer;
+import net.got.entity.client.npc.smallfolk.northmen.NorthmanRenderer;
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModBlocks;
 import net.got.init.GotModBoatEntities;
@@ -136,10 +136,10 @@ public final class ClientSetup {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        // ── NPC renderers ────────────────────────────────────────────────
-        event.registerEntityRenderer(GotModEntities.NORTH_BOWMAN.get(),  ctx -> new NorthBowmanRenderer(ctx));
-        event.registerEntityRenderer(GotModEntities.NORTH_WARRIOR.get(), ctx -> new NorthWarriorRenderer(ctx));
-        event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),      ctx -> new NorthmanRenderer(ctx));
+        // ── Northmen NPC renderers ───────────────────────────────────────────
+        event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),      NorthmanRenderer::new);
+        event.registerEntityRenderer(GotModEntities.NORTH_BOWMAN.get(),  NorthBowmanRenderer::new);
+        event.registerEntityRenderer(GotModEntities.NORTH_WARRIOR.get(), NorthWarriorRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));
