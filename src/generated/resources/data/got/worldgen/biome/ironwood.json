@@ -69,7 +69,14 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "got:northman",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
     "misc": [],
     "monster": [],
     "underground_water_creature": [],

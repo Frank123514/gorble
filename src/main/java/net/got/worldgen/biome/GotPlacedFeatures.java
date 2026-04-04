@@ -124,7 +124,7 @@ public final class GotPlacedFeatures {
     public static final ResourceKey<PlacedFeature> BLOODWOOD_SPARSE   = key("bloodwood_sparse");
 
     public static final ResourceKey<PlacedFeature> IRONWOOD           = key("ironwood");
-    public static final ResourceKey<PlacedFeature> IRONWOOD_SPARSE    = key("ironwood_sparse");
+    public static final ResourceKey<PlacedFeature> IRONWOOD_SPARSE    = key("ironwood_sparse.json");
 
     public static final ResourceKey<PlacedFeature> SHRUB              = key("shrub");
 

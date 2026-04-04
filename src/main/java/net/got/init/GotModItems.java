@@ -1231,10 +1231,28 @@ public class GotModItems {
     // ── North NPC Spawn Eggs ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
             "northman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTHMAN.get(), p));
-    public static final DeferredItem<SpawnEggItem> NORTH_WARRIOR_SPAWN_EGG = REGISTRY.registerItem(
-            "north_warrior_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTH_WARRIOR.get(), p));
-    public static final DeferredItem<SpawnEggItem> NORTH_BOWMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "north_bowman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTH_BOWMAN.get(), p));
+
+    // ── Levy Spawn Eggs (Tier 2) ─────────────────────────────────────────────
+    public static final DeferredItem<SpawnEggItem> STARK_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "stark_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.STARK_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> TULLY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "tully_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.TULLY_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> LANNISTER_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "lannister_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.LANNISTER_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> BARATHEON_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "baratheon_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.BARATHEON_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> GREYJOY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "greyjoy_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.GREYJOY_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> MARTELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "martell_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.MARTELL_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> TYRELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "tyrell_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.TYRELL_LEVY.get(), p));
+
+    // ── Skilled Fighter Spawn Eggs (Tier 3) ──────────────────────────────────
+    public static final DeferredItem<SpawnEggItem> NORTH_SOLDIER_SPAWN_EGG = REGISTRY.registerItem(
+            "north_soldier_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTH_SOLDIER.get(), p));
+    public static final DeferredItem<SpawnEggItem> VALE_KNIGHT_SPAWN_EGG = REGISTRY.registerItem(
+            "vale_knight_spawn_egg", p -> new SpawnEggItem(GotModEntities.VALE_KNIGHT.get(), p));
 
     // ── Helpers ───────────────────────────────────────────────────────────
 

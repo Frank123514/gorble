@@ -1,8 +1,17 @@
 package net.got.entity;
 
-import net.got.entity.npc.smallfolk.northmen.NorthBowmanEntity;
 import net.got.entity.npc.smallfolk.northmen.NorthmanEntity;
-import net.got.entity.npc.smallfolk.northmen.NorthWarriorEntity;
+// ── Levy ──────────────────────────────────────────────────────────────────────
+import net.got.entity.npc.levy.stark.StarkLevyEntity;
+import net.got.entity.npc.levy.tully.TullyLevyEntity;
+import net.got.entity.npc.levy.lannister.LannisterLevyEntity;
+import net.got.entity.npc.levy.baratheon.BaratheonLevyEntity;
+import net.got.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
+import net.got.entity.npc.levy.martell.MartellLevyEntity;
+import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
+// ── Skilled Fighters ──────────────────────────────────────────────────────────
+import net.got.entity.npc.fighter.north.NorthSoldierEntity;
+import net.got.entity.npc.fighter.vale.ValeKnightEntity;
 import net.got.init.GotModEntities;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -26,11 +35,19 @@ public class GotEntityEvents {
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
         // ── Northmen ───────────────────────────────────────────────────────────
         event.put(GotModEntities.NORTHMAN.get(),      NorthmanEntity.createAttributes().build());
-        event.put(GotModEntities.NORTH_BOWMAN.get(),  NorthBowmanEntity.createAttributes().build());
-        event.put(GotModEntities.NORTH_WARRIOR.get(), NorthWarriorEntity.createAttributes().build());
 
-        // ── Reachmen (future) ──────────────────────────────────────────────────
-        // event.put(GotModEntities.REACH_PEASANT.get(), ReachPeasantEntity.createAttributes().build());
+        // ── Levies (Tier 2) ────────────────────────────────────────────────────
+        event.put(GotModEntities.STARK_LEVY.get(),     StarkLevyEntity.createAttributes().build());
+        event.put(GotModEntities.TULLY_LEVY.get(),     TullyLevyEntity.createAttributes().build());
+        event.put(GotModEntities.LANNISTER_LEVY.get(), LannisterLevyEntity.createAttributes().build());
+        event.put(GotModEntities.BARATHEON_LEVY.get(), BaratheonLevyEntity.createAttributes().build());
+        event.put(GotModEntities.GREYJOY_LEVY.get(),   GreyjoyLevyEntity.createAttributes().build());
+        event.put(GotModEntities.MARTELL_LEVY.get(),   MartellLevyEntity.createAttributes().build());
+        event.put(GotModEntities.TYRELL_LEVY.get(),    TyrellLevyEntity.createAttributes().build());
+
+        // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
+        event.put(GotModEntities.NORTH_SOLDIER.get(), NorthSoldierEntity.createAttributes().build());
+        event.put(GotModEntities.VALE_KNIGHT.get(),   ValeKnightEntity.createAttributes().build());
     }
 
     // ── Spawn placements ───────────────────────────────────────────────────────
@@ -45,22 +62,37 @@ public class GotEntityEvents {
                 NorthmanEntity::checkSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
         );
-        event.register(
-                GotModEntities.NORTH_BOWMAN.get(),
-                SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                NorthBowmanEntity::checkSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.REPLACE
-        );
-        event.register(
-                GotModEntities.NORTH_WARRIOR.get(),
-                SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                NorthWarriorEntity::checkSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.REPLACE
-        );
 
-        // ── Reachmen (future) ──────────────────────────────────────────────────
-        // event.register(GotModEntities.REACH_PEASANT.get(), ...);
+
+        // ── Levies (Tier 2) ────────────────────────────────────────────────────
+        event.register(GotModEntities.STARK_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                StarkLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.TULLY_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                TullyLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.LANNISTER_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                LannisterLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.BARATHEON_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                BaratheonLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.GREYJOY_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GreyjoyLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.MARTELL_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                MartellLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.TYRELL_LEVY.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                TyrellLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
+        event.register(GotModEntities.NORTH_SOLDIER.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                NorthSoldierEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.VALE_KNIGHT.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ValeKnightEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

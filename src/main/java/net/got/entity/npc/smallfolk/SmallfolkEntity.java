@@ -74,6 +74,11 @@ public abstract class SmallfolkEntity extends PathfinderMob implements NeutralMo
      */
     public abstract int getVariantCount();
 
+    /** Returns the gender assigned at spawn. Override to lock a specific gender. */
+    protected NpcGender selectGender() {
+        return NpcGender.values()[this.random.nextInt(NpcGender.COUNT)];
+    }
+
     // ── Accessors ──────────────────────────────────────────────────────────────
 
     public int       getVariant() { return variant; }
@@ -90,8 +95,8 @@ public abstract class SmallfolkEntity extends PathfinderMob implements NeutralMo
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         EntitySpawnReason spawnType, @Nullable SpawnGroupData groupData) {
-        // 1. Gender (50 / 50).
-        this.gender = NpcGender.values()[this.random.nextInt(NpcGender.COUNT)];
+        // 1. Gender — delegated so subclasses can restrict it.
+        this.gender = selectGender();
         // 2. Variant within the gender's sub-range.
         int baseOffset = this.gender.ordinal() * getVariantsPerGender();
         this.variant   = baseOffset + this.random.nextInt(getVariantsPerGender());

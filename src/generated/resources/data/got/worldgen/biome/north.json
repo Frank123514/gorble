@@ -85,18 +85,6 @@
         "maxCount": 4
       },
       {
-        "type": "got:north_bowman",
-        "weight": 4,
-        "minCount": 1,
-        "maxCount": 2
-      },
-      {
-        "type": "got:north_warrior",
-        "weight": 4,
-        "minCount": 1,
-        "maxCount": 2
-      },
-      {
         "type": "minecraft:rabbit",
         "maxCount": 3,
         "minCount": 2,
@@ -137,6 +125,18 @@
         "maxCount": 3,
         "minCount": 1,
         "weight": 1
+      },
+      {
+        "type": "got:stark_levy",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "got:north_soldier",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 2
       }
     ],
     "misc": [],

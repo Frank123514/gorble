@@ -89,6 +89,18 @@
         "maxCount": 4,
         "minCount": 2,
         "weight": 8
+      },
+      {
+        "type": "got:northman",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "got:stark_levy",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 2
       }
     ],
     "misc": [],

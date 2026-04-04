@@ -1,6 +1,6 @@
 package net.got.entity.npc.smallfolk.northmen;
 
-import net.got.entity.npc.NpcGender;
+import net.got.entity.animations.GotAnimationDefinitions;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -18,9 +18,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
 
 /**
  * Northman — civilian smallfolk of the North.
@@ -42,9 +39,6 @@ public class NorthmanEntity extends SmallfolkEntity {
 
     // 4 male skins + 4 female skins
     private static final int VARIANT_COUNT = 8;
-
-    private static final RawAnimation ANIM_WALK = RawAnimation.begin().thenLoop("animation.northman.walk");
-    private static final RawAnimation ANIM_IDLE = RawAnimation.begin().thenLoop("animation.northman.idle");
 
     public NorthmanEntity(EntityType<? extends NorthmanEntity> type, Level level) {
         super(type, level);
@@ -103,11 +97,9 @@ public class NorthmanEntity extends SmallfolkEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "movement", 3, state -> {
-            if (state.isMoving()) {
-                return state.setAndContinue(ANIM_WALK);
-            }
-            return state.setAndContinue(ANIM_IDLE);
-        }));
+        controllers.add(GotAnimationDefinitions.deathController(this));
+        controllers.add(GotAnimationDefinitions.spawnController(this));
+        // Northmen don't have a dedicated isAttacking flag — use swinging directly
+        controllers.add(GotAnimationDefinitions.movementController(this));
     }
 }

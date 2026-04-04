@@ -118,6 +118,24 @@
         "maxCount": 3,
         "minCount": 1,
         "weight": 1
+      },
+      {
+        "type": "got:northman",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "got:stark_levy",
+        "weight": 7,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:north_soldier",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 2
       }
     ],
     "misc": [],

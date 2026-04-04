@@ -2,9 +2,18 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
-import net.got.entity.client.npc.smallfolk.northmen.NorthBowmanRenderer;
-import net.got.entity.client.npc.smallfolk.northmen.NorthWarriorRenderer;
 import net.got.entity.client.npc.smallfolk.northmen.NorthmanRenderer;
+// ── Levy renderers ────────────────────────────────────────────────────────────
+import net.got.entity.client.npc.levy.stark.StarkLevyRenderer;
+import net.got.entity.client.npc.levy.tully.TullyLevyRenderer;
+import net.got.entity.client.npc.levy.lannister.LannisterLevyRenderer;
+import net.got.entity.client.npc.levy.baratheon.BaratheonLevyRenderer;
+import net.got.entity.client.npc.levy.greyjoy.GreyjoyLevyRenderer;
+import net.got.entity.client.npc.levy.martell.MartellLevyRenderer;
+import net.got.entity.client.npc.levy.tyrell.TyrellLevyRenderer;
+// ── Skilled Fighter renderers ─────────────────────────────────────────────────
+import net.got.entity.client.npc.fighter.north.NorthSoldierRenderer;
+import net.got.entity.client.npc.fighter.vale.ValeKnightRenderer;
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModBlocks;
 import net.got.init.GotModBoatEntities;
@@ -138,8 +147,19 @@ public final class ClientSetup {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // ── Northmen NPC renderers ───────────────────────────────────────────
         event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),      NorthmanRenderer::new);
-        event.registerEntityRenderer(GotModEntities.NORTH_BOWMAN.get(),  NorthBowmanRenderer::new);
-        event.registerEntityRenderer(GotModEntities.NORTH_WARRIOR.get(), NorthWarriorRenderer::new);
+
+        // ── Levy NPC renderers (Tier 2) ──────────────────────────────────────
+        event.registerEntityRenderer(GotModEntities.STARK_LEVY.get(),     StarkLevyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.TULLY_LEVY.get(),     TullyLevyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.LANNISTER_LEVY.get(), LannisterLevyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.BARATHEON_LEVY.get(), BaratheonLevyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GREYJOY_LEVY.get(),   GreyjoyLevyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.MARTELL_LEVY.get(),   MartellLevyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.TYRELL_LEVY.get(),    TyrellLevyRenderer::new);
+
+        // ── Skilled Fighter renderers (Tier 3) ───────────────────────────────
+        event.registerEntityRenderer(GotModEntities.NORTH_SOLDIER.get(), NorthSoldierRenderer::new);
+        event.registerEntityRenderer(GotModEntities.VALE_KNIGHT.get(),   ValeKnightRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));
