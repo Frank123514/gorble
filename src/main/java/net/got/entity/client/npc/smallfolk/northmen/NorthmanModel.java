@@ -10,26 +10,26 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 /**
  * GeckoLib model for the Northman civilian NPC.
  *
- * <p>Male NPCs use the standard {@code humanoid.geo.json} skeleton.
- * Female NPCs automatically use the smaller {@code humanoid_female.geo.json}
+ * <p>Male NPCs use the shared {@code smallfolk.geo.json} skeleton.
+ * Female NPCs automatically use the smaller {@code smallfolk_female.geo.json}
  * skeleton — no separate model class required. GeckoLib calls
  * {@link #getModelResource} per entity, so each gets the right geometry.
  * Both skeletons share the same animation file; bone names must match.
  *
  * <ul>
- *   <li>Male geo:   {@code assets/got/geo/entity/npc/humanoid.geo.json}</li>
- *   <li>Female geo: {@code assets/got/geo/entity/npc/humanoid_female.geo.json}</li>
- *   <li>Animation:  {@code assets/got/animations/entity/northmen/northman.animation.json}</li>
+ *   <li>Male geo:   {@code assets/got/geo/entity/npc/smallfolk.geo.json}</li>
+ *   <li>Female geo: {@code assets/got/geo/entity/npc/smallfolk_female.geo.json}</li>
+ *   <li>Animation:  {@code assets/got/animations/entity/npc/smallfolk.animation.json}</li>
  * </ul>
  */
 public class NorthmanModel extends DefaultedEntityGeoModel<NorthmanEntity> {
 
     private static final ResourceLocation FEMALE_GEO =
             ResourceLocation.fromNamespaceAndPath(GotMod.MODID,
-                    "geo/entity/npc/humanoid_female.geo.json");
+                    "geo/entity/npc/smallfolk_female.geo.json");
 
     public NorthmanModel() {
-        super(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "npc/humanoid"), true);
+        super(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "npc/smallfolk"), true);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class NorthmanModel extends DefaultedEntityGeoModel<NorthmanEntity> {
     @Override
     public ResourceLocation getAnimationResource(NorthmanEntity animatable) {
         return ResourceLocation.fromNamespaceAndPath(GotMod.MODID,
-                "animations/entity/northmen/northman.animation.json");
+                "animations/entity/npc/smallfolk.animation.json");
     }
 }

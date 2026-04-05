@@ -1,7 +1,10 @@
 package net.got.entity.npc.fighter;
 
+import net.got.entity.animations.GotAnimationDefinitions;
 import net.got.entity.npc.NpcGender;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
+import net.got.entity.horse.GotHorseEntity;
+import net.got.init.GotModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
@@ -9,7 +12,8 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+// AbstractHorse retained for potential subclass checks
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -101,21 +105,40 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
     }
 
     /**
-     * Attempts to spawn a tamed horse at this fighter's position and mount it.
+     * Attempts to spawn a tamed {@link GotHorseEntity} at this fighter's position
+     * and mount it. Uses the custom GOT horse model and GeckoLib animations.
      * Fails silently if the horse cannot be placed (no valid ground, etc.).
      */
     private void trySpawnMounted(ServerLevel serverLevel) {
-        Horse horse = EntityType.HORSE.create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
+        GotHorseEntity horse = GotModEntities.GOT_HORSE.get()
+                .create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
         if (horse == null) return;
 
         horse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0f);
         horse.setTamed(true);
         horse.setOwnerUUID(this.getUUID());
 
-        // Randomise horse appearance
-
         if (serverLevel.tryAddFreshEntityWithPassengers(horse)) {
             this.startRiding(horse, true);
         }
+    }
+
+    // ── GeckoLib animations ───────────────────────────────────────────────────
+
+    /**
+     * Default animation controllers for all skilled fighters.
+     *
+     * <p>The riding controller is registered first so that the seated pose
+     * always wins over walk/idle when this fighter is mounted on a horse.
+     *
+     * <p>Subclasses with extra animations (e.g. a lance-charge) should call
+     * {@code super.registerControllers(controllers)} and then add their own.
+     */
+    @Override
+    public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(GotAnimationDefinitions.ridingController(this));
+        controllers.add(GotAnimationDefinitions.deathController(this));
+        controllers.add(GotAnimationDefinitions.spawnController(this));
+        controllers.add(GotAnimationDefinitions.movementController(this));
     }
 }

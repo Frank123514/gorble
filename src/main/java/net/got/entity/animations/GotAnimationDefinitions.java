@@ -11,7 +11,7 @@ import software.bernie.geckolib.animation.RawAnimation;
  * {@link AnimationController} factory methods for all GoT NPC entities.
  *
  * <p>All animation names match the keys defined in
- * {@code assets/got/animations/entity/npc/humanoid.animation.json}. Every
+ * {@code assets/got/animations/entity/npc/smallfolk.animation.json}. Every
  * levy and skilled-fighter entity uses this shared animation file, so any
  * update to keyframes here propagates to the entire NPC roster automatically.
  *
@@ -19,6 +19,7 @@ import software.bernie.geckolib.animation.RawAnimation;
  * <pre>{@code
  * @Override
  * public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+ *     controllers.add(GotAnimationDefinitions.ridingController(this));
  *     controllers.add(GotAnimationDefinitions.deathController(this));
  *     controllers.add(GotAnimationDefinitions.spawnController(this));
  *     controllers.add(GotAnimationDefinitions.attackController(this));
@@ -34,15 +35,40 @@ public final class GotAnimationDefinitions {
     private GotAnimationDefinitions() {}
 
     // ── Shared RawAnimation constants ─────────────────────────────────────────
-    // All keys live in assets/got/animations/entity/npc/humanoid.animation.json
+    // All keys live in assets/got/animations/entity/npc/smallfolk.animation.json
 
     public static final RawAnimation IDLE   = RawAnimation.begin().thenLoop("misc.idle");
     public static final RawAnimation WALK   = RawAnimation.begin().thenLoop("misc.walk");
     public static final RawAnimation ATTACK = RawAnimation.begin().thenLoop("misc.attack");
     public static final RawAnimation DIE    = RawAnimation.begin().thenPlay("misc.die");
     public static final RawAnimation SPAWN  = RawAnimation.begin().thenPlay("misc.spawn");
+    /**
+     * Horse-riding / sitting pose. Played whenever the entity is a passenger
+     * on any vehicle (horse, etc.). Legs are bent outward to straddle the
+     * mount; the torso leans slightly forward. Defined in the shared
+     * {@code smallfolk.animation.json} as {@code misc.ride}.
+     */
+    public static final RawAnimation RIDE   = RawAnimation.begin().thenLoop("misc.ride");
 
     // ── Controller factories ──────────────────────────────────────────────────
+
+    /**
+     * Plays the riding/sitting animation while the entity is mounted on any
+     * vehicle (horse, etc.). This controller should be registered <em>first</em>
+     * so it takes top priority — when seated, walk/idle must not override the
+     * leg position.
+     *
+     * <p>The animation ({@code misc.ride}) bends both legs outward and forward
+     * to straddle the mount and leans the torso slightly forward for a natural
+     * seated posture.
+     */
+    public static <T extends LivingEntity & GeoAnimatable>
+    AnimationController<T> ridingController(T animatable) {
+        return new AnimationController<>(animatable, "riding", 3,
+                state -> state.getAnimatable().isPassenger()
+                        ? state.setAndContinue(RIDE)
+                        : PlayState.STOP);
+    }
 
     /**
      * Plays the death animation while the entity is dying.

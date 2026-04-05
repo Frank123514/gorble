@@ -30,8 +30,8 @@ import software.bernie.geckolib.animation.AnimatableManager;
  *
  * <h3>GeckoLib asset paths (create in Blockbench)</h3>
  * <pre>
- *   assets/got/geo/entity/northmen/northman.geo.json
- *   assets/got/animations/entity/northmen/northman.animation.json
+ *   assets/got/geo/entity/npc/smallfolk.geo.json
+ *   assets/got/animations/entity/npc/smallfolk.animation.json
  * </pre>
  * Texture paths are handled by the renderer and follow the pattern above.
  */
@@ -85,18 +85,21 @@ public class NorthmanEntity extends SmallfolkEntity {
 
     // ── Spawn rules ───────────────────────────────────────────────────────────
 
+    @SuppressWarnings("unchecked")
     public static boolean checkSpawnRules(EntityType<NorthmanEntity> type,
                                           ServerLevelAccessor level,
                                           EntitySpawnReason spawnType,
                                           BlockPos pos,
                                           RandomSource random) {
-        return defaultSpawnRules(type, level, spawnType, pos, random);
+        // Cast to raw type to bypass generic type checking
+        return defaultSpawnRules((EntityType) type, level, spawnType, pos, random);
     }
 
     // ── GeckoLib animations ───────────────────────────────────────────────────
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(GotAnimationDefinitions.ridingController(this));
         controllers.add(GotAnimationDefinitions.deathController(this));
         controllers.add(GotAnimationDefinitions.spawnController(this));
         // Northmen don't have a dedicated isAttacking flag — use swinging directly

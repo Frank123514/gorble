@@ -1,6 +1,7 @@
 package net.got.init;
 
 import net.got.GotMod;
+import net.got.entity.horse.GotHorseEntity;
 import net.got.entity.npc.smallfolk.northmen.NorthmanEntity;
 // ── Levy imports ──────────────────────────────────────────────────────────────
 import net.got.entity.npc.levy.stark.StarkLevyEntity;
@@ -124,4 +125,23 @@ public class GotModEntities {
                             .sized(0.6f, 1.8f).clientTrackingRange(10).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "vale_knight"))));
+
+    // ── GOT Horse ─────────────────────────────────────────────────────────────
+
+    /**
+     * GOT Warhorse — the custom-modelled horse used by all mounted fighters.
+     *
+     * <p>Uses the detailed {@code got_horse.geo.json} model with full GeckoLib
+     * animation (idle, walk, trot, gallop, eat, die). Extends vanilla
+     * {@link net.minecraft.world.entity.animal.horse.Horse} so all vanilla
+     * riding, taming, saddling, and breeding behaviour is preserved.
+     *
+     * <p>Size is slightly larger than an NPC (horses are about 1.4×1.6 blocks).
+     */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotHorseEntity>> GOT_HORSE =
+            REGISTRY.register("got_horse", () ->
+                    EntityType.Builder.<GotHorseEntity>of(GotHorseEntity::new, MobCategory.CREATURE)
+                            .sized(1.4f, 1.6f).clientTrackingRange(10).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_horse"))));
 }

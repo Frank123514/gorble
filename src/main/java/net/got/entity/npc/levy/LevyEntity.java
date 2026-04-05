@@ -2,6 +2,7 @@ package net.got.entity.npc.levy;
 
 import net.got.entity.npc.NpcGender;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
+import net.got.entity.animations.GotAnimationDefinitions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -61,5 +62,22 @@ public abstract class LevyEntity extends SmallfolkEntity {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Monster.class, true));
         this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
+    }
+
+    // ── GeckoLib animations ───────────────────────────────────────────────────
+
+    /**
+     * Default animation controllers for all levies.
+     *
+     * <p>Subclasses that need extra behaviour (e.g. a shoot animation) should
+     * call {@code super.registerControllers(controllers)} first and then add
+     * their own controllers on top.
+     */
+    @Override
+    public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(GotAnimationDefinitions.ridingController(this));
+        controllers.add(GotAnimationDefinitions.deathController(this));
+        controllers.add(GotAnimationDefinitions.spawnController(this));
+        controllers.add(GotAnimationDefinitions.movementController(this));
     }
 }

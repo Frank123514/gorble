@@ -2,6 +2,7 @@ package net.got.entity.npc.smallfolk;
 
 import net.got.entity.npc.NpcGender;
 import net.got.entity.npc.NpcNameHelper;
+import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +12,6 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -138,10 +138,10 @@ public abstract class SmallfolkEntity extends PathfinderMob implements NeutralMo
 
     // ── Spawn rule helper ─────────────────────────────────────────────────────
 
-    protected static boolean defaultSpawnRules(EntityType<? extends SmallfolkEntity> type,
-                                               ServerLevelAccessor level,
-                                               EntitySpawnReason spawnType,
-                                               BlockPos pos, RandomSource random) {
+    public static boolean defaultSpawnRules(EntityType<NorthSoldierEntity> type,
+                                            ServerLevelAccessor level,
+                                            EntitySpawnReason spawnType,
+                                            BlockPos pos, RandomSource random) {
         return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 

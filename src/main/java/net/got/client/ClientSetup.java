@@ -14,6 +14,8 @@ import net.got.entity.client.npc.levy.tyrell.TyrellLevyRenderer;
 // ── Skilled Fighter renderers ─────────────────────────────────────────────────
 import net.got.entity.client.npc.fighter.north.NorthSoldierRenderer;
 import net.got.entity.client.npc.fighter.vale.ValeKnightRenderer;
+// ── Horse renderer ────────────────────────────────────────────────────────────
+import net.got.entity.client.horse.GotHorseRenderer;
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModBlocks;
 import net.got.init.GotModBoatEntities;
@@ -160,6 +162,9 @@ public final class ClientSetup {
         // ── Skilled Fighter renderers (Tier 3) ───────────────────────────────
         event.registerEntityRenderer(GotModEntities.NORTH_SOLDIER.get(), NorthSoldierRenderer::new);
         event.registerEntityRenderer(GotModEntities.VALE_KNIGHT.get(),   ValeKnightRenderer::new);
+
+        // ── GOT Horse renderer ───────────────────────────────────────────────
+        event.registerEntityRenderer(GotModEntities.GOT_HORSE.get(), GotHorseRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));

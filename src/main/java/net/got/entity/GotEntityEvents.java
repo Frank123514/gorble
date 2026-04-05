@@ -1,5 +1,6 @@
 package net.got.entity;
 
+import net.got.entity.horse.GotHorseEntity;
 import net.got.entity.npc.smallfolk.northmen.NorthmanEntity;
 // ── Levy ──────────────────────────────────────────────────────────────────────
 import net.got.entity.npc.levy.stark.StarkLevyEntity;
@@ -48,6 +49,18 @@ public class GotEntityEvents {
         // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
         event.put(GotModEntities.NORTH_SOLDIER.get(), NorthSoldierEntity.createAttributes().build());
         event.put(GotModEntities.VALE_KNIGHT.get(),   ValeKnightEntity.createAttributes().build());
+
+        // ── GOT Horse ──────────────────────────────────────────────────────────
+        // Horse.createBaseHorseAttributes() provides the vanilla horse attribute set
+        // (max health 15–30, jump strength 0.4–1.0, movement speed 0.2–0.34).
+        // We use the full vanilla-compatible spread so GOT horses feel like
+        // proper warhorses — faster and tougher than a standard steed on average.
+        event.put(GotModEntities.GOT_HORSE.get(),
+                net.minecraft.world.entity.animal.horse.AbstractHorse.createBaseHorseAttributes()
+                        .add(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH, 20.0)
+                        .add(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED, 0.265)
+                        .add(net.minecraft.world.entity.ai.attributes.Attributes.JUMP_STRENGTH, 0.7)
+                        .build());
     }
 
     // ── Spawn placements ───────────────────────────────────────────────────────
@@ -94,5 +107,10 @@ public class GotEntityEvents {
         event.register(GotModEntities.VALE_KNIGHT.get(),
                 SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ValeKnightEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        // ── GOT Horse ──────────────────────────────────────────────────────────
+        event.register(GotModEntities.GOT_HORSE.get(),
+                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GotHorseEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }
