@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "got:block/fir_roofing",
+    "top": "got:block/fir_roofing",
+    "side": "got:block/fir_roofing",
+    "wall": "got:block/fir_roofing",
+    "particle": "got:block/fir_roofing"
+  }
+}

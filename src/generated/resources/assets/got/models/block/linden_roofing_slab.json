@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/linden_roofing",
+    "top": "got:block/linden_roofing",
+    "side": "got:block/linden_roofing",
+    "wall": "got:block/linden_roofing",
+    "particle": "got:block/linden_roofing"
+  }
+}

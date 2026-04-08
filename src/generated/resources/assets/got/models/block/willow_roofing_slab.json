@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/willow_roofing",
+    "top": "got:block/willow_roofing",
+    "side": "got:block/willow_roofing",
+    "wall": "got:block/willow_roofing",
+    "particle": "got:block/willow_roofing"
+  }
+}

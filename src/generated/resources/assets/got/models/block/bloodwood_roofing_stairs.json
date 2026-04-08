@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/bloodwood_roofing",
+    "top": "got:block/bloodwood_roofing",
+    "side": "got:block/bloodwood_roofing",
+    "wall": "got:block/bloodwood_roofing",
+    "particle": "got:block/bloodwood_roofing"
+  }
+}

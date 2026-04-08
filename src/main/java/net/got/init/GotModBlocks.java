@@ -606,6 +606,598 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILLOW_SAPLING = woodBlock("willow_sapling", p -> new GotSaplingBlock(GotTreeGrowers.WILLOW, p));
     public static final DeferredBlock<Block> WORMTREE_SAPLING = woodBlock("wormtree_sapling", p -> new GotSaplingBlock(GotTreeGrowers.WORMTREE, p));
 
+    // ── Wood Shingles ─────────────────────────────────────────────────────────
+    // Block, Slab, Stairs, Wall for every custom and vanilla wood type
+    // Paste this block into GotModBlocks.java
+
+    public static final DeferredBlock<Block> ALDER_ROOFING =
+            REGISTRY.registerBlock("alder_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> ALDER_ROOFING_SLAB =
+            REGISTRY.registerBlock("alder_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> ALDER_ROOFING_STAIRS =
+            REGISTRY.registerBlock("alder_roofing_stairs",
+                    p -> new StairBlock(ALDER_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> ALDER_ROOFING_WALL =
+            REGISTRY.registerBlock("alder_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> APPLE_ROOFING =
+            REGISTRY.registerBlock("apple_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> APPLE_ROOFING_SLAB =
+            REGISTRY.registerBlock("apple_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> APPLE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("apple_roofing_stairs",
+                    p -> new StairBlock(APPLE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> APPLE_ROOFING_WALL =
+            REGISTRY.registerBlock("apple_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> ASH_ROOFING =
+            REGISTRY.registerBlock("ash_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> ASH_ROOFING_SLAB =
+            REGISTRY.registerBlock("ash_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> ASH_ROOFING_STAIRS =
+            REGISTRY.registerBlock("ash_roofing_stairs",
+                    p -> new StairBlock(ASH_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> ASH_ROOFING_WALL =
+            REGISTRY.registerBlock("ash_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> ASPEN_ROOFING =
+            REGISTRY.registerBlock("aspen_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> ASPEN_ROOFING_SLAB =
+            REGISTRY.registerBlock("aspen_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> ASPEN_ROOFING_STAIRS =
+            REGISTRY.registerBlock("aspen_roofing_stairs",
+                    p -> new StairBlock(ASPEN_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> ASPEN_ROOFING_WALL =
+            REGISTRY.registerBlock("aspen_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BEECH_ROOFING =
+            REGISTRY.registerBlock("beech_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BEECH_ROOFING_SLAB =
+            REGISTRY.registerBlock("beech_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BEECH_ROOFING_STAIRS =
+            REGISTRY.registerBlock("beech_roofing_stairs",
+                    p -> new StairBlock(BEECH_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BEECH_ROOFING_WALL =
+            REGISTRY.registerBlock("beech_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_ROOFING =
+            REGISTRY.registerBlock("black_cottonwood_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_ROOFING_SLAB =
+            REGISTRY.registerBlock("black_cottonwood_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_ROOFING_STAIRS =
+            REGISTRY.registerBlock("black_cottonwood_roofing_stairs",
+                    p -> new StairBlock(BLACK_COTTONWOOD_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BLACK_COTTONWOOD_ROOFING_WALL =
+            REGISTRY.registerBlock("black_cottonwood_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BLACKBARK_ROOFING =
+            REGISTRY.registerBlock("blackbark_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BLACKBARK_ROOFING_SLAB =
+            REGISTRY.registerBlock("blackbark_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BLACKBARK_ROOFING_STAIRS =
+            REGISTRY.registerBlock("blackbark_roofing_stairs",
+                    p -> new StairBlock(BLACKBARK_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BLACKBARK_ROOFING_WALL =
+            REGISTRY.registerBlock("blackbark_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BLOODWOOD_ROOFING =
+            REGISTRY.registerBlock("bloodwood_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BLOODWOOD_ROOFING_SLAB =
+            REGISTRY.registerBlock("bloodwood_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BLOODWOOD_ROOFING_STAIRS =
+            REGISTRY.registerBlock("bloodwood_roofing_stairs",
+                    p -> new StairBlock(BLOODWOOD_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BLOODWOOD_ROOFING_WALL =
+            REGISTRY.registerBlock("bloodwood_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BLUE_MAHOE_ROOFING =
+            REGISTRY.registerBlock("blue_mahoe_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BLUE_MAHOE_ROOFING_SLAB =
+            REGISTRY.registerBlock("blue_mahoe_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BLUE_MAHOE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("blue_mahoe_roofing_stairs",
+                    p -> new StairBlock(BLUE_MAHOE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BLUE_MAHOE_ROOFING_WALL =
+            REGISTRY.registerBlock("blue_mahoe_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> CEDAR_ROOFING =
+            REGISTRY.registerBlock("cedar_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> CEDAR_ROOFING_SLAB =
+            REGISTRY.registerBlock("cedar_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> CEDAR_ROOFING_STAIRS =
+            REGISTRY.registerBlock("cedar_roofing_stairs",
+                    p -> new StairBlock(CEDAR_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> CEDAR_ROOFING_WALL =
+            REGISTRY.registerBlock("cedar_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> CHESTNUT_ROOFING =
+            REGISTRY.registerBlock("chestnut_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> CHESTNUT_ROOFING_SLAB =
+            REGISTRY.registerBlock("chestnut_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> CHESTNUT_ROOFING_STAIRS =
+            REGISTRY.registerBlock("chestnut_roofing_stairs",
+                    p -> new StairBlock(CHESTNUT_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> CHESTNUT_ROOFING_WALL =
+            REGISTRY.registerBlock("chestnut_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> CINNAMON_ROOFING =
+            REGISTRY.registerBlock("cinnamon_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> CINNAMON_ROOFING_SLAB =
+            REGISTRY.registerBlock("cinnamon_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> CINNAMON_ROOFING_STAIRS =
+            REGISTRY.registerBlock("cinnamon_roofing_stairs",
+                    p -> new StairBlock(CINNAMON_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> CINNAMON_ROOFING_WALL =
+            REGISTRY.registerBlock("cinnamon_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> CLOVE_ROOFING =
+            REGISTRY.registerBlock("clove_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> CLOVE_ROOFING_SLAB =
+            REGISTRY.registerBlock("clove_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> CLOVE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("clove_roofing_stairs",
+                    p -> new StairBlock(CLOVE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> CLOVE_ROOFING_WALL =
+            REGISTRY.registerBlock("clove_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> COTTONWOOD_ROOFING =
+            REGISTRY.registerBlock("cottonwood_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> COTTONWOOD_ROOFING_SLAB =
+            REGISTRY.registerBlock("cottonwood_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> COTTONWOOD_ROOFING_STAIRS =
+            REGISTRY.registerBlock("cottonwood_roofing_stairs",
+                    p -> new StairBlock(COTTONWOOD_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> COTTONWOOD_ROOFING_WALL =
+            REGISTRY.registerBlock("cottonwood_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> EBONY_ROOFING =
+            REGISTRY.registerBlock("ebony_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> EBONY_ROOFING_SLAB =
+            REGISTRY.registerBlock("ebony_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> EBONY_ROOFING_STAIRS =
+            REGISTRY.registerBlock("ebony_roofing_stairs",
+                    p -> new StairBlock(EBONY_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> EBONY_ROOFING_WALL =
+            REGISTRY.registerBlock("ebony_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> ELM_ROOFING =
+            REGISTRY.registerBlock("elm_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> ELM_ROOFING_SLAB =
+            REGISTRY.registerBlock("elm_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> ELM_ROOFING_STAIRS =
+            REGISTRY.registerBlock("elm_roofing_stairs",
+                    p -> new StairBlock(ELM_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> ELM_ROOFING_WALL =
+            REGISTRY.registerBlock("elm_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> FIR_ROOFING =
+            REGISTRY.registerBlock("fir_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> FIR_ROOFING_SLAB =
+            REGISTRY.registerBlock("fir_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> FIR_ROOFING_STAIRS =
+            REGISTRY.registerBlock("fir_roofing_stairs",
+                    p -> new StairBlock(FIR_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> FIR_ROOFING_WALL =
+            REGISTRY.registerBlock("fir_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> GOLDENHEART_ROOFING =
+            REGISTRY.registerBlock("goldenheart_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> GOLDENHEART_ROOFING_SLAB =
+            REGISTRY.registerBlock("goldenheart_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> GOLDENHEART_ROOFING_STAIRS =
+            REGISTRY.registerBlock("goldenheart_roofing_stairs",
+                    p -> new StairBlock(GOLDENHEART_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> GOLDENHEART_ROOFING_WALL =
+            REGISTRY.registerBlock("goldenheart_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> HAWTHORN_ROOFING =
+            REGISTRY.registerBlock("hawthorn_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> HAWTHORN_ROOFING_SLAB =
+            REGISTRY.registerBlock("hawthorn_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> HAWTHORN_ROOFING_STAIRS =
+            REGISTRY.registerBlock("hawthorn_roofing_stairs",
+                    p -> new StairBlock(HAWTHORN_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> HAWTHORN_ROOFING_WALL =
+            REGISTRY.registerBlock("hawthorn_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> IRONWOOD_ROOFING =
+            REGISTRY.registerBlock("ironwood_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> IRONWOOD_ROOFING_SLAB =
+            REGISTRY.registerBlock("ironwood_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> IRONWOOD_ROOFING_STAIRS =
+            REGISTRY.registerBlock("ironwood_roofing_stairs",
+                    p -> new StairBlock(IRONWOOD_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> IRONWOOD_ROOFING_WALL =
+            REGISTRY.registerBlock("ironwood_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> LINDEN_ROOFING =
+            REGISTRY.registerBlock("linden_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> LINDEN_ROOFING_SLAB =
+            REGISTRY.registerBlock("linden_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> LINDEN_ROOFING_STAIRS =
+            REGISTRY.registerBlock("linden_roofing_stairs",
+                    p -> new StairBlock(LINDEN_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> LINDEN_ROOFING_WALL =
+            REGISTRY.registerBlock("linden_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> MAHOGANY_ROOFING =
+            REGISTRY.registerBlock("mahogany_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> MAHOGANY_ROOFING_SLAB =
+            REGISTRY.registerBlock("mahogany_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> MAHOGANY_ROOFING_STAIRS =
+            REGISTRY.registerBlock("mahogany_roofing_stairs",
+                    p -> new StairBlock(MAHOGANY_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> MAHOGANY_ROOFING_WALL =
+            REGISTRY.registerBlock("mahogany_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> MAPLE_ROOFING =
+            REGISTRY.registerBlock("maple_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> MAPLE_ROOFING_SLAB =
+            REGISTRY.registerBlock("maple_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> MAPLE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("maple_roofing_stairs",
+                    p -> new StairBlock(MAPLE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> MAPLE_ROOFING_WALL =
+            REGISTRY.registerBlock("maple_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> MYRRH_ROOFING =
+            REGISTRY.registerBlock("myrrh_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> MYRRH_ROOFING_SLAB =
+            REGISTRY.registerBlock("myrrh_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> MYRRH_ROOFING_STAIRS =
+            REGISTRY.registerBlock("myrrh_roofing_stairs",
+                    p -> new StairBlock(MYRRH_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> MYRRH_ROOFING_WALL =
+            REGISTRY.registerBlock("myrrh_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> PINE_ROOFING =
+            REGISTRY.registerBlock("pine_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> PINE_ROOFING_SLAB =
+            REGISTRY.registerBlock("pine_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> PINE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("pine_roofing_stairs",
+                    p -> new StairBlock(PINE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> PINE_ROOFING_WALL =
+            REGISTRY.registerBlock("pine_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> REDWOOD_ROOFING =
+            REGISTRY.registerBlock("redwood_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> REDWOOD_ROOFING_SLAB =
+            REGISTRY.registerBlock("redwood_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> REDWOOD_ROOFING_STAIRS =
+            REGISTRY.registerBlock("redwood_roofing_stairs",
+                    p -> new StairBlock(REDWOOD_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> REDWOOD_ROOFING_WALL =
+            REGISTRY.registerBlock("redwood_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> SENTINAL_ROOFING =
+            REGISTRY.registerBlock("sentinal_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> SENTINAL_ROOFING_SLAB =
+            REGISTRY.registerBlock("sentinal_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> SENTINAL_ROOFING_STAIRS =
+            REGISTRY.registerBlock("sentinal_roofing_stairs",
+                    p -> new StairBlock(SENTINAL_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> SENTINAL_ROOFING_WALL =
+            REGISTRY.registerBlock("sentinal_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> SOLDIER_PINE_ROOFING =
+            REGISTRY.registerBlock("soldier_pine_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> SOLDIER_PINE_ROOFING_SLAB =
+            REGISTRY.registerBlock("soldier_pine_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> SOLDIER_PINE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("soldier_pine_roofing_stairs",
+                    p -> new StairBlock(SOLDIER_PINE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> SOLDIER_PINE_ROOFING_WALL =
+            REGISTRY.registerBlock("soldier_pine_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> WEIRWOOD_ROOFING =
+            REGISTRY.registerBlock("weirwood_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> WEIRWOOD_ROOFING_SLAB =
+            REGISTRY.registerBlock("weirwood_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> WEIRWOOD_ROOFING_STAIRS =
+            REGISTRY.registerBlock("weirwood_roofing_stairs",
+                    p -> new StairBlock(WEIRWOOD_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> WEIRWOOD_ROOFING_WALL =
+            REGISTRY.registerBlock("weirwood_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> WILLOW_ROOFING =
+            REGISTRY.registerBlock("willow_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> WILLOW_ROOFING_SLAB =
+            REGISTRY.registerBlock("willow_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> WILLOW_ROOFING_STAIRS =
+            REGISTRY.registerBlock("willow_roofing_stairs",
+                    p -> new StairBlock(WILLOW_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> WILLOW_ROOFING_WALL =
+            REGISTRY.registerBlock("willow_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> WORMTREE_ROOFING =
+            REGISTRY.registerBlock("wormtree_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> WORMTREE_ROOFING_SLAB =
+            REGISTRY.registerBlock("wormtree_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> WORMTREE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("wormtree_roofing_stairs",
+                    p -> new StairBlock(WORMTREE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> WORMTREE_ROOFING_WALL =
+            REGISTRY.registerBlock("wormtree_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> OAK_ROOFING =
+            REGISTRY.registerBlock("oak_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> OAK_ROOFING_SLAB =
+            REGISTRY.registerBlock("oak_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> OAK_ROOFING_STAIRS =
+            REGISTRY.registerBlock("oak_roofing_stairs",
+                    p -> new StairBlock(OAK_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> OAK_ROOFING_WALL =
+            REGISTRY.registerBlock("oak_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> SPRUCE_ROOFING =
+            REGISTRY.registerBlock("spruce_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> SPRUCE_ROOFING_SLAB =
+            REGISTRY.registerBlock("spruce_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> SPRUCE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("spruce_roofing_stairs",
+                    p -> new StairBlock(SPRUCE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> SPRUCE_ROOFING_WALL =
+            REGISTRY.registerBlock("spruce_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BIRCH_ROOFING =
+            REGISTRY.registerBlock("birch_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BIRCH_ROOFING_SLAB =
+            REGISTRY.registerBlock("birch_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BIRCH_ROOFING_STAIRS =
+            REGISTRY.registerBlock("birch_roofing_stairs",
+                    p -> new StairBlock(BIRCH_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BIRCH_ROOFING_WALL =
+            REGISTRY.registerBlock("birch_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> JUNGLE_ROOFING =
+            REGISTRY.registerBlock("jungle_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> JUNGLE_ROOFING_SLAB =
+            REGISTRY.registerBlock("jungle_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> JUNGLE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("jungle_roofing_stairs",
+                    p -> new StairBlock(JUNGLE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> JUNGLE_ROOFING_WALL =
+            REGISTRY.registerBlock("jungle_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> ACACIA_ROOFING =
+            REGISTRY.registerBlock("acacia_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> ACACIA_ROOFING_SLAB =
+            REGISTRY.registerBlock("acacia_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> ACACIA_ROOFING_STAIRS =
+            REGISTRY.registerBlock("acacia_roofing_stairs",
+                    p -> new StairBlock(ACACIA_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> ACACIA_ROOFING_WALL =
+            REGISTRY.registerBlock("acacia_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> DARK_OAK_ROOFING =
+            REGISTRY.registerBlock("dark_oak_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> DARK_OAK_ROOFING_SLAB =
+            REGISTRY.registerBlock("dark_oak_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> DARK_OAK_ROOFING_STAIRS =
+            REGISTRY.registerBlock("dark_oak_roofing_stairs",
+                    p -> new StairBlock(DARK_OAK_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> DARK_OAK_ROOFING_WALL =
+            REGISTRY.registerBlock("dark_oak_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> MANGROVE_ROOFING =
+            REGISTRY.registerBlock("mangrove_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> MANGROVE_ROOFING_SLAB =
+            REGISTRY.registerBlock("mangrove_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> MANGROVE_ROOFING_STAIRS =
+            REGISTRY.registerBlock("mangrove_roofing_stairs",
+                    p -> new StairBlock(MANGROVE_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> MANGROVE_ROOFING_WALL =
+            REGISTRY.registerBlock("mangrove_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> CHERRY_ROOFING =
+            REGISTRY.registerBlock("cherry_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> CHERRY_ROOFING_SLAB =
+            REGISTRY.registerBlock("cherry_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> CHERRY_ROOFING_STAIRS =
+            REGISTRY.registerBlock("cherry_roofing_stairs",
+                    p -> new StairBlock(CHERRY_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> CHERRY_ROOFING_WALL =
+            REGISTRY.registerBlock("cherry_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> BAMBOO_ROOFING =
+            REGISTRY.registerBlock("bamboo_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> BAMBOO_ROOFING_SLAB =
+            REGISTRY.registerBlock("bamboo_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> BAMBOO_ROOFING_STAIRS =
+            REGISTRY.registerBlock("bamboo_roofing_stairs",
+                    p -> new StairBlock(BAMBOO_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> BAMBOO_ROOFING_WALL =
+            REGISTRY.registerBlock("bamboo_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> CRIMSON_ROOFING =
+            REGISTRY.registerBlock("crimson_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> CRIMSON_ROOFING_SLAB =
+            REGISTRY.registerBlock("crimson_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> CRIMSON_ROOFING_STAIRS =
+            REGISTRY.registerBlock("crimson_roofing_stairs",
+                    p -> new StairBlock(CRIMSON_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> CRIMSON_ROOFING_WALL =
+            REGISTRY.registerBlock("crimson_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
+    public static final DeferredBlock<Block> WARPED_ROOFING =
+            REGISTRY.registerBlock("warped_roofing", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
+    public static final DeferredBlock<Block> WARPED_ROOFING_SLAB =
+            REGISTRY.registerBlock("warped_roofing_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
+    public static final DeferredBlock<Block> WARPED_ROOFING_STAIRS =
+            REGISTRY.registerBlock("warped_roofing_stairs",
+                    p -> new StairBlock(WARPED_ROOFING.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
+    public static final DeferredBlock<Block> WARPED_ROOFING_WALL =
+            REGISTRY.registerBlock("warped_roofing_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
+
     // ── Flowers ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BELLFLOWER         = flowerBlock("bellflower");
     public static final DeferredBlock<Block> BLACK_LOTUS        = flowerBlock("black_lotus");
@@ -651,7 +1243,9 @@ public class GotModBlocks {
 
     // ── Grasses ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> DEVILGRASS         = flowerBlock("devilgrass");
-    public static final DeferredBlock<Block> GHOST_GRASS        = flowerBlock("ghost_grass");
+    public static final DeferredBlock<Block> GHOST_GRASS = REGISTRY.registerBlock("ghost_grass",
+            GhostGrassBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion().randomTicks());
     public static final DeferredBlock<Block> HRANNA             = flowerBlock("hranna");
     public static final DeferredBlock<Block> PIPERS_GRASS       = flowerBlock("pipers_grass");
     public static final DeferredBlock<Block> WHEATGRASS      = flowerBlock("wheatgrass");
@@ -697,8 +1291,13 @@ public class GotModBlocks {
 
     // ── Reeds ──────────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> REEDS = REGISTRY.registerBlock("reeds",
-            ReedsBlock::new,
+            TripleReedsBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion());
+
+    public static final DeferredBlock<Block> SHORT_REEDS = REGISTRY.registerBlock("short_reeds",
+            ShortReedsBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion());
+
 
     // ── Crops — Seed-type (planted with seed, harvests crop + seeds) ──────
     // Block registered first; seed item wired in via supplier after items load.
@@ -931,10 +1530,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> FLINT_BRICK = registerFlint("flint_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> CRACKED_FLINT_BRICK = registerFlint("cracked_flint_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_FLINT_BRICK = registerFlint("mossy_flint_brick", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE = registerFlint("flint_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE = registerFlint("mossy_flint_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK = registerFlint("smooth_flint_rock", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> FLINT_PILLAR = registerFlint("flint_pillar", RegionalRockPillarBlock::new);
     public static final DeferredBlock<Block> FLINT_ROCK_SLAB = registerFlint("flint_rock_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> FLINT_ROCK_STAIRS = registerFlint("flint_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> FLINT_ROCK_WALL = registerFlint("flint_rock_wall", RegionalRockWallBlock::new);
@@ -949,15 +1544,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_SLAB = registerFlint("mossy_flint_brick_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_STAIRS = registerFlint("mossy_flint_brick_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> MOSSY_FLINT_BRICK_WALL = registerFlint("mossy_flint_brick_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE_SLAB = registerFlint("flint_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE_STAIRS = registerFlint("flint_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> FLINT_COBBLESTONE_WALL = registerFlint("flint_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_SLAB = registerFlint("mossy_flint_cobblestone_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_STAIRS = registerFlint("mossy_flint_cobblestone_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> MOSSY_FLINT_COBBLESTONE_WALL = registerFlint("mossy_flint_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_SLAB = registerFlint("smooth_flint_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_STAIRS = registerFlint("smooth_flint_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_FLINT_ROCK_WALL = registerFlint("smooth_flint_rock_wall", RegionalRockWallBlock::new);
 
     // ── Limestone ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> LIMESTONE_ROCK = registerLimestone("limestone_rock", RegionalRockBlock::new);

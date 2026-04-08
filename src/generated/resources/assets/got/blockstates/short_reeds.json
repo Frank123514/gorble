@@ -1,0 +1,20 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "half": "lower"
+      },
+      "apply": {
+        "model": "got:block/reeds_bottom"
+      }
+    },
+    {
+      "when": {
+        "half": "upper"
+      },
+      "apply": {
+        "model": "got:block/reeds_top"
+      }
+    }
+  ]
+}

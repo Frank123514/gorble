@@ -9,7 +9,9 @@
         {
           "condition": "minecraft:block_state_property",
           "block": "got:reeds",
-          "properties": { "half": "lower" }
+          "properties": {
+            "section": "0"
+          }
         },
         {
           "condition": "minecraft:survives_explosion"

@@ -366,6 +366,344 @@ public class GotModItems {
     public static final DeferredItem<Item> WORMTREE_PRESSURE_PLATE = block(GotModBlocks.WORMTREE_PRESSURE_PLATE);
     public static final DeferredItem<Item> WORMTREE_BUTTON         = block(GotModBlocks.WORMTREE_BUTTON);
 
+    // ── Wood Shingles Items — paste into GotModItems.java ─────────────────────
+    public static final DeferredItem<BlockItem> ALDER_ROOFING =
+            REGISTRY.registerSimpleBlockItem("alder_roofing", GotModBlocks.ALDER_ROOFING);
+    public static final DeferredItem<BlockItem> ALDER_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("alder_roofing_slab", GotModBlocks.ALDER_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> ALDER_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("alder_roofing_stairs", GotModBlocks.ALDER_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> ALDER_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("alder_roofing_wall", GotModBlocks.ALDER_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> APPLE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("apple_roofing", GotModBlocks.APPLE_ROOFING);
+    public static final DeferredItem<BlockItem> APPLE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("apple_roofing_slab", GotModBlocks.APPLE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> APPLE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("apple_roofing_stairs", GotModBlocks.APPLE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> APPLE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("apple_roofing_wall", GotModBlocks.APPLE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> ASH_ROOFING =
+            REGISTRY.registerSimpleBlockItem("ash_roofing", GotModBlocks.ASH_ROOFING);
+    public static final DeferredItem<BlockItem> ASH_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("ash_roofing_slab", GotModBlocks.ASH_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> ASH_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("ash_roofing_stairs", GotModBlocks.ASH_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> ASH_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("ash_roofing_wall", GotModBlocks.ASH_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> ASPEN_ROOFING =
+            REGISTRY.registerSimpleBlockItem("aspen_roofing", GotModBlocks.ASPEN_ROOFING);
+    public static final DeferredItem<BlockItem> ASPEN_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("aspen_roofing_slab", GotModBlocks.ASPEN_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> ASPEN_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("aspen_roofing_stairs", GotModBlocks.ASPEN_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> ASPEN_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("aspen_roofing_wall", GotModBlocks.ASPEN_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BEECH_ROOFING =
+            REGISTRY.registerSimpleBlockItem("beech_roofing", GotModBlocks.BEECH_ROOFING);
+    public static final DeferredItem<BlockItem> BEECH_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("beech_roofing_slab", GotModBlocks.BEECH_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BEECH_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("beech_roofing_stairs", GotModBlocks.BEECH_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BEECH_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("beech_roofing_wall", GotModBlocks.BEECH_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BLACK_COTTONWOOD_ROOFING =
+            REGISTRY.registerSimpleBlockItem("black_cottonwood_roofing", GotModBlocks.BLACK_COTTONWOOD_ROOFING);
+    public static final DeferredItem<BlockItem> BLACK_COTTONWOOD_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("black_cottonwood_roofing_slab", GotModBlocks.BLACK_COTTONWOOD_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BLACK_COTTONWOOD_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("black_cottonwood_roofing_stairs", GotModBlocks.BLACK_COTTONWOOD_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BLACK_COTTONWOOD_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("black_cottonwood_roofing_wall", GotModBlocks.BLACK_COTTONWOOD_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BLACKBARK_ROOFING =
+            REGISTRY.registerSimpleBlockItem("blackbark_roofing", GotModBlocks.BLACKBARK_ROOFING);
+    public static final DeferredItem<BlockItem> BLACKBARK_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("blackbark_roofing_slab", GotModBlocks.BLACKBARK_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BLACKBARK_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("blackbark_roofing_stairs", GotModBlocks.BLACKBARK_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BLACKBARK_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("blackbark_roofing_wall", GotModBlocks.BLACKBARK_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BLOODWOOD_ROOFING =
+            REGISTRY.registerSimpleBlockItem("bloodwood_roofing", GotModBlocks.BLOODWOOD_ROOFING);
+    public static final DeferredItem<BlockItem> BLOODWOOD_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("bloodwood_roofing_slab", GotModBlocks.BLOODWOOD_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BLOODWOOD_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("bloodwood_roofing_stairs", GotModBlocks.BLOODWOOD_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BLOODWOOD_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("bloodwood_roofing_wall", GotModBlocks.BLOODWOOD_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BLUE_MAHOE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("blue_mahoe_roofing", GotModBlocks.BLUE_MAHOE_ROOFING);
+    public static final DeferredItem<BlockItem> BLUE_MAHOE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("blue_mahoe_roofing_slab", GotModBlocks.BLUE_MAHOE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BLUE_MAHOE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("blue_mahoe_roofing_stairs", GotModBlocks.BLUE_MAHOE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BLUE_MAHOE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("blue_mahoe_roofing_wall", GotModBlocks.BLUE_MAHOE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> CEDAR_ROOFING =
+            REGISTRY.registerSimpleBlockItem("cedar_roofing", GotModBlocks.CEDAR_ROOFING);
+    public static final DeferredItem<BlockItem> CEDAR_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("cedar_roofing_slab", GotModBlocks.CEDAR_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> CEDAR_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("cedar_roofing_stairs", GotModBlocks.CEDAR_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> CEDAR_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("cedar_roofing_wall", GotModBlocks.CEDAR_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> CHESTNUT_ROOFING =
+            REGISTRY.registerSimpleBlockItem("chestnut_roofing", GotModBlocks.CHESTNUT_ROOFING);
+    public static final DeferredItem<BlockItem> CHESTNUT_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("chestnut_roofing_slab", GotModBlocks.CHESTNUT_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> CHESTNUT_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("chestnut_roofing_stairs", GotModBlocks.CHESTNUT_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> CHESTNUT_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("chestnut_roofing_wall", GotModBlocks.CHESTNUT_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> CINNAMON_ROOFING =
+            REGISTRY.registerSimpleBlockItem("cinnamon_roofing", GotModBlocks.CINNAMON_ROOFING);
+    public static final DeferredItem<BlockItem> CINNAMON_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("cinnamon_roofing_slab", GotModBlocks.CINNAMON_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> CINNAMON_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("cinnamon_roofing_stairs", GotModBlocks.CINNAMON_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> CINNAMON_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("cinnamon_roofing_wall", GotModBlocks.CINNAMON_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> CLOVE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("clove_roofing", GotModBlocks.CLOVE_ROOFING);
+    public static final DeferredItem<BlockItem> CLOVE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("clove_roofing_slab", GotModBlocks.CLOVE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> CLOVE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("clove_roofing_stairs", GotModBlocks.CLOVE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> CLOVE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("clove_roofing_wall", GotModBlocks.CLOVE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> COTTONWOOD_ROOFING =
+            REGISTRY.registerSimpleBlockItem("cottonwood_roofing", GotModBlocks.COTTONWOOD_ROOFING);
+    public static final DeferredItem<BlockItem> COTTONWOOD_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("cottonwood_roofing_slab", GotModBlocks.COTTONWOOD_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> COTTONWOOD_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("cottonwood_roofing_stairs", GotModBlocks.COTTONWOOD_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> COTTONWOOD_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("cottonwood_roofing_wall", GotModBlocks.COTTONWOOD_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> EBONY_ROOFING =
+            REGISTRY.registerSimpleBlockItem("ebony_roofing", GotModBlocks.EBONY_ROOFING);
+    public static final DeferredItem<BlockItem> EBONY_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("ebony_roofing_slab", GotModBlocks.EBONY_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> EBONY_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("ebony_roofing_stairs", GotModBlocks.EBONY_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> EBONY_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("ebony_roofing_wall", GotModBlocks.EBONY_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> ELM_ROOFING =
+            REGISTRY.registerSimpleBlockItem("elm_roofing", GotModBlocks.ELM_ROOFING);
+    public static final DeferredItem<BlockItem> ELM_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("elm_roofing_slab", GotModBlocks.ELM_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> ELM_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("elm_roofing_stairs", GotModBlocks.ELM_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> ELM_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("elm_roofing_wall", GotModBlocks.ELM_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> FIR_ROOFING =
+            REGISTRY.registerSimpleBlockItem("fir_roofing", GotModBlocks.FIR_ROOFING);
+    public static final DeferredItem<BlockItem> FIR_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("fir_roofing_slab", GotModBlocks.FIR_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> FIR_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("fir_roofing_stairs", GotModBlocks.FIR_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> FIR_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("fir_roofing_wall", GotModBlocks.FIR_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> GOLDENHEART_ROOFING =
+            REGISTRY.registerSimpleBlockItem("goldenheart_roofing", GotModBlocks.GOLDENHEART_ROOFING);
+    public static final DeferredItem<BlockItem> GOLDENHEART_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("goldenheart_roofing_slab", GotModBlocks.GOLDENHEART_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> GOLDENHEART_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("goldenheart_roofing_stairs", GotModBlocks.GOLDENHEART_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> GOLDENHEART_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("goldenheart_roofing_wall", GotModBlocks.GOLDENHEART_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> HAWTHORN_ROOFING =
+            REGISTRY.registerSimpleBlockItem("hawthorn_roofing", GotModBlocks.HAWTHORN_ROOFING);
+    public static final DeferredItem<BlockItem> HAWTHORN_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("hawthorn_roofing_slab", GotModBlocks.HAWTHORN_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> HAWTHORN_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("hawthorn_roofing_stairs", GotModBlocks.HAWTHORN_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> HAWTHORN_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("hawthorn_roofing_wall", GotModBlocks.HAWTHORN_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> IRONWOOD_ROOFING =
+            REGISTRY.registerSimpleBlockItem("ironwood_roofing", GotModBlocks.IRONWOOD_ROOFING);
+    public static final DeferredItem<BlockItem> IRONWOOD_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("ironwood_roofing_slab", GotModBlocks.IRONWOOD_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> IRONWOOD_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("ironwood_roofing_stairs", GotModBlocks.IRONWOOD_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> IRONWOOD_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("ironwood_roofing_wall", GotModBlocks.IRONWOOD_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> LINDEN_ROOFING =
+            REGISTRY.registerSimpleBlockItem("linden_roofing", GotModBlocks.LINDEN_ROOFING);
+    public static final DeferredItem<BlockItem> LINDEN_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("linden_roofing_slab", GotModBlocks.LINDEN_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> LINDEN_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("linden_roofing_stairs", GotModBlocks.LINDEN_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> LINDEN_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("linden_roofing_wall", GotModBlocks.LINDEN_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> MAHOGANY_ROOFING =
+            REGISTRY.registerSimpleBlockItem("mahogany_roofing", GotModBlocks.MAHOGANY_ROOFING);
+    public static final DeferredItem<BlockItem> MAHOGANY_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("mahogany_roofing_slab", GotModBlocks.MAHOGANY_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> MAHOGANY_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("mahogany_roofing_stairs", GotModBlocks.MAHOGANY_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> MAHOGANY_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("mahogany_roofing_wall", GotModBlocks.MAHOGANY_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> MAPLE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("maple_roofing", GotModBlocks.MAPLE_ROOFING);
+    public static final DeferredItem<BlockItem> MAPLE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("maple_roofing_slab", GotModBlocks.MAPLE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> MAPLE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("maple_roofing_stairs", GotModBlocks.MAPLE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> MAPLE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("maple_roofing_wall", GotModBlocks.MAPLE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> MYRRH_ROOFING =
+            REGISTRY.registerSimpleBlockItem("myrrh_roofing", GotModBlocks.MYRRH_ROOFING);
+    public static final DeferredItem<BlockItem> MYRRH_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("myrrh_roofing_slab", GotModBlocks.MYRRH_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> MYRRH_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("myrrh_roofing_stairs", GotModBlocks.MYRRH_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> MYRRH_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("myrrh_roofing_wall", GotModBlocks.MYRRH_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> PINE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("pine_roofing", GotModBlocks.PINE_ROOFING);
+    public static final DeferredItem<BlockItem> PINE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("pine_roofing_slab", GotModBlocks.PINE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> PINE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("pine_roofing_stairs", GotModBlocks.PINE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> PINE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("pine_roofing_wall", GotModBlocks.PINE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> REDWOOD_ROOFING =
+            REGISTRY.registerSimpleBlockItem("redwood_roofing", GotModBlocks.REDWOOD_ROOFING);
+    public static final DeferredItem<BlockItem> REDWOOD_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("redwood_roofing_slab", GotModBlocks.REDWOOD_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> REDWOOD_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("redwood_roofing_stairs", GotModBlocks.REDWOOD_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> REDWOOD_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("redwood_roofing_wall", GotModBlocks.REDWOOD_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> SENTINAL_ROOFING =
+            REGISTRY.registerSimpleBlockItem("sentinal_roofing", GotModBlocks.SENTINAL_ROOFING);
+    public static final DeferredItem<BlockItem> SENTINAL_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("sentinal_roofing_slab", GotModBlocks.SENTINAL_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> SENTINAL_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("sentinal_roofing_stairs", GotModBlocks.SENTINAL_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> SENTINAL_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("sentinal_roofing_wall", GotModBlocks.SENTINAL_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> SOLDIER_PINE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("soldier_pine_roofing", GotModBlocks.SOLDIER_PINE_ROOFING);
+    public static final DeferredItem<BlockItem> SOLDIER_PINE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("soldier_pine_roofing_slab", GotModBlocks.SOLDIER_PINE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> SOLDIER_PINE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("soldier_pine_roofing_stairs", GotModBlocks.SOLDIER_PINE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> SOLDIER_PINE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("soldier_pine_roofing_wall", GotModBlocks.SOLDIER_PINE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> WEIRWOOD_ROOFING =
+            REGISTRY.registerSimpleBlockItem("weirwood_roofing", GotModBlocks.WEIRWOOD_ROOFING);
+    public static final DeferredItem<BlockItem> WEIRWOOD_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("weirwood_roofing_slab", GotModBlocks.WEIRWOOD_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> WEIRWOOD_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("weirwood_roofing_stairs", GotModBlocks.WEIRWOOD_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> WEIRWOOD_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("weirwood_roofing_wall", GotModBlocks.WEIRWOOD_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> WILLOW_ROOFING =
+            REGISTRY.registerSimpleBlockItem("willow_roofing", GotModBlocks.WILLOW_ROOFING);
+    public static final DeferredItem<BlockItem> WILLOW_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("willow_roofing_slab", GotModBlocks.WILLOW_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> WILLOW_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("willow_roofing_stairs", GotModBlocks.WILLOW_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> WILLOW_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("willow_roofing_wall", GotModBlocks.WILLOW_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> WORMTREE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("wormtree_roofing", GotModBlocks.WORMTREE_ROOFING);
+    public static final DeferredItem<BlockItem> WORMTREE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("wormtree_roofing_slab", GotModBlocks.WORMTREE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> WORMTREE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("wormtree_roofing_stairs", GotModBlocks.WORMTREE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> WORMTREE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("wormtree_roofing_wall", GotModBlocks.WORMTREE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> OAK_ROOFING =
+            REGISTRY.registerSimpleBlockItem("oak_roofing", GotModBlocks.OAK_ROOFING);
+    public static final DeferredItem<BlockItem> OAK_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("oak_roofing_slab", GotModBlocks.OAK_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> OAK_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("oak_roofing_stairs", GotModBlocks.OAK_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> OAK_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("oak_roofing_wall", GotModBlocks.OAK_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> SPRUCE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("spruce_roofing", GotModBlocks.SPRUCE_ROOFING);
+    public static final DeferredItem<BlockItem> SPRUCE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("spruce_roofing_slab", GotModBlocks.SPRUCE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> SPRUCE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("spruce_roofing_stairs", GotModBlocks.SPRUCE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> SPRUCE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("spruce_roofing_wall", GotModBlocks.SPRUCE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BIRCH_ROOFING =
+            REGISTRY.registerSimpleBlockItem("birch_roofing", GotModBlocks.BIRCH_ROOFING);
+    public static final DeferredItem<BlockItem> BIRCH_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("birch_roofing_slab", GotModBlocks.BIRCH_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BIRCH_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("birch_roofing_stairs", GotModBlocks.BIRCH_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BIRCH_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("birch_roofing_wall", GotModBlocks.BIRCH_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> JUNGLE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("jungle_roofing", GotModBlocks.JUNGLE_ROOFING);
+    public static final DeferredItem<BlockItem> JUNGLE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("jungle_roofing_slab", GotModBlocks.JUNGLE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> JUNGLE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("jungle_roofing_stairs", GotModBlocks.JUNGLE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> JUNGLE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("jungle_roofing_wall", GotModBlocks.JUNGLE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> ACACIA_ROOFING =
+            REGISTRY.registerSimpleBlockItem("acacia_roofing", GotModBlocks.ACACIA_ROOFING);
+    public static final DeferredItem<BlockItem> ACACIA_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("acacia_roofing_slab", GotModBlocks.ACACIA_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> ACACIA_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("acacia_roofing_stairs", GotModBlocks.ACACIA_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> ACACIA_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("acacia_roofing_wall", GotModBlocks.ACACIA_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> DARK_OAK_ROOFING =
+            REGISTRY.registerSimpleBlockItem("dark_oak_roofing", GotModBlocks.DARK_OAK_ROOFING);
+    public static final DeferredItem<BlockItem> DARK_OAK_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("dark_oak_roofing_slab", GotModBlocks.DARK_OAK_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> DARK_OAK_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("dark_oak_roofing_stairs", GotModBlocks.DARK_OAK_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> DARK_OAK_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("dark_oak_roofing_wall", GotModBlocks.DARK_OAK_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> MANGROVE_ROOFING =
+            REGISTRY.registerSimpleBlockItem("mangrove_roofing", GotModBlocks.MANGROVE_ROOFING);
+    public static final DeferredItem<BlockItem> MANGROVE_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("mangrove_roofing_slab", GotModBlocks.MANGROVE_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> MANGROVE_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("mangrove_roofing_stairs", GotModBlocks.MANGROVE_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> MANGROVE_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("mangrove_roofing_wall", GotModBlocks.MANGROVE_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> CHERRY_ROOFING =
+            REGISTRY.registerSimpleBlockItem("cherry_roofing", GotModBlocks.CHERRY_ROOFING);
+    public static final DeferredItem<BlockItem> CHERRY_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("cherry_roofing_slab", GotModBlocks.CHERRY_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> CHERRY_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("cherry_roofing_stairs", GotModBlocks.CHERRY_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> CHERRY_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("cherry_roofing_wall", GotModBlocks.CHERRY_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BAMBOO_ROOFING =
+            REGISTRY.registerSimpleBlockItem("bamboo_roofing", GotModBlocks.BAMBOO_ROOFING);
+    public static final DeferredItem<BlockItem> BAMBOO_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("bamboo_roofing_slab", GotModBlocks.BAMBOO_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BAMBOO_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("bamboo_roofing_stairs", GotModBlocks.BAMBOO_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BAMBOO_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("bamboo_roofing_wall", GotModBlocks.BAMBOO_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> CRIMSON_ROOFING =
+            REGISTRY.registerSimpleBlockItem("crimson_roofing", GotModBlocks.CRIMSON_ROOFING);
+    public static final DeferredItem<BlockItem> CRIMSON_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("crimson_roofing_slab", GotModBlocks.CRIMSON_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> CRIMSON_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("crimson_roofing_stairs", GotModBlocks.CRIMSON_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> CRIMSON_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("crimson_roofing_wall", GotModBlocks.CRIMSON_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> WARPED_ROOFING =
+            REGISTRY.registerSimpleBlockItem("warped_roofing", GotModBlocks.WARPED_ROOFING);
+    public static final DeferredItem<BlockItem> WARPED_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("warped_roofing_slab", GotModBlocks.WARPED_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> WARPED_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("warped_roofing_stairs", GotModBlocks.WARPED_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> WARPED_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("warped_roofing_wall", GotModBlocks.WARPED_ROOFING_WALL);
+
     // ── Basalt items ──────────────────────────────────────────────────────
     public static final DeferredItem<Item> BASALT_ROCK = block(GotModBlocks.BASALT_ROCK);
     public static final DeferredItem<Item> BASALT_BRICK = block(GotModBlocks.BASALT_BRICK);
@@ -437,10 +775,6 @@ public class GotModItems {
     public static final DeferredItem<Item> FLINT_BRICK = block(GotModBlocks.FLINT_BRICK);
     public static final DeferredItem<Item> CRACKED_FLINT_BRICK = block(GotModBlocks.CRACKED_FLINT_BRICK);
     public static final DeferredItem<Item> MOSSY_FLINT_BRICK = block(GotModBlocks.MOSSY_FLINT_BRICK);
-    public static final DeferredItem<Item> FLINT_COBBLESTONE = block(GotModBlocks.FLINT_COBBLESTONE);
-    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE);
-    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK = block(GotModBlocks.SMOOTH_FLINT_ROCK);
-    public static final DeferredItem<Item> FLINT_PILLAR = block(GotModBlocks.FLINT_PILLAR);
     public static final DeferredItem<Item> FLINT_ROCK_SLAB = block(GotModBlocks.FLINT_ROCK_SLAB);
     public static final DeferredItem<Item> FLINT_ROCK_STAIRS = block(GotModBlocks.FLINT_ROCK_STAIRS);
     public static final DeferredItem<Item> FLINT_ROCK_WALL = block(GotModBlocks.FLINT_ROCK_WALL);
@@ -455,15 +789,6 @@ public class GotModItems {
     public static final DeferredItem<Item> MOSSY_FLINT_BRICK_SLAB = block(GotModBlocks.MOSSY_FLINT_BRICK_SLAB);
     public static final DeferredItem<Item> MOSSY_FLINT_BRICK_STAIRS = block(GotModBlocks.MOSSY_FLINT_BRICK_STAIRS);
     public static final DeferredItem<Item> MOSSY_FLINT_BRICK_WALL = block(GotModBlocks.MOSSY_FLINT_BRICK_WALL);
-    public static final DeferredItem<Item> FLINT_COBBLESTONE_SLAB = block(GotModBlocks.FLINT_COBBLESTONE_SLAB);
-    public static final DeferredItem<Item> FLINT_COBBLESTONE_STAIRS = block(GotModBlocks.FLINT_COBBLESTONE_STAIRS);
-    public static final DeferredItem<Item> FLINT_COBBLESTONE_WALL = block(GotModBlocks.FLINT_COBBLESTONE_WALL);
-    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE_SLAB = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE_SLAB);
-    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE_STAIRS = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE_STAIRS);
-    public static final DeferredItem<Item> MOSSY_FLINT_COBBLESTONE_WALL = block(GotModBlocks.MOSSY_FLINT_COBBLESTONE_WALL);
-    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK_SLAB = block(GotModBlocks.SMOOTH_FLINT_ROCK_SLAB);
-    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK_STAIRS = block(GotModBlocks.SMOOTH_FLINT_ROCK_STAIRS);
-    public static final DeferredItem<Item> SMOOTH_FLINT_ROCK_WALL = block(GotModBlocks.SMOOTH_FLINT_ROCK_WALL);
 
     // ── Limestone items ──────────────────────────────────────────────────────
     public static final DeferredItem<Item> LIMESTONE_ROCK = block(GotModBlocks.LIMESTONE_ROCK);
@@ -1132,6 +1457,9 @@ public class GotModItems {
 
     // ── Reeds ────────────────────────────────────────────────────────────────
     public static final DeferredItem<Item> REEDS = block(GotModBlocks.REEDS);
+
+    public static final DeferredItem<BlockItem> SHORT_REEDS = REGISTRY.registerSimpleBlockItem(
+            "short_reeds", GotModBlocks.SHORT_REEDS);
 
     // ── Crop seeds (seed-type crops) ──────────────────────────────────────
     public static final DeferredItem<Item> OAT_SEEDS     = REGISTRY.registerItem("oat_seeds",     p -> new BlockItem(GotModBlocks.OAT_CROP.get(),      p));

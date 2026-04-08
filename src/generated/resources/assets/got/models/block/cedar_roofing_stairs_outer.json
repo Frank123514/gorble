@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "got:block/cedar_roofing",
+    "top": "got:block/cedar_roofing",
+    "side": "got:block/cedar_roofing",
+    "wall": "got:block/cedar_roofing",
+    "particle": "got:block/cedar_roofing"
+  }
+}

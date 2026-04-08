@@ -46,7 +46,13 @@ public class GotHorseEntity extends Horse implements GeoEntity {
     private static final RawAnimation ANIM_TROT   = RawAnimation.begin().thenLoop("horse.trot");
     private static final RawAnimation ANIM_GALLOP = RawAnimation.begin().thenLoop("horse.gallop");
     private static final RawAnimation ANIM_EAT    = RawAnimation.begin().thenLoop("horse.eat");
+    private static final RawAnimation ANIM_YAWN   = RawAnimation.begin().thenPlay("horse.yawn").thenLoop("horse.idle");
     private static final RawAnimation ANIM_DIE    = RawAnimation.begin().thenPlay("horse.die");
+
+    // ── Yawn idle timer ───────────────────────────────────────────────────────
+    /** Counts up while the horse is idle; triggers a yawn every ~12–18 seconds. */
+    private int yawnTimer = 0;
+    private int yawnCooldown = 0;
 
     /**
      * Horizontal-speed-squared thresholds used to pick the gait animation.
@@ -114,15 +120,29 @@ public class GotHorseEntity extends Horse implements GeoEntity {
             double speedSq = horse.getDeltaMovement().horizontalDistanceSqr();
 
             if (speedSq > GALLOP_THRESHOLD) {
+                yawnTimer = 0;
                 return state.setAndContinue(ANIM_GALLOP);
             }
             if (speedSq > TROT_THRESHOLD) {
+                yawnTimer = 0;
                 return state.setAndContinue(ANIM_TROT);
             }
             if (state.isMoving()) {
+                yawnTimer = 0;
                 return state.setAndContinue(ANIM_WALK);
             }
 
+            // Occasionally play a yawn when standing still
+            if (yawnCooldown > 0) {
+                yawnCooldown--;
+            }
+            yawnTimer++;
+            // Yawn roughly every 12–18 seconds (240–360 ticks), once cooldown is up
+            if (yawnTimer > 240 + horse.level().random.nextInt(120) && yawnCooldown == 0) {
+                yawnTimer = 0;
+                yawnCooldown = 400; // wait ~20s before next yawn
+                return state.setAndContinue(ANIM_YAWN);
+            }
             return state.setAndContinue(ANIM_IDLE);
         }));
     }

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/jungle_roofing",
+    "top": "got:block/jungle_roofing",
+    "side": "got:block/jungle_roofing",
+    "wall": "got:block/jungle_roofing",
+    "particle": "got:block/jungle_roofing"
+  }
+}

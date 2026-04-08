@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/blackbark_roofing_slab"
+    },
+    "type=top": {
+      "model": "got:block/blackbark_roofing_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/blackbark_roofing"
+    }
+  }
+}
