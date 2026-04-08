@@ -1,7 +1,15 @@
 package net.got.entity;
 
 import net.got.entity.horse.GotHorseEntity;
-import net.got.entity.npc.smallfolk.northmen.NorthmanEntity;
+// ── Tier-1 Smallfolk ──────────────────────────────────────────────────────────
+import net.got.entity.npc.smallfolk.NorthmanEntity;
+import net.got.entity.npc.smallfolk.RiverlanderEntity;
+import net.got.entity.npc.smallfolk.ValemanEntity;
+import net.got.entity.npc.smallfolk.WestermanEntity;
+import net.got.entity.npc.smallfolk.StormlorderEntity;
+import net.got.entity.npc.smallfolk.IronbornEntity;
+import net.got.entity.npc.smallfolk.DornishmanEntity;
+import net.got.entity.npc.smallfolk.ReachmanEntity;
 // ── Levy ──────────────────────────────────────────────────────────────────────
 import net.got.entity.npc.levy.stark.StarkLevyEntity;
 import net.got.entity.npc.levy.tully.TullyLevyEntity;
@@ -21,21 +29,20 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
-/**
- * MOD-bus event subscriber for entity attributes and spawn placements.
- *
- * <p>When adding a new culture (e.g. Reachmen), append entries for each
- * new entity type to both event handlers below.
- */
 @EventBusSubscriber(modid = "got")
 public class GotEntityEvents {
 
-    // ── Attributes ─────────────────────────────────────────────────────────────
-
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        // ── Northmen ───────────────────────────────────────────────────────────
-        event.put(GotModEntities.NORTHMAN.get(),      NorthmanEntity.createAttributes().build());
+        // ── Tier-1 Smallfolk ──────────────────────────────────────────────────
+        event.put(GotModEntities.NORTHMAN.get(),    NorthmanEntity.createAttributes().build());
+        event.put(GotModEntities.RIVERLANDER.get(), RiverlanderEntity.createAttributes().build());
+        event.put(GotModEntities.VALEMAN.get(),     ValemanEntity.createAttributes().build());
+        event.put(GotModEntities.WESTERMAN.get(),   WestermanEntity.createAttributes().build());
+        event.put(GotModEntities.STORMLORDER.get(), StormlorderEntity.createAttributes().build());
+        event.put(GotModEntities.IRONBORN.get(),    IronbornEntity.createAttributes().build());
+        event.put(GotModEntities.DORNISHMAN.get(),  DornishmanEntity.createAttributes().build());
+        event.put(GotModEntities.REACHMAN.get(),    ReachmanEntity.createAttributes().build());
 
         // ── Levies (Tier 2) ────────────────────────────────────────────────────
         event.put(GotModEntities.STARK_LEVY.get(),     StarkLevyEntity.createAttributes().build());
@@ -51,10 +58,6 @@ public class GotEntityEvents {
         event.put(GotModEntities.VALE_KNIGHT.get(),   ValeKnightEntity.createAttributes().build());
 
         // ── GOT Horse ──────────────────────────────────────────────────────────
-        // Horse.createBaseHorseAttributes() provides the vanilla horse attribute set
-        // (max health 15–30, jump strength 0.4–1.0, movement speed 0.2–0.34).
-        // We use the full vanilla-compatible spread so GOT horses feel like
-        // proper warhorses — faster and tougher than a standard steed on average.
         event.put(GotModEntities.GOT_HORSE.get(),
                 net.minecraft.world.entity.animal.horse.AbstractHorse.createBaseHorseAttributes()
                         .add(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH, 20.0)
@@ -63,54 +66,32 @@ public class GotEntityEvents {
                         .build());
     }
 
-    // ── Spawn placements ───────────────────────────────────────────────────────
-
     @SubscribeEvent
     public static void onSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        // ── Northmen ───────────────────────────────────────────────────────────
-        event.register(
-                GotModEntities.NORTHMAN.get(),
-                SpawnPlacementTypes.ON_GROUND,
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                NorthmanEntity::checkSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.REPLACE
-        );
-
+        // ── Tier-1 Smallfolk ──────────────────────────────────────────────────
+        event.register(GotModEntities.NORTHMAN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NorthmanEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.RIVERLANDER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, RiverlanderEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.VALEMAN.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ValemanEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.WESTERMAN.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WestermanEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.STORMLORDER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StormlorderEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.IRONBORN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, IronbornEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.DORNISHMAN.get(),  SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DornishmanEntity::checkSpawnRules,  RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.REACHMAN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ReachmanEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         // ── Levies (Tier 2) ────────────────────────────────────────────────────
-        event.register(GotModEntities.STARK_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                StarkLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.TULLY_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                TullyLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.LANNISTER_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                LannisterLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.BARATHEON_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                BaratheonLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.GREYJOY_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                GreyjoyLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.MARTELL_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                MartellLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.TYRELL_LEVY.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                TyrellLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.STARK_LEVY.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StarkLevyEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.TULLY_LEVY.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TullyLevyEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.LANNISTER_LEVY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LannisterLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.BARATHEON_LEVY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaratheonLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.GREYJOY_LEVY.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GreyjoyLevyEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.MARTELL_LEVY.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MartellLevyEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.TYRELL_LEVY.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TyrellLevyEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
-        event.register(GotModEntities.NORTH_SOLDIER.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                NorthSoldierEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(GotModEntities.VALE_KNIGHT.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                ValeKnightEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.NORTH_SOLDIER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NorthSoldierEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.VALE_KNIGHT.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ValeKnightEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         // ── GOT Horse ──────────────────────────────────────────────────────────
-        event.register(GotModEntities.GOT_HORSE.get(),
-                SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                GotHorseEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.GOT_HORSE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotHorseEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

@@ -1,19 +1,16 @@
 package net.got.entity.npc.fighter;
 
-import net.got.entity.animations.GotAnimationDefinitions;
 import net.got.entity.npc.NpcGender;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
 import net.got.entity.horse.GotHorseEntity;
 import net.got.init.GotModEntities;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-// AbstractHorse retained for potential subclass checks
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,31 +18,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
  * Abstract base for all Tier 3 Skilled Fighter NPC entities.
- *
- * <h3>Tier overview</h3>
- * <pre>
- *   Tier 1 — Smallfolk      : unarmed civilians
- *   Tier 2 — Levy           : armed conscripts
- *   Tier 3 — Skilled Fighter : THIS CLASS — professional soldiers with optional mounts
- * </pre>
- *
- * <h3>Horse-spawning system</h3>
- * Subclasses declare their mounted spawn probability via
- * {@link #getHorseSpawnChance()}. A value of {@code 0f} disables horse
- * spawning entirely (e.g. Iron Island fighters who have no horse culture).
- * A value of {@code 0.4f} means 40% of spawns will attempt to place the
- * fighter on a horse.
- *
- * <p>When a horse is spawned it is tamed and immediately mounted by the
- * fighter. If the horse cannot be placed (e.g. not enough space), the
- * fighter simply spawns on foot without error.
- *
- * <h3>Adding a new skilled fighter culture</h3>
- * Create a sub-package under {@code net.got.entity.npc.fighter.<house>},
- * extend this class, implement {@link SmallfolkEntity#getVariantCount()},
- * {@link SmallfolkEntity#registerControllers}, override
- * {@link #populateDefaultEquipmentSlots}, and return the correct horse
- * chance from {@link #getHorseSpawnChance()}.
  */
 public abstract class SkilledFighterEntity extends SmallfolkEntity {
 
@@ -53,26 +25,14 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         super(type, level);
     }
 
-    // ── Subclass contract ─────────────────────────────────────────────────────
-
     /**
      * Probability (0.0–1.0) that this fighter spawns mounted on a horse.
-     *
-     * <ul>
-     *   <li>0.0f — never mounted (e.g. Iron Islands, Dorne foot soldiers)</li>
-     *   <li>0.25f — occasional cavalry (e.g. North soldiers on open plains)</li>
-     *   <li>0.5f — frequent cavalry (e.g. Vale knights in mountain passes)</li>
-     *   <li>0.8f — primarily cavalry (e.g. Reach or Lannister heavy horse)</li>
-     * </ul>
+     * Return 0f to never spawn mounted.
      */
     public abstract float getHorseSpawnChance();
 
     @Override
     protected NpcGender selectGender() { return NpcGender.MALE; }
-
-    // ── Goals ─────────────────────────────────────────────────────────────────
-    // Skilled fighters are aggressive professionals — they actively hunt monsters
-    // and maintain formation better than levies.
 
     @Override
     protected void registerGoals() {
@@ -87,10 +47,8 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
-    // ── Horse spawning ────────────────────────────────────────────────────────
-
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, net.minecraft.world.DifficultyInstance difficulty,
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         EntitySpawnReason spawnType,
                                         @org.jetbrains.annotations.Nullable SpawnGroupData groupData) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, groupData);
@@ -104,11 +62,6 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         return result;
     }
 
-    /**
-     * Attempts to spawn a tamed {@link GotHorseEntity} at this fighter's position
-     * and mount it. Uses the custom GOT horse model and GeckoLib animations.
-     * Fails silently if the horse cannot be placed (no valid ground, etc.).
-     */
     private void trySpawnMounted(ServerLevel serverLevel) {
         GotHorseEntity horse = GotModEntities.GOT_HORSE.get()
                 .create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
@@ -121,24 +74,5 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         if (serverLevel.tryAddFreshEntityWithPassengers(horse)) {
             this.startRiding(horse, true);
         }
-    }
-
-    // ── GeckoLib animations ───────────────────────────────────────────────────
-
-    /**
-     * Default animation controllers for all skilled fighters.
-     *
-     * <p>The riding controller is registered first so that the seated pose
-     * always wins over walk/idle when this fighter is mounted on a horse.
-     *
-     * <p>Subclasses with extra animations (e.g. a lance-charge) should call
-     * {@code super.registerControllers(controllers)} and then add their own.
-     */
-    @Override
-    public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(GotAnimationDefinitions.ridingController(this));
-        controllers.add(GotAnimationDefinitions.deathController(this));
-        controllers.add(GotAnimationDefinitions.spawnController(this));
-        controllers.add(GotAnimationDefinitions.movementController(this));
     }
 }

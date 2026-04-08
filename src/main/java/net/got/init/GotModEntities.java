@@ -2,7 +2,15 @@ package net.got.init;
 
 import net.got.GotMod;
 import net.got.entity.horse.GotHorseEntity;
-import net.got.entity.npc.smallfolk.northmen.NorthmanEntity;
+// ── Tier-1 Smallfolk imports ───────────────────────────────────────────────────
+import net.got.entity.npc.smallfolk.NorthmanEntity;
+import net.got.entity.npc.smallfolk.RiverlanderEntity;
+import net.got.entity.npc.smallfolk.ValemanEntity;
+import net.got.entity.npc.smallfolk.WestermanEntity;
+import net.got.entity.npc.smallfolk.StormlorderEntity;
+import net.got.entity.npc.smallfolk.IronbornEntity;
+import net.got.entity.npc.smallfolk.DornishmanEntity;
+import net.got.entity.npc.smallfolk.ReachmanEntity;
 // ── Levy imports ──────────────────────────────────────────────────────────────
 import net.got.entity.npc.levy.stark.StarkLevyEntity;
 import net.got.entity.npc.levy.tully.TullyLevyEntity;
@@ -24,31 +32,36 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
  * Central entity type registry for the GoT mod.
- *
- * <p><b>Adding a new smallfolk culture</b> (e.g. Reachmen):
- * <ol>
- *   <li>Create entities in {@code net.got.entity.npc.smallfolk.reachmen}.</li>
- *   <li>Register them below in the {@code // ── Reachmen ──} block.</li>
- *   <li>Register attributes + spawn placements in {@link net.got.entity.GotEntityEvents}.</li>
- *   <li>Register renderers in {@link net.got.client.ClientSetup}.</li>
- * </ol>
  */
 public class GotModEntities {
 
     public static final DeferredRegister<EntityType<?>> REGISTRY =
             DeferredRegister.create(Registries.ENTITY_TYPE, GotMod.MODID);
 
-    // ── Northmen ───────────────────────────────────────────────────────────────
+    // ── Helper: standard humanoid size ────────────────────────────────────────
 
-    /** Civilian northman smallfolk (8 variants: 4 male, 4 female). */
-    public static final DeferredHolder<EntityType<?>, EntityType<NorthmanEntity>> NORTHMAN =
-            REGISTRY.register("northman", () ->
-                    EntityType.Builder.<NorthmanEntity>of(NorthmanEntity::new, MobCategory.CREATURE)
-                            .sized(0.6f, 1.8f)
-                            .clientTrackingRange(8)
-                            .updateInterval(3)
-                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "northman"))));
+    private static <T extends net.got.entity.npc.smallfolk.SmallfolkEntity>
+    DeferredHolder<EntityType<?>, EntityType<T>> smallfolk(
+            String id, EntityType.EntityFactory<T> factory) {
+        return REGISTRY.register(id, () ->
+                EntityType.Builder.<T>of(factory, MobCategory.CREATURE)
+                        .sized(0.6f, 1.8f)
+                        .clientTrackingRange(8)
+                        .updateInterval(3)
+                        .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                ResourceLocation.fromNamespaceAndPath(GotMod.MODID, id))));
+    }
+
+    // ── Tier-1 Smallfolk (civilians) ──────────────────────────────────────────
+
+    public static final DeferredHolder<EntityType<?>, EntityType<NorthmanEntity>>    NORTHMAN    = smallfolk("northman",    NorthmanEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<RiverlanderEntity>> RIVERLANDER = smallfolk("riverlander", RiverlanderEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ValemanEntity>>     VALEMAN     = smallfolk("valeman",     ValemanEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<WestermanEntity>>   WESTERMAN   = smallfolk("westerman",   WestermanEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<StormlorderEntity>> STORMLORDER = smallfolk("stormlorder", StormlorderEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<IronbornEntity>>    IRONBORN    = smallfolk("ironborn",    IronbornEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<DornishmanEntity>>  DORNISHMAN  = smallfolk("dornishman",  DornishmanEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ReachmanEntity>>    REACHMAN    = smallfolk("reachman",    ReachmanEntity::new);
 
     // ── Levy — Tier 2 (armed conscripts, one per major house) ─────────────────
 
@@ -108,7 +121,7 @@ public class GotModEntities {
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "tyrell_levy"))));
 
-    // ── Skilled Fighters — Tier 3 (professional soldiers, may spawn mounted) ──
+    // ── Skilled Fighters — Tier 3 ─────────────────────────────────────────────
 
     /** North Soldier — professional infantryman of the North (15% horse chance). */
     public static final DeferredHolder<EntityType<?>, EntityType<NorthSoldierEntity>> NORTH_SOLDIER =
@@ -128,16 +141,7 @@ public class GotModEntities {
 
     // ── GOT Horse ─────────────────────────────────────────────────────────────
 
-    /**
-     * GOT Warhorse — the custom-modelled horse used by all mounted fighters.
-     *
-     * <p>Uses the detailed {@code got_horse.geo.json} model with full GeckoLib
-     * animation (idle, walk, trot, gallop, eat, die). Extends vanilla
-     * {@link net.minecraft.world.entity.animal.horse.Horse} so all vanilla
-     * riding, taming, saddling, and breeding behaviour is preserved.
-     *
-     * <p>Size is slightly larger than an NPC (horses are about 1.4×1.6 blocks).
-     */
+    /** GOT Warhorse — the custom-modelled horse used by all mounted fighters. */
     public static final DeferredHolder<EntityType<?>, EntityType<GotHorseEntity>> GOT_HORSE =
             REGISTRY.register("got_horse", () ->
                     EntityType.Builder.<GotHorseEntity>of(GotHorseEntity::new, MobCategory.CREATURE)

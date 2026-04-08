@@ -2,44 +2,62 @@ package net.got.entity.client.npc.smallfolk;
 
 import net.got.entity.npc.NpcGender;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 /**
- * Abstract GeckoLib renderer shared by all smallfolk NPC sub-types.
+ * Concrete vanilla renderer for ALL Smallfolk-hierarchy NPC cultures
+ * (Tier 1 civilians, Tier 2 levies, Tier 3 skilled fighters).
  *
- * <p>Handles texture routing per-variant via
- * {@link #getMaleTextures()} / {@link #getFemaleTextures()}.
+ * <p>Uses the 1.21.4 render-state pattern: entity data (gender, variant) is
+ * copied into {@link SmallfolkRenderState} during {@link #extractRenderState},
+ * then used in {@link #getTextureLocation} to pick the correct texture.
  *
- * <p>Name tags are handled automatically by vanilla because every
- * smallfolk entity calls {@code setCustomName()} and
- * {@code setCustomNameVisible(true)} inside {@code finalizeSpawn()}.
+ * <p>Register in ClientSetup with texture arrays from the entity class:
+ * <pre>{@code
+ *   event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),
+ *       ctx -> new SmallfolkRenderer<>(ctx,
+ *           NorthmanEntity.MALE_TEXTURES, NorthmanEntity.FEMALE_TEXTURES));
+ * }</pre>
  *
- * @param <T> the concrete smallfolk entity type
+ * @param <T> any entity that extends {@link SmallfolkEntity}
  */
-public abstract class SmallfolkRenderer<T extends SmallfolkEntity>
-        extends GeoEntityRenderer<T> {
+public class SmallfolkRenderer<T extends SmallfolkEntity>
+        extends HumanoidMobRenderer<T, SmallfolkRenderState, HumanoidModel<SmallfolkRenderState>> {
 
-    protected SmallfolkRenderer(EntityRendererProvider.Context ctx, GeoModel<T> model) {
-        super(ctx, model);
-        this.shadowRadius = 0.5f;
+    private final ResourceLocation[] maleTextures;
+    private final ResourceLocation[] femaleTextures;
+
+    public SmallfolkRenderer(EntityRendererProvider.Context ctx,
+                              ResourceLocation[] maleTextures,
+                              ResourceLocation[] femaleTextures) {
+        super(ctx, new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE)), 0.5f);
+        this.maleTextures   = maleTextures;
+        this.femaleTextures = femaleTextures;
     }
 
-    // ── Texture routing ────────────────────────────────────────────────────────
-
-    protected abstract ResourceLocation[] getMaleTextures();
-    protected abstract ResourceLocation[] getFemaleTextures();
+    @Override
+    public SmallfolkRenderState createRenderState() {
+        return new SmallfolkRenderState();
+    }
 
     @Override
-    public ResourceLocation getTextureLocation(T entity) {
-        if (entity.getGender() == NpcGender.FEMALE) {
-            int idx = entity.getVariant() - entity.getVariantsPerGender();
-            ResourceLocation[] arr = getFemaleTextures();
-            return arr[Math.abs(idx) % arr.length];
+    public void extractRenderState(T entity, SmallfolkRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+        state.isFemale         = entity.getGender() == NpcGender.FEMALE;
+        state.variant          = entity.getVariant();
+        state.variantsPerGender = entity.getVariantsPerGender();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(SmallfolkRenderState state) {
+        if (state.isFemale) {
+            int idx = state.variant - state.variantsPerGender;
+            return femaleTextures[Math.abs(idx) % femaleTextures.length];
         }
-        ResourceLocation[] arr = getMaleTextures();
-        return arr[entity.getVariant() % arr.length];
+        return maleTextures[state.variant % maleTextures.length];
     }
 }
