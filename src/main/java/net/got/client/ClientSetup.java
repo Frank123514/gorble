@@ -2,6 +2,7 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
+import net.got.entity.client.npc.smallfolk.GotFemaleSmallfolkModel;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -46,7 +47,8 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 //      (which now defaults to the MOD bus) and remove the Bus import entirely.
 @EventBusSubscriber(
         modid = "got",
-        value = Dist.CLIENT
+        value = Dist.CLIENT,
+        bus = EventBusSubscriber.Bus.MOD
 )
 public final class ClientSetup {
 
@@ -144,12 +146,19 @@ public final class ClientSetup {
         return (EntityType<AbstractBoat>) type;
     }
 
+    /**
+     * Registers custom entity model layer definitions so they are available
+     * when {@link #registerRenderers} runs and bakes them via ctx.bakeLayer().
+     *
+     * <p>This event fires BEFORE RegisterRenderers by design — that ordering
+     * was the root cause of the earlier registration-timing crash when
+     * GotFemaleSmallfolkModel was first introduced.
+     */
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        // Ensure vanilla PlayerModel layer roots are available when our NPC renderers
-        // call ctx.bakeLayer(ModelLayers.PLAYER / PLAYER_SLIM / PLAYER_INNER_ARMOR /
-        // PLAYER_OUTER_ARMOR). These are already registered by vanilla, but registering
-        // them again via the event is a no-op if they already exist, so this is safe.
+        event.registerLayerDefinition(
+                GotFemaleSmallfolkModel.LAYER,
+                GotFemaleSmallfolkModel::createBodyLayer);
     }
 
     @SubscribeEvent

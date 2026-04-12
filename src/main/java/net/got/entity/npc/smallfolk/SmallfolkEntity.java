@@ -154,13 +154,37 @@ public abstract class SmallfolkEntity extends PathfinderMob {
 
     private void setNpcName(String name) { entityData.set(DATA_NPC_NAME, name); }
 
-    /** Returns the displayed name: "Name (Type)" when name is non-empty, otherwise just the type. */
+    /**
+     * Exposes the NPC's personal name as the entity's "custom name" so
+     * Minecraft's nameplate renderer picks it up via {@code hasCustomName()}.
+     *
+     * <p>Returns the fully-formatted component — e.g. "Jon the Northman" —
+     * so the nameplate, death messages, and chat logs all use the same text.
+     * Returns {@code null} when no personal name has been assigned (before
+     * {@code finalizeSpawn} runs), which suppresses the nameplate entirely.
+     *
+     * <p><b>FIX:</b> the old {@code getName()} override was invisible to the
+     * nameplate because Minecraft checks {@code getCustomName() != null}, not
+     * {@code getName()}. Moving the logic here corrects that.
+     */
     @Override
-    public Component getName() {
+    public @Nullable Component getCustomName() {
         String personal = getNpcName();
-        if (personal == null || personal.isEmpty()) return super.getName();
+        if (personal == null || personal.isEmpty()) return null;
         return Component.translatable("entity.got.npc.named",
-                Component.literal(personal), super.getName());
+                Component.literal(personal),
+                Component.translatable(getType().getDescriptionId()));
+    }
+
+    /**
+     * Always show the nameplate above named NPCs, mirroring LOTR's behaviour.
+     * Without this override the nameplate only appears when the player looks
+     * directly at the entity.
+     */
+    @Override
+    public boolean isCustomNameVisible() {
+        String personal = getNpcName();
+        return personal != null && !personal.isEmpty();
     }
 
     // ── Personality ───────────────────────────────────────────────────────────
@@ -317,27 +341,27 @@ public abstract class SmallfolkEntity extends PathfinderMob {
      * {@code npcItemsInv.setMeleeWeapon()} pattern.
      */
     protected void setMainhandItem(ItemStack stack) {
-        setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, stack);
+        setItemSlot(EquipmentSlot.MAINHAND, stack);
     }
 
     /** Equip a helmet. */
     protected void setHelmet(ItemStack stack) {
-        setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, stack);
+        setItemSlot(EquipmentSlot.HEAD, stack);
     }
 
     /** Equip a chestplate. */
     protected void setChestplate(ItemStack stack) {
-        setItemSlot(net.minecraft.world.entity.EquipmentSlot.CHEST, stack);
+        setItemSlot(EquipmentSlot.CHEST, stack);
     }
 
     /** Equip leggings. */
     protected void setLeggings(ItemStack stack) {
-        setItemSlot(net.minecraft.world.entity.EquipmentSlot.LEGS, stack);
+        setItemSlot(EquipmentSlot.LEGS, stack);
     }
 
     /** Equip boots. */
     protected void setBoots(ItemStack stack) {
-        setItemSlot(net.minecraft.world.entity.EquipmentSlot.FEET, stack);
+        setItemSlot(EquipmentSlot.FEET, stack);
     }
 
     // ── Talk-animation data accessors (package-private, used by GotNpcTalkAnimations) ──

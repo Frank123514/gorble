@@ -21,6 +21,21 @@ import net.minecraft.resources.ResourceLocation;
  *   <li>Gender-split texture array lookup.</li>
  * </ul>
  *
+ * <p><b>Female model:</b> {@code slimModel} is baked from
+ * {@link GotFemaleSmallfolkModel#LAYER}, which is registered in
+ * {@code ClientSetup.registerLayerDefinitions} — an event that fires
+ * <em>before</em> {@code RegisterRenderers}, so the layer is always
+ * available when this constructor runs.
+ *
+ * <p><b>Model switch mechanism:</b> {@code this.model} (the protected field
+ * on {@code LivingEntityRenderer}) is reassigned to the gender-appropriate
+ * model in both {@link #extractRenderState} (before {@code super} runs its
+ * internal {@code setupAnim}) and {@link #render} (before
+ * {@code super.render} drives {@code renderModel}).  There is no
+ * {@code getModel(state)} hook to override in NeoForge 1.21.4 —
+ * {@code FeatureRendererContext#getModel()} simply returns {@code this.model},
+ * so direct field assignment is the correct approach.
+ *
  * @param <T> any entity extending {@link SmallfolkEntity}
  */
 public class SmallfolkRenderer<T extends SmallfolkEntity>
@@ -29,7 +44,9 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     /** 15/16 — matches LOTR's PLAYER_SCALE constant. */
     private static final float NPC_SCALE = 0.9375f;
 
+    /** Standard (Steve/4px-arm) model used for males and non-civilian NPCs. */
     private final HumanoidModel<SmallfolkRenderState> standardModel;
+    /** Slim-armed (Alex/3px-arm) model used for females. */
     private final HumanoidModel<SmallfolkRenderState> slimModel;
 
     private final ResourceLocation[] maleTextures;
@@ -38,21 +55,33 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     public SmallfolkRenderer(EntityRendererProvider.Context ctx,
                              ResourceLocation[] maleTextures,
                              ResourceLocation[] femaleTextures) {
-        super(ctx, new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE)), 0.5f);
-        this.standardModel = new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE));
-        // Slim arms: ZOMBIE_INNER_ARMOR is the closest available baked layer with slim proportions;
-        // artists can replace this with a dedicated ModelLayer once custom models are added.
-        this.slimModel     = new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE));
+        // Bake the standard (Steve/4px-arm) model and pass it to super as default.
+        super(ctx, new HumanoidModel<>(ctx.bakeLayer(ModelLayers.PLAYER)), 0.5f);
+
+        // Keep a named reference so we can swap back to it for males.
+        this.standardModel = this.model;
+
+        // Slim-armed model: GotFemaleSmallfolkModel.LAYER must be registered via
+        // ClientSetup.registerLayerDefinitions before this constructor is called.
+        // That event fires before RegisterRenderers, so the ordering is guaranteed.
+        this.slimModel = new GotFemaleSmallfolkModel(
+                ctx.bakeLayer(GotFemaleSmallfolkModel.LAYER));
+
         this.maleTextures   = maleTextures;
         this.femaleTextures = femaleTextures;
     }
 
-    // ── Render ────────────────────────────────────────────────────────────────
+    // ── Model switch + render ─────────────────────────────────────────────────
+    //
+    // this.model is the protected field on LivingEntityRenderer that the
+    // vanilla pipeline reads for both setupAnim() and renderModel(). We swap
+    // it before super.render() so both calls see the correct geometry.
+    // There is no getModel(state) hook to override in NeoForge 1.21.4;
+    // FeatureRendererContext#getModel() simply returns this.model directly.
 
     @Override
     public void render(SmallfolkRenderState state, PoseStack poseStack,
                        MultiBufferSource buffer, int packedLight) {
-        // Switch model before rendering, mirroring LOTRBipedRenderer.selectEntityModelForArmsStyle
         this.model = state.useSmallArms ? slimModel : standardModel;
         poseStack.pushPose();
         poseStack.scale(NPC_SCALE, NPC_SCALE, NPC_SCALE);
@@ -69,6 +98,11 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
 
     @Override
     public void extractRenderState(T entity, SmallfolkRenderState state, float partialTick) {
+        // Swap this.model BEFORE super.extractRenderState() so that any
+        // internal setupAnim() the super invokes already sees the correct
+        // slim vs. standard geometry for this entity.
+        this.model = entity.useSmallArmsModel() ? slimModel : standardModel;
+
         super.extractRenderState(entity, state, partialTick);
         state.isFemale          = entity.getGender() == NpcGender.FEMALE;
         state.variant           = entity.getVariant();
