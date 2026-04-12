@@ -2099,7 +2099,7 @@
   "entity.got.greyjoy_levy": "Greyjoy Levy",
   "entity.got.martell_levy": "Martell Levy",
   "entity.got.tyrell_levy": "Tyrell Levy",
-  "entity.got.north_soldier": "North Soldier",
+  "entity.got.north_soldier": "Northern Soldier",
   "entity.got.vale_knight": "Vale Knight",
   "item.got.stark_levy_spawn_egg": "Stark Levy Spawn Egg",
   "item.got.tully_levy_spawn_egg": "Tully Levy Spawn Egg",
@@ -2279,5 +2279,15 @@
   "block.got.warped_roofing": "Warped Roofing",
   "block.got.warped_roofing_slab": "Warped Roofing Slab",
   "block.got.warped_roofing_stairs": "Warped Roofing Stairs",
-  "block.got.warped_roofing_wall": "Warped Roofing Wall"
+  "block.got.warped_roofing_wall": "Warped Roofing Wall",
+  "entity.got.npc.named": "%s the %s",
+  "entity.got.northman": "Northman",
+  "entity.got.riverlander": "Riverlander",
+  "entity.got.valeman": "Valeman",
+  "entity.got.westerman": "Westerman",
+  "entity.got.stormlorder": "Stormlander",
+  "entity.got.ironborn": "Ironborn",
+  "entity.got.dornishman": "Dornishman",
+  "entity.got.reachman": "Reachman",
+  "entity.got.got_horse": "Warhorse"
 }

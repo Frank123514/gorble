@@ -1,0 +1,19 @@
+package net.got.entity.npc.goal;
+
+import net.got.entity.npc.smallfolk.SmallfolkEntity;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+
+/**
+ * Hurt-by-target goal for GoT NPCs — mirrors LOTR's {@code NPCHurtByTargetGoal}.
+ *
+ * <p>Alerts nearby allies of the same class when this NPC is attacked,
+ * causing them to join the fight.
+ */
+public final class GotHurtByTargetGoal extends HurtByTargetGoal {
+
+    public GotHurtByTargetGoal(SmallfolkEntity entity) {
+        super(entity);
+        // Alert all nearby smallfolk NPCs of the same culture when attacked
+        setAlertOthers();
+    }
+}
