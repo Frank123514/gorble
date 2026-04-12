@@ -1,6 +1,6 @@
 package net.got.entity.npc.data;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 /**
  * Functional interface that decides whether a newly-spawned NPC is male.
@@ -23,5 +23,5 @@ public interface GotGenderProvider {
      *
      * @param rand the entity's RNG, seeded at spawn time
      */
-    boolean isMale(Random rand);
+    boolean isMale(RandomSource rand);
 }

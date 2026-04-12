@@ -19,6 +19,6 @@ public final class GotNearestTargetGoal<T extends LivingEntity> extends NearestA
     }
 
     public GotNearestTargetGoal(SmallfolkEntity entity, Class<T> targetClass, boolean mustSee, Predicate<LivingEntity> predicate) {
-        super(entity, targetClass, 10, mustSee, false, predicate);
+        super(entity, targetClass, 10, mustSee, false, (target, level) -> predicate.test(target));
     }
 }

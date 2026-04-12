@@ -305,7 +305,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
                 playSound(SoundEvents.VILLAGER_AMBIENT, 0.6f,
                         0.9f + random.nextFloat() * 0.2f);
             }
-            return InteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
     }
@@ -342,7 +342,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
 
     // ── Talk-animation data accessors (package-private, used by GotNpcTalkAnimations) ──
 
-    void setTalkData(float headYaw, float headPitch, float gesture) {
+    public void setTalkData(float headYaw, float headPitch, float gesture) {
         entityData.set(DATA_TALK_HEAD_YAW,   headYaw);
         entityData.set(DATA_TALK_HEAD_PITCH, headPitch);
         entityData.set(DATA_TALK_GESTURE,    gesture);

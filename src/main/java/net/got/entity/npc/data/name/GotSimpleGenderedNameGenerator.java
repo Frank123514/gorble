@@ -1,8 +1,7 @@
 package net.got.entity.npc.data.name;
 
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 /**
  * Picks a random name from a male bank or a female bank depending on gender.
@@ -19,7 +18,7 @@ public final class GotSimpleGenderedNameGenerator implements GotNameGenerator {
     }
 
     @Override
-    public String generateName(Random rand, boolean male) {
+    public String generateName(RandomSource rand, boolean male) {
         ResourceLocation bank = male ? maleBank : femaleBank;
         return GotNameBankManager.INSTANCE.fetchBank(bank).getRandomName(rand);
     }

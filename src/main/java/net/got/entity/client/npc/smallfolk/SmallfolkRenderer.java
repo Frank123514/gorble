@@ -36,8 +36,8 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     private final ResourceLocation[] femaleTextures;
 
     public SmallfolkRenderer(EntityRendererProvider.Context ctx,
-                              ResourceLocation[] maleTextures,
-                              ResourceLocation[] femaleTextures) {
+                             ResourceLocation[] maleTextures,
+                             ResourceLocation[] femaleTextures) {
         super(ctx, new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE)), 0.5f);
         this.standardModel = new HumanoidModel<>(ctx.bakeLayer(ModelLayers.ZOMBIE));
         // Slim arms: ZOMBIE_INNER_ARMOR is the closest available baked layer with slim proportions;
@@ -50,16 +50,14 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     // ── Render ────────────────────────────────────────────────────────────────
 
     @Override
-    public void render(T entity, float yaw, float partialTick,
-                       PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(SmallfolkRenderState state, PoseStack poseStack,
+                       MultiBufferSource buffer, int packedLight) {
         // Switch model before rendering, mirroring LOTRBipedRenderer.selectEntityModelForArmsStyle
-        this.model = entity.useSmallArmsModel() ? slimModel : standardModel;
-        super.render(entity, yaw, partialTick, poseStack, buffer, packedLight);
-    }
-
-    @Override
-    protected void scale(T entity, PoseStack poseStack, float partialTick) {
+        this.model = state.useSmallArms ? slimModel : standardModel;
+        poseStack.pushPose();
         poseStack.scale(NPC_SCALE, NPC_SCALE, NPC_SCALE);
+        super.render(state, poseStack, buffer, packedLight);
+        poseStack.popPose();
     }
 
     // ── Render-state ──────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 package net.got.entity.npc.data.name;
 
 import java.util.List;
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 /**
  * An immutable list of names that can return a random entry.
@@ -15,7 +15,7 @@ public final class GotNameBank {
         this.names = List.copyOf(names);
     }
 
-    public String getRandomName(Random rand) {
+    public String getRandomName(RandomSource rand) {
         if (names.isEmpty()) return "Unknown";
         return names.get(rand.nextInt(names.size()));
     }

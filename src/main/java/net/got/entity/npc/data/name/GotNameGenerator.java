@@ -1,6 +1,6 @@
 package net.got.entity.npc.data.name;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 /**
  * Functional interface that generates a name for a newly-spawned NPC.
@@ -19,5 +19,5 @@ public interface GotNameGenerator {
      * @param male {@code true} if the NPC is male
      * @return a name string, or {@code ""} for no name
      */
-    String generateName(Random rand, boolean male);
+    String generateName(RandomSource rand, boolean male);
 }

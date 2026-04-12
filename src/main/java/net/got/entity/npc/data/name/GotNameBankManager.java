@@ -9,7 +9,7 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * Loads NPC name banks from {@code data/got/npc_names/<path>.json}.
  * Each JSON file is a flat array of strings: {@code ["Eddard","Robb","Jon"]}
  */
-@EventBusSubscriber(modid = "got")
+@EventBusSubscriber(modid = "got", bus = EventBusSubscriber.Bus.MOD)
 public class GotNameBankManager extends SimplePreparableReloadListener<Map<ResourceLocation, GotNameBank>> {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -38,8 +38,8 @@ public class GotNameBankManager extends SimplePreparableReloadListener<Map<Resou
     private Map<ResourceLocation, GotNameBank> banks = new HashMap<>();
 
     @SubscribeEvent
-    public static void onAddReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(INSTANCE);
+    public static void onAddReloadListeners(AddServerReloadListenersEvent event) {
+        event.addListener(ResourceLocation.fromNamespaceAndPath("got", "npc_names"), INSTANCE);
     }
 
     @Override
