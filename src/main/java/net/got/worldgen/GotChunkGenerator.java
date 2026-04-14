@@ -59,20 +59,13 @@ import java.util.concurrent.CompletableFuture;
  * </ul>
  *
  * <h2>Noise architecture</h2>
- * <p>Three-octave fBm via {@link GotPerlinNoise#fbm}.  The Y coordinate is
- * fixed at 0 inside the noise call so the field is purely horizontal.
- * Because noise is constant along the Y axis for any (X, Z) column the
- * density function is strictly monotonically decreasing with altitude —
- * guaranteeing solid, overhang-free terrain with no floating islands.
- * Mountain shapes come entirely from horizontal frequency content.
- *
- * <pre>
- *   Coarse  H = 1/256   broad landscape undulation
- *   Mid     H = 1/102   hill-scale bumps and ridges
- *   Fine    H = 1/ 43   surface roughness and ledge detail
- *
- *   (internally driven by GotPerlinNoise.fbm — coarse × 0.50, mid × 0.35, fine × 0.15)
- * </pre>
+ * <p>Terrain density blends multiple layered Perlin fields: broad fBm for
+ * continental shape, ridged multi-fractal for sharp mountain chains, and
+ * high-frequency detail for crags and ledges. To avoid chaotic floating shelves,
+ * the density noise is evaluated in X/Z and combined with a vertical gradient,
+ * producing sharp but grounded mountain silhouettes.
+ * A separate low-frequency contour mask cuts continuous valley corridors that
+ * snake between highlands to form natural passes.
  *
  * <h2>Biome sync</h2>
  * <p>{@link GotBiomeSource} performs the same bilinear 4-pixel lookup and picks
@@ -99,21 +92,10 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     // ── Perlin noise frequencies ──────────────────────────────────────────
     //
-    // FREQ_H is applied to world X and Z only.
+    // Frequencies are applied to all axes with lower vertical frequency.
     //
-    // The Y axis is intentionally excluded from the noise evaluation so that
-    // the density function is strictly monotonically decreasing with altitude.
-    // Passing a varying Y coordinate into the noise caused the density to
-    // oscillate as altitude increases, producing overhangs and floating
-    // islands in mountain biomes.  With Y fixed at 0 the noise is a pure 2D
-    // horizontal field: at any given (X, Z) column, density = (depth - Y) + C
-    // where C is a constant in [-scale, scale], which is guaranteed to cross
-    // zero exactly once and never reverse — giving solid, overhang-free peaks.
-    //
-    // These are passed into GotPerlinNoise.fbm which internally applies
-    // sub-octave multipliers of 2.5× and 6.0×.
 
-    private static final float FREQ_H = 1f / 256f;  // horizontal base frequency
+    private static final float FREQ_XZ = 1f / 210f; // base horizontal frequency for continental forms
 
     // Base seed constant — XOR'd with the world seed at runtime so every
     // world/save produces different terrain within the same biome layout.
@@ -414,15 +396,38 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static float cornerDensity(int wx, int wy, int wz,
                                        float depth, float scale, int seed) {
         float gradient = depth - wy;
-        // Y is fixed at 0 — purely horizontal noise — preserving the
-        // no-overhang guarantee.  The seed varies per world so mountains,
-        // plains, etc. all look different in every new world.
-        float noise = GotPerlinNoise.fbm(
-                wx * FREQ_H,
-                0f,
-                wz * FREQ_H,
-                seed);
-        return gradient + noise * scale;
+
+        // Keep terrain column-monotonic to prevent floating shelves/caves.
+        // We still use layered fractal noise, but sample it in XZ only.
+        float nx = wx * FREQ_XZ;
+        float nz = wz * FREQ_XZ;
+
+        float base = GotPerlinNoise.fbm(nx, 0f, nz, seed ^ 0x1F23A7, 5, 2.0f, 0.5f);
+        float ridged = GotPerlinNoise.ridgedFbm(nx * 1.28f, 0f, nz * 1.28f,
+                seed ^ 0x6B5CD3, 4, 2.0f, 0.55f);
+        float detail = GotPerlinNoise.fbm(nx * 3.2f, 0f, nz * 3.2f,
+                seed ^ 0xA41E29, 3, 2.2f, 0.5f);
+
+        float mountainMask = Mth.clamp((depth - 77f) / 44f, 0f, 1f);
+
+        float ridge01 = (ridged + 1f) * 0.5f;
+        float spire = ridge01 * ridge01 * ridge01; // softened alpine cones
+
+        // Continuous valley/pass mask from long, snaking contour lines.
+        float valleyCarrier = GotPerlinNoise.fbm(nx * 0.58f, 0f, nz * 0.58f,
+                seed ^ 0x2D91F3, 3, 2.0f, 0.5f);
+        float valleyLine = 1f - Math.abs(valleyCarrier);
+        valleyLine = valleyLine * valleyLine * valleyLine;
+        float valleyMask = mountainMask * valleyLine;
+
+        float noise = base * 0.66f
+                + detail * 0.10f
+                + mountainMask * ((ridged * 0.12f) + (spire * 0.15f) - 0.05f)
+                - valleyMask * 0.24f;
+
+        float amplitude = scale * (0.94f + mountainMask * 0.72f);
+        amplitude *= (1f - valleyMask * 0.10f);
+        return gradient + noise * amplitude;
     }
 
     // ── Package-private API used by GotBiomeSource ────────────────────────

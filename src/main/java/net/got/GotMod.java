@@ -1,6 +1,7 @@
 package net.got;
 
 import net.got.client.GotClient;
+import net.got.worldgen.biome.placers.GotTreePlacers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.HashSet;
 import net.got.init.GotModBlocks;
@@ -74,6 +75,7 @@ public final class GotMod {
         GotModTabs.register(modBus);
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
+        GotTreePlacers.register(modBus);
 
         // ── NPC entities ────────────────────────────────────────────────
         GotModEntities.REGISTRY.register(modBus);

@@ -34,4 +34,5 @@ public class SmallfolkRenderState extends HumanoidRenderState {
 
     /** True while the NPC is in a talking animation state. */
     public boolean isTalking;
+    public boolean isUsingSmallArms;
 }

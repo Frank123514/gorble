@@ -2,7 +2,6 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
-import net.got.entity.client.npc.smallfolk.GotFemaleSmallfolkModel;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -144,21 +143,6 @@ public final class ClientSetup {
     @SuppressWarnings("unchecked")
     private static EntityType<AbstractBoat> boat(EntityType<?> type) {
         return (EntityType<AbstractBoat>) type;
-    }
-
-    /**
-     * Registers custom entity model layer definitions so they are available
-     * when {@link #registerRenderers} runs and bakes them via ctx.bakeLayer().
-     *
-     * <p>This event fires BEFORE RegisterRenderers by design — that ordering
-     * was the root cause of the earlier registration-timing crash when
-     * GotFemaleSmallfolkModel was first introduced.
-     */
-    @SubscribeEvent
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(
-                GotFemaleSmallfolkModel.LAYER,
-                GotFemaleSmallfolkModel::createBodyLayer);
     }
 
     @SubscribeEvent

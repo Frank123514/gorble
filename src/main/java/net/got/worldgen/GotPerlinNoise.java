@@ -106,10 +106,55 @@ public final class GotPerlinNoise {
      * @return fBm value in approximately [−1, 1]
      */
     public static float fbm(float x, float y, float z, int seed) {
-        float coarse = sample(x,          y,          z,          seed);
-        float mid    = sample(x * 2.5f,   y * 2.5f,   z * 2.5f,   seed ^ 0x5D3F1A);
-        float fine   = sample(x * 6.0f,   y * 6.0f,   z * 6.0f,   seed ^ 0xC7B42E);
-        return coarse * 0.50f + mid * 0.35f + fine * 0.15f;
+        return fbm(x, y, z, seed, 3, 2.5f, 0.5f);
+    }
+
+
+    /**
+     * General-purpose fractal Brownian motion with configurable octave stack.
+     */
+    public static float fbm(float x, float y, float z, int seed,
+                            int octaves, float lacunarity, float gain) {
+        float value = 0f;
+        float amplitude = 1f;
+        float frequency = 1f;
+        float amplitudeSum = 0f;
+
+        for (int i = 0; i < octaves; i++) {
+            value += sample(x * frequency, y * frequency, z * frequency,
+                    seed ^ (0x9E3779B9 * (i + 1))) * amplitude;
+            amplitudeSum += amplitude;
+            frequency *= lacunarity;
+            amplitude *= gain;
+        }
+
+        return amplitudeSum == 0f ? 0f : value / amplitudeSum;
+    }
+
+    /**
+     * Ridged multi-fractal noise suitable for sharp mountain chains.
+     */
+    public static float ridgedFbm(float x, float y, float z, int seed,
+                                  int octaves, float lacunarity, float gain) {
+        float value = 0f;
+        float amplitude = 1f;
+        float frequency = 1f;
+        float amplitudeSum = 0f;
+
+        for (int i = 0; i < octaves; i++) {
+            float n = sample(x * frequency, y * frequency, z * frequency,
+                    seed ^ (0x7F4A7C15 * (i + 1)));
+            float ridged = 1f - Math.abs(n);
+            ridged *= ridged;
+
+            value += ridged * amplitude;
+            amplitudeSum += amplitude;
+            frequency *= lacunarity;
+            amplitude *= gain;
+        }
+
+        if (amplitudeSum == 0f) return 0f;
+        return (value / amplitudeSum) * 2f - 1f;
     }
 
     // ── Internal maths ────────────────────────────────────────────────────
@@ -125,7 +170,7 @@ public final class GotPerlinNoise {
      * Ken Perlin's reference implementation, adapted here to be seed-dependent.
      */
     private static float grad(int ix, int iy, int iz, int seed,
-                               float dx, float dy, float dz) {
+                              float dx, float dy, float dz) {
         int h = hash(ix, iy, iz, seed) & 15;
         // Select two of {dx, dy, dz} and apply sign via two bits.
         // h & 8 → swap which axis is 'u'; h & 4 → which axis is 'v'.

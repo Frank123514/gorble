@@ -2,6 +2,7 @@ package net.got.worldgen.biome;
 
 import net.got.GotMod;
 import net.got.init.GotModBlocks;
+import net.got.worldgen.biome.placers.GotPineTrunkPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -302,7 +303,7 @@ public final class GotConfiguredFeatures {
         // pine: straight trunk(14,3,0), pine foliage(r=1,o=1,h=3-4), dirt=grass_block
         register(ctx, PINE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.PINE_LOG.get()),
-                new StraightTrunkPlacer(14, 3, 0),
+                new GotPineTrunkPlacer(14, 3, 0),
                 BlockStateProvider.simple(GotModBlocks.PINE_LEAVES.get().defaultBlockState()),
                 new PineFoliagePlacer(ConstantInt.of(1), ConstantInt.of(1), UniformInt.of(3, 4)),
                 new TwoLayersFeatureSize(1, 0, 2))

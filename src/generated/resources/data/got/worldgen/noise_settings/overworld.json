@@ -1304,23 +1304,41 @@
                             "if_true": {
                               "type": "minecraft:biome",
                               "biome_is": [
-                                "got:north_hills"
+                                "got:north_hills",
+                                "got:north_mountains"
                               ]
                             },
                             "then_run": {
-                              "type": "minecraft:condition",
-                              "if_true": {
-                                "type": "minecraft:noise_threshold",
-                                "max_threshold": 1.7976931348623157E308,
-                                "min_threshold": 0.12121212121212122,
-                                "noise": "minecraft:surface"
-                              },
-                              "then_run": {
-                                "type": "minecraft:block",
-                                "result_state": {
-                                  "Name": "minecraft:stone"
+                              "type": "minecraft:sequence",
+                              "sequence": [
+                                {
+                                  "type": "minecraft:condition",
+                                  "if_true": {
+                                    "type": "minecraft:steep"
+                                  },
+                                  "then_run": {
+                                    "type": "minecraft:block",
+                                    "result_state": {
+                                      "Name": "minecraft:stone"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "minecraft:condition",
+                                  "if_true": {
+                                    "type": "minecraft:water",
+                                    "add_stone_depth": false,
+                                    "offset": 0,
+                                    "surface_depth_multiplier": 0
+                                  },
+                                  "then_run": {
+                                    "type": "minecraft:block",
+                                    "result_state": {
+                                      "Name": "minecraft:grass_block"
+                                    }
+                                  }
                                 }
-                              }
+                              ]
                             }
                           },
                           {
@@ -2082,7 +2100,9 @@
                         "if_true": {
                           "type": "minecraft:biome",
                           "biome_is": [
-                            "got:frostfangs"
+                            "got:frostfangs",
+                            "got:north_hills",
+                            "got:north_mountains"
                           ]
                         },
                         "then_run": {
@@ -2573,7 +2593,9 @@
                     "type": "minecraft:biome",
                     "biome_is": [
                       "minecraft:frozen_peaks",
-                      "got:frostfangs"
+                      "got:frostfangs",
+                      "got:north_hills",
+                      "got:north_mountains"
                     ]
                   },
                   "then_run": {

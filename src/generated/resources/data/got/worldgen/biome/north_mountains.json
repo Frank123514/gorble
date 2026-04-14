@@ -3,7 +3,7 @@
   "downfall": 0.9,
   "effects": {
     "fog_color": 12638463,
-    "grass_color": 2391380,
+    "grass_color": 6260580,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -83,5 +83,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": -0.3
+  "temperature": 0.2
 }

@@ -13,28 +13,14 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Universal renderer for all Smallfolk-hierarchy NPCs (Tiers 1, 2, 3).
  *
- * <p>Mirrors LOTR's {@code LOTRBipedRenderer}:
- * <ul>
- *   <li>Scale: 93.75% (15/16) of player size.</li>
- *   <li>Model switching: slim arms for females ({@link SmallfolkEntity#useSmallArmsModel()}).</li>
- *   <li>Talk-animation data forwarded into {@link SmallfolkRenderState}.</li>
- *   <li>Gender-split texture array lookup.</li>
- * </ul>
+ * <p>Uses the vanilla {@code ModelLayers.PLAYER} (Steve/standard-arm) model for
+ * males and {@code ModelLayers.PLAYER_SLIM} (Alex/slim-arm) model for females —
+ * exactly the same model layers the player renderer uses. No custom model
+ * layer registration is required.
  *
- * <p><b>Female model:</b> {@code slimModel} is baked from
- * {@link GotFemaleSmallfolkModel#LAYER}, which is registered in
- * {@code ClientSetup.registerLayerDefinitions} — an event that fires
- * <em>before</em> {@code RegisterRenderers}, so the layer is always
- * available when this constructor runs.
- *
- * <p><b>Model switch mechanism:</b> {@code this.model} (the protected field
- * on {@code LivingEntityRenderer}) is reassigned to the gender-appropriate
- * model in both {@link #extractRenderState} (before {@code super} runs its
- * internal {@code setupAnim}) and {@link #render} (before
- * {@code super.render} drives {@code renderModel}).  There is no
- * {@code getModel(state)} hook to override in NeoForge 1.21.4 —
- * {@code FeatureRendererContext#getModel()} simply returns {@code this.model},
- * so direct field assignment is the correct approach.
+ * <p>The correct model is selected once during {@link #extractRenderState}
+ * by writing it into {@link SmallfolkRenderState#useSmallArms}, then
+ * applied in {@link #render} before the super call drives the pipeline.
  *
  * @param <T> any entity extending {@link SmallfolkEntity}
  */
@@ -44,9 +30,9 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     /** 15/16 — matches LOTR's PLAYER_SCALE constant. */
     private static final float NPC_SCALE = 0.9375f;
 
-    /** Standard (Steve/4px-arm) model used for males and non-civilian NPCs. */
+    /** Standard (Steve / 4 px arm) model — used for males. */
     private final HumanoidModel<SmallfolkRenderState> standardModel;
-    /** Slim-armed (Alex/3px-arm) model used for females. */
+    /** Slim (Alex / 3 px arm) model — used for females. */
     private final HumanoidModel<SmallfolkRenderState> slimModel;
 
     private final ResourceLocation[] maleTextures;
@@ -55,29 +41,18 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     public SmallfolkRenderer(EntityRendererProvider.Context ctx,
                              ResourceLocation[] maleTextures,
                              ResourceLocation[] femaleTextures) {
-        // Bake the standard (Steve/4px-arm) model and pass it to super as default.
+        // Start with the standard player model as the default.
         super(ctx, new HumanoidModel<>(ctx.bakeLayer(ModelLayers.PLAYER)), 0.5f);
-
-        // Keep a named reference so we can swap back to it for males.
         this.standardModel = this.model;
 
-        // Slim-armed model: GotFemaleSmallfolkModel.LAYER must be registered via
-        // ClientSetup.registerLayerDefinitions before this constructor is called.
-        // That event fires before RegisterRenderers, so the ordering is guaranteed.
-        this.slimModel = new GotFemaleSmallfolkModel(
-                ctx.bakeLayer(GotFemaleSmallfolkModel.LAYER));
+        // Slim model uses the same vanilla layer as the player slim / Alex skin.
+        this.slimModel = new HumanoidModel<>(ctx.bakeLayer(ModelLayers.PLAYER_SLIM));
 
         this.maleTextures   = maleTextures;
         this.femaleTextures = femaleTextures;
     }
 
-    // ── Model switch + render ─────────────────────────────────────────────────
-    //
-    // this.model is the protected field on LivingEntityRenderer that the
-    // vanilla pipeline reads for both setupAnim() and renderModel(). We swap
-    // it before super.render() so both calls see the correct geometry.
-    // There is no getModel(state) hook to override in NeoForge 1.21.4;
-    // FeatureRendererContext#getModel() simply returns this.model directly.
+    // ── Render ───────────────────────────────────────────────────────────────
 
     @Override
     public void render(SmallfolkRenderState state, PoseStack poseStack,
@@ -98,9 +73,7 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
 
     @Override
     public void extractRenderState(T entity, SmallfolkRenderState state, float partialTick) {
-        // Swap this.model BEFORE super.extractRenderState() so that any
-        // internal setupAnim() the super invokes already sees the correct
-        // slim vs. standard geometry for this entity.
+        // Swap model BEFORE super call so setupAnim sees the right geometry.
         this.model = entity.useSmallArmsModel() ? slimModel : standardModel;
 
         super.extractRenderState(entity, state, partialTick);
@@ -108,6 +81,12 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
         state.variant           = entity.getVariant();
         state.variantsPerGender = entity.getVariantsPerGender();
         state.useSmallArms      = entity.useSmallArmsModel();
+        // FIX: also set the vanilla HumanoidRenderState field so that
+        // HumanoidModel.setupAnim() positions the slim arm bones at the
+        // correct X offset (-5.5 instead of -5.0).  Without this, female
+        // slim arms overlap the body by 0.5 px and look identical to the
+        // standard male model.
+        state.isUsingSmallArms  = state.useSmallArms;
         state.isTalking         = entity.isTalking();
 
         var talk = entity.getTalkAnimations();
