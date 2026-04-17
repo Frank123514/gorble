@@ -4,9 +4,9 @@ import net.got.entity.npc.smallfolk.SmallfolkEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 /**
- * Melee attack goal tuned for GoT NPCs — like LOTR's {@code NPCMeleeAttackGoal}.
+ * Melee attack goal tuned for GoT NPCs
  *
- * <p>Uses {@link MeleeAttackGoal} with memorizeTarget=true so the NPC keeps
+ * so the NPC keeps
  * chasing a fleeing target rather than giving up at melee range.
  */
 public final class GotMeleeAttackGoal extends MeleeAttackGoal {

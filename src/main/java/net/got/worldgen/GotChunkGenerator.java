@@ -414,19 +414,48 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float spire = ridge01 * ridge01 * ridge01; // softened alpine cones
 
         // Continuous valley/pass mask from long, snaking contour lines.
-        float valleyCarrier = GotPerlinNoise.fbm(nx * 0.58f, 0f, nz * 0.58f,
+        //
+        // Two carriers at different frequencies are combined so that their
+        // zero-crossings are interleaved, producing roughly 2× as many passes
+        // as a single carrier while keeping the sinuous, organic character.
+        //
+        //   carrier1: frequency raised from 0.58 → 0.90  (≈55% more crossings)
+        //   carrier2: frequency at 0.52, different seed   (fills gaps left by carrier1)
+        //
+        // valleyLine uses a squared (not cubed) falloff so each pass is
+        // noticeably wider — a proper corridor rather than a knife-edge crease.
+        //
+        // The subtraction strength is kept at 0.24 per carrier but weighted
+        // 60/40 so the primary carrier still dominates the pass shape.
+        float valleyCarrier1 = GotPerlinNoise.fbm(nx * 0.90f, 0f, nz * 0.90f,
                 seed ^ 0x2D91F3, 3, 2.0f, 0.5f);
-        float valleyLine = 1f - Math.abs(valleyCarrier);
-        valleyLine = valleyLine * valleyLine * valleyLine;
+        float valleyCarrier2 = GotPerlinNoise.fbm(nx * 0.52f, 0f, nz * 0.52f,
+                seed ^ 0x7C3EA1, 3, 2.0f, 0.5f);
+
+        // Squared falloff → wider passes (cube was too narrow/rare).
+        float valleyLine1 = 1f - Math.abs(valleyCarrier1);
+        valleyLine1 = valleyLine1 * valleyLine1;
+
+        float valleyLine2 = 1f - Math.abs(valleyCarrier2);
+        valleyLine2 = valleyLine2 * valleyLine2;
+
+        // Blend: take the stronger of the two passes at each point so they
+        // don't destructively interfere, then scale back into [0,1].
+        float valleyLine = Math.max(valleyLine1 * 0.60f, valleyLine2 * 0.40f);
         float valleyMask = mountainMask * valleyLine;
 
+        // Valley carving: strong subtraction punches deep U-shaped saddles between
+        // peaks.  0.55 (was 0.24) is enough to cut well below the surrounding ridge
+        // line.  The amplitude is also damped hard inside the pass (0.40 vs 0.10)
+        // so the noise that remains near the floor is naturally quieter — giving
+        // smooth grassy bowls without any explicit floor-smoothing hack.
         float noise = base * 0.66f
                 + detail * 0.10f
                 + mountainMask * ((ridged * 0.12f) + (spire * 0.15f) - 0.05f)
-                - valleyMask * 0.24f;
+                - valleyMask * 0.55f;
 
         float amplitude = scale * (0.94f + mountainMask * 0.72f);
-        amplitude *= (1f - valleyMask * 0.10f);
+        amplitude *= (1f - valleyMask * 0.40f);
         return gradient + noise * amplitude;
     }
 

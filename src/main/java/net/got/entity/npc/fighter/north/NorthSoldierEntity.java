@@ -1,6 +1,7 @@
 package net.got.entity.npc.fighter.north;
 
 import net.got.entity.npc.GotSpawnEquipment;
+import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.data.name.GotNameGenerator;
 import net.got.entity.npc.data.name.GotNpcNames;
 import net.got.entity.npc.fighter.SkilledFighterEntity;
@@ -26,17 +27,16 @@ public class NorthSoldierEntity extends SkilledFighterEntity {
     private static final GotSpawnEquipment WEAPONS =
             GotSpawnEquipment.of(Items.IRON_SWORD, Items.IRON_SWORD, Items.STONE_SWORD);
 
-    public static final ResourceLocation[] MALE_TEXTURES = {
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/npc/fighter/north/male_1.png")
-    };
-    public static final ResourceLocation[] FEMALE_TEXTURES = MALE_TEXTURES;
+    /** Reuse the regional smallfolk male skins — levies are drawn from the same population. */
+    public static final ResourceLocation[] MALE_TEXTURES   = NorthmanEntity.MALE_TEXTURES;
+    public static final ResourceLocation[] FEMALE_TEXTURES = NorthmanEntity.MALE_TEXTURES;
 
     public NorthSoldierEntity(EntityType<? extends NorthSoldierEntity> type, Level level) {
         super(type, level);
     }
 
     @Override public float getHorseSpawnChance() { return 0.15f; }
-    @Override public int   getVariantsPerGender() { return 1; }
+    @Override public int   getVariantsPerGender() { return NorthmanEntity.MALE_VARIANT_COUNT; }
     @Override protected GotNameGenerator getNameGenerator() { return GotNpcNames.NORTH_SOLDIER; }
 
     @Override

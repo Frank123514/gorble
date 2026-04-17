@@ -174,20 +174,81 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
 
     @Override
     public void setupAnim(SmallfolkRenderState state) {
-        // Head look via render-state yaw/pitch (populated by SmallfolkRenderer)
+
+        // ── Reset rotations each frame ────────────────────────────────────────
+        head.xRot = 0f;  head.yRot = 0f;  head.zRot = 0f;
+        body.xRot = 0f;  body.yRot = 0f;  body.zRot = 0f;
+        leftArm.xRot  = 0f;  leftArm.yRot  = 0f;  leftArm.zRot  = 0f;
+        rightArm.xRot = 0f;  rightArm.yRot = 0f;  rightArm.zRot = 0f;
+        leftLeg.xRot  = 0f;  leftLeg.yRot  = 0f;
+        rightLeg.xRot = 0f;  rightLeg.yRot = 0f;
+
+        // ── Head look ─────────────────────────────────────────────────────────
         head.yRot = state.talkHeadYaw;
         head.xRot = state.talkHeadPitch;
 
-        // Basic walk cycle — mirror the vanilla bipedal swing
+        // ── Idle animation (vanilla MC style) ────────────────────────────────
+        // Matches the default Minecraft humanoid idle: arms hang at sides with
+        // a natural outward droop, gentle body bob on a ~4-second cycle, subtle
+        // head nod — all fade out as walking begins.
+        float age       = state.ageInTicks;
+        float idleBlend = 1f - Math.min(state.walkAnimationSpeed * 6f, 1f);
+
+        // Gentle body bob — vanilla uses 0.067 rad/tick (~4 s cycle)
+        float bob    = (float) Math.sin(age * 0.067f);
+        // Idle arm sway — swings outward then back to a neutral outward rest.
+        // Base 0.15 + amplitude 0.05 keeps arms between 0.10 and 0.20 rad outward.
+        // Signs are +right / -left for this model's rotation convention.
+        float armOsc = (float) Math.cos(age * 0.09f) * 0.075f + 0.075f;
+
+        body.xRot      += bob * 0.015f * idleBlend;
+
+        // Arms swing outward on z-axis, never crossing into the body
+        rightArm.zRot   =  (armOsc) * idleBlend;   // positive = outward for this model
+        leftArm.zRot    = -(armOsc) * idleBlend;   // negative = outward for this model
+        rightArm.xRot  +=  bob * 0.015f  * idleBlend;
+        leftArm.xRot   += -bob * 0.015f  * idleBlend;
+        head.xRot      -= bob * 0.020f   * idleBlend;
+
+        // ── Walk cycle ────────────────────────────────────────────────────────
+        // Stride multiplier at 1.4 for visibly longer limb swings.
         float swing     = state.walkAnimationPos;
-        float intensity = state.walkAnimationSpeed * 0.5F;
+        float intensity = state.walkAnimationSpeed * 1.4F;
 
-        leftLeg.xRot  =  (float) Math.cos(swing)        * intensity;
-        rightLeg.xRot = -(float) Math.cos(swing)        * intensity;
-        leftArm.xRot  = -(float) Math.cos(swing)        * intensity;
-        rightArm.xRot =  (float) Math.cos(swing)        * intensity;
+        leftLeg.xRot  =  (float) Math.cos(swing) * intensity;
+        rightLeg.xRot = -(float) Math.cos(swing) * intensity;
+        leftArm.xRot  += -(float) Math.cos(swing) * intensity * 0.85f;
+        rightArm.xRot +=  (float) Math.cos(swing) * intensity * 0.85f;
 
-        // Talking gesture — raise right arm slightly
+        // ── Attack arm swing ──────────────────────────────────────────────────
+        if (state.attackTime > 0f) {
+            float t      = state.attackTime;
+            float stroke = t < 0.5f ? t * 2f : (1f - t) * 2f;
+            float arc    = (float) Math.sin(stroke * Math.PI);
+            rightArm.xRot -= arc * 2.0f;
+            rightArm.zRot -= arc * 0.30f;
+            rightArm.yRot += arc * 0.20f;
+        }
+
+        // ── Bow / crossbow aim ────────────────────────────────────────────────
+        if (state.isAimingBow) {
+            rightArm.xRot = -1.10f;
+            rightArm.yRot = -0.30f;
+            rightArm.zRot =  0.05f;
+            leftArm.xRot  = -0.95f;
+            leftArm.yRot  =  0.30f;
+            leftArm.zRot  = -0.05f;
+            head.xRot    -= 0.20f;
+        }
+
+        // ── Shield block ──────────────────────────────────────────────────────
+        if (state.isShieldBlocking) {
+            leftArm.xRot = -0.85f;
+            leftArm.yRot =  0.25f;
+            leftArm.zRot =  0.20f;
+        }
+
+        // ── Talking gesture ───────────────────────────────────────────────────
         if (state.isTalking) {
             rightArm.xRot -= state.talkGesture * 0.8F;
         }

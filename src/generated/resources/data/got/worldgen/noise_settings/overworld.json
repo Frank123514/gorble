@@ -1304,8 +1304,10 @@
                             "if_true": {
                               "type": "minecraft:biome",
                               "biome_is": [
+                                "got:frostfangs",
                                 "got:north_hills",
-                                "got:north_mountains"
+                                "got:north_mountains",
+                                "got:north"
                               ]
                             },
                             "then_run": {
@@ -2102,7 +2104,8 @@
                           "biome_is": [
                             "got:frostfangs",
                             "got:north_hills",
-                            "got:north_mountains"
+                            "got:north_mountains",
+                            "got:north"
                           ]
                         },
                         "then_run": {
@@ -2255,7 +2258,10 @@
                             "if_true": {
                               "type": "minecraft:biome",
                               "biome_is": [
-                                "got:north_hills"
+                                "got:frostfangs",
+                                "got:north_hills",
+                                "got:north_mountains",
+                                "got:north"
                               ]
                             },
                             "then_run": {
@@ -2595,7 +2601,8 @@
                       "minecraft:frozen_peaks",
                       "got:frostfangs",
                       "got:north_hills",
-                      "got:north_mountains"
+                      "got:north_mountains",
+                      "got:north"
                     ]
                   },
                   "then_run": {

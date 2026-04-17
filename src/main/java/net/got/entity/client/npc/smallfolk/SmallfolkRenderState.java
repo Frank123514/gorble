@@ -45,6 +45,18 @@ public class SmallfolkRenderState extends HumanoidRenderState {
     /** True when the entity is rendered as a child. */
     public boolean isChild;
 
+    /**
+     * True when the NPC is actively drawing a bow or crossbow.
+     * Set by the renderer from {@code entity.isUsingItem()} + item-type check.
+     */
+    public boolean isAimingBow;
+
+    /**
+     * True when the NPC has a shield raised (i.e. {@code entity.isBlocking()}).
+     * Drives the left-arm shield-guard pose in the model.
+     */
+    public boolean isShieldBlocking;
+
     // walkAnimationPos and walkAnimationSpeed are inherited from LivingEntityRenderState.
     // Do NOT redeclare them here — that would shadow the inherited fields and cause
     // the vanilla walk-cycle code to read stale zero values.

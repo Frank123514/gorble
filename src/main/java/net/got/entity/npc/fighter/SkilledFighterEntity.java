@@ -36,7 +36,7 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
                 .add(Attributes.ARMOR, 4.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.27);
+                .add(Attributes.MOVEMENT_SPEED, 0.22);
     }
 
     /** Probability (0–1) that this fighter spawns mounted. Return 0 to never mount. */

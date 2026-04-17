@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 /**
  * Nearest-attackable-target goal for GoT NPCs.
- * Mirrors LOTR's {@code NPCNearestAttackableTargetGoal}.
+ *
  *
  * @param <T> the target entity type
  */

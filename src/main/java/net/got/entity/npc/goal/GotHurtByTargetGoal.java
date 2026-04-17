@@ -4,7 +4,7 @@ import net.got.entity.npc.smallfolk.SmallfolkEntity;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 
 /**
- * Hurt-by-target goal for GoT NPCs — mirrors LOTR's {@code NPCHurtByTargetGoal}.
+ *
  *
  * <p>Alerts nearby allies of the same class when this NPC is attacked,
  * causing them to join the fight.

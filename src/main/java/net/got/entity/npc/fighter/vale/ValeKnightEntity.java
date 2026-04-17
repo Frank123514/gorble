@@ -1,6 +1,7 @@
 package net.got.entity.npc.fighter.vale;
 
 import net.got.entity.npc.GotSpawnEquipment;
+import net.got.entity.npc.smallfolk.ValemanEntity;
 import net.got.entity.npc.data.name.GotNameGenerator;
 import net.got.entity.npc.data.name.GotNpcNames;
 import net.got.entity.npc.fighter.SkilledFighterEntity;
@@ -26,17 +27,16 @@ public class ValeKnightEntity extends SkilledFighterEntity {
     private static final GotSpawnEquipment WEAPONS =
             GotSpawnEquipment.of(Items.IRON_SWORD, Items.IRON_SWORD, Items.IRON_AXE);
 
-    public static final ResourceLocation[] MALE_TEXTURES = {
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/npc/fighter/vale/male_1.png")
-    };
-    public static final ResourceLocation[] FEMALE_TEXTURES = MALE_TEXTURES;
+    /** Reuse the regional smallfolk male skins — levies are drawn from the same population. */
+    public static final ResourceLocation[] MALE_TEXTURES   = ValemanEntity.MALE_TEXTURES;
+    public static final ResourceLocation[] FEMALE_TEXTURES = ValemanEntity.MALE_TEXTURES;
 
     public ValeKnightEntity(EntityType<? extends ValeKnightEntity> type, Level level) {
         super(type, level);
     }
 
     @Override public float getHorseSpawnChance() { return 0.50f; }
-    @Override public int   getVariantsPerGender() { return 1; }
+    @Override public int   getVariantsPerGender() { return ValemanEntity.MALE_VARIANT_COUNT; }
     @Override protected GotNameGenerator getNameGenerator() { return GotNpcNames.VALE_KNIGHT; }
 
     @Override

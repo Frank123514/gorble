@@ -8,6 +8,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.ShieldItem;
 
 /**
  * Universal renderer for all Smallfolk-hierarchy NPCs (Tiers 1, 2, 3).
@@ -97,6 +100,13 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
         state.talkHeadYaw   = talk.getTalkHeadYaw();
         state.talkHeadPitch = talk.getTalkHeadPitch();
         state.talkGesture   = talk.getTalkGesture();
+
+        // Combat animation states
+        var useItem = entity.getUseItem();
+        state.isAimingBow    = entity.isUsingItem()
+                && (useItem.getItem() instanceof BowItem
+                 || useItem.getItem() instanceof CrossbowItem);
+        state.isShieldBlocking = entity.isBlocking();
     }
 
     // ── Texture ───────────────────────────────────────────────────────────────

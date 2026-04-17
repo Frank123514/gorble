@@ -12,9 +12,14 @@ import net.minecraft.world.level.Level;
 public class DornishmanEntity extends SmallfolkEntity {
 
     /** Male texture variants. */
-    public static final ResourceLocation[] MALE_TEXTURES   = textures("dornishman", false, 3);
+    public static final int MALE_VARIANT_COUNT   = 4;
+    /** Number of female skin variants. */
+    public static final int FEMALE_VARIANT_COUNT = 3;
+    /** Male texture variants — dornishman/male_1.png … male_4.png */
+    public static final ResourceLocation[] MALE_TEXTURES   = textures("dornishman", false, MALE_VARIANT_COUNT);
     /** Female texture variants. */
-    public static final ResourceLocation[] FEMALE_TEXTURES = textures("dornishman", true,  2);
+    /** Female texture variants — dornishman/female_1.png … female_3.png */
+    public static final ResourceLocation[] FEMALE_TEXTURES = textures("dornishman", true,  FEMALE_VARIANT_COUNT);
 
     private static ResourceLocation[] textures(String id, boolean female, int count) {
         String prefix = female ? "female" : "male";
@@ -37,7 +42,7 @@ public class DornishmanEntity extends SmallfolkEntity {
     protected GotNameGenerator getNameGenerator() { return GotNpcNames.DORNISHMAN; }
 
     @Override
-    public int getVariantsPerGender() { return 3; }
+    public int getVariantsPerGender() { return MALE_VARIANT_COUNT; }
 
     @Override
     public boolean isCivilian() { return true; }

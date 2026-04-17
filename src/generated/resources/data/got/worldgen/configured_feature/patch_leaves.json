@@ -8,7 +8,10 @@
           "to_place": {
             "type": "minecraft:simple_state_provider",
             "state": {
-              "Name": "minecraft:oak_leaves"
+              "Name": "minecraft:oak_leaves",
+              "Properties": {
+                "persistent": "true"
+              }
             }
           }
         }
@@ -40,8 +43,8 @@
         }
       ]
     },
-    "tries": 64,
-    "xz_spread": 7,
+    "tries": 32,
+    "xz_spread": 15,
     "y_spread": 3
   }
 }
