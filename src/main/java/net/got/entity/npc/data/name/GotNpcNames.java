@@ -47,6 +47,7 @@ public final class GotNpcNames {
     public static final GotNameGenerator GREYJOY_LEVY   = gendered("ironborn");
     public static final GotNameGenerator MARTELL_LEVY   = gendered("dornishman");
     public static final GotNameGenerator TYRELL_LEVY    = gendered("reachman");
+    public static final GotNameGenerator ARRYN_LEVY     = gendered("valeman");
 
     // ── Tier-3 Skilled Fighters ───────────────────────────────────────────────
 

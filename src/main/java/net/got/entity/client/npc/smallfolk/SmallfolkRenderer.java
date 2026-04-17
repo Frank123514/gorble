@@ -27,6 +27,8 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
 
     /** 15/16 — matches LOTR's PLAYER_SCALE constant. */
     private static final float NPC_SCALE = 0.9375f;
+    /** Additional scale applied to children. */
+    private static final float CHILD_SCALE = 0.55f;
 
     /** Custom male model — standard-arm geometry, no breast sub-part. */
     private final GotSmallfolkModel maleModel;
@@ -58,11 +60,18 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     @Override
     public void render(SmallfolkRenderState state, PoseStack poseStack,
                        MultiBufferSource buffer, int packedLight) {
-        // Select the appropriate model for this NPC's gender.
-        this.model = state.isFemale ? femaleModel : maleModel;
+        // Children use a single shared model regardless of gender.
+        if (state.isChild) {
+            this.model = maleModel;
+        } else {
+            this.model = state.isFemale ? femaleModel : maleModel;
+        }
 
         poseStack.pushPose();
         poseStack.scale(NPC_SCALE, NPC_SCALE, NPC_SCALE);
+        if (state.isChild) {
+            poseStack.scale(CHILD_SCALE, CHILD_SCALE, CHILD_SCALE);
+        }
         super.render(state, poseStack, buffer, packedLight);
         poseStack.popPose();
     }
@@ -82,6 +91,7 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
         state.variant           = entity.getVariant();
         state.variantsPerGender = entity.getVariantsPerGender();
         state.isTalking         = entity.isTalking();
+        state.isChild           = entity.isBaby();
 
         var talk = entity.getTalkAnimations();
         state.talkHeadYaw   = talk.getTalkHeadYaw();

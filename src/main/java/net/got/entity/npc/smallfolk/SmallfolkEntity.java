@@ -28,8 +28,10 @@ import java.util.Optional;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 
 /**
@@ -44,7 +46,7 @@ import net.minecraft.world.item.ItemStack;
  *   <li><b>Variant</b> — texture variant index, split by gender for skin variety.</li>
  * </ul>
  */
-public abstract class SmallfolkEntity extends PathfinderMob {
+public abstract class SmallfolkEntity extends Animal {
 
     // ── Synced data ───────────────────────────────────────────────────────────
 
@@ -87,7 +89,8 @@ public abstract class SmallfolkEntity extends PathfinderMob {
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 3.0)
                 .add(Attributes.FOLLOW_RANGE, 35.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
+                .add(Attributes.TEMPT_RANGE, 10.0);  // <-- FIX: Required for TemptGoal in MC 1.21.4
     }
 
     // ── Spawn rules ───────────────────────────────────────────────────────────
@@ -137,7 +140,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     public boolean isMale()   { return getGender() == NpcGender.MALE; }
     public boolean isFemale() { return getGender() == NpcGender.FEMALE; }
 
-    private void setGender(NpcGender g) {
+    protected void setGender(NpcGender g) {
         entityData.set(DATA_GENDER, g.toByte());
     }
 
@@ -151,7 +154,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     /** The NPC's personal name string (empty = no personal name). */
     public String getNpcName() { return entityData.get(DATA_NPC_NAME); }
 
-    private void setNpcName(String name) { entityData.set(DATA_NPC_NAME, name); }
+    protected void setNpcName(String name) { entityData.set(DATA_NPC_NAME, name); }
 
     /**
      * Exposes the NPC's personal name as the entity's "custom name" so
@@ -219,7 +222,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
 
     public int getVariant() { return entityData.get(DATA_VARIANT); }
 
-    private void setVariant(int v) { entityData.set(DATA_VARIANT, v); }
+    protected void setVariant(int v) { entityData.set(DATA_VARIANT, v); }
 
     // ── Civilian check ────────────────────────────────────────────────────────
 
@@ -229,6 +232,21 @@ public abstract class SmallfolkEntity extends PathfinderMob {
      */
     public boolean isCivilian() { return true; }
 
+    /** Initializes gender/variant/name/personality for newly created NPCs. */
+    protected void assignIdentityFromRandom(RandomSource rand) {
+        boolean male = getGenderProvider().isMale(rand);
+        setGender(male ? NpcGender.MALE : NpcGender.FEMALE);
+
+        int vpg = getVariantsPerGender();
+        int variant = male
+                ? rand.nextInt(Math.max(1, vpg))
+                : vpg + rand.nextInt(Math.max(1, vpg));
+        setVariant(variant);
+
+        setNpcName(getNameGenerator().generateName(rand, male));
+        personality = GotNpcPersonality.random(rand);
+    }
+
     // ── Spawn ─────────────────────────────────────────────────────────────────
 
     @Override
@@ -236,23 +254,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
                                         EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, groupData);
 
-        // --- Gender ---
-        boolean male = getGenderProvider().isMale(random);
-        setGender(male ? NpcGender.MALE : NpcGender.FEMALE);
-
-        // --- Variant ---
-        int vpg = getVariantsPerGender();
-        int variant = male
-                ? random.nextInt(Math.max(1, vpg))
-                : vpg + random.nextInt(Math.max(1, vpg));
-        setVariant(variant);
-
-        // --- Name ---
-        String name = getNameGenerator().generateName(random, male);
-        setNpcName(name);
-
-        // --- Personality ---
-        personality = GotNpcPersonality.random(random);
+        assignIdentityFromRandom(random);
 
         return result;
     }
@@ -301,6 +303,10 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new PanicGoal(this, 1.25));
+        if (isCivilian()) {
+            goalSelector.addGoal(2, new BreedGoal(this, 1.0));
+            goalSelector.addGoal(3, new TemptGoal(this, 1.1, net.minecraft.world.item.crafting.Ingredient.of(Items.BREAD), false));
+        }
         goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f, 0.02f));
@@ -323,6 +329,33 @@ public abstract class SmallfolkEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return isCivilian() && stack.is(Items.BREAD);
+    }
+
+    @Override
+    public boolean canMate(Animal otherAnimal) {
+        if (!(otherAnimal instanceof SmallfolkEntity other)) return false;
+        if (other == this) return false;
+        if (!isCivilian() || !other.isCivilian()) return false;
+        if (this.getClass() != other.getClass()) return false;
+        return isInLove() && other.isInLove()
+                && !isBaby() && !other.isBaby()
+                && this.getGender() != other.getGender();
+    }
+
+    @Override
+    public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        Entity child = getType().create(level, EntitySpawnReason.BREEDING);
+        if (child instanceof SmallfolkEntity baby) {
+            baby.assignIdentityFromRandom(level.getRandom());
+            baby.setAge(-24000);
+            return baby;
+        }
+        return null;
     }
 
     // ── Equipment slot helpers (for use in subclass finalizeSpawn) ────────────
@@ -366,5 +399,4 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     public float getTalkHeadYaw()   { return entityData.get(DATA_TALK_HEAD_YAW); }
     public float getTalkHeadPitch() { return entityData.get(DATA_TALK_HEAD_PITCH); }
     public float getTalkGesture()   { return entityData.get(DATA_TALK_GESTURE); }
-
 }

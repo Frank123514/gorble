@@ -18,6 +18,7 @@ import net.got.entity.npc.levy.baratheon.BaratheonLevyEntity;
 import net.got.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
 import net.got.entity.npc.levy.martell.MartellLevyEntity;
 import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
+import net.got.entity.npc.levy.arryn.ArrynLevyEntity;
 // ── Skilled Fighters ──────────────────────────────────────────────────────────
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
@@ -52,6 +53,7 @@ public class GotEntityEvents {
         event.put(GotModEntities.GREYJOY_LEVY.get(),   GreyjoyLevyEntity.createAttributes().build());
         event.put(GotModEntities.MARTELL_LEVY.get(),   MartellLevyEntity.createAttributes().build());
         event.put(GotModEntities.TYRELL_LEVY.get(),    TyrellLevyEntity.createAttributes().build());
+        event.put(GotModEntities.ARRYN_LEVY.get(),     ArrynLevyEntity.createAttributes().build());
 
         // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
         event.put(GotModEntities.NORTH_SOLDIER.get(), NorthSoldierEntity.createAttributes().build());
@@ -86,6 +88,7 @@ public class GotEntityEvents {
         event.register(GotModEntities.GREYJOY_LEVY.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GreyjoyLevyEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(GotModEntities.MARTELL_LEVY.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MartellLevyEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(GotModEntities.TYRELL_LEVY.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TyrellLevyEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GotModEntities.ARRYN_LEVY.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ArrynLevyEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
         event.register(GotModEntities.NORTH_SOLDIER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NorthSoldierEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);

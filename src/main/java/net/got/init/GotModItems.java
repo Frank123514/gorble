@@ -1589,6 +1589,8 @@ public class GotModItems {
             "martell_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.MARTELL_LEVY.get(), p));
     public static final DeferredItem<SpawnEggItem> TYRELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
             "tyrell_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.TYRELL_LEVY.get(), p));
+    public static final DeferredItem<SpawnEggItem> ARRYN_LEVY_SPAWN_EGG = REGISTRY.registerItem(
+            "arryn_levy_spawn_egg", p -> new SpawnEggItem(GotModEntities.ARRYN_LEVY.get(), p));
 
     // ── Skilled Fighter Spawn Eggs (Tier 3) ──────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTH_SOLDIER_SPAWN_EGG = REGISTRY.registerItem(

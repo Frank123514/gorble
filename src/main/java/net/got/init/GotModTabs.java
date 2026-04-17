@@ -1463,6 +1463,13 @@ public class GotModTabs {
 
                         // ── Spawn Eggs ───────────────────────────────────
                         output.accept(GotModItems.NORTHMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.RIVERLANDER_SPAWN_EGG.get());
+                        output.accept(GotModItems.VALEMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.WESTERMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.STORMLORDER_SPAWN_EGG.get());
+                        output.accept(GotModItems.IRONBORN_SPAWN_EGG.get());
+                        output.accept(GotModItems.DORNISHMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.REACHMAN_SPAWN_EGG.get());
                         // Levy (Tier 2)
                         output.accept(GotModItems.STARK_LEVY_SPAWN_EGG.get());
                         output.accept(GotModItems.TULLY_LEVY_SPAWN_EGG.get());
@@ -1471,6 +1478,7 @@ public class GotModTabs {
                         output.accept(GotModItems.GREYJOY_LEVY_SPAWN_EGG.get());
                         output.accept(GotModItems.MARTELL_LEVY_SPAWN_EGG.get());
                         output.accept(GotModItems.TYRELL_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.ARRYN_LEVY_SPAWN_EGG.get());
                         // Skilled Fighters (Tier 3)
                         output.accept(GotModItems.NORTH_SOLDIER_SPAWN_EGG.get());
                         output.accept(GotModItems.VALE_KNIGHT_SPAWN_EGG.get());

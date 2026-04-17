@@ -19,6 +19,7 @@ import net.got.entity.npc.levy.baratheon.BaratheonLevyEntity;
 import net.got.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
 import net.got.entity.npc.levy.martell.MartellLevyEntity;
 import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
+import net.got.entity.npc.levy.arryn.ArrynLevyEntity;
 // ── Skilled Fighter imports ───────────────────────────────────────────────────
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
@@ -120,6 +121,14 @@ public class GotModEntities {
                             .sized(0.6f, 1.8f).clientTrackingRange(8).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "tyrell_levy"))));
+
+    /** Arryn Levy — armed conscript of House Arryn (The Vale). */
+    public static final DeferredHolder<EntityType<?>, EntityType<ArrynLevyEntity>> ARRYN_LEVY =
+            REGISTRY.register("arryn_levy", () ->
+                    EntityType.Builder.<ArrynLevyEntity>of(ArrynLevyEntity::new, MobCategory.CREATURE)
+                            .sized(0.6f, 1.8f).clientTrackingRange(8).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "arryn_levy"))));
 
     // ── Skilled Fighters — Tier 3 ─────────────────────────────────────────────
 

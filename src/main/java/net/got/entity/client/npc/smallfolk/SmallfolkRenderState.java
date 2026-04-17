@@ -42,6 +42,9 @@ public class SmallfolkRenderState extends HumanoidRenderState {
     /** True while the NPC is in a talking animation state. */
     public boolean isTalking;
 
+    /** True when the entity is rendered as a child. */
+    public boolean isChild;
+
     // walkAnimationPos and walkAnimationSpeed are inherited from LivingEntityRenderState.
     // Do NOT redeclare them here — that would shadow the inherited fields and cause
     // the vanilla walk-cycle code to read stale zero values.
