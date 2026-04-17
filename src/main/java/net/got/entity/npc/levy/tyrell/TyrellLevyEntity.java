@@ -32,7 +32,6 @@ public class TyrellLevyEntity extends LevyEntity {
     @Override protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE; }
     @Override protected GotNameGenerator  getNameGenerator()  { return GotNpcNames.TYRELL_LEVY; }
     @Override public int getVariantsPerGender() { return 1; }
-    @Override public boolean useSmallArmsModel() { return false; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,

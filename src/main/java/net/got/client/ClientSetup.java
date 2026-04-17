@@ -2,6 +2,8 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
+import net.got.entity.client.npc.smallfolk.GotSmallfolkFemaleModel;
+import net.got.entity.client.npc.smallfolk.GotSmallfolkModel;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -41,17 +43,27 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
-// FIX: EventBusSubscriber.Bus and Bus.MOD are deprecated for removal in NeoForge 21.3.x.
-//      The replacement is to annotate with @EventBusSubscriber without a bus parameter
-//      (which now defaults to the MOD bus) and remove the Bus import entirely.
+// The bus parameter was deprecated for removal in NeoForge 21.3.x.
+// Omitting it defaults to the MOD bus, which is the correct behaviour here.
 @EventBusSubscriber(
         modid = "got",
-        value = Dist.CLIENT,
-        bus = EventBusSubscriber.Bus.MOD
+        value = Dist.CLIENT
 )
 public final class ClientSetup {
 
 
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        // Register the custom male smallfolk model layer so bakeLayer() can find it.
+        event.registerLayerDefinition(
+                GotSmallfolkModel.LAYER_LOCATION,
+                GotSmallfolkModel::createBodyLayer);
+        // Register the custom female smallfolk model layer so bakeLayer() can find it.
+        event.registerLayerDefinition(
+                GotSmallfolkFemaleModel.LAYER_LOCATION,
+                GotSmallfolkFemaleModel::createBodyLayer);
+    }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {

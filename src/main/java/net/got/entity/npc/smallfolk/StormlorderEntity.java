@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 public class StormlorderEntity extends SmallfolkEntity {
 
     /** Male texture variants. */
-    public static final ResourceLocation[] MALE_TEXTURES   = textures("stormlorder", false, 2);
+    public static final ResourceLocation[] MALE_TEXTURES   = textures("stormlorder", false, 3);
     /** Female texture variants. */
     public static final ResourceLocation[] FEMALE_TEXTURES = textures("stormlorder", true,  2);
 
@@ -37,7 +37,7 @@ public class StormlorderEntity extends SmallfolkEntity {
     protected GotNameGenerator getNameGenerator() { return GotNpcNames.STORMLORDER; }
 
     @Override
-    public int getVariantsPerGender() { return 2; }
+    public int getVariantsPerGender() { return 3; }
 
     @Override
     public boolean isCivilian() { return true; }

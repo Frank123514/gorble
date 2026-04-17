@@ -42,7 +42,6 @@ import net.minecraft.world.item.ItemStack;
  *   <li><b>Personality</b> — a {@link GotNpcPersonality} trait saved to NBT.</li>
  *   <li><b>Talk animations</b> — head nod / gesture floats synced via {@link GotNpcTalkAnimations}.</li>
  *   <li><b>Variant</b> — texture variant index, split by gender for skin variety.</li>
- *   <li><b>Small-arms model</b> — female NPCs can opt into the slim-arms model.</li>
  * </ul>
  */
 public abstract class SmallfolkEntity extends PathfinderMob {
@@ -221,14 +220,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     public int getVariant() { return entityData.get(DATA_VARIANT); }
 
     private void setVariant(int v) { entityData.set(DATA_VARIANT, v); }
-
-    // ── Small-arms model (female slim arms, like LOTR) ────────────────────────
-
-    /**
-     * Returns {@code true} when the renderer should use the slim-arms model.
-     * By default female NPCs use slim arms; override to disable per culture.
-     */
-    public boolean useSmallArmsModel() { return isFemale(); }
 
     // ── Civilian check ────────────────────────────────────────────────────────
 

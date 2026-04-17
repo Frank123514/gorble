@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 public class NorthmanEntity extends SmallfolkEntity {
 
     /** Male texture variants. */
-    public static final ResourceLocation[] MALE_TEXTURES   = textures("northman", false, 2);
+    public static final ResourceLocation[] MALE_TEXTURES   = textures("northman", false, 3);
     /** Female texture variants. */
     public static final ResourceLocation[] FEMALE_TEXTURES = textures("northman", true,  2);
 
@@ -37,7 +37,7 @@ public class NorthmanEntity extends SmallfolkEntity {
     protected GotNameGenerator getNameGenerator() { return GotNpcNames.NORTHMAN; }
 
     @Override
-    public int getVariantsPerGender() { return 2; }
+    public int getVariantsPerGender() { return 3; }
 
     @Override
     public boolean isCivilian() { return true; }

@@ -46,9 +46,6 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
     public boolean isCivilian() { return false; }
 
     @Override
-    public boolean useSmallArmsModel() { return false; }
-
-    @Override
     protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE; }
 
     @Override

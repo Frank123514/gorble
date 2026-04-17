@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 public class IronbornEntity extends SmallfolkEntity {
 
     /** Male texture variants. */
-    public static final ResourceLocation[] MALE_TEXTURES   = textures("ironborn", false, 2);
+    public static final ResourceLocation[] MALE_TEXTURES   = textures("ironborn", false, 3);
     /** Female texture variants. */
     public static final ResourceLocation[] FEMALE_TEXTURES = textures("ironborn", true,  2);
 
@@ -37,7 +37,7 @@ public class IronbornEntity extends SmallfolkEntity {
     protected GotNameGenerator getNameGenerator() { return GotNpcNames.IRONBORN; }
 
     @Override
-    public int getVariantsPerGender() { return 2; }
+    public int getVariantsPerGender() { return 3; }
 
     @Override
     public boolean isCivilian() { return true; }
