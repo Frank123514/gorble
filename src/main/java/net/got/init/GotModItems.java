@@ -1556,9 +1556,23 @@ public class GotModItems {
     public static final DeferredItem<ArmorItem> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS, p));
 
-    // ── North NPC Spawn Eggs ─────────────────────────────────────────────
+    // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
             "northman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTHMAN.get(), p));
+    public static final DeferredItem<SpawnEggItem> RIVERLANDER_SPAWN_EGG = REGISTRY.registerItem(
+            "riverlander_spawn_egg", p -> new SpawnEggItem(GotModEntities.RIVERLANDER.get(), p));
+    public static final DeferredItem<SpawnEggItem> VALEMAN_SPAWN_EGG = REGISTRY.registerItem(
+            "valeman_spawn_egg", p -> new SpawnEggItem(GotModEntities.VALEMAN.get(), p));
+    public static final DeferredItem<SpawnEggItem> IRONBORN_SPAWN_EGG = REGISTRY.registerItem(
+            "ironborn_spawn_egg", p -> new SpawnEggItem(GotModEntities.IRONBORN.get(), p));
+    public static final DeferredItem<SpawnEggItem> WESTERMAN_SPAWN_EGG = REGISTRY.registerItem(
+            "westerman_spawn_egg", p -> new SpawnEggItem(GotModEntities.WESTERMAN.get(), p));
+    public static final DeferredItem<SpawnEggItem> REACHMAN_SPAWN_EGG = REGISTRY.registerItem(
+            "reachman_spawn_egg", p -> new SpawnEggItem(GotModEntities.REACHMAN.get(), p));
+    public static final DeferredItem<SpawnEggItem> STORMLORDER_SPAWN_EGG = REGISTRY.registerItem(
+            "stormlorder_spawn_egg", p -> new SpawnEggItem(GotModEntities.STORMLORDER.get(), p));
+    public static final DeferredItem<SpawnEggItem> DORNISHMAN_SPAWN_EGG = REGISTRY.registerItem(
+            "dornishman_spawn_egg", p -> new SpawnEggItem(GotModEntities.DORNISHMAN.get(), p));
 
     // ── Levy Spawn Eggs (Tier 2) ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> STARK_LEVY_SPAWN_EGG = REGISTRY.registerItem(

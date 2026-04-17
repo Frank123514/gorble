@@ -125,11 +125,11 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
         // Standard (non-slim) right arm
         PartDefinition rightArm = body.addOrReplaceChild("rightArm",
                 CubeListBuilder.create()
-                        .texOffs(41, 16).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
+                        .texOffs(40, 16).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(-5.0F, 2.0F, 0.0F));
         rightArm.addOrReplaceChild("rightSleeve",
                 CubeListBuilder.create()
-                        .texOffs(41, 32).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
+                        .texOffs(40, 32).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
         rightArm.addOrReplaceChild("rightItem",
                 CubeListBuilder.create(),
@@ -140,14 +140,14 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
                         .texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        // Breasts sub-part — angled forward using an X-rotation of ~60° (1.0472 rad)
+        // Breasts sub-part — angled forward using an X-rotation of ~-27.5° (-0.4800 rad)
         PartDefinition breasts = body.addOrReplaceChild("breasts",
                 CubeListBuilder.create(),
-                PartPose.offset(0.5F, 3.7F, -1.0F));
+                PartPose.offset(0.0F, 5.0F, -2.5F));
         breasts.addOrReplaceChild("breasts_r1",
                 CubeListBuilder.create()
-                        .texOffs(17, 36).addBox(-4.0F, -2.0F, -2.0F, 7.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.0472F, 0.0F, 0.0F));
+                        .texOffs(24, 3).addBox(-3.0F, -3.0F, -1.0F, 6.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.4800F, 0.0F, 0.0F));
 
         PartDefinition leftLeg = root.addOrReplaceChild("leftLeg",
                 CubeListBuilder.create()
