@@ -15,10 +15,15 @@ import net.minecraft.resources.ResourceLocation;
  * The breasts sub-part adds the feminine silhouette without requiring any
  * vanilla "slim arm" (Alex) model hackery.
  *
+ * <p>Implements {@link SmallfolkModelParts} so that {@link SmallfolkArmorLayer}
+ * and {@link SmallfolkHeldItemLayer} can access skeleton parts without
+ * knowing the concrete model class.
+ *
  * <p>Exported for Minecraft 1.17+ / Mojang mappings, updated for 1.21 render
  * pipeline (SmallfolkRenderState replaces the raw Entity generic).
  */
-public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
+public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
+        implements SmallfolkModelParts {
 
     /**
      * Layer location — bake this with
@@ -56,23 +61,23 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
         // so passing the outer baked ModelPart here is correct — the inner
         // "root" child and all descendants are rendered transitively.
         super(root);
-        this.root      = root.getChild("root");
-        this.waist     = this.root.getChild("waist");
-        this.body      = this.waist.getChild("body");
-        this.head      = this.body.getChild("head");
-        this.hat       = this.head.getChild("hat");
-        this.cape      = this.body.getChild("cape");
-        this.leftArm   = this.body.getChild("leftArm");
+        this.root        = root.getChild("root");
+        this.waist       = this.root.getChild("waist");
+        this.body        = this.waist.getChild("body");
+        this.head        = this.body.getChild("head");
+        this.hat         = this.head.getChild("hat");
+        this.cape        = this.body.getChild("cape");
+        this.leftArm     = this.body.getChild("leftArm");
         this.leftSleeve  = this.leftArm.getChild("leftSleeve");
         this.leftItem    = this.leftArm.getChild("leftItem");
-        this.rightArm  = this.body.getChild("rightArm");
+        this.rightArm    = this.body.getChild("rightArm");
         this.rightSleeve = this.rightArm.getChild("rightSleeve");
         this.rightItem   = this.rightArm.getChild("rightItem");
-        this.jacket    = this.body.getChild("jacket");
-        this.breasts   = this.body.getChild("breasts");
-        this.leftLeg   = this.root.getChild("leftLeg");
+        this.jacket      = this.body.getChild("jacket");
+        this.breasts     = this.body.getChild("breasts");
+        this.leftLeg     = this.root.getChild("leftLeg");
         this.leftPants   = this.leftLeg.getChild("leftPants");
-        this.rightLeg  = this.root.getChild("rightLeg");
+        this.rightLeg    = this.root.getChild("rightLeg");
         this.rightPants  = this.rightLeg.getChild("rightPants");
     }
 
@@ -109,7 +114,7 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
                 CubeListBuilder.create(),
                 PartPose.offset(0.0F, 0.0F, 3.0F));
 
-        // Standard (non-slim) left arm — 3 wide, matching Steve geometry
+        // Standard (non-slim) left arm
         PartDefinition leftArm = body.addOrReplaceChild("leftArm",
                 CubeListBuilder.create()
                         .texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
@@ -171,6 +176,9 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
+    //
+    // Priority order (highest wins, applied in sequence so later overwrites earlier):
+    //   riding (early-out) → idle → walk → attack → bow aim → shield block → talking
 
     @Override
     public void setupAnim(SmallfolkRenderState state) {
@@ -180,38 +188,42 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
         body.xRot = 0f;  body.yRot = 0f;  body.zRot = 0f;
         leftArm.xRot  = 0f;  leftArm.yRot  = 0f;  leftArm.zRot  = 0f;
         rightArm.xRot = 0f;  rightArm.yRot = 0f;  rightArm.zRot = 0f;
-        leftLeg.xRot  = 0f;  leftLeg.yRot  = 0f;
-        rightLeg.xRot = 0f;  rightLeg.yRot = 0f;
+        leftLeg.xRot  = 0f;  leftLeg.yRot  = 0f;  leftLeg.zRot  = 0f;
+        rightLeg.xRot = 0f;  rightLeg.yRot = 0f;  rightLeg.zRot = 0f;
 
         // ── Head look ─────────────────────────────────────────────────────────
-        head.yRot = state.talkHeadYaw;
-        head.xRot = state.talkHeadPitch;
+        // Only drive head yaw/pitch from talk animations when actually talking.
+        if (state.isTalking) {
+            head.yRot = state.talkHeadYaw;
+            head.xRot = state.talkHeadPitch;
+        }
 
-        // ── Idle animation (vanilla MC style) ────────────────────────────────
-        // Matches the default Minecraft humanoid idle: arms hang at sides with
-        // a natural outward droop, gentle body bob on a ~4-second cycle, subtle
-        // head nod — all fade out as walking begins.
+        // ── Riding / mount pose ───────────────────────────────────────────────
+        if (state.isRiding) {
+            leftLeg.xRot  = -1.4137167f;
+            leftLeg.yRot  =  0.31415927f;
+            leftLeg.zRot  =  0.07853982f;
+            rightLeg.xRot = -1.4137167f;
+            rightLeg.yRot = -0.31415927f;
+            rightLeg.zRot = -0.07853982f;
+            return;
+        }
+
+        // ── Idle animation ────────────────────────────────────────────────────
         float age       = state.ageInTicks;
         float idleBlend = 1f - Math.min(state.walkAnimationSpeed * 6f, 1f);
 
-        // Gentle body bob — vanilla uses 0.067 rad/tick (~4 s cycle)
         float bob    = (float) Math.sin(age * 0.067f);
-        // Idle arm sway — swings outward then back to a neutral outward rest.
-        // Base 0.15 + amplitude 0.05 keeps arms between 0.10 and 0.20 rad outward.
-        // Signs are +right / -left for this model's rotation convention.
         float armOsc = (float) Math.cos(age * 0.09f) * 0.075f + 0.075f;
 
-        body.xRot      += bob * 0.015f * idleBlend;
-
-        // Arms swing outward on z-axis, never crossing into the body
-        rightArm.zRot   =  (armOsc) * idleBlend;   // positive = outward for this model
-        leftArm.zRot    = -(armOsc) * idleBlend;   // negative = outward for this model
-        rightArm.xRot  +=  bob * 0.015f  * idleBlend;
-        leftArm.xRot   += -bob * 0.015f  * idleBlend;
-        head.xRot      -= bob * 0.020f   * idleBlend;
+        body.xRot     += bob * 0.015f * idleBlend;
+        rightArm.zRot  =  armOsc  * idleBlend;
+        leftArm.zRot   = -armOsc  * idleBlend;
+        rightArm.xRot +=  bob * 0.015f * idleBlend;
+        leftArm.xRot  += -bob * 0.015f * idleBlend;
+        head.xRot     -= bob * 0.020f  * idleBlend;
 
         // ── Walk cycle ────────────────────────────────────────────────────────
-        // Stride multiplier at 1.4 for visibly longer limb swings.
         float swing     = state.walkAnimationPos;
         float intensity = state.walkAnimationSpeed * 1.4F;
 
@@ -253,6 +265,17 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState> {
             rightArm.xRot -= state.talkGesture * 0.8F;
         }
     }
+
+    // ── SmallfolkModelParts ───────────────────────────────────────────────────
+
+    @Override public ModelPart sfHead()            { return head; }
+    @Override public ModelPart sfBody()            { return body; }
+    @Override public ModelPart sfRightArm()        { return rightArm; }
+    @Override public ModelPart sfLeftArm()         { return leftArm; }
+    @Override public ModelPart sfRightLeg()        { return rightLeg; }
+    @Override public ModelPart sfLeftLeg()         { return leftLeg; }
+    @Override public ModelPart sfRightItemAnchor() { return rightItem; }
+    @Override public ModelPart sfLeftItemAnchor()  { return leftItem; }
 
     // ── Render ────────────────────────────────────────────────────────────────
     // renderToBuffer() is final in net.minecraft.client.model.Model as of 1.21.x.

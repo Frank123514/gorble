@@ -11,14 +11,13 @@ import net.minecraft.world.level.Level;
 /** Tier-1 civilian NPC — DornishmanEntity. */
 public class DornishmanEntity extends SmallfolkEntity {
 
-    /** Male texture variants. */
-    public static final int MALE_VARIANT_COUNT   = 4;
+    /** Number of generated skin variants per gender (12 variants from skin generator). */
+    public static final int MALE_VARIANT_COUNT   = 12;
     /** Number of female skin variants. */
-    public static final int FEMALE_VARIANT_COUNT = 3;
-    /** Male texture variants — dornishman/male_1.png … male_4.png */
+    public static final int FEMALE_VARIANT_COUNT = 12;
+    /** Male texture variants — dornishman/generated/male_01.png … male_12.png */
     public static final ResourceLocation[] MALE_TEXTURES   = textures("dornishman", false, MALE_VARIANT_COUNT);
-    /** Female texture variants. */
-    /** Female texture variants — dornishman/female_1.png … female_3.png */
+    /** Female texture variants — dornishman/generated/female_01.png … female_12.png */
     public static final ResourceLocation[] FEMALE_TEXTURES = textures("dornishman", true,  FEMALE_VARIANT_COUNT);
 
     private static ResourceLocation[] textures(String id, boolean female, int count) {
@@ -26,7 +25,7 @@ public class DornishmanEntity extends SmallfolkEntity {
         ResourceLocation[] arr = new ResourceLocation[Math.max(1, count)];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = ResourceLocation.fromNamespaceAndPath("got",
-                    "textures/entity/npc/smallfolk/" + id + "/" + prefix + "_" + (i + 1) + ".png");
+                    "textures/entity/npc/smallfolk/" + id + "/generated/" + prefix + "_" + String.format("%02d", i + 1) + ".png");
         }
         return arr;
     }

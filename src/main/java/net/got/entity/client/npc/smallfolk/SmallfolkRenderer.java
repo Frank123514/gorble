@@ -8,20 +8,28 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ShieldItem;
 
 /**
  * Universal renderer for all Smallfolk-hierarchy NPCs (Tiers 1, 2, 3).
  *
- * <p>Male NPCs use {@link GotSmallfolkModel} — a fully custom Blockbench model
- * with standard-width (Steve / 4 px) arms.
+ * <h3>Models</h3>
+ * <ul>
+ *   <li>Male NPCs use {@link GotSmallfolkModel} — standard-arm (Steve, 4 px) geometry.</li>
+ *   <li>Female NPCs use {@link GotSmallfolkFemaleModel} — same arm width plus the
+ *       breast sub-part for a feminine silhouette.</li>
+ *   <li>Children use the male model regardless of gender.</li>
+ * </ul>
  *
- * <p>Female NPCs use {@link GotSmallfolkFemaleModel} — also a custom Blockbench
- * model, sharing the same arm width but adding the breast sub-part for a
- * feminine silhouette. No vanilla HumanoidModel / ModelLayers.PLAYER is used
- * anywhere in this pipeline.
+ * <h3>Render layers (added in constructor)</h3>
+ * <ul>
+ *   <li>{@link SmallfolkHeldItemLayer} — renders weapons / tools in the NPC's hands.</li>
+ *   <li>{@link SmallfolkArmorLayer} — renders equipped armour by copying pose data
+ *       into a vanilla {@code HumanoidModel} and calling {@code EquipmentRenderer}.</li>
+ * </ul>
  *
  * @param <T> any entity extending {@link SmallfolkEntity}
  */
@@ -56,6 +64,13 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
 
         this.maleTextures   = maleTextures;
         this.femaleTextures = femaleTextures;
+
+        // ── Render layers ─────────────────────────────────────────────────────
+        // Order matters: armor is rendered first (behind the body), then held
+        // items on top so the hand grip overlaps the armour cuff correctly.
+        this.addLayer(new SmallfolkArmorLayer(this, ctx));
+        this.addLayer(new SmallfolkHeldItemLayer(this,
+                net.minecraft.client.Minecraft.getInstance().getItemRenderer()));
     }
 
     // ── Render ───────────────────────────────────────────────────────────────
@@ -63,7 +78,7 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     @Override
     public void render(SmallfolkRenderState state, PoseStack poseStack,
                        MultiBufferSource buffer, int packedLight) {
-        // Children use a single shared model regardless of gender.
+        // Children use the male model regardless of gender.
         if (state.isChild) {
             this.model = maleModel;
         } else {
@@ -90,23 +105,41 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
     public void extractRenderState(T entity, SmallfolkRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);
 
+        // ── Identity ──────────────────────────────────────────────────────────
         state.isFemale          = entity.getGender() == NpcGender.FEMALE;
         state.variant           = entity.getVariant();
         state.variantsPerGender = entity.getVariantsPerGender();
-        state.isTalking         = entity.isTalking();
         state.isChild           = entity.isBaby();
 
+        // ── Riding ────────────────────────────────────────────────────────────
+        // isPassenger() is true whenever the entity is mounted (horse, pig, etc.).
+        state.isRiding = entity.isPassenger();
+
+        // ── Talking ───────────────────────────────────────────────────────────
+        state.isTalking = entity.isTalking();
         var talk = entity.getTalkAnimations();
         state.talkHeadYaw   = talk.getTalkHeadYaw();
         state.talkHeadPitch = talk.getTalkHeadPitch();
         state.talkGesture   = talk.getTalkGesture();
 
-        // Combat animation states
+        // ── Combat ────────────────────────────────────────────────────────────
         var useItem = entity.getUseItem();
-        state.isAimingBow    = entity.isUsingItem()
+        state.isAimingBow = entity.isUsingItem()
                 && (useItem.getItem() instanceof BowItem
-                 || useItem.getItem() instanceof CrossbowItem);
+                || useItem.getItem() instanceof CrossbowItem);
         state.isShieldBlocking = entity.isBlocking();
+
+        // ── Held items ────────────────────────────────────────────────────────
+        // These are consumed by SmallfolkHeldItemLayer.
+        state.mainHandItem = entity.getItemInHand(InteractionHand.MAIN_HAND);
+        state.offHandItem  = entity.getItemInHand(InteractionHand.OFF_HAND);
+
+        // ── Armor items ───────────────────────────────────────────────────────
+        // These are consumed by SmallfolkArmorLayer.
+        state.headArmorItem     = entity.getItemBySlot(EquipmentSlot.HEAD);
+        state.chestArmorItem    = entity.getItemBySlot(EquipmentSlot.CHEST);
+        state.leggingsArmorItem = entity.getItemBySlot(EquipmentSlot.LEGS);
+        state.bootsArmorItem    = entity.getItemBySlot(EquipmentSlot.FEET);
     }
 
     // ── Texture ───────────────────────────────────────────────────────────────

@@ -20,10 +20,18 @@ public class StarkLevyEntity extends LevyEntity {
 
     private static final GotSpawnEquipment WEAPONS = GotSpawnEquipment.of(Items.IRON_SWORD, Items.STONE_SWORD);
 
-    public static final ResourceLocation[] MALE_TEXTURES = {
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/npc/levy/stark_levy/male_1.png")
-    };
-    public static final ResourceLocation[] FEMALE_TEXTURES = MALE_TEXTURES;
+    private static ResourceLocation[] textures(boolean female) {
+        String prefix = female ? "female" : "male";
+        ResourceLocation[] arr = new ResourceLocation[16];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = ResourceLocation.fromNamespaceAndPath("got",
+                    "textures/entity/npc/smallfolk/northman/generated/" + prefix + "_" + String.format("%02d", i + 1) + ".png");
+        }
+        return arr;
+    }
+
+    public static final ResourceLocation[] MALE_TEXTURES   = textures(false);
+    public static final ResourceLocation[] FEMALE_TEXTURES = textures(true);
 
     public StarkLevyEntity(EntityType<? extends StarkLevyEntity> type, Level level) {
         super(type, level);
@@ -31,7 +39,7 @@ public class StarkLevyEntity extends LevyEntity {
 
     @Override protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE; }
     @Override protected GotNameGenerator  getNameGenerator()  { return GotNpcNames.STARK_LEVY; }
-    @Override public int getVariantsPerGender() { return 1; }
+    @Override public int getVariantsPerGender() { return 16; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
