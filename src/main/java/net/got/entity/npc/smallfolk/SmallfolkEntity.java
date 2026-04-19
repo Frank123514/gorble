@@ -29,6 +29,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.sounds.SoundEvents;
@@ -409,15 +410,45 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "smallfolk_controller", 4, state -> {
+        // ── Locomotion / talk (base layer) ────────────────────────────────────
+        controllers.add(new AnimationController<>(this, "smallfolk_locomotion", 4, state -> {
+            String prefix = isBaby() ? "animation.smallfolk_child." : "animation.smallfolk.";
             if (isTalking()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.talk"));
+                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "talk"));
+            }
+            if (isCrouching()) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "sneak"));
             }
             if (state.isMoving()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.walk"));
+                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "walk"));
             }
-            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.idle"));
+            return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "idle"));
         }));
+
+        // ── Riding (replaces locomotion while mounted) ────────────────────────
+        controllers.add(new AnimationController<>(this, "smallfolk_riding", 2, state -> {
+            String prefix = isBaby() ? "animation.smallfolk_child." : "animation.smallfolk.";
+            if (isPassenger()) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "riding"));
+            }
+            state.getController().forceAnimationReset();
+            return PlayState.STOP;
+        }));
+
+        // ── Attack (overlay layer, triggerable) ──────────────────────────────
+        // Using a triggerableAnim instead of checking `swinging` each tick.
+        // `swinging` flips true briefly then resets, so thenPlay() never
+        // re-fires because GeckoLib only reacts to state *changes*. A
+        // triggerable controller fires exactly once per triggerAnim() call,
+        // which GotMeleeAttackGoal calls at the moment the hit lands.
+        // The predicate returns STOP so the controller is idle between triggers;
+        // GeckoLib overrides this automatically when a trigger fires.
+        controllers.add(new AnimationController<>(this, "smallfolk_attack", 0,
+                state -> PlayState.STOP)
+                .triggerableAnim("attack",
+                        RawAnimation.begin().thenPlay(
+                                isBaby() ? "animation.smallfolk_child.attack"
+                                        : "animation.smallfolk.attack")));
     }
 
     @Override

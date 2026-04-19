@@ -1,48 +1,49 @@
 package net.got.entity.npc.goal;
 
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 /**
  * Melee attack goal tuned for GoT NPCs.
  *
- * <p><b>Bug fix — attack arm swing:</b> the base {@link MeleeAttackGoal} calls
- * {@code mob.doHurtTarget()} directly but never calls
- * {@code mob.swing(MAIN_HAND)}.  Without the swing call, {@code swingTime}
- * stays at 0, so {@code attackAnim} in {@code LivingEntity} never advances
- * above 0, which means {@code state.attackTime} is always 0 in the render
- * pipeline and the attack-arm animation in
- * {@link net.got.entity.npc.smallfolk.SmallfolkEntity} never fires.
+ * <p><b>Attack animation fix:</b> the old approach called {@code mob.swing(MAIN_HAND)}
+ * and relied on the {@code swinging} flag in the GeckoLib controller. This failed
+ * because {@code swinging} is {@code true} for only a single tick — GeckoLib's
+ * {@code thenPlay} only fires when the controller's animation <em>changes</em>, so
+ * a brief flag that resets each tick never re-triggers the animation.
  *
- * <p>Overriding {@link #checkAndPerformAttack} and calling
- * {@code mob.swing(MAIN_HAND)} before delegating to super is the minimal,
- * safe fix — vanilla handles the cooldown reset and the actual hurt logic.
+ * <p>The fix is to use a {@code triggerableAnim} controller registered in
+ * {@link SmallfolkEntity#registerControllers} and call
+ * {@link SmallfolkEntity#triggerAnim(String, String)} at the exact tick the
+ * hit lands. GeckoLib queues one full play-through of the attack clip, regardless
+ * of how long {@code swinging} stays set, and the controller returns to STOP when
+ * done — no state-change edge-detect problem.
  */
 public final class GotMeleeAttackGoal extends MeleeAttackGoal {
 
+    private final SmallfolkEntity smallfolk;
+
     public GotMeleeAttackGoal(SmallfolkEntity entity, double speedMultiplier) {
         super(entity, speedMultiplier, /* followingTargetEvenIfNotSeen = */ true);
+        this.smallfolk = entity;
     }
 
     /**
      * Called every tick while the NPC is within melee reach of its target.
-     * We fire {@code swing()} here — exactly once per attack cooldown — so the
-     * arm-swing animation starts on the same tick the damage lands.
+     * We fire {@code triggerAnim} here — exactly once per attack cooldown — so
+     * the GeckoLib triggerable controller plays one full attack clip.
      */
     @Override
     protected void checkAndPerformAttack(LivingEntity target) {
-        // Calculate melee reach: based on entity width + target bounding box
         float reach = this.mob.getBbWidth() * 2.0F;
         double reachSq = reach * reach + (target.getBbWidth() * target.getBbWidth());
         double distToTargetSq = this.mob.distanceToSqr(target);
         if (distToTargetSq <= reachSq && this.getTicksUntilNextAttack() <= 0) {
-            // Trigger the visual arm swing.  This sets mob.swinging = true and
-            // mob.swingTime = -1, which drives the attackAnim field every tick
-            // via LivingEntity.updateSwingTime(), so the render state picks it up
-            // and state.attackTime goes 0 → 1 over one swing period.
-            this.mob.swing(InteractionHand.MAIN_HAND);
+            // Fire the GeckoLib triggerable animation. This queues a single
+            // play-through of the "attack" clip in the "smallfolk_attack"
+            // controller without relying on a per-tick boolean flag.
+            this.smallfolk.triggerAnim("smallfolk_attack", "attack");
         }
         // Vanilla MeleeAttackGoal resets the cooldown and calls doHurtTarget().
         super.checkAndPerformAttack(target);

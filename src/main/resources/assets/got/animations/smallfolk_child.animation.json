@@ -1,0 +1,179 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.smallfolk_child.walk": {
+      "loop": true,
+      "bones": {
+        "leftArm": {
+          "rotation": {
+            "vector": [
+              "math.sin(query.life_time * 390) * 35",
+              0,
+              0
+            ]
+          }
+        },
+        "leftLeg": {
+          "rotation": {
+            "vector": [
+              "math.sin(query.life_time * 390) * -49",
+              -0.1,
+              -0.1
+            ]
+          }
+        },
+        "rightArm": {
+          "rotation": {
+            "vector": [
+              "math.sin(query.life_time * 390) * -35",
+              0,
+              0
+            ]
+          }
+        },
+        "rightLeg": {
+          "rotation": {
+            "vector": [
+              "math.sin(query.life_time * 390) * 49",
+              0.1,
+              0.1
+            ]
+          }
+        }
+      }
+    },
+    "animation.smallfolk_child.idle": {
+      "loop": true,
+      "bones": {
+        "leftArm": {
+          "rotation": {
+            "vector": [
+              0,
+              0,
+              "((math.cos(query.life_time * 103.2) * 2.865) + 2.865) * -1.0"
+            ]
+          }
+        },
+        "rightArm": {
+          "rotation": {
+            "vector": [
+              0,
+              0,
+              "(math.cos(query.life_time * 103.2) * 2.865) + 2.865"
+            ]
+          }
+        }
+      }
+    },
+    "animation.smallfolk_child.talk": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": {
+            "vector": [
+              "math.sin(query.life_time * 200) * 7.5",
+              "math.sin(query.life_time * 130) * 5",
+              0
+            ]
+          }
+        },
+        "rightArm": {
+          "rotation": {
+            "vector": [
+              "-20 + math.sin(query.life_time * 180) * 15",
+              0,
+              "math.sin(query.life_time * 90) * 8"
+            ]
+          }
+        }
+      }
+    },
+    "animation.smallfolk_child.attack": {
+      "animation_length": 0.4167,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.125": {
+              "vector": [
+                -103.75593,
+                -16.30726,
+                14.38793
+              ]
+            },
+            "0.25": {
+              "vector": [
+                -65.29956,
+                -44.74231,
+                3.78931
+              ]
+            },
+            "0.375": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "animation.smallfolk_child.riding": {
+      "loop": true,
+      "bones": {
+        "body": {
+          "position": {
+            "vector": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "vector": [
+              -36,
+              0,
+              0
+            ]
+          }
+        },
+        "rightArm": {
+          "rotation": {
+            "vector": [
+              -36,
+              0,
+              0
+            ]
+          }
+        },
+        "leftLeg": {
+          "rotation": {
+            "vector": [
+              -81.0,
+              -18.0,
+              0
+            ]
+          }
+        },
+        "rightLeg": {
+          "rotation": {
+            "vector": [
+              -81.0,
+              18.0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}
