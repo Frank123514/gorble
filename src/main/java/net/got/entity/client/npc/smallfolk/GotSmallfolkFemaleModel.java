@@ -114,7 +114,7 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
                 CubeListBuilder.create(),
                 PartPose.offset(0.0F, 0.0F, 3.0F));
 
-        // Standard (non-slim) left arm
+        // Slim (Alex-width, 3 px) left arm
         PartDefinition leftArm = body.addOrReplaceChild("leftArm",
                 CubeListBuilder.create()
                         .texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
@@ -125,9 +125,9 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
                 PartPose.offset(0.0F, 0.0F, 0.0F));
         leftArm.addOrReplaceChild("leftItem",
                 CubeListBuilder.create(),
-                PartPose.offset(1.0F, 7.0F, 1.0F));
+                PartPose.offset(1.0F, 13.0F, 4.0F));
 
-        // Standard (non-slim) right arm
+        // Slim (Alex-width, 3 px) right arm
         PartDefinition rightArm = body.addOrReplaceChild("rightArm",
                 CubeListBuilder.create()
                         .texOffs(40, 16).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
@@ -138,25 +138,25 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
                 PartPose.offset(0.0F, 0.0F, 0.0F));
         rightArm.addOrReplaceChild("rightItem",
                 CubeListBuilder.create(),
-                PartPose.offset(-1.0F, 7.0F, 1.0F));
+                PartPose.offset(-1.0F, 13.0F, -4.0F));
 
         body.addOrReplaceChild("jacket",
                 CubeListBuilder.create()
                         .texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        // Breasts sub-part — angled forward using an X-rotation of ~-27.5° (-0.4800 rad)
+        // Breasts sub-part — angled forward using an X-rotation of ~-20° (-0.3491 rad)
         PartDefinition breasts = body.addOrReplaceChild("breasts",
                 CubeListBuilder.create(),
-                PartPose.offset(0.0F, 5.0F, -2.5F));
+                PartPose.offset(0.0F, 12.0F, 0.0F));
         breasts.addOrReplaceChild("breasts_r1",
                 CubeListBuilder.create()
-                        .texOffs(24, 3).addBox(-3.0F, -3.0F, -1.0F, 6.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.4800F, 0.0F, 0.0F));
+                        .texOffs(24, 3).addBox(-3.0F, -2.0F, -1.0F, 6.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, -8.0F, -1.7F, -0.3491F, 0.0F, 0.0F));
 
         PartDefinition leftLeg = root.addOrReplaceChild("leftLeg",
                 CubeListBuilder.create()
-                        .texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
+                        .texOffs(16, 48).addBox(-1.9F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(1.9F, -12.0F, 0.0F));
         leftLeg.addOrReplaceChild("leftPants",
                 CubeListBuilder.create()
@@ -165,7 +165,7 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
 
         PartDefinition rightLeg = root.addOrReplaceChild("rightLeg",
                 CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
+                        .texOffs(0, 16).addBox(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(-1.9F, -12.0F, 0.0F));
         rightLeg.addOrReplaceChild("rightPants",
                 CubeListBuilder.create()
@@ -177,8 +177,12 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
 
     // ── Animation ─────────────────────────────────────────────────────────────
     //
-    // Priority order (highest wins, applied in sequence so later overwrites earlier):
-    //   riding (early-out) → idle → walk → attack → bow aim → shield block → talking
+    // Priority (highest wins — applied last):
+    //   riding (early-out) → idle bob → walk → attack → bow → swimming → sneaking
+    //   → shield block → talking
+    //
+    // State-machine poses use EntityModel.animate() with slim-arm constants from
+    // GotSmallfolkFemaleAnimations.  Procedural animations use direct math.
 
     @Override
     public void setupAnim(SmallfolkRenderState state) {
@@ -191,39 +195,34 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
         leftLeg.xRot  = 0f;  leftLeg.yRot  = 0f;  leftLeg.zRot  = 0f;
         rightLeg.xRot = 0f;  rightLeg.yRot = 0f;  rightLeg.zRot = 0f;
 
+        float ageInTicks = state.ageInTicks;
+
         // ── Head look ─────────────────────────────────────────────────────────
-        // Only drive head yaw/pitch from talk animations when actually talking.
         if (state.isTalking) {
             head.yRot = state.talkHeadYaw;
             head.xRot = state.talkHeadPitch;
         }
 
-        // ── Riding / mount pose ───────────────────────────────────────────────
+        // ── Riding — early return; walk/idle animations are suppressed ────────
         if (state.isRiding) {
-            leftLeg.xRot  = -1.4137167f;
-            leftLeg.yRot  =  0.31415927f;
-            leftLeg.zRot  =  0.07853982f;
-            rightLeg.xRot = -1.4137167f;
-            rightLeg.yRot = -0.31415927f;
-            rightLeg.zRot = -0.07853982f;
+            this.animate(state.ridingAnimationState, GotSmallfolkFemaleAnimations.RIDING_LEGS, ageInTicks);
+            this.animate(state.ridingAnimationState, GotSmallfolkFemaleAnimations.RIDING_ARMS, ageInTicks);
             return;
         }
 
-        // ── Idle animation ────────────────────────────────────────────────────
-        float age       = state.ageInTicks;
+        // ── Idle animation (procedural bob) ───────────────────────────────────
         float idleBlend = 1f - Math.min(state.walkAnimationSpeed * 6f, 1f);
-
-        float bob    = (float) Math.sin(age * 0.067f);
-        float armOsc = (float) Math.cos(age * 0.09f) * 0.075f + 0.075f;
+        float bob    = (float) Math.sin(ageInTicks * 0.067f);
+        float armOsc = (float) Math.cos(ageInTicks * 0.09f) * 0.075f + 0.075f;
 
         body.xRot     += bob * 0.015f * idleBlend;
         rightArm.zRot  =  armOsc  * idleBlend;
         leftArm.zRot   = -armOsc  * idleBlend;
         rightArm.xRot +=  bob * 0.015f * idleBlend;
         leftArm.xRot  += -bob * 0.015f * idleBlend;
-        head.xRot     -= bob * 0.020f  * idleBlend;
+        head.xRot     -=  bob * 0.020f  * idleBlend;
 
-        // ── Walk cycle ────────────────────────────────────────────────────────
+        // ── Walk cycle (procedural) ───────────────────────────────────────────
         float swing     = state.walkAnimationPos;
         float intensity = state.walkAnimationSpeed * 1.4F;
 
@@ -232,7 +231,7 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
         leftArm.xRot  += -(float) Math.cos(swing) * intensity * 0.85f;
         rightArm.xRot +=  (float) Math.cos(swing) * intensity * 0.85f;
 
-        // ── Attack arm swing ──────────────────────────────────────────────────
+        // ── Attack swing (procedural) ─────────────────────────────────────────
         if (state.attackTime > 0f) {
             float t      = state.attackTime;
             float stroke = t < 0.5f ? t * 2f : (1f - t) * 2f;
@@ -242,18 +241,16 @@ public class GotSmallfolkFemaleModel extends EntityModel<SmallfolkRenderState>
             rightArm.yRot += arc * 0.20f;
         }
 
-        // ── Bow / crossbow aim ────────────────────────────────────────────────
-        if (state.isAimingBow) {
-            rightArm.xRot = -1.10f;
-            rightArm.yRot = -0.30f;
-            rightArm.zRot =  0.05f;
-            leftArm.xRot  = -0.95f;
-            leftArm.yRot  =  0.30f;
-            leftArm.zRot  = -0.05f;
-            head.xRot    -= 0.20f;
-        }
+        // ── Bow / crossbow aim (Blockbench pose, slim-arm angles) ─────────────
+        this.animate(state.aimingBowAnimationState, GotSmallfolkFemaleAnimations.BOW_AND_ARROW, ageInTicks);
 
-        // ── Shield block ──────────────────────────────────────────────────────
+        // ── Swimming (Blockbench looping animation) ───────────────────────────
+        this.animate(state.swimmingAnimationState, GotSmallfolkFemaleAnimations.SWIMMING, ageInTicks);
+
+        // ── Sneaking / crouching (Blockbench pose) ────────────────────────────
+        this.animate(state.sneakingAnimationState, GotSmallfolkFemaleAnimations.SNEAKING, ageInTicks);
+
+        // ── Shield block (no Blockbench definition — kept as direct math) ──────
         if (state.isShieldBlocking) {
             leftArm.xRot = -0.85f;
             leftArm.yRot =  0.25f;

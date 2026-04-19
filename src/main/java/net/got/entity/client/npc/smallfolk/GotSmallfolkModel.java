@@ -122,7 +122,7 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
                 PartPose.offset(0.0F, 0.0F, 0.0F));
         leftArm.addOrReplaceChild("leftItem",
                 CubeListBuilder.create(),
-                PartPose.offset(1.0F, 7.0F, 1.0F));
+                PartPose.offset(1.0F, 13.0F, 4.0F));
 
         // Standard (Steve-width, 4 px) right arm
         PartDefinition rightArm = body.addOrReplaceChild("rightArm",
@@ -135,7 +135,7 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
                 PartPose.offset(0.0F, 0.0F, 0.0F));
         rightArm.addOrReplaceChild("rightItem",
                 CubeListBuilder.create(),
-                PartPose.offset(-1.0F, 7.0F, 1.0F));
+                PartPose.offset(-1.0F, 13.0F, -4.0F));
 
         body.addOrReplaceChild("jacket",
                 CubeListBuilder.create()
@@ -144,7 +144,7 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
 
         PartDefinition leftLeg = root.addOrReplaceChild("leftLeg",
                 CubeListBuilder.create()
-                        .texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
+                        .texOffs(16, 48).addBox(-1.9F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(1.9F, -12.0F, 0.0F));
         leftLeg.addOrReplaceChild("leftPants",
                 CubeListBuilder.create()
@@ -153,7 +153,7 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
 
         PartDefinition rightLeg = root.addOrReplaceChild("rightLeg",
                 CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
+                        .texOffs(0, 16).addBox(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(-1.9F, -12.0F, 0.0F));
         rightLeg.addOrReplaceChild("rightPants",
                 CubeListBuilder.create()
@@ -165,8 +165,15 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
 
     // ── Animation ─────────────────────────────────────────────────────────────
     //
-    // Priority order (highest wins, applied in sequence so later overwrites earlier):
-    //   riding (early-out) → idle → walk → attack → bow aim → shield block → talking
+    // Priority (highest wins — applied last):
+    //   riding (early-out) → idle bob → walk → attack → bow → swimming → sneaking
+    //   → shield block → talking
+    //
+    // State-machine poses (riding, bow, sneaking, swimming) use
+    // EntityModel.animate() with AnimationDefinition constants from
+    // GotSmallfolkAnimations.  Procedural animations (idle bob, walk cycle,
+    // attack swing) use direct rotation math since they cannot be expressed
+    // as static keyframe poses.
 
     @Override
     public void setupAnim(SmallfolkRenderState state) {
@@ -179,45 +186,34 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
         leftLeg.xRot  = 0f;  leftLeg.yRot  = 0f;  leftLeg.zRot  = 0f;
         rightLeg.xRot = 0f;  rightLeg.yRot = 0f;  rightLeg.zRot = 0f;
 
+        float ageInTicks = state.ageInTicks;
+
         // ── Head look ─────────────────────────────────────────────────────────
-        // Only drive head yaw/pitch from talk animations when actually talking.
-        // Previously this was applied unconditionally, which clobbered the head
-        // rotation every frame even for idle/walking NPCs (always looked forward).
         if (state.isTalking) {
             head.yRot = state.talkHeadYaw;
             head.xRot = state.talkHeadPitch;
         }
 
-        // ── Riding / mount pose ───────────────────────────────────────────────
-        // When the NPC is a passenger on a horse (or any vehicle) the legs splay
-        // forward and outward so the figure sits astride the mount naturally.
-        // We return early to suppress all walk / idle / attack animations —
-        // the horse's own movement drives the apparent motion.
+        // ── Riding — early return; walk/idle animations are suppressed ────────
         if (state.isRiding) {
-            leftLeg.xRot  = -1.4137167f;    // ~-81° — upper leg swings forward
-            leftLeg.yRot  =  0.31415927f;   // angled inward over the saddle
-            leftLeg.zRot  =  0.07853982f;   // slight outward roll
-            rightLeg.xRot = -1.4137167f;
-            rightLeg.yRot = -0.31415927f;
-            rightLeg.zRot = -0.07853982f;
+            this.animate(state.ridingAnimationState, GotSmallfolkAnimations.RIDING_LEGS, ageInTicks);
+            this.animate(state.ridingAnimationState, GotSmallfolkAnimations.RIDING_ARMS, ageInTicks);
             return;
         }
 
-        // ── Idle animation (vanilla MC style) ────────────────────────────────
-        float age       = state.ageInTicks;
+        // ── Idle animation (procedural bob) ───────────────────────────────────
         float idleBlend = 1f - Math.min(state.walkAnimationSpeed * 6f, 1f);
-
-        float bob    = (float) Math.sin(age * 0.067f);
-        float armOsc = (float) Math.cos(age * 0.09f) * 0.075f + 0.075f;
+        float bob    = (float) Math.sin(ageInTicks * 0.067f);
+        float armOsc = (float) Math.cos(ageInTicks * 0.09f) * 0.075f + 0.075f;
 
         body.xRot     += bob * 0.015f * idleBlend;
         rightArm.zRot  =  armOsc  * idleBlend;
         leftArm.zRot   = -armOsc  * idleBlend;
         rightArm.xRot +=  bob * 0.015f * idleBlend;
         leftArm.xRot  += -bob * 0.015f * idleBlend;
-        head.xRot     -= bob * 0.020f  * idleBlend;
+        head.xRot     -=  bob * 0.020f  * idleBlend;
 
-        // ── Walk cycle ────────────────────────────────────────────────────────
+        // ── Walk cycle (procedural) ───────────────────────────────────────────
         float swing     = state.walkAnimationPos;
         float intensity = state.walkAnimationSpeed * 1.4F;
 
@@ -226,30 +222,26 @@ public class GotSmallfolkModel extends EntityModel<SmallfolkRenderState>
         leftArm.xRot  += -(float) Math.cos(swing) * intensity * 0.85f;
         rightArm.xRot +=  (float) Math.cos(swing) * intensity * 0.85f;
 
-        // ── Attack arm swing ──────────────────────────────────────────────────
-        // attackTime runs 0 → 1 over one swing (driven by mob.swing() in
-        // GotMeleeAttackGoal).  Right arm sweeps forward like a sword slash.
+        // ── Attack swing (procedural) ─────────────────────────────────────────
         if (state.attackTime > 0f) {
             float t      = state.attackTime;
             float stroke = t < 0.5f ? t * 2f : (1f - t) * 2f;
             float arc    = (float) Math.sin(stroke * Math.PI);
-            rightArm.xRot -= arc * 2.0f;   // strong forward sweep
-            rightArm.zRot -= arc * 0.30f;  // slight inward roll at peak
-            rightArm.yRot += arc * 0.20f;  // subtle horizontal component
+            rightArm.xRot -= arc * 2.0f;
+            rightArm.zRot -= arc * 0.30f;
+            rightArm.yRot += arc * 0.20f;
         }
 
-        // ── Bow / crossbow aim ────────────────────────────────────────────────
-        if (state.isAimingBow) {
-            rightArm.xRot = -1.10f;
-            rightArm.yRot = -0.30f;
-            rightArm.zRot =  0.05f;
-            leftArm.xRot  = -0.95f;
-            leftArm.yRot  =  0.30f;
-            leftArm.zRot  = -0.05f;
-            head.xRot    -= 0.20f;
-        }
+        // ── Bow / crossbow aim (Blockbench pose) ──────────────────────────────
+        this.animate(state.aimingBowAnimationState, GotSmallfolkAnimations.BOW_AND_ARROW, ageInTicks);
 
-        // ── Shield block ──────────────────────────────────────────────────────
+        // ── Swimming (Blockbench looping animation) ───────────────────────────
+        this.animate(state.swimmingAnimationState, GotSmallfolkAnimations.SWIMMING, ageInTicks);
+
+        // ── Sneaking / crouching (Blockbench pose) ────────────────────────────
+        this.animate(state.sneakingAnimationState, GotSmallfolkAnimations.SNEAKING, ageInTicks);
+
+        // ── Shield block (no Blockbench definition — kept as direct math) ──────
         if (state.isShieldBlocking) {
             leftArm.xRot = -0.85f;
             leftArm.yRot =  0.25f;

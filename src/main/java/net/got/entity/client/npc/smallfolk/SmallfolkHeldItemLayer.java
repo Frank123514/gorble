@@ -45,6 +45,7 @@ public class SmallfolkHeldItemLayer
         if (!state.mainHandItem.isEmpty()) {
             renderAtAnchor(poseStack, buffer, packedLight,
                     state.mainHandItem,
+                    parts,
                     parts.sfRightArm(),
                     parts.sfRightItemAnchor(),
                     ItemDisplayContext.THIRD_PERSON_RIGHT_HAND);
@@ -54,6 +55,7 @@ public class SmallfolkHeldItemLayer
         if (!state.offHandItem.isEmpty()) {
             renderAtAnchor(poseStack, buffer, packedLight,
                     state.offHandItem,
+                    parts,
                     parts.sfLeftArm(),
                     parts.sfLeftItemAnchor(),
                     ItemDisplayContext.THIRD_PERSON_LEFT_HAND);
@@ -61,26 +63,37 @@ public class SmallfolkHeldItemLayer
     }
 
     /**
-     * Walks the arm → anchor chain manually so the item inherits all
-     * accumulated parent transforms (walk cycle, attack swing, riding pose).
+     * Walks the full parent chain so the item correctly inherits every
+     * accumulated transform (idle bob, walk cycle, attack swing, riding pose).
      *
-     * <p>The model's render pass has already returned by the time render layers
-     * run, so the poseStack is back at the entity root. We must re-apply the
-     * arm and anchor transforms ourselves.
+     * <p>The model hierarchy above the arm is:
+     * <pre>mesh-root -&gt; "root"(0,24,0) -&gt; "waist"(0,-12,0) -&gt; body -&gt; arm -&gt; anchor</pre>
+     * The render-layer poseStack is at mesh-root (entity-root) level. "root" and
+     * "waist" are never animated, so their combined y-offset (24-12=12 pixels =
+     * 0.75 blocks) is applied as a single static translate. "body" carries idle
+     * and attack animation and must go through translateAndRotate. Then arm and
+     * anchor complete the chain.
      */
     private void renderAtAnchor(PoseStack poseStack, MultiBufferSource buffer,
                                 int packedLight, ItemStack stack,
-                                ModelPart arm, ModelPart anchor,
+                                SmallfolkModelParts parts, ModelPart arm, ModelPart anchor,
                                 ItemDisplayContext ctx) {
         poseStack.pushPose();
 
-        // Re-apply the arm part's local transform (rotation + pivot offset).
+        // Static offset: "root"(y=+24) + "waist"(y=-12) = net y=+12 pixels = 0.75 blocks.
+        poseStack.translate(0.0f, 12.0f / 16.0f, 0.0f);
+        // Body may carry idle/attack animation; must use translateAndRotate.
+        parts.sfBody().translateAndRotate(poseStack);
+        // Now at the body pivot -- apply arm then palm anchor.
         arm.translateAndRotate(poseStack);
-        // Then apply the anchor's local offset to reach the palm position.
         anchor.translateAndRotate(poseStack);
 
-        // Flip from model-space into item-render-space and scale to hand size.
-        poseStack.scale(0.5f, -0.5f, -0.5f);
+        // Scale to hand size. No axis negations here: LivingEntityRenderer already applies
+        // scale(-1,-1,1) which inverts x and y for all entity rendering. Item JSON display
+        // contexts (THIRD_PERSON_RIGHT/LEFT_HAND) are calibrated for that coordinate system.
+        // Adding our own -y/-z negations double-flips those axes, reversing the blade direction
+        // so it points back through the arm instead of outward from the hand.
+        poseStack.scale(0.4375f, 0.4375f, 0.4375f);
 
         itemRenderer.renderStatic(
                 stack,

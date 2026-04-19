@@ -1,5 +1,6 @@
 package net.got.entity.client.npc.smallfolk;
 
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.world.item.ItemStack;
 
@@ -70,6 +71,24 @@ public class SmallfolkRenderState extends HumanoidRenderState {
      * animations — the mount's own animation drives apparent motion instead.
      */
     public boolean isRiding;
+
+    // ── Blockbench animation states ───────────────────────────────────────────
+    //
+    // Each AnimationState persists between frames (the render state is reused
+    // per entity by EntityRenderDispatcher). The renderer starts/stops each
+    // state in extractRenderState(); the models consume them via animate().
+
+    /** Active while the NPC is riding a vehicle. Drives RIDING_LEGS + RIDING_ARMS. */
+    public final AnimationState ridingAnimationState   = new AnimationState();
+
+    /** Active while the NPC is drawing a bow or crossbow. Drives BOW_AND_ARROW. */
+    public final AnimationState aimingBowAnimationState = new AnimationState();
+
+    /** Active while the NPC is crouching / sneaking. Drives SNEAKING. */
+    public final AnimationState sneakingAnimationState  = new AnimationState();
+
+    /** Active while the NPC is swimming. Drives SWIMMING. */
+    public final AnimationState swimmingAnimationState  = new AnimationState();
 
     // ── Held items (for SmallfolkHeldItemLayer) ───────────────────────────────
 

@@ -129,6 +129,23 @@ public class SmallfolkRenderer<T extends SmallfolkEntity>
                 || useItem.getItem() instanceof CrossbowItem);
         state.isShieldBlocking = entity.isBlocking();
 
+        // ── Animation states (driven from booleans populated above) ───────────
+        // These persist between frames because SmallfolkRenderState is cached
+        // per-entity by EntityRenderDispatcher.
+        long gameTime = entity.level().getGameTime();
+
+        if (state.isRiding)      state.ridingAnimationState.startIfStopped((int) gameTime);
+        else                     state.ridingAnimationState.stop();
+
+        if (state.isAimingBow)   state.aimingBowAnimationState.startIfStopped((int) gameTime);
+        else                     state.aimingBowAnimationState.stop();
+
+        if (entity.isCrouching()) state.sneakingAnimationState.startIfStopped((int) gameTime);
+        else                      state.sneakingAnimationState.stop();
+
+        if (entity.isSwimming())  state.swimmingAnimationState.startIfStopped((int) gameTime);
+        else                      state.swimmingAnimationState.stop();
+
         // ── Held items ────────────────────────────────────────────────────────
         // These are consumed by SmallfolkHeldItemLayer.
         state.mainHandItem = entity.getItemInHand(InteractionHand.MAIN_HAND);

@@ -124,12 +124,16 @@ public class SmallfolkArmorLayer
     }
 
     private static void copyPart(ModelPart from, ModelPart to) {
+        // Copy rotations only.  The NPC model uses a non-standard part hierarchy
+        // (root → waist → body, legs offset by -12 from root, etc.), so its x/y/z
+        // positions are incompatible with the vanilla HumanoidModel's coordinate
+        // system.  Overwriting the HumanoidModel's own part positions was the root
+        // cause of leggings rendering at the head, the chestplate torso disappearing,
+        // and boots not appearing at all.  The HumanoidModel already knows where each
+        // part belongs; we only need to sync the animation rotations.
         to.xRot = from.xRot;
         to.yRot = from.yRot;
         to.zRot = from.zRot;
-        to.x    = from.x;
-        to.y    = from.y;
-        to.z    = from.z;
     }
 
     private static void setSlotVisibility(HumanoidModel<?> model, EquipmentSlot slot) {
@@ -145,7 +149,10 @@ public class SmallfolkArmorLayer
             case HEAD  -> { model.head.visible = true;     model.hat.visible      = true; }
             case CHEST -> { model.body.visible = true;     model.rightArm.visible = true;
                 model.leftArm.visible  = true; }
-            case LEGS  -> { model.rightLeg.visible = true; model.leftLeg.visible  = true; }
+            // body must also be visible for LEGS so the leggings texture renders its
+            // hip/waistband section on the torso area — matching vanilla 1.21.4 behaviour.
+            case LEGS  -> { model.body.visible     = true;
+                            model.rightLeg.visible = true; model.leftLeg.visible  = true; }
             case FEET  -> { model.rightLeg.visible = true; model.leftLeg.visible  = true; }
             default    -> {}
         }
