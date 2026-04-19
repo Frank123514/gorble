@@ -11,7 +11,19 @@ tasks.named('wrapper', Wrapper).configure {
 version = mod_version
 group = mod_group_id
 
-repositories {    // JEI
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'GeckoLib'
+                url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+            }
+        }
+        filter {
+            includeGroup('software.bernie.geckolib')
+        }
+    }
+    // JEI
     maven {
         name = "JEI Maven (BlameJared)"
         url = "https://maven.blamejared.com"
@@ -56,6 +68,9 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+    // ── GeckoLib ─────────────────────────────────────────────────────────────
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -1,0 +1,145 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.smallfolk.idle": {
+      "loop": true,
+      "animation_length": 3,
+      "bones": {
+        "body": {
+          "rotation": {
+            "0.0":  [0, 0, 0],
+            "1.5":  [1, 0, 0],
+            "3.0":  [0, 0, 0]
+          }
+        },
+        "rightArm": {
+          "rotation": {
+            "0.0":  [0, 0,  5],
+            "1.5":  [1, 0,  5],
+            "3.0":  [0, 0,  5]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "0.0":  [0, 0, -5],
+            "1.5": [-1, 0, -5],
+            "3.0":  [0, 0, -5]
+          }
+        }
+      }
+    },
+    "animation.smallfolk.walk": {
+      "loop": true,
+      "animation_length": 1,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0":  [-45, 0, 0],
+            "0.5":  [45,  0, 0],
+            "1.0":  [-45, 0, 0]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "0.0":  [45,  0, 0],
+            "0.5":  [-45, 0, 0],
+            "1.0":  [45,  0, 0]
+          }
+        },
+        "rightLeg": {
+          "rotation": {
+            "0.0":  [45,  0, 0],
+            "0.5":  [-45, 0, 0],
+            "1.0":  [45,  0, 0]
+          }
+        },
+        "leftLeg": {
+          "rotation": {
+            "0.0":  [-45, 0, 0],
+            "0.5":  [45,  0, 0],
+            "1.0":  [-45, 0, 0]
+          }
+        }
+      }
+    },
+    "animation.smallfolk.attack": {
+      "loop": false,
+      "animation_length": 0.5,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0":  [0,   0, 0],
+            "0.15": [-115, 0, -17],
+            "0.5":  [0,   0, 0]
+          }
+        }
+      }
+    },
+    "animation.smallfolk.sneaking": {
+      "loop": true,
+      "animation_length": 0,
+      "bones": {
+        "body":     { "rotation": { "0.0": [-30, 0, 0] } },
+        "head":     { "rotation": { "0.0": [30,  0, 0] } },
+        "rightLeg": { "rotation": { "0.0": [-15, 0, 0] } },
+        "leftLeg":  { "rotation": { "0.0": [-15, 0, 0] } }
+      }
+    },
+    "animation.smallfolk.swimming": {
+      "loop": true,
+      "animation_length": 1,
+      "bones": {
+        "body": {
+          "rotation": {
+            "0.0": [-90, 0, 0]
+          }
+        },
+        "rightArm": {
+          "rotation": {
+            "0.0":  [-135, 0, 0],
+            "0.5":  [-90,  0, 0],
+            "1.0":  [-135, 0, 0]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "0.0":  [-135, 0, 0],
+            "0.5":  [-90,  0, 0],
+            "1.0":  [-135, 0, 0]
+          }
+        },
+        "rightLeg": {
+          "rotation": {
+            "0.0":  [-15, 0, 0],
+            "0.5":  [15,  0, 0],
+            "1.0":  [-15, 0, 0]
+          }
+        },
+        "leftLeg": {
+          "rotation": {
+            "0.0":  [15,  0, 0],
+            "0.5":  [-15, 0, 0],
+            "1.0":  [15,  0, 0]
+          }
+        }
+      }
+    },
+    "animation.smallfolk.riding": {
+      "loop": true,
+      "animation_length": 0,
+      "bones": {
+        "rightLeg": { "rotation": { "0.0": [-90, 0,  25] } },
+        "leftLeg":  { "rotation": { "0.0": [-90, 0, -25] } },
+        "body":     { "rotation": { "0.0": [5, 0, 0] } }
+      }
+    },
+    "animation.smallfolk.aiming_bow": {
+      "loop": true,
+      "animation_length": 0,
+      "bones": {
+        "rightArm": { "rotation": { "0.0": [-90, -6,  6] } },
+        "leftArm":  { "rotation": { "0.0": [-90,  29, -6] } }
+      }
+    }
+  }
+}

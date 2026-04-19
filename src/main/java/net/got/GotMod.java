@@ -30,7 +30,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddServerReloadListenersEvent;  // ← renamed in 21.4
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
@@ -46,26 +46,19 @@ public final class GotMod {
     public static final String MODID = "got";
     public static final Logger LOGGER = LogManager.getLogger();
 
-    /* ---------------------------- */
-    /* Constructor                  */
-    /* ---------------------------- */
-
     public GotMod() {
         IEventBus modBus = ModLoadingContext
                 .get()
                 .getActiveContainer()
                 .getEventBus();
 
-        /* ---------- Lifecycle ---------- */
         assert modBus != null;
         modBus.addListener(this::commonSetup);
         modBus.addListener(this::registerNetworking);
 
-        /* ---------- Registries ---------- */
         GotWoodTypes.init();
         GotModMenus.REGISTRY.register(modBus);
         GotModRecipeTypes.REGISTRY.register(modBus);
-        // Register the oven recipe serializer and its recipe book category
         GotModRecipeSerializers.REGISTRY.register(modBus);
         GotModRecipeSerializers.CATEGORY_REGISTRY.register(modBus);
         GotModBlocks.REGISTRY.register(modBus);
@@ -77,14 +70,10 @@ public final class GotMod {
         WorldgenRegistries.register(modBus);
         GotTreePlacers.register(modBus);
 
-        // ── NPC entities ────────────────────────────────────────────────
         GotModEntities.REGISTRY.register(modBus);
-        // GotEntityEvents is @EventBusSubscriber(Bus.MOD) — auto-registered
 
-        /* ---------- Runtime events ---------- */
         NeoForge.EVENT_BUS.register(this);
 
-        /* ---------- Client bootstrap ---------- */
         if (FMLEnvironment.dist == Dist.CLIENT) {
             GotClient.init();
         }
@@ -92,14 +81,7 @@ public final class GotMod {
         LOGGER.info("Game of Thrones mod loaded");
     }
 
-    /* ---------------------------- */
-    /* Common Setup                 */
-    /* ---------------------------- */
-
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // HangingSignBlockEntity hardcodes BlockEntityType.HANGING_SIGN internally.
-        // We must add our custom hanging sign blocks to that type's validBlocks set
-        // so BlockEntity.validateBlockState() passes. The field is exposed via AT.
         event.enqueueWork(() -> {
             HashSet<net.minecraft.world.level.block.Block> blocks =
                     new HashSet<>(BlockEntityType.HANGING_SIGN.validBlocks);
@@ -143,31 +125,19 @@ public final class GotMod {
         GotNetwork.init();
     }
 
-    /* ---------------------------- */
-    /* Networking                   */
-    /* ---------------------------- */
-
     private void registerNetworking(final RegisterPayloadHandlersEvent event) {
         GotNetwork.register(event);
         LOGGER.info("GoT networking registered");
     }
 
-    /* ---------------------------- */
-    /* Datapack Reload (Maps)       */
-    /* ---------------------------- */
-
     @SubscribeEvent
-    public void onAddReloadListeners(AddServerReloadListenersEvent event) {  // ← renamed
+    public void onAddReloadListeners(AddServerReloadListenersEvent event) {
         event.addListener(
-                ResourceLocation.fromNamespaceAndPath(MODID, "map_reload"),  // ← id required in 21.4
+                ResourceLocation.fromNamespaceAndPath(MODID, "map_reload"),
                 new MapReloadListener()
         );
         LOGGER.info("Registered GoT map reload listener");
     }
-
-    /* ---------------------------- */
-    /* Server Work Queue            */
-    /* ---------------------------- */
 
     private static final Collection<Tuple<Runnable, Integer>> WORK_QUEUE =
             new ConcurrentLinkedQueue<>();
@@ -190,10 +160,6 @@ public final class GotMod {
         ready.forEach(t -> t.getA().run());
         WORK_QUEUE.removeAll(ready);
     }
-
-    /* ---------------------------- */
-    /* Utilities                    */
-    /* ---------------------------- */
 
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);

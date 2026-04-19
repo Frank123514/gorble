@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
  * stays at 0, so {@code attackAnim} in {@code LivingEntity} never advances
  * above 0, which means {@code state.attackTime} is always 0 in the render
  * pipeline and the attack-arm animation in
- * {@link net.got.entity.client.npc.smallfolk.GotSmallfolkModel} never fires.
+ * {@link net.got.entity.npc.smallfolk.SmallfolkEntity} never fires.
  *
  * <p>Overriding {@link #checkAndPerformAttack} and calling
  * {@code mob.swing(MAIN_HAND)} before delegating to super is the minimal,

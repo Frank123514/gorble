@@ -25,6 +25,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -46,7 +52,7 @@ import net.minecraft.world.item.Items;
  *   <li><b>Variant</b> — texture variant index, split by gender for skin variety.</li>
  * </ul>
  */
-public abstract class SmallfolkEntity extends Animal {
+public abstract class SmallfolkEntity extends Animal implements GeoEntity {
 
     // ── Synced data ───────────────────────────────────────────────────────────
 
@@ -70,6 +76,7 @@ public abstract class SmallfolkEntity extends Animal {
 
     private GotNpcPersonality personality = GotNpcPersonality.FRIENDLY;
     private final GotNpcTalkAnimations talkAnimations = new GotNpcTalkAnimations(this);
+    private final AnimatableInstanceCache animCache = GeckoLibUtil.createInstanceCache(this);
 
     /** Ticks until this NPC can speak to a player again. */
     private int speechCooldown;
@@ -399,4 +406,22 @@ public abstract class SmallfolkEntity extends Animal {
     public float getTalkHeadYaw()   { return entityData.get(DATA_TALK_HEAD_YAW); }
     public float getTalkHeadPitch() { return entityData.get(DATA_TALK_HEAD_PITCH); }
     public float getTalkGesture()   { return entityData.get(DATA_TALK_GESTURE); }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "smallfolk_controller", 4, state -> {
+            if (isTalking()) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.talk"));
+            }
+            if (state.isMoving()) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.walk"));
+            }
+            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.idle"));
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animCache;
+    }
 }
