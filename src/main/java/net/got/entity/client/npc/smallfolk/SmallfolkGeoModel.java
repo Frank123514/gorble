@@ -31,12 +31,8 @@ public final class SmallfolkGeoModel<T extends SmallfolkEntity>
             ResourceLocation.fromNamespaceAndPath("got", "geo/smallfolk_male.geo.json");
     private static final ResourceLocation MODEL_FEMALE =
             ResourceLocation.fromNamespaceAndPath("got", "geo/smallfolk_female.geo.json");
-    private static final ResourceLocation MODEL_CHILD =
-            ResourceLocation.fromNamespaceAndPath("got", "geo/smallfolk_child.geo.json");
     private static final ResourceLocation ANIMATIONS =
             ResourceLocation.fromNamespaceAndPath("got", "animations/smallfolk.animation.json");
-    private static final ResourceLocation ANIMATIONS_CHILD =
-            ResourceLocation.fromNamespaceAndPath("got", "animations/smallfolk_child.animation.json");
 
     private final ResourceLocation[] maleTextures;
     private final ResourceLocation[] femaleTextures;
@@ -56,8 +52,14 @@ public final class SmallfolkGeoModel<T extends SmallfolkEntity>
 
     @Override
     public ResourceLocation getModelResource(T animatable, GeoRenderer<T> renderer) {
-        if (animatable.isBaby()) return MODEL_CHILD;
+        // Babies use the same adult model — the renderer halves the scale for them.
+        // The dedicated child geo had broken UV mapping so the skin didn't fit.
         return animatable.getGender() == NpcGender.FEMALE ? MODEL_FEMALE : MODEL_MALE;
+    }
+
+    @Override
+    public ResourceLocation getAnimationResource(T animatable) {
+        return ANIMATIONS;
     }
 
     @Override
@@ -70,10 +72,6 @@ public final class SmallfolkGeoModel<T extends SmallfolkEntity>
         return maleTextures[animatable.getVariant() % maleTextures.length];
     }
 
-    @Override
-    public ResourceLocation getAnimationResource(T animatable) {
-        return animatable.isBaby() ? ANIMATIONS_CHILD : ANIMATIONS;
-    }
 
     /**
      * Called by GeckoLib after it bakes (or re-bakes) the model.

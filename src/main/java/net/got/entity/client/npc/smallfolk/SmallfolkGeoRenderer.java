@@ -9,6 +9,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState; // ADD THIS IMPORT
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -47,7 +49,7 @@ public final class SmallfolkGeoRenderer<T extends SmallfolkEntity> extends GeoEn
     private static final String RIGHT_BOOT      = "armor_right_boot";
     private static final String LEFT_BOOT       = "armor_left_boot";
 
-    private static final float RIDING_Y_OFFSET  = 0.3f;
+    private static final float RIDING_Y_OFFSET  = 0.65f;
     private static final float NPC_SCALE        = 0.9375f;
 
     // ── Cached equipment stacks — set in preRender, read by both layers ────────
@@ -57,6 +59,9 @@ public final class SmallfolkGeoRenderer<T extends SmallfolkEntity> extends GeoEn
     protected ItemStack bootsItem;
     protected ItemStack mainHandItem;
     protected ItemStack offhandItem;
+
+    // Store dialogue for render state extraction
+    protected String currentDialogue;
 
     public SmallfolkGeoRenderer(EntityRendererProvider.Context context,
                                 ResourceLocation[] maleTextures,
@@ -161,6 +166,51 @@ public final class SmallfolkGeoRenderer<T extends SmallfolkEntity> extends GeoEn
         });
     }
 
+    /**
+     * Extract render state from entity - including dialogue for name tag rendering
+     */
+    @Override
+    public void extractRenderState(T entity, @Nullable EntityRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+
+        // Store dialogue in instance field for use in submitNameTag
+        this.currentDialogue = entity.getCurrentDialogueLine();
+    }
+
+    /**
+     * When the NPC is talking, renders two labels:
+     * <ol>
+     *   <li>The entity name, shifted upward to make room below it.</li>
+     *   <li>The chosen dialogue line at the normal nameplate position,
+     *       styled in gold italics so it's visually distinct from the name.</li>
+     * </ol>
+     * When silent, falls through to the standard single-label render.
+     */
+    @Override
+    protected void renderNameTag(EntityRenderState state, Component displayName,
+                                 PoseStack poseStack, MultiBufferSource bufferSource,
+                                 int packedLight) {
+        // Use the stored dialogue from extractRenderState
+        String dialogue = this.currentDialogue;
+
+        if (dialogue == null || dialogue.isEmpty()) {
+            super.renderNameTag(state, displayName, poseStack, bufferSource, packedLight);
+            return;
+        }
+
+        // ── Name: shifted up to sit above the dialogue line ───────────────────
+        poseStack.pushPose();
+        poseStack.translate(0.0, 0.3, 0.0);
+        super.renderNameTag(state, displayName, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
+
+        // ── Dialogue: rendered at the normal nameplate height ─────────────────
+        // Gold italic text with curly quotes so it reads as speech, not a label.
+        Component dialogueLabel = Component.literal("\u201C" + dialogue + "\u201D")
+                .withStyle(s -> s.withColor(0xFFD700).withItalic(true));
+        super.renderNameTag(state, dialogueLabel, poseStack, bufferSource, packedLight);
+    }
+
     @Override
     public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model,
                           MultiBufferSource bufferSource, VertexConsumer buffer,
@@ -183,5 +233,15 @@ public final class SmallfolkGeoRenderer<T extends SmallfolkEntity> extends GeoEn
         }
 
         poseStack.scale(NPC_SCALE, NPC_SCALE, NPC_SCALE);
+
+        // Babies use the adult model scaled down — avoids the broken UV mapping
+        // of the dedicated child geo. No translate needed: the model origin sits
+        // at the entity's feet so scaling keeps them on the ground.
+        if (animatable.isBaby()) {
+            poseStack.scale(0.65f, 0.65f, 0.65f);
+            this.shadowRadius = 0.325f;
+        } else {
+            this.shadowRadius = 0.5f;
+        }
     }
 }

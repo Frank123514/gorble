@@ -35,6 +35,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.got.client.gui.OvenScreen;
+import net.got.client.gui.NpcTradeScreen;
 import net.got.init.GotModMenus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -54,6 +55,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(GotModMenus.OVEN.get(), OvenScreen::new);
+        event.register(GotModMenus.NPC_TRADE.get(), NpcTradeScreen::new);
     }
 
     @SubscribeEvent

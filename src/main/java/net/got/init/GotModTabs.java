@@ -1328,6 +1328,15 @@ public class GotModTabs {
 
                         // ── Oven
                         safeAccept(output, GotModBlocks.OVEN.get());
+                        // ── Currency ─────────────────────────────────────────
+                        output.accept(GotModItems.COIN_HALFPENNY.get());
+                        output.accept(GotModItems.COIN_PENNY.get());
+                        output.accept(GotModItems.COIN_HALFGROAT.get());
+                        output.accept(GotModItems.COIN_GROAT.get());
+                        output.accept(GotModItems.COIN_STAR.get());
+                        output.accept(GotModItems.COIN_STAG.get());
+                        output.accept(GotModItems.COIN_MOON.get());
+                        output.accept(GotModItems.COIN_DRAGON.get());
                         // ── Crops (wild/planted blocks) ───────────────────────────────────────
                         safeAccept(output, GotModBlocks.OAT_CROP.get());
                         safeAccept(output, GotModBlocks.RYE_CROP.get());

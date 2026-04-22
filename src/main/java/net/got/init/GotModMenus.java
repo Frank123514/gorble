@@ -16,4 +16,8 @@ public class GotModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<OvenMenu>> OVEN =
             REGISTRY.register("oven", () ->
                     new MenuType<>(OvenMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<net.got.menu.NpcTradeMenu>> NPC_TRADE =
+            REGISTRY.register("npc_trade", () ->
+                    new MenuType<>(net.got.menu.NpcTradeMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

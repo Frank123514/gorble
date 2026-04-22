@@ -12,6 +12,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * The GOT oven — a cooking block that works like a furnace.
+ *
+ * <p>Baker NPCs are no longer assigned via the oven block. Use the hire
+ * screen instead (sneak + right-click any unemployed NPC).
+ */
 public class OvenBlock extends AbstractFurnaceBlock {
 
     public static final MapCodec<OvenBlock> CODEC = MapCodec.unit(OvenBlock::new);
@@ -51,3 +57,4 @@ public class OvenBlock extends AbstractFurnaceBlock {
                 OvenBlockEntity::serverTick);
     }
 }
+

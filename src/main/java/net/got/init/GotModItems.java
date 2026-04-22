@@ -1425,6 +1425,22 @@ public class GotModItems {
     // ── Oven ──────────────────────────────────────────────────────────────────
     public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);
 
+    // ── NPC Workstations ─────────────────────────────────────────────────────
+
+    // ── Currency ──────────────────────────────────────────────────────────────
+    // Ordered smallest → largest.  Values (in halfpennies):
+    //   Halfpenny=1  Penny=2  Halfgroat=4  Groat=8  Star=16
+    //   Stag=112  Moon=784  Dragon=23520
+    public static final DeferredItem<Item> COIN_HALFPENNY = simple("coin_halfpenny");
+    public static final DeferredItem<Item> COIN_PENNY     = simple("coin_penny");
+    public static final DeferredItem<Item> COIN_HALFGROAT = simple("coin_halfgroat");
+    public static final DeferredItem<Item> COIN_GROAT     = simple("coin_groat");
+    public static final DeferredItem<Item> COIN_STAR      = simple("coin_star");
+    public static final DeferredItem<Item> COIN_STAG      = simple("coin_stag");
+    public static final DeferredItem<Item> COIN_MOON      = simple("coin_moon");
+    public static final DeferredItem<Item> COIN_DRAGON    = simple("coin_dragon");
+
+
     // ── Grasses ───────────────────────────────────────────────────────────
     public static final DeferredItem<Item> DEVILGRASS         = block(GotModBlocks.DEVILGRASS);
     public static final DeferredItem<Item> GHOST_GRASS        = block(GotModBlocks.GHOST_GRASS);

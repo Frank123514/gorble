@@ -1,18 +1,25 @@
 package net.got.entity.npc.smallfolk;
 
+import net.got.entity.npc.GotNpcSpeechBank;
 import net.got.entity.npc.GotNpcTalkAnimations;
 import net.got.entity.npc.NpcGender;
+import net.got.entity.npc.NpcInventory;
 import net.got.entity.npc.data.GotGenderProvider;
+import net.got.entity.npc.data.GotNpcOccupation;
 import net.got.entity.npc.data.GotNpcPersonality;
 import net.got.entity.npc.data.name.GotNameGenerator;
 import net.got.entity.npc.data.name.GotNpcNames;
+import net.got.network.OpenInteractScreenPayload;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -72,6 +79,12 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float>   DATA_TALK_GESTURE    =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.FLOAT);
+    // The dialogue line currently being shown above this NPC. Empty when silent.
+    protected static final EntityDataAccessor<String>  DATA_DIALOGUE_LINE   =
+            SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
+    // Current occupation, synced so clients can show it in the nameplate.
+    protected static final EntityDataAccessor<String>  DATA_OCCUPATION      =
+            SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
 
     // ── Fields ────────────────────────────────────────────────────────────────
 
@@ -82,6 +95,31 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     /** Ticks until this NPC can speak to a player again. */
     private int speechCooldown;
     private static final int SPEECH_INTERVAL = 40;
+
+    /**
+     * Countdown timer for how long this NPC stays in the talking state.
+     * Set to TALK_DURATION when talking starts; decrements each tick;
+     * talking stops when it reaches zero.
+     */
+    private int talkTimer;
+    private static final int TALK_DURATION = 80; // 4 seconds
+
+    /**
+     * The player this NPC is currently talking to.
+     * Used server-side to track them with getLookControl().
+     * Cleared when talking stops.
+     */
+    private @Nullable Player talkingPlayer;
+
+    // ── Occupation & personal inventory ───────────────────────────────────────
+
+    private GotNpcOccupation occupation = GotNpcOccupation.NONE;
+
+    /**
+     * The NPC's personal 9-slot stash. Persisted in NBT.
+     * Exposed to players via the NpcTradeMenu when the NPC is employed.
+     */
+    private final NpcInventory npcInventory = new NpcInventory();
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -129,6 +167,8 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         builder.define(DATA_TALK_HEAD_YAW,   0f);
         builder.define(DATA_TALK_HEAD_PITCH, 0f);
         builder.define(DATA_TALK_GESTURE,    0f);
+        builder.define(DATA_DIALOGUE_LINE,   "");
+        builder.define(DATA_OCCUPATION,      GotNpcOccupation.NONE.id);
     }
 
     // ── Gender ────────────────────────────────────────────────────────────────
@@ -213,6 +253,13 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     public void startTalkingTo(Player player) {
         if (!level().isClientSide) {
             setTalking(true);
+            talkTimer = TALK_DURATION;
+            talkingPlayer = player;
+            // Pick a random dialogue line from this NPC's speech bank
+            String line = getSpeechBank().randomLine(getRandom());
+            entityData.set(DATA_DIALOGUE_LINE, line);
+            // Stop any active navigation so the NPC stays in place
+            getNavigation().stop();
         }
     }
 
@@ -220,7 +267,40 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     public void stopTalking() {
         if (!level().isClientSide) {
             setTalking(false);
+            talkingPlayer = null;
+            entityData.set(DATA_DIALOGUE_LINE, "");
         }
+    }
+
+    // ── Dialogue ──────────────────────────────────────────────────────────────
+
+    /**
+     * Override in subclasses to supply a culture-specific speech bank.
+     * The bank is loaded once from {@code /assets/got/dialogue/<name>.json}.
+     */
+    protected net.got.entity.npc.GotNpcSpeechBank getSpeechBank() {
+        return net.got.entity.npc.GotNpcSpeechBank.SMALLFOLK_CIVILIAN;
+    }
+
+    /** The dialogue line currently shown above this NPC (empty when silent). */
+    public String getCurrentDialogueLine() {
+        return entityData.get(DATA_DIALOGUE_LINE);
+    }
+
+    // ── Occupation ────────────────────────────────────────────────────────────
+
+    public GotNpcOccupation getOccupation() {
+        return GotNpcOccupation.fromString(entityData.get(DATA_OCCUPATION));
+    }
+
+    public void setOccupation(GotNpcOccupation o) {
+        occupation = o;
+        entityData.set(DATA_OCCUPATION, o.id);
+    }
+
+    /** The NPC's personal 9-slot inventory (stash / earnings). */
+    public NpcInventory getNpcInventory() {
+        return npcInventory;
     }
 
     // ── Variant (skin variety) ────────────────────────────────────────────────
@@ -253,6 +333,10 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
 
         setNpcName(getNameGenerator().generateName(rand, male));
         personality = GotNpcPersonality.random(rand);
+
+        // Randomly assign an occupation from all hireable jobs
+        GotNpcOccupation[] hireable = GotNpcOccupation.HIREABLE;
+        setOccupation(hireable[rand.nextInt(hireable.length)]);
     }
 
     // ── Spawn ─────────────────────────────────────────────────────────────────
@@ -275,6 +359,20 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         if (!level().isClientSide) {
             talkAnimations.serverTick();
             if (speechCooldown < Integer.MAX_VALUE) speechCooldown++;
+
+            if (isTalking()) {
+                // Keep the NPC frozen in place — suppress any wander/patrol goals
+                getNavigation().stop();
+                // Turn to face the player wherever they move
+                if (talkingPlayer != null && talkingPlayer.isAlive()) {
+                    getLookControl().setLookAt(talkingPlayer, 30f, 30f);
+                }
+                if (talkTimer > 0) {
+                    talkTimer--;
+                } else {
+                    stopTalking();
+                }
+            }
         }
     }
 
@@ -294,6 +392,8 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         tag.putInt("Variant", getVariant());
         tag.putString("NpcName", getNpcName());
         tag.putString("Personality", personality.id);
+        tag.putString(GotNpcOccupation.NBT_KEY, occupation.id);
+        npcInventory.save(tag, level().registryAccess());
     }
 
     @Override
@@ -303,6 +403,8 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         setVariant(tag.getInt("Variant"));
         setNpcName(tag.getString("NpcName"));
         personality = GotNpcPersonality.fromString(tag.getString("Personality"));
+        setOccupation(GotNpcOccupation.fromString(tag.getString(GotNpcOccupation.NBT_KEY)));
+        npcInventory.load(tag, level().registryAccess());
     }
 
     // ── Default AI (peaceful civilian) ───────────────────────────────────────
@@ -327,7 +429,24 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (hand == InteractionHand.MAIN_HAND && isAlive() && canSpeakToPlayer()) {
+        if (hand != InteractionHand.MAIN_HAND || !isAlive()) {
+            return super.mobInteract(player, hand);
+        }
+
+        // ── Shift + right-click → open interact screen ────────────────────────
+        if (player.isShiftKeyDown()) {
+            if (!level().isClientSide && player instanceof ServerPlayer sp) {
+                String npcName = getNpcName().isEmpty()
+                        ? getType().getDescription().getString() : getNpcName();
+                PacketDistributor.sendToPlayer(sp,
+                        new OpenInteractScreenPayload(
+                                getId(), getOccupation().id, npcName));
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        // ── Regular right-click → talk ────────────────────────────────────────
+        if (canSpeakToPlayer()) {
             if (!level().isClientSide) {
                 startTalkingTo(player);
                 markSpoken();
@@ -336,6 +455,7 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
             }
             return InteractionResult.SUCCESS;
         }
+
         return super.mobInteract(player, hand);
     }
 
@@ -411,25 +531,39 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         // ── Locomotion / talk (base layer) ────────────────────────────────────
+        // ── Locomotion (walk / idle / sneak — no talk logic here) ────────────
+        // When the NPC is talking it is frozen in place, so state.isMoving()
+        // will be false and this controller naturally falls through to idle.
+        // That gives idle + talk playing together from separate controllers.
         controllers.add(new AnimationController<>(this, "smallfolk_locomotion", 4, state -> {
-            String prefix = isBaby() ? "animation.smallfolk_child." : "animation.smallfolk.";
-            if (isTalking()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "talk"));
-            }
             if (isCrouching()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "sneak"));
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.sneak"));
             }
-            if (state.isMoving()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "walk"));
+            // state.isMoving() uses limbSwingAmount which lags behind actual movement,
+            // causing idle to play briefly while the entity is already walking (or vice versa).
+            // Checking horizontal velocity directly is immediate and frame-accurate.
+            boolean actuallyMoving = getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+            if (actuallyMoving) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.walk"));
             }
-            return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "idle"));
+            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.idle"));
+        }));
+
+        // ── Talk overlay (runs on top of locomotion while the NPC is talking) ─
+        // Plays the talk animation alongside idle. Stops completely when not
+        // talking so it never interferes with walk or any other locomotion state.
+        controllers.add(new AnimationController<>(this, "smallfolk_talk", 4, state -> {
+            if (isTalking()) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.talk"));
+            }
+            state.getController().forceAnimationReset();
+            return PlayState.STOP;
         }));
 
         // ── Riding (replaces locomotion while mounted) ────────────────────────
         controllers.add(new AnimationController<>(this, "smallfolk_riding", 2, state -> {
-            String prefix = isBaby() ? "animation.smallfolk_child." : "animation.smallfolk.";
             if (isPassenger()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop(prefix + "riding"));
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.riding"));
             }
             state.getController().forceAnimationReset();
             return PlayState.STOP;
@@ -446,9 +580,7 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         controllers.add(new AnimationController<>(this, "smallfolk_attack", 0,
                 state -> PlayState.STOP)
                 .triggerableAnim("attack",
-                        RawAnimation.begin().thenPlay(
-                                isBaby() ? "animation.smallfolk_child.attack"
-                                        : "animation.smallfolk.attack")));
+                        RawAnimation.begin().thenPlay("animation.smallfolk.attack")));
     }
 
     @Override
