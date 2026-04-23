@@ -5,108 +5,118 @@ import net.got.item.GotCoin;
 import net.got.menu.NpcTradeMenu;
 import net.got.network.ExecuteSellPayload;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
 /**
- * Trade screen shown when the server opens {@link NpcTradeMenu}.
+ * Trade screen for employed NPCs.
  *
- * <p><b>Buy tab</b> — a grid of items the NPC sells. Each cell shows the
- * item icon, its name, and its coin cost. Click a cell to purchase;
- * cells are greyed out if the player cannot afford them.
+ * Buy tab  (matches image 2):
+ *   "You can buy" label
+ *   ┌──┬──┬──┬──┬──┬──┬──┬──┐   8 item cells per row
+ *   │  │  │  │  │  │  │  │  │   16×16 item icon + count badge
+ *   └──┴──┴──┴──┴──┴──┴──┴──┘
+ *    15  19  84  …                coin cost below each cell
  *
- * <p><b>Sell tab</b> — a list of items the NPC will buy. Each row shows
- * the item and what the NPC pays. The player places the item to sell in
- * the sell slot at the bottom, selects the matching offer row, and clicks
- * the Sell button.
+ * Sell tab (matches image 3):
+ *   "You can sell" label
+ *   row of what the NPC accepts + payout
+ *   "You want to sell"
+ *   [ sell slot ]   [ Sell ]
+ *   player inventory
  */
 public class NpcTradeScreen extends AbstractContainerScreen<NpcTradeMenu> {
 
-    // ── Layout ────────────────────────────────────────────────────────────────
-    private static final int GUI_W = 230;
-    private static final int GUI_H = 240;
+    // ── Screen dimensions ─────────────────────────────────────────────────────
+    private static final int W  = 176;
+    private static final int H  = 220;
 
-    // Tab bar
-    private static final int TAB_Y  = 14;
-    private static final int TAB_H  = 14;
+    // ── Offer grid (buy + sell displays) ─────────────────────────────────────
+    // 8 cells × 18 px = 144 px; left margin 8 px → right edge 152 px
+    private static final int CELLS_PER_ROW = 8;
+    private static final int CELL          = 18; // slot stride (icon 16×16 + 2 gap)
+    private static final int OFFERS_X      = 8;
+    private static final int OFFERS_Y      = 30; // top of offer row (icon top)
+    private static final int PRICE_DY      = 18; // price text is 18 px below icon top
+
+    // ── Sell section ──────────────────────────────────────────────────────────
+    private static final int SELL_LBL_Y    = 58;  // "You want to sell" label
+    private static final int SELL_BTN_X    = 30;  // relative to leftPos
+    private static final int SELL_BTN_Y    = 86;  // relative to topPos (just above sell slot)
+    private static final int SELL_BTN_W    = 60;
+    private static final int SELL_BTN_H    = 16;
+
+    // ── Tab bar ───────────────────────────────────────────────────────────────
+    private static final int TAB_Y  = 6;
     private static final int TAB_W  = 55;
-
-    // Offer grid (buy)
-    private static final int GRID_X    = 8;
-    private static final int GRID_Y    = 34;
-    private static final int CELL_W    = 105;
-    private static final int CELL_H    = 22;
-    private static final int COLS      = 2;
-    private static final int VIS_ROWS  = 4;
-
-    // Sell list
-    private static final int LIST_X   = 8;
-    private static final int LIST_Y   = 34;
-    private static final int LIST_W   = 214;
-    private static final int S_ROW_H  = 22;
-    private static final int S_VIS    = 4;
-
-    // Sell slot position (matches NpcTradeMenu slot 36 coordinates)
-    private static final int SELL_SLOT_X = 80;
-    private static final int SELL_SLOT_Y = 130;
-
-    // Sell button
-    private static final int SELL_BTN_X = 104;
-    private static final int SELL_BTN_Y = 128;
-    private static final int SELL_BTN_W = 60;
-    private static final int SELL_BTN_H = 14;
-
-    // Player inventory
-    private static final int PINV_Y = 152;
-    private static final int HBAR_Y = 210;
+    private static final int TAB_H  = 14;
 
     // ── Colours ───────────────────────────────────────────────────────────────
-    private static final int C_BG      = 0xFF_C6C6C6;
-    private static final int C_PANEL   = 0xFF_8B8B8B;
-    private static final int C_DARK    = 0xFF_373737;
-    private static final int C_HOVER   = 0xFF_555555;
-    private static final int C_AFFORD  = 0xFF_1A3A1A; // dark green bg for affordable
-    private static final int C_CANT    = 0xFF_3A1A1A; // dark red bg for unaffordable
-    private static final int C_SEL     = 0xFF_2A4A6A; // selected sell row
-    private static final int C_TAB_ON  = 0xFF_A0C8FF;
-    private static final int C_TAB_OFF = 0xFF_707070;
-    private static final int C_TEXT    = 0xFF_222222;
-    private static final int C_WHITE   = 0xFF_FFFFFF;
-    private static final int C_GOLD    = 0xFF_FFD700;
-    private static final int C_BTN_G   = 0xFF_3A7A3A;
-    private static final int C_BTN_GH  = 0xFF_50AA50;
-    private static final int C_BTN_D   = 0xFF_555555;
+    private static final int C_BG       = 0xFF_C6C6C6;
+    private static final int C_SHADOW   = 0xFF_555555;
+    private static final int C_HILITE   = 0xFF_FFFFFF;
+    private static final int C_BORDER   = 0xFF_000000;
+    private static final int C_SLOT     = 0xFF_8B8B8B;
+    private static final int C_SLOT_BDR = 0xFF_373737;
+    private static final int C_SELECTED = 0xFF_6699CC;
+    private static final int C_HOVER    = 0xFF_A0B8D0;
+    private static final int C_AFFORD   = 0xFF_2A5A2A;   // green tint: can afford
+    private static final int C_CANT     = 0xFF_5A2A2A;   // red tint: can't afford
+    private static final int C_TEXT     = 0xFF_404040;
+    private static final int C_WHITE    = 0xFF_FFFFFF;
+    private static final int C_GOLD     = 0xFF_FFFF55;
+    private static final int C_LABEL    = 0xFF_404040;
+    private static final int C_TAB_ON   = 0xFF_C6C6C6;   // matches panel bg — "selected"
+    private static final int C_TAB_OFF  = 0xFF_8B8B8B;
 
     // ── State ─────────────────────────────────────────────────────────────────
-    private int  tab          = 0; // 0 = buy, 1 = sell
+    private int  tab          = 0;   // 0 = buy, 1 = sell
     private int  scrollBuy    = 0;
     private int  scrollSell   = 0;
-    private int  selectedSell = -1;
-    private int  hoveredBuy   = -1;
-    private int  hoveredSell  = -1;
+    private int  selectedSell = -1;  // which sell offer row is selected
+
+    private Button sellButton;
 
     public NpcTradeScreen(NpcTradeMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
-        this.imageWidth  = GUI_W;
-        this.imageHeight = GUI_H;
+        imageWidth  = W;
+        imageHeight = H;
     }
 
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = (imageWidth - font.width(title)) / 2;
-        this.inventoryLabelY = GUI_H - 94;
+        titleLabelX    = (W - font.width(buildTitle())) / 2;
+        titleLabelY    = -10; // negative = hidden (we draw our own header)
+        inventoryLabelX = 8;
+        inventoryLabelY = H - 86;  // 220 - 86 = 134 → matches slot y 138
+
+        // Sell button — only active in sell tab
+        sellButton = Button.builder(Component.literal("Sell"), btn -> doSell())
+                .bounds(leftPos + SELL_BTN_X, topPos + SELL_BTN_Y, SELL_BTN_W, SELL_BTN_H)
+                .build();
+        addRenderableWidget(sellButton);
     }
 
-    // ── Render ────────────────────────────────────────────────────────────────
+    // ── Rendering ─────────────────────────────────────────────────────────────
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float delta) {
+        // Update sell button visibility & enabled state
+        sellButton.visible = (tab == 1);
+        sellButton.active  = (tab == 1) && canExecuteSell();
+        // Reposition in case window was resized
+        sellButton.setX(leftPos + SELL_BTN_X);
+        sellButton.setY(topPos  + SELL_BTN_Y);
+
         super.render(g, mx, my, delta);
         renderTooltip(g, mx, my);
     }
@@ -115,132 +125,162 @@ public class NpcTradeScreen extends AbstractContainerScreen<NpcTradeMenu> {
     protected void renderBg(GuiGraphics g, float delta, int mx, int my) {
         int x = leftPos, y = topPos;
 
-        g.fill(x, y, x + GUI_W, y + GUI_H, C_BG);
-        g.fill(x + 1, y + 1, x + GUI_W - 1, y + GUI_H - 1, C_PANEL);
+        // ── Vanilla-style panel background ────────────────────────────────────
+        g.fill(x - 1, y - 1, x + W + 1, y + H + 1, C_BORDER);
+        g.fill(x, y, x + W, y + H, C_BG);
+        // Top-left highlight
+        g.fill(x, y, x + W, y + 1, C_HILITE);
+        g.fill(x, y, x + 1, y + H, C_HILITE);
+        // Bottom-right shadow
+        g.fill(x, y + H - 1, x + W, y + H, C_SHADOW);
+        g.fill(x + W - 1, y, x + W, y + H, C_SHADOW);
 
-        // ── Tabs ──────────────────────────────────────────────────────────────
-        drawTab(g, x + 8,  y + TAB_Y, TAB_W, TAB_H, "Buy",  tab == 0, mx, my);
-        drawTab(g, x + 67, y + TAB_Y, TAB_W, TAB_H, "Sell", tab == 1, mx, my);
+        // ── Header: NPC name + occupation ─────────────────────────────────────
+        String hdr = buildTitle();
+        g.drawCenteredString(font, hdr, x + W / 2, y + 5, C_TEXT);
 
+        // ── Tab selectors ─────────────────────────────────────────────────────
+        drawTabSelector(g, x + 8,       y + TAB_Y, TAB_W, TAB_H, "Buy",  tab == 0, mx, my);
+        drawTabSelector(g, x + 8 + TAB_W + 4, y + TAB_Y, TAB_W, TAB_H, "Sell", tab == 1, mx, my);
+
+        // ── Tab content ───────────────────────────────────────────────────────
         if (tab == 0) renderBuyTab(g, x, y, mx, my);
         else          renderSellTab(g, x, y, mx, my);
 
-        // ── Player inventory ──────────────────────────────────────────────────
-        for (int row = 0; row < 3; row++)
-            for (int col = 0; col < 9; col++)
-                slotBg(g, x + 8 + col * 18, y + PINV_Y + row * 18);
-        for (int col = 0; col < 9; col++)
-            slotBg(g, x + 8 + col * 18, y + HBAR_Y);
-    }
-
-    private void renderBuyTab(GuiGraphics g, int x, int y, int mx, int my) {
-        List<GotNpcTrades.BuyOffer> offers = menu.getBuyOffers();
-        int rows   = (int) Math.ceil((double) offers.size() / COLS);
-        int visEnd = Math.min(scrollBuy + VIS_ROWS, rows);
-        hoveredBuy = -1;
-
-        for (int row = scrollBuy; row < visEnd; row++) {
-            for (int col = 0; col < COLS; col++) {
-                int idx = row * COLS + col;
-                if (idx >= offers.size()) break;
-
-                GotNpcTrades.BuyOffer offer = offers.get(idx);
-                int cx = x + GRID_X + col * CELL_W;
-                int cy = y + GRID_Y + (row - scrollBuy) * CELL_H;
-
-                boolean canAfford = canAffordBuy(offer);
-                boolean hov = hit(mx, my, cx, cy, CELL_W - 2, CELL_H - 2);
-                if (hov) hoveredBuy = idx;
-
-                int bg = hov ? C_HOVER : (canAfford ? C_AFFORD : C_CANT);
-                g.fill(cx, cy, cx + CELL_W - 2, cy + CELL_H - 2, bg);
-
-                // Item icon
-                g.renderItem(offer.payStack(), cx + 2, cy + 3);
-
-                // Item name (truncated)
-                String name = offer.payItem().getName(offer.payStack()).getString();
-                if (font.width(name) > 52) name = font.plainSubstrByWidth(name, 49) + "…";
-                g.drawString(font, name, cx + 22, cy + 4,
-                        canAfford ? C_WHITE : 0xFF_AA7777, true);
-
-                // Coin cost
-                String cost = offer.coinCost() + " " + capitalize(offer.coinType().id);
-                g.renderItem(offer.coinStack(), cx + 22, cy + 12);
-                // small coin icon already rendered; draw text after it
-                g.drawString(font, cost, cx + 22, cy + 13,
-                        canAfford ? C_GOLD : 0xFF_886644, true);
-            }
-        }
-
-        scrollHint(g, x + GRID_X + COLS * CELL_W + 2, y + GRID_Y, rows, VIS_ROWS, scrollBuy);
-    }
-
-    private void renderSellTab(GuiGraphics g, int x, int y, int mx, int my) {
-        List<GotNpcTrades.SellOffer> offers = menu.getSellOffers();
-        int visEnd = Math.min(scrollSell + S_VIS, offers.size());
-        hoveredSell = -1;
-
-        // Offer list
-        g.fill(x + LIST_X, y + LIST_Y,
-               x + LIST_X + LIST_W, y + LIST_Y + S_VIS * S_ROW_H, C_DARK);
-
-        for (int i = scrollSell; i < visEnd; i++) {
-            GotNpcTrades.SellOffer offer = offers.get(i);
-            int ry = y + LIST_Y + (i - scrollSell) * S_ROW_H;
-            boolean hov  = hit(mx, my, x + LIST_X, ry, LIST_W, S_ROW_H);
-            boolean sel  = selectedSell == i;
-            if (hov) hoveredSell = i;
-
-            int bg = sel ? C_SEL : (hov ? C_HOVER : C_DARK);
-            g.fill(x + LIST_X, ry, x + LIST_X + LIST_W, ry + S_ROW_H, bg);
-
-            // "Give X of [item] → receive Y [coin]"
-            g.renderItem(offer.costStack(), x + LIST_X + 2, ry + 3);
-            g.drawString(font, "×" + offer.costCount(),
-                    x + LIST_X + 20, ry + 7, C_WHITE, true);
-            g.drawString(font, "→",
-                    x + LIST_X + 60, ry + 7, 0xFF_AAAAAA, false);
-            g.renderItem(offer.coinStack(), x + LIST_X + 78, ry + 3);
-            g.drawString(font, "×" + offer.coinPay() + " " + capitalize(offer.coinType().id),
-                    x + LIST_X + 96, ry + 7,
-                    sel ? C_GOLD : C_WHITE, true);
-        }
-
-        scrollHint(g, x + LIST_X + LIST_W + 2, y + LIST_Y,
-                offers.size(), S_VIS, scrollSell);
-
-        // Sell slot label + background
-        g.drawString(font, "Place item here:", x + 8, y + SELL_SLOT_Y - 10, C_TEXT, false);
-        slotBg(g, x + SELL_SLOT_X, y + SELL_SLOT_Y);
-
-        // Sell button
-        boolean hasItem  = !menu.getSellInputSlot().getItem(0).isEmpty();
-        boolean hasOffer = selectedSell >= 0 && selectedSell < offers.size();
-        boolean canSell  = hasItem && hasOffer && canExecuteSell();
-        boolean btnHov   = hit(mx, my, x + SELL_BTN_X, y + SELL_BTN_Y, SELL_BTN_W, SELL_BTN_H);
-        int btnCol = canSell ? (btnHov ? C_BTN_GH : C_BTN_G) : C_BTN_D;
-        g.fill(x + SELL_BTN_X, y + SELL_BTN_Y,
-               x + SELL_BTN_X + SELL_BTN_W, y + SELL_BTN_Y + SELL_BTN_H, btnCol);
-        g.drawString(font, "Sell",
-                x + SELL_BTN_X + (SELL_BTN_W - font.width("Sell")) / 2,
-                y + SELL_BTN_Y + (SELL_BTN_H - 8) / 2, C_WHITE, true);
-
-        // Hint if nothing selected
-        if (!hasOffer) {
-            g.drawString(font, "← Select an offer",
-                    x + SELL_BTN_X + SELL_BTN_W + 4, y + SELL_BTN_Y + 3,
-                    0xFF_AAAAAA, false);
-        }
+        // ── Player inventory area (identical for both tabs) ───────────────────
+        // Divider line above inventory label
+        g.fill(x + 7, y + H - 90, x + W - 7, y + H - 89, C_SHADOW);
     }
 
     @Override
     protected void renderLabels(GuiGraphics g, int mx, int my) {
-        String occ  = capitalize(menu.getOccupation().id);
-        String hdr  = menu.getNpcName().isEmpty() ? occ
-                : menu.getNpcName() + "  —  " + occ;
-        g.drawString(font, hdr, 8, 4, C_TEXT, false);
-        g.drawString(font, playerInventoryTitle, 8, imageHeight - 86, C_TEXT, false);
+        // Draw "Inventory" label only (title is drawn in renderBg)
+        g.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, C_LABEL, false);
+    }
+
+    // ── Buy tab ───────────────────────────────────────────────────────────────
+
+    private void renderBuyTab(GuiGraphics g, int x, int y, int mx, int my) {
+        List<GotNpcTrades.BuyOffer> offers = menu.getBuyOffers();
+
+        g.drawString(font, "You can buy", x + OFFERS_X, y + OFFERS_Y - 10, C_LABEL, false);
+
+        int rows    = (int) Math.ceil((double) offers.size() / CELLS_PER_ROW);
+        int visRows = Math.min(2, rows); // show up to 2 rows
+
+        for (int row = scrollBuy; row < scrollBuy + visRows && row < rows; row++) {
+            for (int col = 0; col < CELLS_PER_ROW; col++) {
+                int idx = row * CELLS_PER_ROW + col;
+                if (idx >= offers.size()) break;
+
+                GotNpcTrades.BuyOffer offer = offers.get(idx);
+                int cx = x + OFFERS_X + col * CELL;
+                int cy = y + OFFERS_Y + (row - scrollBuy) * (CELL + PRICE_DY);
+
+                boolean canAfford = canAffordBuy(offer);
+                boolean hov = inRect(mx, my, cx, cy, 16, 16);
+
+                // Slot background
+                drawSlotBg(g, cx, cy);
+                // Tint the slot
+                if (hov)
+                    g.fill(cx, cy, cx + 16, cy + 16, 0x44_FFFFFF);
+                else if (!canAfford)
+                    g.fill(cx, cy, cx + 16, cy + 16, 0x66_FF0000);
+
+                // Item icon
+                g.renderItem(offer.payStack(), cx, cy);
+
+                // Count badge (top-right of icon)
+                if (offer.payCount() > 1) {
+                    String cnt = String.valueOf(offer.payCount());
+                    g.drawString(font, cnt, cx + 17 - font.width(cnt), cy + 9,
+                            C_WHITE, true);
+                }
+
+                // Coin cost number below the slot
+                String cost = String.valueOf(offer.coinCost());
+                g.drawString(font, cost,
+                        cx + (16 - font.width(cost)) / 2,
+                        cy + PRICE_DY, canAfford ? C_GOLD : 0xFF_AA5555, true);
+            }
+        }
+
+        // Scroll hints
+        if (scrollBuy > 0)
+            g.drawString(font, "▲", x + W - 14, y + OFFERS_Y, C_WHITE, false);
+        if (scrollBuy + visRows < rows)
+            g.drawString(font, "▼", x + W - 14, y + OFFERS_Y + visRows * (CELL + PRICE_DY) - 8,
+                    C_WHITE, false);
+    }
+
+    // ── Sell tab ──────────────────────────────────────────────────────────────
+
+    private void renderSellTab(GuiGraphics g, int x, int y, int mx, int my) {
+        List<GotNpcTrades.SellOffer> offers = menu.getSellOffers();
+
+        // "You can sell" row (visual display of what NPC accepts)
+        g.drawString(font, "You can sell", x + OFFERS_X, y + OFFERS_Y - 10, C_LABEL, false);
+
+        int visOffers = Math.min(offers.size(), CELLS_PER_ROW);
+        for (int i = 0; i < visOffers; i++) {
+            int idx = i + scrollSell;
+            if (idx >= offers.size()) break;
+            GotNpcTrades.SellOffer offer = offers.get(idx);
+            int cx = x + OFFERS_X + i * CELL;
+            int cy = y + OFFERS_Y;
+
+            boolean sel = (selectedSell == idx);
+            boolean hov = inRect(mx, my, cx, cy, 16, 16);
+
+            drawSlotBg(g, cx, cy);
+            if (sel)       g.fill(cx, cy, cx + 16, cy + 16, 0x88_0055FF);
+            else if (hov)  g.fill(cx, cy, cx + 16, cy + 16, 0x44_FFFFFF);
+
+            g.renderItem(offer.costStack(), cx, cy);
+
+            // Required count below
+            String cnt  = String.valueOf(offer.costCount());
+            g.drawString(font, cnt,
+                    cx + (16 - font.width(cnt)) / 2,
+                    cy + PRICE_DY, sel ? C_GOLD : 0xFF_DDDDDD, true);
+        }
+
+        // "You want to sell" section
+        g.drawString(font, "You want to sell", x + OFFERS_X, y + SELL_LBL_Y, C_LABEL, false);
+
+        // Sell input slot background  (slot 36 is drawn by AbstractContainerScreen
+        // at leftPos + SELL_SLOT_X, topPos + SELL_SLOT_Y — we just add the surround)
+        int sx = x + NpcTradeMenu.SELL_SLOT_X;
+        int sy = y + NpcTradeMenu.SELL_SLOT_Y;
+        drawSlotBg(g, sx, sy);
+
+        // Show payout for selected offer next to sell slot
+        if (selectedSell >= 0 && selectedSell < offers.size()) {
+            GotNpcTrades.SellOffer offer = offers.get(selectedSell);
+            g.drawString(font, "→ " + offer.coinPay() + " " + capitalize(offer.coinType().id),
+                    sx + 20, sy + 4, C_GOLD, true);
+        }
+    }
+
+    // ── Slot hide on buy tab ──────────────────────────────────────────────────
+
+    /** Don't render the sell slot when on the buy tab. */
+    @Override
+    protected void renderSlot(GuiGraphics g, Slot slot) {
+        if (tab == 0 && slot.index == NpcTradeMenu.SELL_SLOT_INDEX) {
+            return;
+        }
+        super.renderSlot(g, slot);
+    }
+
+    /** Prevent interaction with the sell slot on the buy tab. */
+    @Override
+    protected void slotClicked(Slot slot, int slotIndex, int mouseButton, ClickType type) {
+        if (tab == 0 && slotIndex == NpcTradeMenu.SELL_SLOT_INDEX) {
+            return;
+        }
+        super.slotClicked(slot, slotIndex, mouseButton, type);
     }
 
     // ── Input ─────────────────────────────────────────────────────────────────
@@ -250,44 +290,44 @@ public class NpcTradeScreen extends AbstractContainerScreen<NpcTradeMenu> {
         if (btn != 0) return super.mouseClicked(mx, my, btn);
         int x = leftPos, y = topPos;
 
-        // Tab clicks
-        if (hit(mx, my, x + 8,  y + TAB_Y, TAB_W, TAB_H)) { tab = 0; scrollBuy  = 0; return true; }
-        if (hit(mx, my, x + 67, y + TAB_Y, TAB_W, TAB_H)) { tab = 1; scrollSell = 0; return true; }
+        // Tab selectors
+        if (inRect(mx, my, x + 8, y + TAB_Y, TAB_W, TAB_H)) {
+            tab = 0; scrollBuy = 0; return true;
+        }
+        if (inRect(mx, my, x + 8 + TAB_W + 4, y + TAB_Y, TAB_W, TAB_H)) {
+            tab = 1; scrollSell = 0; selectedSell = -1; return true;
+        }
 
         if (tab == 0) {
-            // Buy grid click
+            // Buy: click offer cell
             List<GotNpcTrades.BuyOffer> offers = menu.getBuyOffers();
-            int rows = (int) Math.ceil((double) offers.size() / COLS);
-            for (int row = scrollBuy; row < Math.min(scrollBuy + VIS_ROWS, rows); row++) {
-                for (int col = 0; col < COLS; col++) {
-                    int idx = row * COLS + col;
+            int rows    = (int) Math.ceil((double) offers.size() / CELLS_PER_ROW);
+            int visRows = Math.min(2, rows);
+            for (int row = scrollBuy; row < scrollBuy + visRows && row < rows; row++) {
+                for (int col = 0; col < CELLS_PER_ROW; col++) {
+                    int idx = row * CELLS_PER_ROW + col;
                     if (idx >= offers.size()) break;
-                    int cx = x + GRID_X + col * CELL_W;
-                    int cy = y + GRID_Y + (row - scrollBuy) * CELL_H;
-                    if (hit(mx, my, cx, cy, CELL_W - 2, CELL_H - 2)) {
+                    int cx = x + OFFERS_X + col * CELL;
+                    int cy = y + OFFERS_Y + (row - scrollBuy) * (CELL + PRICE_DY);
+                    if (inRect(mx, my, cx, cy, 16, 16)) {
                         executeBuy(idx);
                         return true;
                     }
                 }
             }
         } else {
-            // Sell list — select row
+            // Sell: select offer row
             List<GotNpcTrades.SellOffer> offers = menu.getSellOffers();
-            for (int i = scrollSell; i < Math.min(scrollSell + S_VIS, offers.size()); i++) {
-                int ry = y + LIST_Y + (i - scrollSell) * S_ROW_H;
-                if (hit(mx, my, x + LIST_X, ry, LIST_W, S_ROW_H)) {
-                    selectedSell = (selectedSell == i) ? -1 : i;
+            int visOffers = Math.min(offers.size(), CELLS_PER_ROW);
+            for (int i = 0; i < visOffers; i++) {
+                int idx = i + scrollSell;
+                if (idx >= offers.size()) break;
+                int cx = x + OFFERS_X + i * CELL;
+                int cy = y + OFFERS_Y;
+                if (inRect(mx, my, cx, cy, 16, 16)) {
+                    selectedSell = (selectedSell == idx) ? -1 : idx;
                     return true;
                 }
-            }
-
-            // Sell button
-            if (hit(mx, my, x + SELL_BTN_X, y + SELL_BTN_Y, SELL_BTN_W, SELL_BTN_H)) {
-                if (selectedSell >= 0 && canExecuteSell()) {
-                    PacketDistributor.sendToServer(new ExecuteSellPayload(selectedSell));
-                    selectedSell = -1;
-                }
-                return true;
             }
         }
 
@@ -297,77 +337,85 @@ public class NpcTradeScreen extends AbstractContainerScreen<NpcTradeMenu> {
     @Override
     public boolean mouseScrolled(double mx, double my, double dx, double dy) {
         if (tab == 0) {
-            int rows = (int) Math.ceil((double) menu.getBuyOffers().size() / COLS);
-            int max  = Math.max(0, rows - VIS_ROWS);
-            scrollBuy = (dy < 0) ? Math.min(scrollBuy + 1, max) : Math.max(scrollBuy - 1, 0);
+            int rows = (int) Math.ceil((double) menu.getBuyOffers().size() / CELLS_PER_ROW);
+            int max  = Math.max(0, rows - 2);
+            scrollBuy = dy < 0 ? Math.min(scrollBuy + 1, max) : Math.max(scrollBuy - 1, 0);
         } else {
-            int max = Math.max(0, menu.getSellOffers().size() - S_VIS);
-            scrollSell = (dy < 0) ? Math.min(scrollSell + 1, max) : Math.max(scrollSell - 1, 0);
+            int max = Math.max(0, menu.getSellOffers().size() - CELLS_PER_ROW);
+            scrollSell = dy < 0 ? Math.min(scrollSell + 1, max) : Math.max(scrollSell - 1, 0);
         }
         return true;
     }
 
-    // ── Trade logic ───────────────────────────────────────────────────────────
+    // ── Trade execution ───────────────────────────────────────────────────────
 
     private boolean canAffordBuy(GotNpcTrades.BuyOffer offer) {
-        assert minecraft != null;
-        if (minecraft.player == null) return false;
+        if (minecraft == null || minecraft.player == null) return false;
         return offer.coinType().countIn(minecraft.player.getInventory()) >= offer.coinCost();
     }
 
     private boolean canExecuteSell() {
-        assert minecraft != null;
-        if (minecraft.player == null || selectedSell < 0) return false;
+        if (minecraft == null || minecraft.player == null || selectedSell < 0) return false;
         List<GotNpcTrades.SellOffer> offers = menu.getSellOffers();
         if (selectedSell >= offers.size()) return false;
         GotNpcTrades.SellOffer offer = offers.get(selectedSell);
         ItemStack slot = menu.getSellInputSlot().getItem(0);
-        return !slot.isEmpty() && slot.is(offer.costItem())
-                && slot.getCount() >= offer.costCount();
+        return !slot.isEmpty() && slot.is(offer.costItem()) && slot.getCount() >= offer.costCount();
     }
 
-    /**
-     * Client-side buy execution. Deducts coin cost and grants pay item.
-     * Works correctly in singleplayer / as server host.
-     */
     private void executeBuy(int idx) {
         List<GotNpcTrades.BuyOffer> offers = menu.getBuyOffers();
         if (idx < 0 || idx >= offers.size()) return;
-        assert minecraft != null;
-        if (minecraft.player == null) return;
-
+        if (minecraft == null || minecraft.player == null) return;
         GotNpcTrades.BuyOffer offer = offers.get(idx);
         if (!canAffordBuy(offer)) return;
-
         offer.coinType().removeFrom(minecraft.player.getInventory(), offer.coinCost());
         minecraft.player.getInventory().add(offer.payStack());
         minecraft.player.getInventory().setChanged();
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
-    private void drawTab(GuiGraphics g, int x, int y, int w, int h,
-                         String label, boolean active, int mx, int my) {
-        boolean hov = !active && hit(mx, my, x, y, w, h);
-        g.fill(x, y, x + w, y + h, active ? C_TAB_ON : (hov ? C_HOVER : C_TAB_OFF));
-        g.drawString(font, label,
-                x + (w - font.width(label)) / 2, y + (h - 8) / 2,
-                active ? C_TEXT : C_WHITE, false);
-    }
-
-    private void slotBg(GuiGraphics g, int x, int y) {
-        g.fill(x - 1, y - 1, x + 17, y + 17, C_DARK);
-        g.fill(x, y, x + 16, y + 16, 0xFF_8B8B8B);
-    }
-
-    private void scrollHint(GuiGraphics g, int x, int y, int total, int vis, int off) {
-        if (total > vis) {
-            if (off > 0)         g.drawString(font, "▲", x, y + 2,     C_WHITE, false);
-            if (off < total-vis) g.drawString(font, "▼", x, y + vis*S_ROW_H - 10, C_WHITE, false);
+    private void doSell() {
+        if (selectedSell >= 0 && canExecuteSell()) {
+            PacketDistributor.sendToServer(new ExecuteSellPayload(selectedSell));
+            selectedSell = -1;
         }
     }
 
-    private static boolean hit(double mx, double my, int x, int y, int w, int h) {
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private String buildTitle() {
+        String occ = capitalize(menu.getOccupation().id);
+        return menu.getNpcName().isEmpty() ? occ : menu.getNpcName() + "  —  " + occ;
+    }
+
+    private void drawTabSelector(GuiGraphics g, int x, int y, int w, int h,
+                                 String label, boolean active, int mx, int my) {
+        boolean hov = !active && inRect(mx, my, x, y, w, h);
+        // Tab background
+        g.fill(x, y, x + w, y + h, active ? C_TAB_ON : C_TAB_OFF);
+        // Active tab: flush border with panel (no bottom border)
+        if (active) {
+            g.fill(x, y, x + w, y + 1, C_HILITE);
+            g.fill(x, y, x + 1, y + h, C_HILITE);
+            g.fill(x + w - 1, y, x + w, y + h, C_SHADOW);
+        } else {
+            g.fill(x, y, x + w, y + 1, C_HILITE);
+            g.fill(x, y, x + 1, y + h, C_HILITE);
+            g.fill(x, y + h - 1, x + w, y + h, C_SHADOW);
+            g.fill(x + w - 1, y, x + w, y + h, C_SHADOW);
+            if (hov) g.fill(x + 1, y + 1, x + w - 1, y + h - 1, 0x22_FFFFFF);
+        }
+        // Label
+        g.drawCenteredString(font, label, x + w / 2, y + (h - 8) / 2, C_TEXT);
+    }
+
+    private void drawSlotBg(GuiGraphics g, int x, int y) {
+        // 1px dark border then medium-gray interior — classic MC slot look
+        g.fill(x - 1, y - 1, x + 17, y + 17, C_SLOT_BDR);
+        g.fill(x, y, x + 16, y + 16, C_SLOT);
+    }
+
+    private static boolean inRect(double mx, double my, int x, int y, int w, int h) {
         return mx >= x && mx < x + w && my >= y && my < y + h;
     }
 

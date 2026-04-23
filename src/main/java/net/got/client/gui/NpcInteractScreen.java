@@ -3,100 +3,127 @@ package net.got.client.gui;
 import net.got.network.RequestTradeMenuPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * Simple two-button screen opened by shift + right-clicking any NPC.
+ * Floating interaction menu shown when the player shift-right-clicks an NPC.
+ * The game world stays visible and running behind this screen.
  *
- * <ul>
- *   <li><b>Trade</b> — sends {@link RequestTradeMenuPayload} to the server,
- *       which opens the full {@link NpcTradeScreen}.</li>
- *   <li><b>Coin Exchange</b> — opens {@link NpcCoinExchangeScreen} directly
- *       on the client (no server round-trip needed).</li>
- * </ul>
+ * Layout (matches image style):
+ *   - NPC name + occupation header above the button panel
+ *   - Row 1: [Talk]  [Trade]  [<Occupation>]
+ *   - Row 2: [Exchange Coins]
+ *
+ * Uses vanilla Button widgets throughout so hover/press states are automatic.
  */
 public class NpcInteractScreen extends Screen {
 
-    private static final int GUI_W = 160;
-    private static final int GUI_H = 100;
-
-    private static final int COL_BG     = 0xFF_C6C6C6;
-    private static final int COL_BORDER = 0xFF_373737;
-    private static final int COL_BTN    = 0xFF_5A7A9A;
-    private static final int COL_BTN_H  = 0xFF_7AAACA;
-    private static final int COL_BTN_D  = 0xFF_444444; // disabled
-    private static final int COL_TEXT   = 0xFF_FFFFFF;
-    private static final int COL_TITLE  = 0xFF_222222;
+    private static final int BTN_W  = 80;
+    private static final int BTN_H  = 20;
+    private static final int GAP    = 4;
+    private static final int PAD    = 10;
 
     private final int    entityId;
     private final String occupationId;
     private final String npcName;
-    private final boolean employed;
 
     private NpcInteractScreen(int entityId, String occupationId, String npcName) {
         super(Component.empty());
         this.entityId     = entityId;
         this.occupationId = occupationId;
         this.npcName      = npcName;
-        this.employed     = !occupationId.equals("none");
     }
 
-    /** Called from {@link net.got.network.GotNetwork} on packet receipt. */
+    /** Called from GotNetwork when OpenInteractScreenPayload is received. */
     public static void open(int entityId, String occupationId, String npcName) {
         Minecraft mc = Minecraft.getInstance();
         if (mc != null) mc.setScreen(new NpcInteractScreen(entityId, occupationId, npcName));
     }
 
-    @Override
-    public boolean isPauseScreen() { return false; }
+    @Override public boolean isPauseScreen() { return false; }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float delta) {
-        renderBackground(g, mx, my, delta);
-        int x = (width - GUI_W) / 2, y = (height - GUI_H) / 2;
+    protected void init() {
+        super.init();
 
-        // Chrome
-        g.fill(x, y, x + GUI_W, y + GUI_H, COL_BG);
-        g.fill(x, y, x + GUI_W, y + 1, COL_BORDER);
-        g.fill(x, y + GUI_H - 1, x + GUI_W, y + GUI_H, COL_BORDER);
-        g.fill(x, y, x + 1, y + GUI_H, COL_BORDER);
-        g.fill(x + GUI_W - 1, y, x + GUI_W, y + GUI_H, COL_BORDER);
+        // Panel origin — centred, slightly below screen midpoint so NPC shows above
+        int panelW = BTN_W * 3 + GAP * 2 + PAD * 2;
+        int panelH = BTN_H * 2 + GAP + PAD * 2;
+        int px = (width  - panelW) / 2;
+        int py = (height - panelH) / 2 + 30;
 
-        // NPC header
-        String occupation = capitalize(occupationId.equals("none") ? "Unemployed" : occupationId);
-        String header = npcName.isEmpty() ? occupation : npcName + "  —  " + occupation;
-        g.drawString(font, header, x + (GUI_W - font.width(header)) / 2, y + 8, COL_TITLE, false);
+        // Row 1 left-edge of first button
+        int row1y = py + PAD;
+        int col1  = px + PAD;
+        int col2  = col1 + BTN_W + GAP;
+        int col3  = col2 + BTN_W + GAP;
 
-        // Trade button (greyed if unemployed)
-        drawBtn(g, x + 20, y + 30, 120, 20, "Trade", employed, mx, my);
+        // Row 2 centred
+        int row2y  = row1y + BTN_H + GAP;
+        int exBtnW = 120;
+        int exBtnX = px + (panelW - exBtnW) / 2;
 
-        // Coin Exchange button (always active)
-        drawBtn(g, x + 20, y + 58, 120, 20, "Coin Exchange", true, mx, my);
+        // Talk — just closes the screen; regular right-click handles talking
+        addRenderableWidget(Button.builder(
+                Component.literal("Talk"),
+                btn -> onClose()
+        ).bounds(col1, row1y, BTN_W, BTN_H).build());
 
-        super.render(g, mx, my, delta);
+        // Trade — requests the server to open the NpcTradeMenu
+        addRenderableWidget(Button.builder(
+                Component.literal("Trade"),
+                btn -> {
+                    PacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId));
+                    onClose();
+                }
+        ).bounds(col2, row1y, BTN_W, BTN_H).build());
+
+        // Occupation button — same action as Trade for now; shows job label
+        String jobLabel = capitalize(occupationId.equals("none") ? "Civilian" : occupationId);
+        addRenderableWidget(Button.builder(
+                Component.literal(jobLabel),
+                btn -> {
+                    PacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId));
+                    onClose();
+                }
+        ).bounds(col3, row1y, BTN_W, BTN_H).build());
+
+        // Exchange Coins — opens coin exchange screen
+        addRenderableWidget(Button.builder(
+                Component.literal("Exchange Coins"),
+                btn -> Minecraft.getInstance().setScreen(new NpcCoinExchangeScreen())
+        ).bounds(exBtnX, row2y, exBtnW, BTN_H).build());
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int btn) {
-        if (btn != 0) return super.mouseClicked(mx, my, btn);
-        int x = (width - GUI_W) / 2, y = (height - GUI_H) / 2;
+    public void render(GuiGraphics g, int mx, int my, float delta) {
+        // ── Semi-transparent panel behind buttons ─────────────────────────────
+        int panelW = BTN_W * 3 + GAP * 2 + PAD * 2;
+        int panelH = BTN_H * 2 + GAP + PAD * 2;
+        int px = (width  - panelW) / 2;
+        int py = (height - panelH) / 2 + 30;
 
-        // Trade button
-        if (employed && hit(mx, my, x + 20, y + 30, 120, 20)) {
-            PacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId));
-            onClose();
-            return true;
-        }
+        // Outer border
+        g.fill(px - 1, py - 1, px + panelW + 1, py + panelH + 1, 0xFF_000000);
+        // Panel background (vanilla inventory tone)
+        g.fill(px, py, px + panelW, py + panelH, 0xFF_C6C6C6);
+        // Top-left highlight
+        g.fill(px, py, px + panelW, py + 1, 0xFF_FFFFFF);
+        g.fill(px, py, px + 1, py + panelH, 0xFF_FFFFFF);
+        // Bottom-right shadow
+        g.fill(px, py + panelH - 1, px + panelW, py + panelH, 0xFF_555555);
+        g.fill(px + panelW - 1, py, px + panelW, py + panelH, 0xFF_555555);
 
-        // Coin Exchange button
-        if (hit(mx, my, x + 20, y + 58, 120, 20)) {
-            Minecraft.getInstance().setScreen(new NpcCoinExchangeScreen());
-            return true;
-        }
+        // ── NPC name + occupation above panel ────────────────────────────────
+        String occ  = occupationId.equals("none") ? "Unemployed" : capitalize(occupationId);
+        String header = npcName.isEmpty() ? occ : npcName + ", " + occ;
+        g.drawCenteredString(font, header, width / 2, py - 12, 0xFF_FFFF55);
 
-        return super.mouseClicked(mx, my, btn);
+        // ── Vanilla button widgets ────────────────────────────────────────────
+        super.render(g, mx, my, delta);
     }
 
     @Override
@@ -105,21 +132,9 @@ public class NpcInteractScreen extends Screen {
         return super.keyPressed(key, scan, mods);
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
-    private void drawBtn(GuiGraphics g, int x, int y, int w, int h,
-                         String label, boolean enabled, int mx, int my) {
-        boolean hov = enabled && hit(mx, my, x, y, w, h);
-        int col = enabled ? (hov ? COL_BTN_H : COL_BTN) : COL_BTN_D;
-        g.fill(x, y, x + w, y + h, col);
-        g.fill(x, y, x + w, y + 1, 0x44_FFFFFF);
-        g.drawString(font, label, x + (w - font.width(label)) / 2,
-                y + (h - 8) / 2, COL_TEXT, true);
-    }
-
-    private static boolean hit(double mx, double my, int x, int y, int w, int h) {
-        return mx >= x && mx < x + w && my >= y && my < y + h;
-    }
+    // Do NOT call renderBackground — let the game world show through
+    @Override
+    public void renderBackground(GuiGraphics g, int mx, int my, float delta) {}
 
     private static String capitalize(String s) {
         return s == null || s.isEmpty() ? s
