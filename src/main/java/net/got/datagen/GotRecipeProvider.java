@@ -166,7 +166,6 @@ public class GotRecipeProvider extends RecipeProvider {
 
     private void buildSmeltingRecipes(HolderGetter<Item> items) {
         // Ore → raw material
-        smeltAndBlast(items, item("copper_ore"),    GotModItems.RAW_COPPER.get(),          0.7f, "copper_ore");
         smeltAndBlast(items, item("tin_ore"),       GotModItems.RAW_TIN.get(),             0.7f, "tin_ore");
         smeltAndBlast(items, item("silver_ore"),    GotModItems.RAW_SILVER.get(),          0.7f, "silver_ore");
         smeltAndBlast(items, item("valyrian_ore"),  GotModItems.RAW_VALYRIAN_STEEL.get(),  1.0f, "valyrian_ore");
@@ -181,7 +180,7 @@ public class GotRecipeProvider extends RecipeProvider {
         smeltAndBlast(items, item("dragonglass"),  GotModItems.DRAGONGLASS_SHARD.get(), 0.7f, "dragonglass_ore");
 
         // Raw → ingot
-        smeltAndBlast(items, GotModItems.RAW_COPPER.get(),         GotModItems.COPPER_INGOT.get(),          0.7f, "raw_copper");
+        smeltAndBlast(items, Items.RAW_COPPER,         Items.COPPER_INGOT,          0.7f, "raw_copper");
         smeltAndBlast(items, GotModItems.RAW_TIN.get(),            GotModItems.TIN_INGOT.get(),             0.7f, "raw_tin");
         smeltAndBlast(items, GotModItems.RAW_SILVER.get(),         GotModItems.SILVER_INGOT.get(),          0.7f, "raw_silver");
         smeltAndBlast(items, GotModItems.RAW_VALYRIAN_STEEL.get(), GotModItems.VALYRIAN_STEEL_INGOT.get(), 1.0f, "raw_valyrian_steel");
@@ -391,16 +390,16 @@ public class GotRecipeProvider extends RecipeProvider {
 
     private void buildAlloyRecipes(HolderGetter<Item> items) {
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, GotModItems.BRONZE_INGOT.get(), 2)
-                .requires(GotModItems.COPPER_INGOT.get())
+                .requires(Items.COPPER_INGOT)
                 .requires(GotModItems.TIN_INGOT.get())
-                .unlockedBy("has_copper", has(GotModItems.COPPER_INGOT.get()))
+                .unlockedBy("has_copper", has(Items.COPPER_INGOT))
                 .save(this.output, rk("bronze_ingot_from_alloy"));
     }
 
     // ── Tools ─────────────────────────────────────────────────────────
 
     private void buildToolRecipes(HolderGetter<Item> items) {
-        buildTools(items, "copper", GotModItems.COPPER_INGOT.get());
+        buildTools(items, "copper", Items.COPPER_INGOT);
         buildTools(items, "bronze", GotModItems.BRONZE_INGOT.get());
     }
 
@@ -440,7 +439,7 @@ public class GotRecipeProvider extends RecipeProvider {
     // ── Armour ────────────────────────────────────────────────────────
 
     private void buildArmourRecipes(HolderGetter<Item> items) {
-        buildArmour(items, "copper", GotModItems.COPPER_INGOT.get());
+        buildArmour(items, "copper", Items.COPPER_INGOT);
         buildArmour(items, "bronze", GotModItems.BRONZE_INGOT.get());
     }
 

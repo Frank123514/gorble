@@ -4,71 +4,55 @@ import net.minecraft.util.StringRepresentable;
 
 /**
  * Every possible job a Smallfolk NPC can hold.
- *
- * <p>Jobs are assigned by the player via the Hire screen (sneak + right-click
- * any unemployed NPC). There are no longer dedicated workstation blocks for
- * job assignment — the hire screen lists all available occupations directly.
- *
- * <p>To add a new job: add an entry here with a unique {@code id} and a
- * human-readable {@code label}, then add trade lists for it in
- * {@link GotNpcTrades}.
+ * Jobs are only assigned to adult, non-military Smallfolk.
+ * Some jobs are male-only (heavy labour trades).
  */
 public enum GotNpcOccupation implements StringRepresentable {
 
-    NONE      ("none",       "None"),
-    SMITH     ("smith",      "Smith"),
-    FARMER    ("farmer",     "Farmer"),
-    FARMHAND  ("farmhand",   "Farmhand"),
-    BARKEEP   ("barkeep",    "Barkeep"),
-    MINER     ("miner",      "Miner"),
-    FORESTER  ("forester",   "Forester"),
-    MASON     ("mason",      "Mason"),
-    BREWER    ("brewer",     "Brewer"),
-    FLORIST   ("florist",    "Florist"),
-    BUTCHER   ("butcher",    "Butcher"),
-    BAKER     ("baker",      "Baker"),
-    FISHERMAN ("fisherman",  "Fisherman");
+    NONE      ("none",       "None",      false),
+    SMITH     ("smith",      "Smith",     true),   // male only – heavy forge work
+    FARMER    ("farmer",     "Farmer",    true),   // male only – field labour
+    FARMHAND  ("farmhand",   "Farmhand",  false),
+    BARKEEP   ("barkeep",    "Barkeep",   false),
+    MINER     ("miner",      "Miner",     true),   // male only
+    FORESTER  ("forester",   "Forester",  true),   // male only
+    MASON     ("mason",      "Mason",     true),   // male only
+    BREWER    ("brewer",     "Brewer",    false),
+    FLORIST   ("florist",    "Florist",   false),
+    BUTCHER   ("butcher",    "Butcher",   false),
+    BAKER     ("baker",      "Baker",     false),
+    FISHERMAN ("fisherman",  "Fisherman", false);
 
-    /** Serialisation key — used in NBT and network packets. */
-    public final String id;
+    public final String  id;
+    public final String  label;
+    /** True means this job cannot be assigned to a female NPC. */
+    public final boolean maleOnly;
 
-    /**
-     * Human-readable label shown in the hire screen and nameplate.
-     * Matches the {@code got.occupation.<id>} lang key value for convenience.
-     */
-    public final String label;
-
-    GotNpcOccupation(String id, String label) {
-        this.id    = id;
-        this.label = label;
+    GotNpcOccupation(String id, String label, boolean maleOnly) {
+        this.id       = id;
+        this.label    = label;
+        this.maleOnly = maleOnly;
     }
 
-    @Override
-    public String getSerializedName() {
-        return id;
-    }
+    @Override public String getSerializedName() { return id; }
 
     public static GotNpcOccupation fromString(String s) {
-        for (GotNpcOccupation o : values()) {
-            if (o.id.equals(s)) return o;
-        }
+        for (GotNpcOccupation o : values()) if (o.id.equals(s)) return o;
         return NONE;
     }
 
-    /** Whether this NPC currently has a job. */
-    public boolean isEmployed() {
-        return this != NONE;
-    }
+    public boolean isEmployed() { return this != NONE; }
 
-    /**
-     * All occupations that can be assigned to a civilian NPC, in display order.
-     * {@link #NONE} is excluded — it is the unassigned state, not a hireable job.
-     */
+    /** All hireable jobs (excludes NONE). */
     public static final GotNpcOccupation[] HIREABLE = {
         SMITH, FARMER, FARMHAND, BARKEEP, MINER,
         FORESTER, MASON, BREWER, FLORIST, BUTCHER, BAKER, FISHERMAN
     };
 
-    /** NBT key used when saving/loading occupation. */
+    /** Jobs available to female NPCs only. */
+    public static final GotNpcOccupation[] HIREABLE_FEMALE = java.util.Arrays.stream(HIREABLE)
+            .filter(o -> !o.maleOnly)
+            .toArray(GotNpcOccupation[]::new);
+
     public static final String NBT_KEY = "Occupation";
 }

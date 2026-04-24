@@ -70,21 +70,18 @@ public class GotItemTagsProvider extends ItemTagsProvider {
         addGemTag("topaz",       GotModItems.TOPAZ);
 
         tag(Tags.Items.INGOTS).add(
-                GotModItems.COPPER_INGOT.get(),  GotModItems.SILVER_INGOT.get(),
                 GotModItems.TIN_INGOT.get(),     GotModItems.BRONZE_INGOT.get(),
                 GotModItems.VALYRIAN_STEEL_INGOT.get());
 
-        addIngotTag("copper",         GotModItems.COPPER_INGOT);
         addIngotTag("silver",         GotModItems.SILVER_INGOT);
         addIngotTag("tin",            GotModItems.TIN_INGOT);
         addIngotTag("bronze",         GotModItems.BRONZE_INGOT);
         addIngotTag("valyrian_steel", GotModItems.VALYRIAN_STEEL_INGOT);
 
         tag(Tags.Items.RAW_MATERIALS).add(
-                GotModItems.RAW_COPPER.get(),        GotModItems.RAW_SILVER.get(),
+                                                     GotModItems.RAW_SILVER.get(),
                 GotModItems.RAW_TIN.get(),           GotModItems.RAW_VALYRIAN_STEEL.get());
 
-        addRawTag("copper",         GotModItems.RAW_COPPER);
         addRawTag("silver",         GotModItems.RAW_SILVER);
         addRawTag("tin",            GotModItems.RAW_TIN);
         addRawTag("valyrian_steel", GotModItems.RAW_VALYRIAN_STEEL);

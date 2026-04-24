@@ -1,11 +1,11 @@
 package net.got.entity.npc.fighter;
 
+import net.got.entity.horse.GotHorseEntity;
 import net.got.entity.npc.data.GotGenderProvider;
 import net.got.entity.npc.goal.GotHurtByTargetGoal;
 import net.got.entity.npc.goal.GotMeleeAttackGoal;
 import net.got.entity.npc.goal.GotNearestTargetGoal;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
-import net.got.entity.horse.GotHorseEntity;
 import net.got.init.GotModEntities;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;

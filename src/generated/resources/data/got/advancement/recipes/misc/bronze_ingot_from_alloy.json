@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "got:copper_ingot"
+            "items": "minecraft:copper_ingot"
           }
         ]
       },

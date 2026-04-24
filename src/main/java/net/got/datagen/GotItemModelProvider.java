@@ -89,6 +89,11 @@ public class GotItemModelProvider extends ModelProvider {
                 "copper_ingot", "silver_ingot", "tin_ingot", "bronze_ingot", "valyrian_steel_ingot"}) {
             g.generateFlatItem(item(ingot), ModelTemplates.FLAT_ITEM);
         }
+        for (String coin : new String[]{
+                "coin_halfpenny", "coin_penny", "coin_halfgroat", "coin_groat",
+                "coin_star", "coin_stag", "coin_moon", "coin_dragon"}) {
+            g.generateFlatItem(item(coin), ModelTemplates.FLAT_ITEM);
+        }
     }
 
     // ── Helper ────────────────────────────────────────────────────────

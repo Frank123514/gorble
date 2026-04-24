@@ -1,5 +1,6 @@
 package net.got.client.gui;
 
+import net.got.network.CloseInteractScreenPayload;
 import net.got.item.GotCoin;
 import net.got.network.CoinExchangePayload;
 import net.minecraft.client.Minecraft;
@@ -46,12 +47,15 @@ public class NpcCoinExchangeScreen extends Screen {
 
     private static final GotCoin[] COINS = GotCoin.values(); // smallest first
 
+    private final int entityId;
+
     // Computed panel height once we know the number of rows
     private int panelH;
     private int px, py; // panel top-left (computed in init)
 
-    public NpcCoinExchangeScreen() {
+    public NpcCoinExchangeScreen(int entityId) {
         super(Component.literal("Coin Exchange"));
+        this.entityId = entityId;
     }
 
     @Override public boolean isPauseScreen() { return false; }
@@ -180,6 +184,12 @@ public class NpcCoinExchangeScreen extends Screen {
             }
             btnIdx++;
         }
+    }
+
+    @Override
+    public void onClose() {
+        PacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
+        super.onClose();
     }
 
     @Override

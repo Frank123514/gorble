@@ -3,8 +3,8 @@
   "category": "misc",
   "group": "bronze_ingot",
   "ingredients": [
-    "got:copper_ingot",
-    "got:copper_ingot",
+    "minecraft:copper_ingot",
+    "minecraft:copper_ingot",
     "got:tin_ingot"
   ],
   "result": {

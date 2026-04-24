@@ -1,8 +1,8 @@
 package net.got.init;
 
 import net.got.GotMod;
-import net.got.entity.horse.GotHorseEntity;
 // ── Tier-1 Smallfolk imports ───────────────────────────────────────────────────
+import net.got.entity.horse.GotHorseEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
 import net.got.entity.npc.smallfolk.ValemanEntity;

@@ -40,6 +40,9 @@ public abstract class LevyEntity extends SmallfolkEntity {
     @Override
     protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE; }
 
+    /** Levies and fighters are military — they never hold civilian occupations. */
+    @Override protected boolean shouldHaveOccupation() { return false; }
+
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));

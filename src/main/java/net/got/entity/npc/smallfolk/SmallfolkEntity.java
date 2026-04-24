@@ -101,7 +101,7 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
      * Set to TALK_DURATION when talking starts; decrements each tick;
      * talking stops when it reaches zero.
      */
-    private int talkTimer;
+    protected int talkTimer;
     private static final int TALK_DURATION = 80; // 4 seconds
 
     /**
@@ -221,6 +221,14 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     public @Nullable Component getCustomName() {
         String personal = getNpcName();
         if (personal == null || personal.isEmpty()) return null;
+        GotNpcOccupation occ = getOccupation();
+        if (occ.isEmployed()) {
+            // e.g. "Baker Jory the Northman"
+            return Component.translatable("entity.got.npc.named_with_occupation",
+                    Component.literal(occ.label),
+                    Component.literal(personal),
+                    Component.translatable(getType().getDescriptionId()));
+        }
         return Component.translatable("entity.got.npc.named",
                 Component.literal(personal),
                 Component.translatable(getType().getDescriptionId()));
@@ -261,6 +269,28 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
             // Stop any active navigation so the NPC stays in place
             getNavigation().stop();
         }
+    }
+
+    /**
+     * Extends the talk timer to {@code ticks} if the current timer is shorter.
+     * Used by network handlers to keep the NPC frozen while a GUI is open.
+     */
+    public void extendTalkTimer(int ticks) {
+        if (!level().isClientSide) {
+            if (!isTalking()) setTalking(true);
+            if (talkTimer < ticks) talkTimer = ticks;
+            getNavigation().stop();
+        }
+    }
+
+    /**
+     * Returns {@code true} if this NPC can be assigned a civilian occupation.
+     * Pure Smallfolk (non-military) return true; levies and fighters override
+     * this to return false so they stay as NONE.
+     * Children are also blocked — age check is done at call-site via {@code !isBaby()}.
+     */
+    protected boolean shouldHaveOccupation() {
+        return !isBaby();
     }
 
     /** Called after the conversation timer expires. */
@@ -334,9 +364,17 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         setNpcName(getNameGenerator().generateName(rand, male));
         personality = GotNpcPersonality.random(rand);
 
-        // Randomly assign an occupation from all hireable jobs
-        GotNpcOccupation[] hireable = GotNpcOccupation.HIREABLE;
-        setOccupation(hireable[rand.nextInt(hireable.length)]);
+        // Randomly assign an occupation — adults only, gender-appropriate pool.
+        // Subclasses that override shouldHaveOccupation() (e.g. levies/fighters)
+        // return false so they never get civilian jobs.
+        if (shouldHaveOccupation()) {
+            GotNpcOccupation[] pool = male
+                    ? GotNpcOccupation.HIREABLE
+                    : GotNpcOccupation.HIREABLE_FEMALE;
+            setOccupation(pool[rand.nextInt(pool.length)]);
+        } else {
+            setOccupation(GotNpcOccupation.NONE);
+        }
     }
 
     // ── Spawn ─────────────────────────────────────────────────────────────────
@@ -425,7 +463,7 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     }
 
 
-    // ── Player interaction (right-click to "talk") ────────────────────────────
+    // ── Player interaction (right-click → open interact screen) ───────────────
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -433,30 +471,18 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
             return super.mobInteract(player, hand);
         }
 
-        // ── Shift + right-click → open interact screen ────────────────────────
-        if (player.isShiftKeyDown()) {
-            if (!level().isClientSide && player instanceof ServerPlayer sp) {
-                String npcName = getNpcName().isEmpty()
-                        ? getType().getDescription().getString() : getNpcName();
-                PacketDistributor.sendToPlayer(sp,
-                        new OpenInteractScreenPayload(
-                                getId(), getOccupation().id, npcName));
-            }
-            return InteractionResult.SUCCESS;
+        // ── Right-click → open interact screen + start talking animation ──────
+        if (!level().isClientSide && player instanceof ServerPlayer sp) {
+            String npcName = getNpcName().isEmpty()
+                    ? getType().getDescription().getString() : getNpcName();
+            PacketDistributor.sendToPlayer(sp,
+                    new OpenInteractScreenPayload(
+                            getId(), getOccupation().id, npcName));
+            // Freeze NPC in talking pose while screen is open (up to 30 s safety timeout)
+            startTalkingTo(player);
+            extendTalkTimer(600);
         }
-
-        // ── Regular right-click → talk ────────────────────────────────────────
-        if (canSpeakToPlayer()) {
-            if (!level().isClientSide) {
-                startTalkingTo(player);
-                markSpoken();
-                playSound(SoundEvents.VILLAGER_AMBIENT, 0.6f,
-                        0.9f + random.nextFloat() * 0.2f);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        return super.mobInteract(player, hand);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

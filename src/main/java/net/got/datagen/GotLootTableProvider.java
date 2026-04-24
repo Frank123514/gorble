@@ -131,7 +131,6 @@ public class GotLootTableProvider extends LootTableProvider {
 
         private void generateOreLoot() {
             // Metal ores → raw material (silk touch drops ore)
-            add(block("copper_ore"),   b -> createOreDrop(b, GotModItems.RAW_COPPER.get()));
             add(block("tin_ore"),      b -> createOreDrop(b, GotModItems.RAW_TIN.get()));
             add(block("silver_ore"),   b -> createOreDrop(b, GotModItems.RAW_SILVER.get()));
             add(block("valyrian_ore"), b -> createOreDrop(b, GotModItems.RAW_VALYRIAN_STEEL.get()));

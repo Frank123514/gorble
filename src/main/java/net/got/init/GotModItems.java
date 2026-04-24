@@ -1025,7 +1025,6 @@ public class GotModItems {
     // ── Ore block items ───────────────────────────────────────────────────
     public static final DeferredItem<Item> AMBER_ORE          = block(GotModBlocks.AMBER_ORE);
     public static final DeferredItem<Item> AMETHYST_ORE       = block(GotModBlocks.AMETHYST_ORE);
-    public static final DeferredItem<Item> COPPER_ORE         = block(GotModBlocks.COPPER_ORE);
     public static final DeferredItem<Item> DRAGONGLASS_ORE    = block(GotModBlocks.DRAGONGLASS_ORE);
     public static final DeferredItem<Item> OPAL_ORE           = block(GotModBlocks.OPAL_ORE);
     public static final DeferredItem<Item> RUBY_ORE           = block(GotModBlocks.RUBY_ORE);
@@ -1045,13 +1044,11 @@ public class GotModItems {
     public static final DeferredItem<Item> TOPAZ           = simple("topaz");
 
     // ── Raw ores ──────────────────────────────────────────────────────────
-    public static final DeferredItem<Item> RAW_COPPER          = simple("raw_copper");
     public static final DeferredItem<Item> RAW_SILVER          = simple("raw_silver");
     public static final DeferredItem<Item> RAW_TIN             = simple("raw_tin");
     public static final DeferredItem<Item> RAW_VALYRIAN_STEEL  = simple("raw_valyrian_steel");
 
     // ── Ingots ────────────────────────────────────────────────────────────
-    public static final DeferredItem<Item> COPPER_INGOT         = simple("copper_ingot");
     public static final DeferredItem<Item> SILVER_INGOT         = simple("silver_ingot");
     public static final DeferredItem<Item> TIN_INGOT            = simple("tin_ingot");
     public static final DeferredItem<Item> BRONZE_INGOT         = simple("bronze_ingot");

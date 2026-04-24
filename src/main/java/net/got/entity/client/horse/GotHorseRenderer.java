@@ -1,37 +1,20 @@
 package net.got.entity.client.horse;
 
-import net.got.GotMod;
 import net.got.entity.horse.GotHorseEntity;
-import net.minecraft.client.model.HorseModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.state.HorseRenderState;
-import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 /**
- * Client-side renderer for {@link net.got.entity.horse.GotHorseEntity}.
+ * GeckoLib renderer for {@link GotHorseEntity}.
  *
- * <p>Extends vanilla MobRenderer with HorseModel to reuse the vanilla horse model system,
- * overriding only the texture location to point at the GOT warhorse skin.
- * The vanilla horse model layer (saddle, mane, tail) is preserved automatically.
+ * <p>Replaces the old vanilla {@code MobRenderer<HorseModel>} with a
+ * {@link GeoEntityRenderer} driven by the geo model and animation JSON.
+ * Shadow radius is kept at 0.9 to match the entity's 1.4-wide footprint.
  */
-public class GotHorseRenderer extends MobRenderer<GotHorseEntity, HorseRenderState, HorseModel> {
-
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "textures/entity/got_horse.png");
+public class GotHorseRenderer extends GeoEntityRenderer<GotHorseEntity> {
 
     public GotHorseRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new HorseModel(ctx.bakeLayer(ModelLayers.HORSE)), 0.9f);
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(HorseRenderState state) {
-        return TEXTURE;
-    }
-
-    @Override
-    public HorseRenderState createRenderState() {
-        return new HorseRenderState();
+        super(ctx, new GotHorseGeoModel());
+        this.shadowRadius = 0.9f;
     }
 }

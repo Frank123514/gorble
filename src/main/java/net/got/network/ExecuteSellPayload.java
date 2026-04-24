@@ -6,15 +6,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Sent <b>client → server</b> when the player clicks the Sell button in
+ * Sent <b>client → server</b> when the player clicks a sell-offer icon in
  * {@link net.got.client.gui.NpcTradeScreen}.
  *
- * <p>The server looks up the {@link net.got.menu.NpcTradeMenu} for the
- * player, finds the sell offer at {@code offerIndex}, checks that the player
- * has placed the required item in the sell-input slot, removes it, and grants
- * the reward.
+ * <p>The server looks up the NPC by {@code entityId}, reads its occupation,
+ * finds the sell offer at {@code offerIndex}, and if the player has the
+ * required items in their inventory it removes them and grants the coin reward.
  */
-public record ExecuteSellPayload(int offerIndex) implements CustomPacketPayload {
+public record ExecuteSellPayload(int entityId, int offerIndex) implements CustomPacketPayload {
 
     public static final ResourceLocation ID =
             ResourceLocation.fromNamespaceAndPath("got", "execute_sell");
@@ -23,12 +22,10 @@ public record ExecuteSellPayload(int offerIndex) implements CustomPacketPayload 
 
     public static final StreamCodec<FriendlyByteBuf, ExecuteSellPayload> STREAM_CODEC =
             StreamCodec.of(
-                    (buf, pkt) -> buf.writeInt(pkt.offerIndex),
-                    buf -> new ExecuteSellPayload(buf.readInt())
+                    (buf, pkt) -> { buf.writeInt(pkt.entityId); buf.writeInt(pkt.offerIndex); },
+                    buf -> new ExecuteSellPayload(buf.readInt(), buf.readInt())
             );
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
 }

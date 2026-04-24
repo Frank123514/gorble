@@ -1326,7 +1326,6 @@ public class GotModBlocks {
 
     // ── Ores
     // Stone-tier ores (hardness 3, resistance 3) — copper, tin, amber, topaz
-    public static final DeferredBlock<Block> COPPER_ORE    = oreStone("copper_ore");
     public static final DeferredBlock<Block> TIN_ORE       = oreStone("tin_ore");
     public static final DeferredBlock<Block> AMBER_ORE     = oreStone("amber_ore");
     public static final DeferredBlock<Block> TOPAZ_ORE     = oreStone("topaz_ore");

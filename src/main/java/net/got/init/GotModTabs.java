@@ -1412,7 +1412,6 @@ public class GotModTabs {
                         // ── Ore blocks ──────────────────────────────────
                         output.accept(GotModItems.AMBER_ORE.get());
                         output.accept(GotModItems.AMETHYST_ORE.get());
-                        output.accept(GotModItems.COPPER_ORE.get());
                         output.accept(GotModItems.DRAGONGLASS_ORE.get());
                         output.accept(GotModItems.OPAL_ORE.get());
                         output.accept(GotModItems.RUBY_ORE.get());
@@ -1432,13 +1431,11 @@ public class GotModTabs {
                         output.accept(GotModItems.TOPAZ.get());
 
                         // ── Raw ores ─────────────────────────────────────
-                        output.accept(GotModItems.RAW_COPPER.get());
                         output.accept(GotModItems.RAW_SILVER.get());
                         output.accept(GotModItems.RAW_TIN.get());
                         output.accept(GotModItems.RAW_VALYRIAN_STEEL.get());
 
                         // ── Ingots ───────────────────────────────────────
-                        output.accept(GotModItems.COPPER_INGOT.get());
                         output.accept(GotModItems.SILVER_INGOT.get());
                         output.accept(GotModItems.TIN_INGOT.get());
                         output.accept(GotModItems.BRONZE_INGOT.get());

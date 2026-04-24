@@ -3,12 +3,8 @@ package net.got.network;
 import net.got.entity.npc.data.GotNpcTrades;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
 import net.got.item.GotCoin;
-import net.got.menu.NpcTradeMenu;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -48,7 +44,16 @@ public final class GotNetwork {
                     }
                 }));
 
-        // ── Request trade menu (C→S) ──────────────────────────────────────────
+        // ── Close interact screen (C→S) ───────────────────────────────────────
+        r.playToServer(CloseInteractScreenPayload.TYPE, CloseInteractScreenPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    Entity entity = player.serverLevel().getEntity(payload.entityId());
+                    if (entity instanceof SmallfolkEntity npc) npc.stopTalking();
+                }));
+
+        // ── Request trade menu (C→S) → reply with OpenTradeScreenPayload ─────
         r.playToServer(RequestTradeMenuPayload.TYPE, RequestTradeMenuPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
@@ -58,14 +63,26 @@ public final class GotNetwork {
                     if (!npc.getOccupation().isEmployed()) return;
                     if (npc.distanceTo(player) > 12.0f) return;
 
+                    // Keep NPC frozen while player is in the trade screen
+                    npc.startTalkingTo(player);
+                    npc.extendTalkTimer(600);
+
                     String npcName = npc.getNpcName().isEmpty()
                             ? npc.getType().getDescription().getString()
                             : npc.getNpcName();
-                    MenuProvider provider = new SimpleMenuProvider(
-                            (id, playerInv, p) ->
-                                    new NpcTradeMenu(id, playerInv, npc.getOccupation(), npcName),
-                            Component.literal(npcName));
-                    player.openMenu(provider);
+                    // Send custom payload — client opens NpcTradeScreen directly (no container menu)
+                    net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(player,
+                            new OpenTradeScreenPayload(payload.entityId(),
+                                    npc.getOccupation().id, npcName));
+                }));
+
+        // ── Open trade screen (S→C) ────────────────────────────────────────────
+        r.playToClient(OpenTradeScreenPayload.TYPE, OpenTradeScreenPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.client.gui.NpcTradeScreen.open(
+                                payload.entityId(), payload.occupationId(), payload.npcName());
+                    }
                 }));
 
         // ── Execute sell trade (C→S) ──────────────────────────────────────────
@@ -73,25 +90,44 @@ public final class GotNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    if (!(player.containerMenu instanceof NpcTradeMenu menu)) return;
+
+                    // Validate NPC still exists and player is close enough
+                    Entity entity = player.serverLevel().getEntity(payload.entityId());
+                    if (!(entity instanceof SmallfolkEntity npc)) return;
+                    if (!npc.getOccupation().isEmployed()) return;
+                    if (npc.distanceTo(player) > 12.0f) return;
 
                     List<GotNpcTrades.SellOffer> sellOffers =
-                            GotNpcTrades.getSellOffers(menu.getOccupation());
+                            GotNpcTrades.getSellOffers(npc.getOccupation());
                     int idx = payload.offerIndex();
                     if (idx < 0 || idx >= sellOffers.size()) return;
 
                     GotNpcTrades.SellOffer offer = sellOffers.get(idx);
-                    ItemStack slotItem = menu.getSellInputSlot().getItem(0);
+                    Inventory inv = player.getInventory();
 
-                    if (slotItem.isEmpty() || !slotItem.is(offer.costItem())) return;
-                    if (slotItem.getCount() < offer.costCount()) return;
+                    // Count matching items across all inventory slots
+                    int found = 0;
+                    for (int i = 0; i < inv.getContainerSize(); i++) {
+                        ItemStack s = inv.getItem(i);
+                        if (s.is(offer.costItem())) found += s.getCount();
+                    }
+                    if (found < offer.costCount()) return;
 
-                    slotItem.shrink(offer.costCount());
-                    menu.getSellInputSlot().setItem(0,
-                            slotItem.isEmpty() ? ItemStack.EMPTY : slotItem);
-                    player.getInventory().add(offer.coinStack());
-                    player.getInventory().setChanged();
-                    menu.getSellInputSlot().setChanged();
+                    // Remove required items from inventory
+                    int toRemove = offer.costCount();
+                    for (int i = 0; i < inv.getContainerSize() && toRemove > 0; i++) {
+                        ItemStack s = inv.getItem(i);
+                        if (s.is(offer.costItem())) {
+                            int take = Math.min(toRemove, s.getCount());
+                            s.shrink(take);
+                            toRemove -= take;
+                            if (s.isEmpty()) inv.setItem(i, ItemStack.EMPTY);
+                        }
+                    }
+
+                    // Grant coin reward
+                    inv.add(offer.coinStack());
+                    inv.setChanged();
                 }));
 
         // ── Coin exchange (C→S) ───────────────────────────────────────────────
@@ -103,12 +139,10 @@ public final class GotNetwork {
                     GotCoin coin = GotCoin.fromId(payload.fromCoinId());
 
                     if (payload.toSmaller()) {
-                        // Break 1 coin → ratio smaller coins
                         if (coin.smaller == null) return;
                         if (!coin.removeFrom(inv, 1)) return;
                         inv.add(coin.smaller.stack(coin.ratio()));
                     } else {
-                        // Combine ratio smaller coins → 1 coin
                         if (coin.smaller == null) return;
                         int ratio = coin.ratio();
                         if (!coin.smaller.removeFrom(inv, ratio)) return;

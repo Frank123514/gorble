@@ -21,7 +21,7 @@ import net.got.entity.npc.levy.martell.MartellLevyEntity;
 import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
-// ── Horse renderer ────────────────────────────────────────────────────────────
+// ── Horse renderer (GeckoLib) ─────────────────────────────────────────────────
 import net.got.entity.client.horse.GotHorseRenderer;
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModBlocks;
@@ -55,7 +55,8 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(GotModMenus.OVEN.get(), OvenScreen::new);
-        event.register(GotModMenus.NPC_TRADE.get(), NpcTradeScreen::new);
+        // NPC_TRADE menu type is kept registered but NpcTradeScreen is opened directly
+        // via OpenTradeScreenPayload — no ScreenConstructor registration needed.
     }
 
     @SubscribeEvent
