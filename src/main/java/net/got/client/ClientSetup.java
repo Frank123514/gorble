@@ -23,6 +23,8 @@ import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
 // ── Horse renderer (GeckoLib) ─────────────────────────────────────────────────
 import net.got.entity.client.horse.GotHorseRenderer;
+import net.got.entity.client.pony.GotPonyRenderer;
+import net.got.entity.client.stag.GotStagRenderer;
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModBlocks;
 import net.got.init.GotModBoatEntities;
@@ -173,6 +175,8 @@ public final class ClientSetup {
 
         // ── GOT Horse renderer ───────────────────────────────────────────────
         event.registerEntityRenderer(GotModEntities.GOT_HORSE.get(), GotHorseRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_PONY.get(),  GotPonyRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_STAG.get(),  GotStagRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));

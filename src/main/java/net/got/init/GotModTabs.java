@@ -1488,6 +1488,10 @@ public class GotModTabs {
                         // Skilled Fighters (Tier 3)
                         output.accept(GotModItems.NORTH_SOLDIER_SPAWN_EGG.get());
                         output.accept(GotModItems.VALE_KNIGHT_SPAWN_EGG.get());
+                        // WildLife
+                        output.accept(GotModItems.GOT_HORSE_SPAWN_EGG.get());
+                        output.accept(GotModItems.GOT_PONY_SPAWN_EGG.get());
+                        output.accept(GotModItems.GOT_STAG_SPAWN_EGG.get());
                     })
                     .build());
 

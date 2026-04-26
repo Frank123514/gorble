@@ -14,6 +14,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -35,11 +36,15 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  */
 public class GotHorseEntity extends Horse implements GeoEntity {
 
-    private static final RawAnimation IDLE  = RawAnimation.begin().thenLoop("animation.got_horse.idle");
-    private static final RawAnimation WALK  = RawAnimation.begin().thenLoop("animation.got_horse.walk");
-    private static final RawAnimation RUN   = RawAnimation.begin().thenLoop("animation.got_horse.run");
-    private static final RawAnimation REAR  = RawAnimation.begin().thenPlay("animation.got_horse.rear");
-    private static final RawAnimation SWIM  = RawAnimation.begin().thenLoop("animation.got_horse.swim");
+    private static final RawAnimation IDLE     = RawAnimation.begin().thenLoop("animation.got_horse.idle");
+    private static final RawAnimation WALK     = RawAnimation.begin().thenLoop("animation.got_horse.walk");
+    private static final RawAnimation RUN      = RawAnimation.begin().thenLoop("animation.got_horse.run");
+    private static final RawAnimation REAR     = RawAnimation.begin().thenPlay("animation.got_horse.rear");
+    private static final RawAnimation SWIM     = RawAnimation.begin().thenLoop("animation.got_horse.swim");
+    /** Head dips to graze with jaw chew cycles. Triggered while {@link #isEating()}. */
+    private static final RawAnimation EAT      = RawAnimation.begin().thenLoop("animation.got_horse.eat");
+    /** Energetic side-to-side tail wag. Plays on a separate controller when tamed and idle. */
+    private static final RawAnimation TAIL_WAG = RawAnimation.begin().thenLoop("animation.got_horse.tail_wag");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -51,21 +56,30 @@ public class GotHorseEntity extends Horse implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        // Primary movement controller — eating takes precedence over idle/walk/run.
         controllers.add(new AnimationController<>(this, "movement", 4, state -> {
-            if (this.isInWater()) {
-                return state.setAndContinue(SWIM);
-            }
-            if (this.isStanding()) {
-                return state.setAndContinue(REAR);
-            }
-            if (!state.isMoving()) {
-                return state.setAndContinue(IDLE);
-            }
+            if (this.isInWater())  return state.setAndContinue(SWIM);
+            if (this.isStanding()) return state.setAndContinue(REAR);
+            if (this.isEating())   return state.setAndContinue(EAT);
+            if (!state.isMoving()) return state.setAndContinue(IDLE);
             double speedSq = this.getDeltaMovement().horizontalDistanceSqr();
-            if (speedSq > 0.08) {
-                return state.setAndContinue(RUN);
-            }
+            if (speedSq > 0.08)    return state.setAndContinue(RUN);
             return state.setAndContinue(WALK);
+        }));
+
+        // Tail controller — plays the energetic tail-wag animation independently
+        // whenever the horse is tamed and not busy with another action.
+        // Registered second so its tail-bone output takes priority over the
+        // movement controller's tail pose when both are active.
+        controllers.add(new AnimationController<>(this, "tail", 2, state -> {
+            if (this.isTamed()
+                    && !this.isInWater()
+                    && !this.isStanding()
+                    && !this.isEating()
+                    && !state.isMoving()) {
+                return state.setAndContinue(TAIL_WAG);
+            }
+            return PlayState.STOP;
         }));
     }
 
