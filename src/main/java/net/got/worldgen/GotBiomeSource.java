@@ -247,6 +247,19 @@ public final class GotBiomeSource extends BiomeSource {
 
         if (bestLoc == null) return fallback;
         Holder<Biome> h = locationToHolder.get(bestLoc);
+
+        // ── Sub-biome override ────────────────────────────────────────────
+        // For land cells, check if the dominant biome has a procedural sub-biome
+        // patch at this XZ position and substitute it when one is registered.
+        if (!cellIsOpenWater) {
+            ResourceLocation subId = GotSubBiomeSystem.getSubBiomeId(worldX, worldZ, bestLoc.getPath());
+            if (subId != null) {
+                Holder<Biome> subHolder = locationToHolder.get(subId);
+                if (subHolder != null) return subHolder;
+                // Sub-biome not in the biomes list (missing from knownworld.json) — fall through.
+            }
+        }
+
         return h != null ? h : fallback;
     }
 

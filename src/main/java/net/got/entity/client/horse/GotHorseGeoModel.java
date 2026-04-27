@@ -15,20 +15,23 @@ public class GotHorseGeoModel extends GeoModel<GotHorseEntity> {
             ResourceLocation.fromNamespaceAndPath("got", "geo/got_horse.geo.json");
     private static final ResourceLocation ANIMATIONS =
             ResourceLocation.fromNamespaceAndPath("got", "animations/got_horse.animation.json");
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/got_horse.png");
 
-    // Saddle bones
+    /** Indexed by {@link GotHorseEntity#getCoatVariant()} (0-5). */
+    private static final ResourceLocation[] COAT_TEXTURES = {
+        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_black.png"),
+        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_brown.png"),
+        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_chestnut.png"),
+        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_creamy.png"),
+        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_darkbrown.png"),
+        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_gray.png"),
+    };
+
     private static final String[] SADDLE_BONES = {
         "saddle", "saddleb", "saddlec", "saddlel", "saddlel2", "saddler", "saddler2",
         "headsaddle", "saddlemouthl", "saddlemouthr", "saddlemouthline", "saddlemouthliner"
     };
-
-    // Armor bones — the bag bones double as armor visuals
     private static final String[] ARMOR_BONES = { "bag1", "bag2" };
-
-    // Mule ear bones — only show on mules (not relevant here but hide by default)
-    private static final String[] MULE_EAR_BONES = { "muleearl", "muleearr" };
+    private static final String[] MULE_EARS   = { "muleearl", "muleearr" };
 
     @Override
     public ResourceLocation getModelResource(GotHorseEntity animatable, GeoRenderer<GotHorseEntity> renderer) {
@@ -37,7 +40,9 @@ public class GotHorseGeoModel extends GeoModel<GotHorseEntity> {
 
     @Override
     public ResourceLocation getTextureResource(GotHorseEntity animatable, GeoRenderer<GotHorseEntity> renderer) {
-        return TEXTURE;
+        int id = animatable.getCoatVariant();
+        if (id < 0 || id >= COAT_TEXTURES.length) id = 0;
+        return COAT_TEXTURES[id];
     }
 
     @Override
@@ -53,18 +58,12 @@ public class GotHorseGeoModel extends GeoModel<GotHorseEntity> {
         BakedGeoModel baked = getBakedModel(MODEL);
         if (baked == null) return;
 
-        boolean saddled = animatable.isSaddled();
+        boolean saddled  = animatable.isSaddled();
         boolean hasArmor = !animatable.getItemBySlot(EquipmentSlot.BODY).isEmpty()
                         && animatable.getItemBySlot(EquipmentSlot.BODY).getItem() != Items.AIR;
 
-        for (String name : SADDLE_BONES) {
-            baked.getBone(name).ifPresent(b -> b.setHidden(!saddled));
-        }
-        for (String name : ARMOR_BONES) {
-            baked.getBone(name).ifPresent(b -> b.setHidden(!hasArmor));
-        }
-        for (String name : MULE_EAR_BONES) {
-            baked.getBone(name).ifPresent(b -> b.setHidden(true));
-        }
+        for (String name : SADDLE_BONES) baked.getBone(name).ifPresent(b -> b.setHidden(!saddled));
+        for (String name : ARMOR_BONES)  baked.getBone(name).ifPresent(b -> b.setHidden(!hasArmor));
+        for (String name : MULE_EARS)    baked.getBone(name).ifPresent(b -> b.setHidden(true));
     }
 }

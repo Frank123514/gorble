@@ -71,7 +71,16 @@ public final class GotBiomeDensityParams {
          */
         public final boolean isWater;
 
-        Params(float depth, float scale, boolean isWater) {
+        /**
+         * Registry path of this biome (e.g. {@code "north"}).
+         * Exposed so that {@link GotChunkGenerator#bilinearBlend} can pass the
+         * dominant-pixel biome name to {@link GotSubBiomeSystem#getTerrainDelta}
+         * without a separate reverse-lookup through the colour palette.
+         */
+        public final String name;
+
+        Params(String name, float depth, float scale, boolean isWater) {
+            this.name    = name;
             this.depth   = depth;
             this.scale   = scale;
             this.isWater = isWater;
@@ -129,11 +138,11 @@ public final class GotBiomeDensityParams {
     }
 
     private static void land(String name, float depth, float scale) {
-        BY_NAME.put(name, new Params(depth, scale, false));
+        BY_NAME.put(name, new Params(name, depth, scale, false));
     }
 
     private static void water(String name, float depth, float scale) {
-        BY_NAME.put(name, new Params(depth, scale, true));
+        BY_NAME.put(name, new Params(name, depth, scale, true));
     }
 
     private GotBiomeDensityParams() {}
@@ -171,5 +180,14 @@ public final class GotBiomeDensityParams {
     /** Returns the {@link Params} by biome registry path (e.g. {@code "north_mountains"}). */
     public static Params forName(String name) {
         return BY_NAME.getOrDefault(name, FALLBACK);
+    }
+
+    /**
+     * Returns the registry path (biome name) for the given 24-bit biomemap RGB colour.
+     * Uses the same nearest-colour-distance lookup as {@link #forColor}.
+     * Returns {@code "ocean"} (the fallback) if the colour is unrecognised.
+     */
+    public static String nameForColor(int rgb) {
+        return forColor(rgb).name;
     }
 }

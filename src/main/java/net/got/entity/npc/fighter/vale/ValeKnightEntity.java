@@ -36,6 +36,12 @@ public class ValeKnightEntity extends SkilledFighterEntity {
     }
 
     @Override public float getHorseSpawnChance() { return 0.50f; }
+
+    @Override
+    public String getMilitaryTitle() {
+        return "";
+    }
+
     @Override public int   getVariantsPerGender() { return ValemanEntity.MALE_VARIANT_COUNT; }
     @Override protected GotNameGenerator getNameGenerator() { return GotNpcNames.VALE_KNIGHT; }
 

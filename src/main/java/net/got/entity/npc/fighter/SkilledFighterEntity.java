@@ -45,6 +45,14 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
     @Override
     public boolean isCivilian() { return false; }
 
+    /** Fighters are military — they never hold civilian occupations. */
+    @Override
+    protected boolean shouldHaveOccupation() { return false; }
+
+    /** Short rank label for the nameplate — e.g. "Soldier", "Knight". */
+    @Override
+    public abstract String getMilitaryTitle();
+
     @Override
     protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE; }
 
@@ -81,6 +89,9 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         horse.moveTo(getX(), getY(), getZ(), getYRot(), 0f);
         horse.setTamed(true);
         horse.setOwnerUUID(getUUID());
+        // Always give the horse a saddle so the rider can properly control it.
+        horse.equipSaddle(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SADDLE),
+                net.minecraft.sounds.SoundSource.NEUTRAL);
         if (serverLevel.tryAddFreshEntityWithPassengers(horse)) startRiding(horse, true);
     }
 }

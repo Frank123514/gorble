@@ -8,11 +8,25 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
+/**
+ * Entity renderer for {@link GotHorseEntity}.
+ *
+ * <p>Rendering stack (back to front):
+ * <ol>
+ *   <li>Base coat — resolved per-entity by {@link GotHorseGeoModel#getTextureResource}.</li>
+ *   <li>Markings overlay — {@link GotHorseMarkingsLayer} (translucent, skipped if markings == 0).</li>
+ *   <li>Horse-armour overlay — {@link GotHorseArmorLayer} (cutout, skipped when no armour equipped).</li>
+ * </ol>
+ */
 public class GotHorseRenderer extends GeoEntityRenderer<GotHorseEntity> {
 
     public GotHorseRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new GotHorseGeoModel());
         this.shadowRadius = 0.9f;
+
+        // Register overlay layers in draw order (markings first, then armour on top).
+        addRenderLayer(new GotHorseMarkingsLayer(this));
+        addRenderLayer(new GotHorseArmorLayer(this));
     }
 
     @Override

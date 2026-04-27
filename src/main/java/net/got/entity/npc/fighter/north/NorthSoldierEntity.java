@@ -36,6 +36,12 @@ public class NorthSoldierEntity extends SkilledFighterEntity {
     }
 
     @Override public float getHorseSpawnChance() { return 0.15f; }
+
+    @Override
+    public String getMilitaryTitle() {
+        return "";
+    }
+
     @Override public int   getVariantsPerGender() { return NorthmanEntity.MALE_VARIANT_COUNT; }
     @Override protected GotNameGenerator getNameGenerator() { return GotNpcNames.NORTH_SOLDIER; }
 

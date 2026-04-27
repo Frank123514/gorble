@@ -221,6 +221,19 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     public @Nullable Component getCustomName() {
         String personal = getNpcName();
         if (personal == null || personal.isEmpty()) return null;
+
+        // Military NPCs (levies, soldiers, knights) show "Brandon, Levy" —
+        // their rank is their identity, not a job assigned from a workstation.
+        if (!isCivilian()) {
+            String title = getMilitaryTitle();
+            if (title != null && !title.isEmpty()) {
+                return Component.translatable("entity.got.npc.named_military",
+                        Component.literal(personal),
+                        Component.literal(title));
+            }
+        }
+
+        // Civilian smallfolk show occupation when employed, plain name otherwise.
         GotNpcOccupation occ = getOccupation();
         if (occ.isEmployed()) {
             // e.g. "Baker Jory the Northman"
@@ -233,6 +246,14 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
                 Component.literal(personal),
                 Component.translatable(getType().getDescriptionId()));
     }
+
+    /**
+     * Returns the short military rank label shown after the NPC's name —
+     * e.g. "Levy", "Soldier", "Knight".
+     * Returns null by default (civilians never call this).
+     * Military subclasses override to supply the correct title.
+     */
+    public @Nullable String getMilitaryTitle() { return null; }
 
     /**
      * Always show the nameplate above named NPCs, mirroring LOTR's behaviour.
@@ -308,8 +329,8 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
      * Override in subclasses to supply a culture-specific speech bank.
      * The bank is loaded once from {@code /assets/got/dialogue/<name>.json}.
      */
-    protected net.got.entity.npc.GotNpcSpeechBank getSpeechBank() {
-        return net.got.entity.npc.GotNpcSpeechBank.SMALLFOLK_CIVILIAN;
+    protected GotNpcSpeechBank getSpeechBank() {
+        return GotNpcSpeechBank.SMALLFOLK_CIVILIAN;
     }
 
     /** The dialogue line currently shown above this NPC (empty when silent). */
@@ -441,7 +462,12 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         setVariant(tag.getInt("Variant"));
         setNpcName(tag.getString("NpcName"));
         personality = GotNpcPersonality.fromString(tag.getString("Personality"));
-        setOccupation(GotNpcOccupation.fromString(tag.getString(GotNpcOccupation.NBT_KEY)));
+        // Never restore a civilian job onto a military NPC — strips stale NBT from old saves.
+        if (isCivilian()) {
+            setOccupation(GotNpcOccupation.fromString(tag.getString(GotNpcOccupation.NBT_KEY)));
+        } else {
+            setOccupation(GotNpcOccupation.NONE);
+        }
         npcInventory.load(tag, level().registryAccess());
     }
 
@@ -475,9 +501,10 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
         if (!level().isClientSide && player instanceof ServerPlayer sp) {
             String npcName = getNpcName().isEmpty()
                     ? getType().getDescription().getString() : getNpcName();
+            String milTitle = isCivilian() ? "" : (getMilitaryTitle() != null ? getMilitaryTitle() : "");
             PacketDistributor.sendToPlayer(sp,
                     new OpenInteractScreenPayload(
-                            getId(), getOccupation().id, npcName));
+                            getId(), getOccupation().id, npcName, milTitle));
             // Freeze NPC in talking pose while screen is open (up to 30 s safety timeout)
             startTalkingTo(player);
             extendTalkTimer(600);

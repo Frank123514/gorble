@@ -570,6 +570,23 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float depth = p00.depth * w00 + p10.depth * w10 + p01.depth * w01 + p11.depth * w11;
         float scale = p00.scale * w00 + p10.scale * w10 + p01.scale * w01 + p11.scale * w11;
 
+        // ── Sub-biome terrain modifier ────────────────────────────────────
+        // Determine the dominant pixel (highest bilinear weight) and apply any
+        // terrain delta registered for its parent biome's sub-biome at this XZ.
+        // The delta is smoothly ramped at patch edges by GotSubBiomeSystem so
+        // there are no hard seams between the parent terrain and sub-biome terrain.
+        float maxWeight = Math.max(Math.max(w00, w10), Math.max(w01, w11));
+        int dominantColor;
+        if      (maxWeight == w00) dominantColor = BiomemapLoader.getRawPixel(px0,     pz0);
+        else if (maxWeight == w10) dominantColor = BiomemapLoader.getRawPixel(px0 + 1, pz0);
+        else if (maxWeight == w01) dominantColor = BiomemapLoader.getRawPixel(px0,     pz0 + 1);
+        else                       dominantColor = BiomemapLoader.getRawPixel(px0 + 1, pz0 + 1);
+
+        String  dominantName  = GotBiomeDensityParams.nameForColor(dominantColor);
+        float[] terrainDelta  = GotSubBiomeSystem.getTerrainDelta(wx, wz, dominantName);
+        depth += terrainDelta[0];
+        scale += terrainDelta[1];
+
         return new float[]{ depth, scale };
     }
 

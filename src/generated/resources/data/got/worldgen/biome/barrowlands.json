@@ -108,7 +108,7 @@
         "weight": 8
       },
       {
-        "type": "minecraft:horse",
+        "type": "got:got_horse",
         "maxCount": 6,
         "minCount": 2,
         "weight": 5

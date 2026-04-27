@@ -40,7 +40,7 @@ public final class GotNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.dist == Dist.CLIENT) {
                         net.got.client.gui.NpcInteractScreen.open(
-                                payload.entityId(), payload.occupationId(), payload.npcName());
+                                payload.entityId(), payload.occupationId(), payload.npcName(), payload.militaryTitle());
                     }
                 }));
 
