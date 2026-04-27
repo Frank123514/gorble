@@ -1617,10 +1617,6 @@ public class GotModItems {
     public static final DeferredItem<SpawnEggItem> GOT_HORSE_SPAWN_EGG = REGISTRY.registerItem(
             "got_horse_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_HORSE.get(), p));
 
-    /** Pony spawn egg — bay brown with golden-tan spots. */
-    public static final DeferredItem<SpawnEggItem> GOT_PONY_SPAWN_EGG = REGISTRY.registerItem(
-            "got_pony_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_PONY.get(), p));
-
     /** Stag spawn egg — bark brown with antler-cream spots. */
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
             "got_stag_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_STAG.get(), p));

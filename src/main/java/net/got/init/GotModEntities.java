@@ -3,7 +3,6 @@ package net.got.init;
 import net.got.GotMod;
 // ── Tier-1 Smallfolk imports ───────────────────────────────────────────────────
 import net.got.entity.horse.GotHorseEntity;
-import net.got.entity.pony.GotPonyEntity;
 import net.got.entity.stag.GotStagEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
@@ -160,13 +159,6 @@ public class GotModEntities {
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_horse"))));
 
-    /** GOT Pony — a small sturdy mount, 0.65× the size of the warhorse. */
-    public static final DeferredHolder<EntityType<?>, EntityType<GotPonyEntity>> GOT_PONY =
-            REGISTRY.register("got_pony", () ->
-                    EntityType.Builder.<GotPonyEntity>of(GotPonyEntity::new, MobCategory.CREATURE)
-                            .sized(0.9f, 1.0f).clientTrackingRange(10).updateInterval(3)
-                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_pony"))));
 
     /** GOT Stag — a wild red deer stag found in the forests of Westeros. */
     public static final DeferredHolder<EntityType<?>, EntityType<GotStagEntity>> GOT_STAG =

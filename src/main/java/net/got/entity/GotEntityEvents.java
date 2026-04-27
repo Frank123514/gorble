@@ -2,7 +2,6 @@ package net.got.entity;
 
 // ── Tier-1 Smallfolk ──────────────────────────────────────────────────────────
 import net.got.entity.horse.GotHorseEntity;
-import net.got.entity.pony.GotPonyEntity;
 import net.got.entity.stag.GotStagEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
@@ -69,14 +68,6 @@ public class GotEntityEvents {
                         .add(net.minecraft.world.entity.ai.attributes.Attributes.JUMP_STRENGTH, 0.7)
                         .build());
 
-        // ── GOT Pony ───────────────────────────────────────────────────────────
-        event.put(GotModEntities.GOT_PONY.get(),
-                net.minecraft.world.entity.animal.horse.AbstractHorse.createBaseHorseAttributes()
-                        .add(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH, 15.0)
-                        .add(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED, 0.22)
-                        .add(net.minecraft.world.entity.ai.attributes.Attributes.JUMP_STRENGTH, 0.5)
-                        .build());
-
         // ── GOT Stag ───────────────────────────────────────────────────────────
         event.put(GotModEntities.GOT_STAG.get(), GotStagEntity.createAttributes().build());
     }
@@ -109,9 +100,6 @@ public class GotEntityEvents {
 
         // ── GOT Horse ──────────────────────────────────────────────────────────
         event.register(GotModEntities.GOT_HORSE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotHorseEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-
-        // ── GOT Pony ───────────────────────────────────────────────────────────
-        event.register(GotModEntities.GOT_PONY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotPonyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         // ── GOT Stag ───────────────────────────────────────────────────────────
         event.register(GotModEntities.GOT_STAG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotStagEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);

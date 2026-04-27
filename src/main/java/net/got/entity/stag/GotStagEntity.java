@@ -1,15 +1,16 @@
-package net.got.entity.horse;
+package net.got.entity.stag;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -21,36 +22,51 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * GOT custom horse entity — a warhorse for the Game of Thrones mod.
+ * GOT Stag — a great red deer stag of the Westerosi forests.
  *
- * <p>Extends vanilla {@link Horse} to inherit all vanilla horse behaviour
- * (taming, inventory, saddling, breeding, riding, jump strength, health).
- * Rendered via GeckoLib using a custom 1.12.2-style geo model.
+ * <p>Uses the custom stag geo model with antlers and a deer-like silhouette.
+ * Extends vanilla {@link Horse} to reuse all horse behaviour (taming,
+ * saddling, riding, breeding, health) while being rendered via GeckoLib
+ * with its own model and the horse animation set remapped to stag bone names.
  *
- * <p>Animation states:
+ * <p>Animation states (same logic as the warhorse, using stag-prefixed clips):
  * <ul>
- *   <li>{@code idle}  — subtle breathing while standing still.</li>
- *   <li>{@code walk}  — 4-beat walk gait.</li>
- *   <li>{@code run}   — faster diagonal canter/gallop.</li>
- *   <li>{@code rear}  — rearing animation when {@link #isStanding()}.</li>
- *   <li>{@code swim}  — paddling motion while in water.</li>
+ *   <li>{@code idle}    — subtle breathing bob.</li>
+ *   <li>{@code walk}    — 4-beat walk gait.</li>
+ *   <li>{@code run}     — bounding gallop.</li>
+ *   <li>{@code rear}    — rearing when {@link #isStanding()}.</li>
+ *   <li>{@code swim}    — paddling motion in water.</li>
+ *   <li>{@code eat}     — grazing head-dip.</li>
+ *   <li>{@code tail_wag}— tail flick when tamed and idle.</li>
  * </ul>
  */
-public class GotHorseEntity extends Horse implements GeoEntity {
+public class GotStagEntity extends Horse implements GeoEntity {
 
-    private static final RawAnimation IDLE     = RawAnimation.begin().thenLoop("animation.got_horse.idle");
-    private static final RawAnimation WALK     = RawAnimation.begin().thenLoop("animation.got_horse.walk");
-    private static final RawAnimation RUN      = RawAnimation.begin().thenLoop("animation.got_horse.run");
-    private static final RawAnimation REAR     = RawAnimation.begin().thenPlay("animation.got_horse.rear");
-    private static final RawAnimation SWIM     = RawAnimation.begin().thenLoop("animation.got_horse.swim");
-    /** Head dips to graze with jaw chew cycles. Triggered while {@link #isEating()}. */
-    private static final RawAnimation EAT      = RawAnimation.begin().thenLoop("animation.got_horse.eat");
-    /** Energetic side-to-side tail wag. Plays on a separate controller when tamed and idle. */
-    private static final RawAnimation TAIL_WAG = RawAnimation.begin().thenLoop("animation.got_horse.tail_wag");
+    private static final RawAnimation IDLE     = RawAnimation.begin().thenLoop("animation.got_stag.idle");
+    private static final RawAnimation WALK     = RawAnimation.begin().thenLoop("animation.got_stag.walk");
+    private static final RawAnimation RUN      = RawAnimation.begin().thenLoop("animation.got_stag.run");
+    private static final RawAnimation REAR     = RawAnimation.begin().thenPlay("animation.got_stag.rear");
+    private static final RawAnimation SWIM     = RawAnimation.begin().thenLoop("animation.got_stag.swim");
+    private static final RawAnimation EAT      = RawAnimation.begin().thenLoop("animation.got_stag.eat");
+    private static final RawAnimation TAIL_WAG = RawAnimation.begin().thenLoop("animation.got_stag.tail_wag");
+
+    // ── Attributes ────────────────────────────────────────────────────────────
+
+    /**
+     * Called by {@link net.got.entity.GotEntityEvents} during
+     * {@code EntityAttributeCreationEvent} to register the stag's attribute set.
+     * Stags are fast and nimble but not quite as tough as the warhorse.
+     */
+    public static AttributeSupplier.Builder createAttributes() {
+        return AbstractHorse.createBaseHorseAttributes()
+                .add(Attributes.MAX_HEALTH, 18.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.JUMP_STRENGTH, 0.65);
+    }
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public GotHorseEntity(EntityType<? extends Horse> type, Level level) {
+    public GotStagEntity(EntityType<? extends Horse> type, Level level) {
         super(type, level);
     }
 
@@ -58,7 +74,6 @@ public class GotHorseEntity extends Horse implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // Primary movement controller — eating takes precedence over idle/walk/run.
         controllers.add(new AnimationController<>(this, "movement", 4, state -> {
             if (this.isInWater())  return state.setAndContinue(SWIM);
             if (this.isStanding()) return state.setAndContinue(REAR);
@@ -69,10 +84,6 @@ public class GotHorseEntity extends Horse implements GeoEntity {
             return state.setAndContinue(WALK);
         }));
 
-        // Tail controller — plays the energetic tail-wag animation independently
-        // whenever the horse is tamed and not busy with another action.
-        // Registered second so its tail-bone output takes priority over the
-        // movement controller's tail pose when both are active.
         controllers.add(new AnimationController<>(this, "tail", 2, state -> {
             if (this.isTamed()
                     && !this.isInWater()
@@ -93,7 +104,7 @@ public class GotHorseEntity extends Horse implements GeoEntity {
     // ── Spawn rules ───────────────────────────────────────────────────────────
 
     @SuppressWarnings("unchecked")
-    public static boolean checkSpawnRules(EntityType<GotHorseEntity> type,
+    public static boolean checkSpawnRules(EntityType<GotStagEntity> type,
                                           ServerLevelAccessor level,
                                           EntitySpawnReason spawnType,
                                           BlockPos pos,
@@ -106,13 +117,7 @@ public class GotHorseEntity extends Horse implements GeoEntity {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level,
                                                   DifficultyInstance difficulty,
                                                   EntitySpawnReason spawnType,
-                                                  @Nullable SpawnGroupData groupData) {
-        return super.finalizeSpawn(level, difficulty, spawnType, groupData);
+                                                  @Nullable SpawnGroupData spawnGroupData) {
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
-
-    @Override
-    public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        return (AgeableMob) getType().create(level, EntitySpawnReason.BREEDING);
-    }
-
 }
