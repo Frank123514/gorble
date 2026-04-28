@@ -15,6 +15,9 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.got.init.GotModBlocks;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.got.worldgen.surface.GotBiomeSurfaceConfig;
+import net.got.worldgen.surface.GotBiomeSurfaces;
+import net.got.worldgen.surface.GotMountainTerrainProvider;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.ChunkPos;
@@ -270,6 +273,119 @@ public final class GotChunkGenerator extends ChunkGenerator {
         vanilla.buildSurface(region, structures, random, chunk);
         if (BiomemapLoader.isLoaded()) {
             applyCoastalMud(chunk);
+            applySurfaceConfigs(region, chunk, random);
+        }
+    }
+
+    // ── LOTR-style surface config application ─────────────────────────────
+    //
+    // After the vanilla surface pass (and the coastal mud pass), scan each
+    // column and apply the biome's GotBiomeSurfaceConfig:
+    //   1. MountainTerrainProvider — height-conditional block replacement
+    //      (snow caps, exposed stone) applied highest-priority.
+    //   2. SurfaceNoiseMixer — noise-driven block patches (gravel, coarse dirt).
+    //   3. SurfaceNoisePaths — dirt-path contour trails on the top surface.
+    //   4. SubSoilLayers — geological strata placed beneath the filler.
+    //   5. UnderwaterNoiseMixer — floor replacement in flooded columns.
+
+    private void applySurfaceConfigs(@NotNull WorldGenRegion region,
+                                     @NotNull ChunkAccess chunk,
+                                     @NotNull RandomState random) {
+        ChunkPos pos    = chunk.getPos();
+        int chunkX      = pos.getMinBlockX();
+        int chunkZ      = pos.getMinBlockZ();
+        int minY        = chunk.getMinY();
+        int sea         = getSeaLevel();
+
+        // Seeded per-chunk RandomSource for stochastic block selection.
+        RandomSource rand = random
+                .getOrCreateRandomFactory(net.got.GotMod.id("surface_noise"))
+                .at(new BlockPos(chunkX, 0, chunkZ));
+
+        for (int lx = 0; lx < 16; lx++) {
+            for (int lz = 0; lz < 16; lz++) {
+                int wx = chunkX + lx;
+                int wz = chunkZ + lz;
+
+                // Resolve biome at approximate surface height.
+                int surfaceY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
+                ResourceLocation biomeId = region.getBiome(new BlockPos(wx, surfaceY, wz))
+                        .unwrapKey()
+                        .map(k -> k.location())
+                        .orElse(null);
+                if (biomeId == null) continue;
+
+                GotBiomeSurfaceConfig config = GotBiomeSurfaces.getConfig(biomeId.getPath());
+                if (config == null) continue;
+
+                // Per-column mountain-terrain jitter value (constant across Y).
+                int stoneJitter = config.hasMountainTerrain()
+                        ? GotMountainTerrainProvider.computeStoneNoiseDepth(wx, wz)
+                        : 0;
+
+                // Scan from surface downward.
+                boolean top          = true;
+                int     depthBelow   = 0;
+
+                for (int y = surfaceY; y >= minY; y--) {
+                    BlockPos bp    = new BlockPos(lx, y, lz);
+                    BlockState state = chunk.getBlockState(bp);
+
+                    // Skip non-solid / fluid blocks — reset top flag.
+                    if (!state.isSolid()) {
+                        top = true;
+                        continue;
+                    }
+
+                    // 1. Mountain terrain (highest priority).
+                    if (config.hasMountainTerrain()) {
+                        BlockState mountainResult = config.applyMountainTerrain(
+                                wx, wz, y, state, top, stoneJitter);
+                        if (mountainResult != state) {
+                            chunk.setBlockState(bp, mountainResult, false);
+                            state = mountainResult;
+                        }
+                    }
+
+                    // 2+3. Surface noise mixer + noise paths (top and near-surface filler).
+                    if (depthBelow < 5 && config.hasSurfaceNoiseMixer()) {
+                        BlockState mixed = config.applySurfaceNoise(wx, wz, state, top, rand);
+                        if (mixed != state) {
+                            chunk.setBlockState(bp, mixed, false);
+                            state = mixed;
+                        }
+                    }
+
+                    // 4. Sub-soil layers (depth-ordered strata beneath filler).
+                    if (!config.getSubSoilLayers().isEmpty()) {
+                        for (GotBiomeSurfaceConfig.SubSoilLayer layer : config.getSubSoilLayers()) {
+                            int targetDepth = layer.getDepth(rand);
+                            if (depthBelow == targetDepth) {
+                                chunk.setBlockState(bp, layer.material(), false);
+                                state = layer.material();
+                                break; // first matching depth wins
+                            }
+                        }
+                    }
+
+                    top = false;
+                    depthBelow++;
+
+                    // Only process a limited depth below the surface for efficiency.
+                    if (depthBelow > 8) break;
+                }
+
+                // 5. Underwater noise mixer (floor of flooded columns only).
+                if (config.hasUnderwaterMixer() && surfaceY < sea) {
+                    int floorY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, lx, lz);
+                    BlockPos floorBp = new BlockPos(lx, floorY, lz);
+                    BlockState floorState = chunk.getBlockState(floorBp);
+                    BlockState replaced = config.applyUnderwaterNoise(wx, wz, floorState, rand);
+                    if (replaced != floorState) {
+                        chunk.setBlockState(floorBp, replaced, false);
+                    }
+                }
+            }
         }
     }
 
@@ -569,23 +685,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
         float depth = p00.depth * w00 + p10.depth * w10 + p01.depth * w01 + p11.depth * w11;
         float scale = p00.scale * w00 + p10.scale * w10 + p01.scale * w01 + p11.scale * w11;
-
-        // ── Sub-biome terrain modifier ────────────────────────────────────
-        // Determine the dominant pixel (highest bilinear weight) and apply any
-        // terrain delta registered for its parent biome's sub-biome at this XZ.
-        // The delta is smoothly ramped at patch edges by GotSubBiomeSystem so
-        // there are no hard seams between the parent terrain and sub-biome terrain.
-        float maxWeight = Math.max(Math.max(w00, w10), Math.max(w01, w11));
-        int dominantColor;
-        if      (maxWeight == w00) dominantColor = BiomemapLoader.getRawPixel(px0,     pz0);
-        else if (maxWeight == w10) dominantColor = BiomemapLoader.getRawPixel(px0 + 1, pz0);
-        else if (maxWeight == w01) dominantColor = BiomemapLoader.getRawPixel(px0,     pz0 + 1);
-        else                       dominantColor = BiomemapLoader.getRawPixel(px0 + 1, pz0 + 1);
-
-        String  dominantName  = GotBiomeDensityParams.nameForColor(dominantColor);
-        float[] terrainDelta  = GotSubBiomeSystem.getTerrainDelta(wx, wz, dominantName);
-        depth += terrainDelta[0];
-        scale += terrainDelta[1];
 
         return new float[]{ depth, scale };
     }

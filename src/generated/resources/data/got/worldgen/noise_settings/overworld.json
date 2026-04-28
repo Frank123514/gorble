@@ -1210,7 +1210,7 @@
                             "if_true": {
                               "type": "minecraft:biome",
                               "biome_is": [
-                                "got:stony_shore"
+                                "minecraft:desert"
                               ]
                             },
                             "then_run": {
@@ -1306,8 +1306,7 @@
                               "biome_is": [
                                 "got:frostfangs",
                                 "got:north_hills",
-                                "got:north_mountains",
-                                "got:north"
+                                "got:north_mountains"
                               ]
                             },
                             "then_run": {
@@ -1483,7 +1482,7 @@
                         "if_true": {
                           "type": "minecraft:biome",
                           "biome_is": [
-                            "got:iron_hills"
+                            "minecraft:desert"
                           ]
                         },
                         "then_run": {
