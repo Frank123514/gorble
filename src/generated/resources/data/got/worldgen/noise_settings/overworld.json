@@ -1612,9 +1612,7 @@
                         "if_true": {
                           "type": "minecraft:biome",
                           "biome_is": [
-                            "minecraft:old_growth_pine_taiga",
-                            "got:wolfswood",
-                            "got:ironwood"
+                            "minecraft:old_growth_pine_taiga"
                           ]
                         },
                         "then_run": {
@@ -2399,7 +2397,6 @@
                         "if_true": {
                           "type": "minecraft:biome",
                           "biome_is": [
-                            "got:iron_hills"
                           ]
                         },
                         "then_run": {
@@ -2506,7 +2503,6 @@
                         "if_true": {
                           "type": "minecraft:biome",
                           "biome_is": [
-                            "got:neck"
                           ]
                         },
                         "then_run": {

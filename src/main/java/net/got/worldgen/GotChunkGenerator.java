@@ -15,9 +15,9 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.got.init.GotModBlocks;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.got.worldgen.surface.GotBiomeSurfaceConfig;
 import net.got.worldgen.surface.GotBiomeSurfaces;
-import net.got.worldgen.surface.GotMountainTerrainProvider;
+import net.minecraft.world.level.levelgen.Noises;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.ChunkPos;
@@ -273,31 +273,39 @@ public final class GotChunkGenerator extends ChunkGenerator {
         vanilla.buildSurface(region, structures, random, chunk);
         if (BiomemapLoader.isLoaded()) {
             applyCoastalMud(chunk);
-            applySurfaceConfigs(region, chunk, random);
+            applySurfacePatches(region, chunk, random);
         }
     }
 
     // ── LOTR-style surface config application ─────────────────────────────
     //
     // After the vanilla surface pass (and the coastal mud pass), scan each
-    // column and apply the biome's GotBiomeSurfaceConfig:
-    //   1. MountainTerrainProvider — height-conditional block replacement
-    //      (snow caps, exposed stone) applied highest-priority.
-    //   2. SurfaceNoiseMixer — noise-driven block patches (gravel, coarse dirt).
-    //   3. SurfaceNoisePaths — dirt-path contour trails on the top surface.
-    //   4. SubSoilLayers — geological strata placed beneath the filler.
-    //   5. UnderwaterNoiseMixer — floor replacement in flooded columns.
+    // column and apply the biome's surface config.
+    //
+    // Mirrors MiddleEarthSurfaceBuilder.buildSurface() order exactly:
+    // ── Vanilla noise surface patch pass ─────────────────────────────────
+    //
+    // Replaces the old LOTR-ported noise system.  Uses vanilla's own
+    // minecraft:surface and minecraft:surface_secondary noise keys so patch
+    // behaviour is identical to how vanilla MC drives its own surface rules.
+    //
+    // Application order per column:
+    //   1. Mountain layers  — height-conditional stone / snow / powder snow.
+    //   2. Podzol variation — secondary noise drives forest floor block choice.
+    //   3. Surface patch    — narrow vanilla noise threshold → scattered patch.
 
-    private void applySurfaceConfigs(@NotNull WorldGenRegion region,
+    private void applySurfacePatches(@NotNull WorldGenRegion region,
                                      @NotNull ChunkAccess chunk,
                                      @NotNull RandomState random) {
-        ChunkPos pos    = chunk.getPos();
-        int chunkX      = pos.getMinBlockX();
-        int chunkZ      = pos.getMinBlockZ();
-        int minY        = chunk.getMinY();
-        int sea         = getSeaLevel();
 
-        // Seeded per-chunk RandomSource for stochastic block selection.
+        NormalNoise surfaceNoise   = random.getOrCreateNoise(Noises.SURFACE);
+        NormalNoise secondaryNoise = random.getOrCreateNoise(Noises.SURFACE_SECONDARY);
+
+        ChunkPos pos   = chunk.getPos();
+        int chunkX     = pos.getMinBlockX();
+        int chunkZ     = pos.getMinBlockZ();
+
+        // Per-chunk RandomSource for weighted block selection (mountain jitter etc.)
         RandomSource rand = random
                 .getOrCreateRandomFactory(net.got.GotMod.id("surface_noise"))
                 .at(new BlockPos(chunkX, 0, chunkZ));
@@ -307,82 +315,62 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 int wx = chunkX + lx;
                 int wz = chunkZ + lz;
 
-                // Resolve biome at approximate surface height.
                 int surfaceY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
-                ResourceLocation biomeId = region.getBiome(new BlockPos(wx, surfaceY, wz))
+
+                ResourceLocation biomeId = region
+                        .getBiome(new BlockPos(wx, surfaceY, wz))
                         .unwrapKey()
                         .map(k -> k.location())
                         .orElse(null);
                 if (biomeId == null) continue;
 
-                GotBiomeSurfaceConfig config = GotBiomeSurfaces.getConfig(biomeId.getPath());
+                GotBiomeSurfaces.BiomeConfig config = GotBiomeSurfaces.getConfig(biomeId.getPath());
                 if (config == null) continue;
 
-                // Per-column mountain-terrain jitter value (constant across Y).
-                int stoneJitter = config.hasMountainTerrain()
-                        ? GotMountainTerrainProvider.computeStoneNoiseDepth(wx, wz)
-                        : 0;
+                BlockPos   topBp    = new BlockPos(lx, surfaceY, lz);
+                BlockState topState = chunk.getBlockState(topBp);
+                if (!topState.isSolid()) continue;
 
-                // Scan from surface downward.
-                boolean top          = true;
-                int     depthBelow   = 0;
-
-                for (int y = surfaceY; y >= minY; y--) {
-                    BlockPos bp    = new BlockPos(lx, y, lz);
-                    BlockState state = chunk.getBlockState(bp);
-
-                    // Skip non-solid / fluid blocks — reset top flag.
-                    if (!state.isSolid()) {
-                        top = true;
-                        continue;
-                    }
-
-                    // 1. Mountain terrain (highest priority).
-                    if (config.hasMountainTerrain()) {
-                        BlockState mountainResult = config.applyMountainTerrain(
-                                wx, wz, y, state, top, stoneJitter);
-                        if (mountainResult != state) {
-                            chunk.setBlockState(bp, mountainResult, false);
-                            state = mountainResult;
-                        }
-                    }
-
-                    // 2+3. Surface noise mixer + noise paths (top and near-surface filler).
-                    if (depthBelow < 5 && config.hasSurfaceNoiseMixer()) {
-                        BlockState mixed = config.applySurfaceNoise(wx, wz, state, top, rand);
-                        if (mixed != state) {
-                            chunk.setBlockState(bp, mixed, false);
-                            state = mixed;
-                        }
-                    }
-
-                    // 4. Sub-soil layers (depth-ordered strata beneath filler).
-                    if (!config.getSubSoilLayers().isEmpty()) {
-                        for (GotBiomeSurfaceConfig.SubSoilLayer layer : config.getSubSoilLayers()) {
-                            int targetDepth = layer.getDepth(rand);
-                            if (depthBelow == targetDepth) {
-                                chunk.setBlockState(bp, layer.material(), false);
-                                state = layer.material();
-                                break; // first matching depth wins
-                            }
-                        }
-                    }
-
-                    top = false;
-                    depthBelow++;
-
-                    // Only process a limited depth below the surface for efficiency.
-                    if (depthBelow > 8) break;
+                // ── 1. Mountain terrain (height-conditional, highest priority) ──
+                if (config.stoneAbove >= 0 && surfaceY >= config.stoneAbove) {
+                    topState = Blocks.STONE.defaultBlockState();
+                    chunk.setBlockState(topBp, topState, false);
+                } else if (config.snowBlockAbove >= 0 && surfaceY >= config.snowBlockAbove) {
+                    topState = Blocks.SNOW_BLOCK.defaultBlockState();
+                    chunk.setBlockState(topBp, topState, false);
+                } else if (config.powderSnowAbove >= 0 && surfaceY >= config.powderSnowAbove) {
+                    topState = Blocks.POWDER_SNOW.defaultBlockState();
+                    chunk.setBlockState(topBp, topState, false);
                 }
 
-                // 5. Underwater noise mixer (floor of flooded columns only).
-                if (config.hasUnderwaterMixer() && surfaceY < sea) {
-                    int floorY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, lx, lz);
-                    BlockPos floorBp = new BlockPos(lx, floorY, lz);
-                    BlockState floorState = chunk.getBlockState(floorBp);
-                    BlockState replaced = config.applyUnderwaterNoise(wx, wz, floorState, rand);
-                    if (replaced != floorState) {
-                        chunk.setBlockState(floorBp, replaced, false);
+                // ── 2. Podzol / forest floor variation ───────────────────────
+                // Secondary noise sampled at a Y offset independent of the patch
+                // noise so forest floors don't phase-lock with patch placement.
+                if (config.podzol && topState.is(Blocks.GRASS_BLOCK)) {
+                    double pv = secondaryNoise.getValue(wx, 12, wz);
+                    if (pv > 0.5) {
+                        // 45% podzol, 15% coarse dirt, rest stays grass
+                        int r = rand.nextInt(100);
+                        if      (r < 45) topState = Blocks.PODZOL.defaultBlockState();
+                        else if (r < 60) topState = Blocks.COARSE_DIRT.defaultBlockState();
+                        chunk.setBlockState(topBp, topState, false);
+                    }
+                }
+
+                // ── 3. Surface noise patch ────────────────────────────────────
+                // Narrow threshold band on vanilla surface noise → scattered blobs.
+                // Band width ~0.14 in [-1,1] → ~7% patch coverage.
+                if (config.hasPatch()) {
+                    double nv = config.useSecondary
+                            ? secondaryNoise.getValue(wx, 0, wz)
+                            : surfaceNoise.getValue(wx, 0, wz);
+                    if (nv >= config.minThreshold && nv <= config.maxThreshold) {
+                        // Only replace soil/grass/stone — don't overwrite snow/powder
+                        if (!topState.is(Blocks.SNOW_BLOCK)
+                                && !topState.is(Blocks.POWDER_SNOW)
+                                && !topState.is(Blocks.BEDROCK)) {
+                            chunk.setBlockState(topBp, config.mainPatch.pick(rand), false);
+                        }
                     }
                 }
             }

@@ -1,316 +1,219 @@
 package net.got.worldgen.surface;
 
 import net.got.init.GotModBlocks;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Static registry of {@link GotBiomeSurfaceConfig} instances keyed by biome
- * registry path (e.g. {@code "north"}, {@code "north_mountains"}).
+ * Per-biome surface patch configuration — vanilla MC noise driven.
  *
- * <p>This is the single place to define what each GoT biome's surface looks like
- * — gravel patches, mountain snow/stone layers, dirt paths, underwater sand
- * coverage, sub-soil geology — all driven by the ported LOTR noise system.
- *
- * <h3>How to add a config for a new biome</h3>
- * <ol>
- *   <li>Create a {@link GotBiomeSurfaceConfig} with
- *       {@link GotBiomeSurfaceConfig#create()}.</li>
- *   <li>Chain the setters you need ({@code setSurfaceNoiseMixer},
- *       {@code setMountainTerrain}, etc.).</li>
- *   <li>Call {@code register("my_biome_name", config)} inside the
- *       {@code static} block.</li>
- * </ol>
- *
- * <h3>Noise mixer quick-reference</h3>
- * <pre>
- *   channel(1) scales(0.4, 0.07) threshold(0.25)  — medium gravel patches
- *   channel(2) scales(0.3, 0.05) threshold(0.30)  — smaller stone patches
- *   channel(3) scales(0.2, 0.04) threshold(0.35)  — sparse coarse dirt
- * </pre>
+ * <p>Uses {@code minecraft:surface} and {@code minecraft:surface_secondary} noise
+ * with NARROW threshold bands for fine scattered flecks on ALL patch blocks.
  */
 public final class GotBiomeSurfaces {
 
-    private static final Map<String, GotBiomeSurfaceConfig> REGISTRY = new HashMap<>();
+    // ── Weighted block choice ─────────────────────────────────────────────
+
+    public static final class PatchEntry {
+        private final BlockState[] states;
+        private final int[]        weights;
+        private final int          total;
+
+        private PatchEntry(BlockState[] states, int[] weights) {
+            this.states  = states;
+            this.weights = weights;
+            int t = 0;
+            for (int w : weights) t += w;
+            this.total = t;
+        }
+
+        public static PatchEntry of(BlockState state) {
+            return new PatchEntry(new BlockState[]{ state }, new int[]{ 1 });
+        }
+
+        public static PatchEntry of(BlockState s1, int w1, BlockState s2, int w2) {
+            return new PatchEntry(new BlockState[]{ s1, s2 }, new int[]{ w1, w2 });
+        }
+
+        public BlockState pick(RandomSource rand) {
+            if (states.length == 1) return states[0];
+            int pick = rand.nextInt(total);
+            int acc  = 0;
+            for (int i = 0; i < states.length; i++) {
+                acc += weights[i];
+                if (pick < acc) return states[i];
+            }
+            return states[states.length - 1];
+        }
+    }
+
+    // ── Per-biome config ──────────────────────────────────────────────────
+
+    public static final class BiomeConfig {
+        public final Double     minThreshold;
+        public final Double     maxThreshold;
+        public final boolean    useSecondary;
+        public final PatchEntry mainPatch;
+        public final boolean    podzol;
+        public final int        powderSnowAbove;
+        public final int        snowBlockAbove;
+        public final int        stoneAbove;
+
+        private BiomeConfig(Builder b) {
+            this.minThreshold    = b.minThreshold;
+            this.maxThreshold    = b.maxThreshold;
+            this.useSecondary    = b.useSecondary;
+            this.mainPatch       = b.mainPatch;
+            this.podzol          = b.podzol;
+            this.powderSnowAbove = b.powderSnowAbove;
+            this.snowBlockAbove  = b.snowBlockAbove;
+            this.stoneAbove      = b.stoneAbove;
+        }
+
+        public boolean hasPatch() { return minThreshold != null && mainPatch != null; }
+
+        public static Builder builder() { return new Builder(); }
+
+        public static final class Builder {
+            private Double     minThreshold    = null;
+            private Double     maxThreshold    = null;
+            private boolean    useSecondary    = false;
+            private PatchEntry mainPatch       = null;
+            private boolean    podzol          = false;
+            private int        powderSnowAbove = -1;
+            private int        snowBlockAbove  = -1;
+            private int        stoneAbove      = -1;
+
+            private Builder() {}
+
+            public Builder patch(PatchEntry entry, double min, double max) {
+                this.mainPatch    = entry;
+                this.minThreshold = min;
+                this.maxThreshold = max;
+                return this;
+            }
+
+            public Builder secondary()            { this.useSecondary    = true; return this; }
+            public Builder podzol()               { this.podzol          = true; return this; }
+            public Builder powderSnowAbove(int y) { this.powderSnowAbove = y;   return this; }
+            public Builder snowBlockAbove(int y)  { this.snowBlockAbove  = y;   return this; }
+            public Builder stoneAbove(int y)      { this.stoneAbove      = y;   return this; }
+
+            public BiomeConfig build() { return new BiomeConfig(this); }
+        }
+    }
+
+    // ── Registry ──────────────────────────────────────────────────────────
+
+    private static final Map<String, BiomeConfig> REGISTRY = new HashMap<>();
 
     static {
+        // ALL biomes use NARROW bands (~0.14 width) for fine scattered flecks.
+        // This makes BOTH blocks in a PatchEntry scatter as tiny flecks.
 
-        // ── NORTH ─────────────────────────────────────────────────────────
-        register("north",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.4, 0.07)
-                                        .threshold(0.30)
-                                        .state(Blocks.GRAVEL.defaultBlockState())
-                                        .topOnly()
-                                        .build(),
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(2)
-                                        .scales(0.25, 0.05)
-                                        .threshold(0.35)
-                                        .state(Blocks.COARSE_DIRT.defaultBlockState())
-                                        .topOnly()
-                                        .build()
-                        ))
-        );
+        // NORTH — gravel (70%) + coarse dirt (30%), both as fine flecks
+        register("north", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        7,
+                                Blocks.COARSE_DIRT.defaultBlockState(), 3),
+                        -0.08, 0.06)
+                .build());
 
-        // ── NORTH HILLS ───────────────────────────────────────────────────
-        register("north_hills",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.4, 0.07)
-                                        .threshold(0.22)
-                                        .states(
-                                                Blocks.GRAVEL.defaultBlockState(), 3,
-                                                Blocks.STONE.defaultBlockState(), 1
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(Blocks.GRAVEL.defaultBlockState(), 1, 2)
-        );
+        // NORTH HILLS — gravel (75%) + stone (25%), fine flecks
+        register("north_hills", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(), 3,
+                                Blocks.STONE.defaultBlockState(),  1),
+                        -0.10, 0.04)
+                .build());
 
-        // ── NORTH MOUNTAINS ───────────────────────────────────────────────
-        register("north_mountains",
-                GotBiomeSurfaceConfig.create()
-                        .setMountainTerrain(GotMountainTerrainProvider.create(
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(145).state(Blocks.POWDER_SNOW.defaultBlockState()).topOnly().build(),
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(130).state(Blocks.SNOW_BLOCK.defaultBlockState()).topOnly().build(),
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(105).useStone().build()
-                        ))
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.35, 0.06)
-                                        .threshold(0.28)
-                                        .state(Blocks.GRAVEL.defaultBlockState())
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState(), 2, 4)
-        );
+        // NORTH MOUNTAINS — stone flecks + height layers
+        register("north_mountains", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState()), -0.12, 0.02)
+                .powderSnowAbove(145)
+                .snowBlockAbove(130)
+                .stoneAbove(105)
+                .build());
 
-        // ── FROSTFANGS ────────────────────────────────────────────────────
-        register("frostfangs",
-                GotBiomeSurfaceConfig.create()
-                        .setMountainTerrain(GotMountainTerrainProvider.create(
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(140).state(Blocks.POWDER_SNOW.defaultBlockState()).topOnly().build(),
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(120).state(Blocks.SNOW_BLOCK.defaultBlockState()).topOnly().build(),
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(90).useStone().build()
-                        ))
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.40, 0.08)
-                                        .threshold(0.20)
-                                        .state(Blocks.STONE.defaultBlockState())
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(Blocks.STONE.defaultBlockState(), 2, 5)
-        );
+        // FROSTFANGS — stone flecks
+        register("frostfangs", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState()), -0.06, 0.08)
+                .powderSnowAbove(140)
+                .snowBlockAbove(120)
+                .stoneAbove(90)
+                .build());
 
-        // ── ALWAYS WINTER ─────────────────────────────────────────────────
-        register("always_winter",
-                GotBiomeSurfaceConfig.create()
-                        .setMountainTerrain(GotMountainTerrainProvider.create(
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(100).state(Blocks.POWDER_SNOW.defaultBlockState()).topOnly().build(),
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(88).state(Blocks.SNOW_BLOCK.defaultBlockState()).topOnly().build()
-                        ))
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(2)
-                                        .scales(0.30, 0.06)
-                                        .threshold(0.32)
-                                        .state(Blocks.GRAVEL.defaultBlockState())
-                                        .topOnly()
-                                        .build()
-                        ))
-        );
+        // ALWAYS WINTER — gravel flecks
+        register("always_winter", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState()), -0.10, 0.04)
+                .secondary()
+                .powderSnowAbove(100)
+                .snowBlockAbove(88)
+                .build());
 
-        // ── WOLFSWOOD ─────────────────────────────────────────────────────
-        register("wolfswood",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(3)
-                                        .scales(0.20, 0.04)
-                                        .threshold(0.35)
-                                        .states(
-                                                Blocks.COARSE_DIRT.defaultBlockState(), 3,
-                                                Blocks.ROOTED_DIRT.defaultBlockState(), 1
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(Blocks.COARSE_DIRT.defaultBlockState(), 1)
-        );
+        // WOLFSWOOD — podzol + coarse dirt flecks
+        register("wolfswood", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        3,
+                                Blocks.COARSE_DIRT.defaultBlockState(), 1),
+                        -0.08, 0.06)
+                .podzol()
+                .build());
 
-        // ── HAUNTED FOREST ────────────────────────────────────────────────
-        register("haunted_forest",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.35, 0.07)
-                                        .threshold(0.28)
-                                        .states(
-                                                Blocks.COARSE_DIRT.defaultBlockState(), 2,
-                                                Blocks.GRAVEL.defaultBlockState(), 1
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-        );
+        // HAUNTED FOREST — podzol flecks, secondary noise
+        register("haunted_forest", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        2,
+                                Blocks.COARSE_DIRT.defaultBlockState(), 1),
+                        -0.12, 0.02)
+                .secondary()
+                .podzol()
+                .build());
 
-        // ── IRONWOOD ──────────────────────────────────────────────────────
-        register("ironwood",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(2)
-                                        .scales(0.25, 0.05)
-                                        .threshold(0.25)
-                                        .states(
-                                                Blocks.COARSE_DIRT.defaultBlockState(), 2,
-                                                Blocks.ROOTED_DIRT.defaultBlockState(), 2
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(Blocks.COARSE_DIRT.defaultBlockState(), 1, 2)
-        );
+        // IRONWOOD — dense podzol flecks, secondary noise
+        register("ironwood", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        1,
+                                Blocks.COARSE_DIRT.defaultBlockState(), 1),
+                        -0.14, 0.00)
+                .secondary()
+                .podzol()
+                .build());
 
-        // ── BARROWLANDS ───────────────────────────────────────────────────
-        register("barrowlands",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.40, 0.08)
-                                        .threshold(0.28)
-                                        .states(
-                                                Blocks.GRAVEL.defaultBlockState(), 2,
-                                                Blocks.COBBLESTONE.defaultBlockState(), 1
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(GotModBlocks.LIMESTONE_ROCK.get().defaultBlockState(), 2, 3)
-        );
+        // BARROWLANDS — coarse dirt + gravel flecks
+        register("barrowlands", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.COARSE_DIRT.defaultBlockState(), 2,
+                                Blocks.GRAVEL.defaultBlockState(),      1),
+                        -0.08, 0.06)
+                .build());
 
-        // ── STONY SHORE ───────────────────────────────────────────────────
-        register("stony_shore",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.45, 0.09)
-                                        .threshold(0.18)
-                                        .states(
-                                                Blocks.GRAVEL.defaultBlockState(), 4,
-                                                Blocks.STONE.defaultBlockState(), 1
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .setUnderwaterNoiseMixer(GotUnderwaterNoiseMixer.SEA_LATITUDE)
-                        .addSubSoilLayer(Blocks.GRAVEL.defaultBlockState(), 2, 3)
-        );
+        // STONY SHORE — gravel + stone flecks
+        register("stony_shore", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(), 4,
+                                Blocks.STONE.defaultBlockState(),  1),
+                        -0.10, 0.04)
+                .build());
 
-        // ── IRON HILLS ────────────────────────────────────────────────────
-        register("iron_hills",
-                GotBiomeSurfaceConfig.create()
-                        .setLocalStone(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState())
-                        .setMountainTerrain(GotMountainTerrainProvider.create(
-                                GotMountainTerrainProvider.Layer.builder()
-                                        .above(110).useStone().build()
-                        ))
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(1)
-                                        .scales(0.40, 0.08)
-                                        .threshold(0.22)
-                                        .states(
-                                                GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState(), 3,
-                                                Blocks.GRAVEL.defaultBlockState(), 2
-                                        )
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState(), 2, 4)
-                        .addSubSoilLayer(GotModBlocks.FLINT_ROCK.get().defaultBlockState(), 1, 2)
-        );
+        // IRON HILLS — stone + gravel flecks, secondary noise
+        register("iron_hills", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState(),  3,
+                                Blocks.GRAVEL.defaultBlockState(), 2),
+                        -0.06, 0.08)
+                .secondary()
+                .stoneAbove(110)
+                .build());
 
-        // ── NECK ──────────────────────────────────────────────────────────
-        // Waterlogged marshland at the coast: mostly vanilla mud/clay, but
-        // the underwater floor blends toward sand in southern areas.
-        register("neck",
-                GotBiomeSurfaceConfig.create()
-                        .setUnderwaterNoiseMixer(GotUnderwaterNoiseMixer.SEA_LATITUDE)
-        );
-
-        // ── SHEEPSHEAD HILLS ──────────────────────────────────────────────
-        register("sheepshead_hills",
-                GotBiomeSurfaceConfig.create()
-                        .setSurfaceNoiseMixer(GotSurfaceNoiseMixer.createNoiseMixer(
-                                GotSurfaceNoiseMixer.Condition.builder()
-                                        .channel(2)
-                                        .scales(0.35, 0.07)
-                                        .threshold(0.30)
-                                        .state(Blocks.GRAVEL.defaultBlockState())
-                                        .topOnly()
-                                        .build()
-                        ))
-                        .addSubSoilLayer(GotModBlocks.LIMESTONE_ROCK.get().defaultBlockState(), 1, 3)
-        );
-
-        // ── OCEAN / DEEP OCEAN ────────────────────────────────────────────
-        // Latitude-blended sand/gravel seabed.
-        register("ocean",
-                GotBiomeSurfaceConfig.create()
-                        .setUnderwaterNoiseMixer(GotUnderwaterNoiseMixer.SEA_LATITUDE)
-        );
-        register("deep_ocean",
-                GotBiomeSurfaceConfig.create()
-                        .setUnderwaterNoiseMixer(GotUnderwaterNoiseMixer.SEA_LATITUDE)
-        );
-
-        // ── RIVERS ────────────────────────────────────────────────────────
-        // No special surface config — vanilla clay/gravel is fine.
-        // (No register call → getConfig returns null → chunk gen skips the pass.)
+        // SHEEPSHEAD HILLS — sparse gravel flecks
+        register("sheepshead_hills", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState()), -0.04, 0.10)
+                .secondary()
+                .build());
     }
 
-    // ── Registry API ──────────────────────────────────────────────────────
+    // ── Public API ────────────────────────────────────────────────────────
 
-    private static void register(String biomeName, GotBiomeSurfaceConfig config) {
-        REGISTRY.put(biomeName, config);
-    }
+    private static void register(String name, BiomeConfig config) { REGISTRY.put(name, config); }
 
-    /**
-     * Returns the surface config for the given biome registry path, or
-     * {@code null} if this biome has no special surface config (vanilla defaults
-     * are kept as-is).
-     *
-     * @param biomePath e.g. {@code "north"}, {@code "north_mountains"}
-     */
-    public static GotBiomeSurfaceConfig getConfig(String biomePath) {
-        return REGISTRY.get(biomePath);
-    }
+    public static BiomeConfig getConfig(String biomePath) { return REGISTRY.get(biomePath); }
 
     private GotBiomeSurfaces() {}
 }
