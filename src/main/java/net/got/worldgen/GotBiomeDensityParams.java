@@ -97,7 +97,7 @@ public final class GotBiomeDensityParams {
         // ── Land biomes ───────────────────────────────────────────────────
         //                            depth   scale
         land("north",                 70f,    15f);   // rolling plains
-        land("barrowlands",           75f,    20f);   // gentle barrow hills
+        land("barrowlands",           75f,    35f);   // gentle barrow hills
         land("stony_shore",           66f,    12f);   // coastal rock shelves
         land("north_hills",           88f,    35f);   // pronounced hill range
         land("neck",                  62f,     8f);   // near-sea-level wetlands

@@ -2101,8 +2101,7 @@
                           "biome_is": [
                             "got:frostfangs",
                             "got:north_hills",
-                            "got:north_mountains",
-                            "got:north"
+                            "got:north_mountains"
                           ]
                         },
                         "then_run": {
@@ -2257,8 +2256,7 @@
                               "biome_is": [
                                 "got:frostfangs",
                                 "got:north_hills",
-                                "got:north_mountains",
-                                "got:north"
+                                "got:north_mountains"
                               ]
                             },
                             "then_run": {
@@ -2596,8 +2594,7 @@
                       "minecraft:frozen_peaks",
                       "got:frostfangs",
                       "got:north_hills",
-                      "got:north_mountains",
-                      "got:north"
+                      "got:north_mountains"
                     ]
                   },
                   "then_run": {

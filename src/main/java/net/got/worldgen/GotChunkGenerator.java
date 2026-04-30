@@ -141,6 +141,13 @@ public final class GotChunkGenerator extends ChunkGenerator {
      */
     static volatile int sharedNoiseSeed = SEED_TERRAIN;
 
+    /**
+     * Cached on first {@link #fillFromNoise} call so that
+     * {@link #applyBiomeDecoration} can build a PlacementContext for the extra
+     * tree-placement passes added by the sub-biome variant system.
+     */
+    private volatile RandomState cachedRandomState = null;
+
     private static int configuredSpawnPixelX = -1;
     private static int configuredSpawnPixelZ = -1;
 
@@ -184,6 +191,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
             noiseSeed = SEED_TERRAIN ^ (int)(s ^ (s >>> 32));
             sharedNoiseSeed = noiseSeed;   // visible to GotBiomeSource
         }
+        if (cachedRandomState == null) cachedRandomState = random;
 
         NoiseSettings ns = settings.value().noiseSettings();
         int minY = ns.minY();
@@ -578,6 +586,50 @@ public final class GotChunkGenerator extends ChunkGenerator {
         return cornerDensity(wx, wy, wz, depth, scale, sharedNoiseSeed);
     }
 
+    /**
+     * Returns the active {@link GotSubBiomeSystem.Variant} at a world XZ
+     * position, or {@code null} for no variant.
+     *
+     * <p>Convenience wrapper so surface passes (e.g. {@link #applySurfacePatches})
+     * and any future decoration hooks can query the variant without duplicating
+     * the dominant-pixel lookup.  Uses the same warped pixel-space calculation
+     * as {@link #bilinearBlend} so the answer always agrees with terrain shape.
+     *
+     * <p>Typical usage in a surface pass:
+     * <pre>
+     *   GotSubBiomeSystem.Variant variant = GotChunkGenerator.variantAt(wx, wz);
+     *   if (variant != null && "pine_grove".equals(variant.name())) { ... }
+     * </pre>
+     */
+    public static GotSubBiomeSystem.Variant variantAt(int wx, int wz) {
+        float[] warped = warpCoordinates(wx, wz);
+        float cx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float cz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+
+        int   px0 = (int) Math.floor(cx);
+        int   pz0 = (int) Math.floor(cz);
+        float tx  = sharpenBlend(cx - px0);
+        float tz  = sharpenBlend(cz - pz0);
+
+        GotBiomeDensityParams.Params p00 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0));
+        GotBiomeDensityParams.Params p10 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0));
+        GotBiomeDensityParams.Params p01 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0 + 1));
+        GotBiomeDensityParams.Params p11 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0 + 1));
+
+        float w00 = (1f - tx) * (1f - tz);
+        float w10 = tx        * (1f - tz);
+        float w01 = (1f - tx) * tz;
+        float w11 = tx        * tz;
+
+        String dominantName;
+        if      (w00 >= w10 && w00 >= w01 && w00 >= w11) dominantName = p00.name;
+        else if (w10 >= w01 && w10 >= w11)               dominantName = p10.name;
+        else if (w01 >= w11)                             dominantName = p01.name;
+        else                                             dominantName = p11.name;
+
+        return GotSubBiomeSystem.activeVariant(dominantName, wx, wz);
+    }
+
     // ── Domain warp ───────────────────────────────────────────────────────
     //
     // Before the pixel-space lookup we displace the world coordinates with a
@@ -674,6 +726,24 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float depth = p00.depth * w00 + p10.depth * w10 + p01.depth * w01 + p11.depth * w11;
         float scale = p00.scale * w00 + p10.scale * w10 + p01.scale * w01 + p11.scale * w11;
 
+        // ── Sub-biome variant terrain delta ───────────────────────────────
+        //
+        // Find the dominant (highest-weight) biomemap pixel and ask
+        // GotSubBiomeSystem whether a variant is active at this position.
+        // The delta is blended in proportion to the dominant pixel's weight so
+        // the variant effect fades smoothly near biome boundaries instead of
+        // cutting sharply across them.
+        String dominantName;
+        float  dominantWeight;
+        if (w00 >= w10 && w00 >= w01 && w00 >= w11) { dominantName = p00.name; dominantWeight = w00; }
+        else if (w10 >= w01 && w10 >= w11)           { dominantName = p10.name; dominantWeight = w10; }
+        else if (w01 >= w11)                         { dominantName = p01.name; dominantWeight = w01; }
+        else                                         { dominantName = p11.name; dominantWeight = w11; }
+
+        float[] delta = GotSubBiomeSystem.getTerrainDelta(dominantName, wx, wz);
+        depth += delta[0] * dominantWeight;
+        scale += delta[1] * dominantWeight;
+
         return new float[]{ depth, scale };
     }
 
@@ -750,6 +820,101 @@ public final class GotChunkGenerator extends ChunkGenerator {
                              @NotNull StructureManager structures,
                              @NotNull ChunkAccess chunk) {
         vanilla.applyCarvers(region, seed, random, biomeManager, structures, chunk);
+    }
+
+    // ── Sub-biome feature density ─────────────────────────────────────────
+    //
+    // After vanilla places all standard features (trees, flowers, etc.) we
+    // check which sub-biome variant is active at the chunk centre.  If it has
+    // treeDensityBonus > 0 we look up the biome's VEGETAL_DECORATION placed
+    // features, filter for tree features by resource-location path, and try
+    // to place each one treeDensityBonus extra times at random positions
+    // within the chunk.
+    //
+    // Why "try": PlacedFeature.place() internally runs all the same placement
+    // modifiers (count, random_offset, biome_filter, etc.) as the first pass,
+    // so it will naturally skip invalid spots (water, wrong biome, too close
+    // to another tree) — no special guarding needed here.
+
+    @Override
+    public void applyBiomeDecoration(@NotNull WorldGenLevel level,
+                                     @NotNull ChunkAccess chunk,
+                                     @NotNull StructureManager structureManager) {
+
+        // Always run the standard vanilla decoration pass first.
+        super.applyBiomeDecoration(level, chunk, structureManager);
+
+        RandomState rs = cachedRandomState;
+        if (rs == null) return;   // biomemap not loaded yet — skip
+
+        ChunkPos cpos = chunk.getPos();
+        int cx = cpos.getMiddleBlockX();
+        int cz = cpos.getMiddleBlockZ();
+
+        // ── Find dominant biome name at chunk centre ───────────────────
+        float[] warped = warpCoordinates(cx, cz);
+        float mapCx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float mapCz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+        int   px0   = (int) Math.floor(mapCx);
+        int   pz0   = (int) Math.floor(mapCz);
+        // Use the nearest pixel (dominant at centre — no blending needed here)
+        String baseName = GotBiomeDensityParams.nameForColor(BiomemapLoader.getRawPixel(px0, pz0));
+
+        GotSubBiomeSystem.Variant variant = GotSubBiomeSystem.activeVariant(baseName, cx, cz);
+        if (variant == null || variant.treeDensityBonus() <= 0) return;
+
+        // ── Get the biome's placed features at VEGETAL_DECORATION step ─
+        BlockPos samplePos = new BlockPos(cx, 64, cz);
+        Holder<Biome> biomeHolder = level.getBiome(samplePos);
+        java.util.List<net.minecraft.core.HolderSet<net.minecraft.world.level.levelgen.placement.PlacedFeature>>
+                featureSteps = biomeHolder.value().getGenerationSettings().features();
+
+        int vegetalStep = GenerationStep.Decoration.VEGETAL_DECORATION.ordinal();
+        if (vegetalStep >= featureSteps.size()) return;
+
+        // ── Extra placement passes ─────────────────────────────────────
+        WorldgenRandom rand = new WorldgenRandom(RandomSource.create());
+        rand.setDecorationSeed(level.getSeed(), cpos.getMinBlockX(), cpos.getMinBlockZ());
+        // Advance seed so extra passes don't repeat the standard pass pattern
+        rand.setFeatureSeed(level.getSeed(), vegetalStep, 999);
+
+                for (Holder<net.minecraft.world.level.levelgen.placement.PlacedFeature> holder
+                : featureSteps.get(vegetalStep)) {
+
+            // Only re-run tree-type features — check resource location path
+            java.util.Optional<net.minecraft.resources.ResourceKey<
+                    net.minecraft.world.level.levelgen.placement.PlacedFeature>> key = holder.unwrapKey();
+            if (key.isEmpty()) continue;
+            String path = key.get().location().getPath();
+            boolean isTree = path.contains("tree")
+                    || path.contains("pine")
+                    || path.contains("oak")
+                    || path.contains("birch")
+                    || path.contains("spruce")
+                    || path.contains("weirwood")
+                    || path.contains("ironwood");
+            if (!isTree) continue;
+
+            net.minecraft.world.level.levelgen.placement.PlacedFeature placed = holder.value();
+            // Each pass attempts placement at a random position within the chunk.
+            // treeDensityBonus is the total number of extra attempts for this feature —
+            // high values (8-16) are needed because each attempt still goes through all
+            // vanilla placement modifiers (height checks, biome filters, spacing rules)
+            // and most will be rejected. The ones that pass produce a real tree.
+            for (int pass = 0; pass < variant.treeDensityBonus(); pass++) {
+                int bx = cpos.getMinBlockX() + rand.nextInt(16);
+                int bz = cpos.getMinBlockZ() + rand.nextInt(16);
+                int by = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, bx, bz);
+                // Advance rand between attempts so they don't cluster on the same spot
+                rand.setFeatureSeed(level.getSeed() ^ (pass * 0x9E3779B9L), vegetalStep, pass + 1000);
+                try {
+                    placed.place(level, this, rand, new BlockPos(bx, by, bz));
+                } catch (IllegalStateException ignored) {
+                    // BiomeFilter placement modifier rejects features whose holders
+                    // aren't in the generator's featuresPerStep list — safe to skip.
+                }
+            }
+        }
     }
 
     @Override
