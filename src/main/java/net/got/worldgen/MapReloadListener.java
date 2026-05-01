@@ -1,52 +1,41 @@
 package net.got.worldgen;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.io.InputStream;
-
 /**
- * Datapack reload listener that loads the biomemap PNG:
- *   got:worldgen/map/biomemap.png — biome placement paint-over
+ * Server reload listener retained for forward compatibility.
  *
- * In the biome-driven terrain system, there is no separate heightmap PNG.
- * Terrain height is derived from the biome category at each position.
+ * <p>The biomemap PNG ({@code got:worldgen/map/biomemap.png}) and its loader
+ * ({@code BiomemapLoader}) have been removed. Biome placement is now handled
+ * entirely by the LOTR-style layer system in {@link net.got.worldgen.layer.GotWorldLayers}.
  *
- * Reloaded whenever datapacks are applied so /reload works during development.
+ * <p>This listener is a no-op. It is kept so that any datapack or reload hook
+ * that expects {@code got:map_reload} to exist does not throw a missing-listener
+ * error. It can be safely removed if the listener registration in
+ * {@link net.got.GotMod} is also removed.
  */
 public class MapReloadListener extends SimplePreparableReloadListener<Void> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final ResourceLocation BIOMEMAP =
-            ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/biomemap.png");
-
     @Override
-    protected @NotNull Void prepare(@NotNull ResourceManager manager, @NotNull ProfilerFiller profiler) {
-
-        try {
-            Resource biomeRes = manager.getResourceOrThrow(BIOMEMAP);
-            try (InputStream stream = biomeRes.open()) {
-                BiomemapLoader.load(stream);
-            }
-            LOGGER.info("[GoT Worldgen] Biomemap loaded successfully");
-        } catch (Exception e) {
-            LOGGER.error("[GoT Worldgen] Failed to load biomemap: {}", e.getMessage());
-            e.printStackTrace();
-        }
-
+    protected @NotNull Void prepare(@NotNull ResourceManager manager,
+                                    @NotNull ProfilerFiller profiler) {
+        // No-op: biomemap loading removed. Biomes are now layer-generated.
+        LOGGER.debug("[GoT Worldgen] MapReloadListener prepare() — no-op (biomemap removed)");
         return null;
     }
 
     @Override
-    protected void apply(@NotNull Void object, @NotNull ResourceManager manager,
+    protected void apply(@NotNull Void prepared,
+                         @NotNull ResourceManager manager,
                          @NotNull ProfilerFiller profiler) {
-        // Nothing to apply — data is already live in BiomemapLoader
+        // No-op.
+        LOGGER.debug("[GoT Worldgen] MapReloadListener apply() — no-op (biomemap removed)");
     }
 }

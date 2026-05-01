@@ -2,8 +2,10 @@ package net.got.worldgen;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.got.worldgen.layer.GotBiomeRegistry;
+import net.got.worldgen.layer.GotSubBiomeSampler;
+import net.got.worldgen.surface.GotBiomeSurfaces;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
@@ -12,162 +14,61 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.got.init.GotModBlocks;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.got.worldgen.surface.GotBiomeSurfaces;
-import net.minecraft.world.level.levelgen.Noises;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Chunk generator for the GoT mod — cell-based 3D density field with Perlin noise.
- *
- * <h2>Algorithm</h2>
- *
- * <h3>Step 1 — Biome blend at cell corners (bilinear)</h3>
- * <p>For each XZ column corner in the cell grid, compute a float pixel-space
- * coordinate and bilinearly interpolate the {@code depth} and {@code scale}
- * values from the four surrounding biomemap pixels.  This is performed once per
- * corner (every {@value CELL_H} blocks in XZ) rather than per block.
- *
- * <h3>Step 2 — Density at cell corners</h3>
- * <p>At every (x, y, z) cell corner evaluate:
- * <pre>
- *   density = (blendedDepth − y) + fbm3D(x, y, z) × blendedScale
- * </pre>
- * The first term is a vertical gradient; positive below the nominal surface,
- * negative above.  The Perlin fBm term bends this gradient, creating overhangs,
- * peaks, and undercuts wherever the noise is strong enough.
- *
- * <h3>Step 3 — Trilinear interpolation within cells</h3>
- * <p>Each block samples the density of its enclosing cell's 8 corners via
- * trilinear interpolation.  Because the Perlin noise is already C² continuous,
- * linear interpolation between corners is sufficient and avoids seam artefacts
- * at cell boundaries.  Cells are {@value CELL_H}×{@value CELL_V}×{@value CELL_H}
- * blocks (XZ × Y × XZ), giving a good balance between smoothness and detail.
- *
- * <h3>Step 4 — Block assignment</h3>
- * <ul>
- *   <li>{@code density > 0} → STONE</li>
- *   <li>{@code density ≤ 0 && y ≤ SEA_LEVEL} → default fluid</li>
- *   <li>otherwise → AIR</li>
- * </ul>
- *
- * <h2>Noise architecture</h2>
- * <p>Terrain density blends multiple layered Perlin fields: broad fBm for
- * continental shape, ridged multi-fractal for sharp mountain chains, and
- * high-frequency detail for crags and ledges. To avoid chaotic floating shelves,
- * the density noise is evaluated in X/Z and combined with a vertical gradient,
- * producing sharp but grounded mountain silhouettes.
- * A separate low-frequency contour mask cuts continuous valley corridors that
- * snake between highlands to form natural passes.
- *
- * <h2>Biome sync</h2>
- * <p>{@link GotBiomeSource} performs the same bilinear 4-pixel lookup and picks
- * the dominant biome by weight, so biome boundaries are guaranteed to follow the
- * same pixel-space interpolation as the terrain depth/scale blend.
+ * Chunk generator using the LOTR Renewed terrain algorithm, ported to 1.21.4.
  */
 public final class GotChunkGenerator extends ChunkGenerator {
 
-    public static final int SEA_LEVEL = 61;
+    public static final int SEA_LEVEL = 63;
 
-    // ── Cell grid dimensions ──────────────────────────────────────────────
-    //
-    // Density is evaluated at a 5 × (rows+1) × 5 lattice of cell corners
-    // and trilinearly interpolated within each CELL_H × CELL_V × CELL_H cell.
-    //
-    // CELL_H = 4 → 4 complete XZ cells per chunk axis (16 / 4 = 4).
-    //              Corner count per axis: 4 + 1 = 5.
-    // CELL_V = 8 → cells are taller than wide to match the vertical scale of
-    //              terrain features, reducing cell count in the most expensive
-    //              axis without losing significant detail.
+    private static final int NOISE_SIZE_XZ = 4;
+    private static final int NOISE_SIZE_Y  = 48;
+    private static final int CELL_H = 4;
+    private static final int CELL_V = 8;
 
-    private static final int CELL_H = 4;   // horizontal cell size in blocks
-    private static final int CELL_V = 8;   // vertical   cell size in blocks
+    private static final int SAMPLE_RADIUS = 6;
+    private static final int SAMPLE_WIDTH  = 13;
+    private static final float[] BIOME_SIGNIFICANCE = new float[SAMPLE_WIDTH * SAMPLE_WIDTH];
 
-    // ── Perlin noise frequencies ──────────────────────────────────────────
-    //
-    // Frequencies are applied to all axes with lower vertical frequency.
-    //
-
-    private static final float FREQ_XZ = 1f / 210f; // base horizontal frequency for continental forms
-
-    // Base seed constant — XOR'd with the world seed at runtime so every
-    // world/save produces different terrain within the same biome layout.
-    private static final int SEED_TERRAIN = 0x3F9A1B;
+    static {
+        for (int dz = -SAMPLE_RADIUS; dz <= SAMPLE_RADIUS; dz++) {
+            for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx++) {
+                float f = 10.0f / Mth.sqrt(dx * dx + dz * dz + 0.2f);
+                BIOME_SIGNIFICANCE[(dz + SAMPLE_RADIUS) * SAMPLE_WIDTH + (dx + SAMPLE_RADIUS)] = f;
+            }
+        }
+    }
 
     // ── Codec ─────────────────────────────────────────────────────────────
 
-    public static final MapCodec<GotChunkGenerator> CODEC =
-            RecordCodecBuilder.mapCodec(i -> i.group(
-                    BiomeSource.CODEC.fieldOf("biome_source")
-                            .forGetter(ChunkGenerator::getBiomeSource),
-                    NoiseGeneratorSettings.CODEC.fieldOf("settings")
-                            .forGetter(g -> g.settings),
-                    com.mojang.serialization.Codec.INT
-                            .optionalFieldOf("spawn_pixel_x", -1)
-                            .forGetter(g -> g.spawnPixelX),
-                    com.mojang.serialization.Codec.INT
-                            .optionalFieldOf("spawn_pixel_z", -1)
-                            .forGetter(g -> g.spawnPixelZ)
+    public static final MapCodec<GotChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(i ->
+            i.group(
+                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
+                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settings)
             ).apply(i, GotChunkGenerator::new));
-
-    // ── Fields ────────────────────────────────────────────────────────────
 
     private final Holder<NoiseGeneratorSettings> settings;
     private final NoiseBasedChunkGenerator vanilla;
-    private final int spawnPixelX;
-    private final int spawnPixelZ;
+    private volatile boolean seedPushed = false;
 
-    /** Mixed into the noise seed so every world seed produces different terrain. */
-    private volatile int noiseSeed = SEED_TERRAIN;
-
-    /**
-     * Shared copy of {@link #noiseSeed} written on first chunk generation and
-     * readable by {@link GotBiomeSource} so its Y-aware density check uses the
-     * same seed as the terrain — keeping biomes block-for-block in sync.
-     *
-     * <p>Initialised to {@link #SEED_TERRAIN} (the same default the instance
-     * field uses) so that biome queries issued before the first chunk generate
-     * still agree with the terrain once it is produced.
-     */
-    static volatile int sharedNoiseSeed = SEED_TERRAIN;
-
-    /**
-     * Cached on first {@link #fillFromNoise} call so that
-     * {@link #applyBiomeDecoration} can build a PlacementContext for the extra
-     * tree-placement passes added by the sub-biome variant system.
-     */
-    private volatile RandomState cachedRandomState = null;
-
-    private static int configuredSpawnPixelX = -1;
-    private static int configuredSpawnPixelZ = -1;
-
-    // ── Constructor ───────────────────────────────────────────────────────
-
-    public GotChunkGenerator(BiomeSource biomeSource,
-                             Holder<NoiseGeneratorSettings> settings,
-                             int spawnPixelX,
-                             int spawnPixelZ) {
+    public GotChunkGenerator(BiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings) {
         super(biomeSource);
-        this.settings    = settings;
-        this.spawnPixelX = spawnPixelX;
-        this.spawnPixelZ = spawnPixelZ;
-        this.vanilla     = new NoiseBasedChunkGenerator(biomeSource, settings);
-        configuredSpawnPixelX = spawnPixelX;
-        configuredSpawnPixelZ = spawnPixelZ;
+        this.settings = settings;
+        this.vanilla  = new NoiseBasedChunkGenerator(biomeSource, settings);
     }
-
-    public static int getConfiguredSpawnPixelX() { return configuredSpawnPixelX; }
-    public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     @Override
     protected @NotNull MapCodec<? extends ChunkGenerator> codec() { return CODEC; }
@@ -179,792 +80,299 @@ public final class GotChunkGenerator extends ChunkGenerator {
             @NotNull Blender blender, @NotNull RandomState random,
             @NotNull StructureManager structures, @NotNull ChunkAccess chunk) {
 
-        if (!BiomemapLoader.isLoaded()) return fillFlat(chunk);
-
-        // Derive a per-world noise seed from the level seed the first time we
-        // generate a chunk.  This is what makes different world seeds produce
-        // different terrain shapes within the same biome layout.
-        if (noiseSeed == SEED_TERRAIN) {
-            long s = random.getOrCreateRandomFactory(
-                            ResourceLocation.fromNamespaceAndPath("got", "terrain_seed"))
-                    .at(BlockPos.ZERO).nextLong();
-            noiseSeed = SEED_TERRAIN ^ (int)(s ^ (s >>> 32));
-            sharedNoiseSeed = noiseSeed;   // visible to GotBiomeSource
+        // Derive and push the level seed to the biome source on first chunk gen.
+        // Same pattern as the original GotChunkGenerator — use getOrCreateRandomFactory
+        // to extract a stable long that varies per world seed.
+        if (!seedPushed) {
+            long s = random.getOrCreateRandomFactory(net.got.GotMod.id("layer_seed"))
+                           .at(new BlockPos(0, 0, 0)).nextLong();
+            GotBiomeSource.setSeed(s);
+            seedPushed = true;
         }
-        if (cachedRandomState == null) cachedRandomState = random;
 
         NoiseSettings ns = settings.value().noiseSettings();
-        int minY = ns.minY();
-        int maxY = minY + ns.height();
-        int sea  = getSeaLevel();
-        ChunkPos pos = chunk.getPos();
-        int chunkX = pos.getMinBlockX();
-        int chunkZ = pos.getMinBlockZ();
+        int minY  = ns.minY();
+        int maxY  = minY + ns.height();
+        int sea   = getSeaLevel();
+        ChunkPos cp = chunk.getPos();
+        int baseX = cp.getMinBlockX();
+        int baseZ = cp.getMinBlockZ();
 
-        // ── Build the cell-corner density grid ────────────────────────────
-        //
-        // cornerDensity[cx][cz][cy] is the density at world position:
-        //   (chunkX + cx*CELL_H,  minY + cy*CELL_V,  chunkZ + cz*CELL_H)
-        //
-        // The grid is (COLS × COLS × ROWS) where:
-        //   COLS = 16/CELL_H + 1 = 5
-        //   ROWS = ceil((maxY-minY) / CELL_V) + 1  (one extra to cover partial top cell)
+        // Pre-warm the layer cache for the region this chunk will sample.
+        // The 13×13 biome window is centred on each noise column, so we need
+        // (chunkNoiseMin - SAMPLE_RADIUS) .. (chunkNoiseMax + SAMPLE_RADIUS).
+        if (getBiomeSource() instanceof GotBiomeSource gbs) {
+            int noiseMinX = (baseX >> 2) - SAMPLE_RADIUS - 1;
+            int noiseMinZ = (baseZ >> 2) - SAMPLE_RADIUS - 1;
+            int noiseMaxX = (baseX >> 2) + NOISE_SIZE_XZ + SAMPLE_RADIUS + 1;
+            int noiseMaxZ = (baseZ >> 2) + NOISE_SIZE_XZ + SAMPLE_RADIUS + 1;
+            gbs.prewarm(noiseMinX, noiseMinZ, noiseMaxX, noiseMaxZ);
+        }
 
-        int COLS     = 16 / CELL_H + 1;                                // 5
-        int ROWS     = (maxY - minY + CELL_V - 1) / CELL_V + 1;
+        int COLS = NOISE_SIZE_XZ + 1;
+        int ROWS = NOISE_SIZE_Y  + 1;
 
-        float[][][] cornerDensity = new float[COLS][COLS][ROWS];
-
+        double[][][] grid = new double[COLS][COLS][ROWS];
         for (int cx = 0; cx < COLS; cx++) {
             for (int cz = 0; cz < COLS; cz++) {
-                int wx = chunkX + cx * CELL_H;
-                int wz = chunkZ + cz * CELL_H;
-
-                // Bilinear blend: one call per XZ corner, not per block.
-                float[] bp    = bilinearBlend(wx, wz);
-                float   depth = bp[0];
-                float   scale = bp[1];
-
+                int noiseX = (baseX >> 2) + cx;
+                int noiseZ = (baseZ >> 2) + cz;
+                double[] col = buildNoiseColumn(noiseX, noiseZ, random);
                 for (int cy = 0; cy < ROWS; cy++) {
-                    int wy = minY + cy * CELL_V;
-                    cornerDensity[cx][cz][cy] = cornerDensity(wx, wy, wz, depth, scale, noiseSeed);
+                    grid[cx][cz][cy] = (cy < col.length) ? col[cy] : -30.0;
                 }
             }
         }
 
-        // ── Trilinearly interpolate and fill blocks ────────────────────────
-
+        BlockPos.MutableBlockPos mp = new BlockPos.MutableBlockPos();
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
-                int cellX = lx / CELL_H;          // XZ cell index (0-3)
-                int cellZ = lz / CELL_H;
-                float tx = (lx % CELL_H) / (float) CELL_H;   // fraction within cell
+                int   cx = lx / CELL_H;
+                int   cz = lz / CELL_H;
+                float tx = (lx % CELL_H) / (float) CELL_H;
                 float tz = (lz % CELL_H) / (float) CELL_H;
 
                 for (int y = minY; y < maxY; y++) {
-                    int   cellY = (y - minY) / CELL_V;
-                    float ty    = ((y - minY) % CELL_V) / (float) CELL_V;
+                    int   cy = (y - minY) / CELL_V;
+                    float ty = ((y - minY) % CELL_V) / (float) CELL_V;
+                    if (cy >= NOISE_SIZE_Y) break;
 
-                    // Trilinear interpolation of the 8 surrounding corner densities.
-                    float density = trilinear(tx, ty, tz,
-                            cornerDensity[cellX    ][cellZ    ][cellY    ],
-                            cornerDensity[cellX + 1][cellZ    ][cellY    ],
-                            cornerDensity[cellX    ][cellZ + 1][cellY    ],
-                            cornerDensity[cellX + 1][cellZ + 1][cellY    ],
-                            cornerDensity[cellX    ][cellZ    ][cellY + 1],
-                            cornerDensity[cellX + 1][cellZ    ][cellY + 1],
-                            cornerDensity[cellX    ][cellZ + 1][cellY + 1],
-                            cornerDensity[cellX + 1][cellZ + 1][cellY + 1]);
+                    double density = trilinear(tx, ty, tz,
+                            grid[cx    ][cz    ][cy    ], grid[cx + 1][cz    ][cy    ],
+                            grid[cx    ][cz + 1][cy    ], grid[cx + 1][cz + 1][cy    ],
+                            grid[cx    ][cz    ][cy + 1], grid[cx + 1][cz    ][cy + 1],
+                            grid[cx    ][cz + 1][cy + 1], grid[cx + 1][cz + 1][cy + 1]);
 
                     BlockState state;
-                    if (density > 0f) {
-                        state = Blocks.STONE.defaultBlockState();
-                    } else if (y <= sea) {
-                        state = settings.value().defaultFluid();
-                    } else {
-                        state = Blocks.AIR.defaultBlockState();
-                    }
+                    if      (density > 0.0) state = Blocks.STONE.defaultBlockState();
+                    else if (y <= sea)      state = settings.value().defaultFluid();
+                    else                    state = Blocks.AIR.defaultBlockState();
 
-                    chunk.setBlockState(new BlockPos(lx, y, lz), state, false);
+                    chunk.setBlockState(mp.set(lx, y, lz), state, false);
                 }
             }
         }
-
         return CompletableFuture.completedFuture(chunk);
     }
 
+    // ── LOTR noise column ─────────────────────────────────────────────────
+
+    private double[] buildNoiseColumn(int noiseX, int noiseZ, RandomState random) {
+        double[] col    = new double[NOISE_SIZE_Y + 1];
+        double[] ds     = getBiomeDepthScale(noiseX, noiseZ);
+        double avgDepth = ds[0];
+        double avgScale = ds[1];
+
+        // Two noise passes blended by a third — matches LOTR's OctavesNoiseGenerator
+        // Using SURFACE and SURFACE_SECONDARY which are available in 1.21.4
+        NormalNoise n1 = random.getOrCreateNoise(Noises.SURFACE);
+        NormalNoise n2 = random.getOrCreateNoise(Noises.SURFACE_SECONDARY);
+
+        double scaleXZ = 684.412 / 80.0;
+        double scaleY  = 684.412 / 5000.0;
+
+        for (int y = 0; y <= NOISE_SIZE_Y; y++) {
+            double wx = noiseX * scaleXZ;
+            double wy = y      * scaleY;
+            double wz = noiseZ * scaleXZ;
+
+            double raw1  = n1.getValue(wx,       wy,       wz);
+            double raw2  = n2.getValue(wx * 0.5, wy * 0.5, wz * 0.5);
+            // Use n1 at a different scale as the blender weight (avoids needing a 3rd noise key)
+            double blend = Mth.clamp(n1.getValue(wx * 0.25, 10.0, wz * 0.25) * 0.5 + 0.5, 0.0, 1.0);
+            double raw   = Mth.lerp(blend, raw1, raw2) * 684.412 / 512.0;
+
+            double d = raw - terrainGradient(avgDepth, avgScale, y);
+
+            if (y > NOISE_SIZE_Y - 4) d = Mth.clampedLerp(d,  3.0, (y - (NOISE_SIZE_Y - 4)) / -10.0);
+            else if (y < 1)           d = Mth.clampedLerp(d, -30.0, (1.0 - y));
+
+            col[y] = d;
+        }
+        return col;
+    }
+
+    private static double terrainGradient(double depth, double scale, int y) {
+        double d = (y - 8.5 + depth * 8.5 / 8.0 * 4.0) * 12.0 * 128.0 / 256.0 / scale;
+        if (d < 0.0) d *= 4.0;
+        return d;
+    }
+
+    // ── 13×13 biome depth/scale sampling ─────────────────────────────────
+
+    private double[] getBiomeDepthScale(int noiseX, int noiseZ) {
+        float totalScale = 0, totalDepth = 0, totalSig = 0;
+        float centralDepth = getBiomeDepth(noiseX, noiseZ);
+
+        for (int dk = -SAMPLE_RADIUS; dk <= SAMPLE_RADIUS; dk++) {
+            for (int dl = -SAMPLE_RADIUS; dl <= SAMPLE_RADIUS; dl++) {
+                float depth = getBiomeDepth(noiseX + dk, noiseZ + dl);
+                float scale = getBiomeScale(noiseX + dk, noiseZ + dl);
+                if (scale == 0f) scale = 1e-7f;
+
+                int   idx    = (dk + SAMPLE_RADIUS) * SAMPLE_WIDTH + (dl + SAMPLE_RADIUS);
+                float sig    = BIOME_SIGNIFICANCE[idx];
+                float modSig = sig / (depth + 2.0f);
+                if (depth > centralDepth) modSig /= 2.0f;
+                if (depth < -0.2f && depth > -1.0f) modSig *= 5.0f;
+
+                totalScale += scale * modSig;
+                totalDepth += depth * modSig;
+                totalSig   += modSig;
+            }
+        }
+
+        float avgDepth = totalDepth / totalSig;
+        float avgScale = totalScale / totalSig;
+
+        if (centralDepth < 0f && avgDepth >= 0f) {
+            avgDepth = Mth.lerp(0.5f, avgDepth, centralDepth / 2.0f);
+        }
+        avgDepth = (avgDepth * 4.0f - 1.0f) / 8.0f;
+
+        return new double[]{ avgDepth, Math.max(0.001, avgScale) };
+    }
+
+    private float getBiomeDepth(int nx, int nz) {
+        return GotSubBiomeSampler.effectiveDepth(sampleBiomeId(nx, nz), nx * CELL_H, nz * CELL_H);
+    }
+
+    private float getBiomeScale(int nx, int nz) {
+        return GotSubBiomeSampler.effectiveScale(sampleBiomeId(nx, nz), nx * CELL_H, nz * CELL_H);
+    }
+
+    private int sampleBiomeId(int nx, int nz) {
+        if (getBiomeSource() instanceof GotBiomeSource gbs) return gbs.sampleId(nx, nz);
+        return GotBiomeRegistry.ID_NORTH;
+    }
+
+    // ── Surface builder ───────────────────────────────────────────────────
+
     @Override
-    public void buildSurface(@NotNull WorldGenRegion region,
-                             @NotNull StructureManager structures,
-                             @NotNull RandomState random,
-                             @NotNull ChunkAccess chunk) {
+    public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureManager structures,
+                             @NotNull RandomState random, @NotNull ChunkAccess chunk) {
         vanilla.buildSurface(region, structures, random, chunk);
-        if (BiomemapLoader.isLoaded()) {
-            applyCoastalMud(chunk);
-            applySurfacePatches(region, chunk, random);
-        }
+        applyGotSurface(region, chunk, random);
     }
 
-    // ── LOTR-style surface config application ─────────────────────────────
-    //
-    // After the vanilla surface pass (and the coastal mud pass), scan each
-    // column and apply the biome's surface config.
-    //
-    // Mirrors MiddleEarthSurfaceBuilder.buildSurface() order exactly:
-    // ── Vanilla noise surface patch pass ─────────────────────────────────
-    //
-    // Replaces the old LOTR-ported noise system.  Uses vanilla's own
-    // minecraft:surface and minecraft:surface_secondary noise keys so patch
-    // behaviour is identical to how vanilla MC drives its own surface rules.
-    //
-    // Application order per column:
-    //   1. Mountain layers  — height-conditional stone / snow / powder snow.
-    //   2. Podzol variation — secondary noise drives forest floor block choice.
-    //   3. Surface patch    — narrow vanilla noise threshold → scattered patch.
-
-    private void applySurfacePatches(@NotNull WorldGenRegion region,
-                                     @NotNull ChunkAccess chunk,
-                                     @NotNull RandomState random) {
-
-        NormalNoise surfaceNoise   = random.getOrCreateNoise(Noises.SURFACE);
-        NormalNoise secondaryNoise = random.getOrCreateNoise(Noises.SURFACE_SECONDARY);
-
-        ChunkPos pos   = chunk.getPos();
-        int chunkX     = pos.getMinBlockX();
-        int chunkZ     = pos.getMinBlockZ();
-
-        // Per-chunk RandomSource for weighted block selection (mountain jitter etc.)
-        RandomSource rand = random
-                .getOrCreateRandomFactory(net.got.GotMod.id("surface_noise"))
-                .at(new BlockPos(chunkX, 0, chunkZ));
-
-        for (int lx = 0; lx < 16; lx++) {
-            for (int lz = 0; lz < 16; lz++) {
-                int wx = chunkX + lx;
-                int wz = chunkZ + lz;
-
-                int surfaceY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
-
-                ResourceLocation biomeId = region
-                        .getBiome(new BlockPos(wx, surfaceY, wz))
-                        .unwrapKey()
-                        .map(k -> k.location())
-                        .orElse(null);
-                if (biomeId == null) continue;
-
-                GotBiomeSurfaces.BiomeConfig config = GotBiomeSurfaces.getConfig(biomeId.getPath());
-                if (config == null) continue;
-
-                BlockPos   topBp    = new BlockPos(lx, surfaceY, lz);
-                BlockState topState = chunk.getBlockState(topBp);
-                if (!topState.isSolid()) continue;
-
-                // ── 1. Mountain terrain (height-conditional, highest priority) ──
-                if (config.stoneAbove >= 0 && surfaceY >= config.stoneAbove) {
-                    topState = Blocks.STONE.defaultBlockState();
-                    chunk.setBlockState(topBp, topState, false);
-                } else if (config.snowBlockAbove >= 0 && surfaceY >= config.snowBlockAbove) {
-                    topState = Blocks.SNOW_BLOCK.defaultBlockState();
-                    chunk.setBlockState(topBp, topState, false);
-                } else if (config.powderSnowAbove >= 0 && surfaceY >= config.powderSnowAbove) {
-                    topState = Blocks.POWDER_SNOW.defaultBlockState();
-                    chunk.setBlockState(topBp, topState, false);
-                }
-
-                // ── 2. Podzol / forest floor variation ───────────────────────
-                // Secondary noise sampled at a Y offset independent of the patch
-                // noise so forest floors don't phase-lock with patch placement.
-                if (config.podzol && topState.is(Blocks.GRASS_BLOCK)) {
-                    double pv = secondaryNoise.getValue(wx, 12, wz);
-                    if (pv > 0.5) {
-                        // 45% podzol, 15% coarse dirt, rest stays grass
-                        int r = rand.nextInt(100);
-                        if      (r < 45) topState = Blocks.PODZOL.defaultBlockState();
-                        else if (r < 60) topState = Blocks.COARSE_DIRT.defaultBlockState();
-                        chunk.setBlockState(topBp, topState, false);
-                    }
-                }
-
-                // ── 3. Surface noise patch ────────────────────────────────────
-                // Narrow threshold band on vanilla surface noise → scattered blobs.
-                // Band width ~0.14 in [-1,1] → ~7% patch coverage.
-                if (config.hasPatch()) {
-                    double nv = config.useSecondary
-                            ? secondaryNoise.getValue(wx, 0, wz)
-                            : surfaceNoise.getValue(wx, 0, wz);
-                    if (nv >= config.minThreshold && nv <= config.maxThreshold) {
-                        // Only replace soil/grass/stone — don't overwrite snow/powder
-                        if (!topState.is(Blocks.SNOW_BLOCK)
-                                && !topState.is(Blocks.POWDER_SNOW)
-                                && !topState.is(Blocks.BEDROCK)) {
-                            chunk.setBlockState(topBp, config.mainPatch.pick(rand), false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // ── Coastal mud / quagmire pass ───────────────────────────────────────
-    //
-    // After the vanilla surface pass has placed grass/dirt/sand/gravel etc.,
-    // we scan every column in the chunk and — where the solid floor is near
-    // sea level AND close to open water — place Quagmire (on land) or Mud
-    // (on the submerged floor) using Perlin noise to shape organic patches.
-    //
-    // "Near water" is detected mathematically: we evaluate the terrain density
-    // at sea level for four neighbouring positions.  If any neighbour returns
-    // density ≤ 0 (i.e. would be open water) the current column is coastal.
-    // Using evalDensity instead of reading live blocks avoids any dependency
-    // on neighbouring chunk state at this generation stage.
-
-    // ── Coastal mud / quagmire constants ─────────────────────────────────
-    //
-    // Two independent noise fields:
-    //   PATCH  — decides whether a block is inside a mud/quagmire patch at all.
-    //            Medium frequency (~40-block blobs) gives patches the size seen
-    //            in-game (a few blocks to ~15 blocks across).
-    //   MIX    — inside a patch, decides per-block whether to place Mud or
-    //            Quagmire.  Higher frequency (~8-block period) creates the
-    //            salt-and-pepper mix of the two blocks visible in the reference
-    //            screenshot.  Mud wins unless MIX is above 0.25 (~65/35 split).
-
-    private static final float MUD_PATCH_FREQ = 1f / 40f;
-    private static final float MUD_MIX_FREQ   = 1f /  8f;
-    private static final int   MUD_SEED_PATCH = 0xB0_0B_1E50;
-    private static final int   MUD_SEED_MIX   = 0x57AC_E0FF;
-
-    /** Columns within this many blocks above or below sea level are eligible. */
-    private static final int MUD_ALTITUDE_RANGE = 5;
-
-    /** Cardinal + diagonal unit offsets for the near-water scan. */
-    private static final int[][] SHORE_DIRS = {
-            { 1, 0}, {-1, 0}, { 0, 1}, { 0,-1},
-            { 1, 1}, { 1,-1}, {-1, 1}, {-1,-1}
-    };
-
-    private void applyCoastalMud(ChunkAccess chunk) {
+    private void applyGotSurface(WorldGenRegion region, ChunkAccess chunk, RandomState random) {
+        NormalNoise surfNoise = random.getOrCreateNoise(Noises.SURFACE);
+        NormalNoise secNoise  = random.getOrCreateNoise(Noises.SURFACE_SECONDARY);
         ChunkPos pos = chunk.getPos();
-        int chunkX   = pos.getMinBlockX();
-        int chunkZ   = pos.getMinBlockZ();
+        int baseX = pos.getMinBlockX();
+        int baseZ = pos.getMinBlockZ();
+        RandomSource rand = random.getOrCreateRandomFactory(net.got.GotMod.id("surface"))
+                                  .at(new BlockPos(baseX, 0, baseZ));
 
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
-                int wx = chunkX + lx;
-                int wz = chunkZ + lz;
+                int wx = baseX + lx;
+                int wz = baseZ + lz;
+                int sy = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
 
-                // Fast altitude cull using the blended depth approximation.
-                float depth = bilinearBlend(wx, wz)[0];
-                if (depth < SEA_LEVEL - MUD_ALTITUDE_RANGE - 2
-                        || depth > SEA_LEVEL + MUD_ALTITUDE_RANGE + 2) continue;
+                var biomeKey = region.getBiome(new BlockPos(wx, sy, wz)).unwrapKey();
+                if (biomeKey.isEmpty()) continue;
+                GotBiomeSurfaces.BiomeConfig cfg =
+                        GotBiomeSurfaces.getConfig(biomeKey.get().location().getPath());
+                if (cfg == null) continue;
 
-                // Is there open water within 8 blocks?
-                boolean nearWater = false;
-                outer:
-                for (int r = 4; r <= 8; r += 4) {
-                    for (int[] d : SHORE_DIRS) {
-                        int nx = wx + d[0] * r;
-                        int nz = wz + d[1] * r;
-                        float[] nbp = bilinearBlend(nx, nz);
-                        if (evalDensity(nx, SEA_LEVEL, nz, nbp[0], nbp[1]) <= 0f) {
-                            nearWater = true;
-                            break outer;
+                BlockPos bp = new BlockPos(lx, sy, lz);
+                BlockState top = chunk.getBlockState(bp);
+                if (!top.isSolid()) continue;
+
+                if (cfg.stoneAbove >= 0 && sy >= cfg.stoneAbove) {
+                    chunk.setBlockState(bp, Blocks.STONE.defaultBlockState(), false);
+                } else if (cfg.snowBlockAbove >= 0 && sy >= cfg.snowBlockAbove) {
+                    chunk.setBlockState(bp, Blocks.SNOW_BLOCK.defaultBlockState(), false);
+                } else if (cfg.powderSnowAbove >= 0 && sy >= cfg.powderSnowAbove) {
+                    chunk.setBlockState(bp, Blocks.POWDER_SNOW.defaultBlockState(), false);
+                }
+
+                if (cfg.podzol && top.is(Blocks.GRASS_BLOCK)
+                        && secNoise.getValue(wx, 12, wz) > 0.5) {
+                    int r = rand.nextInt(100);
+                    if      (r < 45) chunk.setBlockState(bp, Blocks.PODZOL.defaultBlockState(), false);
+                    else if (r < 60) chunk.setBlockState(bp, Blocks.COARSE_DIRT.defaultBlockState(), false);
+                }
+
+                if (cfg.hasPatch()) {
+                    double nv = cfg.useSecondary
+                            ? secNoise.getValue(wx, 0, wz)
+                            : surfNoise.getValue(wx, 0, wz);
+                    if (nv >= cfg.minThreshold && nv <= cfg.maxThreshold) {
+                        BlockState cur = chunk.getBlockState(bp);
+                        if (!cur.is(Blocks.SNOW_BLOCK) && !cur.is(Blocks.POWDER_SNOW)
+                                && !cur.is(Blocks.BEDROCK)) {
+                            chunk.setBlockState(bp, cfg.mainPatch.pick(rand), false);
                         }
                     }
                 }
-                if (!nearWater) continue;
-
-                // PATCH noise: are we inside a mud/quagmire patch?
-                float patch = GotPerlinNoise.sample(
-                        wx * MUD_PATCH_FREQ, 0f, wz * MUD_PATCH_FREQ, MUD_SEED_PATCH);
-                if (patch < 0.05f) continue;
-
-                // Solid floor — valid regardless of whether the column is flooded.
-                int floorY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, lx, lz);
-                if (Math.abs(floorY - SEA_LEVEL) > MUD_ALTITUDE_RANGE) continue;
-
-                BlockPos floorPos = new BlockPos(lx, floorY, lz);
-                if (!isMudReplaceable(chunk.getBlockState(floorPos))) continue;
-
-                // MIX noise: mud or quagmire?  Mud wins ~65% of the time.
-                float mix = GotPerlinNoise.sample(
-                        wx * MUD_MIX_FREQ, 0f, wz * MUD_MIX_FREQ, MUD_SEED_MIX);
-                BlockState place = (mix > 0.25f)
-                        ? GotModBlocks.QUAGMIRE.get().defaultBlockState()
-                        : Blocks.MUD.defaultBlockState();
-
-                chunk.setBlockState(floorPos, place, false);
             }
         }
     }
 
-    /** Blocks that mud and quagmire are allowed to replace. */
-    private static boolean isMudReplaceable(BlockState s) {
-        return s.is(Blocks.GRASS_BLOCK)
-                || s.is(Blocks.DIRT)
-                || s.is(Blocks.SAND)
-                || s.is(Blocks.GRAVEL)
-                || s.is(Blocks.CLAY)
-                || s.is(Blocks.STONE);
-    }
+    // ── Boilerplate ───────────────────────────────────────────────────────
 
-    // ── Density evaluation ────────────────────────────────────────────────
-
-    /**
-     * Evaluates the signed density at a cell corner.
-     *
-     * <pre>
-     *   density = (blendedDepth − worldY) + fbm3D(worldX, worldY, worldZ) × blendedScale
-     * </pre>
-     *
-     * <ul>
-     *   <li>Positive → solid (STONE)</li>
-     *   <li>Negative → empty (fluid if {@code y ≤ SEA_LEVEL}, else AIR)</li>
-     * </ul>
-     *
-     * @param depth blended baseline surface Y from the biomemap
-     * @param scale blended noise amplitude in blocks
-     */
-    private static float cornerDensity(int wx, int wy, int wz,
-                                       float depth, float scale, int seed) {
-        float gradient = depth - wy;
-
-        // Keep terrain column-monotonic to prevent floating shelves/caves.
-        // We still use layered fractal noise, but sample it in XZ only.
-        float nx = wx * FREQ_XZ;
-        float nz = wz * FREQ_XZ;
-
-        float base = GotPerlinNoise.fbm(nx, 0f, nz, seed ^ 0x1F23A7, 5, 2.0f, 0.5f);
-        float ridged = GotPerlinNoise.ridgedFbm(nx * 1.28f, 0f, nz * 1.28f,
-                seed ^ 0x6B5CD3, 4, 2.0f, 0.55f);
-        float detail = GotPerlinNoise.fbm(nx * 3.2f, 0f, nz * 3.2f,
-                seed ^ 0xA41E29, 3, 2.2f, 0.5f);
-
-        float mountainMask = Mth.clamp((depth - 77f) / 44f, 0f, 1f);
-
-        float ridge01 = (ridged + 1f) * 0.5f;
-        float spire = ridge01 * ridge01 * ridge01; // softened alpine cones
-
-        // Continuous valley/pass mask from long, snaking contour lines.
-        //
-        // Two carriers at different frequencies are combined so that their
-        // zero-crossings are interleaved, producing roughly 2× as many passes
-        // as a single carrier while keeping the sinuous, organic character.
-        //
-        //   carrier1: frequency raised from 0.58 → 0.90  (≈55% more crossings)
-        //   carrier2: frequency at 0.52, different seed   (fills gaps left by carrier1)
-        //
-        // valleyLine uses a squared (not cubed) falloff so each pass is
-        // noticeably wider — a proper corridor rather than a knife-edge crease.
-        //
-        // The subtraction strength is kept at 0.24 per carrier but weighted
-        // 60/40 so the primary carrier still dominates the pass shape.
-        float valleyCarrier1 = GotPerlinNoise.fbm(nx * 0.90f, 0f, nz * 0.90f,
-                seed ^ 0x2D91F3, 3, 2.0f, 0.5f);
-        float valleyCarrier2 = GotPerlinNoise.fbm(nx * 0.52f, 0f, nz * 0.52f,
-                seed ^ 0x7C3EA1, 3, 2.0f, 0.5f);
-
-        // Squared falloff → wider passes (cube was too narrow/rare).
-        float valleyLine1 = 1f - Math.abs(valleyCarrier1);
-        valleyLine1 = valleyLine1 * valleyLine1;
-
-        float valleyLine2 = 1f - Math.abs(valleyCarrier2);
-        valleyLine2 = valleyLine2 * valleyLine2;
-
-        // Blend: take the stronger of the two passes at each point so they
-        // don't destructively interfere, then scale back into [0,1].
-        float valleyLine = Math.max(valleyLine1 * 0.60f, valleyLine2 * 0.40f);
-        float valleyMask = mountainMask * valleyLine;
-
-        // Valley carving: strong subtraction punches deep U-shaped saddles between
-        // peaks.  0.55 (was 0.24) is enough to cut well below the surrounding ridge
-        // line.  The amplitude is also damped hard inside the pass (0.40 vs 0.10)
-        // so the noise that remains near the floor is naturally quieter — giving
-        // smooth grassy bowls without any explicit floor-smoothing hack.
-        float noise = base * 0.66f
-                + detail * 0.10f
-                + mountainMask * ((ridged * 0.12f) + (spire * 0.15f) - 0.05f)
-                - valleyMask * 0.55f;
-
-        float amplitude = scale * (0.94f + mountainMask * 0.72f);
-        amplitude *= (1f - valleyMask * 0.40f);
-        return gradient + noise * amplitude;
-    }
-
-    // ── Package-private API used by GotBiomeSource ────────────────────────
-
-    /**
-     * Evaluates the signed density at an arbitrary world position using the
-     * same formula as {@link #cornerDensity} but reading {@link #sharedNoiseSeed}
-     * so that {@link GotBiomeSource} can reproduce the terrain generator's exact
-     * solid/open decision for every noise cell.
-     *
-     * <p>Called once per noise cell (4 × 4 × 4 blocks) that is at or below sea
-     * level, so the extra cost is negligible compared with full chunk generation.
-     */
-    static float evalDensity(int wx, int wy, int wz, float depth, float scale) {
-        return cornerDensity(wx, wy, wz, depth, scale, sharedNoiseSeed);
-    }
-
-    /**
-     * Returns the active {@link GotSubBiomeSystem.Variant} at a world XZ
-     * position, or {@code null} for no variant.
-     *
-     * <p>Convenience wrapper so surface passes (e.g. {@link #applySurfacePatches})
-     * and any future decoration hooks can query the variant without duplicating
-     * the dominant-pixel lookup.  Uses the same warped pixel-space calculation
-     * as {@link #bilinearBlend} so the answer always agrees with terrain shape.
-     *
-     * <p>Typical usage in a surface pass:
-     * <pre>
-     *   GotSubBiomeSystem.Variant variant = GotChunkGenerator.variantAt(wx, wz);
-     *   if (variant != null && "pine_grove".equals(variant.name())) { ... }
-     * </pre>
-     */
-    public static GotSubBiomeSystem.Variant variantAt(int wx, int wz) {
-        float[] warped = warpCoordinates(wx, wz);
-        float cx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
-        float cz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
-
-        int   px0 = (int) Math.floor(cx);
-        int   pz0 = (int) Math.floor(cz);
-        float tx  = sharpenBlend(cx - px0);
-        float tz  = sharpenBlend(cz - pz0);
-
-        GotBiomeDensityParams.Params p00 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0));
-        GotBiomeDensityParams.Params p10 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0));
-        GotBiomeDensityParams.Params p01 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0 + 1));
-        GotBiomeDensityParams.Params p11 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0 + 1));
-
-        float w00 = (1f - tx) * (1f - tz);
-        float w10 = tx        * (1f - tz);
-        float w01 = (1f - tx) * tz;
-        float w11 = tx        * tz;
-
-        String dominantName;
-        if      (w00 >= w10 && w00 >= w01 && w00 >= w11) dominantName = p00.name;
-        else if (w10 >= w01 && w10 >= w11)               dominantName = p10.name;
-        else if (w01 >= w11)                             dominantName = p01.name;
-        else                                             dominantName = p11.name;
-
-        return GotSubBiomeSystem.activeVariant(dominantName, wx, wz);
-    }
-
-    // ── Domain warp ───────────────────────────────────────────────────────
-    //
-    // Before the pixel-space lookup we displace the world coordinates with a
-    // pair of low-frequency Perlin fields.  This bends the otherwise perfectly
-    // axis-aligned pixel-grid boundaries into organic, wavy curves — eliminating
-    // the visible "generated from squares" artefact shown in the river and biome
-    // boundary screenshots.
-    //
-    // WARP_FREQ   — low frequency so the warp creates broad, sweeping curves
-    //               rather than jittery noise.  At 1/400 one full warp cycle
-    //               spans ≈400 blocks, well above the 128-block pixel size.
-    // WARP_AMP    — displacement in world blocks.  64 = half a pixel width,
-    //               enough to noticeably curve boundaries without wildly
-    //               distorting the overall map layout.
-    // WARP_SEED_* — fixed constants (not world-seed-dependent) so that biome
-    //               placement is reproducible across all world seeds, matching
-    //               the static biomemap art.
-
-    private static final float WARP_FREQ   = 3f / 400f;
-    private static final float WARP_AMP    = 64f;
-    private static final int   WARP_SEED_X = 0xAB12_34CD;
-    private static final int   WARP_SEED_Z = 0xEF56_78AB;
-
-    /**
-     * Applies domain warp to a world (wx, wz) position.
-     *
-     * <p>Two independent Perlin samples displace the X and Z axes separately,
-     * breaking up the rectilinear pixel-grid layout into organic curves.  Both
-     * {@link #bilinearBlend} and {@link GotBiomeSource#getNoiseBiome} call this
-     * helper so that terrain and biome boundaries are always in perfect sync.
-     *
-     * @return float[2] { warpedWorldX, warpedWorldZ }
-     */
-    static float[] warpCoordinates(float wx, float wz) {
-        float dx = GotPerlinNoise.sample(wx * WARP_FREQ, 0f, wz * WARP_FREQ, WARP_SEED_X);
-        float dz = GotPerlinNoise.sample(wx * WARP_FREQ, 0f, wz * WARP_FREQ, WARP_SEED_Z);
-        return new float[]{ wx + dx * WARP_AMP, wz + dz * WARP_AMP };
-    }
-
-    // ── Biomemap bilinear blend ───────────────────────────────────────────
-
-    /**
-     * Bilinearly blends the {@code depth} and {@code scale} terrain parameters
-     * from the four biomemap pixels surrounding the world position (wx, wz).
-     *
-     * <p>The biomemap is a regular integer pixel grid.  Converting (wx, wz) to
-     * float pixel-space gives a sub-pixel position {@code (cx, cz)}.  The four
-     * pixels at {@code (⌊cx⌋, ⌊cz⌋)}, {@code (⌊cx⌋+1, ⌊cz⌋)}, etc. are each
-     * weighted by their bilinear proximity ({@code (1-tx)(1-tz)} and so on).
-     * Each weight is between 0 and 1; the four weights sum to exactly 1.
-     *
-     * <p>This replaces the old 7×7 Gaussian kernel: bilinear is exact on the
-     * pixel grid (Gaussian over-smoothed), is faster (4 samples vs 49), and
-     * matches the bilinear lookup that {@link GotBiomeSource} uses — so the
-     * blended terrain parameters and the biome boundaries come from the same
-     * mathematical operation.
-     *
-     * @return float[2] { blendedDepth, blendedScale }
-     */
-    static float sharpenBlend(float t) {
-        // First smoothstep pass
-        t = t * t * (3f - 2f * t);
-        // Second smoothstep pass — steeper plateau + sharper transition zone
-        t = t * t * (3f - 2f * t);
-        return t;
-    }
-
-// ─── REPLACE the existing bilinearBlend() method with this version ───
-//     (only change: sharpenBlend() applied to tx and tz)
-
-    static float[] bilinearBlend(int wx, int wz) {
-        // Apply domain warp so the pixel-grid boundary lines become organic curves
-        // instead of axis-aligned straight edges.
-        float[] warped = warpCoordinates(wx, wz);
-        float cx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
-        float cz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
-
-        int   px0 = (int) Math.floor(cx);
-        int   pz0 = (int) Math.floor(cz);
-        // ↓ sharpen: replaces the old linear (cx - px0) / (cz - pz0) fractions
-        float tx  = sharpenBlend(cx - px0);
-        float tz  = sharpenBlend(cz - pz0);
-
-        GotBiomeDensityParams.Params p00 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0));
-        GotBiomeDensityParams.Params p10 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0));
-        GotBiomeDensityParams.Params p01 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0,     pz0 + 1));
-        GotBiomeDensityParams.Params p11 = GotBiomeDensityParams.forColor(BiomemapLoader.getRawPixel(px0 + 1, pz0 + 1));
-
-        float w00 = (1f - tx) * (1f - tz);
-        float w10 = tx        * (1f - tz);
-        float w01 = (1f - tx) * tz;
-        float w11 = tx        * tz;
-
-        float depth = p00.depth * w00 + p10.depth * w10 + p01.depth * w01 + p11.depth * w11;
-        float scale = p00.scale * w00 + p10.scale * w10 + p01.scale * w01 + p11.scale * w11;
-
-        // ── Sub-biome variant terrain delta ───────────────────────────────
-        //
-        // Find the dominant (highest-weight) biomemap pixel and ask
-        // GotSubBiomeSystem whether a variant is active at this position.
-        // The delta is blended in proportion to the dominant pixel's weight so
-        // the variant effect fades smoothly near biome boundaries instead of
-        // cutting sharply across them.
-        String dominantName;
-        float  dominantWeight;
-        if (w00 >= w10 && w00 >= w01 && w00 >= w11) { dominantName = p00.name; dominantWeight = w00; }
-        else if (w10 >= w01 && w10 >= w11)           { dominantName = p10.name; dominantWeight = w10; }
-        else if (w01 >= w11)                         { dominantName = p01.name; dominantWeight = w01; }
-        else                                         { dominantName = p11.name; dominantWeight = w11; }
-
-        float[] delta = GotSubBiomeSystem.getTerrainDelta(dominantName, wx, wz);
-        depth += delta[0] * dominantWeight;
-        scale += delta[1] * dominantWeight;
-
-        return new float[]{ depth, scale };
-    }
-
-    // ── Interpolation helpers ─────────────────────────────────────────────
-
-    /**
-     * Trilinear interpolation of a density value within a cell.
-     *
-     * <p>Corners are labelled by which face of the cell they belong to:
-     * first index = X side (0 = near, 1 = far), second = Z, third = Y.
-     *
-     * @param tx fraction in X (0 = near corner, 1 = far corner)
-     * @param ty fraction in Y (0 = bottom, 1 = top)
-     * @param tz fraction in Z
-     */
-    private static float trilinear(float tx, float ty, float tz,
-                                   float d000, float d100,
-                                   float d010, float d110,
-                                   float d001, float d101,
-                                   float d011, float d111) {
-        float x0 = lerp(tx, d000, d100);
-        float x1 = lerp(tx, d010, d110);
-        float x2 = lerp(tx, d001, d101);
-        float x3 = lerp(tx, d011, d111);
-        float z0  = lerp(tz, x0, x1);
-        float z1  = lerp(tz, x2, x3);
-        return lerp(ty, z0, z1);
-    }
-
-    private static float lerp(float t, float a, float b) { return a + t * (b - a); }
-
-    // ── ChunkGenerator boilerplate ────────────────────────────────────────
-
-    /**
-     * Estimates the surface Y for structure placement and heightmaps.
-     * The blended {@code depth} is the expected zero-crossing of the density
-     * function (noise averages to 0), so it is a good approximation of the surface.
-     */
     @Override
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Types type,
-                             @NotNull LevelHeightAccessor level,
-                             @NotNull RandomState random) {
-        if (!BiomemapLoader.isLoaded()) return SEA_LEVEL;
-        float[] bp = bilinearBlend(x, z);
-        return Mth.clamp(Mth.floor(bp[0]), level.getMinY(), level.getMaxY());
+                             @NotNull LevelHeightAccessor level, @NotNull RandomState random) {
+        float depth = GotBiomeRegistry.getDepth(sampleBiomeId(x >> 2, z >> 2));
+        return Mth.clamp(Math.round(depth * 17.0f + 64.0f), level.getMinY(), level.getMaxY());
     }
 
     @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z,
                                               @NotNull LevelHeightAccessor level,
                                               @NotNull RandomState random) {
-        int   minY  = level.getMinY();
-        int   sea   = getSeaLevel();
-        float[] bp  = BiomemapLoader.isLoaded() ? bilinearBlend(x, z)
-                : new float[]{ SEA_LEVEL, 10f };
-        float depth = bp[0];
-        float scale = bp[1];
-
+        int minY  = level.getMinY();
+        int sea   = getSeaLevel();
+        int surfY = getBaseHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, level, random);
         BlockState[] states = new BlockState[level.getHeight()];
         for (int i = 0; i < states.length; i++) {
-            int   y       = minY + i;
-            float density = cornerDensity(x, y, z, depth, scale, noiseSeed);
-            if      (density > 0f) states[i] = Blocks.STONE.defaultBlockState();
-            else if (y <= sea)     states[i] = settings.value().defaultFluid();
-            else                   states[i] = Blocks.AIR.defaultBlockState();
+            int y = minY + i;
+            if      (y < surfY) states[i] = Blocks.STONE.defaultBlockState();
+            else if (y <= sea)  states[i] = settings.value().defaultFluid();
+            else                states[i] = Blocks.AIR.defaultBlockState();
         }
         return new NoiseColumn(minY, states);
     }
 
     @Override
     public void applyCarvers(@NotNull WorldGenRegion region, long seed,
-                             @NotNull RandomState random,
-                             @NotNull BiomeManager biomeManager,
-                             @NotNull StructureManager structures,
-                             @NotNull ChunkAccess chunk) {
-        vanilla.applyCarvers(region, seed, random, biomeManager, structures, chunk);
-    }
-
-    // ── Sub-biome feature density ─────────────────────────────────────────
-    //
-    // After vanilla places all standard features (trees, flowers, etc.) we
-    // check which sub-biome variant is active at the chunk centre.  If it has
-    // treeDensityBonus > 0 we look up the biome's VEGETAL_DECORATION placed
-    // features, filter for tree features by resource-location path, and try
-    // to place each one treeDensityBonus extra times at random positions
-    // within the chunk.
-    //
-    // Why "try": PlacedFeature.place() internally runs all the same placement
-    // modifiers (count, random_offset, biome_filter, etc.) as the first pass,
-    // so it will naturally skip invalid spots (water, wrong biome, too close
-    // to another tree) — no special guarding needed here.
-
-    @Override
-    public void applyBiomeDecoration(@NotNull WorldGenLevel level,
-                                     @NotNull ChunkAccess chunk,
-                                     @NotNull StructureManager structureManager) {
-
-        // Always run the standard vanilla decoration pass first.
-        super.applyBiomeDecoration(level, chunk, structureManager);
-
-        RandomState rs = cachedRandomState;
-        if (rs == null) return;   // biomemap not loaded yet — skip
-
-        ChunkPos cpos = chunk.getPos();
-        int cx = cpos.getMiddleBlockX();
-        int cz = cpos.getMiddleBlockZ();
-
-        // ── Find dominant biome name at chunk centre ───────────────────
-        float[] warped = warpCoordinates(cx, cz);
-        float mapCx = warped[0] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
-        float mapCz = warped[1] / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
-        int   px0   = (int) Math.floor(mapCx);
-        int   pz0   = (int) Math.floor(mapCz);
-        // Use the nearest pixel (dominant at centre — no blending needed here)
-        String baseName = GotBiomeDensityParams.nameForColor(BiomemapLoader.getRawPixel(px0, pz0));
-
-        GotSubBiomeSystem.Variant variant = GotSubBiomeSystem.activeVariant(baseName, cx, cz);
-        if (variant == null || variant.treeDensityBonus() <= 0) return;
-
-        // ── Get the biome's placed features at VEGETAL_DECORATION step ─
-        BlockPos samplePos = new BlockPos(cx, 64, cz);
-        Holder<Biome> biomeHolder = level.getBiome(samplePos);
-        java.util.List<net.minecraft.core.HolderSet<net.minecraft.world.level.levelgen.placement.PlacedFeature>>
-                featureSteps = biomeHolder.value().getGenerationSettings().features();
-
-        int vegetalStep = GenerationStep.Decoration.VEGETAL_DECORATION.ordinal();
-        if (vegetalStep >= featureSteps.size()) return;
-
-        // ── Extra placement passes ─────────────────────────────────────
-        WorldgenRandom rand = new WorldgenRandom(RandomSource.create());
-        rand.setDecorationSeed(level.getSeed(), cpos.getMinBlockX(), cpos.getMinBlockZ());
-        // Advance seed so extra passes don't repeat the standard pass pattern
-        rand.setFeatureSeed(level.getSeed(), vegetalStep, 999);
-
-                for (Holder<net.minecraft.world.level.levelgen.placement.PlacedFeature> holder
-                : featureSteps.get(vegetalStep)) {
-
-            // Only re-run tree-type features — check resource location path
-            java.util.Optional<net.minecraft.resources.ResourceKey<
-                    net.minecraft.world.level.levelgen.placement.PlacedFeature>> key = holder.unwrapKey();
-            if (key.isEmpty()) continue;
-            String path = key.get().location().getPath();
-            boolean isTree = path.contains("tree")
-                    || path.contains("pine")
-                    || path.contains("oak")
-                    || path.contains("birch")
-                    || path.contains("spruce")
-                    || path.contains("weirwood")
-                    || path.contains("ironwood");
-            if (!isTree) continue;
-
-            net.minecraft.world.level.levelgen.placement.PlacedFeature placed = holder.value();
-            // Each pass attempts placement at a random position within the chunk.
-            // treeDensityBonus is the total number of extra attempts for this feature —
-            // high values (8-16) are needed because each attempt still goes through all
-            // vanilla placement modifiers (height checks, biome filters, spacing rules)
-            // and most will be rejected. The ones that pass produce a real tree.
-            for (int pass = 0; pass < variant.treeDensityBonus(); pass++) {
-                int bx = cpos.getMinBlockX() + rand.nextInt(16);
-                int bz = cpos.getMinBlockZ() + rand.nextInt(16);
-                int by = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, bx, bz);
-                // Advance rand between attempts so they don't cluster on the same spot
-                rand.setFeatureSeed(level.getSeed() ^ (pass * 0x9E3779B9L), vegetalStep, pass + 1000);
-                try {
-                    placed.place(level, this, rand, new BlockPos(bx, by, bz));
-                } catch (IllegalStateException ignored) {
-                    // BiomeFilter placement modifier rejects features whose holders
-                    // aren't in the generator's featuresPerStep list — safe to skip.
-                }
-            }
-        }
+                             @NotNull RandomState random, @NotNull BiomeManager biomes,
+                             @NotNull StructureManager structures, @NotNull ChunkAccess chunk) {
+        vanilla.applyCarvers(region, seed, random, biomes, structures, chunk);
     }
 
     @Override
     public void spawnOriginalMobs(@NotNull WorldGenRegion region) {
-        ChunkPos pos = region.getCenter();
-        Holder<Biome> b = region.getBiome(pos.getWorldPosition().atY(region.getMaxY() - 1));
-        WorldgenRandom rand = new WorldgenRandom(RandomSource.create());
-        rand.setDecorationSeed(region.getSeed(), pos.getMinBlockX(), pos.getMinBlockZ());
-        NaturalSpawner.spawnMobsForChunkGeneration(region, b, pos, rand);
+        ChunkPos cp = region.getCenter();
+        Holder<Biome> b = region.getBiome(cp.getWorldPosition().atY(region.getMaxY() - 1));
+        WorldgenRandom rng = new WorldgenRandom(RandomSource.create());
+        rng.setDecorationSeed(region.getSeed(), cp.getMinBlockX(), cp.getMinBlockZ());
+        NaturalSpawner.spawnMobsForChunkGeneration(region, b, cp, rng);
     }
-
-    @Override public int getSeaLevel()  { return SEA_LEVEL; }
-    @Override public int getMinY()      { return settings.value().noiseSettings().minY(); }
-    @Override public int getGenDepth()  { return settings.value().noiseSettings().height(); }
-
-    // ── Debug ─────────────────────────────────────────────────────────────
 
     @Override
-    public void addDebugScreenInfo(java.util.List<String> info,
-                                   RandomState random, BlockPos pos) {
-        if (!BiomemapLoader.isLoaded()) return;
-        int wx = pos.getX(), wy = pos.getY(), wz = pos.getZ();
-        float[] bp  = bilinearBlend(wx, wz);
-        float density = cornerDensity(wx, wy, wz, bp[0], bp[1], noiseSeed);
-        int[] px = BiomemapLoader.getPixelForWorld(wx, wz);
-        info.add(String.format(
-                "[GoT] px=(%d,%d)  depth=%.1f  scale=%.1f  density@Y%d=%.2f  sea=%d",
-                px[0], px[1], bp[0], bp[1], wy, density, SEA_LEVEL));
+    public void addDebugScreenInfo(@NotNull List<String> info,
+                                   @NotNull RandomState random, @NotNull BlockPos pos) {
+        int id = sampleBiomeId(pos.getX() >> 2, pos.getZ() >> 2);
+        info.add("GoT Biome: " + GotBiomeRegistry.locationFor(id).getPath());
     }
 
-    // ── Fallback flat fill (pre-load) ─────────────────────────────────────
+    @Override public int getSeaLevel() { return SEA_LEVEL; }
+    @Override public int getMinY()     { return settings.value().noiseSettings().minY(); }
+    @Override public int getGenDepth() { return settings.value().noiseSettings().height(); }
 
-    /** Flat sea-level fill used before the biomemap is loaded. */
-    private CompletableFuture<ChunkAccess> fillFlat(ChunkAccess chunk) {
-        NoiseSettings ns  = settings.value().noiseSettings();
-        int minY = ns.minY();
-        int maxY = minY + ns.height();
-        int sea  = getSeaLevel();
-        ChunkPos pos = chunk.getPos();
-        for (int lx = 0; lx < 16; lx++) {
-            for (int lz = 0; lz < 16; lz++) {
-                for (int y = minY; y < maxY; y++) {
-                    BlockState state;
-                    if      (y < sea)  state = Blocks.STONE.defaultBlockState();
-                    else if (y == sea) state = settings.value().defaultFluid();
-                    else               state = Blocks.AIR.defaultBlockState();
-                    chunk.setBlockState(new BlockPos(lx, y, lz), state, false);
-                }
-            }
-        }
-        return CompletableFuture.completedFuture(chunk);
+    // ── Trilinear interpolation ───────────────────────────────────────────
+
+    private static double trilinear(float tx, float ty, float tz,
+            double d000, double d100, double d010, double d110,
+            double d001, double d101, double d011, double d111) {
+        return lerp(ty,
+                lerp(tz, lerp(tx, d000, d100), lerp(tx, d010, d110)),
+                lerp(tz, lerp(tx, d001, d101), lerp(tx, d011, d111)));
     }
+
+    private static double lerp(double t, double a, double b) { return a + t * (b - a); }
 }
