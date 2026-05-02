@@ -85,7 +85,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         // to extract a stable long that varies per world seed.
         if (!seedPushed) {
             long s = random.getOrCreateRandomFactory(net.got.GotMod.id("layer_seed"))
-                           .at(new BlockPos(0, 0, 0)).nextLong();
+                    .at(new BlockPos(0, 0, 0)).nextLong();
             GotBiomeSource.setSeed(s);
             seedPushed = true;
         }
@@ -152,6 +152,21 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 }
             }
         }
+        // Classic 5-layer bedrock: minY is always bedrock, minY+1..minY+4 are
+        // bedrock with decreasing probability. fillFromNoise previously never
+        // wrote BEDROCK at all, leaving an open void at the bottom of the world.
+        WorldgenRandom bedrockRng = new WorldgenRandom(RandomSource.create());
+        bedrockRng.setDecorationSeed(0L, baseX, baseZ);
+        for (int lx = 0; lx < 16; lx++) {
+            for (int lz = 0; lz < 16; lz++) {
+                for (int layer = 0; layer < 5; layer++) {
+                    int y = minY + layer;
+                    if (layer == 0 || bedrockRng.nextInt(layer + 1) == 0) {
+                        chunk.setBlockState(mp.set(lx, y, lz), Blocks.BEDROCK.defaultBlockState(), false);
+                    }
+                }
+            }
+        }
         return CompletableFuture.completedFuture(chunk);
     }
 
@@ -180,7 +195,10 @@ public final class GotChunkGenerator extends ChunkGenerator {
             double raw2  = n2.getValue(wx * 0.5, wy * 0.5, wz * 0.5);
             // Use n1 at a different scale as the blender weight (avoids needing a 3rd noise key)
             double blend = Mth.clamp(n1.getValue(wx * 0.25, 10.0, wz * 0.25) * 0.5 + 0.5, 0.0, 1.0);
-            double raw   = Mth.lerp(blend, raw1, raw2) * 684.412 / 512.0;
+            // NormalNoise amplitude is ≈ ±128 (matching LOTR's OctavesNoiseGenerator).
+            // The original code divided by 512 which is a ~96× amplitude mismatch,
+            // flattening terrain almost to zero and causing everything to be underwater.
+            double raw   = Mth.lerp(blend, raw1, raw2) * 128.0;
 
             double d = raw - terrainGradient(avgDepth, avgScale, y);
 
@@ -193,7 +211,18 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     private static double terrainGradient(double depth, double scale, int y) {
-        double d = (y - 8.5 + depth * 8.5 / 8.0 * 4.0) * 12.0 * 128.0 / 256.0 / scale;
+        // seaRef is the noise-cell index of sea level, computed dynamically.
+        // In 1.21.4: minY=-64, CELL_V=8 → seaRef = (63-(-64))/8 = 15.875.
+        final double seaRef = (SEA_LEVEL - (-64)) / (double) CELL_V;
+
+        // The LOTR convention is: depth > 0 → terrain ABOVE sea level,
+        //                         depth < 0 → terrain BELOW sea level (ocean/deep ocean).
+        // The gradient shifts the noise baseline so that density=0 (surface) occurs at:
+        //   y_surface = seaRef + depth * seaRef/2
+        // which means depth must ADD to seaRef (not subtract).
+        // An earlier version subtracted here, inverting all terrain heights so that
+        // deep-ocean biomes generated as mountains and mountains generated underground.
+        double d = (y - seaRef - depth * seaRef / 8.0 * 4.0) * 12.0 * 128.0 / 256.0 / scale;
         if (d < 0.0) d *= 4.0;
         return d;
     }
@@ -262,7 +291,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         int baseX = pos.getMinBlockX();
         int baseZ = pos.getMinBlockZ();
         RandomSource rand = random.getOrCreateRandomFactory(net.got.GotMod.id("surface"))
-                                  .at(new BlockPos(baseX, 0, baseZ));
+                .at(new BlockPos(baseX, 0, baseZ));
 
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
@@ -367,8 +396,8 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // ── Trilinear interpolation ───────────────────────────────────────────
 
     private static double trilinear(float tx, float ty, float tz,
-            double d000, double d100, double d010, double d110,
-            double d001, double d101, double d011, double d111) {
+                                    double d000, double d100, double d010, double d110,
+                                    double d001, double d101, double d011, double d111) {
         return lerp(ty,
                 lerp(tz, lerp(tx, d000, d100), lerp(tx, d010, d110)),
                 lerp(tz, lerp(tx, d001, d101), lerp(tx, d011, d111)));

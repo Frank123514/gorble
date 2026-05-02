@@ -6,6 +6,7 @@ import net.got.worldgen.layer.GotBiomeGenSettings;
 import net.got.worldgen.layer.GotBiomeRegistry;
 import net.got.worldgen.layer.GotWorldLayers;
 import net.got.worldgen.layer.LayerArea;
+import net.got.worldgen.layer.GotMapLayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
@@ -32,6 +33,22 @@ public final class GotBiomeSource extends BiomeSource {
 
     /** Called by GotChunkGenerator when the level seed is known. */
     public static void setSeed(long seed) { activeSeed = seed; }
+
+    /** Latest biomemap loaded by MapReloadListener; null until first resource load. */
+    private static volatile GotMapLayer.PreparedMap latestMap = null;
+
+    /** Incremented each time the map is reloaded, so getLayer() knows to rebuild. */
+    private static volatile int mapGeneration = 0;
+
+    /**
+     * Called by {@link net.got.worldgen.MapReloadListener#apply} after
+     * {@code biomemap.png} has been decoded off-thread. Invalidates the cached
+     * layer so it gets rebuilt with the new map data on next sample.
+     */
+    public static void setMapLayer(GotMapLayer.PreparedMap prepared) {
+        latestMap = prepared;
+        mapGeneration++;
+    }
 
     // ── Codec — mirrors the original GotBiomeSource pattern exactly ───────
 
@@ -74,8 +91,8 @@ public final class GotBiomeSource extends BiomeSource {
     protected @NotNull Stream<Holder<Biome>> collectPossibleBiomes() { return biomes.stream(); }
 
     @Override
-    public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z,
-                                                Climate.@NotNull Sampler sampler) {
+    public Holder<Biome> getNoiseBiome(int x, int y, int z,
+                                       Climate.@NotNull Sampler sampler) {
         int id = getLayer().get(x, z);
         ResourceLocation loc = GotBiomeRegistry.locationFor(id);
         Holder<Biome> h = locationToHolder.get(loc);
@@ -84,13 +101,21 @@ public final class GotBiomeSource extends BiomeSource {
 
     // ── Layer access ──────────────────────────────────────────────────────
 
+    private volatile int builtForMapGen = -1;
+
     private LayerArea getLayer() {
-        long seed = activeSeed;
-        if (genLayer == null || builtForSeed != seed) {
+        long seed   = activeSeed;
+        int  mapGen = mapGeneration;
+        if (genLayer == null || builtForSeed != seed || builtForMapGen != mapGen) {
             synchronized (this) {
-                if (genLayer == null || builtForSeed != seed) {
-                    genLayer    = GotWorldLayers.create(seed, new GotBiomeGenSettings());
-                    builtForSeed = seed;
+                if (genLayer == null || builtForSeed != seed || builtForMapGen != mapGen) {
+                    LayerArea classic   = GotWorldLayers.create(seed, new GotBiomeGenSettings());
+                    GotMapLayer.PreparedMap map = latestMap;
+                    genLayer         = (map != null)
+                            ? GotMapLayer.createLayer(map, classic)
+                            : classic;
+                    builtForSeed     = seed;
+                    builtForMapGen   = mapGen;
                 }
             }
         }
