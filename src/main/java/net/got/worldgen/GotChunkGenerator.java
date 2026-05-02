@@ -174,7 +174,22 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     private double[] buildNoiseColumn(int noiseX, int noiseZ, RandomState random) {
         double[] col    = new double[NOISE_SIZE_Y + 1];
-        double[] ds     = getBiomeDepthScale(noiseX, noiseZ);
+
+        // ── Domain warp ───────────────────────────────────────────────────
+        // LOTR Renewed displaced biome sample coordinates with a slow-frequency
+        // offset noise before sampling depth/scale. This breaks up the axis-aligned
+        // stairstep pattern produced by the zoom layers, giving rivers and biome
+        // borders organic curved shapes rather than a visible pixel grid.
+        //
+        // Warp frequency 0.004 in noise-cell space = one full warp cycle every
+        // ~250 noise cells = ~1000 blocks.  Amplitude ±3 cells = ±12 blocks —
+        // enough to fully destroy the stairstep while keeping biome blobs intact.
+        NormalNoise warpNoise = random.getOrCreateNoise(Noises.OFFSET);
+        double wf = 0.004;
+        int warpX = (int) Math.round(warpNoise.getValue(noiseX * wf,  0.0, noiseZ * wf) * 3.0);
+        int warpZ = (int) Math.round(warpNoise.getValue(noiseX * wf, 97.3, noiseZ * wf) * 3.0);
+
+        double[] ds     = getBiomeDepthScale(noiseX, noiseZ, warpX, warpZ);
         double avgDepth = ds[0];
         double avgScale = ds[1];
 
@@ -211,32 +226,34 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     private static double terrainGradient(double depth, double scale, int y) {
-        // seaRef is the noise-cell index of sea level, computed dynamically.
-        // In 1.21.4: minY=-64, CELL_V=8 → seaRef = (63-(-64))/8 = 15.875.
         final double seaRef = (SEA_LEVEL - (-64)) / (double) CELL_V;
 
-        // The LOTR convention is: depth > 0 → terrain ABOVE sea level,
-        //                         depth < 0 → terrain BELOW sea level (ocean/deep ocean).
-        // The gradient shifts the noise baseline so that density=0 (surface) occurs at:
-        //   y_surface = seaRef + depth * seaRef/2
-        // which means depth must ADD to seaRef (not subtract).
-        // An earlier version subtracted here, inverting all terrain heights so that
-        // deep-ocean biomes generated as mountains and mountains generated underground.
-        double d = (y - seaRef - depth * seaRef / 8.0 * 4.0) * 12.0 * 128.0 / 256.0 / scale;
+        // LOTR Renewed clamps the effective scale to [0.20, 1.0] before dividing.
+        // Without the clamp, scale=0.55 produces a density gradient 5.5× steeper
+        // than scale=0.1, creating needle spikes.  Clamping at 0.20 limits the
+        // steepest possible gradient to 5× plains, giving LOTR's characteristic
+        // wide merged ridge-lines rather than isolated spikes.
+        double effectiveScale = Mth.clamp(scale, 0.20, 1.0);
+
+        double d = (y - seaRef - depth * seaRef / 8.0 * 4.0) * 12.0 * 128.0 / 256.0 / effectiveScale;
         if (d < 0.0) d *= 4.0;
         return d;
     }
 
     // ── 13×13 biome depth/scale sampling ─────────────────────────────────
 
-    private double[] getBiomeDepthScale(int noiseX, int noiseZ) {
+    private double[] getBiomeDepthScale(int noiseX, int noiseZ, int warpX, int warpZ) {
         float totalScale = 0, totalDepth = 0, totalSig = 0;
-        float centralDepth = getBiomeDepth(noiseX, noiseZ);
+        // Central sample also uses the warp offset so the self-weight is consistent
+        float centralDepth = getBiomeDepth(noiseX + warpX, noiseZ + warpZ);
 
         for (int dk = -SAMPLE_RADIUS; dk <= SAMPLE_RADIUS; dk++) {
             for (int dl = -SAMPLE_RADIUS; dl <= SAMPLE_RADIUS; dl++) {
-                float depth = getBiomeDepth(noiseX + dk, noiseZ + dl);
-                float scale = getBiomeScale(noiseX + dk, noiseZ + dl);
+                // Apply the domain warp to every sample in the 13×13 window.
+                // All samples shift together so the biome weighting kernel is
+                // displaced as a whole — this is what LOTR Renewed did.
+                float depth = getBiomeDepth(noiseX + dk + warpX, noiseZ + dl + warpZ);
+                float scale = getBiomeScale(noiseX + dk + warpX, noiseZ + dl + warpZ);
                 if (scale == 0f) scale = 1e-7f;
 
                 int   idx    = (dk + SAMPLE_RADIUS) * SAMPLE_WIDTH + (dl + SAMPLE_RADIUS);
@@ -345,8 +362,10 @@ public final class GotChunkGenerator extends ChunkGenerator {
     @Override
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Types type,
                              @NotNull LevelHeightAccessor level, @NotNull RandomState random) {
+        // blockY ≈ 63 + depth * 63.5  (derived from terrainGradient: surface at y_noise = seaRef + depth*seaRef/2,
+        // blockY = minY + CELL_V * y_noise = -64 + 8*(15.875 + depth*7.9375) = 63 + depth*63.5)
         float depth = GotBiomeRegistry.getDepth(sampleBiomeId(x >> 2, z >> 2));
-        return Mth.clamp(Math.round(depth * 17.0f + 64.0f), level.getMinY(), level.getMaxY());
+        return Mth.clamp(Math.round(63.0f + depth * 63.5f), level.getMinY(), level.getMaxY());
     }
 
     @Override

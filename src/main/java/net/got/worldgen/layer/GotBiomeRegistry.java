@@ -69,34 +69,34 @@ public final class GotBiomeRegistry {
     // ── Registry paths ────────────────────────────────────────────────────
 
     private static final String[] PATHS = {
-            /* 0  */ "north",
-            /* 1  */ "barrowlands",
-            /* 2  */ "haunted_forest",
-            /* 3  */ "wolfswood",
-            /* 4  */ "ironwood",
-            /* 5  */ "north_hills",
-            /* 6  */ "north_mountains",
-            /* 7  */ "always_winter",
-            /* 8  */ "frostfangs",
-            /* 9  */ "stony_shore",
-            /* 10 */ "neck",
-            /* 11 */ "ocean",
-            /* 12 */ "deep_ocean",
-            /* 13 */ "river",
-            /* 14 */ "neck_river",
-            /* 15 */ "frozen_river",
-            /* 16 */ "iron_hills",
-            /* 17 */ "sheepshead_hills",
-            /* 18 */ "lake",
-            /* 19 */ "frozen_lake",
+        /* 0  */ "north",
+        /* 1  */ "barrowlands",
+        /* 2  */ "haunted_forest",
+        /* 3  */ "wolfswood",
+        /* 4  */ "ironwood",
+        /* 5  */ "north_hills",
+        /* 6  */ "north_mountains",
+        /* 7  */ "always_winter",
+        /* 8  */ "frostfangs",
+        /* 9  */ "stony_shore",
+        /* 10 */ "neck",
+        /* 11 */ "ocean",
+        /* 12 */ "deep_ocean",
+        /* 13 */ "river",
+        /* 14 */ "neck_river",
+        /* 15 */ "frozen_river",
+        /* 16 */ "iron_hills",
+        /* 17 */ "sheepshead_hills",
+        /* 18 */ "lake",
+        /* 19 */ "frozen_lake",
     };
 
     /** Major biomes that can be randomly seeded during classic generation. */
     public static final int[] MAJOR_IDS = {
-            ID_NORTH, ID_BARROWLANDS, ID_HAUNTED_FOREST, ID_WOLFSWOOD,
-            ID_IRONWOOD, ID_NORTH_HILLS, ID_NORTH_MOUNTAINS, ID_ALWAYS_WINTER,
-            ID_FROSTFANGS, ID_STONY_SHORE, ID_NECK,
-            ID_IRON_HILLS, ID_SHEEPSHEAD_HILLS,
+        ID_NORTH, ID_BARROWLANDS, ID_HAUNTED_FOREST, ID_WOLFSWOOD,
+        ID_IRONWOOD, ID_NORTH_HILLS, ID_NORTH_MOUNTAINS, ID_ALWAYS_WINTER,
+        ID_FROSTFANGS, ID_STONY_SHORE, ID_NECK,
+        ID_IRON_HILLS, ID_SHEEPSHEAD_HILLS,
     };
 
     // ── Terrain depth and scale — LOTR Renewed equivalents ───────────────
@@ -118,9 +118,9 @@ public final class GotBiomeRegistry {
     static {
         // depth / scale — direct LOTR Renewed biome JSON equivalents
         //                              depth    scale
-        set(ID_NECK,              -0.050f,  0.050f);  // near-sea wetland marshes
-        set(ID_STONY_SHORE,        0.000f,  0.120f);  // coastal rock shelf at sea level
-        set(ID_HAUNTED_FOREST,     0.100f,  0.120f);  // eerily flat dark forest
+        set(ID_NECK,               0.200f,  0.050f);  // near-sea wetland marshes
+        set(ID_STONY_SHORE,        0.400f,  0.060f);  // coastal rock shelf at sea level
+        set(ID_HAUNTED_FOREST,     0.350f,  0.050f);  // eerily flat dark forest
         set(ID_NORTH,              0.350f,  0.050f);  // rolling plains (Rohan equivalent)
         set(ID_WOLFSWOOD,          0.350f,  0.050f);  // dense forested rolling slopes
         set(ID_IRONWOOD,           0.350f,  0.050f);  // forested hill country
@@ -137,15 +137,25 @@ public final class GotBiomeRegistry {
         // River depth -0.05 → average bed Y≈60 (3 blocks below sea).
         // scale 0.025 makes the gradient very steep → sharp channel 1–6 blocks
         // wide, exactly matching LOTR Renewed's narrow river appearance.
-        set(ID_RIVER,             -0.050f,  0.025f);  // standard river channel
-        set(ID_NECK_RIVER,        -0.050f,  0.025f);  // neck wetland channel
-        set(ID_FROZEN_RIVER,      -0.050f,  0.025f);  // frozen river channel
+        // ── Water — all below sea level ───────────────────────────────────
+        //
+        // Formula: surface blockY = 63 + depth * 63.5
+        //   river bed    Y ≈ 60  (depth −0.047) — 3 below sea
+        //   lake floor   Y ≈ 51  (depth −0.189) — 12 below sea, visible open lake
+        //   ocean floor  Y ≈ 46  (depth −0.268) — 17 below sea, vanilla-matching
+        //   deep abyss   Y ≈ 30  (depth −0.520) — 33 below sea
+        //
+        // scale 0.025 on rivers → very steep gradient → sharp 1–6 block wide
+        // channel matching LOTR Renewed's narrow river appearance.
+        set(ID_RIVER,             -0.047f,  0.025f);  // river bed  Y ≈ 60
+        set(ID_NECK_RIVER,        -0.047f,  0.025f);  // neck swamp channel
+        set(ID_FROZEN_RIVER,      -0.047f,  0.025f);  // frozen river channel
 
-        set(ID_LAKE,              -0.300f,  0.030f);  // inland lake (~8 blocks deep)
-        set(ID_FROZEN_LAKE,       -0.300f,  0.030f);  // frozen inland lake
+        set(ID_LAKE,              -0.189f,  0.030f);  // lake floor Y ≈ 51
+        set(ID_FROZEN_LAKE,       -0.189f,  0.030f);  // frozen lake floor Y ≈ 51
 
-        set(ID_OCEAN,             -0.700f,  0.050f);  // open ocean floor
-        set(ID_DEEP_OCEAN,        -1.200f,  0.060f);  // abyssal depths
+        set(ID_OCEAN,             -0.268f,  0.050f);  // ocean floor Y ≈ 46
+        set(ID_DEEP_OCEAN,        -0.520f,  0.060f);  // deep ocean  Y ≈ 30
     }
 
     private static void set(int id, float depth, float scale) {
@@ -166,8 +176,8 @@ public final class GotBiomeRegistry {
 
     public static boolean isWater(int id) {
         return isSea(id)
-                || id == ID_LAKE || id == ID_FROZEN_LAKE
-                || id == ID_RIVER || id == ID_NECK_RIVER || id == ID_FROZEN_RIVER;
+            || id == ID_LAKE || id == ID_FROZEN_LAKE
+            || id == ID_RIVER || id == ID_NECK_RIVER || id == ID_FROZEN_RIVER;
     }
 
     public static int getRiverFor(int landId) {

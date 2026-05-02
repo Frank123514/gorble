@@ -125,7 +125,7 @@ public final class GotBiomeSurfaces {
         // coarse dirt on exposed spots — matches LOTR's "Rohan" surface feel.
         register("north", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        7,
-                                Blocks.COARSE_DIRT.defaultBlockState(),   3),
+                                     Blocks.COARSE_DIRT.defaultBlockState(),   3),
                         -0.08, 0.06)
                 .build());
 
@@ -133,7 +133,7 @@ public final class GotBiomeSurfaces {
         // Avg surface Y ≈ 79. Exposed coarse dirt and gravel on barrow tops.
         register("barrowlands", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.COARSE_DIRT.defaultBlockState(),   2,
-                                Blocks.GRAVEL.defaultBlockState(),        1),
+                                     Blocks.GRAVEL.defaultBlockState(),        1),
                         -0.08, 0.06)
                 .build());
 
@@ -141,7 +141,7 @@ public final class GotBiomeSurfaces {
         // Avg surface Y ≈ 75. Podzol + coarse dirt under the canopy.
         register("wolfswood", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        3,
-                                Blocks.COARSE_DIRT.defaultBlockState(),   1),
+                                     Blocks.COARSE_DIRT.defaultBlockState(),   1),
                         -0.08, 0.06)
                 .podzol()
                 .build());
@@ -150,7 +150,7 @@ public final class GotBiomeSurfaces {
         // Avg surface Y ≈ 71. Dense podzol with secondary noise for patchy feel.
         register("haunted_forest", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        2,
-                                Blocks.COARSE_DIRT.defaultBlockState(),   1),
+                                     Blocks.COARSE_DIRT.defaultBlockState(),   1),
                         -0.12, 0.02)
                 .secondary()
                 .podzol()
@@ -160,7 +160,7 @@ public final class GotBiomeSurfaces {
         // Avg surface Y ≈ 79. Dense podzol / coarse dirt forest floor.
         register("ironwood", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        1,
-                                Blocks.COARSE_DIRT.defaultBlockState(),   1),
+                                     Blocks.COARSE_DIRT.defaultBlockState(),   1),
                         -0.14, 0.00)
                 .secondary()
                 .podzol()
@@ -171,7 +171,7 @@ public final class GotBiomeSurfaces {
         // Emyn Muil where rock breaks through the grass on upper slopes.
         register("north_hills", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        3,
-                                Blocks.STONE.defaultBlockState(),         1),
+                                     Blocks.STONE.defaultBlockState(),         1),
                         -0.10, 0.04)
                 .stoneAbove(85)
                 .build());
@@ -210,7 +210,7 @@ public final class GotBiomeSurfaces {
         // At sea level.  Heavy gravel + stone — matches LOTR coastal biomes.
         register("stony_shore", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        4,
-                                Blocks.STONE.defaultBlockState(),         1),
+                                     Blocks.STONE.defaultBlockState(),         1),
                         -0.10, 0.04)
                 .build());
 
@@ -218,7 +218,7 @@ public final class GotBiomeSurfaces {
         // Avg surface Y ≈ 91.  Stone face starts at Y 88 (very rocky biome).
         register("iron_hills", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.STONE.defaultBlockState(),         3,
-                                Blocks.GRAVEL.defaultBlockState(),        2),
+                                     Blocks.GRAVEL.defaultBlockState(),        2),
                         -0.06, 0.08)
                 .secondary()
                 .stoneAbove(88)
@@ -237,7 +237,7 @@ public final class GotBiomeSurfaces {
         // is gravel-covered, not just scattered patches.
         register("river", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        3,
-                                Blocks.SAND.defaultBlockState(),          1),
+                                     Blocks.SAND.defaultBlockState(),          1),
                         -0.60, 0.60)
                 .build());
 
@@ -245,7 +245,7 @@ public final class GotBiomeSurfaces {
         // Neck swamp channels: muddy clay-and-gravel bottom.
         register("neck_river", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        2,
-                                Blocks.CLAY.defaultBlockState(),          1),
+                                     Blocks.CLAY.defaultBlockState(),          1),
                         -0.60, 0.60)
                 .build());
 

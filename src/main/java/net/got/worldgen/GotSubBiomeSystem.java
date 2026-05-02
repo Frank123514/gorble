@@ -72,9 +72,9 @@ public final class GotSubBiomeSystem {
         //  forest_patch 38 % cumul → tree-dense sheltered areas
         // ═══════════════════════════════════════════════════════════════════
         define("north",
-                new Variant("highland",     0.12f,  0.00f, +0.120f,  0),
-                new Variant("valley",       0.22f, -0.02f, -0.050f,  0),
-                new Variant("forest_patch", 0.38f,  0.00f, -0.020f, 12)
+            new Variant("highland",     0.12f,  0.00f, +0.120f,  0),
+            new Variant("valley",       0.22f, -0.02f, -0.050f,  0),
+            new Variant("forest_patch", 0.38f,  0.00f, -0.020f, 12)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -84,8 +84,8 @@ public final class GotSubBiomeSystem {
         //  flat_moor    28 % cumul → open desolate moorland
         // ═══════════════════════════════════════════════════════════════════
         define("barrowlands",
-                new Variant("barrow_ridge", 0.15f,  0.00f, +0.160f,  0),
-                new Variant("flat_moor",    0.28f,  0.00f, -0.080f,  0)
+            new Variant("barrow_ridge", 0.15f,  0.00f, +0.160f,  0),
+            new Variant("flat_moor",    0.28f,  0.00f, -0.080f,  0)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -96,9 +96,9 @@ public final class GotSubBiomeSystem {
         //  clearing   40 % cumul → open glade with sparse trees
         // ═══════════════════════════════════════════════════════════════════
         define("wolfswood",
-                new Variant("deep_wood", 0.22f,  0.00f, -0.050f, 16),
-                new Variant("ridge",     0.32f,  0.00f, +0.140f,  8),
-                new Variant("clearing",  0.40f,  0.00f, -0.020f,  0)
+            new Variant("deep_wood", 0.22f,  0.00f, -0.050f, 16),
+            new Variant("ridge",     0.32f,  0.00f, +0.140f,  8),
+            new Variant("clearing",  0.40f,  0.00f, -0.020f,  0)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -107,7 +107,7 @@ public final class GotSubBiomeSystem {
         //  deep_hollow 15 % → sunken flat bowl — eerie low ground
         // ═══════════════════════════════════════════════════════════════════
         define("haunted_forest",
-                new Variant("deep_hollow", 0.15f, -0.02f, -0.100f,  8)
+            new Variant("deep_hollow", 0.15f, -0.02f, -0.100f,  8)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -116,39 +116,33 @@ public final class GotSubBiomeSystem {
         //  ironwood_slopes 18 % → rocky exposed ridges, hillier, denser trees
         // ═══════════════════════════════════════════════════════════════════
         define("ironwood",
-                new Variant("ironwood_slopes", 0.18f, 0.00f, +0.130f,  8)
+            new Variant("ironwood_slopes", 0.18f, 0.00f, +0.130f,  8)
         );
 
         // ═══════════════════════════════════════════════════════════════════
-        // NORTH HILLS  (depth 0.55, scale 0.35) — Emyn Muil
+        // NORTH HILLS  (depth 0.55, scale 0.25) — Emyn Muil
         //
         //  crag           8 % → dramatic exposed rocky crags, highest within hills
         //  valley        20 % cumul → sheltered inter-hill valleys
         //  forested_slope 35 % cumul → lower wooded flanks
         // ═══════════════════════════════════════════════════════════════════
         define("north_hills",
-                new Variant("crag",           0.08f,  0.00f, +0.220f,  0),
-                new Variant("valley",         0.20f, -0.08f, -0.140f,  0),
-                new Variant("forested_slope", 0.35f,  0.00f, -0.040f,  8)
+            new Variant("crag",           0.08f,  0.00f, +0.120f,  0),
+            new Variant("valley",         0.20f, -0.08f, -0.100f,  0),
+            new Variant("forested_slope", 0.35f,  0.00f, -0.040f,  8)
         );
 
         // ═══════════════════════════════════════════════════════════════════
-        // NORTH MOUNTAINS  (depth 1.10, scale 0.55) — Misty Mountains
+        // NORTH MOUNTAINS  (depth 1.10, scale 0.35) — Misty Mountains
         //
-        //  KEY LOTR FEATURE — foothills variant:
-        //  The foothills sub-region lowers the mountain base significantly,
-        //  creating the characteristic stepped approach — wide lower slopes
-        //  before the true peaks, exactly as seen in LOTR Renewed.
-        //
-        //  peak       12 % → extreme altitude zone, highest and sharpest
-        //  foothills  40 % cumul → mountain foothills — much lower baseline,
-        //                          moderate hilliness; this is the dominant view
-        //  valley     52 % cumul → sheltered mountain glens, pine-forested
+        //  peak       12 % → highest zone, slightly hillier than base
+        //  foothills  40 % cumul → wide lower approach, much lower baseline
+        //  valley     52 % cumul → sheltered mountain glens
         // ═══════════════════════════════════════════════════════════════════
         define("north_mountains",
-                new Variant("peak",      0.12f, +0.080f, +0.120f,  0),
-                new Variant("foothills", 0.40f, -0.350f, -0.220f,  4),
-                new Variant("valley",    0.52f, -0.220f, -0.180f,  4)
+            new Variant("peak",      0.12f, +0.060f, +0.080f,  0),
+            new Variant("foothills", 0.40f, -0.350f, -0.150f,  4),
+            new Variant("valley",    0.52f, -0.220f, -0.120f,  4)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -158,18 +152,17 @@ public final class GotSubBiomeSystem {
         //  frozen_ridge  28 % cumul → raised icy ridgeline
         // ═══════════════════════════════════════════════════════════════════
         define("always_winter",
-                new Variant("ice_fields",   0.18f, -0.04f, -0.100f,  0),
-                new Variant("frozen_ridge", 0.28f,  0.00f, +0.100f,  0)
+            new Variant("ice_fields",   0.18f, -0.04f, -0.100f,  0),
+            new Variant("frozen_ridge", 0.28f,  0.00f, +0.100f,  0)
         );
 
         // ═══════════════════════════════════════════════════════════════════
-        // FROSTFANGS  (depth 1.40, scale 0.65) — Caradhras / extreme north
+        // FROSTFANGS  (depth 1.40, scale 0.42) — Caradhras / extreme north
         //
-        //  glacier_shelf 12 % → flat ice shelf at foot of extreme peaks,
-        //                        dramatic scale drop matching LOTR glacier zones
+        //  glacier_shelf 12 % → flat ice shelf at foot of extreme peaks
         // ═══════════════════════════════════════════════════════════════════
         define("frostfangs",
-                new Variant("glacier_shelf", 0.12f, -0.100f, -0.200f,  0)
+            new Variant("glacier_shelf", 0.12f, -0.100f, -0.150f,  0)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -178,7 +171,7 @@ public final class GotSubBiomeSystem {
         //  marsh_flat 14 % → deeper standing-water zone, almost perfectly flat
         // ═══════════════════════════════════════════════════════════════════
         define("neck",
-                new Variant("marsh_flat", 0.14f, -0.020f, -0.030f,  0)
+            new Variant("marsh_flat", 0.14f, -0.020f, -0.030f,  0)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -188,8 +181,8 @@ public final class GotSubBiomeSystem {
         //  forested_skirts 25 % cumul → lower wooded hill flanks
         // ═══════════════════════════════════════════════════════════════════
         define("iron_hills",
-                new Variant("rocky_crest",     0.10f,  0.00f, +0.180f,  0),
-                new Variant("forested_skirts", 0.25f,  0.00f, -0.060f,  8)
+            new Variant("rocky_crest",     0.10f,  0.00f, +0.180f,  0),
+            new Variant("forested_skirts", 0.25f,  0.00f, -0.060f,  8)
         );
 
         // ═══════════════════════════════════════════════════════════════════
@@ -199,8 +192,8 @@ public final class GotSubBiomeSystem {
         //  dale       22 % cumul → flat sheltered valley between hills
         // ═══════════════════════════════════════════════════════════════════
         define("sheepshead_hills",
-                new Variant("high_downs", 0.12f,  0.00f, +0.150f,  0),
-                new Variant("dale",       0.22f, -0.06f, -0.120f,  0)
+            new Variant("high_downs", 0.12f,  0.00f, +0.150f,  0),
+            new Variant("dale",       0.22f, -0.06f, -0.120f,  0)
         );
     }
 
