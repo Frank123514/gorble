@@ -1,6 +1,5 @@
 package net.got.worldgen.surface;
 
-import net.got.init.GotModBlocks;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,8 +10,16 @@ import java.util.Map;
 /**
  * Per-biome surface patch configuration — vanilla MC noise driven.
  *
- * <p>Uses {@code minecraft:surface} and {@code minecraft:surface_secondary} noise
- * with NARROW threshold bands for fine scattered flecks on ALL patch blocks.
+ * <p>All threshold heights are calibrated to the new LOTR Renewed-equivalent
+ * depth/scale values in {@link net.got.worldgen.layer.GotBiomeRegistry}:
+ *
+ * <ul>
+ *   <li>Plains (north) avg surface ≈ Y 71 — stone never shows at surface</li>
+ *   <li>Hills avg ≈ Y 91 — stone outcrops from Y 85 upward</li>
+ *   <li>Mountains avg ≈ Y 116 — stone from Y 90, snow from Y 128, powder from Y 142</li>
+ *   <li>Frostfangs avg ≈ Y 128 — stone from Y 85, snow from Y 118, powder from Y 134</li>
+ *   <li>Rivers — gravel/sand bottom matching LOTR river appearance</li>
+ * </ul>
  */
 public final class GotBiomeSurfaces {
 
@@ -112,104 +119,144 @@ public final class GotBiomeSurfaces {
     private static final Map<String, BiomeConfig> REGISTRY = new HashMap<>();
 
     static {
-        // ALL biomes use NARROW bands (~0.14 width) for fine scattered flecks.
-        // This makes BOTH blocks in a PatchEntry scatter as tiny flecks.
 
-        // NORTH — gravel (70%) + coarse dirt (30%), both as fine flecks
+        // ── NORTH — Rohan / Eriador rolling plains ─────────────────────
+        // Avg surface Y ≈ 71.  Scattered gravel flecks on gently sloping ground,
+        // coarse dirt on exposed spots — matches LOTR's "Rohan" surface feel.
         register("north", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        7,
-                                Blocks.COARSE_DIRT.defaultBlockState(), 3),
+                                Blocks.COARSE_DIRT.defaultBlockState(),   3),
                         -0.08, 0.06)
                 .build());
 
-        // NORTH HILLS — gravel (75%) + stone (25%), fine flecks
-        register("north_hills", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(), 3,
-                                Blocks.STONE.defaultBlockState(),  1),
-                        -0.10, 0.04)
+        // ── BARROWLANDS — Barrow-downs ─────────────────────────────────
+        // Avg surface Y ≈ 79. Exposed coarse dirt and gravel on barrow tops.
+        register("barrowlands", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.COARSE_DIRT.defaultBlockState(),   2,
+                                Blocks.GRAVEL.defaultBlockState(),        1),
+                        -0.08, 0.06)
                 .build());
 
-        // NORTH MOUNTAINS — stone flecks + height layers
-        register("north_mountains", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState()), -0.12, 0.02)
-                .powderSnowAbove(145)
-                .snowBlockAbove(130)
-                .stoneAbove(105)
-                .build());
-
-        // FROSTFANGS — stone flecks
-        register("frostfangs", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState()), -0.06, 0.08)
-                .powderSnowAbove(140)
-                .snowBlockAbove(120)
-                .stoneAbove(90)
-                .build());
-
-        // ALWAYS WINTER — gravel flecks
-        register("always_winter", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState()), -0.10, 0.04)
-                .secondary()
-                .powderSnowAbove(100)
-                .snowBlockAbove(88)
-                .build());
-
-        // WOLFSWOOD — podzol + coarse dirt flecks
+        // ── WOLFSWOOD — Mirkwood-edge dense forest ─────────────────────
+        // Avg surface Y ≈ 75. Podzol + coarse dirt under the canopy.
         register("wolfswood", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        3,
-                                Blocks.COARSE_DIRT.defaultBlockState(), 1),
+                                Blocks.COARSE_DIRT.defaultBlockState(),   1),
                         -0.08, 0.06)
                 .podzol()
                 .build());
 
-        // HAUNTED FOREST — podzol flecks, secondary noise
+        // ── HAUNTED FOREST — Dead Marshes canopy ───────────────────────
+        // Avg surface Y ≈ 71. Dense podzol with secondary noise for patchy feel.
         register("haunted_forest", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        2,
-                                Blocks.COARSE_DIRT.defaultBlockState(), 1),
+                                Blocks.COARSE_DIRT.defaultBlockState(),   1),
                         -0.12, 0.02)
                 .secondary()
                 .podzol()
                 .build());
 
-        // IRONWOOD — dense podzol flecks, secondary noise
+        // ── IRONWOOD — Fangorn lower slopes ────────────────────────────
+        // Avg surface Y ≈ 79. Dense podzol / coarse dirt forest floor.
         register("ironwood", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.PODZOL.defaultBlockState(),        1,
-                                Blocks.COARSE_DIRT.defaultBlockState(), 1),
+                                Blocks.COARSE_DIRT.defaultBlockState(),   1),
                         -0.14, 0.00)
                 .secondary()
                 .podzol()
                 .build());
 
-        // BARROWLANDS — coarse dirt + gravel flecks
-        register("barrowlands", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.COARSE_DIRT.defaultBlockState(), 2,
-                                Blocks.GRAVEL.defaultBlockState(),      1),
-                        -0.08, 0.06)
+        // ── NORTH HILLS — Emyn Muil ─────────────────────────────────────
+        // Avg surface Y ≈ 91.  Stone outcrops start at Y 85 — matching LOTR's
+        // Emyn Muil where rock breaks through the grass on upper slopes.
+        register("north_hills", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        3,
+                                Blocks.STONE.defaultBlockState(),         1),
+                        -0.10, 0.04)
+                .stoneAbove(85)
                 .build());
 
-        // STONY SHORE — gravel + stone flecks
+        // ── NORTH MOUNTAINS — Misty Mountains ──────────────────────────
+        // Avg surface Y ≈ 116, peaks reaching Y 140+.
+        // Stone face from Y 90.  Snow block from Y 128.  Powder snow crown Y 142.
+        // Calibrated so the mountain spine looks capped in white like LOTR.
+        register("north_mountains", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState()), -0.12, 0.02)
+                .stoneAbove(90)
+                .snowBlockAbove(128)
+                .powderSnowAbove(142)
+                .build());
+
+        // ── FROSTFANGS — Caradhras / extreme north peaks ────────────────
+        // Avg surface Y ≈ 128, peaks Y 155+.
+        // Aggressive stone and snow thresholds so even mid-slopes are snow-clad.
+        register("frostfangs", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState()), -0.06, 0.08)
+                .stoneAbove(85)
+                .snowBlockAbove(118)
+                .powderSnowAbove(134)
+                .build());
+
+        // ── ALWAYS WINTER — Forodwaith frozen plateau ───────────────────
+        // Avg surface Y ≈ 91.  Lower snow threshold — the whole plateau is cold.
+        register("always_winter", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState()), -0.10, 0.04)
+                .secondary()
+                .snowBlockAbove(82)
+                .powderSnowAbove(96)
+                .build());
+
+        // ── STONY SHORE — coastal rock shelves ─────────────────────────
+        // At sea level.  Heavy gravel + stone — matches LOTR coastal biomes.
         register("stony_shore", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(), 4,
-                                Blocks.STONE.defaultBlockState(),  1),
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        4,
+                                Blocks.STONE.defaultBlockState(),         1),
                         -0.10, 0.04)
                 .build());
 
-        // IRON HILLS — stone + gravel flecks, secondary noise
+        // ── IRON HILLS ──────────────────────────────────────────────────
+        // Avg surface Y ≈ 91.  Stone face starts at Y 88 (very rocky biome).
         register("iron_hills", BiomeConfig.builder()
-                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState(),  3,
-                                Blocks.GRAVEL.defaultBlockState(), 2),
+                .patch(PatchEntry.of(Blocks.STONE.defaultBlockState(),         3,
+                                Blocks.GRAVEL.defaultBlockState(),        2),
                         -0.06, 0.08)
                 .secondary()
-                .stoneAbove(110)
+                .stoneAbove(88)
                 .build());
 
-        // SHEEPSHEAD HILLS — sparse gravel flecks
+        // ── SHEEPSHEAD HILLS ─────────────────────────────────────────────
+        // Avg surface Y ≈ 83.  Sparse gravel — open wind-blown downs.
         register("sheepshead_hills", BiomeConfig.builder()
                 .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState()), -0.04, 0.10)
                 .secondary()
                 .build());
+
+        // ── RIVER ───────────────────────────────────────────────────────
+        // Average bed Y ≈ 60 (3 below sea).  LOTR rivers have a gravel/sand
+        // bottom — apply it over a wide noise range so the whole riverbed
+        // is gravel-covered, not just scattered patches.
+        register("river", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        3,
+                                Blocks.SAND.defaultBlockState(),          1),
+                        -0.60, 0.60)
+                .build());
+
+        // ── NECK RIVER ──────────────────────────────────────────────────
+        // Neck swamp channels: muddy clay-and-gravel bottom.
+        register("neck_river", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState(),        2,
+                                Blocks.CLAY.defaultBlockState(),          1),
+                        -0.60, 0.60)
+                .build());
+
+        // ── FROZEN RIVER ─────────────────────────────────────────────────
+        // Frozen channels: gravel bottom under the ice.
+        register("frozen_river", BiomeConfig.builder()
+                .patch(PatchEntry.of(Blocks.GRAVEL.defaultBlockState()), -0.60, 0.60)
+                .build());
     }
 
-    // ── Public API ────────────────────────────────────────────────────────
+    // ── Public API ─────────────────────────────────────────────────────────
 
     private static void register(String name, BiomeConfig config) { REGISTRY.put(name, config); }
 

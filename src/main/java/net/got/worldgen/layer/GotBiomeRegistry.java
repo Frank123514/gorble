@@ -10,18 +10,34 @@ import net.minecraft.world.level.biome.Biome;
  * Central registry of GoT biome metadata used by the layer system.
  *
  * <p>Assigns stable integer IDs to each biome. Depth and scale values are
- * taken directly from {@link net.got.worldgen.GotBiomeDensityParams} so
- * terrain character matches the original GoT design.
+ * set to their <b>LOTR Renewed-equivalent</b> values so the terrain character
+ * of each GoT biome directly matches its Middle-earth counterpart.
+ *
+ * <h3>Depth / Scale convention (LOTR Renewed style)</h3>
+ * <p>These are the same dimensionless values used by LOTR Renewed 1.16.5.
+ * They feed directly into {@link net.got.worldgen.GotChunkGenerator}'s
+ * {@code terrainGradient} function unchanged.
+ *
+ * <pre>
+ *  depth =  0.0  → average surface at sea level (Y 63)
+ *  depth =  0.125→ gentle plains  ~Y 71  (Rohan / Westlands)
+ *  depth =  0.30 → rolling hills  ~Y 79  (Barrow-downs)
+ *  depth =  0.55 → significant hills ~Y 91 (Emyn Muil)
+ *  depth =  1.10 → tall mountains ~Y 116 (Misty Mountains)
+ *  depth =  1.40 → extreme peaks  ~Y 128 (Frostfangs / Caradhras)
+ *  depth = -0.05 → river channel  ~Y 60  (3 below sea — LOTR river style)
+ *  depth = -0.30 → inland lake    ~Y 56
+ *  depth = -0.70 → ocean floor    ~Y 43
+ *  depth = -1.20 → deep abyss     ~Y 29
+ *
+ *  scale: larger = hillier / more noise variation:
+ *    0.01–0.05 = nearly flat (rivers, wetlands)
+ *    0.10–0.20 = gentle plains
+ *    0.25–0.40 = hills
+ *    0.50–0.70 = mountains
+ * </pre>
  *
  * <p><b>Do not reorder the ID constants</b> — doing so scrambles existing worlds.
- *
- * <h3>Depth/scale convention</h3>
- * <p>These use the LOTR Renewed vanilla convention, NOT block-Y coordinates:
- * <pre>
- *   vanilla_depth = (blockY - 64) / 17.0f   (approximate)
- *   vanilla_scale = blockAmplitude / 55.0f  (approximate)
- * </pre>
- * Converted from GotBiomeDensityParams values (which are in block units).
  */
 public final class GotBiomeRegistry {
 
@@ -43,7 +59,6 @@ public final class GotBiomeRegistry {
     public static final int ID_RIVER            = 13;
     public static final int ID_NECK_RIVER       = 14;
     public static final int ID_FROZEN_RIVER     = 15;
-    // These are derived/rare — not in major seed list
     public static final int ID_IRON_HILLS       = 16;
     public static final int ID_SHEEPSHEAD_HILLS = 17;
     public static final int ID_LAKE             = 18;
@@ -54,79 +69,88 @@ public final class GotBiomeRegistry {
     // ── Registry paths ────────────────────────────────────────────────────
 
     private static final String[] PATHS = {
-        /* 0  */ "north",
-        /* 1  */ "barrowlands",
-        /* 2  */ "haunted_forest",
-        /* 3  */ "wolfswood",
-        /* 4  */ "ironwood",
-        /* 5  */ "north_hills",
-        /* 6  */ "north_mountains",
-        /* 7  */ "always_winter",
-        /* 8  */ "frostfangs",
-        /* 9  */ "stony_shore",
-        /* 10 */ "neck",
-        /* 11 */ "ocean",
-        /* 12 */ "deep_ocean",
-        /* 13 */ "river",
-        /* 14 */ "neck_river",
-        /* 15 */ "frozen_river",
-        /* 16 */ "iron_hills",
-        /* 17 */ "sheepshead_hills",
-        /* 18 */ "lake",
-        /* 19 */ "frozen_lake",
+            /* 0  */ "north",
+            /* 1  */ "barrowlands",
+            /* 2  */ "haunted_forest",
+            /* 3  */ "wolfswood",
+            /* 4  */ "ironwood",
+            /* 5  */ "north_hills",
+            /* 6  */ "north_mountains",
+            /* 7  */ "always_winter",
+            /* 8  */ "frostfangs",
+            /* 9  */ "stony_shore",
+            /* 10 */ "neck",
+            /* 11 */ "ocean",
+            /* 12 */ "deep_ocean",
+            /* 13 */ "river",
+            /* 14 */ "neck_river",
+            /* 15 */ "frozen_river",
+            /* 16 */ "iron_hills",
+            /* 17 */ "sheepshead_hills",
+            /* 18 */ "lake",
+            /* 19 */ "frozen_lake",
     };
 
     /** Major biomes that can be randomly seeded during classic generation. */
     public static final int[] MAJOR_IDS = {
-        ID_NORTH, ID_BARROWLANDS, ID_HAUNTED_FOREST, ID_WOLFSWOOD,
-        ID_IRONWOOD, ID_NORTH_HILLS, ID_NORTH_MOUNTAINS, ID_ALWAYS_WINTER,
-        ID_FROSTFANGS, ID_STONY_SHORE, ID_NECK,
-        ID_IRON_HILLS, ID_SHEEPSHEAD_HILLS,
+            ID_NORTH, ID_BARROWLANDS, ID_HAUNTED_FOREST, ID_WOLFSWOOD,
+            ID_IRONWOOD, ID_NORTH_HILLS, ID_NORTH_MOUNTAINS, ID_ALWAYS_WINTER,
+            ID_FROSTFANGS, ID_STONY_SHORE, ID_NECK,
+            ID_IRON_HILLS, ID_SHEEPSHEAD_HILLS,
     };
 
-    // ── Terrain depth and scale ───────────────────────────────────────────
-    // Converted from GotBiomeDensityParams block-Y values using:
-    //   depth = (blockDepth - 64) / 17f
-    //   scale = blockScale / 55f
-    // This preserves the original GoT terrain character in the LOTR formula.
+    // ── Terrain depth and scale — LOTR Renewed equivalents ───────────────
+    //
+    //  LOTR Renewed analogues used as reference:
+    //   North        ≈ Rohan / Eriador plains
+    //   Barrowlands  ≈ Barrow-downs
+    //   Wolfswood    ≈ Mirkwood (forest edge)
+    //   Ironwood     ≈ Fangorn (lower slopes)
+    //   North Hills  ≈ Emyn Muil
+    //   N. Mountains ≈ Misty Mountains
+    //   Always Winter≈ Forodwaith plateau
+    //   Frostfangs   ≈ Forodwaith extreme peaks / Caradhras
+    //   Neck         ≈ Dagorlad / bog lowlands
 
     private static final float[] DEPTH = new float[COUNT];
     private static final float[] SCALE = new float[COUNT];
 
     static {
-        // Land — source values from GotBiomeDensityParams
-        set(ID_NORTH,            d(70),  s(15));   // rolling plains
-        set(ID_BARROWLANDS,      d(75),  s(35));   // gentle barrow hills
-        set(ID_HAUNTED_FOREST,   d(70),  s(18));   // eerily flat dark forest
-        set(ID_WOLFSWOOD,        d(74),  s(22));   // dense forested slopes
-        set(ID_IRONWOOD,         d(76),  s(25));   // forested hill country
-        set(ID_NORTH_HILLS,      d(88),  s(35));   // pronounced hill range
-        set(ID_NORTH_MOUNTAINS,  d(120), s(75));   // tall mountain range
-        set(ID_ALWAYS_WINTER,    d(85),  s(28));   // frozen high plateau
-        set(ID_FROSTFANGS,       d(135), s(90));   // extreme jagged peaks
-        set(ID_STONY_SHORE,      d(66),  s(12));   // coastal rock shelves
-        set(ID_NECK,             d(62),  s(8));    // near-sea-level wetlands
-        set(ID_IRON_HILLS,       d(88),  s(35));   // iron-rich hill range
-        set(ID_SHEEPSHEAD_HILLS, d(78),  s(25));   // rounded sheep hills
-        // Water
-        set(ID_OCEAN,            d(45),  s(5));    // open ocean floor
-        set(ID_DEEP_OCEAN,       d(35),  s(6));    // abyssal depths
-        set(ID_RIVER,            d(55),  s(3));    // shallow river bed
-        set(ID_NECK_RIVER,       d(55),  s(3));    // neck wetland channels
-        set(ID_FROZEN_RIVER,     d(55),  s(3));    // frozen river bed
-        set(ID_LAKE,             d(48),  s(4));    // inland lake
-        set(ID_FROZEN_LAKE,      d(48),  s(4));    // frozen inland lake
+        // depth / scale — direct LOTR Renewed biome JSON equivalents
+        //                              depth    scale
+        set(ID_NECK,              -0.050f,  0.050f);  // near-sea wetland marshes
+        set(ID_STONY_SHORE,        0.000f,  0.120f);  // coastal rock shelf at sea level
+        set(ID_HAUNTED_FOREST,     0.100f,  0.120f);  // eerily flat dark forest
+        set(ID_NORTH,              0.350f,  0.050f);  // rolling plains (Rohan equivalent)
+        set(ID_WOLFSWOOD,          0.350f,  0.050f);  // dense forested rolling slopes
+        set(ID_IRONWOOD,           0.350f,  0.050f);  // forested hill country
+        set(ID_BARROWLANDS,        0.400f,  0.100f);  // barrow-mound hill country
+        set(ID_SHEEPSHEAD_HILLS,   0.350f,  0.280f);  // rounded open sheepland hills
+        set(ID_ALWAYS_WINTER,      0.500f,  0.250f);  // frozen high plateau (Forodwaith)
+        set(ID_NORTH_HILLS,        0.550f,  0.350f);  // significant hills (Emyn Muil)
+        set(ID_IRON_HILLS,         0.550f,  0.350f);  // iron-rich hill range
+        set(ID_NORTH_MOUNTAINS,    1.100f,  0.550f);  // tall mountains (Misty Mountains)
+        set(ID_FROSTFANGS,         1.400f,  0.650f);  // extreme jagged peaks (Caradhras)
+
+        // ── Water — all below sea level ───────────────────────────────────
+        //
+        // River depth -0.05 → average bed Y≈60 (3 blocks below sea).
+        // scale 0.025 makes the gradient very steep → sharp channel 1–6 blocks
+        // wide, exactly matching LOTR Renewed's narrow river appearance.
+        set(ID_RIVER,             -0.050f,  0.025f);  // standard river channel
+        set(ID_NECK_RIVER,        -0.050f,  0.025f);  // neck wetland channel
+        set(ID_FROZEN_RIVER,      -0.050f,  0.025f);  // frozen river channel
+
+        set(ID_LAKE,              -0.300f,  0.030f);  // inland lake (~8 blocks deep)
+        set(ID_FROZEN_LAKE,       -0.300f,  0.030f);  // frozen inland lake
+
+        set(ID_OCEAN,             -0.700f,  0.050f);  // open ocean floor
+        set(ID_DEEP_OCEAN,        -1.200f,  0.060f);  // abyssal depths
     }
-
-    /** Converts a block-Y depth value to LOTR vanilla depth convention. */
-    private static float d(float blockY) { return (blockY - 64f) / 17f; }
-
-    /** Converts a block-amplitude scale value to LOTR vanilla scale convention. */
-    private static float s(float blockAmp) { return Math.max(0.01f, blockAmp / 55f); }
 
     private static void set(int id, float depth, float scale) {
         DEPTH[id] = depth;
-        SCALE[id] = scale;
+        SCALE[id] = Math.max(0.005f, scale);
     }
 
     // ── Accessors ─────────────────────────────────────────────────────────
@@ -142,33 +166,29 @@ public final class GotBiomeRegistry {
 
     public static boolean isWater(int id) {
         return isSea(id)
-            || id == ID_LAKE || id == ID_FROZEN_LAKE
-            || id == ID_RIVER || id == ID_NECK_RIVER || id == ID_FROZEN_RIVER;
+                || id == ID_LAKE || id == ID_FROZEN_LAKE
+                || id == ID_RIVER || id == ID_NECK_RIVER || id == ID_FROZEN_RIVER;
     }
 
     public static int getRiverFor(int landId) {
         return switch (landId) {
-            case ID_NECK                       -> ID_NECK_RIVER;
+            case ID_NECK                          -> ID_NECK_RIVER;
             case ID_ALWAYS_WINTER, ID_FROSTFANGS -> ID_FROZEN_RIVER;
-            default                            -> ID_RIVER;
+            default                               -> ID_RIVER;
         };
     }
 
     public static int getShoreFor(int landId) {
-        // All GoT coastal biomes currently use stony_shore
         return ID_STONY_SHORE;
     }
 
     /** Returns a sub-biome replacement ID, or -1 to keep the base. */
     public static int getSubtype(int baseId, float f) {
-        // wolfswood → ironwood at 15% chance
         if (baseId == ID_WOLFSWOOD && f < 0.15f) return ID_IRONWOOD;
         return -1;
     }
 
     // ── Resource key helpers ──────────────────────────────────────────────
-    // NOTE: these do NOT call Registry.getHolder() — biome holders are looked
-    // up at query time from the locationToHolder map in GotBiomeSource.
 
     public static ResourceLocation locationFor(int id) {
         if (id < 0 || id >= COUNT) id = ID_NORTH;
