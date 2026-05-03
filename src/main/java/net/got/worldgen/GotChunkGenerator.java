@@ -2,9 +2,6 @@ package net.got.worldgen;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.got.worldgen.layer.GotBiomeRegistry;
-import net.got.worldgen.layer.GotSubBiomeSampler;
-import net.got.worldgen.surface.GotBiomeSurfaces;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
@@ -21,406 +18,355 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Chunk generator using the LOTR Renewed terrain algorithm, ported to 1.21.4.
+ * Chunk generator for the GoT mod.
+ *
+ * <p>Pixel-based terrain with Gaussian-blended height transitions between biomes.
+ * Each block's height is computed by sampling neighboring pixels in a Gaussian
+ * window, blending base heights and scales smoothly across biome boundaries.
+ * Rivers and oceans stay where the biomemap says they are, but their edges
+ * transition smoothly into land.
  */
 public final class GotChunkGenerator extends ChunkGenerator {
 
-    public static final int SEA_LEVEL = 63;
+    public static final int SEA_LEVEL = 61;
 
-    private static final int NOISE_SIZE_XZ = 4;
-    private static final int NOISE_SIZE_Y  = 48;
-    private static final int CELL_H = 4;
-    private static final int CELL_V = 8;
+    // ── Gaussian noise/height sampling parameters ─────────────────────────
 
-    private static final int SAMPLE_RADIUS = 6;
-    private static final int SAMPLE_WIDTH  = 13;
-    private static final float[] BIOME_SIGNIFICANCE = new float[SAMPLE_WIDTH * SAMPLE_WIDTH];
+    private static final int   SAMPLE_RADIUS = 6;
+    private static final float GAUSSIAN_SIGMA   = 0.8f;
+    private static final float GAUSSIAN_INV_2S2 = 1f / (2f * GAUSSIAN_SIGMA * GAUSSIAN_SIGMA);
 
-    static {
-        for (int dz = -SAMPLE_RADIUS; dz <= SAMPLE_RADIUS; dz++) {
-            for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx++) {
-                float f = 10.0f / Mth.sqrt(dx * dx + dz * dz + 0.2f);
-                BIOME_SIGNIFICANCE[(dz + SAMPLE_RADIUS) * SAMPLE_WIDTH + (dx + SAMPLE_RADIUS)] = f;
-            }
-        }
-    }
+    // ── Simplex noise parameters ────────────────────────────────────────────
 
-    // ── Codec ─────────────────────────────────────────────────────────────
+    private static final float NOISE_FREQ = 1f / 80f;
+    private static final int   NOISE_SEED = 0x5EED;
 
-    public static final MapCodec<GotChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(i ->
-            i.group(
-                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
-                    NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settings)
-            ).apply(i, GotChunkGenerator::new));
+    // ── Codec / vanilla delegate ────────────────────────────────────────────
 
     private final Holder<NoiseGeneratorSettings> settings;
     private final NoiseBasedChunkGenerator vanilla;
-    private volatile boolean seedPushed = false;
 
-    public GotChunkGenerator(BiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings) {
+    private final int spawnPixelX;
+    private final int spawnPixelZ;
+
+    private static int configuredSpawnPixelX = -1;
+    private static int configuredSpawnPixelZ = -1;
+
+    public static final MapCodec<GotChunkGenerator> CODEC =
+            RecordCodecBuilder.mapCodec(i -> i.group(
+                    BiomeSource.CODEC.fieldOf("biome_source")
+                            .forGetter(ChunkGenerator::getBiomeSource),
+                    NoiseGeneratorSettings.CODEC.fieldOf("settings")
+                            .forGetter(g -> g.settings),
+                    com.mojang.serialization.Codec.INT
+                            .optionalFieldOf("spawn_pixel_x", -1)
+                            .forGetter(g -> g.spawnPixelX),
+                    com.mojang.serialization.Codec.INT
+                            .optionalFieldOf("spawn_pixel_z", -1)
+                            .forGetter(g -> g.spawnPixelZ)
+            ).apply(i, GotChunkGenerator::new));
+
+    public GotChunkGenerator(BiomeSource biomeSource,
+                             Holder<NoiseGeneratorSettings> settings,
+                             int spawnPixelX,
+                             int spawnPixelZ) {
         super(biomeSource);
-        this.settings = settings;
-        this.vanilla  = new NoiseBasedChunkGenerator(biomeSource, settings);
+        this.settings     = settings;
+        this.spawnPixelX  = spawnPixelX;
+        this.spawnPixelZ  = spawnPixelZ;
+        this.vanilla      = new NoiseBasedChunkGenerator(biomeSource, settings);
+        configuredSpawnPixelX = spawnPixelX;
+        configuredSpawnPixelZ = spawnPixelZ;
     }
+
+    public static int getConfiguredSpawnPixelX() { return configuredSpawnPixelX; }
+    public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     @Override
     protected @NotNull MapCodec<? extends ChunkGenerator> codec() { return CODEC; }
 
-    // ── Terrain generation ────────────────────────────────────────────────
+    // ── Block fill ──────────────────────────────────────────────────────────
 
     @Override
     public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(
             @NotNull Blender blender, @NotNull RandomState random,
             @NotNull StructureManager structures, @NotNull ChunkAccess chunk) {
 
-        // Derive and push the level seed to the biome source on first chunk gen.
-        // Same pattern as the original GotChunkGenerator — use getOrCreateRandomFactory
-        // to extract a stable long that varies per world seed.
-        if (!seedPushed) {
-            long s = random.getOrCreateRandomFactory(net.got.GotMod.id("layer_seed"))
-                    .at(new BlockPos(0, 0, 0)).nextLong();
-            GotBiomeSource.setSeed(s);
-            seedPushed = true;
-        }
+        NoiseSettings noise = settings.value().noiseSettings();
+        int minY = noise.minY();
+        int maxY = minY + noise.height();
+        int sea  = getSeaLevel();
+        ChunkPos pos = chunk.getPos();
 
-        NoiseSettings ns = settings.value().noiseSettings();
-        int minY  = ns.minY();
-        int maxY  = minY + ns.height();
-        int sea   = getSeaLevel();
-        ChunkPos cp = chunk.getPos();
-        int baseX = cp.getMinBlockX();
-        int baseZ = cp.getMinBlockZ();
-
-        // Pre-warm the layer cache for the region this chunk will sample.
-        // The 13×13 biome window is centred on each noise column, so we need
-        // (chunkNoiseMin - SAMPLE_RADIUS) .. (chunkNoiseMax + SAMPLE_RADIUS).
-        if (getBiomeSource() instanceof GotBiomeSource gbs) {
-            int noiseMinX = (baseX >> 2) - SAMPLE_RADIUS - 1;
-            int noiseMinZ = (baseZ >> 2) - SAMPLE_RADIUS - 1;
-            int noiseMaxX = (baseX >> 2) + NOISE_SIZE_XZ + SAMPLE_RADIUS + 1;
-            int noiseMaxZ = (baseZ >> 2) + NOISE_SIZE_XZ + SAMPLE_RADIUS + 1;
-            gbs.prewarm(noiseMinX, noiseMinZ, noiseMaxX, noiseMaxZ);
-        }
-
-        int COLS = NOISE_SIZE_XZ + 1;
-        int ROWS = NOISE_SIZE_Y  + 1;
-
-        double[][][] grid = new double[COLS][COLS][ROWS];
-        for (int cx = 0; cx < COLS; cx++) {
-            for (int cz = 0; cz < COLS; cz++) {
-                int noiseX = (baseX >> 2) + cx;
-                int noiseZ = (baseZ >> 2) + cz;
-                double[] col = buildNoiseColumn(noiseX, noiseZ, random);
-                for (int cy = 0; cy < ROWS; cy++) {
-                    grid[cx][cz][cy] = (cy < col.length) ? col[cy] : -30.0;
-                }
-            }
-        }
-
-        BlockPos.MutableBlockPos mp = new BlockPos.MutableBlockPos();
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
-                int   cx = lx / CELL_H;
-                int   cz = lz / CELL_H;
-                float tx = (lx % CELL_H) / (float) CELL_H;
-                float tz = (lz % CELL_H) / (float) CELL_H;
+                int wx = pos.getBlockX(lx);
+                int wz = pos.getBlockZ(lz);
+                int surfaceY = computeSurfaceY(wx, wz);
 
                 for (int y = minY; y < maxY; y++) {
-                    int   cy = (y - minY) / CELL_V;
-                    float ty = ((y - minY) % CELL_V) / (float) CELL_V;
-                    if (cy >= NOISE_SIZE_Y) break;
-
-                    double density = trilinear(tx, ty, tz,
-                            grid[cx    ][cz    ][cy    ], grid[cx + 1][cz    ][cy    ],
-                            grid[cx    ][cz + 1][cy    ], grid[cx + 1][cz + 1][cy    ],
-                            grid[cx    ][cz    ][cy + 1], grid[cx + 1][cz    ][cy + 1],
-                            grid[cx    ][cz + 1][cy + 1], grid[cx + 1][cz + 1][cy + 1]);
-
                     BlockState state;
-                    if      (density > 0.0) state = Blocks.STONE.defaultBlockState();
+                    if      (y <= surfaceY) state = Blocks.STONE.defaultBlockState();
                     else if (y <= sea)      state = settings.value().defaultFluid();
                     else                    state = Blocks.AIR.defaultBlockState();
-
-                    chunk.setBlockState(mp.set(lx, y, lz), state, false);
-                }
-            }
-        }
-        // Classic 5-layer bedrock: minY is always bedrock, minY+1..minY+4 are
-        // bedrock with decreasing probability. fillFromNoise previously never
-        // wrote BEDROCK at all, leaving an open void at the bottom of the world.
-        WorldgenRandom bedrockRng = new WorldgenRandom(RandomSource.create());
-        bedrockRng.setDecorationSeed(0L, baseX, baseZ);
-        for (int lx = 0; lx < 16; lx++) {
-            for (int lz = 0; lz < 16; lz++) {
-                for (int layer = 0; layer < 5; layer++) {
-                    int y = minY + layer;
-                    if (layer == 0 || bedrockRng.nextInt(layer + 1) == 0) {
-                        chunk.setBlockState(mp.set(lx, y, lz), Blocks.BEDROCK.defaultBlockState(), false);
-                    }
+                    chunk.setBlockState(new BlockPos(lx, y, lz), state, false);
                 }
             }
         }
         return CompletableFuture.completedFuture(chunk);
     }
 
-    // ── LOTR noise column ─────────────────────────────────────────────────
-
-    private double[] buildNoiseColumn(int noiseX, int noiseZ, RandomState random) {
-        double[] col    = new double[NOISE_SIZE_Y + 1];
-
-        // ── Domain warp ───────────────────────────────────────────────────
-        // LOTR Renewed displaced biome sample coordinates with a slow-frequency
-        // offset noise before sampling depth/scale. This breaks up the axis-aligned
-        // stairstep pattern produced by the zoom layers, giving rivers and biome
-        // borders organic curved shapes rather than a visible pixel grid.
-        //
-        // Warp frequency 0.004 in noise-cell space = one full warp cycle every
-        // ~250 noise cells = ~1000 blocks.  Amplitude ±3 cells = ±12 blocks —
-        // enough to fully destroy the stairstep while keeping biome blobs intact.
-        NormalNoise warpNoise = random.getOrCreateNoise(Noises.OFFSET);
-        double wf = 0.004;
-        int warpX = (int) Math.round(warpNoise.getValue(noiseX * wf,  0.0, noiseZ * wf) * 3.0);
-        int warpZ = (int) Math.round(warpNoise.getValue(noiseX * wf, 97.3, noiseZ * wf) * 3.0);
-
-        double[] ds     = getBiomeDepthScale(noiseX, noiseZ, warpX, warpZ);
-        double avgDepth = ds[0];
-        double avgScale = ds[1];
-
-        // Two noise passes blended by a third — matches LOTR's OctavesNoiseGenerator
-        // Using SURFACE and SURFACE_SECONDARY which are available in 1.21.4
-        NormalNoise n1 = random.getOrCreateNoise(Noises.SURFACE);
-        NormalNoise n2 = random.getOrCreateNoise(Noises.SURFACE_SECONDARY);
-
-        double scaleXZ = 684.412 / 80.0;
-        double scaleY  = 684.412 / 5000.0;
-
-        for (int y = 0; y <= NOISE_SIZE_Y; y++) {
-            double wx = noiseX * scaleXZ;
-            double wy = y      * scaleY;
-            double wz = noiseZ * scaleXZ;
-
-            double raw1  = n1.getValue(wx,       wy,       wz);
-            double raw2  = n2.getValue(wx * 0.5, wy * 0.5, wz * 0.5);
-            // Use n1 at a different scale as the blender weight (avoids needing a 3rd noise key)
-            double blend = Mth.clamp(n1.getValue(wx * 0.25, 10.0, wz * 0.25) * 0.5 + 0.5, 0.0, 1.0);
-            // NormalNoise amplitude is ≈ ±128 (matching LOTR's OctavesNoiseGenerator).
-            // The original code divided by 512 which is a ~96× amplitude mismatch,
-            // flattening terrain almost to zero and causing everything to be underwater.
-            double raw   = Mth.lerp(blend, raw1, raw2) * 128.0;
-
-            double d = raw - terrainGradient(avgDepth, avgScale, y);
-
-            if (y > NOISE_SIZE_Y - 4) d = Mth.clampedLerp(d,  3.0, (y - (NOISE_SIZE_Y - 4)) / -10.0);
-            else if (y < 1)           d = Mth.clampedLerp(d, -30.0, (1.0 - y));
-
-            col[y] = d;
-        }
-        return col;
-    }
-
-    private static double terrainGradient(double depth, double scale, int y) {
-        final double seaRef = (SEA_LEVEL - (-64)) / (double) CELL_V;
-
-        // LOTR Renewed clamps the effective scale to [0.20, 1.0] before dividing.
-        // Without the clamp, scale=0.55 produces a density gradient 5.5× steeper
-        // than scale=0.1, creating needle spikes.  Clamping at 0.20 limits the
-        // steepest possible gradient to 5× plains, giving LOTR's characteristic
-        // wide merged ridge-lines rather than isolated spikes.
-        double effectiveScale = Mth.clamp(scale, 0.20, 1.0);
-
-        double d = (y - seaRef - depth * seaRef / 8.0 * 4.0) * 12.0 * 128.0 / 256.0 / effectiveScale;
-        if (d < 0.0) d *= 4.0;
-        return d;
-    }
-
-    // ── 13×13 biome depth/scale sampling ─────────────────────────────────
-
-    private double[] getBiomeDepthScale(int noiseX, int noiseZ, int warpX, int warpZ) {
-        float totalScale = 0, totalDepth = 0, totalSig = 0;
-        // Central sample also uses the warp offset so the self-weight is consistent
-        float centralDepth = getBiomeDepth(noiseX + warpX, noiseZ + warpZ);
-
-        for (int dk = -SAMPLE_RADIUS; dk <= SAMPLE_RADIUS; dk++) {
-            for (int dl = -SAMPLE_RADIUS; dl <= SAMPLE_RADIUS; dl++) {
-                // Apply the domain warp to every sample in the 13×13 window.
-                // All samples shift together so the biome weighting kernel is
-                // displaced as a whole — this is what LOTR Renewed did.
-                float depth = getBiomeDepth(noiseX + dk + warpX, noiseZ + dl + warpZ);
-                float scale = getBiomeScale(noiseX + dk + warpX, noiseZ + dl + warpZ);
-                if (scale == 0f) scale = 1e-7f;
-
-                int   idx    = (dk + SAMPLE_RADIUS) * SAMPLE_WIDTH + (dl + SAMPLE_RADIUS);
-                float sig    = BIOME_SIGNIFICANCE[idx];
-                float modSig = sig / (depth + 2.0f);
-                if (depth > centralDepth) modSig /= 2.0f;
-                if (depth < -0.2f && depth > -1.0f) modSig *= 5.0f;
-
-                totalScale += scale * modSig;
-                totalDepth += depth * modSig;
-                totalSig   += modSig;
-            }
-        }
-
-        float avgDepth = totalDepth / totalSig;
-        float avgScale = totalScale / totalSig;
-
-        if (centralDepth < 0f && avgDepth >= 0f) {
-            avgDepth = Mth.lerp(0.5f, avgDepth, centralDepth / 2.0f);
-        }
-        avgDepth = (avgDepth * 4.0f - 1.0f) / 8.0f;
-
-        return new double[]{ avgDepth, Math.max(0.001, avgScale) };
-    }
-
-    private float getBiomeDepth(int nx, int nz) {
-        return GotSubBiomeSampler.effectiveDepth(sampleBiomeId(nx, nz), nx * CELL_H, nz * CELL_H);
-    }
-
-    private float getBiomeScale(int nx, int nz) {
-        return GotSubBiomeSampler.effectiveScale(sampleBiomeId(nx, nz), nx * CELL_H, nz * CELL_H);
-    }
-
-    private int sampleBiomeId(int nx, int nz) {
-        if (getBiomeSource() instanceof GotBiomeSource gbs) return gbs.sampleId(nx, nz);
-        return GotBiomeRegistry.ID_NORTH;
-    }
-
-    // ── Surface builder ───────────────────────────────────────────────────
-
     @Override
     public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureManager structures,
                              @NotNull RandomState random, @NotNull ChunkAccess chunk) {
         vanilla.buildSurface(region, structures, random, chunk);
-        applyGotSurface(region, chunk, random);
     }
 
-    private void applyGotSurface(WorldGenRegion region, ChunkAccess chunk, RandomState random) {
-        NormalNoise surfNoise = random.getOrCreateNoise(Noises.SURFACE);
-        NormalNoise secNoise  = random.getOrCreateNoise(Noises.SURFACE_SECONDARY);
-        ChunkPos pos = chunk.getPos();
-        int baseX = pos.getMinBlockX();
-        int baseZ = pos.getMinBlockZ();
-        RandomSource rand = random.getOrCreateRandomFactory(net.got.GotMod.id("surface"))
-                .at(new BlockPos(baseX, 0, baseZ));
+    // ── Surface Y computation ─────────────────────────────────────────────
 
-        for (int lx = 0; lx < 16; lx++) {
-            for (int lz = 0; lz < 16; lz++) {
-                int wx = baseX + lx;
-                int wz = baseZ + lz;
-                int sy = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
+    /**
+     * Computes terrain surface Y at (worldX, worldZ) with Gaussian-blended
+     * biome height transitions.
+     *
+     * <p>GAUSSIAN BLENDING APPROACH:
+     * <ol>
+     *   <li>Sample all pixels within a Gaussian window around the target point.</li>
+     *   <li>Blend base heights using Gaussian weights — smooth transitions at biome edges.</li>
+     *   <li>Blend noise scales using Gaussian weights — consistent terrain roughness.</li>
+     *   <li>Apply Simplex noise on top of the blended base height.</li>
+     *   <li>Water biomes (rivers, oceans, lakes) are blended separately so their
+     *       beds transition smoothly into land, but water surface stays at sea level.</li>
+     * </ol>
+     */
+    public static int computeSurfaceY(int worldX, int worldZ) {
+        if (!BiomemapLoader.isLoaded()) return SEA_LEVEL;
 
-                var biomeKey = region.getBiome(new BlockPos(wx, sy, wz)).unwrapKey();
-                if (biomeKey.isEmpty()) continue;
-                GotBiomeSurfaces.BiomeConfig cfg =
-                        GotBiomeSurfaces.getConfig(biomeKey.get().location().getPath());
-                if (cfg == null) continue;
+        float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getWidth()  * 0.5f;
+        float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getHeight() * 0.5f;
 
-                BlockPos bp = new BlockPos(lx, sy, lz);
-                BlockState top = chunk.getBlockState(bp);
-                if (!top.isSolid()) continue;
+        int icx = (int) Math.floor(rawCx);
+        int icz = (int) Math.floor(rawCz);
 
-                if (cfg.stoneAbove >= 0 && sy >= cfg.stoneAbove) {
-                    chunk.setBlockState(bp, Blocks.STONE.defaultBlockState(), false);
-                } else if (cfg.snowBlockAbove >= 0 && sy >= cfg.snowBlockAbove) {
-                    chunk.setBlockState(bp, Blocks.SNOW_BLOCK.defaultBlockState(), false);
-                } else if (cfg.powderSnowAbove >= 0 && sy >= cfg.powderSnowAbove) {
-                    chunk.setBlockState(bp, Blocks.POWDER_SNOW.defaultBlockState(), false);
-                }
+        // ── Gaussian window sampling ──────────────────────────────────────
+        // Blend base heights and scales from all nearby pixels
+        float blendedBaseY   = 0f;
+        float blendedScale   = 0f;
+        float waterWeight    = 0f;
+        float landWeight     = 0f;
+        float totalWeight    = 0f;
 
-                if (cfg.podzol && top.is(Blocks.GRASS_BLOCK)
-                        && secNoise.getValue(wx, 12, wz) > 0.5) {
-                    int r = rand.nextInt(100);
-                    if      (r < 45) chunk.setBlockState(bp, Blocks.PODZOL.defaultBlockState(), false);
-                    else if (r < 60) chunk.setBlockState(bp, Blocks.COARSE_DIRT.defaultBlockState(), false);
-                }
+        for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx++) {
+            for (int dz = -SAMPLE_RADIUS; dz <= SAMPLE_RADIUS; dz++) {
+                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz);
+                GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
 
-                if (cfg.hasPatch()) {
-                    double nv = cfg.useSecondary
-                            ? secNoise.getValue(wx, 0, wz)
-                            : surfNoise.getValue(wx, 0, wz);
-                    if (nv >= cfg.minThreshold && nv <= cfg.maxThreshold) {
-                        BlockState cur = chunk.getBlockState(bp);
-                        if (!cur.is(Blocks.SNOW_BLOCK) && !cur.is(Blocks.POWDER_SNOW)
-                                && !cur.is(Blocks.BEDROCK)) {
-                            chunk.setBlockState(bp, cfg.mainPatch.pick(rand), false);
-                        }
-                    }
+                float ddx   = (icx + dx) - rawCx;
+                float ddz   = (icz + dz) - rawCz;
+                float dist2 = ddx * ddx + ddz * ddz;
+                float w = (float) Math.exp(-dist2 * GAUSSIAN_INV_2S2);
+
+                totalWeight  += w;
+                blendedBaseY += p.baseY() * w;
+                blendedScale += p.scale() * w;
+
+                if (p.isWater()) {
+                    waterWeight += w;
+                } else {
+                    landWeight += w;
                 }
             }
         }
+
+        if (totalWeight <= 0f) {
+            return SEA_LEVEL;
+        }
+
+        float avgBaseY = blendedBaseY / totalWeight;
+        float avgScale = blendedScale / totalWeight;
+
+        // ── Water/land mix factor ─────────────────────────────────────────
+        // Determines how "watery" this location is (0 = pure land, 1 = pure water)
+        float waterMix = waterWeight / totalWeight;
+
+        // ── Noise ─────────────────────────────────────────────────────────
+        float n = simplexNoise(worldX * NOISE_FREQ, worldZ * NOISE_FREQ, NOISE_SEED);
+
+        // ── Height computation with blended transitions ─────────────────
+        if (waterMix > 0.85f) {
+            // Deep water: river/ocean bed with small noise variation
+            float waterBed = SEA_LEVEL - 3f;
+            return Mth.floor(waterBed + n * avgScale * 0.2f);
+        } else if (waterMix > 0.15f) {
+            // Transition zone: blend between land and water heights
+            // Smooth interpolation factor (0 at 15% water, 1 at 85% water)
+            float t = (waterMix - 0.15f) / 0.70f;
+            // Land height from blended base + noise
+            float landHeight = avgBaseY + n * avgScale;
+            landHeight = Math.max(landHeight, SEA_LEVEL);
+            // Water bed height
+            float waterBed = SEA_LEVEL - 3f + n * avgScale * 0.2f;
+            // Smooth blend between the two
+            float blendedHeight = Mth.lerp(t, landHeight, waterBed);
+            return Mth.floor(blendedHeight);
+        } else {
+            // Pure land: blended base height + noise, clamped above sea level
+            float landHeight = avgBaseY + n * avgScale;
+            return Mth.floor(Math.max(landHeight, SEA_LEVEL));
+        }
     }
 
-    // ── Boilerplate ───────────────────────────────────────────────────────
+    // ── Simplex noise (2D) ────────────────────────────────────────────────
+
+    private static final int[] PERM = new int[512];
+    private static final int[] PERM_MOD = new int[512];
+    private static final float F2 = 0.5f * ((float) Math.sqrt(3.0) - 1.0f);
+    private static final float G2 = (3.0f - (float) Math.sqrt(3.0)) / 6.0f;
+
+    static {
+        int[] p = new int[256];
+        java.util.Random rand = new java.util.Random(NOISE_SEED);
+        for (int i = 0; i < 256; i++) p[i] = i;
+        for (int i = 255; i > 0; i--) {
+            int j = rand.nextInt(i + 1);
+            int tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+        }
+        for (int i = 0; i < 512; i++) {
+            PERM[i] = p[i & 255];
+            PERM_MOD[i] = PERM[i] % 12;
+        }
+    }
+
+    private static final float[] GRAD3 = {
+            1f,  1f,  0f,   -1f,  1f,  0f,    1f, -1f,  0f,   -1f, -1f,  0f,
+            1f,  0f,  1f,   -1f,  0f,  1f,    1f,  0f, -1f,   -1f,  0f, -1f,
+            0f,  1f,  1f,    0f, -1f,  1f,    0f,  1f, -1f,    0f, -1f, -1f
+    };
+
+    private static float simplexNoise(float xin, float zin, int seed) {
+        float s = (xin + zin) * F2;
+        int i = fastFloor(xin + s);
+        int j = fastFloor(zin + s);
+        float t = (i + j) * G2;
+        float X0 = i - t;
+        float Z0 = j - t;
+        float x0 = xin - X0;
+        float z0 = zin - Z0;
+
+        int i1, j1;
+        if (x0 > z0) { i1 = 1; j1 = 0; }
+        else         { i1 = 0; j1 = 1; }
+
+        float x1 = x0 - i1 + G2;
+        float z1 = z0 - j1 + G2;
+        float x2 = x0 - 1.0f + 2.0f * G2;
+        float z2 = z0 - 1.0f + 2.0f * G2;
+
+        int ii = i & 255;
+        int jj = j & 255;
+        int gi0 = PERM_MOD[ii + PERM[jj]];
+        int gi1 = PERM_MOD[ii + i1 + PERM[jj + j1]];
+        int gi2 = PERM_MOD[ii + 1 + PERM[jj + 1]];
+
+        float n0 = 0f, n1 = 0f, n2 = 0f;
+        float t0 = 0.5f - x0 * x0 - z0 * z0;
+        if (t0 >= 0f) {
+            t0 *= t0;
+            n0 = t0 * t0 * dot(GRAD3, gi0 * 3, x0, z0);
+        }
+        float t1 = 0.5f - x1 * x1 - z1 * z1;
+        if (t1 >= 0f) {
+            t1 *= t1;
+            n1 = t1 * t1 * dot(GRAD3, gi1 * 3, x1, z1);
+        }
+        float t2 = 0.5f - x2 * x2 - z2 * z2;
+        if (t2 >= 0f) {
+            t2 *= t2;
+            n2 = t2 * t2 * dot(GRAD3, gi2 * 3, x2, z2);
+        }
+
+        return 70.0f * (n0 + n1 + n2);
+    }
+
+    private static int fastFloor(float x) {
+        int xi = (int) x;
+        return x < xi ? xi - 1 : xi;
+    }
+
+    private static float dot(float[] g, int off, float x, float z) {
+        return g[off] * x + g[off + 2] * z;
+    }
+
+    // ── ChunkGenerator boilerplate ──────────────────────────────────────────
 
     @Override
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Types type,
-                             @NotNull LevelHeightAccessor level, @NotNull RandomState random) {
-        // blockY ≈ 63 + depth * 63.5  (derived from terrainGradient: surface at y_noise = seaRef + depth*seaRef/2,
-        // blockY = minY + CELL_V * y_noise = -64 + 8*(15.875 + depth*7.9375) = 63 + depth*63.5)
-        float depth = GotBiomeRegistry.getDepth(sampleBiomeId(x >> 2, z >> 2));
-        return Mth.clamp(Math.round(63.0f + depth * 63.5f), level.getMinY(), level.getMaxY());
+                             @NotNull LevelHeightAccessor level,
+                             @NotNull RandomState random) {
+        return computeSurfaceY(x, z);
     }
 
     @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z,
                                               @NotNull LevelHeightAccessor level,
                                               @NotNull RandomState random) {
-        int minY  = level.getMinY();
-        int sea   = getSeaLevel();
-        int surfY = getBaseHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, level, random);
+        int minY    = level.getMinY();
+        int surface = computeSurfaceY(x, z);
+        int sea     = getSeaLevel();
         BlockState[] states = new BlockState[level.getHeight()];
         for (int i = 0; i < states.length; i++) {
             int y = minY + i;
-            if      (y < surfY) states[i] = Blocks.STONE.defaultBlockState();
-            else if (y <= sea)  states[i] = settings.value().defaultFluid();
-            else                states[i] = Blocks.AIR.defaultBlockState();
+            if      (y <= surface) states[i] = Blocks.STONE.defaultBlockState();
+            else if (y <= sea)     states[i] = settings.value().defaultFluid();
+            else                   states[i] = Blocks.AIR.defaultBlockState();
         }
         return new NoiseColumn(minY, states);
     }
 
     @Override
     public void applyCarvers(@NotNull WorldGenRegion region, long seed,
-                             @NotNull RandomState random, @NotNull BiomeManager biomes,
-                             @NotNull StructureManager structures, @NotNull ChunkAccess chunk) {
-        vanilla.applyCarvers(region, seed, random, biomes, structures, chunk);
+                             @NotNull RandomState random,
+                             @NotNull BiomeManager biomeManager,
+                             @NotNull StructureManager structures,
+                             @NotNull ChunkAccess chunk) {
+        vanilla.applyCarvers(region, seed, random, biomeManager, structures, chunk);
     }
 
     @Override
     public void spawnOriginalMobs(@NotNull WorldGenRegion region) {
-        ChunkPos cp = region.getCenter();
-        Holder<Biome> b = region.getBiome(cp.getWorldPosition().atY(region.getMaxY() - 1));
-        WorldgenRandom rng = new WorldgenRandom(RandomSource.create());
-        rng.setDecorationSeed(region.getSeed(), cp.getMinBlockX(), cp.getMinBlockZ());
-        NaturalSpawner.spawnMobsForChunkGeneration(region, b, cp, rng);
+        ChunkPos pos = region.getCenter();
+        Holder<Biome> b = region.getBiome(pos.getWorldPosition().atY(region.getMaxY() - 1));
+        WorldgenRandom rand = new WorldgenRandom(RandomSource.create());
+        rand.setDecorationSeed(region.getSeed(), pos.getMinBlockX(), pos.getMinBlockZ());
+        NaturalSpawner.spawnMobsForChunkGeneration(region, b, pos, rand);
     }
+
+    @Override public int getSeaLevel()  { return SEA_LEVEL; }
+    @Override public int getMinY()      { return settings.value().noiseSettings().minY(); }
+    @Override public int getGenDepth()  { return settings.value().noiseSettings().height(); }
 
     @Override
-    public void addDebugScreenInfo(@NotNull List<String> info,
-                                   @NotNull RandomState random, @NotNull BlockPos pos) {
-        int id = sampleBiomeId(pos.getX() >> 2, pos.getZ() >> 2);
-        info.add("GoT Biome: " + GotBiomeRegistry.locationFor(id).getPath());
+    public void addDebugScreenInfo(java.util.List<String> info,
+                                   RandomState random, BlockPos pos) {
+        if (!BiomemapLoader.isLoaded()) return;
+
+        int cx = Math.round(pos.getX() / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getWidth()  * 0.5f);
+        int cz = Math.round(pos.getZ() / (float) BiomemapLoader.MAP_SCALE
+                + BiomemapLoader.getHeight() * 0.5f);
+        int color = BiomemapLoader.getRawPixel(cx, cz);
+        GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
+        int surfY = computeSurfaceY(pos.getX(), pos.getZ());
+
+        info.add(String.format(
+                "[GoT] Y=%d  base=%.0f  scale=%.2f  %s  sea=%d  px=(%d,%d)",
+                surfY, p.baseY(), p.scale(), p.isWater() ? "WATER" : "land",
+                SEA_LEVEL, cx, cz));
     }
-
-    @Override public int getSeaLevel() { return SEA_LEVEL; }
-    @Override public int getMinY()     { return settings.value().noiseSettings().minY(); }
-    @Override public int getGenDepth() { return settings.value().noiseSettings().height(); }
-
-    // ── Trilinear interpolation ───────────────────────────────────────────
-
-    private static double trilinear(float tx, float ty, float tz,
-                                    double d000, double d100, double d010, double d110,
-                                    double d001, double d101, double d011, double d111) {
-        return lerp(ty,
-                lerp(tz, lerp(tx, d000, d100), lerp(tx, d010, d110)),
-                lerp(tz, lerp(tx, d001, d101), lerp(tx, d011, d111)));
-    }
-
-    private static double lerp(double t, double a, double b) { return a + t * (b - a); }
 }

@@ -1,51 +1,53 @@
 package net.got.worldgen;
 
 import com.mojang.logging.LogUtils;
-import net.got.worldgen.layer.GotMapLayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.Map;
+
 /**
- * Server reload listener that (re-)loads {@code biomemap.png} and pushes a
- * freshly built {@link GotMapLayer} into {@link GotBiomeSource}.
- *
- * <p><b>History:</b> the original GoT code loaded the biomemap here via a now-
- * deleted {@code BiomemapLoader}. A previous refactor replaced the body with
- * no-op stubs and a comment claiming "the loader was removed". This broke biome
- * placement: every world generated with random biomes instead of the hand-crafted
- * Westeros geography painted in {@code biomemap.png}. This class re-implements
- * the missing load.
- *
- * <p>Loading is split across {@link #prepare} (done off-thread, reads pixels)
- * and {@link #apply} (on-thread, pushes the layer to {@link GotBiomeSource}).
+ * Loads {@code biomemap.png} and {@code biome_colors.json} off-thread,
+ * then pushes both into their respective static stores on the main thread.
  */
-public class MapReloadListener extends SimplePreparableReloadListener<GotMapLayer.PreparedMap> {
+public class MapReloadListener extends SimplePreparableReloadListener<MapReloadListener.Prepared> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    record Prepared(int[][] pixels, int width, int height,
+                    Map<Integer, GotBiomeTerrainParams.Params> params) {}
+
     @Override
-    protected @NotNull GotMapLayer.PreparedMap prepare(@NotNull ResourceManager manager,
-                                                       @NotNull ProfilerFiller profiler) {
+    protected @NotNull Prepared prepare(@NotNull ResourceManager manager,
+                                        @NotNull ProfilerFiller profiler) {
         profiler.push("got/biomemap_load");
         try {
-            LOGGER.info("[GoT Worldgen] Loading biomemap.png…");
-            return GotMapLayer.prepare(manager);
+            int[][] pixels = BiomemapLoader.load(manager);
+            int w = 0, h = 0;
+            if (pixels != null) { w = pixels.length; h = pixels[0].length; }
+            Map<Integer, GotBiomeTerrainParams.Params> params = GotBiomeTerrainParams.load(manager);
+            return new Prepared(pixels, w, h, params);
         } finally {
             profiler.pop();
         }
     }
 
     @Override
-    protected void apply(@NotNull GotMapLayer.PreparedMap prepared,
+    protected void apply(@NotNull Prepared prepared,
                          @NotNull ResourceManager manager,
                          @NotNull ProfilerFiller profiler) {
         profiler.push("got/biomemap_apply");
         try {
-            GotBiomeSource.setMapLayer(prepared);
-            LOGGER.info("[GoT Worldgen] biomemap.png applied to GotBiomeSource.");
+            if (prepared.pixels() != null)
+                BiomemapLoader.apply(prepared.pixels(), prepared.width(), prepared.height());
+            GotBiomeTerrainParams.apply(prepared.params());
+            // Notify GotBiomeSource so getNoiseBiome re-reads the new data.
+            GotBiomeSource.onMapReloaded();
+            LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors)",
+                    prepared.width(), prepared.height(), prepared.params().size());
         } finally {
             profiler.pop();
         }
