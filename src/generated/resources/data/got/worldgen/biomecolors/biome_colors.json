@@ -1,22 +1,394 @@
 {
-  "#949038": { "biome": "got:north",           "base_height":  8,   "height_variation":  4  },
-  "#ADA942": { "biome": "got:barrowlands",      "base_height": 10,   "height_variation":  8  },
-  "#92B0AC": { "biome": "got:stony_shore",      "base_height":  4,   "height_variation":  3  },
-  "#808F81": { "biome": "got:north_hills",      "base_height": 22,   "height_variation": 18  },
-  "#2F4A33": { "biome": "got:neck",             "base_height":  2,   "height_variation":  2  },
-  "#02450D": { "biome": "got:ironwood",         "base_height":  8,   "height_variation":  6  },
-  "#047D17": { "biome": "got:wolfswood",        "base_height":  8,   "height_variation":  4  },
-  "#00229D": { "biome": "got:ocean",            "base_height": -17,  "height_variation":  4  },
-  "#110751": { "biome": "got:deep_ocean",       "base_height": -33,  "height_variation":  6  },
-  "#2D6796": { "biome": "got:river",            "base_height": -30,   "height_variation":  1  },
-  "#35A180": { "biome": "got:neck_river",       "base_height": -3,   "height_variation":  1  },
-  "#4B91E6": { "biome": "got:frozen_river",     "base_height": -3,   "height_variation":  1  },
-  "#BBCCCD": { "biome": "got:frostfangs",       "base_height": 30,   "height_variation": 45  },
-  "#FFFFFF": { "biome": "got:always_winter",    "base_height": 30,   "height_variation": 16  },
-  "#A5B7B9": { "biome": "got:north_mountains",  "base_height": 60,   "height_variation": 35  },
-  "#537053": { "biome": "got:haunted_forest",   "base_height":  7,   "height_variation":  3  },
-  "#6B5C3E": { "biome": "got:iron_hills",       "base_height": 22,   "height_variation": 20  },
-  "#C8B87A": { "biome": "got:sheepshead_hills", "base_height": 14,   "height_variation": 16  },
-  "#1A5C8F": { "biome": "got:lake",             "base_height": -12,  "height_variation":  2  },
-  "#4B91C0": { "biome": "got:frozen_lake",      "base_height": -12,  "height_variation":  2  }
+  "#949038": {
+    "biome": "got:north",
+    "base_height": 71,
+    "height_variation": 4,
+    "slope_blocks": [
+      {
+        "max_angle": 30,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 45,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#ADA942": {
+    "biome": "got:barrowlands",
+    "base_height": 73,
+    "height_variation": 8,
+    "slope_blocks": [
+      {
+        "max_angle": 28,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 36,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 44,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#92B0AC": {
+    "biome": "got:stony_shore",
+    "base_height": 67,
+    "height_variation": 3,
+    "slope_blocks": [
+      {
+        "max_angle": 20,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:stone"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:cobblestone"
+      }
+    ]
+  },
+  "#808F81": {
+    "biome": "got:north_hills",
+    "base_height": 85,
+    "height_variation": 18,
+    "slope_blocks": [
+      {
+        "max_angle": 28,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 35,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 42,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#2F4A33": {
+    "biome": "got:neck",
+    "base_height": 65,
+    "height_variation": 2,
+    "slope_blocks": [
+      {
+        "max_angle": 30,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 45,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#02450D": {
+    "biome": "got:ironwood",
+    "base_height": 71,
+    "height_variation": 6,
+    "slope_blocks": [
+      {
+        "max_angle": 30,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 45,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#047D17": {
+    "biome": "got:wolfswood",
+    "base_height": 71,
+    "height_variation": 4,
+    "slope_blocks": [
+      {
+        "max_angle": 30,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 45,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#00229D": {
+    "biome": "got:ocean",
+    "base_height": 35,
+    "height_variation": 4,
+    "slope_blocks": []
+  },
+  "#110751": {
+    "biome": "got:deep_ocean",
+    "base_height": 25,
+    "height_variation": 6,
+    "slope_blocks": []
+  },
+  "#2D6796": {
+    "biome": "got:river",
+    "base_height": 45,
+    "height_variation": 1,
+    "slope_blocks": []
+  },
+  "#35A180": {
+    "biome": "got:neck_river",
+    "base_height": 45,
+    "height_variation": 1,
+    "slope_blocks": [
+      {
+        "max_angle": 20,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:sand"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#4B91E6": {
+    "biome": "got:frozen_river",
+    "base_height": 45,
+    "height_variation": 1,
+    "slope_blocks": [
+      {
+        "max_angle": 20,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:ice"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#BBCCCD": {
+    "biome": "got:frostfangs",
+    "base_height": 120,
+    "height_variation": 90,
+    "slope_blocks": [
+      {
+        "max_angle": 25,
+        "block": "minecraft:snow_block"
+      },
+      {
+        "max_angle": 35,
+        "block": "minecraft:stone"
+      },
+      {
+        "max_angle": 50,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:cobblestone"
+      }
+    ]
+  },
+  "#FFFFFF": {
+    "biome": "got:always_winter",
+    "base_height": 75,
+    "height_variation": 10,
+    "slope_blocks": [
+      {
+        "max_angle": 30,
+        "block": "minecraft:snow_block"
+      },
+      {
+        "max_angle": 50,
+        "block": "minecraft:snow_block"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#A5B7B9": {
+    "biome": "got:north_mountains",
+    "base_height": 100,
+    "height_variation": 70,
+    "slope_blocks": [
+      {
+        "max_angle": 25,
+        "block": "minecraft:snow_block"
+      },
+      {
+        "max_angle": 33,
+        "block": "minecraft:stone"
+      },
+      {
+        "max_angle": 42,
+        "block": "minecraft:andesite"
+      },
+      {
+        "max_angle": 56,
+        "block": "minecraft:tuff"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:cobblestone"
+      }
+    ]
+  },
+  "#537053": {
+    "biome": "got:haunted_forest",
+    "base_height": 70,
+    "height_variation": 3,
+    "slope_blocks": [
+      {
+        "max_angle": 30,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 45,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#6B5C3E": {
+    "biome": "got:iron_hills",
+    "base_height": 85,
+    "height_variation": 20,
+    "slope_blocks": [
+      {
+        "max_angle": 28,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 34,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 55,
+        "block": "minecraft:stone"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:andesite"
+      }
+    ]
+  },
+  "#C8B87A": {
+    "biome": "got:sheepshead_hills",
+    "base_height": 77,
+    "height_variation": 16,
+    "slope_blocks": [
+      {
+        "max_angle": 28,
+        "block": "minecraft:grass_block"
+      },
+      {
+        "max_angle": 35,
+        "block": "minecraft:coarse_dirt"
+      },
+      {
+        "max_angle": 42,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#1A5C8F": {
+    "biome": "got:lake",
+    "base_height": 51,
+    "height_variation": 2,
+    "slope_blocks": [
+      {
+        "max_angle": 20,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:sand"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#4B91C0": {
+    "biome": "got:frozen_lake",
+    "base_height": 51,
+    "height_variation": 2,
+    "slope_blocks": [
+      {
+        "max_angle": 20,
+        "block": "minecraft:gravel"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:ice"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:stone"
+      }
+    ]
+  },
+  "#A0D1CE": {
+    "biome": "got:the_wall",
+    "base_height": 150,
+    "height_variation": 0,
+    "slope_blocks": [
+      {
+        "max_angle": 20,
+        "block": "minecraft:packed_ice"
+      },
+      {
+        "max_angle": 40,
+        "block": "minecraft:packed_ice"
+      },
+      {
+        "max_angle": 90,
+        "block": "minecraft:packed_ice"
+      }
+    ]
+  }
 }

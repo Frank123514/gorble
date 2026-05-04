@@ -26,7 +26,7 @@ public final class BiomemapLoader {
             ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/biomemap.png");
 
     /** World blocks represented by one pixel. */
-    public static final int MAP_SCALE = 96;
+    public static final int MAP_SCALE = 46;
 
     // ── Static pixel store ─────────────────────────────────────────────────
 

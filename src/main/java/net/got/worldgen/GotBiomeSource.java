@@ -18,26 +18,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Biome source that reads the static pixel store in {@link BiomemapLoader}.
- * Pure pixel-based: each block gets the biome of the center pixel.
- * No water/land blending. Rivers stay exactly where the biomemap says.
+ * Biome source kept in exact sync with {@link GotChunkGenerator}'s SDF pipeline.
+ *
+ * Pipeline:
+ *   1. Domain warp  — identical simplex offsets to computeSurfaceY
+ *   2. riverSdf     — same call the terrain makes; inside channel → river biome,
+ *                     inside bank zone → centre-pixel class decides
+ *   3. Gaussian vote — outside any river, weighted color vote picks land/ocean biome
  */
 public final class GotBiomeSource extends BiomeSource {
 
-    // ── Reload signal from MapReloadListener ───────────────────────────────
-
     private static volatile int reloadGeneration = 0;
-
-    /** Called by MapReloadListener after both stores have been updated. */
     public static void onMapReloaded() { reloadGeneration++; }
 
-    // ── Gaussian parameters (for noise scale only, NOT biome blending) ──
-
-    private static final int   SAMPLE_RADIUS = 6;
+    // Must stay identical to GotChunkGenerator
+    private static final int   SAMPLE_RADIUS    = 6;
     private static final float GAUSSIAN_SIGMA   = 0.8f;
     private static final float GAUSSIAN_INV_2S2 = 1f / (2f * GAUSSIAN_SIGMA * GAUSSIAN_SIGMA);
-
-    // ── Codec ──────────────────────────────────────────────────────────────
+    private static final float RIVER_HALF_WIDTH = 28f;
+    private static final float RIVER_BANK_WIDTH = 22f;
+    private static final int   RIVER_SEARCH_RADIUS = 3;
 
     public static final MapCodec<GotBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -48,8 +48,6 @@ public final class GotBiomeSource extends BiomeSource {
                     holderSet -> new GotBiomeSource(holderSet.stream().collect(Collectors.toList()))
             ))
     );
-
-    // ── Fields ─────────────────────────────────────────────────────────────
 
     private final List<Holder<Biome>>                  biomes;
     private final Map<ResourceLocation, Holder<Biome>> locationToHolder;
@@ -67,8 +65,6 @@ public final class GotBiomeSource extends BiomeSource {
         this.fallback = Objects.requireNonNull(fb, "GotBiomeSource: biome list is empty!");
     }
 
-    // ── BiomeSource ────────────────────────────────────────────────────────
-
     @Override protected @NotNull MapCodec<? extends BiomeSource> codec() { return CODEC; }
     @Override protected @NotNull Stream<Holder<Biome>> collectPossibleBiomes() { return biomes.stream(); }
 
@@ -76,67 +72,48 @@ public final class GotBiomeSource extends BiomeSource {
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NotNull Sampler sampler) {
         if (!BiomemapLoader.isLoaded()) return fallback;
 
-        // Convert noise coords (1 unit = 4 blocks) to world-block coords, then pixel-space.
-        int worldX = x * 4;
-        int worldZ = z * 4;
-        float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE
-                + BiomemapLoader.getWidth()  * 0.5f;
-        float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE
-                + BiomemapLoader.getHeight() * 0.5f;
+        int worldX = x << 2;
+        int worldZ = z << 2;
 
-        int icx = (int) Math.floor(rawCx);
-        int icz = (int) Math.floor(rawCz);
+        float rawCx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float rawCz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
-        // ── PURE PIXEL: center pixel decides biome ────────────────────────
-        int centerColor = BiomemapLoader.getRawPixel(icx, icz);
-        GotBiomeTerrainParams.Params centerParams = GotBiomeTerrainParams.forColor(centerColor);
+        // 1. Domain warp — same call as computeSurfaceY
+        float[] wc = GotChunkGenerator.warpCoord(rawCx, rawCz);
+        float warpedCx = wc[0];
+        float warpedCz = wc[1];
+        int icx = (int) Math.floor(warpedCx);
+        int icz = (int) Math.floor(warpedCz);
 
-        // For the transition band, we do a simple Gaussian vote to pick the
-        // dominant nearby biome, but we do NOT blend land into water.
-        float waterWeight = 0f;
-        float totalWeight = 0f;
-        java.util.HashMap<Integer, Float> landVotes  = new java.util.HashMap<>();
-        java.util.HashMap<Integer, Float> waterVotes = new java.util.HashMap<>();
+        // 2. SDF river check — same function as terrain pipeline
+        float riverDist = GotChunkGenerator.riverSdf(warpedCx, warpedCz);
 
+        if (riverDist < RIVER_HALF_WIDTH) {
+            // Inside channel: use nearest river pixel's biome
+            return nearestRiverBiome(icx, icz, warpedCx, warpedCz);
+
+        } else if (riverDist < RIVER_HALF_WIDTH + RIVER_BANK_WIDTH) {
+            // Bank zone: let centre pixel class decide to avoid biome flicker
+            if (GotBiomeTerrainParams.forColor(BiomemapLoader.getRawPixel(icx, icz)).isRiver()) {
+                return nearestRiverBiome(icx, icz, warpedCx, warpedCz);
+            }
+        }
+
+        // 3. Gaussian vote for land / ocean / lake
+        HashMap<Integer, Float> votes = new HashMap<>();
         for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx++) {
             for (int dz = -SAMPLE_RADIUS; dz <= SAMPLE_RADIUS; dz++) {
-                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz);
-                GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
-
-                float ddx   = (icx + dx) - rawCx;
-                float ddz   = (icz + dz) - rawCz;
-                float dist2 = ddx * ddx + ddz * ddz;
-                float w = (float) Math.exp(-dist2 * GAUSSIAN_INV_2S2);
-
-                totalWeight += w;
-                if (p.isWater()) {
-                    waterWeight += w;
-                    waterVotes.merge(color, w, Float::sum);
-                } else {
-                    landVotes.merge(color, w, Float::sum);
-                }
+                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz) & 0xFFFFFF;
+                float ddx = (icx + dx) - warpedCx;
+                float ddz = (icz + dz) - warpedCz;
+                float w   = (float) Math.exp(-(ddx*ddx + ddz*ddz) * GAUSSIAN_INV_2S2);
+                votes.merge(color, w, Float::sum);
             }
         }
 
-        // ── CENTER PIXEL DECIDES THE CLASS ────────────────────────────────
-        // If center is land, we stay land unless we're deep in water.
-        // If center is water, we stay water unless we're deep on land.
-        boolean pickWaterBiome = centerParams.isWater();
-
-        java.util.HashMap<Integer, Float> votes = pickWaterBiome ? waterVotes : landVotes;
-
-        int bestColor = -1;
-        float bestWeight = -1f;
+        int bestColor = -1; float bestW = -1f;
         for (var e : votes.entrySet()) {
-            if (e.getValue() > bestWeight) {
-                bestWeight = e.getValue();
-                bestColor = e.getKey();
-            }
-        }
-
-        // Fallback: if no votes in the winning class, use centre pixel
-        if (bestColor == -1) {
-            bestColor = centerColor;
+            if (e.getValue() > bestW) { bestW = e.getValue(); bestColor = e.getKey(); }
         }
 
         ResourceLocation loc = colorToBiome(bestColor);
@@ -147,7 +124,25 @@ public final class GotBiomeSource extends BiomeSource {
         return fallback;
     }
 
-    // ── Color → biome name ─────────────────────────────────────────────────
+    private Holder<Biome> nearestRiverBiome(int icx, int icz, float warpedCx, float warpedCz) {
+        float nearestSq = Float.MAX_VALUE;
+        int nearestColor = -1;
+        for (int dx = -RIVER_SEARCH_RADIUS; dx <= RIVER_SEARCH_RADIUS; dx++) {
+            for (int dz = -RIVER_SEARCH_RADIUS; dz <= RIVER_SEARCH_RADIUS; dz++) {
+                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz);
+                if (!GotBiomeTerrainParams.forColor(color).isRiver()) continue;
+                float ddx = (icx + dx + 0.5f) - warpedCx;
+                float ddz = (icz + dz + 0.5f) - warpedCz;
+                float sq  = ddx*ddx + ddz*ddz;
+                if (sq < nearestSq) { nearestSq = sq; nearestColor = color; }
+            }
+        }
+        if (nearestColor == -1) return fallback;
+        ResourceLocation loc = colorToBiome(nearestColor);
+        if (loc == null) return fallback;
+        Holder<Biome> h = locationToHolder.get(loc);
+        return h != null ? h : fallback;
+    }
 
     private static volatile Map<Integer, ResourceLocation> colorToBiomeMap = Map.of();
     private static volatile int colorMapGen = -1;
@@ -157,16 +152,12 @@ public final class GotBiomeSource extends BiomeSource {
         Map<Integer, ResourceLocation> map = colorToBiomeMap;
         ResourceLocation direct = map.get(rgb & 0xFFFFFF);
         if (direct != null) return direct;
-
-        int bestDist = Integer.MAX_VALUE;
-        ResourceLocation best = null;
+        int bestDist = Integer.MAX_VALUE; ResourceLocation best = null;
         int r = (rgb >> 16) & 0xFF, g = (rgb >> 8) & 0xFF, b = rgb & 0xFF;
         for (var e : map.entrySet()) {
-            int k  = e.getKey();
-            int dr = r - ((k >> 16) & 0xFF);
-            int dg = g - ((k >>  8) & 0xFF);
-            int db = b - ( k        & 0xFF);
-            int d  = dr*dr + dg*dg + db*db;
+            int k = e.getKey();
+            int dr = r-((k>>16)&0xFF), dg = g-((k>>8)&0xFF), db = b-(k&0xFF);
+            int d = dr*dr + dg*dg + db*db;
             if (d < bestDist) { bestDist = d; best = e.getValue(); }
         }
         return best;
@@ -175,7 +166,6 @@ public final class GotBiomeSource extends BiomeSource {
     private static void refreshColorMap() {
         int gen = reloadGeneration;
         if (colorMapGen == gen) return;
-
         Map<Integer, ResourceLocation> fresh = new LinkedHashMap<>();
         fresh.put(0x949038, GotMod.id("north"));
         fresh.put(0xADA942, GotMod.id("barrowlands"));
@@ -197,7 +187,6 @@ public final class GotBiomeSource extends BiomeSource {
         fresh.put(0xC8B87A, GotMod.id("sheepshead_hills"));
         fresh.put(0x1A5C8F, GotMod.id("lake"));
         fresh.put(0x4B91C0, GotMod.id("frozen_lake"));
-
         colorToBiomeMap = Collections.unmodifiableMap(fresh);
         colorMapGen = gen;
     }
