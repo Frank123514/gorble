@@ -20,6 +20,8 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -81,32 +83,39 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // ─────────────────────────────────────────────────────────────────────
     // Gaussian biome blending
     // ─────────────────────────────────────────────────────────────────────
-    private static final int   SAMPLE_RADIUS    = 6;
-    private static final float GAUSSIAN_SIGMA   = 0.8f;
-    private static final float GAUSSIAN_INV_2S2 = 1f / (2f * GAUSSIAN_SIGMA * GAUSSIAN_SIGMA);
 
     // ─────────────────────────────────────────────────────────────────────
     // Domain warping — applied before the Gaussian window lookup.
     // Low frequency so the distortion is large-scale (river meander).
     // ─────────────────────────────────────────────────────────────────────
     private static final float WARP_FREQ      = 1f / 340f; // pixel-space frequency
-    private static final float WARP_AMPLITUDE = 2.4f;      // max pixel displacement
+    private static final float WARP_AMPLITUDE = 5.0f;      // max pixel displacement
 
     // ─────────────────────────────────────────────────────────────────────
-    // Fractal / octave Perlin noise  (ME: getPerlinHeight constants)
+    // Terrain Gaussian vote — identical values to GotBiomeSource
     // ─────────────────────────────────────────────────────────────────────
-    private static final float PERLIN_FREQ          = 1f / 210f;
-    private static final float PERLIN_STRETCH_2     = 37f;          // ME's PERLIN_STRETCH_X2
-    private static final float PERLIN_HEIGHT_RANGE  = 53f;          // ME: PERLIN_HEIGHT_RANGE
-    private static final float PERLIN_HEIGHT_OFFSET = 8f;           // ME: PERLIN_HEIGHT_OFFSET
-    private static final float PERLIN_NORMALISER    = 1f + 0.5f + 0.25f + 0.125f;
+    private static final int   TERRAIN_SAMPLE_RADIUS    = 6;
+    private static final float TERRAIN_GAUSSIAN_SIGMA   = 0.8f;
+    private static final float TERRAIN_GAUSSIAN_INV_2S2 = 1f / (2f * TERRAIN_GAUSSIAN_SIGMA * TERRAIN_GAUSSIAN_SIGMA);
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Fractal / octave Simplex noise  (ME: getPerlinHeight constants, exact)
+    // ─────────────────────────────────────────────────────────────────────
+    // ME uses *separate* X and Z stretch values (210 vs 180), replicated here.
+    private static final double PERLIN_STRETCH_X    = 210.0; // ME: PERLIN_STRETCH_X
+    private static final double PERLIN_STRETCH_Z    = 180.0; // ME: PERLIN_STRETCH_Y
+    private static final double PERLIN_STRETCH_2    = 37.0;  // ME: PERLIN_STRETCH_X2 / Y2 (mountain octaves)
+    private static final float  PERLIN_HEIGHT_RANGE  = 53f;  // ME: PERLIN_HEIGHT_RANGE
+    private static final float  PERLIN_HEIGHT_OFFSET = 8f;   // ME: PERLIN_HEIGHT_OFFSET
+    private static final float  PERLIN_NORMALISER    = 1f + 0.5f + 0.25f + 0.125f;
 
     // ─────────────────────────────────────────────────────────────────────
     // Mountain amplification  (ME: MOUNTAIN_EXPONENTIAL_HEIGHT constants)
     // ─────────────────────────────────────────────────────────────────────
-    private static final float MOUNTAIN_THRESHOLD  = SEA_LEVEL + 30f; // ME: MOUNTAIN_START_HEIGHT
+    private static final float MOUNTAIN_THRESHOLD  = SEA_LEVEL + 55f; // only true mountain biomes (base_height ~116+)
     private static final float MOUNTAIN_EXPO       = 1.02f;           // ME: MOUNTAIN_EXPONENTIAL_HEIGHT
-    private static final float MOUNTAIN_NOISE_AMP  = 3.5f;           // ME: MOUNTAIN_HEIGHT_RANGE
+    private static final float MOUNTAIN_NOISE_AMP  = 3.5f;            // ME: MOUNTAIN_HEIGHT_RANGE
+    private static final float WATER_PERLIN_DIVIDER = 3.6f;           // ME: WATER_PERLIN_DIVIDER
 
     // ─────────────────────────────────────────────────────────────────────
     // SDF river carving  (replaces the old waterMix / waterWeight system)
@@ -121,7 +130,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // avgBaseY naturally depresses terrain, then buildSurface fills with water.
     private static final float RIVER_HALF_WIDTH   = 28f; // half-width of carved channel (blocks)
     private static final float RIVER_BANK_WIDTH   = 22f; // smoothstep transition zone (blocks)
-    private static final float RIVER_BED_DEPTH    = 5f;  // blocks below SEA_LEVEL for channel floor
+    private static final float RIVER_BED_DEPTH    = 8f;  // blocks below SEA_LEVEL for channel floor
     private static final float RIVER_BED_NOISE    = 0.18f; // noise fraction added to bed Y variation
     private static final int   RIVER_SEARCH_RADIUS = 3;  // pixel search radius (covers warp+channel)
 
@@ -307,67 +316,78 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     // ═════════════════════════════════════════════════════════════════════
-    // buildSurface — slope-based blocks + ME-style layering
+    // buildSurface — ME slope-map terrain + layering
     // ═════════════════════════════════════════════════════════════════════
 
-    /**
-     * Places surface and sub-surface blocks using:
-     * <ol>
-     *   <li>UNDER_DEPTH blocks of under-material (dirt for grass, self for rock).</li>
-     *   <li>Deepslate in the bottom fraction of the world (ME: DEEPSLATE_LEVEL).</li>
-     *   <li>Water fill up to sea level above submerged terrain.</li>
-     * </ol>
-     */
     @Override
     public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureManager structures,
                              @NotNull RandomState random, @NotNull ChunkAccess chunk) {
-        if (!BiomemapLoader.isLoaded()) {
-            // vanilla.buildSurface intentionally removed — it applies vanilla surface
-            // rules (snow blocks on cold biomes, gravel on rivers) that conflict with ours.
-            return;
-        }
+        if (!BiomemapLoader.isLoaded()) return;
 
         ChunkPos cp  = chunk.getPos();
         int sea      = getSeaLevel();
         int minY     = chunk.getMinY();
         int worldH   = chunk.getHeight();
-        int deepYMax = minY + worldH / 4;  // bottom quarter → deepslate
+        int deepYMax = minY + worldH / 4;
 
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
                 int wx = cp.getBlockX(lx);
                 int wz = cp.getBlockZ(lz);
 
-                int   surfaceY   = computeSurfaceY(wx, wz);
+                float height = computeSurfaceY(wx, wz);
+                int surfaceY = (int) height;
 
-                // Pixel lookup (raw, nearest — domain warp already baked into surfaceY)
+                // ── Gaussian-blended slope map sampling ─────────────────
+                // Same 6-radius Gaussian window used for height blending,
+                // applied to slope-map block selection. This eliminates
+                // the square pixel-edge artefacts on mountain biome borders.
                 float rawCx = wx / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
                 float rawCz = wz / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
-                int color   = BiomemapLoader.getRawPixel(Math.round(rawCx), Math.round(rawCz));
-                GotBiomeTerrainParams.Params params = GotBiomeTerrainParams.forColor(color);
-
-                // ── Surface block ─────────────────────────────────────────
-                // Columns carved by the SDF (inside channel or bank) get river
-                // bed blocks regardless of what the raw pixel says, because the
-                // SDF may have carved a land pixel into the channel.
                 float[] wc  = warpCoord(rawCx, rawCz);
-                float riverDist = riverSdf(wc[0], wc[1]);
+                int icx = (int) Math.floor(wc[0]);
+                int icz = (int) Math.floor(wc[1]);
 
-                // Surface block — height-based only, no slope map.
-                BlockState surfaceBlock;
-                if (surfaceY < sea) {
-                    surfaceBlock = Blocks.GRAVEL.defaultBlockState();
-                } else if (surfaceY >= 115) {
-                    surfaceBlock = Blocks.STONE.defaultBlockState();
-                } else if (surfaceY >= 95) {
-                    surfaceBlock = Blocks.SNOW_BLOCK.defaultBlockState();
-                } else {
-                    surfaceBlock = Blocks.GRASS_BLOCK.defaultBlockState();
+                // Central-difference slope angle — smoother than one-sided 3-block
+                float eastH  = computeSurfaceY(wx + 1, wz);
+                float westH  = computeSurfaceY(wx - 1, wz);
+                float northH = computeSurfaceY(wx, wz - 1);
+                float southH = computeSurfaceY(wx, wz + 1);
+                float ddx = (eastH - westH) / 2f;
+                float ddz = (southH - northH) / 2f;
+                float slopeAngle = (float) Math.toDegrees(Math.atan(Math.sqrt(ddx*ddx + ddz*ddz)));
+
+                // Weighted vote across the Gaussian window for block type
+                HashMap<BlockState, Float> blockVotes = new HashMap<>();
+                float totalWeight = 0f;
+                for (int dx = -TERRAIN_SAMPLE_RADIUS; dx <= TERRAIN_SAMPLE_RADIUS; dx++) {
+                    for (int dz = -TERRAIN_SAMPLE_RADIUS; dz <= TERRAIN_SAMPLE_RADIUS; dz++) {
+                        int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz) & 0xFFFFFF;
+                        float pxDx = (icx + dx) - wc[0];
+                        float pxDz = (icz + dz) - wc[1];
+                        float w = (float) Math.exp(-(pxDx*pxDx + pxDz*pxDz) * TERRAIN_GAUSSIAN_INV_2S2);
+
+                        GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
+                        BlockState block = p.slopeMap().getStateAtAngle(slopeAngle);
+                        blockVotes.merge(block, w, Float::sum);
+                        totalWeight += w;
+                    }
                 }
+
+                // Winner-takes-all (same strategy as GotBiomeSource biome vote)
+                BlockState surfaceBlock = Blocks.GRASS_BLOCK.defaultBlockState();
+                float bestW = -1f;
+                for (var e : blockVotes.entrySet()) {
+                    if (e.getValue() > bestW) {
+                        bestW = e.getValue();
+                        surfaceBlock = e.getKey();
+                    }
+                }
+
+                // Under-surface block (same logic as before)
                 BlockState underBlock;
-                if (surfaceBlock.is(Blocks.GRASS_BLOCK)
-                        || surfaceBlock.is(Blocks.SNOW_BLOCK)
-                        || surfaceBlock.is(Blocks.PODZOL)) {
+                if (surfaceBlock.is(Blocks.GRASS_BLOCK) || surfaceBlock.is(Blocks.PODZOL)
+                        || surfaceBlock.is(Blocks.SNOW_BLOCK)) {
                     underBlock = Blocks.DIRT.defaultBlockState();
                 } else if (surfaceBlock.is(Blocks.SAND)) {
                     underBlock = Blocks.SANDSTONE.defaultBlockState();
@@ -375,28 +395,23 @@ public final class GotChunkGenerator extends ChunkGenerator {
                     underBlock = surfaceBlock;
                 }
 
-                // ── Place block layers ────────────────────────────────────
+                // Under-surface layers + deepslate
                 for (int dy = 0; dy < UNDER_DEPTH; dy++) {
                     int y = surfaceY - dy;
                     if (y >= minY) {
-                        BlockState layer = (y <= deepYMax)
-                                ? Blocks.DEEPSLATE.defaultBlockState()
-                                : underBlock;
-                        chunk.setBlockState(new BlockPos(lx, y, lz), layer, false);
+                        chunk.setBlockState(new BlockPos(lx, y, lz),
+                                y <= deepYMax ? Blocks.DEEPSLATE.defaultBlockState() : underBlock, false);
                     }
                 }
-                int capY = surfaceY + 1;
-                if (capY >= minY && capY < minY + worldH) {
-                    chunk.setBlockState(new BlockPos(lx, capY, lz), surfaceBlock, false);
-                }
 
-                // ── Water fill ────────────────────────────────────────────
-                // Always fill to sea level when below it — covers both carved
-                // river channels (bed < sea) and ocean/lake depressions.
-                for (int y = capY + 1; y <= sea; y++) {
-                    chunk.setBlockState(new BlockPos(lx, y, lz),
-                            settings.value().defaultFluid(), false);
-                }
+                // Surface cap
+                int capY = surfaceY + 1;
+                if (capY >= minY && capY < minY + worldH)
+                    chunk.setBlockState(new BlockPos(lx, capY, lz), surfaceBlock, false);
+
+                // Water fill
+                for (int y = capY + 1; y <= sea; y++)
+                    chunk.setBlockState(new BlockPos(lx, y, lz), settings.value().defaultFluid(), false);
             }
         }
     }
@@ -447,70 +462,78 @@ public final class GotChunkGenerator extends ChunkGenerator {
         int icx = (int) Math.floor(warpedCx);
         int icz = (int) Math.floor(warpedCz);
 
-        // ── 3. Gaussian window + bilinear interpolation ───────────────────
-        // The bilinear pass (ME: getBiomeWeightHeight) runs inside the
-        // Gaussian accumulation: at each integer pixel position we sample
-        // the four surrounding pixel heights and lerp by sub-pixel fraction.
+        // ── 3. Gaussian weighted average ─────────────────────────────────
+        float totalWeight  = 0f;
         float blendedBaseY = 0f;
         float blendedScale = 0f;
-        float totalWeight  = 0f;
-
-        for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx++) {
-            for (int dz = -SAMPLE_RADIUS; dz <= SAMPLE_RADIUS; dz++) {
-                int px = icx + dx;
-                int pz = icz + dz;
-
-                float bilinearBaseY = bilinearSample(px, pz, warpedCx, warpedCz);
-                GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(
-                        BiomemapLoader.getRawPixel(px, pz));
-
-                float ddx   = px - warpedCx;
-                float ddz   = pz - warpedCz;
-                float dist2 = ddx * ddx + ddz * ddz;
-                float w     = (float) Math.exp(-dist2 * GAUSSIAN_INV_2S2);
-
+        for (int dx = -TERRAIN_SAMPLE_RADIUS; dx <= TERRAIN_SAMPLE_RADIUS; dx++) {
+            for (int dz = -TERRAIN_SAMPLE_RADIUS; dz <= TERRAIN_SAMPLE_RADIUS; dz++) {
+                int color = BiomemapLoader.getRawPixel(icx + dx, icz + dz) & 0xFFFFFF;
+                float ddx = (icx + dx) - warpedCx;
+                float ddz = (icz + dz) - warpedCz;
+                float w   = (float) Math.exp(-(ddx*ddx + ddz*ddz) * TERRAIN_GAUSSIAN_INV_2S2);
+                GotBiomeTerrainParams.Params p = GotBiomeTerrainParams.forColor(color);
                 totalWeight  += w;
-                blendedBaseY += bilinearBaseY * w;
+                blendedBaseY += p.baseY() * w;
                 blendedScale += p.scale() * w;
             }
         }
-
-        if (totalWeight <= 0f) return SEA_LEVEL;
-
-        float avgBaseY = blendedBaseY / totalWeight;
-        float avgScale = blendedScale / totalWeight;
+        float avgBaseY    = blendedBaseY / totalWeight;
+        float avgVariation = blendedScale / totalWeight;
 
         // ── 4. Fractal Simplex noise ──────────────────────────────────────
-        float perlin = fractalSimplex2D(worldX, worldZ);
-        float noiseContrib = (perlin - PERLIN_HEIGHT_OFFSET) * (avgScale / PERLIN_HEIGHT_RANGE);
+        // fractalSimplex2D returns [-1,1]. Multiply by the biome's height_variation
+        // (in blocks) to get the actual height offset for this biome.
+        float perlinNorm = fractalSimplex2D(worldX, worldZ); // [-1, 1]
 
-        // ── 5. Mountain amplification ─────────────────────────────────────
+        // Water suppression: flatten noise under deep water
+        float biomeHeight = avgBaseY - SEA_LEVEL;
+        if (biomeHeight < 0) {
+            float divider = Math.max(1f, Math.min(5f, Math.abs(biomeHeight / WATER_PERLIN_DIVIDER)));
+            perlinNorm /= divider;
+        }
+
+        float noiseContrib = perlinNorm * avgVariation;
+
+        // ── 5. Mountain amplification — only for true mountain biomes ─────
+        // Use a high threshold so normal hills don't get exponential boost.
         if (avgBaseY >= MOUNTAIN_THRESHOLD) {
             float mult = (avgBaseY / MOUNTAIN_THRESHOLD) - 1f;
             avgBaseY  += avgBaseY * mult * MOUNTAIN_EXPO;
-            float pn1  = fractalSimplex2D((int)(worldX * 2f / PERLIN_STRETCH_2),
-                    (int)(worldZ * 2f / PERLIN_STRETCH_2));
-            float pn2  = fractalSimplex2D((int)(worldX * 4f / PERLIN_STRETCH_2),
-                    (int)(worldZ * 4f / PERLIN_STRETCH_2));
-            noiseContrib += mult * MOUNTAIN_EXPO * MOUNTAIN_NOISE_AMP
-                    * ((pn1 - PERLIN_HEIGHT_OFFSET) / PERLIN_HEIGHT_RANGE);
-            noiseContrib += mult * (MOUNTAIN_NOISE_AMP * 0.5f)
-                    * ((pn2 - PERLIN_HEIGHT_OFFSET) / PERLIN_HEIGHT_RANGE);
+            float pn1 = (float) simplex2D(worldX / PERLIN_STRETCH_2, worldZ / PERLIN_STRETCH_2);
+            float pn2 = (float) simplex2D(2.0 * worldX / PERLIN_STRETCH_2, 2.0 * worldZ / PERLIN_STRETCH_2);
+            noiseContrib += mult * MOUNTAIN_EXPO * MOUNTAIN_NOISE_AMP * pn1;
+            noiseContrib += mult * (MOUNTAIN_NOISE_AMP * 0.5f) * pn2;
         }
 
         float totalHeight = avgBaseY + noiseContrib;
 
         // ── 6. SDF river carving ──────────────────────────────────────────
+        // Rivers carve a fixed-depth channel regardless of surrounding terrain.
+        // The bed Y is anchored to SEA_LEVEL - RIVER_BED_DEPTH, NOT to the
+        // blended terrain height. Banks rise smoothly from the bed to the
+        // natural terrain, but the channel itself always keeps its depth.
         float riverDist = riverSdf(warpedCx, warpedCz);
         if (riverDist < RIVER_HALF_WIDTH + RIVER_BANK_WIDTH) {
+            // Bed Y is always anchored below sea level — never pulled up by mountains
             float bedY = SEA_LEVEL - RIVER_BED_DEPTH
                     - Math.max(0f, noiseContrib * RIVER_BED_NOISE);
+
             if (riverDist < RIVER_HALF_WIDTH) {
+                // Inside channel: hard floor at bed depth
                 return Mth.floor(bedY);
             } else {
+                // Bank zone: smoothstep from bed to natural terrain, but clamp
+                // so the bank never rises faster than the natural terrain would.
                 float t = (riverDist - RIVER_HALF_WIDTH) / RIVER_BANK_WIDTH;
-                t = t * t * (3f - 2f * t);
-                float bankH = Math.max(totalHeight, SEA_LEVEL + 1f);
+                t = t * t * (3f - 2f * t); // smoothstep
+
+                // The bank rises from bedY toward totalHeight, but we cap it so
+                // rivers in mountains don't get swallowed — the bank maxes out at
+                // a reasonable elevation above the bed, not the full mountain height.
+                float bankMax = Math.max(bedY + 3f, SEA_LEVEL + 2f);
+                float bankH = Math.min(totalHeight, bankMax);
+
                 return Mth.floor(Mth.lerp(t, bedY, bankH));
             }
         }
@@ -562,55 +585,24 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // Bilinear sub-pixel interpolation  (ME: getBiomeWeightHeight)
     // ═════════════════════════════════════════════════════════════════════
 
-    /**
-     * Bilinearly interpolates the biome base height between the four
-     * surrounding biomemap pixels at the given pixel position (px, pz)
-     * using the fractional offset from the warped sample coordinate.
-     *
-     * <p>This matches ME's {@code getBiomeWeightHeight} / {@code getHeightBetween}
-     * pattern exactly.
-     */
-    private static float bilinearSample(int px, int pz, float warpedCx, float warpedCz) {
-        // Four surrounding pixel heights
-        float h00 = baseYForPixel(px,     pz    );
-        float h10 = baseYForPixel(px + 1, pz    );
-        float h01 = baseYForPixel(px,     pz + 1);
-        float h11 = baseYForPixel(px + 1, pz + 1);
-
-        // Sub-pixel fraction (clamped to avoid edge artefacts)
-        float xf = Mth.clamp(warpedCx - px, 0f, 1f);
-        float zf = Mth.clamp(warpedCz - pz, 0f, 1f);
-
-        float hi = Mth.lerp(xf, h00, h10);
-        float lo = Mth.lerp(xf, h01, h11);
-        return Mth.lerp(zf, hi, lo);
-    }
-
-    /** Returns the baseY (SEA_LEVEL + base_height) for a given pixel. */
-    private static float baseYForPixel(int px, int pz) {
-        int color = BiomemapLoader.getRawPixel(px, pz);
-        return GotBiomeTerrainParams.forColor(color).baseY();
-    }
-
     // ═════════════════════════════════════════════════════════════════════
     // ═════════════════════════════════════════════════════════════════════
     // Fractal noise helpers
     // ═════════════════════════════════════════════════════════════════════
 
     /**
-     * Four-octave 2D Simplex noise matching ME's getPerlinHeight structure.
-     * Returns a value in approximately [0, PERLIN_HEIGHT_RANGE].
+     * Four-octave 2D Simplex, normalised to [-1, 1].
+     * height_variation from biome_colors.json is the block amplitude — it gets
+     * multiplied in computeSurfaceY so each biome controls its own roughness.
      */
     private static float fractalSimplex2D(int worldX, int worldZ) {
-        double x = worldX * PERLIN_FREQ;
-        double z = worldZ * PERLIN_FREQ;
-        double n  = 1.000 * simplex2D(x,      z     );
-        n        += 0.500 * simplex2D(x * 2,  z * 2 );
-        n        += 0.250 * simplex2D(x * 4,  z * 4 );
-        n        += 0.125 * simplex2D(x * 8,  z * 8 );
-        n        /= PERLIN_NORMALISER;
-        // Map [-1,1] → [PERLIN_HEIGHT_OFFSET, PERLIN_HEIGHT_OFFSET + PERLIN_HEIGHT_RANGE]
-        return (float)((n + 1.0) * 0.5 * PERLIN_HEIGHT_RANGE + PERLIN_HEIGHT_OFFSET);
+        double x = worldX;
+        double z = worldZ;
+        double n  = 1.000 * simplex2D(x / PERLIN_STRETCH_X,     z / PERLIN_STRETCH_Z    );
+        n        += 0.500 * simplex2D(x * 2 / PERLIN_STRETCH_X, z * 2 / PERLIN_STRETCH_Z);
+        n        += 0.250 * simplex2D(x * 4 / PERLIN_STRETCH_X, z * 4 / PERLIN_STRETCH_Z);
+        n        += 0.125 * simplex2D(x * 8 / PERLIN_STRETCH_X, z * 8 / PERLIN_STRETCH_Z);
+        return (float)(n / PERLIN_NORMALISER); // normalised to [-1, 1]
     }
 
     // ═════════════════════════════════════════════════════════════════════
