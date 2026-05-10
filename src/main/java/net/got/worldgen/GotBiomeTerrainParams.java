@@ -14,12 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
- * Maps biomemap pixel colors to terrain shape parameters used by
- * {@link GotChunkGenerator}.
- *
- * <p>Data is read from {@code biome_colors.json}.  Only {@code base_height}
- * and {@code height_variation} are read — surface block selection is handled
- * entirely by biome JSON surface rules, not by this class.
+ * Maps biomemap pixel colors to terrain shape parameters.
+ * Surface block placement is handled entirely by JSON disk features —
+ * there is no slope-map system in this class.
  */
 public final class GotBiomeTerrainParams {
 
@@ -30,7 +27,8 @@ public final class GotBiomeTerrainParams {
 
     private static volatile Map<Integer, Params> colorToParams = Map.of();
 
-    private static final Params FALLBACK = new Params(71f, 0.5f, false, false);
+    public static final Params FALLBACK =
+            new Params(71f, 4f, false, false, "got:north");
 
     private GotBiomeTerrainParams() {}
 
@@ -39,12 +37,14 @@ public final class GotBiomeTerrainParams {
     /**
      * Terrain shape parameters for one biome.
      *
-     * @param baseY   Absolute surface Y target for this biome.
-     * @param scale   Noise amplitude multiplier (typically 0–1).
+     * @param baseY   Absolute surface Y target.
+     * @param scale   Noise amplitude in blocks (height_variation).
      * @param isWater True for any water biome (ocean, lake, river).
-     * @param isRiver True for narrow river biomes carved by the SDF waterway system.
+     * @param isRiver True for narrow river biomes.
+     * @param biomeId Namespaced biome ID string.
      */
-    public record Params(float baseY, float scale, boolean isWater, boolean isRiver) {}
+    public record Params(float baseY, float scale, boolean isWater, boolean isRiver,
+                         String biomeId) {}
 
     // ── Query ──────────────────────────────────────────────────────────────
 
@@ -73,7 +73,9 @@ public final class GotBiomeTerrainParams {
 
     public static Map<Integer, Params> load(ResourceManager manager) {
         Map<Integer, Params> map = new LinkedHashMap<>();
-        int seaLevel = GotChunkGenerator.SEA_LEVEL;
+        int   seaLevel        = GotChunkGenerator.SEA_LEVEL;
+        float riverThreshold  = seaLevel - BiomemapLoader.MAP_SCALE;
+
         try {
             Optional<Resource> res = manager.getResource(COLORS_LOC);
             if (res.isEmpty()) {
@@ -86,13 +88,17 @@ public final class GotBiomeTerrainParams {
                     int rgb = Integer.parseInt(kv.getKey().replace("#", ""), 16);
                     JsonObject obj = kv.getValue().getAsJsonObject();
 
-                    float baseHeight      = obj.get("base_height").getAsFloat();
-                    float heightVariation = obj.has("height_variation")
-                            ? obj.get("height_variation").getAsFloat() : 0.5f;
-                    boolean isWater = baseHeight < seaLevel;
-                    boolean isRiver = isWater && baseHeight > (seaLevel - 8f);
+                    float  baseHeight      = obj.get("base_height").getAsFloat();
+                    float  heightVariation = obj.has("height_variation")
+                            ? obj.get("height_variation").getAsFloat() : 4f;
+                    String biomeId         = obj.has("biome")
+                            ? obj.get("biome").getAsString() : "got:north";
 
-                    map.put(rgb, new Params(baseHeight, heightVariation, isWater, isRiver));
+                    boolean isWater = baseHeight < seaLevel;
+                    boolean isRiver = isWater && baseHeight > riverThreshold;
+
+                    map.put(rgb, new Params(baseHeight, heightVariation,
+                            isWater, isRiver, biomeId));
                 }
             }
             LOGGER.info("[GoT] Loaded {} terrain param entries", map.size());
@@ -105,4 +111,5 @@ public final class GotBiomeTerrainParams {
     public static void apply(Map<Integer, Params> params) {
         colorToParams = params;
     }
+
 }

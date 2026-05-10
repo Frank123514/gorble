@@ -99,6 +99,11 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_CLAY        = key("disk_clay");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_SAND        = key("disk_sand");
 
+    // Creek features
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_MUD         = key("disk_mud");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_QUAGMIRE    = key("disk_quagmire");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SHORT_REEDS_PATCH = key("short_reeds_patch");
+
     // Rock-pocket ores
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_BASALT_ROCK        = key("ore_basalt_rock");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_FLINT_ROCK         = key("ore_flint_rock");
@@ -553,6 +558,23 @@ public final class GotConfiguredFeatures {
                 BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.SAND),
                 UniformInt.of(2, 3),
                 1));
+
+        // disk_mud: mud, radius 1-3, half_height 1 — creek floor patches
+        register(ctx, DISK_MUD, Feature.DISK, new DiskConfiguration(
+                RuleBasedBlockStateProvider.simple(Blocks.MUD),
+                BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.CLAY, Blocks.SAND, Blocks.GRAVEL),
+                UniformInt.of(1, 3),
+                1));
+
+        // disk_quagmire: quagmire, radius 1-2, half_height 1 — boggy shore patches
+        register(ctx, DISK_QUAGMIRE, Feature.DISK, new DiskConfiguration(
+                RuleBasedBlockStateProvider.simple(GotModBlocks.QUAGMIRE.get().defaultBlockState().getBlock()),
+                BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.MUD, Blocks.CLAY),
+                UniformInt.of(1, 2),
+                1));
+
+        // short_reeds_patch: shoreline reeds, tries=12, xzSpread=5, ySpread=3
+        register(ctx, SHORT_REEDS_PATCH, Feature.RANDOM_PATCH, cropPatch(GotModBlocks.SHORT_REEDS, 12, 5, 3));
 
         // ══════════════════════════════════════════════════════════════════════
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)
