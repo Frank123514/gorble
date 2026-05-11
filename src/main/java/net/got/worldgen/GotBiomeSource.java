@@ -24,17 +24,19 @@ import java.util.stream.Stream;
  * as {@link GotChunkGenerator#computeRawSurfaceY} so biomes stay perfectly
  * aligned with terrain height transitions.
  *
- * <h3>Water containment + creek assignment</h3>
- * <p>Two terrain-height checks run after the bicubic vote resolves a winner:
+ * <h3>Water containment + creek fringe</h3>
+ * <p>Two post-vote checks run after the bicubic vote resolves a winner:
  * <ol>
  *   <li><b>Containment</b> — if a water biome won but terrain is dry
  *       ({@code surfaceY >= SEA_LEVEL}), the best-weighted land candidate
  *       is promoted instead.  Stops river/lake biomes bleeding onto dry shore.
- *   <li><b>Creek assignment</b> — if a land biome won but terrain is
- *       underwater ({@code surfaceY < SEA_LEVEL}) AND the central biomemap
- *       pixel is not already an explicit water pixel, the biome is replaced
- *       with {@code got:creek}.  This creates muddy shallow-water areas
- *       wherever terrain noise dips land below sea level near rivers and lakes.
+ *   <li><b>Creek fringe</b> — if a land biome won AND the bicubic
+ *       neighbourhood carries at least {@link #CREEK_FRINGE_THRESHOLD} of
+ *       cumulative weight from river-type pixels, the cell is promoted to
+ *       {@code got:creek}.  Creates organic, irregularly-shaped muddy
+ *       creek-bank strips along both sides of every river without affecting
+ *       ocean or lake shores.  Adjust {@link #CREEK_FRINGE_THRESHOLD} to
+ *       change the strip width.
  * </ol>
  */
 public final class GotBiomeSource extends BiomeSource {
@@ -55,7 +57,48 @@ public final class GotBiomeSource extends BiomeSource {
             "got:creek"
     );
 
-    /** Biome assigned when land terrain dips below sea level (not a painted water pixel). */
+    /**
+     * River-type biome IDs used for the creek-fringe check.
+     * Lakes and oceans are intentionally excluded — creek fringes only form
+     * along flowing rivers and the Neck river, not on ocean or lake shores.
+     */
+    private static final Set<String> RIVER_BIOME_IDS = Set.of(
+            "got:river",
+            "got:neck_river",
+            "got:frozen_river"
+    );
+
+    /**
+     * Minimum total bicubic vote weight from river pixels required for a dry
+     * land cell to be promoted to {@code got:creek}.
+     *
+     * <p>Tuning guide (MAP_SCALE = 46 blocks per biomemap pixel):
+     * <ul>
+     *   <li>0.04 → ~2–3 block fringe (very thin strip, almost invisible)</li>
+     *   <li>0.08 → ~8–15 block fringe (narrow creek bank, subtle)</li>
+     *   <li>0.14 → ~20–35 block fringe (comfortable visible creek strip)</li>
+     *   <li>0.20 → ~40–55 block fringe (wide, merges across narrow land gaps)</li>
+     * </ul>
+     */
+    private static final float CREEK_FRINGE_THRESHOLD = 0.10f;
+
+    /**
+     * Cold/northern biome IDs where a warm green creek strip would look wrong.
+     * Creek fringe is skipped when the best adjacent land candidate is one of these;
+     * the cold biome is used directly instead so snowy banks stay snowy.
+     */
+    private static final Set<String> COLD_BIOME_IDS = Set.of(
+            "got:always_winter",
+            "got:frostfangs",
+            "got:north",
+            "got:north_hills",
+            "got:north_mountains",
+            "got:barrowlands",
+            "got:haunted_forest",
+            "got:the_wall"
+    );
+
+    /** Biome assigned on dry land adjacent to rivers (creek fringe). */
     private static final String CREEK_BIOME_ID = "got:creek";
 
     private static volatile int reloadGeneration = 0;
@@ -103,8 +146,8 @@ public final class GotBiomeSource extends BiomeSource {
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
         // Same domain warp as terrain
-        float warpX = (float) DomainWarpNoise.fbm(worldX / 320.0, worldZ / 320.0, 3, 2.0, 0.5);
-        float warpZ = (float) DomainWarpNoise.fbm(worldX / 320.0 + 3.7, worldZ / 320.0 + 8.1, 3, 2.0, 0.5);
+        float warpX = (float) SimplexNoise.noise(worldX / 320.0, worldZ / 320.0);
+        float warpZ = (float) SimplexNoise.noise(worldX / 320.0 + 3.7, worldZ / 320.0 + 8.1);
         cx += warpX * 0.9f;
         cz += warpZ * 0.9f;
 
@@ -133,6 +176,7 @@ public final class GotBiomeSource extends BiomeSource {
 
         // Bicubic B-spline voting
         Map<String, Float> biomeVotes = new HashMap<>();
+        float riverInfluence = 0f; // accumulates raw (pre-boost) river pixel weights
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 String id = biomeIds[i][j];
@@ -142,6 +186,9 @@ public final class GotBiomeSource extends BiomeSource {
                 float weight = wx * wz;
                 if (isWater[i][j]) weight *= 1.15f; // thin rivers survive
                 biomeVotes.merge(id, weight, Float::sum);
+                // Track how much of the vote came from river-type pixels
+                // (measured before the 1.15× boost so the threshold stays stable)
+                if (RIVER_BIOME_IDS.contains(id)) riverInfluence += wx * wz;
             }
         }
 
@@ -156,38 +203,39 @@ public final class GotBiomeSource extends BiomeSource {
         }
         if (winner == null) return fallback;
 
-        // ── Central pixel tells us what the biomemap intended here ────────────
-        int clampedPx = Math.max(0, Math.min(BiomemapLoader.getWidth()  - 1, ipx));
-        int clampedPz = Math.max(0, Math.min(BiomemapLoader.getHeight() - 1, ipz));
-        GotBiomeTerrainParams.Params centralParams =
-                GotBiomeTerrainParams.forColor(BiomemapLoader.getRawPixel(clampedPx, clampedPz));
-        boolean centralIsWater = centralParams.isWater();
-
-        // ── Terrain height (same function the chunk generator uses) ───────────
+        // Only run land-side logic when terrain is genuinely above sea level.
         float surfaceY = GotChunkGenerator.computeRawSurfaceY(worldX, worldZ);
-        boolean terrainIsWet = surfaceY < GotChunkGenerator.SEA_LEVEL;
+        if (surfaceY >= GotChunkGenerator.SEA_LEVEL) {
 
-        if (terrainIsWet) {
-            // CREEK ASSIGNMENT — land pixel where noise carved underwater.
-            // Explicitly painted water pixels stay as their own biome (river, lake, etc.)
-            if (!centralIsWater && !WATER_BIOME_IDS.contains(winner)) {
-                winner = CREEK_BIOME_ID;
-            }
-        } else {
-            // CONTAINMENT — voted water biome but terrain is actually dry.
-            // Find the best non-water candidate from the votes instead.
-            if (WATER_BIOME_IDS.contains(winner)) {
-                String landWinner    = null;
-                float  landMaxWeight = -1f;
-                for (Map.Entry<String, Float> entry : biomeVotes.entrySet()) {
-                    if (!WATER_BIOME_IDS.contains(entry.getKey())
-                            && entry.getValue() > landMaxWeight) {
-                        landMaxWeight = entry.getValue();
-                        landWinner    = entry.getKey();
-                    }
+            // Find best non-water land candidate from the vote (used below).
+            String landCandidate    = null;
+            float  landCandidateW   = -1f;
+            for (Map.Entry<String, Float> entry : biomeVotes.entrySet()) {
+                if (!WATER_BIOME_IDS.contains(entry.getKey())
+                        && entry.getValue() > landCandidateW) {
+                    landCandidateW = entry.getValue();
+                    landCandidate  = entry.getKey();
                 }
-                if (landWinner != null) winner = landWinner;
-                // If fully surrounded by water pixels, keep the water winner.
+            }
+
+            // CREEK FRINGE — dry terrain with meaningful river influence.
+            // Skip creek and use the actual land biome if it is cold/northern:
+            // a warm green creek strip next to snow looks completely wrong.
+            if (riverInfluence >= CREEK_FRINGE_THRESHOLD
+                    || (riverInfluence > 0f && RIVER_BIOME_IDS.contains(winner))) {
+
+                if (landCandidate != null && COLD_BIOME_IDS.contains(landCandidate)) {
+                    // Cold bank — keep the snowy biome right up to the river.
+                    winner = landCandidate;
+                } else {
+                    winner = CREEK_BIOME_ID;
+                }
+
+            } else if (WATER_BIOME_IDS.contains(winner)) {
+                // CONTAINMENT — non-river water (ocean/lake) bled onto dry terrain
+                // with zero river influence.  Promote to best land candidate.
+                if (landCandidate != null) winner = landCandidate;
+                // Fully surrounded by water pixels — keep the water winner.
             }
         }
 

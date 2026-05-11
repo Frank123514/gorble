@@ -11,12 +11,13 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 /**
- * Loads {@code biomemap.png} and holds it as a static pixel grid that the
- * chunk generator and biome source can query directly via {@link #getRawPixel}.
+ * Loads {@code got:worldgen/map/biomemap.png} and exposes it as a static
+ * pixel grid for the chunk generator and biome source.
  *
- * <p>Call {@link #load(ResourceManager)} off-thread (in
- * {@code MapReloadListener#prepare}), then {@link #apply(int[][], int, int)}
- * on the main thread.
+ * <p>Thread safety: {@link #load} runs off-thread in
+ * {@code MapReloadListener#prepare}; {@link #apply} is called on the
+ * main thread in {@code apply}.  Reads via {@link #getRawPixel} are safe
+ * at any point after {@link #apply} returns.
  */
 public final class BiomemapLoader {
 
@@ -25,27 +26,30 @@ public final class BiomemapLoader {
     private static final ResourceLocation BIOMEMAP_LOC =
             ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/biomemap.png");
 
-    /** World blocks represented by one pixel. */
+    /** Number of world blocks represented by one biomemap pixel. */
     public static final int MAP_SCALE = 46;
 
-    // ── Static pixel store ─────────────────────────────────────────────────
-
-    private static volatile int[][] pixels = null;
+    // Volatile so that writes from apply() are visible to reader threads
+    private static volatile int[][] pixels   = null;
     private static volatile int     mapWidth  = 0;
     private static volatile int     mapHeight = 0;
 
     private BiomemapLoader() {}
 
-    // ── Query API ──────────────────────────────────────────────────────────
+    // ── Query ──────────────────────────────────────────────────────────────
 
-    public static boolean isLoaded() { return pixels != null; }
+    /** Returns {@code true} once a biomemap has been successfully applied. */
+    public static boolean isLoaded() {
+        return pixels != null;
+    }
 
     public static int getWidth()  { return mapWidth; }
     public static int getHeight() { return mapHeight; }
 
     /**
-     * Returns the raw 0xRRGGBB pixel color at pixel coordinate (px, pz),
-     * clamped to the image boundary. Returns 0 if the map is not loaded.
+     * Returns the raw {@code 0xRRGGBB} color at biomemap pixel (px, pz).
+     * Coordinates are clamped to the image boundary.
+     * Returns {@code 0} if the map has not been loaded yet.
      */
     public static int getRawPixel(int px, int pz) {
         int[][] p = pixels;
@@ -57,7 +61,12 @@ public final class BiomemapLoader {
 
     // ── Load / apply ───────────────────────────────────────────────────────
 
-    /** Reads the biomemap off-thread. Returns null on failure. */
+    /**
+     * Reads {@code biomemap.png} from the resource manager.
+     * Intended to run off the main thread in {@code MapReloadListener#prepare}.
+     *
+     * @return pixel grid {@code [x][z] = 0xRRGGBB}, or {@code null} on failure
+     */
     public static int[][] load(ResourceManager manager) {
         try {
             Optional<Resource> res = manager.getResource(BIOMEMAP_LOC);
@@ -65,21 +74,30 @@ public final class BiomemapLoader {
                 LOGGER.warn("[GoT] biomemap.png not found at {}", BIOMEMAP_LOC);
                 return null;
             }
+
             BufferedImage img = ImageIO.read(res.get().open());
-            int w = img.getWidth(), h = img.getHeight();
+            int w = img.getWidth();
+            int h = img.getHeight();
+
             int[][] grid = new int[w][h];
-            for (int x = 0; x < w; x++)
-                for (int z = 0; z < h; z++)
+            for (int x = 0; x < w; x++) {
+                for (int z = 0; z < h; z++) {
                     grid[x][z] = img.getRGB(x, z) & 0xFFFFFF;
+                }
+            }
             LOGGER.info("[GoT] Loaded biomemap.png ({}x{})", w, h);
             return grid;
+
         } catch (Exception e) {
             LOGGER.error("[GoT] Failed to load biomemap.png", e);
             return null;
         }
     }
 
-    /** Pushes a loaded pixel grid into the static store. Call on the main thread. */
+    /**
+     * Pushes a freshly loaded pixel grid into the static store.
+     * Must be called on the main thread.
+     */
     public static void apply(int[][] grid, int width, int height) {
         pixels    = grid;
         mapWidth  = width;
