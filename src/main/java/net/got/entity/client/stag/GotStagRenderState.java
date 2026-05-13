@@ -7,10 +7,17 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
  * needed by {@link GotStagModel}.
  *
  * <p>Inherits {@code walkAnimationPos}, {@code walkAnimationSpeed},
- * {@code ageInTicks}, {@code yHeadRot}, {@code xRot}, {@code isInWater},
- * and {@code isBaby} from {@link LivingEntityRenderState}.
+ * {@code ageInTicks}, {@code isInWater}, and {@code isBaby} from
+ * {@link LivingEntityRenderState}. {@code yHeadRot} and {@code xRot} are
+ * declared here explicitly because they are not part of the base class in
+ * 1.21.4.
  */
 public class GotStagRenderState extends LivingEntityRenderState {
+
+    /** Head Y-rotation in degrees, copied from {@code entity.getYHeadRot()}. */
+    public float yHeadRot;
+    /** Head X-rotation (pitch) in degrees, copied from {@code entity.getXRot()}. */
+    public float xRot;
 
     /** True when the stag is rearing on its hind legs. */
     public boolean isStanding;

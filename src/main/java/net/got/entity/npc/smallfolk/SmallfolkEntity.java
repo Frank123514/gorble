@@ -572,4 +572,25 @@ public abstract class SmallfolkEntity extends Animal {
     public float getTalkHeadPitch() { return entityData.get(DATA_TALK_HEAD_PITCH); }
     public float getTalkGesture()   { return entityData.get(DATA_TALK_GESTURE); }
 
+    // ── Animation trigger ─────────────────────────────────────────────────────
+
+    /**
+     * Triggers a named animation clip on this entity.
+     *
+     * <p>The method signature mirrors GeckoLib's {@code GeoAnimatable#triggerAnim}
+     * so that goal classes (e.g. {@link net.got.entity.npc.goal.GotMeleeAttackGoal})
+     * can call it without depending on GeckoLib at compile time.
+     *
+     * <p>This vanilla fallback fires a main-hand arm swing, which is visible to
+     * nearby clients via the standard {@code swinging}/{@code swingTime} path.
+     * If the project later adds GeckoLib, override this method in the concrete
+     * subclass and delegate to the GeckoLib trigger instead.
+     *
+     * @param controllerName the animation controller name (ignored in this impl)
+     * @param animName       the animation clip name (ignored in this impl)
+     */
+    public void triggerAnim(String controllerName, String animName) {
+        this.swing(InteractionHand.MAIN_HAND);
+    }
+
 }
