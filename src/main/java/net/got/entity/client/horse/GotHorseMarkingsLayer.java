@@ -1,44 +1,53 @@
 package net.got.entity.client.horse;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.got.entity.horse.GotHorseEntity;
+import net.got.entity.client.model.GotModelLayers;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 /**
  * Translucent markings overlay rendered on top of the base coat.
  * Index 0 (none) is a no-op.
+ *
+ * <p>Uses a second instance of {@link GotHorseModel} (baked from
+ * {@link GotModelLayers#GOT_HORSE}) so the overlay shares the same
+ * animated pose as the primary model.
  */
-public class GotHorseMarkingsLayer extends GeoRenderLayer<GotHorseEntity> {
+public class GotHorseMarkingsLayer
+        extends RenderLayer<GotHorseRenderState, GotHorseModel> {
 
-    /** Indexed by {@link GotHorseEntity#getMarkingsIndex()} (0-4). 0 = none → null. */
     private static final ResourceLocation[] MARKINGS_TEXTURES = {
-        null,
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_blackdots.png"),
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_white.png"),
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_whitedots.png"),
-        ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_whitefield.png"),
+            null,
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_blackdots.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_white.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_whitedots.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_markings_whitefield.png"),
     };
 
-    public GotHorseMarkingsLayer(GeoRenderer<GotHorseEntity> renderer) {
-        super(renderer);
+    private final GotHorseModel overlayModel;
+
+    public GotHorseMarkingsLayer(RenderLayerParent<GotHorseRenderState, GotHorseModel> parent,
+                                 EntityModelSet models) {
+        super(parent);
+        this.overlayModel = new GotHorseModel(models.bakeLayer(GotModelLayers.GOT_HORSE));
     }
 
     @Override
-    public void render(PoseStack poseStack, GotHorseEntity animatable, BakedGeoModel bakedModel,
-                       RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer,
-                       float partialTick, int packedLight, int packedOverlay, int colour) {
-        int idx = animatable.getMarkingsIndex();
-        if (idx <= 0 || idx >= MARKINGS_TEXTURES.length) return;
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight,
+                       GotHorseRenderState state, float yRot, float xRot) {
+        int idx = state.markingsIndex;
+        if (idx <= 0 || idx >= MARKINGS_TEXTURES.length || MARKINGS_TEXTURES[idx] == null) return;
 
-        RenderType overlayType = RenderType.entityTranslucent(MARKINGS_TEXTURES[idx]);
-        getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable,
-                overlayType, bufferSource.getBuffer(overlayType),
-                partialTick, packedLight, packedOverlay, -1);
+        // Copy pose from parent model to overlay model
+        this.getParentModel().copyState(this.overlayModel);
+
+        this.overlayModel.renderToBuffer(poseStack,
+                buffer.getBuffer(RenderType.entityTranslucent(MARKINGS_TEXTURES[idx])),
+                packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

@@ -1,14 +1,14 @@
 {
-  "#949038": {
+  "#5C935C": {
     "biome": "got:north",
-    "base_height": 67,
+    "base_height": 70,
     "height_variation": 10
   },
 
-  "#ADA942": {
+  "#639E63": {
     "biome": "got:barrowlands",
-    "base_height": 73,
-    "height_variation": 20
+    "base_height": 75,
+    "height_variation": 18
   },
 
   "#92B0AC": {
@@ -74,7 +74,7 @@
   "#BBCCCD": {
     "biome": "got:frostfangs",
     "base_height": 120,
-    "height_variation": 10
+    "height_variation": 20
   },
 
   "#FFFFFF": {
@@ -86,7 +86,7 @@
   "#A5B7B9": {
     "biome": "got:north_mountains",
     "base_height": 100,
-    "height_variation": 10
+    "height_variation": 20
   },
 
   "#537053": {

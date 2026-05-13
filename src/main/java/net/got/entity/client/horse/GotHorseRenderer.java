@@ -1,42 +1,77 @@
 package net.got.entity.client.horse;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.got.entity.client.model.GotModelLayers;
 import net.got.entity.horse.GotHorseEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 
 /**
- * Entity renderer for {@link GotHorseEntity}.
+ * Renderer for {@link GotHorseEntity}.
+ *
+ * <p>Uses the custom {@link GotHorseModel} (converted from
+ * {@code assets/got/geo/got_horse.geo.json}).  Replaced the old vanilla
+ * {@code HorseModel} placeholder.
  *
  * <p>Rendering stack (back to front):
  * <ol>
- *   <li>Base coat — resolved per-entity by {@link GotHorseGeoModel#getTextureResource}.</li>
- *   <li>Markings overlay — {@link GotHorseMarkingsLayer} (translucent, skipped if markings == 0).</li>
- *   <li>Horse-armour overlay — {@link GotHorseArmorLayer} (cutout, skipped when no armour equipped).</li>
+ *   <li>Base coat — resolved per-entity by {@link #getTextureLocation}.</li>
+ *   <li>Markings overlay — {@link GotHorseMarkingsLayer}.</li>
+ *   <li>Horse-armour overlay — {@link GotHorseArmorLayer}.</li>
  * </ol>
  */
-public class GotHorseRenderer extends GeoEntityRenderer<GotHorseEntity> {
+public class GotHorseRenderer
+        extends MobRenderer<GotHorseEntity, GotHorseRenderState, GotHorseModel> {
+
+    /** Indexed by {@link GotHorseEntity#getCoatVariant()} (0–5). */
+    private static final ResourceLocation[] COAT_TEXTURES = {
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_black.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_brown.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_chestnut.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_creamy.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_darkbrown.png"),
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/horse/horse_gray.png"),
+    };
 
     public GotHorseRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new GotHorseGeoModel());
-        this.shadowRadius = 0.9f;
+        super(ctx, new GotHorseModel(ctx.bakeLayer(GotModelLayers.GOT_HORSE)), 0.9f);
+        this.addLayer(new GotHorseMarkingsLayer(this, ctx.getModelSet()));
+        this.addLayer(new GotHorseArmorLayer(this, ctx.getModelSet()));
+    }
 
-        // Register overlay layers in draw order (markings first, then armour on top).
-        addRenderLayer(new GotHorseMarkingsLayer(this));
-        addRenderLayer(new GotHorseArmorLayer(this));
+    // ── Render state ──────────────────────────────────────────────────────────
+
+    @Override
+    public GotHorseRenderState createRenderState() {
+        return new GotHorseRenderState();
     }
 
     @Override
-    public void preRender(PoseStack poseStack, GotHorseEntity animatable, BakedGeoModel model,
-                          MultiBufferSource bufferSource, VertexConsumer buffer,
-                          boolean isReRender, float partialTick, int packedLight,
-                          int packedOverlay, int colour) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer,
-                isReRender, partialTick, packedLight, packedOverlay, colour);
-        if (animatable.isBaby()) {
+    public void extractRenderState(GotHorseEntity entity, GotHorseRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+        state.coatVariant    = entity.getCoatVariant();
+        state.markingsIndex  = entity.getMarkingsIndex();
+        state.isStanding     = entity.isStanding();
+        state.isEating       = entity.isEating();
+        state.bodyArmorItem  = entity.getItemBySlot(EquipmentSlot.BODY).getItem();
+    }
+
+    // ── Texture selection ─────────────────────────────────────────────────────
+
+    @Override
+    public ResourceLocation getTextureLocation(GotHorseRenderState state) {
+        int id = state.coatVariant;
+        if (id < 0 || id >= COAT_TEXTURES.length) id = 0;
+        return COAT_TEXTURES[id];
+    }
+
+    // ── Scale ─────────────────────────────────────────────────────────────────
+
+    @Override
+    protected void scale(GotHorseRenderState state, PoseStack poseStack, float partialTick) {
+        if (state.isBaby) {
             poseStack.scale(0.65f, 0.65f, 0.65f);
             this.shadowRadius = 0.585f;
         } else {

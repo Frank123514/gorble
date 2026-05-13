@@ -2,7 +2,12 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
-import net.got.entity.client.npc.smallfolk.SmallfolkGeoRenderer;
+import net.got.entity.client.model.GotModelLayers;
+import net.got.entity.client.npc.smallfolk.GotSmallfolkMaleModel;
+import net.got.entity.client.npc.smallfolk.GotSmallfolkFemaleModel;
+import net.got.entity.client.horse.GotHorseModel;
+import net.got.entity.client.stag.GotStagModel;
+import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
@@ -21,7 +26,7 @@ import net.got.entity.npc.levy.martell.MartellLevyEntity;
 import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
-// ── Horse renderer (GeckoLib) ─────────────────────────────────────────────────
+// ── Horse / Stag renderers ────────────────────────────────────────────────────
 import net.got.entity.client.horse.GotHorseRenderer;
 import net.got.entity.client.stag.GotStagRenderer;
 import net.got.init.GotModBlockEntities;
@@ -36,7 +41,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.got.client.gui.OvenScreen;
-import net.got.client.gui.NpcTradeScreen;
 import net.got.init.GotModMenus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -63,6 +67,23 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(GotKeybinds.OPEN_MAP);
+    }
+
+    /**
+     * Registers the {@link net.minecraft.client.model.geom.LayerDefinition} for every
+     * custom GOT entity model so NeoForge's model baking infrastructure can
+     * build them before the first render frame.
+     *
+     * <p>Each entry maps a {@link net.minecraft.client.model.geom.ModelLayerLocation}
+     * (declared in {@link GotModelLayers}) to the factory that produces the
+     * corresponding {@link net.minecraft.client.model.geom.builders.LayerDefinition}.
+     */
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(GotModelLayers.SMALLFOLK_MALE,   GotSmallfolkMaleModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.SMALLFOLK_FEMALE, GotSmallfolkFemaleModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_HORSE,        GotHorseModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_STAG,         GotStagModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -150,29 +171,29 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // ── Tier-1 Smallfolk renderers (SmallfolkGeoRenderer with culture textures) ─
-        event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),    ctx -> new SmallfolkGeoRenderer<>(ctx, NorthmanEntity.MALE_TEXTURES,    NorthmanEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.RIVERLANDER.get(), ctx -> new SmallfolkGeoRenderer<>(ctx, RiverlanderEntity.MALE_TEXTURES, RiverlanderEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.VALEMAN.get(),     ctx -> new SmallfolkGeoRenderer<>(ctx, ValemanEntity.MALE_TEXTURES,     ValemanEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.WESTERMAN.get(),   ctx -> new SmallfolkGeoRenderer<>(ctx, WestermanEntity.MALE_TEXTURES,   WestermanEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.STORMLORDER.get(), ctx -> new SmallfolkGeoRenderer<>(ctx, StormlorderEntity.MALE_TEXTURES, StormlorderEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.IRONBORN.get(),    ctx -> new SmallfolkGeoRenderer<>(ctx, IronbornEntity.MALE_TEXTURES,    IronbornEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.DORNISHMAN.get(),  ctx -> new SmallfolkGeoRenderer<>(ctx, DornishmanEntity.MALE_TEXTURES,  DornishmanEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.REACHMAN.get(),    ctx -> new SmallfolkGeoRenderer<>(ctx, ReachmanEntity.MALE_TEXTURES,    ReachmanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),    ctx -> new SmallfolkRenderer<>(ctx, NorthmanEntity.MALE_TEXTURES,    NorthmanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.RIVERLANDER.get(), ctx -> new SmallfolkRenderer<>(ctx, RiverlanderEntity.MALE_TEXTURES, RiverlanderEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.VALEMAN.get(),     ctx -> new SmallfolkRenderer<>(ctx, ValemanEntity.MALE_TEXTURES,     ValemanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.WESTERMAN.get(),   ctx -> new SmallfolkRenderer<>(ctx, WestermanEntity.MALE_TEXTURES,   WestermanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.STORMLORDER.get(), ctx -> new SmallfolkRenderer<>(ctx, StormlorderEntity.MALE_TEXTURES, StormlorderEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.IRONBORN.get(),    ctx -> new SmallfolkRenderer<>(ctx, IronbornEntity.MALE_TEXTURES,    IronbornEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.DORNISHMAN.get(),  ctx -> new SmallfolkRenderer<>(ctx, DornishmanEntity.MALE_TEXTURES,  DornishmanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.REACHMAN.get(),    ctx -> new SmallfolkRenderer<>(ctx, ReachmanEntity.MALE_TEXTURES,    ReachmanEntity.FEMALE_TEXTURES));
 
         // ── Levy NPC renderers (Tier 2) — SmallfolkGeoRenderer with house textures ──
-        event.registerEntityRenderer(GotModEntities.STARK_LEVY.get(),     ctx -> new SmallfolkGeoRenderer<>(ctx, StarkLevyEntity.MALE_TEXTURES,     StarkLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.TULLY_LEVY.get(),     ctx -> new SmallfolkGeoRenderer<>(ctx, TullyLevyEntity.MALE_TEXTURES,     TullyLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.LANNISTER_LEVY.get(), ctx -> new SmallfolkGeoRenderer<>(ctx, LannisterLevyEntity.MALE_TEXTURES, LannisterLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.BARATHEON_LEVY.get(), ctx -> new SmallfolkGeoRenderer<>(ctx, BaratheonLevyEntity.MALE_TEXTURES, BaratheonLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.GREYJOY_LEVY.get(),   ctx -> new SmallfolkGeoRenderer<>(ctx, GreyjoyLevyEntity.MALE_TEXTURES,   GreyjoyLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.MARTELL_LEVY.get(),   ctx -> new SmallfolkGeoRenderer<>(ctx, MartellLevyEntity.MALE_TEXTURES,   MartellLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.TYRELL_LEVY.get(),    ctx -> new SmallfolkGeoRenderer<>(ctx, TyrellLevyEntity.MALE_TEXTURES,    TyrellLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.STARK_LEVY.get(),     ctx -> new SmallfolkRenderer<>(ctx, StarkLevyEntity.MALE_TEXTURES,     StarkLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.TULLY_LEVY.get(),     ctx -> new SmallfolkRenderer<>(ctx, TullyLevyEntity.MALE_TEXTURES,     TullyLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.LANNISTER_LEVY.get(), ctx -> new SmallfolkRenderer<>(ctx, LannisterLevyEntity.MALE_TEXTURES, LannisterLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.BARATHEON_LEVY.get(), ctx -> new SmallfolkRenderer<>(ctx, BaratheonLevyEntity.MALE_TEXTURES, BaratheonLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.GREYJOY_LEVY.get(),   ctx -> new SmallfolkRenderer<>(ctx, GreyjoyLevyEntity.MALE_TEXTURES,   GreyjoyLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.MARTELL_LEVY.get(),   ctx -> new SmallfolkRenderer<>(ctx, MartellLevyEntity.MALE_TEXTURES,   MartellLevyEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.TYRELL_LEVY.get(),    ctx -> new SmallfolkRenderer<>(ctx, TyrellLevyEntity.MALE_TEXTURES,    TyrellLevyEntity.FEMALE_TEXTURES));
 
         // ── Skilled Fighter renderers (Tier 3) ───────────────────────────────
-        event.registerEntityRenderer(GotModEntities.NORTH_SOLDIER.get(), ctx -> new SmallfolkGeoRenderer<>(ctx, NorthSoldierEntity.MALE_TEXTURES, NorthSoldierEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(GotModEntities.VALE_KNIGHT.get(),   ctx -> new SmallfolkGeoRenderer<>(ctx, ValeKnightEntity.MALE_TEXTURES,   ValeKnightEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.NORTH_SOLDIER.get(), ctx -> new SmallfolkRenderer<>(ctx, NorthSoldierEntity.MALE_TEXTURES, NorthSoldierEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(GotModEntities.VALE_KNIGHT.get(),   ctx -> new SmallfolkRenderer<>(ctx, ValeKnightEntity.MALE_TEXTURES,   ValeKnightEntity.FEMALE_TEXTURES));
 
-        // ── GOT Horse renderer ───────────────────────────────────────────────
+        // ── GOT Horse / Stag renderers ───────────────────────────────────────
         event.registerEntityRenderer(GotModEntities.GOT_HORSE.get(), GotHorseRenderer::new);
         event.registerEntityRenderer(GotModEntities.GOT_STAG.get(),  GotStagRenderer::new);
 

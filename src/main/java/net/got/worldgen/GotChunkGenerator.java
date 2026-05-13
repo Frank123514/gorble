@@ -33,15 +33,15 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static final double NOISE_SCALE_Z = 190.0;
 
     /**
-     * fBm settings tuned for smooth rolling terrain.
+     * fBm settings — slightly rougher than before.
      *
-     * Only 2 octaves: the first gives broad sweeping hills, the second adds
-     * a very gentle undulation on top (gain 0.25 means it's only 25% as loud).
-     * Higher octaves were the source of the roughness — they're gone now.
+     * 3 octaves: the first gives broad sweeping hills, the second adds
+     * gentle undulation, and the third adds a bit of texture on top.
+     * Gain raised to 0.35 so the extra detail is slightly more audible.
      */
-    private static final int    FBM_OCTAVES    = 2;
+    private static final int    FBM_OCTAVES    = 3;
     private static final double FBM_LACUNARITY = 2.0;   // each octave doubles frequency
-    private static final double FBM_GAIN       = 0.25;  // low gain = fine detail barely visible
+    private static final double FBM_GAIN       = 0.35;  // slightly more detail than before
 
     // ── Codec ──────────────────────────────────────────────────────────────
 
@@ -169,7 +169,16 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 int px = ipx + col - 1;
                 int pz = ipz + row - 1;
                 GotBiomeTerrainParams.Params p = paramsAt(px, pz);
-                h[row * 4 + col] = p.baseHeight();
+                // Only amplify terrain that is genuinely mountain-level (base > 90).
+                // Below that threshold the height is passed through untouched so
+                // plains/hills are completely unaffected. Exponent 1.15 gives a
+                // subtle steepening at mountain edges without being too aggressive.
+                float bh = p.baseHeight();
+                if (bh > 90f) {
+                    float aboveMtn = bh - 90f;
+                    bh = (float) Math.pow(aboveMtn, 1.15) + 90f;
+                }
+                h[row * 4 + col] = bh;
                 v[row * 4 + col] = p.heightVariation();
             }
         }
