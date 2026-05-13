@@ -33,4 +33,9 @@ public class SmallfolkRenderState extends LivingEntityRenderState {
 
     /** True when entity is in a talking state. */
     public boolean isTalking;
+
+    /** Head Y rotation in degrees (populated by SmallfolkRenderer). */
+    public float yHeadRot;
+    /** Head X rotation (pitch) in degrees (populated by SmallfolkRenderer). */
+    public float xRot;
 }

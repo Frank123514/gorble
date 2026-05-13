@@ -36,6 +36,8 @@ public class GotStagRenderer
         super.extractRenderState(entity, state, partialTick);
         state.isStanding = entity.isStanding();
         state.isEating   = entity.isEating();
+        state.yHeadRot   = entity.getYHeadRot();
+        state.xRot       = entity.getXRot();
     }
 
     // ── Texture & scale ───────────────────────────────────────────────────────
@@ -46,7 +48,7 @@ public class GotStagRenderer
     }
 
     @Override
-    protected void scale(GotStagRenderState state, PoseStack poseStack, float partialTick) {
+    protected void scale(GotStagRenderState state, PoseStack poseStack) {
         if (state.isBaby) poseStack.scale(0.65f, 0.65f, 0.65f);
     }
 }

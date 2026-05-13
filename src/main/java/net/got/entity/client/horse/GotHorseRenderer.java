@@ -56,6 +56,8 @@ public class GotHorseRenderer
         state.isStanding     = entity.isStanding();
         state.isEating       = entity.isEating();
         state.bodyArmorItem  = entity.getItemBySlot(EquipmentSlot.BODY).getItem();
+        state.yHeadRot       = entity.getYHeadRot();
+        state.xRot           = entity.getXRot();
     }
 
     // ── Texture selection ─────────────────────────────────────────────────────
@@ -70,7 +72,7 @@ public class GotHorseRenderer
     // ── Scale ─────────────────────────────────────────────────────────────────
 
     @Override
-    protected void scale(GotHorseRenderState state, PoseStack poseStack, float partialTick) {
+    protected void scale(GotHorseRenderState state, PoseStack poseStack) {
         if (state.isBaby) {
             poseStack.scale(0.65f, 0.65f, 0.65f);
             this.shadowRadius = 0.585f;

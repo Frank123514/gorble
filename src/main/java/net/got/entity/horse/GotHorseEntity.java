@@ -15,13 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
+
 
 /**
  * GOT custom horse entity.
@@ -32,7 +26,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * can pick the right texture layers without conflicting with any vanilla
  * Horse interface methods.
  */
-public class GotHorseEntity extends Horse implements GeoEntity {
+public class GotHorseEntity extends Horse {
 
     public static final int COAT_COUNT     = 6;   // black, brown, chestnut, creamy, darkbrown, gray
     public static final int MARKINGS_COUNT = 5;   // 0 = none, 1-4 = patterns
@@ -43,15 +37,8 @@ public class GotHorseEntity extends Horse implements GeoEntity {
     private static final EntityDataAccessor<Integer> DATA_MARKINGS_IDX =
             SynchedEntityData.defineId(GotHorseEntity.class, EntityDataSerializers.INT);
 
-    private static final RawAnimation IDLE     = RawAnimation.begin().thenLoop("animation.got_horse.idle");
-    private static final RawAnimation WALK     = RawAnimation.begin().thenLoop("animation.got_horse.walk");
-    private static final RawAnimation RUN      = RawAnimation.begin().thenLoop("animation.got_horse.run");
-    private static final RawAnimation REAR     = RawAnimation.begin().thenPlay("animation.got_horse.rear");
-    private static final RawAnimation SWIM     = RawAnimation.begin().thenLoop("animation.got_horse.swim");
-    private static final RawAnimation EAT      = RawAnimation.begin().thenLoop("animation.got_horse.eat");
-    private static final RawAnimation TAIL_WAG = RawAnimation.begin().thenLoop("animation.got_horse.tail_wag");
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
 
     public GotHorseEntity(EntityType<? extends Horse> type, Level level) {
         super(type, level);
@@ -90,29 +77,6 @@ public class GotHorseEntity extends Horse implements GeoEntity {
         if (tag.contains("GotMarkings")) setMarkingsIndex(tag.getInt("GotMarkings"));
     }
 
-    // ── GeckoLib ──────────────────────────────────────────────────────────────
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "movement", 4, state -> {
-            if (this.isInWater())  return state.setAndContinue(SWIM);
-            if (this.isStanding()) return state.setAndContinue(REAR);
-            if (this.isEating())   return state.setAndContinue(EAT);
-            if (!state.isMoving()) return state.setAndContinue(IDLE);
-            if (this.getDeltaMovement().horizontalDistanceSqr() > 0.08) return state.setAndContinue(RUN);
-            return state.setAndContinue(WALK);
-        }));
-
-        controllers.add(new AnimationController<>(this, "tail", 2, state -> {
-            if (this.isTamed() && !this.isInWater() && !this.isStanding()
-                    && !this.isEating() && !state.isMoving())
-                return state.setAndContinue(TAIL_WAG);
-            return PlayState.STOP;
-        }));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() { return cache; }
 
     // ── Spawn ─────────────────────────────────────────────────────────────────
 

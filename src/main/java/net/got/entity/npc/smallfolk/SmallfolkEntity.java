@@ -32,13 +32,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -60,7 +53,7 @@ import net.minecraft.world.item.Items;
  *   <li><b>Variant</b> — texture variant index, split by gender for skin variety.</li>
  * </ul>
  */
-public abstract class SmallfolkEntity extends Animal implements GeoEntity {
+public abstract class SmallfolkEntity extends Animal {
 
     // ── Synced data ───────────────────────────────────────────────────────────
 
@@ -90,8 +83,6 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
 
     private GotNpcPersonality personality = GotNpcPersonality.FRIENDLY;
     private final GotNpcTalkAnimations talkAnimations = new GotNpcTalkAnimations(this);
-    private final AnimatableInstanceCache animCache = GeckoLibUtil.createInstanceCache(this);
-
     /** Ticks until this NPC can speak to a player again. */
     private int speechCooldown;
     private static final int SPEECH_INTERVAL = 40;
@@ -581,63 +572,4 @@ public abstract class SmallfolkEntity extends Animal implements GeoEntity {
     public float getTalkHeadPitch() { return entityData.get(DATA_TALK_HEAD_PITCH); }
     public float getTalkGesture()   { return entityData.get(DATA_TALK_GESTURE); }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // ── Locomotion / talk (base layer) ────────────────────────────────────
-        // ── Locomotion (walk / idle / sneak — no talk logic here) ────────────
-        // When the NPC is talking it is frozen in place, so state.isMoving()
-        // will be false and this controller naturally falls through to idle.
-        // That gives idle + talk playing together from separate controllers.
-        controllers.add(new AnimationController<>(this, "smallfolk_locomotion", 4, state -> {
-            if (isCrouching()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.sneak"));
-            }
-            // state.isMoving() uses limbSwingAmount which lags behind actual movement,
-            // causing idle to play briefly while the entity is already walking (or vice versa).
-            // Checking horizontal velocity directly is immediate and frame-accurate.
-            boolean actuallyMoving = getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
-            if (actuallyMoving) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.walk"));
-            }
-            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.idle"));
-        }));
-
-        // ── Talk overlay (runs on top of locomotion while the NPC is talking) ─
-        // Plays the talk animation alongside idle. Stops completely when not
-        // talking so it never interferes with walk or any other locomotion state.
-        controllers.add(new AnimationController<>(this, "smallfolk_talk", 4, state -> {
-            if (isTalking()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.talk"));
-            }
-            state.getController().forceAnimationReset();
-            return PlayState.STOP;
-        }));
-
-        // ── Riding (replaces locomotion while mounted) ────────────────────────
-        controllers.add(new AnimationController<>(this, "smallfolk_riding", 2, state -> {
-            if (isPassenger()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.smallfolk.riding"));
-            }
-            state.getController().forceAnimationReset();
-            return PlayState.STOP;
-        }));
-
-        // ── Attack (overlay layer, triggerable) ──────────────────────────────
-        // Using a triggerableAnim instead of checking `swinging` each tick.
-        // `swinging` flips true briefly then resets, so thenPlay() never
-        // re-fires because GeckoLib only reacts to state *changes*. A
-        // triggerable controller fires exactly once per triggerAnim() call,
-        // which GotMeleeAttackGoal calls at the moment the hit lands.
-        // The predicate returns STOP so the controller is idle between triggers;
-        // GeckoLib overrides this automatically when a trigger fires.
-        controllers.add(new AnimationController<>(this, "smallfolk_attack", 0,
-                state -> PlayState.STOP)
-                .triggerableAnim("attack",
-                        RawAnimation.begin().thenPlay("animation.smallfolk.attack")));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return animCache;
-    }
 }
