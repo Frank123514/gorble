@@ -1,20 +1,23 @@
 package net.got.entity.client.npc.smallfolk;
 
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
 
 /**
  * Per-frame snapshot of Smallfolk NPC state needed by the model and renderer.
  *
- * <p>Populated in {@link SmallfolkRenderer#extractRenderState}.
- * Inherits locomotion fields ({@code walkAnimationPos}, {@code walkAnimationSpeed},
- * {@code ageInTicks}, {@code yHeadRot}, {@code xRot}, {@code isInWater},
- * {@code isBaby}) from {@link LivingEntityRenderState}.
+ * <p>Extends {@link HumanoidRenderState} to inherit all vanilla humanoid
+ * animation fields used by our ported setupAnim logic:
+ * {@code walkAnimationPos}, {@code walkAnimationSpeed}, {@code ageInTicks},
+ * {@code leftArmPose}, {@code rightArmPose}, {@code attackTime},
+ * {@code attackArm}, {@code swimAmount}, {@code isFallFlying},
+ * {@code isUsingItem}, {@code useItemHand}, {@code isCrouching},
+ * {@code isPassenger}, {@code speedValue}, {@code ageScale}, {@code mainArm},
+ * {@code xRot}, {@code yRot}, {@code maxCrossbowChargeDuration},
+ * {@code ticksUsingItem} — all populated automatically by
+ * {@link SmallfolkRenderer} via {@code super.extractRenderState}.
  */
-public class SmallfolkRenderState extends LivingEntityRenderState {
+public class SmallfolkRenderState extends HumanoidRenderState {
 
     /** True when the entity is female (uses female model skeleton). */
     public boolean isFemale;
@@ -28,54 +31,24 @@ public class SmallfolkRenderState extends LivingEntityRenderState {
     /** Resolved texture for this frame. */
     public ResourceLocation texture;
 
-    /** True when entity is riding a mount. */
-    public boolean isRiding;
-
-    /** True when entity is sneaking. */
-    public boolean isSneaking;
-
     /** True when entity is in a talking state. */
     public boolean isTalking;
 
-    /** Head Y rotation in degrees (populated by SmallfolkRenderer). */
-    public float yHeadRot;
-    /** Head X rotation (pitch) in degrees (populated by SmallfolkRenderer). */
-    public float xRot;
+    /**
+     * Synced head-yaw oscillation from {@link net.got.entity.npc.GotNpcTalkAnimations}.
+     * Sinusoidal side-to-side, range roughly ±0.3 rad. Zero when not talking.
+     */
+    public float talkHeadYaw;
 
-    // ── Humanoid animation fields (ported from HumanoidRenderState) ──────────
+    /**
+     * Synced head-pitch oscillation from {@link net.got.entity.npc.GotNpcTalkAnimations}.
+     * Sinusoidal nod, range roughly ±0.15 rad. Zero when not talking.
+     */
+    public float talkHeadPitch;
 
-    /** Left arm pose (EMPTY, ITEM, BLOCK, BOW, CROSSBOW_CHARGE, etc.) */
-    public HumanoidModel.ArmPose leftArmPose = HumanoidModel.ArmPose.EMPTY;
-    /** Right arm pose. */
-    public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
-
-    /** Swim amount (0.0 = not swimming, 1.0 = fully swimming). */
-    public float swimAmount;
-
-    /** True when entity is fall-flying (elytra). */
-    public boolean isFallFlying;
-
-    /** True when entity is actively using an item (eating, drinking, blocking, etc.) */
-    public boolean isUsingItem;
-
-    /** Which hand is using the item. */
-    public InteractionHand useItemHand = InteractionHand.MAIN_HAND;
-
-    /** The entity's main arm (RIGHT or LEFT). */
-    public HumanoidArm mainArm = HumanoidArm.RIGHT;
-
-    /** Which arm is attacking (for the attack swing animation). */
-    public HumanoidArm attackArm = HumanoidArm.RIGHT;
-
-    /** Attack progress (0.0 to 1.0). */
-    public float attackTime;
-
-    /** Scale factor for age (baby = smaller). */
-    public float ageScale = 1.0F;
-
-    /** Max duration for crossbow charge animation. */
-    public int maxCrossbowChargeDuration;
-
-    /** Ticks the entity has been using its current item. */
-    public int ticksUsingItem;
+    /**
+     * Synced right-arm gesture from {@link net.got.entity.npc.GotNpcTalkAnimations}.
+     * Active every other 20 ticks (±0.5 rad xRot on right arm), zero otherwise.
+     */
+    public float talkGesture;
 }

@@ -1,6 +1,7 @@
 package net.got.entity.client.npc.smallfolk;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.HumanoidArm;
 
 /**
  * Exposes named bone accessors from both male and female Smallfolk models
@@ -8,6 +9,8 @@ import net.minecraft.client.model.geom.ModelPart;
  * logical attachment points regardless of which concrete model is active.
  */
 public interface SmallfolkModelParts {
+
+    ModelPart getArm(HumanoidArm side);
 
     ModelPart sfHead();
 
