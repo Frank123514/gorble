@@ -81,8 +81,14 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
     @Override
     public void render(SmallfolkRenderState state, PoseStack poseStack,
                        MultiBufferSource buffer, int packedLight) {
-        // Swap the active skeleton so setupAnim fires on the right bones
-        this.model = state.isFemale ? femaleModel : maleModel;
+        // Swap the active skeleton and update animation states before super renders
+        if (state.isFemale) {
+            this.model = femaleModel;
+            femaleModel.updateAnimationStates(state);
+        } else {
+            this.model = maleModel;
+            maleModel.updateAnimationStates(state);
+        }
         super.render(state, poseStack, buffer, packedLight);
     }
 }
