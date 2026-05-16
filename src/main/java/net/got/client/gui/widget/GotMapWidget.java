@@ -44,8 +44,8 @@ public class GotMapWidget extends AbstractWidget {
     };
     private static final int BORDER_THICKNESS = BORDER_LAYERS.length; // 5
 
-    private static final float COMPASS_FRACTION        = 0.12f;
-    private static final float COMPASS_MARGIN_FRACTION = 0.015f;
+    private static final float COMPASS_FRACTION        = 0.20f;
+    private static final float COMPASS_MARGIN_FRACTION = 0.020f;
 
     private static final double[] ZOOM_MULTIPLIERS    = { 1.0, 2.0, 4.0, 7.0, 12.0, 20.0 };
     private static final float    BLOCKS_PER_PIXEL    = 46.0f;
