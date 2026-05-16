@@ -8,10 +8,9 @@ import net.minecraft.resources.ResourceLocation;
  *
  * <p>Register each in {@code ClientSetup.registerLayerDefinitions}:
  * <pre>{@code
- * event.registerLayerDefinition(GotModelLayers.SMALLFOLK_MALE,   GotSmallfolkMaleModel::createBodyLayer);
- * event.registerLayerDefinition(GotModelLayers.SMALLFOLK_FEMALE, GotSmallfolkFemaleModel::createBodyLayer);
- * event.registerLayerDefinition(GotModelLayers.GOT_HORSE,        GotHorseModel::createBodyLayer);
- * event.registerLayerDefinition(GotModelLayers.GOT_STAG,         GotStagModel::createBodyLayer);
+ * event.registerLayerDefinition(GotModelLayers.SMALLFOLK, GotSmallfolkModel::createBodyLayer);
+ * event.registerLayerDefinition(GotModelLayers.GOT_HORSE,  GotHorseModel::createBodyLayer);
+ * event.registerLayerDefinition(GotModelLayers.GOT_STAG,   GotStagModel::createBodyLayer);
  * }</pre>
  */
 public final class GotModelLayers {
@@ -20,11 +19,8 @@ public final class GotModelLayers {
 
     // ── Smallfolk NPCs ────────────────────────────────────────────────────────
 
-    public static final ModelLayerLocation SMALLFOLK_MALE =
-            location("smallfolk_male");
-
-    public static final ModelLayerLocation SMALLFOLK_FEMALE =
-            location("smallfolk_female");
+    public static final ModelLayerLocation SMALLFOLK =
+            location("smallfolk");
 
     // ── Animals ───────────────────────────────────────────────────────────────
 

@@ -11,23 +11,21 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Renderer for all Smallfolk NPC tiers (Tier 1 smallfolk, Tier 2 levies,
- * Tier 3 skilled fighters).
+ * Renderer for all Smallfolk NPC tiers.
  *
  * <p>Extends {@link HumanoidMobRenderer} so vanilla behaviour is inherited
  * for free: arm pose extraction, attack swing, swim, crouch, item-use
  * animations, held-item rendering, and the built-in humanoid armor layer.
  *
- * <p>The correct male/female skeleton is swapped in {@link #render} before
- * the super call so {@code setupAnim} fires on the right bones each frame.
+ * <p>Gender-specific geometry (slim arms + breasts) is handled inside
+ * {@link GotSmallfolkModel#setupAnim} via part visibility toggling, so
+ * this renderer only has to forward the {@code isFemale} flag through the
+ * render state — no model instance swapping required.
  *
  * @param <T> concrete SmallfolkEntity subtype
  */
 public final class SmallfolkRenderer<T extends SmallfolkEntity>
         extends HumanoidMobRenderer<T, SmallfolkRenderState, HumanoidModel<SmallfolkRenderState>> {
-
-    private final HumanoidModel<SmallfolkRenderState> maleModel;
-    private final HumanoidModel<SmallfolkRenderState> femaleModel;
 
     private final ResourceLocation[] maleTextures;
     private final ResourceLocation[] femaleTextures;
@@ -38,15 +36,13 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
                              ResourceLocation[] maleTextures,
                              ResourceLocation[] femaleTextures) {
         super(ctx,
-                new GotSmallfolkMaleModel(ctx.bakeLayer(GotModelLayers.SMALLFOLK_MALE)),
+                new GotSmallfolkModel(ctx.bakeLayer(GotModelLayers.SMALLFOLK)),
                 PLAYER_SCALE);
-        this.maleModel    = this.model;
-        this.femaleModel  = new GotSmallfolkFemaleModel(ctx.bakeLayer(GotModelLayers.SMALLFOLK_FEMALE));
         this.maleTextures   = maleTextures;
         this.femaleTextures = femaleTextures;
     }
 
-    // ── Render state ──────────────────────────────────────────────────────────
+    // ── Render state ──────────────────────────────────────────────────────
 
     @Override
     public SmallfolkRenderState createRenderState() {
@@ -55,16 +51,13 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
 
     @Override
     public void extractRenderState(T entity, SmallfolkRenderState state, float partialTick) {
-        // Fills all HumanoidRenderState fields automatically:
-        // arm poses, attackTime, attackArm, swimAmount, isCrouching,
-        // isPassenger, mainArm, walkAnimation, xRot/yRot, etc.
         super.extractRenderState(entity, state, partialTick);
 
-        // ── Gender / variant / texture ─────────────────────────────────────────
         boolean female = entity.getGender() == NpcGender.FEMALE;
-        state.isFemale          = female;
-        state.variant           = entity.getVariant();
+        state.isFemale = female;
+        state.variant  = entity.getVariant();
         state.variantsPerGender = entity.getVariantsPerGender();
+
         if (female) {
             int idx = entity.getVariant() - entity.getVariantsPerGender();
             state.texture = femaleTextures[Math.abs(idx) % femaleTextures.length];
@@ -72,33 +65,23 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
             state.texture = maleTextures[entity.getVariant() % maleTextures.length];
         }
 
-        // ── Talk animation ────────────────────────────────────────────────────
-        state.isTalking     = entity.isTalking();
-        state.talkHeadYaw   = entity.getTalkHeadYaw();
+        state.isTalking    = entity.isTalking();
+        state.talkHeadYaw  = entity.getTalkHeadYaw();
         state.talkHeadPitch = entity.getTalkHeadPitch();
-        state.talkGesture   = entity.getTalkGesture();
+        state.talkGesture  = entity.getTalkGesture();
     }
 
-    // ── Scale to player size ──────────────────────────────────────────────────
+    // ── Scale ─────────────────────────────────────────────────────────────
 
     @Override
     protected void scale(SmallfolkRenderState state, PoseStack poseStack) {
         poseStack.scale(PLAYER_SCALE, PLAYER_SCALE, PLAYER_SCALE);
     }
 
-    // ── Texture ───────────────────────────────────────────────────────────────
+    // ── Texture ───────────────────────────────────────────────────────────
 
     @Override
     public ResourceLocation getTextureLocation(SmallfolkRenderState state) {
         return state.texture;
-    }
-
-    // ── Gender-aware render dispatch ──────────────────────────────────────────
-
-    @Override
-    public void render(SmallfolkRenderState state, PoseStack poseStack,
-                       MultiBufferSource buffer, int packedLight) {
-        this.model = state.isFemale ? femaleModel : maleModel;
-        super.render(state, poseStack, buffer, packedLight);
     }
 }

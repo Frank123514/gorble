@@ -3,8 +3,7 @@ package net.got.client;
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
 import net.got.entity.client.model.GotModelLayers;
-import net.got.entity.client.npc.smallfolk.GotSmallfolkMaleModel;
-import net.got.entity.client.npc.smallfolk.GotSmallfolkFemaleModel;
+import net.got.entity.client.npc.smallfolk.GotSmallfolkModel;
 import net.got.entity.client.horse.GotHorseModel;
 import net.got.entity.client.stag.GotStagModel;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
@@ -80,8 +79,7 @@ public final class ClientSetup {
      */
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(GotModelLayers.SMALLFOLK_MALE,   GotSmallfolkMaleModel::createBodyLayer);
-        event.registerLayerDefinition(GotModelLayers.SMALLFOLK_FEMALE, GotSmallfolkFemaleModel::createBodyLayer);
+        event.registerLayerDefinition(GotSmallfolkModel.LAYER_LOCATION, GotSmallfolkModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_HORSE,        GotHorseModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_STAG,         GotStagModel::createBodyLayer);
     }
