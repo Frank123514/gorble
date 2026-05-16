@@ -18,6 +18,15 @@ public class GotMapScreen extends Screen {
     private static final ResourceLocation WIDGETS_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
 
+    /** Parchment background texture — 660×390 px. */
+    private static final ResourceLocation MAP_BG_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/map_background.png");
+    private static final int MAP_BG_W = 660;
+    private static final int MAP_BG_H = 390;
+
+    /** How many pixels of torn-edge border to leave on each side of the canvas. */
+    private static final int PARCHMENT_BORDER = 18;
+
     private static final int BUTTON_W = 120;
     private static final int BUTTON_H = 20;
 
@@ -27,13 +36,17 @@ public class GotMapScreen extends Screen {
     private static final int MAP_PIXEL_WIDTH  = 4207;
     private static final int MAP_PIXEL_HEIGHT = 3277;
 
-    private static final int MAP_BORDER = 20;
+
 
     private GotMapWidget mapWidget;
 
     private int btnX, btnY;
     private boolean btnHovered = false;
 
+    // Window bounds (the whole shrunken panel including the header bar)
+    private int winX, winY, winW, winH;
+
+    // Map canvas bounds (inside the window, below the header bar)
     private int canvasX, canvasY, canvasW, canvasH;
 
     public GotMapScreen() {
@@ -48,13 +61,17 @@ public class GotMapScreen extends Screen {
     protected void init() {
         mapWidget = null;
 
-        int lineH = font.lineHeight;
-        int barH  = 2 + lineH + 2;
+        // Window is exactly the parchment image size, centred on screen
+        winW = MAP_BG_W;
+        winH = MAP_BG_H;
+        winX = (width  - winW) / 2;
+        winY = (height - winH) / 2;
 
-        canvasX = MAP_BORDER;
-        canvasY = MAP_BORDER + barH;
-        canvasW = width  - MAP_BORDER * 2;
-        canvasH = height - MAP_BORDER - canvasY;
+        // Canvas sits inside the torn-edge border of the parchment
+        canvasX = winX + PARCHMENT_BORDER;
+        canvasY = winY + PARCHMENT_BORDER;
+        canvasW = winW - PARCHMENT_BORDER * 2;
+        canvasH = winH - PARCHMENT_BORDER * 2;
 
         mapWidget = new GotMapWidget(
                 canvasX, canvasY,
@@ -64,8 +81,9 @@ public class GotMapScreen extends Screen {
         );
         addRenderableWidget(mapWidget);
 
-        btnX = MAP_BORDER;
-        btnY = (canvasY - BUTTON_H) / 2;
+        // Button sits above the parchment entirely, like a tab
+        btnX = winX + PARCHMENT_BORDER;
+        btnY = winY - BUTTON_H - 4;
     }
 
     /* ------------------------------------------------------------------ */
@@ -75,13 +93,19 @@ public class GotMapScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 
-        // Dark background behind the whole screen (no tiling)
-        gfx.fill(0, 0, width, height, 0xFF111008);
+        // ── 1. Parchment background — scaled via pose matrix ──
+        //    map_background.png is 128×128; we scale the pose so a native-size
+        //    blit fills the entire window panel.
+        // Blit parchment at native size (window == image size, no scaling needed)
+        gfx.blit(RenderType::guiTextured, MAP_BG_TEXTURE,
+                winX, winY, 0f, 0f,
+                MAP_BG_W, MAP_BG_H,
+                MAP_BG_W, MAP_BG_H);
 
-        // Map canvas widget (also draws the iron border)
+        // ── 2. Map canvas widget (also draws the iron border) ──
         super.render(gfx, mouseX, mouseY, partialTick);
 
-        // Back button
+        // ── 3. Back / Menu button ──
         btnHovered = mouseX >= btnX && mouseX < btnX + BUTTON_W
                 && mouseY >= btnY && mouseY < btnY + BUTTON_H;
         int btnV = btnHovered ? BUTTON_V_HOVERED : BUTTON_V_NORMAL;
@@ -98,20 +122,20 @@ public class GotMapScreen extends Screen {
         gfx.drawString(font, btnLabel, lblX, lblY,
                 btnHovered ? 0xFFFFFFFF : 0xFFE8D8A0, btnHovered);
 
-        // Title
+        // ── 4. Title (centred in window, not full screen) ──
         String title  = "The Lands of Ice and Fire";
-        int    titleX = (width - font.width(title)) / 2;
-        int    titleY = MAP_BORDER - 4;
+        int    titleX = winX + (winW - font.width(title)) / 2;
+        int    titleY = winY + (canvasY - winY - font.lineHeight) / 2; // centred in parchment top border
         gfx.drawString(font, title, titleX, titleY, 0xFFE8C060, false);
 
-        // Coordinates
+        // ── 5. Coordinates below the canvas ──
         if (mapWidget != null) {
             BlockPos pos = mapWidget.getHoveredWorldPos(mouseX, mouseY);
             if (pos != null) {
                 String text = "x: " + pos.getX() + "  z: " + pos.getZ();
-                int    tx   = (width - font.width(text)) / 2;
-                int    ty   = canvasY + canvasH + 8;
-                gfx.drawString(font, text, tx, ty, 0xFFFFFFFF, false);
+                int    tx   = winX + (winW - font.width(text)) / 2;
+                int    ty   = canvasY + canvasH + 4;
+                gfx.drawString(font, text, tx, ty, 0xFFE8D8A0, false);
             }
         }
     }

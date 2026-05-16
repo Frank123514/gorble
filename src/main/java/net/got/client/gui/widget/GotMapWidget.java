@@ -60,11 +60,19 @@ public class GotMapWidget extends AbstractWidget {
     private final int textureWidth;
     private final int textureHeight;
 
+    // Current rendered values (lerp toward targets each frame)
     private double zoom, panX, panY;
-    private int    zoomIndex = 0;
+
+    // Smooth zoom targets
+    private double targetZoom;
+    private double targetPanX, targetPanY;
 
     private boolean dragging = false;
-    private long lastZoomTimeMs = 0L;
+
+    // Lerp speed: fraction of remaining distance closed per frame (~60 fps)
+    private static final double LERP = 0.18;
+    // Zoom factor per scroll tick
+    private static final double ZOOM_FACTOR = 1.30;
 
     /* ============================================================= */
     /* ======================== CONSTRUCTOR ======================== */
@@ -79,8 +87,11 @@ public class GotMapWidget extends AbstractWidget {
         this.textureHeight = textureHeight;
 
         this.zoom = zoomForLevel(0);
+        this.targetZoom = this.zoom;
 
         snapPanToPlayer();
+        this.targetPanX = this.panX;
+        this.targetPanY = this.panY;
     }
 
     /* ============================================================= */
@@ -93,6 +104,10 @@ public class GotMapWidget extends AbstractWidget {
 
     private double zoomForLevel(int level) {
         return getMinZoom() * ZOOM_MULTIPLIERS[level];
+    }
+
+    private double maxZoom() {
+        return getMinZoom() * ZOOM_MULTIPLIERS[ZOOM_MULTIPLIERS.length - 1];
     }
 
     private void snapPanToPlayer() {
@@ -108,21 +123,17 @@ public class GotMapWidget extends AbstractWidget {
         clampPan();
     }
 
-    private void zoomAroundCanvasCentre(double newZoom) {
-        double cx = (panX + width  / 2.0) / zoom;
-        double cz = (panY + height / 2.0) / zoom;
-        zoom = newZoom;
-        panX = cx * zoom - width  / 2.0;
-        panY = cz * zoom - height / 2.0;
-        clampPan();
-    }
-
     /* ============================================================= */
     /* ========================== RENDER =========================== */
     /* ============================================================= */
 
     @Override
     public void renderWidget(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+
+        // Smooth lerp toward zoom/pan targets
+        zoom = zoom + (targetZoom - zoom) * LERP;
+        panX = panX + (targetPanX - panX) * LERP;
+        panY = panY + (targetPanY - panY) * LERP;
 
         // Canvas background
         gfx.fill(getX(), getY(), getX() + width, getY() + height, CANVAS_BG_COLOR);
@@ -222,7 +233,9 @@ public class GotMapWidget extends AbstractWidget {
     private void drawZoomLabel(GuiGraphics gfx) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.font == null) return;
-        String label  = "Zoom Level: " + (zoomIndex + 1) + "/" + ZOOM_MULTIPLIERS.length;
+        // Show zoom as a clean multiplier relative to minimum zoom
+        double mult = targetZoom / getMinZoom();
+        String label = String.format("Zoom: %.1fx", mult);
         int    margin = 6;
         int    lx     = getX() + width - mc.font.width(label) - margin;
         int    ly     = getY() + margin;
@@ -236,12 +249,18 @@ public class GotMapWidget extends AbstractWidget {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
         if (!isMouseOver(mouseX, mouseY)) return false;
-        long now = System.currentTimeMillis();
-        if (now - lastZoomTimeMs < 100L) return true;
-        int prev = zoomIndex;
-        if (deltaY > 0) zoomIndex = Math.min(zoomIndex + 1, ZOOM_MULTIPLIERS.length - 1);
-        else            zoomIndex = Math.max(zoomIndex - 1, 0);
-        if (zoomIndex != prev) { zoomAroundCanvasCentre(zoomForLevel(zoomIndex)); lastZoomTimeMs = now; }
+
+        double factor = deltaY > 0 ? ZOOM_FACTOR : 1.0 / ZOOM_FACTOR;
+        double newZoom = Mth.clamp(targetZoom * factor, getMinZoom(), maxZoom());
+        if (newZoom == targetZoom) return true;
+
+        // Zoom around the mouse cursor position
+        double mapX = (mouseX - getX() + targetPanX) / targetZoom;
+        double mapY = (mouseY - getY() + targetPanY) / targetZoom;
+        targetZoom = newZoom;
+        targetPanX = mapX * targetZoom - (mouseX - getX());
+        targetPanY = mapY * targetZoom - (mouseY - getY());
+        clampTargetPan();
         return true;
     }
 
@@ -256,8 +275,10 @@ public class GotMapWidget extends AbstractWidget {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
         if (!dragging) return false;
-        panX -= dx; panY -= dy;
-        clampPan();
+        targetPanX -= dx; targetPanY -= dy;
+        clampTargetPan();
+        // Also snap current pan instantly while dragging so it feels direct
+        panX = targetPanX; panY = targetPanY;
         return true;
     }
 
@@ -305,6 +326,13 @@ public class GotMapWidget extends AbstractWidget {
         int zH = (int) (textureHeight * zoom);
         panX = Mth.clamp(panX, 0, Math.max(0, zW - width));
         panY = Mth.clamp(panY, 0, Math.max(0, zH - height));
+    }
+
+    private void clampTargetPan() {
+        int zW = (int) (textureWidth  * targetZoom);
+        int zH = (int) (textureHeight * targetZoom);
+        targetPanX = Mth.clamp(targetPanX, 0, Math.max(0, zW - width));
+        targetPanY = Mth.clamp(targetPanY, 0, Math.max(0, zH - height));
     }
 
     @Override
