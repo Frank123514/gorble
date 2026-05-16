@@ -2,6 +2,8 @@ package net.got.network;
 
 import net.got.entity.npc.data.GotNpcTrades;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
+import net.got.event.GotPlayerEvents;
+import net.got.faction.GotFactions;
 import net.got.item.GotCoin;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -76,7 +78,7 @@ public final class GotNetwork {
                                     npc.getOccupation().id, npcName));
                 }));
 
-        // ── Open trade screen (S→C) ────────────────────────────────────────────
+        // ── Open trade screen (S→C) ───────────────────────────────────────────
         r.playToClient(OpenTradeScreenPayload.TYPE, OpenTradeScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.dist == Dist.CLIENT) {
@@ -149,6 +151,26 @@ public final class GotNetwork {
                         inv.add(coin.stack(1));
                     }
                     inv.setChanged();
+                }));
+
+        // ── Open faction screen (S→C) ─────────────────────────────────────────
+        r.playToClient(OpenFactionScreenPayload.TYPE, OpenFactionScreenPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                        if (mc != null) mc.setScreen(new net.got.client.gui.FactionSelectionScreen());
+                    }
+                }));
+
+        // ── Select faction (C→S) ──────────────────────────────────────────────
+        r.playToServer(SelectFactionPayload.TYPE, SelectFactionPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    // Validate the faction id server-side before accepting it
+                    if (GotFactions.BY_ID.containsKey(payload.factionId())) {
+                        GotPlayerEvents.setFactionId(player, payload.factionId());
+                    }
                 }));
     }
 
