@@ -1,5 +1,6 @@
 package net.got.client.gui.widget;
 
+import net.got.faction.WaypointData;
 import net.got.network.MapTeleportPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.List;
 
 public class GotMapWidget extends AbstractWidget {
 
@@ -74,6 +78,17 @@ public class GotMapWidget extends AbstractWidget {
     // Zoom factor per scroll tick
     private static final double ZOOM_FACTOR = 1.30;
 
+    // ── Waypoints ─────────────────────────────────────────────────────────────
+    /** All waypoints currently visible on this map. May be empty. */
+    private List<WaypointData> waypoints = Collections.emptyList();
+    /** Index of the "active" (highlighted) waypoint, or -1 for none. */
+    private int activeWaypointIndex = -1;
+
+    // Pin geometry
+    private static final int PIN_W = 6;  // pin diamond half-width
+    private static final int PIN_H = 9;  // total pin height (diamond + stem)
+    private static final int PIN_STEM = 3;
+
     /* ============================================================= */
     /* ======================== CONSTRUCTOR ======================== */
     /* ============================================================= */
@@ -124,6 +139,45 @@ public class GotMapWidget extends AbstractWidget {
     }
 
     /* ============================================================= */
+    /* ====================== WAYPOINT API ========================= */
+    /* ============================================================= */
+
+    /**
+     * Replaces the current waypoint list and optionally focuses the first waypoint.
+     *
+     * @param waypoints    The list of waypoints to display (may be empty).
+     * @param activeIndex  Which waypoint should be highlighted / zoomed to (-1 = none).
+     */
+    public void setWaypoints(List<WaypointData> waypoints, int activeIndex) {
+        this.waypoints          = waypoints != null ? waypoints : Collections.emptyList();
+        this.activeWaypointIndex = activeIndex;
+        if (activeIndex >= 0 && activeIndex < this.waypoints.size()) {
+            panToWaypoint(this.waypoints.get(activeIndex));
+        }
+    }
+
+    /**
+     * Smoothly animates the map to centre on the given waypoint and applies
+     * the waypoint's preferred zoom level.
+     */
+    public void panToWaypoint(WaypointData wp) {
+        double minZ = getMinZoom();
+
+        // Convert block coords → texture-pixel coords
+        double pixelX = (wp.blockX() + WORLD_WIDTH_BLOCKS  / 2.0) / BLOCKS_PER_PIXEL;
+        double pixelY = (wp.blockZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
+
+        // Desired zoom: wp.zoom() is a multiplier on top of minZoom
+        double desiredZoom = Mth.clamp(minZ * wp.zoom(), minZ, maxZoom());
+        targetZoom = desiredZoom;
+
+        // Centre the waypoint in the widget
+        targetPanX = pixelX * targetZoom - width  / 2.0;
+        targetPanY = pixelY * targetZoom - height / 2.0;
+        clampTargetPan();
+    }
+
+    /* ============================================================= */
     /* ========================== RENDER =========================== */
     /* ============================================================= */
 
@@ -154,6 +208,9 @@ public class GotMapWidget extends AbstractWidget {
         // Player marker
         drawPlayerMarker(gfx);
 
+        // Waypoint pins (drawn on top of the map, inside scissor)
+        drawWaypointPins(gfx);
+
         // Compass rose
         int compassSize   = Math.max(16, (int) (height * COMPASS_FRACTION));
         int compassMargin = Math.max(4,  (int) (height * COMPASS_MARGIN_FRACTION));
@@ -168,6 +225,72 @@ public class GotMapWidget extends AbstractWidget {
         drawIronBorder(gfx);
 
         drawZoomLabel(gfx);
+    }
+
+    /* ------------------------------------------------------------ */
+    /* Waypoint pins                                                 */
+    /* ------------------------------------------------------------ */
+
+    /**
+     * Draws a small coloured diamond-pin for every waypoint in {@link #waypoints}.
+     * The active waypoint gets a gold fill; others use a muted grey-white.
+     * A name label floats above each pin when zoomed in enough.
+     */
+    private void drawWaypointPins(GuiGraphics gfx) {
+        Minecraft mc = Minecraft.getInstance();
+        if (waypoints.isEmpty()) return;
+
+        for (int i = 0; i < waypoints.size(); i++) {
+            WaypointData wp = waypoints.get(i);
+            boolean active  = (i == activeWaypointIndex);
+
+            // Convert world block → screen pixel
+            double pixelX = (wp.blockX() + WORLD_WIDTH_BLOCKS  / 2.0) / BLOCKS_PER_PIXEL;
+            double pixelY = (wp.blockZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
+
+            int sx = (int) (getX() - panX + pixelX * zoom);
+            int sy = (int) (getY() - panY + pixelY * zoom);
+
+            // Clip — only draw pins whose tip is inside the canvas
+            if (sx < getX() || sx >= getX() + width || sy - PIN_H < getY() || sy > getY() + height) {
+                continue;
+            }
+
+            // ── Diamond body ──────────────────────────────────────────────────
+            int fill   = active ? 0xFFFFD700 : 0xFFCCCCAA; // gold vs light stone
+            int border = active ? 0xFF8B6000 : 0xFF555544;
+            int stem   = active ? 0xFF8B6000 : 0xFF555544;
+
+            // Stem (1-px wide line from bottom of diamond to tip)
+            gfx.fill(sx, sy - PIN_STEM, sx + 1, sy + 1, stem);
+
+            // Diamond (4 filled rectangles forming a rhombus, 5×5 at half-width=2)
+            int dHalf = 3; // diamond half-width in pixels
+            for (int row = 0; row < dHalf * 2 + 1; row++) {
+                int halfW = dHalf - Math.abs(row - dHalf);
+                int ry    = sy - PIN_STEM - dHalf * 2 + row;
+                // border row
+                gfx.fill(sx - halfW,     ry, sx + halfW + 1,     ry + 1, border);
+                // fill (one pixel inset on each side for non-edge rows)
+                if (halfW > 1) {
+                    gfx.fill(sx - halfW + 1, ry, sx + halfW, ry + 1, fill);
+                }
+            }
+
+            // ── Name label (shown when zoom is high enough) ───────────────────
+            if (mc.font != null && (active || zoom > getMinZoom() * 3)) {
+                String label = wp.name();
+                int lw  = mc.font.width(label);
+                int lx  = sx - lw / 2;
+                int ly  = sy - PIN_STEM - dHalf * 2 - mc.font.lineHeight - 1;
+
+                // Shadow backdrop for readability
+                gfx.fill(lx - 2, ly - 1, lx + lw + 2, ly + mc.font.lineHeight + 1,
+                        0x99000000);
+                int textCol = active ? 0xFFFFD700 : 0xFFEEEEDD;
+                gfx.drawString(mc.font, label, lx, ly, textCol, false);
+            }
+        }
     }
 
     /* ------------------------------------------------------------ */

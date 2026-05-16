@@ -1,6 +1,7 @@
 package net.got.client.gui;
 
 import net.got.client.gui.widget.GotMapWidget;
+import net.got.faction.WaypointRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -79,6 +80,8 @@ public class GotMapScreen extends Screen {
                 MAP_TEXTURE,
                 MAP_PIXEL_WIDTH, MAP_PIXEL_HEIGHT
         );
+        // Show all known-world waypoints on the full map (no active highlight)
+        mapWidget.setWaypoints(WaypointRegistry.ALL, -1);
         addRenderableWidget(mapWidget);
 
         // Button sits above the parchment entirely, like a tab
