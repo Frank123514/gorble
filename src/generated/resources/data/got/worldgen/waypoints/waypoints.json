@@ -1,0 +1,48 @@
+{
+  "factions": {
+    "north": [
+      { "name": "Winterfell",    "pixelX": 614,  "pixelY": 1036,  "zoom": 8.0 },
+      { "name": "Castle Black",  "pixelX": 753,  "pixelY": 750,  "zoom": 8.0 },
+      { "name": "Moat Cailin",   "pixelX": 638,  "pixelY": 1231, "zoom": 8.0 },
+      { "name": "White Harbor",  "pixelX": 724,  "pixelY": 1192,  "zoom": 8.0 }
+    ],
+    "vale": [
+      { "name": "The Eyrie",    "pixelX": 648,  "pixelY": 870,  "zoom": 9.0 },
+      { "name": "Gulltown",     "pixelX": 666,  "pixelY": 933,  "zoom": 9.0 },
+      { "name": "Bloody Gate",  "pixelX": 638,  "pixelY": 845,  "zoom": 9.0 }
+    ],
+    "riverlands": [
+      { "name": "Riverrun",   "pixelX": 390,  "pixelY": 1195, "zoom": 9.0 },
+      { "name": "Harrenhal",  "pixelX": 525,  "pixelY": 1240, "zoom": 9.0 },
+      { "name": "The Twins",  "pixelX": 476,  "pixelY": 1140, "zoom": 9.0 }
+    ],
+    "westerlands": [
+      { "name": "Casterly Rock",   "pixelX": 336,  "pixelY": 1328, "zoom": 9.0 },
+      { "name": "Lannisport",      "pixelX": 330,  "pixelY": 1348, "zoom": 9.0 },
+      { "name": "Clegane's Keep",  "pixelX": 356,  "pixelY": 1308, "zoom": 9.0 }
+    ],
+    "reach": [
+      { "name": "Highgarden",  "pixelX": 428,  "pixelY": 1638, "zoom": 9.0 },
+      { "name": "Oldtown",     "pixelX": 355,  "pixelY": 1868, "zoom": 9.0 },
+      { "name": "Horn Hill",   "pixelX": 443,  "pixelY": 1728, "zoom": 9.0 },
+      { "name": "Cider Hall",  "pixelX": 415,  "pixelY": 1698, "zoom": 9.0 }
+    ],
+    "stormlands": [
+      { "name": "Storm's End",     "pixelX": 580,  "pixelY": 1678, "zoom": 9.0 },
+      { "name": "King's Landing",  "pixelX": 578,  "pixelY": 1378, "zoom": 9.0 },
+      { "name": "Dragonstone",     "pixelX": 636,  "pixelY": 1336, "zoom": 9.0 }
+    ],
+    "iron_islands": [
+      { "name": "Pyke",       "pixelX": 315,  "pixelY": 1322, "zoom": 10.0 },
+      { "name": "Lordsport",  "pixelX": 318,  "pixelY": 1330, "zoom": 10.0 },
+      { "name": "Great Wyk",  "pixelX": 278,  "pixelY": 1416, "zoom": 10.0 },
+      { "name": "Old Wyk",    "pixelX": 292,  "pixelY": 1416, "zoom": 10.0 }
+    ],
+    "dorne": [
+      { "name": "Sunspear",       "pixelX": 648,  "pixelY": 2098, "zoom": 9.0 },
+      { "name": "Water Gardens",  "pixelX": 636,  "pixelY": 2086, "zoom": 9.0 },
+      { "name": "Starfall",       "pixelX": 396,  "pixelY": 1996, "zoom": 9.0 },
+      { "name": "Yronwood",       "pixelX": 516,  "pixelY": 2016, "zoom": 9.0 }
+    ]
+  }
+}

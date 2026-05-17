@@ -64,17 +64,23 @@ public class GotMapWidget extends AbstractWidget {
     private final int textureWidth;
     private final int textureHeight;
 
-    // Current rendered values (lerp toward targets each frame)
-    private double zoom, panX, panY;
-
-    // Smooth zoom targets
+    // Current zoom (smoothly interpolated toward targetZoom each frame)
+    private double zoom;
     private double targetZoom;
-    private double targetPanX, targetPanY;
+
+    // Anchor-based panning: a map-texture point (anchorMapX/Y) is pinned to a
+    // fixed widget-local screen position (anchorScreenX/Y).  Pan is derived
+    // each frame from anchor + zoom, guaranteeing zero drift.
+    private double anchorMapX, anchorMapY;
+    private double anchorScreenX, anchorScreenY;
+
+    // Derived each frame from anchor + zoom
+    private double panX, panY;
 
     private boolean dragging = false;
+    private long lastFrameNanos = 0;
 
-    // Lerp speed: fraction of remaining distance closed per frame (~60 fps)
-    private static final double LERP = 0.18;
+    private static final double ZOOM_SPEED = 5.25;
     // Zoom factor per scroll tick
     private static final double ZOOM_FACTOR = 1.30;
 
@@ -86,8 +92,7 @@ public class GotMapWidget extends AbstractWidget {
 
     // Pin geometry
     private static final int PIN_W = 6;  // pin diamond half-width
-    private static final int PIN_H = 9;  // total pin height (diamond + stem)
-    private static final int PIN_STEM = 3;
+    private static final int PIN_H = 6;  // total pin height (diamond only)
 
     /* ============================================================= */
     /* ======================== CONSTRUCTOR ======================== */
@@ -104,9 +109,9 @@ public class GotMapWidget extends AbstractWidget {
         this.zoom = zoomForLevel(0);
         this.targetZoom = this.zoom;
 
+        this.anchorScreenX = width / 2.0;
+        this.anchorScreenY = height / 2.0;
         snapPanToPlayer();
-        this.targetPanX = this.panX;
-        this.targetPanY = this.panY;
     }
 
     /* ============================================================= */
@@ -128,13 +133,17 @@ public class GotMapWidget extends AbstractWidget {
     private void snapPanToPlayer() {
         Minecraft mc = Minecraft.getInstance();
         double cx = textureWidth  / 2.0;
-        double cz = textureHeight / 2.0;
+        double cy = textureHeight / 2.0;
         if (mc.player instanceof AbstractClientPlayer p) {
             cx = (p.getX() + WORLD_WIDTH_BLOCKS  / 2.0) / BLOCKS_PER_PIXEL;
-            cz = (p.getZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
+            cy = (p.getZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
         }
-        panX = cx * zoom - width  / 2.0;
-        panY = cz * zoom - height / 2.0;
+        anchorMapX = cx;
+        anchorMapY = cy;
+        anchorScreenX = width / 2.0;
+        anchorScreenY = height / 2.0;
+        panX = anchorMapX * zoom - anchorScreenX;
+        panY = anchorMapY * zoom - anchorScreenY;
         clampPan();
     }
 
@@ -163,31 +172,46 @@ public class GotMapWidget extends AbstractWidget {
     public void panToWaypoint(WaypointData wp) {
         double minZ = getMinZoom();
 
-        // Convert block coords → texture-pixel coords
-        double pixelX = (wp.blockX() + WORLD_WIDTH_BLOCKS  / 2.0) / BLOCKS_PER_PIXEL;
-        double pixelY = (wp.blockZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
+        // Anchor on the waypoint, centered in the widget
+        anchorMapX = wp.pixelX();
+        anchorMapY = wp.pixelY();
+        anchorScreenX = width / 2.0;
+        anchorScreenY = height / 2.0;
 
         // Desired zoom: wp.zoom() is a multiplier on top of minZoom
-        double desiredZoom = Mth.clamp(minZ * wp.zoom(), minZ, maxZoom());
-        targetZoom = desiredZoom;
-
-        // Centre the waypoint in the widget
-        targetPanX = pixelX * targetZoom - width  / 2.0;
-        targetPanY = pixelY * targetZoom - height / 2.0;
-        clampTargetPan();
+        targetZoom = Mth.clamp(minZ * wp.zoom(), minZ, maxZoom());
     }
 
     /* ============================================================= */
     /* ========================== RENDER =========================== */
     /* ============================================================= */
 
+    /** Currently hovered waypoint index, or -1 if none. */
+    private int hoveredWaypointIndex = -1;
+
     @Override
     public void renderWidget(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 
-        // Smooth lerp toward zoom/pan targets
-        zoom = zoom + (targetZoom - zoom) * LERP;
-        panX = panX + (targetPanX - panX) * LERP;
-        panY = panY + (targetPanY - panY) * LERP;
+        // ── Smooth zoom: linear step, speed ∝ zoom level ─────────────────────
+        // Converges cleanly to targetZoom with no tail oscillation.
+        long now = System.nanoTime();
+        double dt = lastFrameNanos == 0 ? (1.0 / 60.0) : (now - lastFrameNanos) / 1_000_000_000.0;
+        lastFrameNanos = now;
+        dt = Math.min(dt, 0.1); // cap to prevent huge jumps after lag spikes
+
+        if (zoom != targetZoom) {
+            double speed = zoom * ZOOM_SPEED * dt;
+            if (zoom < targetZoom) {
+                zoom = Math.min(targetZoom, zoom + speed);
+            } else {
+                zoom = Math.max(targetZoom, zoom - speed);
+            }
+        }
+
+        // Derive pan from anchor — couples zoom+pan, eliminates drift
+        panX = anchorMapX * zoom - anchorScreenX;
+        panY = anchorMapY * zoom - anchorScreenY;
+        clampPan();
 
         // Canvas background
         gfx.fill(getX(), getY(), getX() + width, getY() + height, CANVAS_BG_COLOR);
@@ -196,10 +220,10 @@ public class GotMapWidget extends AbstractWidget {
         gfx.enableScissor(getX(), getY(), getX() + width, getY() + height);
 
         // Map texture
-        int zoomedW = (int) (textureWidth  * zoom);
-        int zoomedH = (int) (textureHeight * zoom);
-        int drawX   = (int) (getX() - panX);
-        int drawY   = (int) (getY() - panY);
+        int zoomedW = (int) Math.round(textureWidth  * zoom);
+        int zoomedH = (int) Math.round(textureHeight * zoom);
+        int drawX   = (int) Math.round(getX() - panX);
+        int drawY   = (int) Math.round(getY() - panY);
         gfx.blit(RenderType::guiTextured, mapTexture,
                 drawX, drawY, 0, 0,
                 zoomedW, zoomedH,
@@ -208,6 +232,9 @@ public class GotMapWidget extends AbstractWidget {
         // Player marker
         drawPlayerMarker(gfx);
 
+        // Update hovered waypoint
+        updateHoveredWaypoint(mouseX, mouseY);
+        
         // Waypoint pins (drawn on top of the map, inside scissor)
         drawWaypointPins(gfx);
 
@@ -225,6 +252,14 @@ public class GotMapWidget extends AbstractWidget {
         drawIronBorder(gfx);
 
         drawZoomLabel(gfx);
+        
+        // Draw tooltip for hovered waypoint (outside scissor)
+        if (hoveredWaypointIndex >= 0 && hoveredWaypointIndex < waypoints.size()) {
+            WaypointData wp = waypoints.get(hoveredWaypointIndex);
+            List<Component> tooltip = new java.util.ArrayList<>();
+            tooltip.add(Component.literal(wp.name()));
+            gfx.renderComponentTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        }
     }
 
     /* ------------------------------------------------------------ */
@@ -234,7 +269,6 @@ public class GotMapWidget extends AbstractWidget {
     /**
      * Draws a small coloured diamond-pin for every waypoint in {@link #waypoints}.
      * The active waypoint gets a gold fill; others use a muted grey-white.
-     * A name label floats above each pin when zoomed in enough.
      */
     private void drawWaypointPins(GuiGraphics gfx) {
         Minecraft mc = Minecraft.getInstance();
@@ -244,9 +278,9 @@ public class GotMapWidget extends AbstractWidget {
             WaypointData wp = waypoints.get(i);
             boolean active  = (i == activeWaypointIndex);
 
-            // Convert world block → screen pixel
-            double pixelX = (wp.blockX() + WORLD_WIDTH_BLOCKS  / 2.0) / BLOCKS_PER_PIXEL;
-            double pixelY = (wp.blockZ() + WORLD_HEIGHT_BLOCKS / 2.0) / BLOCKS_PER_PIXEL;
+            // Pixel coords on the map texture
+            double pixelX = wp.pixelX();
+            double pixelY = wp.pixelY();
 
             int sx = (int) (getX() - panX + pixelX * zoom);
             int sy = (int) (getY() - panY + pixelY * zoom);
@@ -259,36 +293,18 @@ public class GotMapWidget extends AbstractWidget {
             // ── Diamond body ──────────────────────────────────────────────────
             int fill   = active ? 0xFFFFD700 : 0xFFCCCCAA; // gold vs light stone
             int border = active ? 0xFF8B6000 : 0xFF555544;
-            int stem   = active ? 0xFF8B6000 : 0xFF555544;
-
-            // Stem (1-px wide line from bottom of diamond to tip)
-            gfx.fill(sx, sy - PIN_STEM, sx + 1, sy + 1, stem);
 
             // Diamond (4 filled rectangles forming a rhombus, 5×5 at half-width=2)
             int dHalf = 3; // diamond half-width in pixels
             for (int row = 0; row < dHalf * 2 + 1; row++) {
                 int halfW = dHalf - Math.abs(row - dHalf);
-                int ry    = sy - PIN_STEM - dHalf * 2 + row;
+                int ry    = sy - dHalf * 2 + row;
                 // border row
                 gfx.fill(sx - halfW,     ry, sx + halfW + 1,     ry + 1, border);
                 // fill (one pixel inset on each side for non-edge rows)
                 if (halfW > 1) {
                     gfx.fill(sx - halfW + 1, ry, sx + halfW, ry + 1, fill);
                 }
-            }
-
-            // ── Name label (shown when zoom is high enough) ───────────────────
-            if (mc.font != null && (active || zoom > getMinZoom() * 3)) {
-                String label = wp.name();
-                int lw  = mc.font.width(label);
-                int lx  = sx - lw / 2;
-                int ly  = sy - PIN_STEM - dHalf * 2 - mc.font.lineHeight - 1;
-
-                // Shadow backdrop for readability
-                gfx.fill(lx - 2, ly - 1, lx + lw + 2, ly + mc.font.lineHeight + 1,
-                        0x99000000);
-                int textCol = active ? 0xFFFFD700 : 0xFFEEEEDD;
-                gfx.drawString(mc.font, label, lx, ly, textCol, false);
             }
         }
     }
@@ -377,13 +393,13 @@ public class GotMapWidget extends AbstractWidget {
         double newZoom = Mth.clamp(targetZoom * factor, getMinZoom(), maxZoom());
         if (newZoom == targetZoom) return true;
 
-        // Zoom around the mouse cursor position
-        double mapX = (mouseX - getX() + targetPanX) / targetZoom;
-        double mapY = (mouseY - getY() + targetPanY) / targetZoom;
+        // Anchor zoom on the map point under the mouse cursor
+        anchorMapX    = (mouseX - getX() + panX) / zoom;
+        anchorMapY    = (mouseY - getY() + panY) / zoom;
+        anchorScreenX = mouseX - getX();
+        anchorScreenY = mouseY - getY();
+
         targetZoom = newZoom;
-        targetPanX = mapX * targetZoom - (mouseX - getX());
-        targetPanY = mapY * targetZoom - (mouseY - getY());
-        clampTargetPan();
         return true;
     }
 
@@ -398,10 +414,12 @@ public class GotMapWidget extends AbstractWidget {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
         if (!dragging) return false;
-        targetPanX -= dx; targetPanY -= dy;
-        clampTargetPan();
-        // Also snap current pan instantly while dragging so it feels direct
-        panX = targetPanX; panY = targetPanY;
+        // Shift anchor in map-space for instant direct-feel panning
+        anchorMapX -= dx / zoom;
+        anchorMapY -= dy / zoom;
+        panX = anchorMapX * zoom - anchorScreenX;
+        panY = anchorMapY * zoom - anchorScreenY;
+        clampPan();
         return true;
     }
 
@@ -445,19 +463,47 @@ public class GotMapWidget extends AbstractWidget {
     /* ============================================================= */
 
     private void clampPan() {
-        int zW = (int) (textureWidth  * zoom);
-        int zH = (int) (textureHeight * zoom);
-        panX = Mth.clamp(panX, 0, Math.max(0, zW - width));
-        panY = Mth.clamp(panY, 0, Math.max(0, zH - height));
-    }
-
-    private void clampTargetPan() {
-        int zW = (int) (textureWidth  * targetZoom);
-        int zH = (int) (textureHeight * targetZoom);
-        targetPanX = Mth.clamp(targetPanX, 0, Math.max(0, zW - width));
-        targetPanY = Mth.clamp(targetPanY, 0, Math.max(0, zH - height));
+        double zW = textureWidth  * zoom;
+        double zH = textureHeight * zoom;
+        double cx = Mth.clamp(panX, 0, Math.max(0, zW - width));
+        double cy = Mth.clamp(panY, 0, Math.max(0, zH - height));
+        if (cx != panX || cy != panY) {
+            panX = cx;
+            panY = cy;
+            // Back-compute anchor so it stays consistent with clamped pan
+            anchorMapX = (panX + anchorScreenX) / zoom;
+            anchorMapY = (panY + anchorScreenY) / zoom;
+        }
     }
 
     @Override
     protected void updateWidgetNarration(@NotNull NarrationElementOutput n) {}
+    
+    /**
+     * Updates {@link #hoveredWaypointIndex} based on current mouse position.
+     */
+    private void updateHoveredWaypoint(int mouseX, int mouseY) {
+        hoveredWaypointIndex = -1;
+        
+        if (waypoints.isEmpty()) return;
+        
+        // Check waypoints in reverse order (top-most rendered first)
+        for (int i = waypoints.size() - 1; i >= 0; i--) {
+            WaypointData wp = waypoints.get(i);
+            
+            double pixelX = wp.pixelX();
+            double pixelY = wp.pixelY();
+            
+            int sx = (int) (getX() - panX + pixelX * zoom);
+            int sy = (int) (getY() - panY + pixelY * zoom);
+            
+            // Check if mouse is within diamond bounds (with some padding)
+            int hitBox = PIN_W + 2;
+            if (mouseX >= sx - hitBox && mouseX <= sx + hitBox &&
+                mouseY >= sy - PIN_H - 2 && mouseY <= sy + 2) {
+                hoveredWaypointIndex = i;
+                break;
+            }
+        }
+    }
 }
