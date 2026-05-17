@@ -3,145 +3,97 @@
     "attached=false,rotation=0": {
       "model": "got:block/hawthorn_hanging_sign"
     },
+    "attached=false,rotation=1": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=2": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=3": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=4": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=5": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=6": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=7": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=8": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=9": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=10": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=11": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=12": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=13": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=false,rotation=14": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
     "attached=false,rotation=15": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=30": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=45": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=60": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=75": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=90": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=105": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=120": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=135": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=150": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=165": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=180": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=195": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=210": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=225": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=240": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=255": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=270": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=285": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=300": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=315": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=330": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=false,rotation=345": {
       "model": "got:block/hawthorn_hanging_sign"
     },
     "attached=true,rotation=0": {
       "model": "got:block/hawthorn_hanging_sign"
     },
+    "attached=true,rotation=1": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=2": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=3": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=4": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=5": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=6": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=7": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=8": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=9": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=10": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=11": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=12": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=13": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
+    "attached=true,rotation=14": {
+      "model": "got:block/hawthorn_hanging_sign"
+    },
     "attached=true,rotation=15": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=30": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=45": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=60": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=75": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=90": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=105": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=120": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=135": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=150": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=165": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=180": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=195": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=210": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=225": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=240": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=255": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=270": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=285": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=300": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=315": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=330": {
-      "model": "got:block/hawthorn_hanging_sign"
-    },
-    "attached=true,rotation=345": {
       "model": "got:block/hawthorn_hanging_sign"
     }
   }

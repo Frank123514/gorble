@@ -3,73 +3,49 @@
     "rotation=0": {
       "model": "got:block/apple_sign"
     },
+    "rotation=1": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=2": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=3": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=4": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=5": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=6": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=7": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=8": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=9": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=10": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=11": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=12": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=13": {
+      "model": "got:block/apple_sign"
+    },
+    "rotation=14": {
+      "model": "got:block/apple_sign"
+    },
     "rotation=15": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=30": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=45": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=60": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=75": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=90": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=105": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=120": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=135": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=150": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=165": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=180": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=195": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=210": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=225": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=240": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=255": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=270": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=285": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=300": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=315": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=330": {
-      "model": "got:block/apple_sign"
-    },
-    "rotation=345": {
       "model": "got:block/apple_sign"
     }
   }
