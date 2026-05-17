@@ -34,344 +34,14 @@ public class GotModTabs {
     }
 
     /* ─────────────────────────────────────────────────────────────────────
-     * TAB 1 — GOT: MASONRY
-     * All stone, brick, cobblestone, and rock-based building blocks.
-     * ───────────────────────────────────────────────────────────────────── */
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MASONRY =
-            REGISTRY.register("got_masonry", () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.got.got_masonry"))
-                    .icon(() -> new ItemStack(GotModBlocks.LIMESTONE_BRICK.get()))
-                    .displayItems((params, output) -> {
-
-                        // ── Basalt ──────────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.BASALT_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK.get());
-                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.BASALT_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK.get());
-                        safeAccept(output, GotModBlocks.BASALT_PILLAR.get());
-                        safeAccept(output, GotModBlocks.BASALT_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.BASALT_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BASALT_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.BASALT_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.BASALT_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.BASALT_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.BASALT_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BASALT_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK_WALL.get());
-
-                        // ── Flint ──────────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.FLINT_ROCK.get());
-                        safeAccept(output, GotModBlocks.FLINT_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK.get());
-                        safeAccept(output, GotModBlocks.FLINT_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.FLINT_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.FLINT_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.FLINT_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.FLINT_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.FLINT_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.FLINT_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.FLINT_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_WALL.get());
-
-                        // ── Fused Black Stone ──────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_PILLAR.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK_WALL.get());
-
-                        // ── Grey Granite ───────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK_WALL.get());
-
-                        // ── Limestone ──────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK_WALL.get());
-
-                        // ── Marble ─────────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.MARBLE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK.get());
-                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MARBLE_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MARBLE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.MARBLE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MARBLE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MARBLE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.MARBLE_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.MARBLE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MARBLE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MARBLE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MARBLE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK_WALL.get());
-
-                        // ── Oily Black Stone ───────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_PILLAR.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_WALL.get());
-
-                        // ── Red Sandstone ──────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_WALL.get());
-
-                        // ── Sandstone ──────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK_WALL.get());
-
-                        // ── Slate ──────────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.SLATE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE.get());
-                        safeAccept(output, GotModBlocks.SLATE_BRICK.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK.get());
-                        safeAccept(output, GotModBlocks.SLATE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.SLATE_SHINGLES.get());
-                        safeAccept(output, GotModBlocks.SLATE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SLATE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SLATE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.SLATE_ROCK_BUTTON.get());
-                        safeAccept(output, GotModBlocks.SLATE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK_WALL.get());
-                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE_WALL.get());
-                        safeAccept(output, GotModBlocks.SLATE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SLATE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SLATE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK_WALL.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_SLAB.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_WALL.get());
-
-                    })
-                    .build());
-
-    /* ─────────────────────────────────────────────────────────────────────
-     * TAB 2 — GOT: CARPENTRY
+     * TAB 1 — GOT: CARPENTRY
      * All wood types: logs, planks, stairs, slabs, fences, doors,
      * trapdoors, pressure plates, buttons, branches, roofing, signs,
      * hanging signs, boats, and chest boats.
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_CARPENTRY =
             REGISTRY.register("got_carpentry", () -> CreativeModeTab.builder()
+                    .withTabsBefore(net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS.location())
                     .title(Component.translatable("itemGroup.got.got_carpentry"))
                     .icon(() -> new ItemStack(GotModBlocks.WEIRWOOD_PLANKS.get()))
                     .displayItems((params, output) -> {
@@ -477,6 +147,16 @@ public class GotModTabs {
                         safeAccept(output, Block.byItem(GotModItems.ASPEN_HANGING_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ASPEN_BOAT.get()));
                         safeAccept(output, Block.byItem(GotModItems.ASPEN_CHEST_BOAT.get()));
+
+                        // ── Thatch (light and dark) ──────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.LIGHT_THATCH.get());
+                        safeAccept(output, GotModBlocks.LIGHT_THATCH_SLAB.get());
+                        safeAccept(output, GotModBlocks.LIGHT_THATCH_STAIRS.get());
+                        safeAccept(output, GotModBlocks.LIGHT_THATCH_WALL.get());
+                        safeAccept(output, GotModBlocks.DARK_THATCH.get());
+                        safeAccept(output, GotModBlocks.DARK_THATCH_SLAB.get());
+                        safeAccept(output, GotModBlocks.DARK_THATCH_STAIRS.get());
+                        safeAccept(output, GotModBlocks.DARK_THATCH_WALL.get());
 
                         // ── Bamboo (vanilla) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BAMBOO_ROOFING.get());
@@ -1190,6 +870,341 @@ public class GotModTabs {
                     .build());
 
     /* ─────────────────────────────────────────────────────────────────────
+     * TAB 2 — GOT: MASONRY
+     * All stone, brick, cobblestone, and rock-based building blocks.
+     * ───────────────────────────────────────────────────────────────────── */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MASONRY =
+            REGISTRY.register("got_masonry", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_CARPENTRY.getId())
+                    .title(Component.translatable("itemGroup.got.got_masonry"))
+                    .icon(() -> new ItemStack(GotModBlocks.LIMESTONE_BRICK.get()))
+                    .displayItems((params, output) -> {
+
+                        // ── Basalt ──────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.BASALT_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK.get());
+                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.BASALT_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK.get());
+                        safeAccept(output, GotModBlocks.BASALT_PILLAR.get());
+                        safeAccept(output, GotModBlocks.BASALT_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.BASALT_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BASALT_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.BASALT_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.BASALT_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BASALT_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.BASALT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.BASALT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BASALT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_BASALT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_BASALT_BRICK_WALL.get());
+
+                        // ── Flint ──────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.FLINT_ROCK.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.FLINT_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FLINT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FLINT_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FLINT_BRICK_WALL.get());
+
+                        // ── Fused Black Stone ──────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_PILLAR.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_FUSED_BLACK_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FUSED_BLACK_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_FUSED_BLACK_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_FUSED_BLACK_BRICK_WALL.get());
+
+                        // ── Grey Granite ───────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_PILLAR.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_GREY_GRANITE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.GREY_GRANITE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_GREY_GRANITE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_GREY_GRANITE_BRICK_WALL.get());
+
+                        // ── Limestone ──────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_PILLAR.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_LIMESTONE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.LIMESTONE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_LIMESTONE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_LIMESTONE_BRICK_WALL.get());
+
+                        // ── Marble ─────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.MARBLE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK.get());
+                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MARBLE_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MARBLE_PILLAR.get());
+                        safeAccept(output, GotModBlocks.MARBLE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MARBLE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MARBLE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.MARBLE_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.MARBLE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_MARBLE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MARBLE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MARBLE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MARBLE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MARBLE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_MARBLE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_MARBLE_BRICK_WALL.get());
+
+                        // ── Oily Black Stone ───────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_PILLAR.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_OILY_BLACK_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.OILY_BLACK_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_OILY_BLACK_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_WALL.get());
+
+                        // ── Red Sandstone ──────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_PILLAR.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_WALL.get());
+
+                        // ── Sandstone ──────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_PILLAR.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK_WALL.get());
+
+                        // ── Slate ──────────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.SLATE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK.get());
+                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE.get());
+                        safeAccept(output, GotModBlocks.SLATE_BRICK.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK.get());
+                        safeAccept(output, GotModBlocks.SLATE_PILLAR.get());
+                        safeAccept(output, GotModBlocks.SLATE_SHINGLES.get());
+                        safeAccept(output, GotModBlocks.SLATE_SHINGLES_SLAB.get());
+                        safeAccept(output, GotModBlocks.SLATE_SHINGLES_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SLATE_SHINGLES_WALL.get());
+                        safeAccept(output, GotModBlocks.SLATE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SLATE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SLATE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.SLATE_ROCK_BUTTON.get());
+                        safeAccept(output, GotModBlocks.SLATE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SMOOTH_SLATE_ROCK_WALL.get());
+                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SLATE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_COBBLESTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.SLATE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.SLATE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.SLATE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.CRACKED_SLATE_BRICK_WALL.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_SLAB.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_WALL.get());
+
+                    })
+                    .build());
+
+    /* ─────────────────────────────────────────────────────────────────────
      * TAB 3 — GOT: DECORATIVE BLOCKS
      * Leaves, saplings, flowers, grasses, wild plants, and the oven.
      * Ores, gems, ingots, and coins live in GOT: INGREDIENTS.
@@ -1198,6 +1213,7 @@ public class GotModTabs {
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_DECORATIVE =
             REGISTRY.register("got_decorative", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_MASONRY.getId())
                     .title(Component.translatable("itemGroup.got.got_decorative"))
                     .icon(() -> new ItemStack(GotModBlocks.WEIRWOOD_LEAVES.get()))
                     .displayItems((params, output) -> {
@@ -1328,6 +1344,7 @@ public class GotModTabs {
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_FOOD =
             REGISTRY.register("got_food", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_DECORATIVE.getId())
                     .title(Component.translatable("itemGroup.got.got_food"))
                     .icon(() -> new ItemStack(GotModBlocks.OVEN.get()))
                     .displayItems((params, output) -> {
@@ -1404,6 +1421,7 @@ public class GotModTabs {
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_ARMORY =
             REGISTRY.register("got_armory", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_FOOD.getId())
                     .title(Component.translatable("itemGroup.got.got_armory"))
                     .icon(() -> new ItemStack(GotModItems.BRONZE_SWORD.get()))
                     .displayItems((params, output) -> {
@@ -1444,6 +1462,7 @@ public class GotModTabs {
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_INGREDIENTS =
             REGISTRY.register("got_ingredients", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_ARMORY.getId())
                     .title(Component.translatable("itemGroup.got.got_ingredients"))
                     .icon(() -> new ItemStack(GotModItems.COIN_DRAGON.get()))
                     .displayItems((params, output) -> {
@@ -1511,6 +1530,7 @@ public class GotModTabs {
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_SPAWN_EGGS =
             REGISTRY.register("got_spawn_eggs", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_INGREDIENTS.getId())
                     .title(Component.translatable("itemGroup.got.got_spawn_eggs"))
                     .icon(() -> new ItemStack(GotModItems.NORTHMAN_SPAWN_EGG.get()))
                     .displayItems((params, output) -> {

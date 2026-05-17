@@ -922,6 +922,9 @@ public class GotModItems {
     public static final DeferredItem<Item> SMOOTH_SLATE_ROCK_STAIRS = block(GotModBlocks.SMOOTH_SLATE_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_SLATE_ROCK_WALL = block(GotModBlocks.SMOOTH_SLATE_ROCK_WALL);
     public static final DeferredItem<Item> SLATE_SHINGLES = block(GotModBlocks.SLATE_SHINGLES);
+    public static final DeferredItem<Item> SLATE_SHINGLES_STAIRS = block(GotModBlocks.SLATE_SHINGLES_STAIRS);
+    public static final DeferredItem<Item> SLATE_SHINGLES_WALL = block(GotModBlocks.SLATE_SHINGLES_WALL);
+    public static final DeferredItem<Item> SLATE_SHINGLES_SLAB = block(GotModBlocks.SLATE_SHINGLES_SLAB);
 
     // ── Oily Black Stone items ────────────────────────────────────────────
     public static final DeferredItem<Item> OILY_BLACK_ROCK = block(GotModBlocks.OILY_BLACK_ROCK);
@@ -1021,6 +1024,16 @@ public class GotModItems {
     public static final DeferredItem<Item> SMOOTH_MARBLE_ROCK_SLAB = block(GotModBlocks.SMOOTH_MARBLE_ROCK_SLAB);
     public static final DeferredItem<Item> SMOOTH_MARBLE_ROCK_STAIRS = block(GotModBlocks.SMOOTH_MARBLE_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_MARBLE_ROCK_WALL = block(GotModBlocks.SMOOTH_MARBLE_ROCK_WALL);
+
+    // ── Thatch block items ────────────────────────────────────────────────
+    public static final DeferredItem<Item> LIGHT_THATCH        = block(GotModBlocks.LIGHT_THATCH);
+    public static final DeferredItem<Item> LIGHT_THATCH_SLAB   = block(GotModBlocks.LIGHT_THATCH_SLAB);
+    public static final DeferredItem<Item> LIGHT_THATCH_STAIRS = block(GotModBlocks.LIGHT_THATCH_STAIRS);
+    public static final DeferredItem<Item> LIGHT_THATCH_WALL   = block(GotModBlocks.LIGHT_THATCH_WALL);
+    public static final DeferredItem<Item> DARK_THATCH         = block(GotModBlocks.DARK_THATCH);
+    public static final DeferredItem<Item> DARK_THATCH_SLAB    = block(GotModBlocks.DARK_THATCH_SLAB);
+    public static final DeferredItem<Item> DARK_THATCH_STAIRS  = block(GotModBlocks.DARK_THATCH_STAIRS);
+    public static final DeferredItem<Item> DARK_THATCH_WALL    = block(GotModBlocks.DARK_THATCH_WALL);
 
     // ── Ore block items ───────────────────────────────────────────────────
     public static final DeferredItem<Item> AMBER_ORE          = block(GotModBlocks.AMBER_ORE);

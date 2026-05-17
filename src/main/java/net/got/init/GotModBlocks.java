@@ -1676,6 +1676,9 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_STAIRS = registerSlate("smooth_slate_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> SMOOTH_SLATE_ROCK_WALL = registerSlate("smooth_slate_rock_wall", RegionalRockWallBlock::new);
     public static final DeferredBlock<Block> SLATE_SHINGLES = registerSlate("slate_shingles", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> SLATE_SHINGLES_SLAB = registerSlate("slate_shingles_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> SLATE_SHINGLES_STAIRS = registerSlate("slate_shingles_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> SLATE_SHINGLES_WALL = registerSlate("slate_shingles_wall", RegionalRockWallBlock::new);
 
     // ── Oily Black Stone blocks ───────────────────────────────────────────────
     public static final DeferredBlock<Block> OILY_BLACK_ROCK = registerOilyBlack("oily_black_rock", RegionalRockBlock::new);
@@ -1775,6 +1778,35 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_SLAB = registerMarble("smooth_marble_rock_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_STAIRS = registerMarble("smooth_marble_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_WALL = registerMarble("smooth_marble_rock_wall", RegionalRockWallBlock::new);
+
+    // ── Thatch ────────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> LIGHT_THATCH =
+            REGISTRY.registerBlock("light_thatch", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+    public static final DeferredBlock<Block> LIGHT_THATCH_SLAB =
+            REGISTRY.registerBlock("light_thatch_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+    public static final DeferredBlock<Block> LIGHT_THATCH_STAIRS =
+            REGISTRY.registerBlock("light_thatch_stairs",
+                    p -> new StairBlock(LIGHT_THATCH.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+    public static final DeferredBlock<Block> LIGHT_THATCH_WALL =
+            REGISTRY.registerBlock("light_thatch_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+
+    public static final DeferredBlock<Block> DARK_THATCH =
+            REGISTRY.registerBlock("dark_thatch", p -> new Block(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+    public static final DeferredBlock<Block> DARK_THATCH_SLAB =
+            REGISTRY.registerBlock("dark_thatch_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+    public static final DeferredBlock<Block> DARK_THATCH_STAIRS =
+            REGISTRY.registerBlock("dark_thatch_stairs",
+                    p -> new StairBlock(DARK_THATCH.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
+    public static final DeferredBlock<Block> DARK_THATCH_WALL =
+            REGISTRY.registerBlock("dark_thatch_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
 
     // ── Log / Stripped-log maps (used by GotFlammableRotatedPillarBlock for axe stripping) ──
     static {

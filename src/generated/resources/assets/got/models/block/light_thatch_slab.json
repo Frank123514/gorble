@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/light_thatch",
+    "top": "got:block/light_thatch",
+    "side": "got:block/light_thatch",
+    "wall": "got:block/light_thatch",
+    "particle": "got:block/light_thatch"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/dark_thatch_slab"
+    },
+    "type=top": {
+      "model": "got:block/dark_thatch_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/dark_thatch"
+    }
+  }
+}
