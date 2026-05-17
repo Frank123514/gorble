@@ -81,7 +81,7 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> PINE_PLANKS = woodBlock("pine_planks", PinePlanksBlock::new);
     public static final DeferredBlock<Block> PINE_LEAVES = woodBlock("pine_leaves", PineLeavesBlock::new);
     public static final DeferredBlock<Block> PINE_STAIRS = woodBlock("pine_stairs", PineStairsBlock::new);
-    public static final DeferredBlock<Block> PINE_SLAB = woodBlock("pine_slab", PineSlabBlock::new);
+    public static final DeferredBlock<Block> PINE_SLAB = woodBlock("pine_slab.json", PineSlabBlock::new);
     public static final DeferredBlock<Block> PINE_FENCE = woodBlock("pine_fence", PineFenceBlock::new);
     public static final DeferredBlock<Block> PINE_FENCE_GATE = woodBlock("pine_fence_gate", p -> new GotFenceGateBlock(GotWoodTypes.PINE, p));
     public static final DeferredBlock<Block> PINE_PRESSURE_PLATE = woodBlock("pine_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
