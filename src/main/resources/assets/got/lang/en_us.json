@@ -2319,5 +2319,13 @@
   "entity.got.got_stag": "Stag",
   "item.got.got_horse_spawn_egg": "Warhorse Spawn Egg",
   "item.got.got_pony_spawn_egg": "Pony Spawn Egg",
-  "item.got.got_stag_spawn_egg": "Stag Spawn Egg"
+  "item.got.got_stag_spawn_egg": "Stag Spawn Egg",
+  "itemGroup.got.got_masonry": "GoT: Masonry",
+  "itemGroup.got.got_carpentry": "GoT: Carpentry",
+  "itemGroup.got.got_decorative": "GoT: Decorative",
+  "itemGroup.got.got_mobs": "GoT: Spawn Eggs",
+  "itemGroup.got.got_food": "GoT: Food",
+  "itemGroup.got.got_armory": "GoT: Armory",
+  "itemGroup.got.got_ingredients": "GoT: Ingredients",
+  "itemGroup.got.got_spawn_eggs": "GoT: Spawn Eggs"
 }

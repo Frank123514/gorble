@@ -22,7 +22,7 @@ public class GotModTabs {
      * is declared in GotModBlocks but its ItemBlock was never registered.
      */
     private static void safeAccept(CreativeModeTab.Output output,
-                                   net.minecraft.world.level.block.Block block) {
+                                   Block block) {
         try {
             ItemStack stack = new ItemStack(block);
             if (!stack.isEmpty() && stack.getCount() == 1) {
@@ -1191,8 +1191,10 @@ public class GotModTabs {
 
     /* ─────────────────────────────────────────────────────────────────────
      * TAB 3 — GOT: DECORATIVE BLOCKS
-     * Leaves, saplings, flowers, grasses, wild plants, ores, gems,
-     * ingots, tools, armour, spawn eggs, oven, coins, and misc items.
+     * Leaves, saplings, flowers, grasses, wild plants, and the oven.
+     * Ores, gems, ingots, and coins live in GOT: INGREDIENTS.
+     * Tools and armour live in GOT: ARMORY.
+     * Spawn eggs live in GOT: SPAWN EGGS.
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_DECORATIVE =
             REGISTRY.register("got_decorative", () -> CreativeModeTab.builder()
@@ -1316,99 +1318,13 @@ public class GotModTabs {
                         // ── Oven & Utility ────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.OVEN.get());
 
-                        // ── Ores ──────────────────────────────────────────────────────
-                        output.accept(GotModItems.AMBER_ORE.get());
-                        output.accept(GotModItems.AMETHYST_ORE.get());
-                        output.accept(GotModItems.DRAGONGLASS_ORE.get());
-                        output.accept(GotModItems.OPAL_ORE.get());
-                        output.accept(GotModItems.RUBY_ORE.get());
-                        output.accept(GotModItems.SAPPHIRE_ORE.get());
-                        output.accept(GotModItems.SILVER_ORE.get());
-                        output.accept(GotModItems.TIN_ORE.get());
-                        output.accept(GotModItems.TOPAZ_ORE.get());
-                        output.accept(GotModItems.VALYRIAN_STEEL_ORE.get());
-
-                        // ── Raw Ores ──────────────────────────────────────────────────
-                        output.accept(GotModItems.RAW_SILVER.get());
-                        output.accept(GotModItems.RAW_TIN.get());
-                        output.accept(GotModItems.RAW_VALYRIAN_STEEL.get());
-
-                        // ── Gemstones ─────────────────────────────────────────────────
-                        output.accept(GotModItems.AMBER.get());
-                        output.accept(GotModItems.AMETHYST.get());
-                        output.accept(GotModItems.DRAGONGLASS_SHARD.get());
-                        output.accept(GotModItems.OPAL.get());
-                        output.accept(GotModItems.RUBY.get());
-                        output.accept(GotModItems.SAPPHIRE.get());
-                        output.accept(GotModItems.TOPAZ.get());
-
-                        // ── Ingots ────────────────────────────────────────────────────
-                        output.accept(GotModItems.SILVER_INGOT.get());
-                        output.accept(GotModItems.TIN_INGOT.get());
-                        output.accept(GotModItems.BRONZE_INGOT.get());
-                        output.accept(GotModItems.VALYRIAN_STEEL_INGOT.get());
-
-                        // ── Copper Tools & Armour ─────────────────────────────────────
-                        output.accept(GotModItems.COPPER_SWORD.get());
-                        output.accept(GotModItems.COPPER_PICKAXE.get());
-                        output.accept(GotModItems.COPPER_AXE.get());
-                        output.accept(GotModItems.COPPER_SHOVEL.get());
-                        output.accept(GotModItems.COPPER_HOE.get());
-                        output.accept(GotModItems.COPPER_HELMET.get());
-                        output.accept(GotModItems.COPPER_CHESTPLATE.get());
-                        output.accept(GotModItems.COPPER_LEGGINGS.get());
-                        output.accept(GotModItems.COPPER_BOOTS.get());
-
-                        // ── Bronze Tools & Armour ─────────────────────────────────────
-                        output.accept(GotModItems.BRONZE_SWORD.get());
-                        output.accept(GotModItems.BRONZE_PICKAXE.get());
-                        output.accept(GotModItems.BRONZE_AXE.get());
-                        output.accept(GotModItems.BRONZE_SHOVEL.get());
-                        output.accept(GotModItems.BRONZE_HOE.get());
-                        output.accept(GotModItems.BRONZE_HELMET.get());
-                        output.accept(GotModItems.BRONZE_CHESTPLATE.get());
-                        output.accept(GotModItems.BRONZE_LEGGINGS.get());
-                        output.accept(GotModItems.BRONZE_BOOTS.get());
-
-                        // ── Currency ──────────────────────────────────────────────────
-                        output.accept(GotModItems.COIN_HALFPENNY.get());
-                        output.accept(GotModItems.COIN_PENNY.get());
-                        output.accept(GotModItems.COIN_HALFGROAT.get());
-                        output.accept(GotModItems.COIN_GROAT.get());
-                        output.accept(GotModItems.COIN_STAR.get());
-                        output.accept(GotModItems.COIN_STAG.get());
-                        output.accept(GotModItems.COIN_MOON.get());
-                        output.accept(GotModItems.COIN_DRAGON.get());
-
-                        // ── Spawn Eggs ────────────────────────────────────────────────
-                        output.accept(GotModItems.NORTHMAN_SPAWN_EGG.get());
-                        output.accept(GotModItems.RIVERLANDER_SPAWN_EGG.get());
-                        output.accept(GotModItems.VALEMAN_SPAWN_EGG.get());
-                        output.accept(GotModItems.WESTERMAN_SPAWN_EGG.get());
-                        output.accept(GotModItems.STORMLORDER_SPAWN_EGG.get());
-                        output.accept(GotModItems.IRONBORN_SPAWN_EGG.get());
-                        output.accept(GotModItems.DORNISHMAN_SPAWN_EGG.get());
-                        output.accept(GotModItems.REACHMAN_SPAWN_EGG.get());
-                        output.accept(GotModItems.STARK_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.TULLY_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.LANNISTER_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.BARATHEON_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.GREYJOY_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.MARTELL_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.TYRELL_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.ARRYN_LEVY_SPAWN_EGG.get());
-                        output.accept(GotModItems.NORTH_SOLDIER_SPAWN_EGG.get());
-                        output.accept(GotModItems.VALE_KNIGHT_SPAWN_EGG.get());
-                        output.accept(GotModItems.GOT_HORSE_SPAWN_EGG.get());
-                        output.accept(GotModItems.GOT_STAG_SPAWN_EGG.get());
-
                     })
                     .build());
 
     /* ─────────────────────────────────────────────────────────────────────
      * TAB 4 — GOT: FOOD
-     * Seeds, crop produce, flour, dough, bread, vegetables, berries,
-     * wild crops, berry bushes, and crop blocks.
+     * Bread, vegetables, berries, wild crops, berry bushes, and crop blocks.
+     * Seeds, grains, flour, and dough live in GOT: INGREDIENTS.
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_FOOD =
             REGISTRY.register("got_food", () -> CreativeModeTab.builder()
@@ -1416,31 +1332,9 @@ public class GotModTabs {
                     .icon(() -> new ItemStack(GotModBlocks.OVEN.get()))
                     .displayItems((params, output) -> {
 
-                        // ── Seeds ─────────────────────────────────────────────────────
-                        output.accept(GotModItems.OAT_SEEDS.get());
-                        output.accept(GotModItems.RYE_SEEDS.get());
-                        output.accept(GotModItems.BARLEY_SEEDS.get());
-                        output.accept(GotModItems.COTTON_SEEDS.get());
-                        output.accept(GotModItems.PEPPERCORN_SEEDS.get());
-
-                        // ── Grains & Cotton ───────────────────────────────────────────
-                        output.accept(GotModItems.OAT.get());
-                        output.accept(GotModItems.RYE.get());
-                        output.accept(GotModItems.BARLEY.get());
-                        output.accept(GotModItems.COTTON.get());
-                        output.accept(GotModItems.PEPPERCORN.get());
-
-                        // ── Flour, Dough & Bread ──────────────────────────────────────
-                        output.accept(GotModItems.WHEAT_FLOUR.get());
-                        output.accept(GotModItems.WHEAT_DOUGH.get());
-                        output.accept(GotModItems.OAT_FLOUR.get());
-                        output.accept(GotModItems.OAT_DOUGH.get());
+                        // ── Bread ─────────────────────────────────────────────────────
                         output.accept(GotModItems.OAT_BREAD.get());
-                        output.accept(GotModItems.RYE_FLOUR.get());
-                        output.accept(GotModItems.RYE_DOUGH.get());
                         output.accept(GotModItems.RYE_BREAD.get());
-                        output.accept(GotModItems.BARLEY_FLOUR.get());
-                        output.accept(GotModItems.BARLEY_DOUGH.get());
                         output.accept(GotModItems.BARLEY_BREAD.get());
 
                         // ── Vegetables ────────────────────────────────────────────────
@@ -1500,6 +1394,154 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLUEBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.RASPBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.STRAWBERRY_BUSH.get());
+
+                    })
+                    .build());
+
+    /* ─────────────────────────────────────────────────────────────────────
+     * TAB 5 — GOT: ARMORY
+     * All weapons (swords, axes, tools used as weapons) and armor sets.
+     * ───────────────────────────────────────────────────────────────────── */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_ARMORY =
+            REGISTRY.register("got_armory", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.got.got_armory"))
+                    .icon(() -> new ItemStack(GotModItems.BRONZE_SWORD.get()))
+                    .displayItems((params, output) -> {
+
+                        // ── Copper Weapons ────────────────────────────────────────────
+                        output.accept(GotModItems.COPPER_SWORD.get());
+                        output.accept(GotModItems.COPPER_AXE.get());
+                        output.accept(GotModItems.COPPER_PICKAXE.get());
+                        output.accept(GotModItems.COPPER_SHOVEL.get());
+                        output.accept(GotModItems.COPPER_HOE.get());
+
+                        // ── Bronze Weapons ────────────────────────────────────────────
+                        output.accept(GotModItems.BRONZE_SWORD.get());
+                        output.accept(GotModItems.BRONZE_AXE.get());
+                        output.accept(GotModItems.BRONZE_PICKAXE.get());
+                        output.accept(GotModItems.BRONZE_SHOVEL.get());
+                        output.accept(GotModItems.BRONZE_HOE.get());
+
+                        // ── Copper Armor ──────────────────────────────────────────────
+                        output.accept(GotModItems.COPPER_HELMET.get());
+                        output.accept(GotModItems.COPPER_CHESTPLATE.get());
+                        output.accept(GotModItems.COPPER_LEGGINGS.get());
+                        output.accept(GotModItems.COPPER_BOOTS.get());
+
+                        // ── Bronze Armor ──────────────────────────────────────────────
+                        output.accept(GotModItems.BRONZE_HELMET.get());
+                        output.accept(GotModItems.BRONZE_CHESTPLATE.get());
+                        output.accept(GotModItems.BRONZE_LEGGINGS.get());
+                        output.accept(GotModItems.BRONZE_BOOTS.get());
+
+                    })
+                    .build());
+
+    /* ─────────────────────────────────────────────────────────────────────
+     * TAB 6 — GOT: INGREDIENTS
+     * Currency, gemstones, raw ores, ingots, seeds, and non-edible produce
+     * (grains, cotton, peppercorn, flour, dough).
+     * ───────────────────────────────────────────────────────────────────── */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_INGREDIENTS =
+            REGISTRY.register("got_ingredients", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.got.got_ingredients"))
+                    .icon(() -> new ItemStack(GotModItems.COIN_DRAGON.get()))
+                    .displayItems((params, output) -> {
+
+                        // ── Currency ──────────────────────────────────────────────────
+                        output.accept(GotModItems.COIN_HALFPENNY.get());
+                        output.accept(GotModItems.COIN_PENNY.get());
+                        output.accept(GotModItems.COIN_HALFGROAT.get());
+                        output.accept(GotModItems.COIN_GROAT.get());
+                        output.accept(GotModItems.COIN_STAR.get());
+                        output.accept(GotModItems.COIN_STAG.get());
+                        output.accept(GotModItems.COIN_MOON.get());
+                        output.accept(GotModItems.COIN_DRAGON.get());
+
+                        // ── Gemstones ─────────────────────────────────────────────────
+                        output.accept(GotModItems.AMBER.get());
+                        output.accept(GotModItems.AMETHYST.get());
+                        output.accept(GotModItems.DRAGONGLASS_SHARD.get());
+                        output.accept(GotModItems.OPAL.get());
+                        output.accept(GotModItems.RUBY.get());
+                        output.accept(GotModItems.SAPPHIRE.get());
+                        output.accept(GotModItems.TOPAZ.get());
+
+                        // ── Raw Ores ──────────────────────────────────────────────────
+                        output.accept(GotModItems.RAW_SILVER.get());
+                        output.accept(GotModItems.RAW_TIN.get());
+                        output.accept(GotModItems.RAW_VALYRIAN_STEEL.get());
+
+                        // ── Ingots ────────────────────────────────────────────────────
+                        output.accept(GotModItems.SILVER_INGOT.get());
+                        output.accept(GotModItems.TIN_INGOT.get());
+                        output.accept(GotModItems.BRONZE_INGOT.get());
+                        output.accept(GotModItems.VALYRIAN_STEEL_INGOT.get());
+
+                        // ── Seeds ─────────────────────────────────────────────────────
+                        output.accept(GotModItems.OAT_SEEDS.get());
+                        output.accept(GotModItems.RYE_SEEDS.get());
+                        output.accept(GotModItems.BARLEY_SEEDS.get());
+                        output.accept(GotModItems.COTTON_SEEDS.get());
+                        output.accept(GotModItems.PEPPERCORN_SEEDS.get());
+
+                        // ── Non-Edible Produce (grains, cotton, processing items) ─────
+                        output.accept(GotModItems.OAT.get());
+                        output.accept(GotModItems.RYE.get());
+                        output.accept(GotModItems.BARLEY.get());
+                        output.accept(GotModItems.COTTON.get());
+                        output.accept(GotModItems.PEPPERCORN.get());
+
+                        // ── Flour & Dough (non-edible intermediates) ──────────────────
+                        output.accept(GotModItems.WHEAT_FLOUR.get());
+                        output.accept(GotModItems.WHEAT_DOUGH.get());
+                        output.accept(GotModItems.OAT_FLOUR.get());
+                        output.accept(GotModItems.OAT_DOUGH.get());
+                        output.accept(GotModItems.RYE_FLOUR.get());
+                        output.accept(GotModItems.RYE_DOUGH.get());
+                        output.accept(GotModItems.BARLEY_FLOUR.get());
+                        output.accept(GotModItems.BARLEY_DOUGH.get());
+
+                    })
+                    .build());
+
+    /* ─────────────────────────────────────────────────────────────────────
+     * TAB 7 — GOT: SPAWN EGGS
+     * All NPC, soldier, mount, and wildlife spawn eggs.
+     * ───────────────────────────────────────────────────────────────────── */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_SPAWN_EGGS =
+            REGISTRY.register("got_spawn_eggs", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.got.got_spawn_eggs"))
+                    .icon(() -> new ItemStack(GotModItems.NORTHMAN_SPAWN_EGG.get()))
+                    .displayItems((params, output) -> {
+
+                        // ── Smallfolk (Tier 1) ────────────────────────────────────────
+                        output.accept(GotModItems.NORTHMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.RIVERLANDER_SPAWN_EGG.get());
+                        output.accept(GotModItems.VALEMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.WESTERMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.STORMLORDER_SPAWN_EGG.get());
+                        output.accept(GotModItems.IRONBORN_SPAWN_EGG.get());
+                        output.accept(GotModItems.DORNISHMAN_SPAWN_EGG.get());
+                        output.accept(GotModItems.REACHMAN_SPAWN_EGG.get());
+
+                        // ── Levies (Tier 2) ───────────────────────────────────────────
+                        output.accept(GotModItems.STARK_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.TULLY_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.LANNISTER_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.BARATHEON_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.GREYJOY_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.MARTELL_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.TYRELL_LEVY_SPAWN_EGG.get());
+                        output.accept(GotModItems.ARRYN_LEVY_SPAWN_EGG.get());
+
+                        // ── Skilled Fighters (Tier 3) ─────────────────────────────────
+                        output.accept(GotModItems.NORTH_SOLDIER_SPAWN_EGG.get());
+                        output.accept(GotModItems.VALE_KNIGHT_SPAWN_EGG.get());
+
+                        // ── Mounts & Wildlife ─────────────────────────────────────────
+                        output.accept(GotModItems.GOT_HORSE_SPAWN_EGG.get());
+                        output.accept(GotModItems.GOT_STAG_SPAWN_EGG.get());
 
                     })
                     .build());
