@@ -1242,13 +1242,19 @@ public class GotModBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
 
     // ── Grasses ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> DEVILGRASS         = flowerBlock("devilgrass");
+    public static final DeferredBlock<Block> DEVILGRASS = REGISTRY.registerBlock("devilgrass",
+            GotShortGrassBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS));
     public static final DeferredBlock<Block> GHOST_GRASS = REGISTRY.registerBlock("ghost_grass",
             GhostGrassBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion().randomTicks());
     public static final DeferredBlock<Block> HRANNA             = flowerBlock("hranna");
-    public static final DeferredBlock<Block> PIPERS_GRASS       = flowerBlock("pipers_grass");
-    public static final DeferredBlock<Block> WHEATGRASS      = flowerBlock("wheatgrass");
+    public static final DeferredBlock<Block> PIPERS_GRASS = REGISTRY.registerBlock("pipers_grass",
+            GotShortGrassBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS));
+    public static final DeferredBlock<Block> WHEATGRASS = REGISTRY.registerBlock("wheatgrass",
+            GotShortGrassBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS));
     
 
     // ── Wild Crops (naturally spawning, drop seeds/produce when broken) ─────
@@ -1952,7 +1958,7 @@ public class GotModBlocks {
      */
     private static DeferredBlock<Block> flowerBlock(String name) {
         return REGISTRY.registerBlock(name,
-                p -> new FlowerBlock(MobEffects.ABSORPTION, 0, p),
+                GotShortGrassBlock::new,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
     }
 

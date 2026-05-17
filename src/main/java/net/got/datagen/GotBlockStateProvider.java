@@ -214,7 +214,15 @@ public class GotBlockStateProvider extends ModelProvider {
     private void registerWetlandBlocks(BlockModelGenerators g) {
         // Wheatgrass — plain cross-model plant, not tinted.
         g.createPlant(block("wheatgrass"), block("wheatgrass"),
-                BlockModelGenerators.PlantType.NOT_TINTED);
+                BlockModelGenerators.PlantType.TINTED);
+
+        // Piper's grass — biome-tinted like vanilla short_grass.
+        g.createPlant(block("pipers_grass"), block("pipers_grass"),
+                BlockModelGenerators.PlantType.TINTED);
+
+        // Devil grass — biome-tinted like vanilla short_grass.
+        g.createPlant(block("devilgrass"), block("devilgrass"),
+                BlockModelGenerators.PlantType.TINTED);
 
         // Reeds — cross-model plant.  All 16 age values share the same model,
         // so we register the block-state once and suppress per-age variants.

@@ -5,6 +5,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -160,8 +162,12 @@ public class GotBlockTagsProvider extends BlockTagsProvider {
     // ─────────────────────────────────────────────────────────────────
 
     private void addWetlandTags() {
-        // Wheatgrass — a small plant; treated like vanilla flowers for tool purposes.
-        tag(BlockTags.FLOWERS).add(block("wheatgrass"));
+        // Wheatgrass, Piper's grass, and Devil grass — behave like vanilla short_grass:
+        // biome-tinted, replaceable, and recognized as short grass by other systems.
+        // minecraft:short_grass — BlockTags constant not available in 1.21.4; create the key directly.
+        TagKey<Block> shortGrass = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("short_grass"));
+        tag(shortGrass).add(block("wheatgrass"), block("pipers_grass"), block("devilgrass"));
+        tag(BlockTags.REPLACEABLE).add(block("wheatgrass"), block("pipers_grass"), block("devilgrass"));
 
         // Reeds — must be replaceable so other blocks can push past a column,
         // and must survive on dirt/similar ground (handled via canSurvive in block).
