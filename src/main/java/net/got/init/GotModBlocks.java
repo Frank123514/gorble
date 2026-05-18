@@ -1243,19 +1243,19 @@ public class GotModBlocks {
 
     // ── Grasses ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> DEVILGRASS = REGISTRY.registerBlock("devilgrass",
-            GotShortGrassBlock::new,
+            GotPlantBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS));
     public static final DeferredBlock<Block> GHOST_GRASS = REGISTRY.registerBlock("ghost_grass",
             GhostGrassBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion().randomTicks());
     public static final DeferredBlock<Block> HRANNA             = flowerBlock("hranna");
     public static final DeferredBlock<Block> PIPERS_GRASS = REGISTRY.registerBlock("pipers_grass",
-            GotShortGrassBlock::new,
+            GotPlantBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS));
     public static final DeferredBlock<Block> WHEATGRASS = REGISTRY.registerBlock("wheatgrass",
-            GotShortGrassBlock::new,
+            GotPlantBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS));
-    
+
 
     // ── Wild Crops (naturally spawning, drop seeds/produce when broken) ─────
     public static final DeferredBlock<Block> WILD_WHEAT = flowerBlock("wild_wheat");

@@ -2,7 +2,6 @@ package net.got.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class GotShortGrassBlock extends BushBlock {
 

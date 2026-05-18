@@ -44,7 +44,9 @@ import net.got.init.GotModMenus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraft.world.level.block.Blocks;
 
 // The bus parameter was deprecated for removal in NeoForge 21.3.x.
 // Omitting it defaults to the MOD bus, which is the correct behaviour here.
@@ -55,6 +57,17 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 public final class ClientSetup {
 
 
+
+    @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+        event.register(
+            (state, level, pos, tintIndex) -> event.getBlockColors().getColor(
+                Blocks.SHORT_GRASS.defaultBlockState(), level, pos, tintIndex),
+            GotModBlocks.DEVILGRASS.get(),
+            GotModBlocks.PIPERS_GRASS.get(),
+            GotModBlocks.WHEATGRASS.get()
+        );
+    }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
