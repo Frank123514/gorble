@@ -4,6 +4,7 @@ import net.got.GotMod;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import net.minecraft.world.level.block.Block;
@@ -1633,6 +1634,39 @@ public class GotModItems {
     /** Stag spawn egg — bark brown with antler-cream spots. */
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
             "got_stag_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_STAG.get(), p));
+
+    // ── Great House Banner Pattern Items (used in the loom) ──────────────────
+
+    public static final DeferredItem<BannerPatternItem> STARK_BANNER_PATTERN =
+            REGISTRY.registerItem("stark_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.STARK_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> LANNISTER_BANNER_PATTERN =
+            REGISTRY.registerItem("lannister_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.LANNISTER_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> TARGARYEN_BANNER_PATTERN =
+            REGISTRY.registerItem("targaryen_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.TARGARYEN_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> BARATHEON_BANNER_PATTERN =
+            REGISTRY.registerItem("baratheon_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.BARATHEON_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> GREYJOY_BANNER_PATTERN =
+            REGISTRY.registerItem("greyjoy_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.GREYJOY_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> TYRELL_BANNER_PATTERN =
+            REGISTRY.registerItem("tyrell_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.TYRELL_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> MARTELL_BANNER_PATTERN =
+            REGISTRY.registerItem("martell_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.MARTELL_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> TULLY_BANNER_PATTERN =
+            REGISTRY.registerItem("tully_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.TULLY_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> ARRYN_BANNER_PATTERN =
+            REGISTRY.registerItem("arryn_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.ARRYN_PATTERN_TAG, p));
+    public static final DeferredItem<BannerPatternItem> BOLTON_BANNER_PATTERN =
+            REGISTRY.registerItem("bolton_banner_pattern",
+                    p -> new BannerPatternItem(GotModBannerPatterns.BOLTON_PATTERN_TAG, p));
 
     // ── Helpers ───────────────────────────────────────────────────────────
 
