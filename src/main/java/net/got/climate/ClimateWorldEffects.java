@@ -18,7 +18,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
  * <p>Exposes {@link #getGrowthRateModifier(int)} for use in crop and plant
  * {@code randomTick} overrides to scale growth speed by latitude.
  */
-@EventBusSubscriber(modid = GotMod.MODID)
 public final class ClimateWorldEffects {
 
     // ── Vegetation growth modifier ────────────────────────────────────────────

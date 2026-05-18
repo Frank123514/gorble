@@ -53,10 +53,20 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
+    annotationProcessor "org.spongepowered:mixin:0.8.7:processor"
+
     // JEI
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+            '-AoutRefMapFile=' + project.file('build/resources/main/got.refmap.json').absolutePath,
+            '-AdefaultObfuscationEnv=named'
+    ]
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -89,10 +99,6 @@ publishing {
             url "file://${project.projectDir}/repo"
         }
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
 }
 
 idea {

@@ -12,9 +12,10 @@ package net.got.climate;
  * <pre>
  *  Z ≤ POLAR_NORTH_MAX      → POLAR           (Land of Always Winter, Frostfangs)
  *  Z ≤ SUBARCTIC_MAX        → SUBARCTIC        (The Wall, Gift, Far North)
- *  Z ≤ TEMPERATE_NORTH_MAX  → TEMPERATE_NORTH  (The North, Riverlands)
- *  Z ≤ TEMPERATE_SOUTH_MAX  → TEMPERATE_SOUTH  (Westerlands, Vale, Stormlands)
- *  Z ≤ SUBTROPICAL_MAX      → SUBTROPICAL      (Reach, Crownlands, Narrow Sea coast)
+ *  Z ≤ TEMPERATE_NORTH_MAX  → TEMPERATE_NORTH  (The North)
+ *  Z ≤ RIVERLANDS_MAX       → RIVERLANDS       (Riverlands, Vale)
+ *  Z ≤ TEMPERATE_SOUTH_MAX  → TEMPERATE_SOUTH  (Westerlands, Stormlands, Crownlands)
+ *  Z ≤ SUBTROPICAL_MAX      → SUBTROPICAL      (Reach, Narrow Sea coast)
  *  else                     → TROPICAL         (Dorne, Summer Islands, Essos desert)
  * </pre>
  *
@@ -28,7 +29,7 @@ public enum ClimateZone {
     /** Land of Always Winter, Frostfangs — perpetual blizzard, extreme cold. */
     POLAR(
             "Polar",
-            -0.8f,   // base temperature modifier (applied on top of biome temp)
+            -0.8f,   // base temperature modifier
             0.0f,    // base rainfall modifier
             true,    // always snowing
             false,   // never thunderstorms
@@ -45,7 +46,7 @@ public enum ClimateZone {
             "got.climate.subarctic"
     ),
 
-    /** The North, Riverlands — temperate continental, cold winters, mild summers. */
+    /** The North — temperate continental, cold winters, mild summers. */
     TEMPERATE_NORTH(
             "Temperate (North)",
             -0.1f,
@@ -55,20 +56,30 @@ public enum ClimateZone {
             "got.climate.temperate_north"
     ),
 
-    /** Westerlands, Vale, Stormlands — mild maritime, storms common. */
+    /** Riverlands, Vale — mild and fertile, moderate rainfall, occasional storms. */
+    RIVERLANDS(
+            "Riverlands",
+            0.05f,
+            0.6f,
+            false,
+            true,
+            "got.climate.riverlands"
+    ),
+
+    /** Westerlands, Stormlands, Crownlands — mild maritime, storms common. */
     TEMPERATE_SOUTH(
             "Temperate (South)",
-            0.1f,
+            0.2f,
             0.6f,
             false,
             true,
             "got.climate.temperate_south"
     ),
 
-    /** Reach, Crownlands — warm, fertile, Mediterranean-like. */
+    /** Reach, Narrow Sea coast — warm, fertile, Mediterranean-like. */
     SUBTROPICAL(
             "Subtropical",
-            0.3f,
+            0.4f,
             0.3f,
             false,
             false,
@@ -88,23 +99,25 @@ public enum ClimateZone {
     // ──────────────────────────────────────────────────────────────────────────
     //  Zone boundary constants (world-block Z coordinates)
     //  Negative Z = north, positive Z = south.
-    //  Adjust these to match your world's actual coordinate layout.
     // ──────────────────────────────────────────────────────────────────────────
 
-    /** Northern edge of the Subarctic zone (everything more north is Polar). */
-    public static final int POLAR_NORTH_MAX       = -12_000;
+    /** Everything north of this is Polar. */
+    public static final int POLAR_NORTH_MAX      = -40_000;
 
     /** Northern edge of the Temperate North zone. */
-    public static final int SUBARCTIC_MAX         =  -6_000;
+    public static final int SUBARCTIC_MAX        = -33_500;
+
+    /** Northern edge of the Riverlands zone. */
+    public static final int TEMPERATE_NORTH_MAX  = -15_500;
 
     /** Northern edge of the Temperate South zone. */
-    public static final int TEMPERATE_NORTH_MAX   =      0;
+    public static final int RIVERLANDS_MAX       =  -4_500;
 
     /** Northern edge of the Subtropical zone. */
-    public static final int TEMPERATE_SOUTH_MAX   =  6_000;
+    public static final int TEMPERATE_SOUTH_MAX  =  16_500;
 
     /** Northern edge of the Tropical zone. */
-    public static final int SUBTROPICAL_MAX       = 12_000;
+    public static final int SUBTROPICAL_MAX      =  40_000;
 
     // ── Fields ────────────────────────────────────────────────────────────────
 
@@ -156,6 +169,7 @@ public enum ClimateZone {
         if (worldZ <= POLAR_NORTH_MAX)     return POLAR;
         if (worldZ <= SUBARCTIC_MAX)       return SUBARCTIC;
         if (worldZ <= TEMPERATE_NORTH_MAX) return TEMPERATE_NORTH;
+        if (worldZ <= RIVERLANDS_MAX)      return RIVERLANDS;
         if (worldZ <= TEMPERATE_SOUTH_MAX) return TEMPERATE_SOUTH;
         if (worldZ <= SUBTROPICAL_MAX)     return SUBTROPICAL;
         return TROPICAL;

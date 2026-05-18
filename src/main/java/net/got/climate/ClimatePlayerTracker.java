@@ -113,6 +113,8 @@ public final class ClimatePlayerTracker {
                     "A biting wind descends from the north. The Wall looms somewhere ahead.";
             case TEMPERATE_NORTH ->
                     "The air turns crisp. You are in the northern reaches of Westeros.";
+            case RIVERLANDS ->
+                    "Rolling hills and rushing rivers surround you. You have entered the Riverlands.";
             case TEMPERATE_SOUTH ->
                     "The climate softens. The great houses of the south hold sway here.";
             case SUBTROPICAL ->
