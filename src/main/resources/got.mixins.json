@@ -6,7 +6,8 @@
   "refmap": "got.refmap.json",
   "mixins": [
     "WeatherRendererMixin",
-    "ServerLevelPrecipitationMixin"
+    "ServerLevelPrecipitationMixin",
+    "SnowMeltMixin"
   ],
   "injectors": {
     "defaultRequire": 0
