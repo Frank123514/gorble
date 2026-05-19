@@ -139,10 +139,17 @@ public final class GotCalendar extends SavedData {
         setDirty();
     }
 
-    /** Advances the calendar by {@code days} days. */
-    public void skipDays(int days) {
+    /**
+     * Advances the calendar by {@code days} days and keeps the season timer in
+     * sync.  Pass the overworld (or any ServerLevel — the season manager always
+     * operates on the overworld internally).
+     */
+    public void skipDays(int days, ServerLevel level) {
         for (int i = 0; i < days; i++) advanceDay();
         setDirty();
+        if (level != null) {
+            SeasonManager.advanceByDays(days, level);
+        }
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────

@@ -2,13 +2,16 @@ package net.got.calendar;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.got.GotMod;
+import net.got.climate.GotSeason;
 import net.got.climate.SeasonManager;
 import net.got.client.command.GotMapCommand;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,10 +22,11 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  *
  * <h3>{@code /gotdate}</h3>
  * <pre>
- *   /gotdate                          — Print current date + season in chat
- *   /gotdate season                   — Print current season + days remaining
- *   /gotdate set &lt;year&gt; &lt;month&gt; &lt;day&gt; — Set date (requires op)
- *   /gotdate skip &lt;days&gt;              — Advance calendar N days (requires op)
+ *   /gotdate                                    — Print current date + season in chat
+ *   /gotdate season                             — Print current season + days remaining
+ *   /gotdate season set &lt;spring|summer|autumn|winter&gt; — Force-set season (op)
+ *   /gotdate set &lt;year&gt; &lt;month&gt; &lt;day&gt;          — Set date (op)
+ *   /gotdate skip &lt;days&gt;                        — Advance calendar + season N days (op)
  * </pre>
  */
 @EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.GAME)
@@ -41,9 +45,18 @@ public final class GotDateCommand {
                         // /gotdate  — show full date
                         .executes(GotDateCommand::executeShow)
 
-                        // /gotdate season  — show season info
+                        // /gotdate season  — show season info; season set <name>  — op only
                         .then(Commands.literal("season")
-                                .executes(GotDateCommand::executeSeason))
+                                .executes(GotDateCommand::executeSeason)
+                                .then(Commands.literal("set")
+                                        .requires(src -> src.hasPermission(2))
+                                        .then(Commands.argument("season", StringArgumentType.word())
+                                                .suggests((ctx, builder) -> {
+                                                    for (GotSeason s : GotSeason.values())
+                                                        builder.suggest(s.name().toLowerCase());
+                                                    return builder.buildFuture();
+                                                })
+                                                .executes(GotDateCommand::executeSeasonSet))))
 
                         // /gotdate set <year> <month> <day>  — op only
                         .then(Commands.literal("set")
@@ -130,8 +143,10 @@ public final class GotDateCommand {
         int days = IntegerArgumentType.getInteger(ctx, "days");
 
         CommandSourceStack src = ctx.getSource();
-        GotCalendar cal = GotCalendar.get(src.getServer().overworld());
-        cal.skipDays(days);
+        ServerLevel overworld = src.getServer().overworld();
+        GotCalendar cal = GotCalendar.get(overworld);
+        // skipDays now advances the season timer in sync
+        cal.skipDays(days, overworld);
 
         String full = cal.formatDate();
         for (ServerPlayer player : src.getServer().getPlayerList().getPlayers()) {
@@ -142,6 +157,39 @@ public final class GotDateCommand {
         }
 
         src.sendSuccess(() -> Component.literal("§aSkipped " + days + " day(s). Now: §e" + full), true);
+        return 1;
+    }
+
+    // ── /gotdate season set <season> ──────────────────────────────────────────
+
+    private static int executeSeasonSet(CommandContext<CommandSourceStack> ctx) {
+        String input = StringArgumentType.getString(ctx, "season").toUpperCase();
+        CommandSourceStack src = ctx.getSource();
+
+        GotSeason season;
+        try {
+            season = GotSeason.valueOf(input);
+        } catch (IllegalArgumentException e) {
+            src.sendFailure(Component.literal(
+                    "§cUnknown season \"" + input + "\". Valid: spring, summer, autumn, winter"));
+            return 0;
+        }
+
+        ServerLevel overworld = src.getServer().overworld();
+        SeasonManager.setSeason(season, overworld);
+
+        // Refresh the action bar / titles for everyone
+        GotCalendar cal = GotCalendar.get(overworld);
+        for (ServerPlayer player : src.getServer().getPlayerList().getPlayers()) {
+            GotCalendar.sendDateTitle(player, cal, false);
+        }
+
+        String seasonColor = switch (season) {
+            case WINTER -> "§b"; case AUTUMN -> "§6";
+            case SPRING -> "§a"; case SUMMER -> "§e";
+        };
+        src.sendSuccess(() -> Component.literal(
+                "§aSeason set to: " + seasonColor + season.displayName), true);
         return 1;
     }
 

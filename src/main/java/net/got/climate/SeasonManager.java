@@ -27,6 +27,11 @@ import java.util.Random;
  * <h3>Quick access</h3>
  * Call {@link #getCurrentSeason()} from anywhere — mixins, event handlers, HUD
  * rendering — for a fast, thread-safe read of the active season.
+ *
+ * <p>Use {@link #getDaysRemaining(ServerLevel)} to query the season countdown,
+ * {@link #advanceByDays(int, ServerLevel)} to consume season ticks in bulk (e.g.
+ * when the calendar skips days), and {@link #setSeason(GotSeason, ServerLevel)}
+ * to force-set the current season.
  */
 @EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.GAME)
 public final class SeasonManager extends SavedData {
@@ -160,6 +165,71 @@ public final class SeasonManager extends SavedData {
 
     private static long daysToTicks(int days) {
         return (long) days * TICKS_PER_DAY;
+    }
+
+    // ── Static helpers (called from commands / calendar) ──────────────────────
+
+    /**
+     * Returns the number of in-game days remaining in the current season.
+     * Always retrieves from the overworld so all dimensions stay in sync.
+     */
+    public static long getDaysRemaining(ServerLevel level) {
+        SeasonManager mgr = get(level.getServer().overworld());
+        return Math.max(0L, mgr.ticksRemaining / TICKS_PER_DAY);
+    }
+
+    /**
+     * Advances the season timer by {@code days} in-game days, triggering one or
+     * more season transitions if the timer runs out mid-skip.
+     *
+     * <p>Called by the calendar when skipping days so that {@code /gotdate skip N}
+     * keeps the date and season in sync.
+     */
+    public static void advanceByDays(int days, ServerLevel level) {
+        ServerLevel overworld = level.getServer().overworld();
+        SeasonManager mgr = get(overworld);
+        long ticksToConsume = (long) days * TICKS_PER_DAY;
+        while (ticksToConsume > 0) {
+            if (ticksToConsume >= mgr.ticksRemaining) {
+                ticksToConsume -= mgr.ticksRemaining;
+                mgr.ticksRemaining = 0;
+                mgr.advanceSeason(overworld); // sets new ticksRemaining internally
+            } else {
+                mgr.ticksRemaining -= ticksToConsume;
+                ticksToConsume = 0;
+            }
+        }
+        mgr.setDirty();
+    }
+
+    /**
+     * Force-sets the active season and resets its timer to a fresh random length.
+     * Used by {@code /gotdate season set <season>}.
+     */
+    public static void setSeason(GotSeason season, ServerLevel level) {
+        ServerLevel overworld = level.getServer().overworld();
+        SeasonManager mgr = get(overworld);
+        GotSeason previous = mgr.currentSeason;
+        mgr.currentSeason  = season;
+        CURRENT_SEASON     = season;
+
+        Random rng = new Random(overworld.getSeed() ^ overworld.getGameTime());
+        mgr.ticksRemaining = switch (season) {
+            case SPRING, AUTUMN -> daysToTicks(TRANSITION_DAYS);
+            case SUMMER, WINTER -> daysToTicks(
+                    BASE_LONG_DAYS + rng.nextInt(MAX_LONG_DAYS - BASE_LONG_DAYS + 1));
+        };
+        mgr.setDirty();
+
+        if (season != previous) {
+            String msg = buildTransitionMessage(season);
+            for (ServerPlayer player : overworld.players()) {
+                player.sendSystemMessage(Component.literal(msg));
+            }
+        }
+
+        GotMod.LOGGER.info("[GoT Seasons] Season manually set to {} (~{} days)",
+                season.displayName, mgr.ticksRemaining / TICKS_PER_DAY);
     }
 
     /** Returns a debug string showing the current season and days remaining. */
