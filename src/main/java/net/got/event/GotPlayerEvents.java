@@ -1,25 +1,35 @@
 package net.got.event;
 
 import net.got.GotMod;
+import net.got.climate.PlayerTemperatureSystem;
 import net.got.faction.GotFactions;
 import net.got.network.OpenFactionScreenPayload;
+import net.got.network.PlayerTemperaturePayload;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
- * Server-side player event handler for the faction system.
+ * Server-side player event handler for the faction system and climate tracking.
  *
  * <p><b>Faction persistence:</b> the player's chosen faction id is stored under
  * the key {@code "got.faction"} in {@link net.minecraft.world.entity.player.Player#getPersistentData()}.
  * An empty string or absent key means "not yet chosen".
  *
  * <p><b>First-spawn trigger:</b> {@link #onPlayerLoggedIn} fires after the player entity
- * is fully loaded on the server.  If their persistent data contains no valid faction id,
+ * is fully loaded on the server. If their persistent data contains no valid faction id,
  * an {@link OpenFactionScreenPayload} is sent so the client shows the selection screen.
+ *
+ * <p><b>Temperature sync:</b> {@link #onPlayerTick} sends a
+ * {@link PlayerTemperaturePayload} to the client once per second so the HUD
+ * always displays the authoritative server-side temperature value.
+ *
+ * <p><b>Disconnect cleanup:</b> {@link #onPlayerLoggedOut} removes the player's
+ * temperature entry from {@link PlayerTemperatureSystem} to prevent a memory leak.
  */
 @EventBusSubscriber(modid = GotMod.MODID)
 public final class GotPlayerEvents {
@@ -27,7 +37,10 @@ public final class GotPlayerEvents {
     /** NBT key used to persist the chosen faction on the player entity. */
     public static final String NBT_KEY = "got.faction";
 
-    // ── Login ─────────────────────────────────────────────────────────────────
+    /** How often (ticks) to send a temperature update to the client. */
+    private static final int TEMP_SYNC_INTERVAL = 20;
+
+    // ── Login ──────────────────────────────────────────────────────────────────
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
@@ -40,7 +53,19 @@ public final class GotPlayerEvents {
         }
     }
 
-    // ── Respawn (death / dimension change) ───────────────────────────────────
+    // ── Logout / disconnect cleanup ────────────────────────────────────────────
+
+    /**
+     * Removes the player's temperature entry when they disconnect.
+     * Without this the UUID→float map in {@link PlayerTemperatureSystem} would
+     * grow unboundedly over the lifetime of the server process.
+     */
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        PlayerTemperatureSystem.removePlayer(event.getEntity().getUUID());
+    }
+
+    // ── Respawn (death / dimension change) ────────────────────────────────────
     //
     // PlayerEvent.Clone fires when a player dies or travels between dimensions.
     // We re-send the screen if they still haven't chosen — this catches the edge
@@ -61,6 +86,23 @@ public final class GotPlayerEvents {
             GotMod.queueServerWork(5, () ->
                     PacketDistributor.sendToPlayer(player, new OpenFactionScreenPayload()));
         }
+    }
+
+    // ── Temperature sync (S→C) ────────────────────────────────────────────────
+
+    /**
+     * Pushes the current server-side temperature to the client once per second.
+     * The client stores the received value in {@link net.got.client.gui.overlay.TemperatureHudOverlay}
+     * for rendering in the HUD.
+     */
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (player.isSpectator()) return;
+        if (player.tickCount % TEMP_SYNC_INTERVAL != 0) return;
+
+        float temp = PlayerTemperatureSystem.getTemperature(player.getUUID());
+        PacketDistributor.sendToPlayer(player, new PlayerTemperaturePayload(temp));
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

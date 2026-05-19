@@ -56,19 +56,6 @@ import net.minecraft.world.level.block.Blocks;
 )
 public final class ClientSetup {
 
-
-
-    @SubscribeEvent
-    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-        event.register(
-            (state, level, pos, tintIndex) -> event.getBlockColors().getColor(
-                Blocks.SHORT_GRASS.defaultBlockState(), level, pos, tintIndex),
-            GotModBlocks.DEVILGRASS.get(),
-            GotModBlocks.PIPERS_GRASS.get(),
-            GotModBlocks.WHEATGRASS.get()
-        );
-    }
-
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(GotModMenus.OVEN.get(), OvenScreen::new);

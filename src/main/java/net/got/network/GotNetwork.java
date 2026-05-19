@@ -172,6 +172,15 @@ public final class GotNetwork {
                         GotPlayerEvents.setFactionId(player, payload.factionId());
                     }
                 }));
+
+        // ── Player temperature sync (S→C) ─────────────────────────────────────
+        r.playToClient(PlayerTemperaturePayload.TYPE, PlayerTemperaturePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.client.gui.overlay.TemperatureHudOverlay
+                                .setClientTemperature(payload.temperature());
+                    }
+                }));
     }
 
     public static void init() {}
