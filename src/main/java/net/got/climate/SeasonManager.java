@@ -140,6 +140,13 @@ public final class SeasonManager extends SavedData {
                     BASE_LONG_DAYS + rng.nextInt(MAX_LONG_DAYS - BASE_LONG_DAYS + 1));
         };
 
+        // Apply or revert winter biome climate mutations on season transitions.
+        if (currentSeason.isWinter()) {
+            WinterBiomeManager.applyWinter(level);
+        } else if (previous.isWinter()) {
+            WinterBiomeManager.revertWinter(level);
+        }
+
         setDirty();
 
         String message = buildTransitionMessage(currentSeason);
@@ -220,6 +227,13 @@ public final class SeasonManager extends SavedData {
                     BASE_LONG_DAYS + rng.nextInt(MAX_LONG_DAYS - BASE_LONG_DAYS + 1));
         };
         mgr.setDirty();
+
+        // Apply or revert winter biome mutations when the season is force-set.
+        if (season.isWinter() && !previous.isWinter()) {
+            WinterBiomeManager.applyWinter(overworld);
+        } else if (!season.isWinter() && previous.isWinter()) {
+            WinterBiomeManager.revertWinter(overworld);
+        }
 
         if (season != previous) {
             String msg = buildTransitionMessage(season);

@@ -30,7 +30,12 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
+import net.got.climate.SeasonManager;
+import net.got.climate.WinterBiomeManager;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
@@ -137,6 +142,20 @@ public final class GotMod {
                 new MapReloadListener()
         );
         LOGGER.info("Registered GoT map reload listener");
+    }
+
+    /**
+     * Re-applies winter biome mutations after a server restart.
+     *
+     * <p>The biome registry is rebuilt fresh on every world load, so any runtime
+     * mutations are lost.  If the persisted season is WINTER we re-apply them here,
+     * before players can join and chunk-ticks start running.
+     */
+    @SubscribeEvent
+    public void onLevelLoad(LevelEvent.Load event) {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        if (!level.dimension().equals(Level.OVERWORLD)) return;
+        WinterBiomeManager.restoreIfWinter(level);
     }
 
     private static final Collection<Tuple<Runnable, Integer>> WORK_QUEUE =
