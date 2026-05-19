@@ -3,11 +3,9 @@
   "minVersion": "0.8",
   "package": "net.got.mixin",
   "compatibilityLevel": "JAVA_21",
-  "refmap": "got.refmap.json",
-  "mixins": [
-"BiomeTemperatureMixin"
-  ],
+  "mixins": [],
+  "client": [],
   "injectors": {
-    "defaultRequire": 0
+    "defaultRequire": 1
   }
 }

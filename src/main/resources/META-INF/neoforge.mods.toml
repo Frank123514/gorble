@@ -16,7 +16,7 @@ authors="MCreator"
 
 # Start of user code block custom mixins
 [[mixins]]
-config="got.mixins.json"
+config = "got.mixins.json"
 # End of user code block custom mixins
 
 [[dependencies.got]]
