@@ -5,9 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "got.refmap.json",
   "mixins": [
-    "WeatherRendererMixin",
-    "ServerLevelPrecipitationMixin",
-    "SnowMeltMixin"
+"BiomeTemperatureMixin"
   ],
   "injectors": {
     "defaultRequire": 0
