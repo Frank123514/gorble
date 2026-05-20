@@ -52,25 +52,38 @@ public final class SeasonFoliageColorProvider {
      * <p>Keeping this below 1.0 means jungle / desert biomes still look
      * somewhat distinct from temperate ones even in the same season.
      */
-    private static final float SEASON_BLEND = 0.70f;
+    /**
+     * Blend factor used to lerp the biome's own color toward the season color.
+     * 0.0 = pure biome color, 1.0 = pure season color.
+     *
+     * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
+     * reuse it without duplicating the value.
+     */
+    public static final float SEASON_BLEND = 0.70f;
 
     // ────────────────────────────────────────────────────────────────────────
     // BlockColor implementation
     // ────────────────────────────────────────────────────────────────────────
 
-    /** Returns the season-tinted foliage color, blended with the biome color. */
-    private static final BlockColor FOLIAGE_COLOR = (state, level, pos, tintIndex) -> {
-        int biomeColor = getFoliageBiomeColor(level, pos);
-        int seasonColor = getFoliageSeasonColor();
-        return blendColors(biomeColor, seasonColor, SEASON_BLEND);
-    };
+    /**
+     * Returns the biome foliage color for GoT leaf blocks.
+     *
+     * <p>No extra blending is needed here: {@link net.got.mixin.BiomeColorsMixin}
+     * already intercepts {@code BiomeColors.getAverageFoliageColor} globally and
+     * blends in the season color before this handler ever receives the value.
+     * Blending a second time would over-saturate the season tint.
+     */
+    private static final BlockColor FOLIAGE_COLOR = (state, level, pos, tintIndex) ->
+            getFoliageBiomeColor(level, pos);
 
-    /** Returns the season-tinted grass color, blended with the biome color. */
-    private static final BlockColor GRASS_COLOR = (state, level, pos, tintIndex) -> {
-        int biomeColor = getGrassBiomeColor(level, pos);
-        int seasonColor = getGrassSeasonColor();
-        return blendColors(biomeColor, seasonColor, SEASON_BLEND);
-    };
+    /**
+     * Returns the biome grass color for GoT grass blocks.
+     *
+     * <p>Same as {@link #FOLIAGE_COLOR}: the mixin has already applied the season
+     * blend at the {@code BiomeColors} level, so we just pass the value through.
+     */
+    private static final BlockColor GRASS_COLOR = (state, level, pos, tintIndex) ->
+            getGrassBiomeColor(level, pos);
 
     // ────────────────────────────────────────────────────────────────────────
     // Registration
@@ -116,19 +129,15 @@ public final class SeasonFoliageColorProvider {
         );
 
         // ── Register season grass color for custom GoT short-grass blocks ────
-        // Delegates vanilla grass blocks to the biome system; we only tint
-        // our own custom grasses here.  Vanilla grass tinting is handled
-        // separately via the existing ClientSetup handler.
+        // The mixin already adjusts BiomeColors.getAverageGrassColor globally,
+        // so the color returned here for SHORT_GRASS is already season-tinted.
+        // We just delegate to the vanilla tint to get the correct biome gradient
+        // without blending a second time.
         event.register(
-                (state, level, pos, tintIndex) -> {
-                    // Re-use vanilla grass biome color as the base so the short-grass
-                    // blocks still respond to temperature-based biome gradients.
-                    int biomeColor = blockColors.getColor(
-                            net.minecraft.world.level.block.Blocks.SHORT_GRASS.defaultBlockState(),
-                            level, pos, tintIndex);
-                    int seasonColor = getGrassSeasonColor();
-                    return blendColors(biomeColor, seasonColor, SEASON_BLEND);
-                },
+                (state, level, pos, tintIndex) ->
+                        blockColors.getColor(
+                                net.minecraft.world.level.block.Blocks.SHORT_GRASS.defaultBlockState(),
+                                level, pos, tintIndex),
                 GotModBlocks.DEVILGRASS.get(),
                 GotModBlocks.PIPERS_GRASS.get(),
                 GotModBlocks.WHEATGRASS.get()
@@ -189,11 +198,14 @@ public final class SeasonFoliageColorProvider {
     /**
      * Linear blend between two packed RGB colors.
      *
+     * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
+     * reuse it without duplicating the implementation.
+     *
      * @param base   source color (biome)
      * @param target target color (season)
      * @param t      blend factor in [0,1] toward target
      */
-    private static int blendColors(int base, int target, float t) {
+    public static int blendColors(int base, int target, float t) {
         int br = (base   >> 16) & 0xFF;
         int bg = (base   >>  8) & 0xFF;
         int bb =  base          & 0xFF;

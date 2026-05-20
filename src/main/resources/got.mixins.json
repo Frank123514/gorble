@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
-    "WeatherEffectRendererMixin"
+    "WeatherEffectRendererMixin",
+    "BiomeColorsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
