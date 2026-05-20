@@ -196,7 +196,22 @@ public final class SeasonFoliageColorProvider {
     }
 
     /**
-     * Linear blend between two packed RGB colors.
+     * Blend factor for the current season.
+     * Returns {@code 0} in Summer so the raw biome color is used unchanged —
+     * summer is the baseline / "normal" look. Other seasons blend toward their
+     * season color at {@link #SEASON_BLEND}.
+     *
+     * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
+     * use the season-aware value instead of the constant.
+     */
+    public static float getSeasonBlend() {
+        return switch (SeasonManager.getCurrentSeason()) {
+            case SUMMER -> 0.0f; // pure biome color — summer is the normal reference
+            default     -> SEASON_BLEND;
+        };
+    }
+
+    /**
      *
      * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
      * reuse it without duplicating the implementation.

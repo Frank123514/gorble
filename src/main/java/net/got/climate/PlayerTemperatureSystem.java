@@ -3,7 +3,6 @@ package net.got.climate;
 import net.got.GotMod;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -75,7 +74,7 @@ public final class PlayerTemperatureSystem {
     private static final float OVERHEAT_DAMAGE    = 0.5f;
 
     // ── Season adjustments (shared with BiomeMixin / SnowMeltHandler) ─────────
-    public static final float ADJ_SUMMER = +0.15f;
+    public static final float ADJ_SUMMER =  0.00f; // summer = normal biome temperature, no adjustment
     public static final float ADJ_SPRING = +0.05f;
     public static final float ADJ_AUTUMN = -0.20f;
     public static final float ADJ_WINTER = -0.80f;
@@ -151,8 +150,8 @@ public final class PlayerTemperatureSystem {
 
     private static float biomeToBodyTarget(float effectiveBiomeTemp) {
         return Mth.clamp(
-            (effectiveBiomeTemp - BIOME_TEMP_MIN) / BIOME_RANGE,
-            BODY_MIN, BODY_MAX
+                (effectiveBiomeTemp - BIOME_TEMP_MIN) / BIOME_RANGE,
+                BODY_MIN, BODY_MAX
         );
     }
 
@@ -186,36 +185,24 @@ public final class PlayerTemperatureSystem {
     }
 
     // ── Effects ───────────────────────────────────────────────────────────────
+    // No potion effects are applied for temperature — visual feedback comes
+    // entirely from the HUD screen overlays (frozen / heat vignette).
+    // Only raw damage is applied at the extremes.
 
     private static void applyEffects(ServerPlayer player, float body) {
-        if (body >= BODY_WARM && body < BODY_OVERHEAT) {
-            // Comfortable — clear all climate effects
-            player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-            player.removeEffect(MobEffects.DIG_SLOWDOWN);
-            player.removeEffect(MobEffects.CONFUSION);
-            return;
-        }
-
-        if (body >= BODY_OVERHEAT) {
-            // Overheated
-            player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-            player.removeEffect(MobEffects.DIG_SLOWDOWN);
-            player.addEffect(new MobEffectInstance(MobEffects.CONFUSION,       INTERVAL + 5, 0, true, false));
-            player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, INTERVAL + 5, 0, true, false));
-            if (body >= BODY_MAX) {
-                player.hurt(player.damageSources().hotFloor(), OVERHEAT_DAMAGE);
-            }
-            return;
-        }
-
-        // Cold bands
+        // Always clear any lingering climate potion effects (e.g. from old saves)
+        player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
+        player.removeEffect(MobEffects.DIG_SLOWDOWN);
         player.removeEffect(MobEffects.CONFUSION);
-        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, INTERVAL + 5, 0, true, false));
-        if (body < BODY_COLD) {
-            player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, INTERVAL + 5, 0, true, false));
-        }
+
+        // Extreme cold — freeze damage (screen overlay handles the visual)
         if (body < BODY_COLD) {
             player.hurt(player.damageSources().freeze(), FREEZE_DAMAGE);
+        }
+
+        // Extreme heat — hotfloor damage (heat vignette overlay handles the visual)
+        if (body >= BODY_MAX) {
+            player.hurt(player.damageSources().hotFloor(), OVERHEAT_DAMAGE);
         }
     }
 
