@@ -4,8 +4,7 @@
   "package": "net.got.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "BiomeMixin",
-    "ServerLevelMixin"
+    "BiomeMixin"
   ],
   "client": [],
   "injectors": {

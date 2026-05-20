@@ -8,7 +8,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.got.climate.SeasonCache;
+import net.got.network.SeasonSyncPayload;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
@@ -55,6 +59,7 @@ public final class SeasonManager extends SavedData {
         }
         mgr.ticksRemaining = tag.getLong("ticksRemaining");
         CURRENT_SEASON = mgr.currentSeason;
+        SeasonCache.set(mgr.currentSeason);
         return mgr;
     }
 
@@ -75,6 +80,8 @@ public final class SeasonManager extends SavedData {
         GotSeason previous = currentSeason;
         currentSeason  = currentSeason.next();
         CURRENT_SEASON = currentSeason;
+        SeasonCache.set(currentSeason);
+        PacketDistributor.sendToAllPlayers(new SeasonSyncPayload(currentSeason));
 
         Random rng = new Random(level.getSeed() ^ level.getGameTime());
         ticksRemaining = switch (currentSeason) {
@@ -136,6 +143,8 @@ public final class SeasonManager extends SavedData {
         GotSeason previous = mgr.currentSeason;
         mgr.currentSeason  = season;
         CURRENT_SEASON     = season;
+        SeasonCache.set(season);
+        PacketDistributor.sendToAllPlayers(new SeasonSyncPayload(season));
 
         Random rng = new Random(overworld.getSeed() ^ overworld.getGameTime());
         mgr.ticksRemaining = switch (season) {
@@ -159,5 +168,12 @@ public final class SeasonManager extends SavedData {
     public String getStatus() {
         return String.format("Season: %s (%d days remaining)",
                 currentSeason.displayName, ticksRemaining / TICKS_PER_DAY);
+    }
+
+    /** Syncs the current season to a player when they first join. */
+    @SubscribeEvent
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer sp)) return;
+        PacketDistributor.sendToPlayer(sp, new SeasonSyncPayload(CURRENT_SEASON));
     }
 }

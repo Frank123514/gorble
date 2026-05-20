@@ -1,9 +1,11 @@
 package net.got.mixin;
 
-import net.got.climate.SeasonManager;
+import net.got.climate.SeasonCache;
 import net.got.climate.WinterWeatherContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,31 +15,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BiomeMixin {
 
     /**
-     * Forces snow accumulation during winter for rendered chunks.
+     * During winter, overrides every biome's effective temperature to -1.0f.
      *
-     * coldEnoughToSnow(BlockPos) is what ServerLevel's weather tick calls
-     * directly to decide whether to place a snow layer. Returning true here
-     * makes every biome cold enough to snow regardless of its base temperature.
-     */
-    @Inject(method = "coldEnoughToSnow", at = @At("HEAD"), cancellable = true, remap = false)
-    private void gotWinter_coldEnoughToSnow(BlockPos pos, int fluidHeight, CallbackInfoReturnable<Boolean> cir) {
-        if (SeasonManager.getCurrentSeason().isWinter() && WinterWeatherContext.isChunkRendered()) {
-            cir.setReturnValue(true);
-        }
-    }
-
-    /**
-     * Forces water freezing during winter for rendered chunks.
+     * Two different rules depending on side:
      *
-     * shouldFreeze() opens with an early-return: if warmEnoughToRain() is true,
-     * skip freezing. By returning false here we let shouldFreeze proceed past
-     * that guard and do its normal water-block + sky-access checks — so only
-     * valid exposed water surfaces freeze, exactly like vanilla cold biomes.
+     *   CLIENT — always override during winter. This is what was broken before:
+     *   the client calls getPrecipitationAt independently for rendering, so
+     *   without this it would show rain even while snow falls server-side.
+     *
+     *   SERVER — only override for chunks within a player's view distance
+     *   (gated by WinterWeatherContext, set by ServerLevelMixin). Without this
+     *   gate the server overrides temperature on every loaded chunk and
+     *   instantly blankets the entire loaded world in snow.
      */
-    @Inject(method = "warmEnoughToRain", at = @At("HEAD"), cancellable = true, remap = false)
-    private void gotWinter_warmEnoughToRain(BlockPos pos, int fluidHeight, CallbackInfoReturnable<Boolean> cir) {
-        if (SeasonManager.getCurrentSeason().isWinter() && WinterWeatherContext.isChunkRendered()) {
-            cir.setReturnValue(false);
+    @Inject(method = "getHeightAdjustedTemperature", at = @At("HEAD"), cancellable = true, remap = false)
+    private void gotWinter_freezeTemperature(BlockPos pos, int fluidHeight, CallbackInfoReturnable<Float> cir) {
+        if (!SeasonCache.get().isWinter()) return;
+        if (FMLEnvironment.dist == Dist.CLIENT || WinterWeatherContext.isChunkRendered()) {
+            cir.setReturnValue(-1.0f);
         }
     }
 }

@@ -12,6 +12,12 @@
   },
 
   "#92B0AC": {
+    "biome": "got:flint_cliffs",
+    "base_height": 67,
+    "height_variation": 3
+  },
+
+  "#5E876E": {
     "biome": "got:stony_shore",
     "base_height": 67,
     "height_variation": 3
