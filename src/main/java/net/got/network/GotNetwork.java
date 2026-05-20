@@ -182,11 +182,11 @@ public final class GotNetwork {
                 }));
 
         // ── Player temperature sync (S→C) ─────────────────────────────────────
-        r.playToClient(PlayerTemperaturePayload.TYPE, PlayerTemperaturePayload.STREAM_CODEC,
+        r.playToClient(PlayerVitalsPayload.TYPE, PlayerVitalsPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.dist == Dist.CLIENT) {
                         net.got.client.gui.overlay.TemperatureHudOverlay
-                                .setClientTemperature(payload.temperature());
+                                .setClientVitals(payload.bodyTemp(), payload.thirst());
                     }
                 }));
     }

@@ -16,19 +16,20 @@ public class WeatherEffectRendererMixin
     /**
      * During winter, redirects rain particles to snow particles.
      *
-     * Targets WeatherEffectRenderer.getPrecipitationAt — the dedicated method
-     * that determines what particle type to render at each column. This is the
-     * same approach used by Serene Seasons (MixinWeatherEffectRenderer).
-     *
-     * Only RAIN → SNOW. Dry biomes (NONE) are untouched.
-     * This class is client-only so no server-side gate is needed.
+     * remap=false is required: this project uses NeoGradle with named/parchment
+     * mappings but does NOT wire SRG mappings into the Mixin annotation processor.
+     * The mod runs in the named environment at runtime, so method names are
+     * already deobfuscated — remap=false tells the AP to skip the SRG lookup
+     * and use the named method name directly.
      */
     @Inject(method = "getPrecipitationAt", at = @At("HEAD"), cancellable = true, remap = false)
-    public void gotSeason_forceSnowInWinter(Level level, BlockPos pos, CallbackInfoReturnable<Biome.Precipitation> cir)
+    public void gotSeason_forceSnowInWinter(Level level, BlockPos pos,
+                                            CallbackInfoReturnable<Biome.Precipitation> cir)
     {
         if (!SeasonCache.get().isWinter()) return;
 
-        Biome.Precipitation precipitation = level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel());
+        Biome.Precipitation precipitation =
+                level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel());
         if (precipitation == Biome.Precipitation.RAIN)
         {
             cir.setReturnValue(Biome.Precipitation.SNOW);

@@ -10,26 +10,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Intercepts the two biome-color lookups that ALL grass/foliage-tinted blocks
- * (vanilla and modded) route through, and blends in the current GoT season color.
+ * Intercepts biome color lookups and blends in the GoT season color.
  *
- * <p>This is the same strategy used by Serene Seasons: rather than registering a
- * per-block {@link net.minecraft.client.color.block.BlockColor} for every single
- * leaf or grass block in existence, we patch the shared resolver so that any block
- * that calls {@code BiomeColors.getAverageGrassColor} or
- * {@code BiomeColors.getAverageFoliageColor} automatically gets the season tint —
- * including vanilla blocks and blocks added by other mods.
- *
- * <p>Season colors and the blend factor are defined in
- * {@link SeasonFoliageColorProvider} so they stay in one place.
+ * remap=false is required for the same reason as WeatherEffectRendererMixin —
+ * the Mixin AP cannot locate SRG mappings in this build setup, so we use
+ * named (parchment) method names directly and skip remapping.
  */
 @Mixin(BiomeColors.class)
 public abstract class BiomeColorsMixin {
 
-    /**
-     * After the biome grass color is resolved, blend it toward the current
-     * season's grass color.
-     */
     @Inject(method = "getAverageGrassColor", at = @At("RETURN"), cancellable = true, remap = false)
     private static void gotSeason_grassColor(BlockAndTintGetter level, BlockPos pos,
                                              CallbackInfoReturnable<Integer> cir) {
@@ -39,10 +28,6 @@ public abstract class BiomeColorsMixin {
                 SeasonFoliageColorProvider.SEASON_BLEND));
     }
 
-    /**
-     * After the biome foliage color is resolved, blend it toward the current
-     * season's foliage color.
-     */
     @Inject(method = "getAverageFoliageColor", at = @At("RETURN"), cancellable = true, remap = false)
     private static void gotSeason_foliageColor(BlockAndTintGetter level, BlockPos pos,
                                                CallbackInfoReturnable<Integer> cir) {

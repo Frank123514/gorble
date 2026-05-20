@@ -3,7 +3,11 @@
   "minVersion": "0.8",
   "package": "net.got.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "BiomeMixin",
+    "LevelMixin",
+    "ServerLevelMixin"
+  ],
   "client": [
     "WeatherEffectRendererMixin",
     "BiomeColorsMixin"
