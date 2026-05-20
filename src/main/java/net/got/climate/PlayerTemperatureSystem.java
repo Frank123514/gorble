@@ -18,12 +18,12 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Manages a per-player temperature value driven purely by the biome's
- * effective temperature at the player's position.
+ * Manages a per-player temperature value driven by the biome's base
+ * temperature and the current season.
  *
- * <p>Season influence is already baked in: during winter, {@code BiomeMixin}
- * overrides {@code getHeightAdjustedTemperature} to return -1.0f for all
- * biomes, so no separate season multiplier is needed here.
+ * <p>Season influence is applied directly: during winter the effective biome
+ * temperature is forced to -1.0f regardless of the actual biome, producing
+ * the frozen target.  All other seasons use the real biome base temperature.
  *
  * <h3>Temperature scale</h3>
  * A float in [0.0, 1.0]:
@@ -124,9 +124,8 @@ public final class PlayerTemperatureSystem {
      * Returns the temperature this player should drift toward.
      *
      * <p>Heat source / shelter → always TEMP_MAX.
-     * Otherwise, reads the biome's height-adjusted temperature, which already
-     * reflects the current season via {@code BiomeMixin}, and maps it to a
-     * player target.
+     * Otherwise, reads the effective biome temperature (frozen to -1.0f
+     * during winter) and maps it to a player target.
      */
     private static float computeTarget(ServerPlayer player) {
         if (!isOutdoors(player) || isNearHeatSource(player)) {
@@ -137,19 +136,32 @@ public final class PlayerTemperatureSystem {
     }
 
     /**
-     * Returns the biome's height-adjusted temperature at the player's position.
-     * During winter this returns -1.0f for all biomes (set by BiomeMixin),
-     * which maps to the FROZEN target automatically.
+     * Returns the effective biome temperature at the player's position, adjusted
+     * for the current season.
+     *
+     * <p>The base value is the biome's own temperature, which already reflects
+     * altitude.  A per-season offset is then added:
+     * <ul>
+     *   <li><b>Summer</b>  +0.15  (warmest)</li>
+     *   <li><b>Spring</b>  +0.05  (mild warm-up)</li>
+     *   <li><b>Autumn</b>  -0.20  (noticeably cooler)</li>
+     *   <li><b>Winter</b>  -0.55  (frigid — pushes temperate biomes below 0)</li>
+     * </ul>
      */
     private static float getEffectiveBiomeTemperature(ServerPlayer player) {
         var   level = player.serverLevel();
         var   pos   = player.blockPosition();
         Biome biome = level.getBiome(pos).value();
-        // getHeightAdjustedTemperature is private; BiomeMixin handles the override for
-        // weather/snow. Here we replicate the same logic: winter = -1.0f, otherwise
-        // use the public base temperature (altitude adjustment is minor for gameplay).
-        if (SeasonCache.get().isWinter()) return -1.0f;
-        return biome.getBaseTemperature();
+        float base  = biome.getBaseTemperature();
+
+        float adjustment = switch (SeasonCache.get()) {
+            case SUMMER -> +0.15f;
+            case SPRING -> +0.05f;
+            case AUTUMN -> -0.20f;
+            case WINTER -> -0.55f;
+        };
+
+        return base + adjustment;
     }
 
     /** Maps a biome's effective temperature to a player temperature target. */

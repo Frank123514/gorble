@@ -36,13 +36,13 @@ public final class SeasonFoliageColorProvider {
     private static final int SPRING_FOLIAGE = 0x80C050; // yellow-green
     private static final int SUMMER_FOLIAGE = 0x48B518; // rich green
     private static final int AUTUMN_FOLIAGE = 0xC07820; // orange-brown
-    private static final int WINTER_FOLIAGE = 0x8CA888; // grey-green
+    private static final int WINTER_FOLIAGE = 0x7A6B52; // dead bare brown
 
     // ── Per-season grass colors ──────────────────────────────────────────────
     private static final int SPRING_GRASS   = 0x91C844; // bright spring green
     private static final int SUMMER_GRASS   = 0x5DB535; // lush summer
     private static final int AUTUMN_GRASS   = 0xA09030; // dry golden
-    private static final int WINTER_GRASS   = 0x7A9070; // muted frosty
+    private static final int WINTER_GRASS   = 0x8C7D5E; // dead dry straw
 
     // ── Transition smoothing ─────────────────────────────────────────────────
     /**
