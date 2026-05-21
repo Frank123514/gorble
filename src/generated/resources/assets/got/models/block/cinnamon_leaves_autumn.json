@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "got:block/cinnamon_leaves_autumn"
+  }
+}

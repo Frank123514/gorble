@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "got:block/black_cottonwood_leaves_winter"
+  }
+}

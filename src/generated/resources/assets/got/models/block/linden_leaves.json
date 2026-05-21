@@ -1,5 +1,5 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/leaves",
   "textures": {
     "all": "got:block/linden_leaves",
     "particle": "got:block/linden_leaves"
