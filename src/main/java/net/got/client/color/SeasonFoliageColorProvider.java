@@ -16,127 +16,160 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import javax.annotation.Nullable;
 
 /**
- * Overrides foliage (leaf) and grass tint colors based on the current GoT season.
+ * Provides per-tree seasonal foliage tint colors.
  *
- * <p>Color palette per season:
- * <ul>
- *   <li><b>Spring</b> – fresh yellow-green  {@code 0x80C050}</li>
- *   <li><b>Summer</b> – deep rich green      {@code 0x48B518} (vanilla-ish)</li>
- *   <li><b>Autumn</b> – warm orange-brown    {@code 0xC07820}</li>
- *   <li><b>Winter</b> – desaturated grey-green {@code 0x8CA888}</li>
- * </ul>
+ * Each tree species has its own set of season colors so that, for example,
+ * maple turns deep crimson-red in autumn while aspen goes bright gold, rather
+ * than every tree sharing one global tint.
  *
- * <p>Registration is handled here via {@link RegisterColorHandlersEvent}; no
- * changes are needed in {@link net.got.client.ClientSetup}.
+ * Weirwood is deliberately excluded — it never changes color.
+ *
+ * The BiomeColorsMixin still blends grass/foliage at the biome level using
+ * the global season colors below; per-tree tinting is applied on top of that
+ * via the BlockColor handlers registered here.
  */
 @EventBusSubscriber(modid = "got", value = Dist.CLIENT)
 public final class SeasonFoliageColorProvider {
 
-    // ── Per-season foliage colors ────────────────────────────────────────────
-    private static final int SPRING_FOLIAGE = 0x80C050; // yellow-green
-    private static final int SUMMER_FOLIAGE = 0x48B518; // rich green
-    private static final int AUTUMN_FOLIAGE = 0xC07820; // orange-brown
-    private static final int WINTER_FOLIAGE = 0x7A6B52; // dead bare brown
+    // ── Global season colors (used by BiomeColorsMixin for grass + generic foliage) ──
+    public static final int SPRING_FOLIAGE = 0x80C050;
+    public static final int SUMMER_FOLIAGE = 0x48B518;
+    public static final int AUTUMN_FOLIAGE = 0xC07820;
+    public static final int WINTER_FOLIAGE = 0x7A6B52;
 
-    // ── Per-season grass colors ──────────────────────────────────────────────
-    private static final int SPRING_GRASS   = 0x91C844; // bright spring green
-    private static final int SUMMER_GRASS   = 0x5DB535; // lush summer
-    private static final int AUTUMN_GRASS   = 0xA09030; // dry golden
-    private static final int WINTER_GRASS   = 0x8C7D5E; // dead dry straw
+    public static final int SPRING_GRASS   = 0x91C844;
+    public static final int SUMMER_GRASS   = 0x5DB535;
+    public static final int AUTUMN_GRASS   = 0xA09030;
+    public static final int WINTER_GRASS   = 0x8C7D5E;
 
-    // ── Transition smoothing ─────────────────────────────────────────────────
-    /**
-     * Blend factor used to lerp the biome's own color toward the season color.
-     * 0.0 = pure biome color, 1.0 = pure season color.
-     *
-     * <p>Keeping this below 1.0 means jungle / desert biomes still look
-     * somewhat distinct from temperate ones even in the same season.
-     */
-    /**
-     * Blend factor used to lerp the biome's own color toward the season color.
-     * 0.0 = pure biome color, 1.0 = pure season color.
-     *
-     * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
-     * reuse it without duplicating the value.
-     */
     public static final float SEASON_BLEND = 0.70f;
 
-    // ────────────────────────────────────────────────────────────────────────
-    // BlockColor implementation
-    // ────────────────────────────────────────────────────────────────────────
+    // ── Per-tree season colors ────────────────────────────────────────────────
+    // Format: { SPRING, SUMMER, AUTUMN, WINTER }
+    // SUMMER is always the "natural" base color of that tree.
 
-    /**
-     * Returns the biome foliage color for GoT leaf blocks.
-     *
-     * <p>No extra blending is needed here: {@link net.got.mixin.BiomeColorsMixin}
-     * already intercepts {@code BiomeColors.getAverageFoliageColor} globally and
-     * blends in the season color before this handler ever receives the value.
-     * Blending a second time would over-saturate the season tint.
-     */
-    private static final BlockColor FOLIAGE_COLOR = (state, level, pos, tintIndex) ->
-            getFoliageBiomeColor(level, pos);
+    // Deciduous — vivid standouts
+    private static final int[] MAPLE         = { 0x82C830, 0x3C8C18, 0xC01408, 0x7A6050 };  // crimson-red autumn
+    private static final int[] ASPEN         = { 0x90CC30, 0x50A020, 0xD4C010, 0x8C8060 };  // bright gold autumn
+    private static final int[] GOLDENHEART   = { 0x94D030, 0x58A820, 0xD0AC18, 0x908060 };  // deep amber-gold autumn
+    private static final int[] BLOODWOOD     = { 0x78882C, 0x3C6C18, 0xA01010, 0x786060 };  // dark crimson autumn
 
-    /**
-     * Returns the biome grass color for GoT grass blocks.
-     *
-     * <p>Same as {@link #FOLIAGE_COLOR}: the mixin has already applied the season
-     * blend at the {@code BiomeColors} level, so we just pass the value through.
-     */
-    private static final BlockColor GRASS_COLOR = (state, level, pos, tintIndex) ->
-            getGrassBiomeColor(level, pos);
+    // Deciduous — warm oranges, all distinct
+    private static final int[] ALDER         = { 0x84C830, 0x48981C, 0xC07014, 0x7A6858 };  // amber-orange
+    private static final int[] BEECH         = { 0x88CC2C, 0x4C9C1C, 0xC48810, 0x7C6C58 };  // golden-orange
+    private static final int[] CHESTNUT      = { 0x80C42C, 0x489018, 0xC0600C, 0x787058 };  // burnt orange
+    private static final int[] COTTONWOOD    = { 0x84CC2C, 0x4A9C1C, 0xC09014, 0x7C7058 };  // soft orange-gold
+    private static final int[] BLACK_COTTON  = { 0x80C82C, 0x489818, 0xBC8810, 0x787058 };  // cooler orange-gold
+    private static final int[] HAWTHORN      = { 0x80C42C, 0x4C9018, 0xC04C10, 0x786858 };  // russet-orange
+    private static final int[] APPLE         = { 0x8CCC30, 0x50A01C, 0xC07010, 0x7C6C58 };  // warm orange-red
 
-    // ────────────────────────────────────────────────────────────────────────
-    // Registration
-    // ────────────────────────────────────────────────────────────────────────
+    // Deciduous — yellows and bronzes
+    private static final int[] ELM           = { 0x88CC2C, 0x4C9C1C, 0xA89814, 0x7C7458 };  // yellow-bronze
+    private static final int[] ASH           = { 0x88CC2C, 0x4C9C1C, 0xB0A010, 0x7C7458 };  // pale yellow-gold
+    private static final int[] LINDEN        = { 0x8CD02C, 0x509C1C, 0xB0A010, 0x807860 };  // warm soft yellow
+    private static final int[] WILLOW        = { 0x84C82C, 0x4A981C, 0x98941C, 0x7C7458 };  // muted yellow-green
+
+    // Deciduous — russets and dark tones
+    private static final int[] IRONWOOD      = { 0x80C02C, 0x4A8C1C, 0x886018, 0x787060 };  // bronze-brown
+    private static final int[] EBONY         = { 0x74B828, 0x408018, 0x784C10, 0x6C6858 };  // dark bronze
+    private static final int[] BLACKBARK     = { 0x78BC28, 0x448418, 0x844010, 0x706858 };  // dark russet
+
+    // Tropical/exotic
+    private static final int[] BLUE_MAHOE    = { 0x6CC864, 0x389C4C, 0x48944C, 0x648070 };  // stays greenish
+    private static final int[] MAHOGANY      = { 0x7CC02C, 0x488818, 0x983C10, 0x786860 };  // dark reddish
+    private static final int[] CINNAMON      = { 0x80C42C, 0x4C9018, 0xBC6C14, 0x7A6C58 };  // spicy warm orange
+    private static final int[] CLOVE         = { 0x7CC02C, 0x488818, 0xA45C10, 0x786858 };  // dark amber
+    private static final int[] MYRRH         = { 0x80C42C, 0x4A9018, 0xB07814, 0x7A7058 };  // warm amber-gold
+
+    // Other deciduous
+    private static final int[] WORMTREE      = { 0x80C02C, 0x4C8C1C, 0x787C10, 0x747060 };  // olive-green autumn
+
+    // Evergreens — stay green all year, minor seasonal shift
+    private static final int[] PINE          = { 0x4CA830, 0x2C7818, 0x306020, 0x245018 };
+    private static final int[] FIR           = { 0x50AC30, 0x307C18, 0x346420, 0x285418 };
+    private static final int[] SENTINAL      = { 0x3CA870, 0x206848, 0x245840, 0x184830 };
+    private static final int[] SOLDIER_PINE  = { 0x5CA028, 0x387010, 0x3C6018, 0x2C5010 };
+    private static final int[] CEDAR         = { 0x48A840, 0x287828, 0x2C6030, 0x205020 };
+    private static final int[] REDWOOD       = { 0x50A038, 0x2C7020, 0x306028, 0x245018 };
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private static int pick(int[] colors) {
+        return switch (SeasonManager.getCurrentSeason()) {
+            case SPRING -> colors[0];
+            case SUMMER -> colors[1];
+            case AUTUMN -> colors[2];
+            case WINTER -> colors[3];
+        };
+    }
+
+    /** Builds a BlockColor handler for one specific tree's color array. */
+    private static BlockColor treeColor(int[] colors) {
+        return (state, level, pos, tintIndex) -> {
+            if (level == null || pos == null) return colors[1]; // fallback: summer
+            int biome  = getBiomeFoliage(level, pos);
+            int season = pick(colors);
+            float blend = getSeasonBlend();
+            return blend == 0f ? biome : blendColors(biome, season, blend);
+        };
+    }
+
+    // ── Registration ─────────────────────────────────────────────────────────
 
     @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-        BlockColors blockColors = event.getBlockColors();
+        BlockColors bc = event.getBlockColors();
 
-        // ── Register season foliage color for every custom GoT leaves block ──
-        event.register(FOLIAGE_COLOR,
-                GotModBlocks.WEIRWOOD_LEAVES.get(),
-                GotModBlocks.ASPEN_LEAVES.get(),
-                GotModBlocks.ALDER_LEAVES.get(),
-                GotModBlocks.PINE_LEAVES.get(),
-                GotModBlocks.FIR_LEAVES.get(),
-                GotModBlocks.SENTINAL_LEAVES.get(),
-                GotModBlocks.IRONWOOD_LEAVES.get(),
-                GotModBlocks.BEECH_LEAVES.get(),
-                GotModBlocks.SOLDIER_PINE_LEAVES.get(),
-                GotModBlocks.ASH_LEAVES.get(),
-                GotModBlocks.HAWTHORN_LEAVES.get(),
-                GotModBlocks.BLACKBARK_LEAVES.get(),
-                GotModBlocks.BLOODWOOD_LEAVES.get(),
-                GotModBlocks.BLUE_MAHOE_LEAVES.get(),
-                GotModBlocks.COTTONWOOD_LEAVES.get(),
-                GotModBlocks.BLACK_COTTONWOOD_LEAVES.get(),
-                GotModBlocks.CINNAMON_LEAVES.get(),
-                GotModBlocks.CLOVE_LEAVES.get(),
-                GotModBlocks.EBONY_LEAVES.get(),
-                GotModBlocks.ELM_LEAVES.get(),
-                GotModBlocks.CEDAR_LEAVES.get(),
-                GotModBlocks.APPLE_LEAVES.get(),
-                GotModBlocks.GOLDENHEART_LEAVES.get(),
-                GotModBlocks.LINDEN_LEAVES.get(),
-                GotModBlocks.MAHOGANY_LEAVES.get(),
-                GotModBlocks.MAPLE_LEAVES.get(),
-                GotModBlocks.MYRRH_LEAVES.get(),
-                GotModBlocks.REDWOOD_LEAVES.get(),
-                GotModBlocks.CHESTNUT_LEAVES.get(),
-                GotModBlocks.WILLOW_LEAVES.get(),
-                GotModBlocks.WORMTREE_LEAVES.get()
-        );
+        // Vivid deciduous
+        event.register(treeColor(MAPLE),        GotModBlocks.MAPLE_LEAVES.get());
+        event.register(treeColor(ASPEN),         GotModBlocks.ASPEN_LEAVES.get());
+        event.register(treeColor(GOLDENHEART),   GotModBlocks.GOLDENHEART_LEAVES.get());
+        event.register(treeColor(BLOODWOOD),     GotModBlocks.BLOODWOOD_LEAVES.get());
 
-        // ── Register season grass color for custom GoT short-grass blocks ────
-        // The mixin already adjusts BiomeColors.getAverageGrassColor globally,
-        // so the color returned here for SHORT_GRASS is already season-tinted.
-        // We just delegate to the vanilla tint to get the correct biome gradient
-        // without blending a second time.
+        // Warm orange deciduous
+        event.register(treeColor(ALDER),         GotModBlocks.ALDER_LEAVES.get());
+        event.register(treeColor(BEECH),         GotModBlocks.BEECH_LEAVES.get());
+        event.register(treeColor(CHESTNUT),      GotModBlocks.CHESTNUT_LEAVES.get());
+        event.register(treeColor(COTTONWOOD),    GotModBlocks.COTTONWOOD_LEAVES.get());
+        event.register(treeColor(BLACK_COTTON),  GotModBlocks.BLACK_COTTONWOOD_LEAVES.get());
+        event.register(treeColor(HAWTHORN),      GotModBlocks.HAWTHORN_LEAVES.get());
+        event.register(treeColor(APPLE),         GotModBlocks.APPLE_LEAVES.get());
+
+        // Yellows and bronzes
+        event.register(treeColor(ELM),           GotModBlocks.ELM_LEAVES.get());
+        event.register(treeColor(ASH),           GotModBlocks.ASH_LEAVES.get());
+        event.register(treeColor(LINDEN),        GotModBlocks.LINDEN_LEAVES.get());
+        event.register(treeColor(WILLOW),        GotModBlocks.WILLOW_LEAVES.get());
+
+        // Russets and dark tones
+        event.register(treeColor(IRONWOOD),      GotModBlocks.IRONWOOD_LEAVES.get());
+        event.register(treeColor(EBONY),         GotModBlocks.EBONY_LEAVES.get());
+        event.register(treeColor(BLACKBARK),     GotModBlocks.BLACKBARK_LEAVES.get());
+
+        // Tropical/exotic
+        event.register(treeColor(BLUE_MAHOE),    GotModBlocks.BLUE_MAHOE_LEAVES.get());
+        event.register(treeColor(MAHOGANY),      GotModBlocks.MAHOGANY_LEAVES.get());
+        event.register(treeColor(CINNAMON),      GotModBlocks.CINNAMON_LEAVES.get());
+        event.register(treeColor(CLOVE),         GotModBlocks.CLOVE_LEAVES.get());
+        event.register(treeColor(MYRRH),         GotModBlocks.MYRRH_LEAVES.get());
+
+        // Other deciduous
+        event.register(treeColor(WORMTREE),      GotModBlocks.WORMTREE_LEAVES.get());
+
+        // Evergreens
+        event.register(treeColor(PINE),          GotModBlocks.PINE_LEAVES.get());
+        event.register(treeColor(FIR),           GotModBlocks.FIR_LEAVES.get());
+        event.register(treeColor(SENTINAL),      GotModBlocks.SENTINAL_LEAVES.get());
+        event.register(treeColor(SOLDIER_PINE),  GotModBlocks.SOLDIER_PINE_LEAVES.get());
+        event.register(treeColor(CEDAR),         GotModBlocks.CEDAR_LEAVES.get());
+        event.register(treeColor(REDWOOD),       GotModBlocks.REDWOOD_LEAVES.get());
+
+        // Weirwood — intentionally NOT registered here so it keeps vanilla/default behavior
+
+        // Grass blocks
         event.register(
                 (state, level, pos, tintIndex) ->
-                        blockColors.getColor(
-                                net.minecraft.world.level.block.Blocks.SHORT_GRASS.defaultBlockState(),
+                        bc.getColor(net.minecraft.world.level.block.Blocks.SHORT_GRASS.defaultBlockState(),
                                 level, pos, tintIndex),
                 GotModBlocks.DEVILGRASS.get(),
                 GotModBlocks.PIPERS_GRASS.get(),
@@ -144,11 +177,8 @@ public final class SeasonFoliageColorProvider {
         );
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // Helpers
-    // ────────────────────────────────────────────────────────────────────────
+    // ── Public helpers used by BiomeColorsMixin ───────────────────────────────
 
-    /** Season target color for leaves. */
     public static int getFoliageSeasonColor() {
         return switch (SeasonManager.getCurrentSeason()) {
             case SPRING -> SPRING_FOLIAGE;
@@ -158,7 +188,6 @@ public final class SeasonFoliageColorProvider {
         };
     }
 
-    /** Season target color for grass. */
     public static int getGrassSeasonColor() {
         return switch (SeasonManager.getCurrentSeason()) {
             case SPRING -> SPRING_GRASS;
@@ -168,58 +197,13 @@ public final class SeasonFoliageColorProvider {
         };
     }
 
-    /**
-     * Looks up the biome-supplied foliage color for the given position.
-     * Falls back to {@link #SUMMER_FOLIAGE} if level or pos is null
-     * (e.g., when rendering as an inventory item).
-     */
-    private static int getFoliageBiomeColor(@Nullable BlockAndTintGetter level,
-                                            @Nullable BlockPos pos) {
-        if (level == null || pos == null) return SUMMER_FOLIAGE;
-        return net.minecraft.client.Minecraft.getInstance()
-                .getBlockColors()
-                .getColor(net.minecraft.world.level.block.Blocks.OAK_LEAVES.defaultBlockState(),
-                        level, pos, 0);
-    }
-
-    /**
-     * Looks up the biome-supplied grass color for the given position.
-     * Falls back to {@link #SUMMER_GRASS} if level or pos is null.
-     */
-    private static int getGrassBiomeColor(@Nullable BlockAndTintGetter level,
-                                          @Nullable BlockPos pos) {
-        if (level == null || pos == null) return SUMMER_GRASS;
-        return net.minecraft.client.Minecraft.getInstance()
-                .getBlockColors()
-                .getColor(net.minecraft.world.level.block.Blocks.SHORT_GRASS.defaultBlockState(),
-                        level, pos, 0);
-    }
-
-    /**
-     * Blend factor for the current season.
-     * Returns {@code 0} in Summer so the raw biome color is used unchanged —
-     * summer is the baseline / "normal" look. Other seasons blend toward their
-     * season color at {@link #SEASON_BLEND}.
-     *
-     * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
-     * use the season-aware value instead of the constant.
-     */
     public static float getSeasonBlend() {
         return switch (SeasonManager.getCurrentSeason()) {
-            case SUMMER -> 0.0f; // pure biome color — summer is the normal reference
+            case SUMMER -> 0.0f;
             default     -> SEASON_BLEND;
         };
     }
 
-    /**
-     *
-     * <p>Exposed as {@code public} so {@link net.got.mixin.BiomeColorsMixin} can
-     * reuse it without duplicating the implementation.
-     *
-     * @param base   source color (biome)
-     * @param target target color (season)
-     * @param t      blend factor in [0,1] toward target
-     */
     public static int blendColors(int base, int target, float t) {
         int br = (base   >> 16) & 0xFF;
         int bg = (base   >>  8) & 0xFF;
@@ -227,10 +211,19 @@ public final class SeasonFoliageColorProvider {
         int tr = (target >> 16) & 0xFF;
         int tg = (target >>  8) & 0xFF;
         int tb =  target        & 0xFF;
-        int r = (int)(br + (tr - br) * t);
-        int g = (int)(bg + (tg - bg) * t);
-        int b = (int)(bb + (tb - bb) * t);
+        int r  = (int)(br + (tr - br) * t);
+        int g  = (int)(bg + (tg - bg) * t);
+        int b  = (int)(bb + (tb - bb) * t);
         return (r << 16) | (g << 8) | b;
+    }
+
+    private static int getBiomeFoliage(@Nullable BlockAndTintGetter level,
+                                       @Nullable BlockPos pos) {
+        if (level == null || pos == null) return SUMMER_FOLIAGE;
+        return net.minecraft.client.Minecraft.getInstance()
+                .getBlockColors()
+                .getColor(net.minecraft.world.level.block.Blocks.OAK_LEAVES.defaultBlockState(),
+                        level, pos, 0);
     }
 
     private SeasonFoliageColorProvider() {}

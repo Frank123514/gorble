@@ -19,22 +19,22 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
  *
  * <h3>Thirst</h3>
  * 10 water-droplet icons on the right side of the screen, one row above the
- * vanilla hunger bar. All 10 are always visible — filled icons are blue,
- * empty icons are dark grey. Mirrors the vanilla hunger/hearts aesthetic.
+ * vanilla hunger bar. All 10 are always visible — filled icons use the mod
+ * sprite at {@code got:textures/gui/thirst_droplet.png}; empty icons are the
+ * same sprite rendered with a dark tint. Half-fill intermediate states give
+ * 20 visual phases across the 10 droplets.
+ * Droplets fill/empty left-to-right: the leftmost droplet empties first as
+ * the player gets thirstier.
  *
  * <h3>Temperature</h3>
- * Small °F readout in the bottom-left corner, only shown when outside the
- * comfortable warm band (i.e. hidden at normal body temperature).
- * Internal [0,1] scale maps so that 0.5 = 98.6 °F (normal human body temp).
+ * Small °F readout positioned above the health bar row (bottom-left),
+ * only shown when outside the comfortable warm band.
  *
  * <h3>Screen overlays</h3>
  * <ul>
- *   <li><b>Cold</b>: vanilla {@code powder_snow_outline.png} texture rendered
- *       full-screen at increasing opacity as the player gets colder.</li>
- *   <li><b>Heat</b>: orange-red vignette at the screen edges, styled
- *       symmetrically to the frozen effect, growing with overheating severity.</li>
+ *   <li><b>Cold</b>: vanilla {@code powder_snow_outline.png} full-screen.</li>
+ *   <li><b>Heat</b>: orange-red vignette at the screen edges.</li>
  * </ul>
- * No mob-effect particles or status icons are used for climate feedback.
  */
 @EventBusSubscriber(modid = "got", value = Dist.CLIENT)
 public final class TemperatureHudOverlay implements LayeredDraw.Layer {
@@ -43,11 +43,14 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
     public static final ResourceLocation ID =
             ResourceLocation.fromNamespaceAndPath("got", "vitals_hud");
 
-    /** Vanilla powder-snow frozen-screen texture (same one the game uses in powder snow blocks). */
     private static final ResourceLocation POWDER_SNOW_RL =
             ResourceLocation.fromNamespaceAndPath("minecraft", "textures/misc/powder_snow_outline.png");
 
-    // ── Client-side cache (written by the network handler) ────────────────────
+    /** Thirst droplet sprite — got:textures/gui/thirst_droplet.png (9×10 px). */
+    private static final ResourceLocation THIRST_DROPLET_RL =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/thirst_droplet.png");
+
+    // ── Client-side cache ─────────────────────────────────────────────────────
     private static volatile float clientBodyTemp = 0.5f;
     private static volatile float clientThirst   = 1.0f;
 
@@ -56,45 +59,33 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
         clientThirst   = clamp(thirst,   0f, 1f);
     }
 
-    /** Legacy compat for callers that only sync temperature. */
     public static void setClientTemperature(float value) {
         clientBodyTemp = clamp(value, 0f, 1f);
     }
 
     // ── Thirst icon layout ────────────────────────────────────────────────────
-    /**
-     * Right-hand edge of the icon strip, measured from the screen horizontal
-     * centre — matches vanilla hearts/hunger right edge.
-     */
     private static final int THIRST_RIGHT_EDGE   = 91;
-    /** Pixels between icon left-edges (same cadence as vanilla hearts). */
     private static final int THIRST_ICON_SPACING = 8;
-    /** Distance from the bottom of the screen to the icon row's top edge. */
-    private static final int THIRST_Y_OFFSET     = 61; // one row above vanilla hunger at -49
-
-    // Droplet colours
-    private static final int DROP_FULL    = 0xFF44AAFF; // bright water-blue
-    private static final int DROP_FULL_HL = 0xFFAADDFF; // lighter highlight
-    private static final int DROP_EMPTY   = 0xFF223344; // dark blue-grey
+    private static final int THIRST_Y_OFFSET     = 61;
+    /** Sprite dimensions in pixels. */
+    private static final int DROPLET_W = 9;
+    private static final int DROPLET_H = 10;
 
     // ── Temperature display ───────────────────────────────────────────────────
-    private static final int TEMP_MARGIN_X = 10;
-    private static final int TEMP_MARGIN_Y = 50;
-
     /**
-     * Converts the internal body-temp value [0, 1] to Fahrenheit.
-     * Mapping: 0.5 → 98.6 °F (normal human body temperature).
-     * Range: 0.0 → ~85 °F (severe hypothermia), 1.0 → ~112 °F (heat stroke).
+     * Y distance from screen bottom to the temperature text baseline.
+     * Sits one text-line above the thirst droplet row (screenH - THIRST_Y_OFFSET),
+     * stacking neatly: temp → thirst → health/hunger → hotbar.
      */
+    private static final int TEMP_MARGIN_Y = 59;
+
     private static float toFahrenheit(float bodyTemp) {
         return 85.0f + bodyTemp * 27.2f;
     }
 
-    // ── Overlay start thresholds ──────────────────────────────────────────────
-    // Cold: only kicks in at BODY_COLD (0.20) — well below the chilly band so
-    // it doesn't bleed into biomes whose base temp lands naturally in the 0.30s.
-    private static final float COLD_OVERLAY_START = PlayerTemperatureSystem.BODY_COLD;  // 0.20
-    private static final float HEAT_OVERLAY_START = PlayerTemperatureSystem.BODY_WARM;  // 0.60
+    // ── Overlay thresholds ────────────────────────────────────────────────────
+    private static final float COLD_OVERLAY_START = PlayerTemperatureSystem.BODY_COLD;
+    private static final float HEAT_OVERLAY_START = PlayerTemperatureSystem.BODY_WARM;
 
     // ── Registration ──────────────────────────────────────────────────────────
     @SubscribeEvent
@@ -114,83 +105,104 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
         int   screenW  = gfx.guiWidth();
         int   screenH  = gfx.guiHeight();
 
-        // 1. Full-screen climate overlays (behind HUD icons)
         renderColdOverlay(gfx, screenW, screenH, bodyTemp);
         renderHeatOverlay(gfx, screenW, screenH, bodyTemp);
-
-        // 2. Thirst droplets — always visible, mirrors vanilla hunger position
         renderThirstDroplets(gfx, screenW, screenH, thirst);
 
-        // 3. Temperature °F readout — bottom-left, hidden when comfortably warm
         PlayerTemperatureSystem.TempBand band = tempBand(bodyTemp);
         if (band != PlayerTemperatureSystem.TempBand.WARM) {
-            renderTempText(gfx, mc, screenH, bodyTemp, band);
+            renderTempText(gfx, mc, screenW, screenH, bodyTemp, band);
         }
     }
 
     // ── Thirst droplets ───────────────────────────────────────────────────────
 
+    /**
+     * Renders 10 droplet icons with 20 half-step phases.
+     * Fill direction: rightmost icons fill first; empties from left as thirst drops.
+     */
     private static void renderThirstDroplets(GuiGraphics gfx, int screenW, int screenH,
                                              float thirst) {
-        int filled = Math.max(0, Math.min(10, Math.round(thirst * 10f)));
+        int filled20     = Math.max(0, Math.min(20, Math.round(thirst * 20f)));
+        int fullDroplets = filled20 / 2;
+        boolean hasHalf  = (filled20 % 2) == 1;
 
         int y       = screenH - THIRST_Y_OFFSET;
-        // Left edge of the first (leftmost) icon, right-aligned like vanilla hunger
-        int rowLeft = screenW / 2 + THIRST_RIGHT_EDGE - 9 * THIRST_ICON_SPACING - 9;
+        int rowLeft = screenW / 2 + THIRST_RIGHT_EDGE - 9 * THIRST_ICON_SPACING - DROPLET_W;
+
+        int startFull = 10 - fullDroplets;
 
         for (int i = 0; i < 10; i++) {
-            drawDroplet(gfx, rowLeft + i * THIRST_ICON_SPACING, y, i < filled);
+            FillState state;
+            if (i >= startFull) {
+                state = FillState.FULL;
+            } else if (hasHalf && i == startFull - 1) {
+                state = FillState.HALF;
+            } else {
+                state = FillState.EMPTY;
+            }
+            drawDroplet(gfx, rowLeft + i * THIRST_ICON_SPACING, y, state);
         }
     }
 
+    private enum FillState { FULL, HALF, EMPTY }
+
     /**
-     * Draws a 9×9 pixel water-droplet icon (teardrop silhouette) at (x, y).
-     * Filled droplets are blue with a small highlight; empty ones are dark.
+     * Draws one droplet icon using the mod texture.
+     * <ul>
+     *   <li>FULL  — sprite at natural colour.</li>
+     *   <li>EMPTY — sprite with a dark blue-grey tint.</li>
+     *   <li>HALF  — bottom 5 rows at natural colour, top 5 rows dark-tinted.</li>
+     * </ul>
      */
-    private static void drawDroplet(GuiGraphics gfx, int x, int y, boolean filled) {
-        int fg = filled ? DROP_FULL  : DROP_EMPTY;
-        int hl = filled ? DROP_FULL_HL : DROP_EMPTY;
+    private static void drawDroplet(GuiGraphics gfx, int x, int y, FillState state) {
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
 
-        // Per-row widths of the teardrop — narrow tip at top, widest near bottom,
-        // then tapers to a rounded bottom cap.
-        int[] widths = { 1, 3, 5, 7, 9, 9, 7, 5, 3 };
+        if (state == FillState.FULL) {
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
+                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H);
 
-        for (int row = 0; row < widths.length; row++) {
-            int w  = widths[row];
-            int lx = x + (9 - w) / 2; // centre each row horizontally
-            gfx.fill(lx, y + row, lx + w, y + row + 1, fg);
+        } else if (state == FillState.EMPTY) {
+            RenderSystem.setShaderColor(0.18f, 0.22f, 0.30f, 1f);
+            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
+                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H);
+
+        } else { // HALF — top half dark, bottom half full colour
+            // Dark tint over entire sprite first
+            RenderSystem.setShaderColor(0.18f, 0.22f, 0.30f, 1f);
+            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
+                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H);
+            // Overwrite bottom 5 rows at full colour
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
+                    x, y + 5, 0f, 5f, DROPLET_W, 5, DROPLET_W, DROPLET_H);
         }
 
-        // Two-pixel highlight on the top-left shoulder of filled drops
-        if (filled) {
-            gfx.fill(x + 2, y + 2, x + 3, y + 4, hl);
-        }
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.disableBlend();
     }
 
     // ── Temperature text ──────────────────────────────────────────────────────
 
     private static void renderTempText(GuiGraphics gfx, Minecraft mc,
-                                       int screenH, float bodyTemp,
+                                       int screenW, int screenH, float bodyTemp,
                                        PlayerTemperatureSystem.TempBand band) {
         float  tempF = toFahrenheit(bodyTemp);
-        // ❄ for cold side, ★ for warm side
         String icon  = (bodyTemp < 0.5f) ? "\u2744" : "\u2605";
         String label = String.format("%s %.1f\u00b0F", icon, tempF);
-        gfx.drawString(mc.font, label, TEMP_MARGIN_X, screenH - TEMP_MARGIN_Y, band.color, false);
+        // Align with the left edge of the vanilla health bar (screenW/2 - 91)
+        int x = screenW / 2 - 91;
+        gfx.drawString(mc.font, label, x, screenH - TEMP_MARGIN_Y, band.color, false);
     }
 
     // ── Screen overlays ───────────────────────────────────────────────────────
 
-    /**
-     * Vanilla {@code powder_snow_outline.png} stretched full-screen.
-     * Opacity ramps from 0 at BODY_CHILLY (0.40) to full at body temp 0.
-     */
     private static void renderColdOverlay(GuiGraphics gfx, int screenW, int screenH,
                                           float bodyTemp) {
         if (bodyTemp >= COLD_OVERLAY_START) return;
-
         float intensity = clamp((COLD_OVERLAY_START - bodyTemp) / COLD_OVERLAY_START, 0f, 1f);
-
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1f, 1f, 1f, intensity);
@@ -200,22 +212,12 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
         RenderSystem.disableBlend();
     }
 
-    /**
-     * Heat overlay: orange-red vignette that bleeds in from the screen edges,
-     * structurally mirroring the frozen powder-snow effect.
-     * Opacity ramps from 0 at BODY_WARM (0.60) to full at body temp 1.0.
-     */
     private static void renderHeatOverlay(GuiGraphics gfx, int screenW, int screenH,
                                           float bodyTemp) {
         if (bodyTemp <= HEAT_OVERLAY_START) return;
-
         float intensity = clamp((bodyTemp - HEAT_OVERLAY_START) / (1f - HEAT_OVERLAY_START), 0f, 1f);
-
-        // Faint base warmth tint across the whole screen
         int baseAlpha = (int)(intensity * 55);
         gfx.fill(0, 0, screenW, screenH, (baseAlpha << 24) | 0xFF5500);
-
-        // Edge vignette — same quadratic falloff toward centre as vanilla frozen tex
         int steps = 32;
         for (int i = 0; i < steps; i++) {
             float t   = (float)(steps - i) / steps;
@@ -223,7 +225,6 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
             if (a < 2) continue;
             int   col = (a << 24) | 0xFF4400;
             int   p   = i * 2;
-            // Top / bottom / left / right border strips
             gfx.fill(p,               p,               screenW - p,     p + 2,           col);
             gfx.fill(p,               screenH - p - 2, screenW - p,     screenH - p,     col);
             gfx.fill(p,               p,               p + 2,           screenH - p,     col);
@@ -231,7 +232,7 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
         }
     }
 
-    // ── Band helper ───────────────────────────────────────────────────────────
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static PlayerTemperatureSystem.TempBand tempBand(float t) {
         if (t >= PlayerTemperatureSystem.BODY_OVERHEAT) return PlayerTemperatureSystem.TempBand.OVERHEATED;
