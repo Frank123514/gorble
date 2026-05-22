@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/chestnut_leaves"
+    "model": "got:block/chestnut_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4351528
+      }
+    ]
   }
 }

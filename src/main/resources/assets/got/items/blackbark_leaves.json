@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/blackbark_leaves"
+    "model": "got:block/blackbark_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 1977359
+      }
+    ]
   }
 }

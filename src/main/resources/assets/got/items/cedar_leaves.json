@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/cedar_leaves"
+    "model": "got:block/cedar_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 2378037
+      }
+    ]
   }
 }

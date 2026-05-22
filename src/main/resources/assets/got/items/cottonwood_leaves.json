@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/cottonwood_leaves"
+    "model": "got:block/cottonwood_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 5994306
+      }
+    ]
   }
 }

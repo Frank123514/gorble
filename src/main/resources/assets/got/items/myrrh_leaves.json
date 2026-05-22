@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/myrrh_leaves"
+    "model": "got:block/myrrh_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 2113541
+      }
+    ]
   }
 }

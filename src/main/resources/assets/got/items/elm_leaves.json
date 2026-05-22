@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/elm_leaves"
+    "model": "got:block/elm_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4349998
+      }
+    ]
   }
 }

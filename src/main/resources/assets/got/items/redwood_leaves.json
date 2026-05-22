@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/redwood_leaves"
+    "model": "got:block/redwood_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4415815
+      }
+    ]
   }
 }

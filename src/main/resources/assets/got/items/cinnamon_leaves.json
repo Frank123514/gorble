@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/cinnamon_leaves"
+    "model": "got:block/cinnamon_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6188588
+      }
+    ]
   }
 }

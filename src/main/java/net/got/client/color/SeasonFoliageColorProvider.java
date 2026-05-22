@@ -4,6 +4,7 @@ import net.got.climate.SeasonManager;
 import net.got.init.GotModBlocks;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -63,6 +64,7 @@ public final class SeasonFoliageColorProvider {
     private static final int[] MAHOGANY     = { 0x608830, 0x385F29, 0x983C10, 0x5E5850 };
     private static final int[] MAPLE        = { 0x78A830, 0xD6651A, 0xC01408, 0x6A5848 };
     private static final int[] MYRRH        = { 0x507020, 0x204005, 0xB07814, 0x5A5448 };
+    private static final int[] OAK          = { 0x74B82A, 0x4E7828, 0xC05C18, 0x706050 };
     private static final int[] PINE         = { 0x508828, 0x335D2A, 0x306020, 0x405848 };
     private static final int[] REDWOOD      = { 0x608038, 0x436147, 0x306028, 0x506050 };
     private static final int[] SENTINAL     = { 0x407858, 0x234D38, 0x245840, 0x3A5448 };
@@ -115,6 +117,7 @@ public final class SeasonFoliageColorProvider {
         event.register(treeColor(MAHOGANY),     GotModBlocks.MAHOGANY_LEAVES.get());
         event.register(treeColor(MAPLE),        GotModBlocks.MAPLE_LEAVES.get());
         event.register(treeColor(MYRRH),        GotModBlocks.MYRRH_LEAVES.get());
+        event.register(treeColor(OAK),          Blocks.OAK_LEAVES);
         event.register(treeColor(PINE),         GotModBlocks.PINE_LEAVES.get());
         event.register(treeColor(REDWOOD),      GotModBlocks.REDWOOD_LEAVES.get());
         event.register(treeColor(SENTINAL),     GotModBlocks.SENTINAL_LEAVES.get());
@@ -122,12 +125,14 @@ public final class SeasonFoliageColorProvider {
         event.register(treeColor(WILLOW),       GotModBlocks.WILLOW_LEAVES.get());
         event.register(treeColor(WORMTREE),     GotModBlocks.WORMTREE_LEAVES.get());
 
-        // Weirwood — NOT registered, keeps its red texture color unchanged
+        // Weirwood — registered with a white (0xFFFFFF) no-op tint so neither
+        // seasonal nor biome foliage color is ever multiplied onto the texture.
+        event.register((state, level, pos, tintIndex) -> 0xFFFFFF, GotModBlocks.WEIRWOOD_LEAVES.get());
 
         // Grass blocks
         event.register(
                 (state, level, pos, tintIndex) ->
-                        bc.getColor(net.minecraft.world.level.block.Blocks.SHORT_GRASS.defaultBlockState(),
+                        bc.getColor(Blocks.SHORT_GRASS.defaultBlockState(),
                                 level, pos, tintIndex),
                 GotModBlocks.DEVILGRASS.get(),
                 GotModBlocks.PIPERS_GRASS.get(),

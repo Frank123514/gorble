@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/weirwood_leaves"
+    "model": "got:block/weirwood_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16777215
+      }
+    ]
   }
 }

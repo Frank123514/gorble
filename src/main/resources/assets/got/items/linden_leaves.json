@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/linden_leaves"
+    "model": "got:block/linden_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 5865268
+      }
+    ]
   }
 }

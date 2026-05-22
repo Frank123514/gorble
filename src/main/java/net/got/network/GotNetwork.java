@@ -177,7 +177,16 @@ public final class GotNetwork {
         r.playToClient(SeasonSyncPayload.TYPE, SeasonSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.climate.GotSeason prev = net.got.climate.SeasonCache.get();
                         net.got.climate.SeasonCache.set(payload.season());
+                        // Re-render all loaded chunks immediately so foliage colors
+                        // update at once rather than trickling in as chunks re-mesh.
+                        if (payload.season() != prev) {
+                            net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                            if (mc != null && mc.levelRenderer != null) {
+                                mc.levelRenderer.allChanged();
+                            }
+                        }
                     }
                 }));
 

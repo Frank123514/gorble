@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/sentinal_leaves"
+    "model": "got:block/sentinal_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 2313528
+      }
+    ]
   }
 }

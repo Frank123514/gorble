@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/beech_leaves"
+    "model": "got:block/beech_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14856468
+      }
+    ]
   }
 }

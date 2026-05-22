@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/ironwood_leaves"
+    "model": "got:block/ironwood_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 1912605
+      }
+    ]
   }
 }

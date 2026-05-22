@@ -1,11 +1,11 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:block/wormtree_leaves",
+    "model": "minecraft:block/oak_leaves",
     "tints": [
       {
         "type": "minecraft:constant",
-        "value": 4346650
+        "value": 5142568
       }
     ]
   }

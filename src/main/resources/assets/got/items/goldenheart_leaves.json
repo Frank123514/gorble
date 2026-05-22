@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/goldenheart_leaves"
+    "model": "got:block/goldenheart_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3623172
+      }
+    ]
   }
 }

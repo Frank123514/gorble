@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/maple_leaves"
+    "model": "got:block/maple_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 14050586
+      }
+    ]
   }
 }

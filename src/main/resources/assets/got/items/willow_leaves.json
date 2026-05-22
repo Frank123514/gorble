@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/willow_leaves"
+    "model": "got:block/willow_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4416818
+      }
+    ]
   }
 }
