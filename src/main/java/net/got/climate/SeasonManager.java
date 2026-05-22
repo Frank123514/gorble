@@ -14,6 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.Random;
@@ -169,6 +170,16 @@ public final class SeasonManager extends SavedData {
         return String.format("Season: %s (%d days remaining)",
                 currentSeason.displayName, ticksRemaining / TICKS_PER_DAY);
     }
+    /** Sets snowAccumulationHeight to 8 on server start so snow builds up fully. */
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        ServerLevel overworld = event.getServer().overworld();
+        overworld.getGameRules()
+                .getRule(net.minecraft.world.level.GameRules.RULE_SNOW_ACCUMULATION_HEIGHT)
+                .set(8, event.getServer());
+        GotMod.LOGGER.info("[GoT Seasons] snowAccumulationHeight set to 8");
+    }
+
 
     /** Syncs the current season to a player when they first join. */
     @SubscribeEvent
