@@ -394,6 +394,13 @@ public class GotRecipeProvider extends RecipeProvider {
                 .requires(GotModItems.TIN_INGOT.get())
                 .unlockedBy("has_copper", has(Items.COPPER_INGOT))
                 .save(this.output, rk("bronze_ingot_from_alloy"));
+
+        // Steel: smelt iron ingot with coal in furnace (shapeless alloy)
+        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, GotModItems.STEEL_INGOT.get(), 1)
+                .requires(Items.IRON_INGOT)
+                .requires(Items.COAL)
+                .unlockedBy("has_iron", has(Items.IRON_INGOT))
+                .save(this.output, rk("steel_ingot_from_alloy"));
     }
 
     // ── Tools ─────────────────────────────────────────────────────────
@@ -401,6 +408,7 @@ public class GotRecipeProvider extends RecipeProvider {
     private void buildToolRecipes(HolderGetter<Item> items) {
         buildTools(items, "copper", Items.COPPER_INGOT);
         buildTools(items, "bronze", GotModItems.BRONZE_INGOT.get());
+        buildTools(items, "steel",  GotModItems.STEEL_INGOT.get());
     }
 
     private void buildTools(HolderGetter<Item> items, String tier, Item ingot) {
@@ -441,6 +449,7 @@ public class GotRecipeProvider extends RecipeProvider {
     private void buildArmourRecipes(HolderGetter<Item> items) {
         buildArmour(items, "copper", Items.COPPER_INGOT);
         buildArmour(items, "bronze", GotModItems.BRONZE_INGOT.get());
+        buildArmour(items, "steel",  GotModItems.STEEL_INGOT.get());
     }
 
     private void buildArmour(HolderGetter<Item> items, String tier, Item ingot) {

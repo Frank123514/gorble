@@ -57,7 +57,7 @@ public class GotItemModelProvider extends ModelProvider {
     // ── Tools ─────────────────────────────────────────────────────────
 
     private void registerToolItems(ItemModelGenerators g) {
-        for (String tier : new String[]{"copper", "bronze"}) {
+        for (String tier : new String[]{"copper", "bronze", "steel"}) {
             for (String tool : new String[]{"sword", "pickaxe", "axe", "shovel", "hoe"}) {
                 g.generateFlatItem(item(tier + "_" + tool), ModelTemplates.FLAT_HANDHELD_ITEM);
             }
@@ -67,7 +67,7 @@ public class GotItemModelProvider extends ModelProvider {
     // ── Armour ────────────────────────────────────────────────────────
 
     private void registerArmorItems(ItemModelGenerators g) {
-        for (String tier : new String[]{"copper", "bronze"}) {
+        for (String tier : new String[]{"copper", "bronze", "steel"}) {
             for (String piece : new String[]{"helmet", "chestplate", "leggings", "boots"}) {
                 g.generateFlatItem(item(tier + "_" + piece), ModelTemplates.FLAT_ITEM);
             }
@@ -86,7 +86,7 @@ public class GotItemModelProvider extends ModelProvider {
             g.generateFlatItem(item(raw), ModelTemplates.FLAT_ITEM);
         }
         for (String ingot : new String[]{
-                "copper_ingot", "silver_ingot", "tin_ingot", "bronze_ingot", "valyrian_steel_ingot"}) {
+                "copper_ingot", "silver_ingot", "tin_ingot", "bronze_ingot", "steel_ingot", "valyrian_steel_ingot"}) {
             g.generateFlatItem(item(ingot), ModelTemplates.FLAT_ITEM);
         }
         for (String coin : new String[]{

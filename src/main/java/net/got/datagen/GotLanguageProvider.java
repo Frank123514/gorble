@@ -89,6 +89,7 @@ public class GotLanguageProvider extends LanguageProvider {
         item("tin_ingot",             "Tin Ingot");
         item("silver_ingot",          "Silver Ingot");
         item("bronze_ingot",          "Bronze Ingot");
+        item("steel_ingot",           "Steel Ingot");
         item("valyrian_steel_ingot",  "Valyrian Steel Ingot");
 
         item("amber",                 "Amber");
@@ -100,7 +101,7 @@ public class GotLanguageProvider extends LanguageProvider {
         item("topaz",                 "Topaz");
 
         // ── Tools & armour ────────────────────────────────────────────
-        for (String tier : new String[]{"copper", "bronze"}) {
+        for (String tier : new String[]{"copper", "bronze", "steel"}) {
             String t = capitalize(tier);
             item(tier + "_sword",     t + " Sword");
             item(tier + "_pickaxe",   t + " Pickaxe");

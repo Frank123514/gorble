@@ -22,7 +22,7 @@ public class GotItemTagsProvider extends ItemTagsProvider {
 
     public GotItemTagsProvider(PackOutput output,
                                CompletableFuture<HolderLookup.Provider> lookupProvider,
-                               CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider) {
+                               CompletableFuture<TagLookup<Block>> blockTagProvider) {
         super(output, lookupProvider, blockTagProvider, GotMod.MODID);
     }
 
@@ -71,11 +71,12 @@ public class GotItemTagsProvider extends ItemTagsProvider {
 
         tag(Tags.Items.INGOTS).add(
                 GotModItems.TIN_INGOT.get(),     GotModItems.BRONZE_INGOT.get(),
-                GotModItems.VALYRIAN_STEEL_INGOT.get());
+                GotModItems.STEEL_INGOT.get(),   GotModItems.VALYRIAN_STEEL_INGOT.get());
 
         addIngotTag("silver",         GotModItems.SILVER_INGOT);
         addIngotTag("tin",            GotModItems.TIN_INGOT);
         addIngotTag("bronze",         GotModItems.BRONZE_INGOT);
+        addIngotTag("steel",          GotModItems.STEEL_INGOT);
         addIngotTag("valyrian_steel", GotModItems.VALYRIAN_STEEL_INGOT);
 
         tag(Tags.Items.RAW_MATERIALS).add(

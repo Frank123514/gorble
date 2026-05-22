@@ -39,6 +39,16 @@ public class GotModTiers {
             repairTag("repairs_iron_tools")
     );
 
+    /** Steel: durability 800, speed 7.5, +2.5 dmg bonus, enchantability 11 */
+    public static final ToolMaterial STEEL = new ToolMaterial(
+            BlockTags.NEEDS_IRON_TOOL,
+            800,
+            7.5f,
+            2.5f,
+            11,
+            repairTag("repairs_iron_tools")
+    );
+
     /** Valyrian Steel: durability 3500, speed 10, +4 dmg bonus, enchantability 20 */
     public static final ToolMaterial VALYRIAN_STEEL = new ToolMaterial(
             BlockTags.NEEDS_DIAMOND_TOOL,

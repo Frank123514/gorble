@@ -57,6 +57,27 @@ public class GotModArmorMaterials {
     );
 
     /**
+     * Steel: 3/6/5/3 defense, enchantability 10, 1.0 toughness.
+     */
+    public static final Holder<ArmorMaterial> STEEL = Holder.direct(
+            new ArmorMaterial(
+                    800,
+                    Map.of(
+                            ArmorType.HELMET,     3,
+                            ArmorType.CHESTPLATE, 6,
+                            ArmorType.LEGGINGS,   5,
+                            ArmorType.BOOTS,      3
+                    ),
+                    10,
+                    SoundEvents.ARMOR_EQUIP_IRON,
+                    1.0f,
+                    0.0f,
+                    repairTag("repairs_steel_armor"),
+                    equipmentKey("steel")
+            )
+    );
+
+    /**
      * Bronze: 3/6/5/3 defense, enchantability 10, 0.5 toughness.
      */
     public static final Holder<ArmorMaterial> BRONZE = Holder.direct(

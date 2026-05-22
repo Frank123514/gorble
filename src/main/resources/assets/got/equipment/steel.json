@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "horse_body": [
+      {
+        "texture": "got:steel"
+      }
+    ],
+    "humanoid": [
+      {
+        "texture": "got:steel"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "got:steel"
+      }
+    ]
+  }
+}

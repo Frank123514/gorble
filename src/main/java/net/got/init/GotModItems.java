@@ -1066,6 +1066,7 @@ public class GotModItems {
     public static final DeferredItem<Item> SILVER_INGOT         = simple("silver_ingot");
     public static final DeferredItem<Item> TIN_INGOT            = simple("tin_ingot");
     public static final DeferredItem<Item> BRONZE_INGOT         = simple("bronze_ingot");
+    public static final DeferredItem<Item> STEEL_INGOT          = simple("steel_ingot");
     public static final DeferredItem<Item> VALYRIAN_STEEL_INGOT = simple("valyrian_steel_ingot");
 
 
@@ -1563,6 +1564,18 @@ public class GotModItems {
     public static final DeferredItem<HoeItem>    BRONZE_HOE      = REGISTRY.registerItem("bronze_hoe",
             p -> new HoeItem(GotModTiers.BRONZE, 0.0f, -3.0f, p));
 
+    // ── Steel tools ───────────────────────────────────────────────────────
+    public static final DeferredItem<SwordItem>  STEEL_SWORD     = REGISTRY.registerItem("steel_sword",
+            p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
+    public static final DeferredItem<PickaxeItem> STEEL_PICKAXE  = REGISTRY.registerItem("steel_pickaxe",
+            p -> new PickaxeItem(GotModTiers.STEEL, 1.0f, -2.8f, p));
+    public static final DeferredItem<AxeItem>    STEEL_AXE       = REGISTRY.registerItem("steel_axe",
+            p -> new AxeItem(GotModTiers.STEEL, 6.0f, -3.1f, p));
+    public static final DeferredItem<ShovelItem> STEEL_SHOVEL    = REGISTRY.registerItem("steel_shovel",
+            p -> new ShovelItem(GotModTiers.STEEL, 1.5f, -3.0f, p));
+    public static final DeferredItem<HoeItem>    STEEL_HOE       = REGISTRY.registerItem("steel_hoe",
+            p -> new HoeItem(GotModTiers.STEEL, 0.0f, -3.0f, p));
+
     // ── Copper armor ──────────────────────────────────────────────────────
     public static final DeferredItem<ArmorItem> COPPER_HELMET     = REGISTRY.registerItem("copper_helmet",
             p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.HELMET, p));
@@ -1582,6 +1595,16 @@ public class GotModItems {
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS, p));
     public static final DeferredItem<ArmorItem> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS, p));
+
+    // ── Steel armor ───────────────────────────────────────────────────────
+    public static final DeferredItem<ArmorItem> STEEL_HELMET      = REGISTRY.registerItem("steel_helmet",
+            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.HELMET, p));
+    public static final DeferredItem<ArmorItem> STEEL_CHESTPLATE  = REGISTRY.registerItem("steel_chestplate",
+            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.CHESTPLATE, p));
+    public static final DeferredItem<ArmorItem> STEEL_LEGGINGS    = REGISTRY.registerItem("steel_leggings",
+            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.LEGGINGS, p));
+    public static final DeferredItem<ArmorItem> STEEL_BOOTS       = REGISTRY.registerItem("steel_boots",
+            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.BOOTS, p));
 
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(

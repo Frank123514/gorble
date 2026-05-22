@@ -1440,6 +1440,13 @@ public class GotModTabs {
                         output.accept(GotModItems.BRONZE_SHOVEL.get());
                         output.accept(GotModItems.BRONZE_HOE.get());
 
+                        // ── Steel Weapons ─────────────────────────────────────────────
+                        output.accept(GotModItems.STEEL_SWORD.get());
+                        output.accept(GotModItems.STEEL_AXE.get());
+                        output.accept(GotModItems.STEEL_PICKAXE.get());
+                        output.accept(GotModItems.STEEL_SHOVEL.get());
+                        output.accept(GotModItems.STEEL_HOE.get());
+
                         // ── Copper Armor ──────────────────────────────────────────────
                         output.accept(GotModItems.COPPER_HELMET.get());
                         output.accept(GotModItems.COPPER_CHESTPLATE.get());
@@ -1451,6 +1458,12 @@ public class GotModTabs {
                         output.accept(GotModItems.BRONZE_CHESTPLATE.get());
                         output.accept(GotModItems.BRONZE_LEGGINGS.get());
                         output.accept(GotModItems.BRONZE_BOOTS.get());
+
+                        // ── Steel Armor ───────────────────────────────────────────────
+                        output.accept(GotModItems.STEEL_HELMET.get());
+                        output.accept(GotModItems.STEEL_CHESTPLATE.get());
+                        output.accept(GotModItems.STEEL_LEGGINGS.get());
+                        output.accept(GotModItems.STEEL_BOOTS.get());
 
                     })
                     .build());
@@ -1495,6 +1508,7 @@ public class GotModTabs {
                         output.accept(GotModItems.SILVER_INGOT.get());
                         output.accept(GotModItems.TIN_INGOT.get());
                         output.accept(GotModItems.BRONZE_INGOT.get());
+                        output.accept(GotModItems.STEEL_INGOT.get());
                         output.accept(GotModItems.VALYRIAN_STEEL_INGOT.get());
 
                         // ── Seeds ─────────────────────────────────────────────────────
