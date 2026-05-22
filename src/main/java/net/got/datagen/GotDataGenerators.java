@@ -23,7 +23,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
  * Output:   src/generated/resources/
  */
 @EventBusSubscriber(modid = GotMod.MODID)
-public final class GotDataGenerators {
+public final class  GotDataGenerators {
 
     // ── Client data run ───────────────────────────────────────────────
 

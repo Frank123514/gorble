@@ -1,10 +1,13 @@
 {
+  "_comment": "Example oven recipe — bread loaf. Drop this in data/got/recipe/",
   "type": "got:oven",
   "pattern": [
-    "WWW"
+    "WWW",
+    "   ",
+    "   "
   ],
   "key": {
-    "W": { "item": "got:wheat_dough" }
+    "W": { "item": "minecraft:wheat" }
   },
   "result": {
     "id": "minecraft:bread",

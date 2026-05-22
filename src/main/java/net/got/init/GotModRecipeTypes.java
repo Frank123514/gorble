@@ -14,8 +14,14 @@ public class GotModRecipeTypes {
             DeferredRegister.create(Registries.RECIPE_TYPE, GotMod.MODID);
 
     /**
-     * The shaped-cooking recipe type for the Oven.
-     * Recipe JSON must use "type": "got:oven".
+     * Recipe type for the Oven block.
+     *
+     * Typed as {@code RecipeType<OvenRecipe>} so that
+     * {@code RecipeManager.getRecipeFor(OVEN.get(), ovenInput, level)}
+     * returns {@code Optional<RecipeHolder<OvenRecipe>>} directly without
+     * any unchecked casts.
+     *
+     * Recipe JSONs must use {@code "type": "got:oven"}.
      */
     public static final DeferredHolder<RecipeType<?>, RecipeType<OvenRecipe>> OVEN =
             REGISTRY.register("oven", () -> RecipeType.simple(

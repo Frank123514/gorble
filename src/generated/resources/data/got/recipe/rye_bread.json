@@ -1,10 +1,13 @@
 {
+  "_comment": "Example oven recipe — bread loaf. Drop this in data/got/recipe/",
   "type": "got:oven",
   "pattern": [
-    "RRR"
+    "WWW",
+    "   ",
+    "   "
   ],
   "key": {
-    "R": { "item": "got:rye_dough" }
+    "W": { "item": "got:rye" }
   },
   "result": {
     "id": "got:rye_bread",

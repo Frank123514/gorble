@@ -64,7 +64,6 @@ public final class GotMod {
         GotModMenus.REGISTRY.register(modBus);
         GotModRecipeTypes.REGISTRY.register(modBus);
         GotModRecipeSerializers.REGISTRY.register(modBus);
-        GotModRecipeSerializers.CATEGORY_REGISTRY.register(modBus);
         GotModBlocks.REGISTRY.register(modBus);
         GotModItems.REGISTRY.register(modBus);
         GotModBlockEntities.REGISTRY.register(modBus);
