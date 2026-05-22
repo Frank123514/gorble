@@ -1,6 +1,7 @@
 package net.got.init;
 
 import net.got.GotMod;
+import net.got.block.OvenBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -35,6 +36,13 @@ public class GotModBlockEntities {
                 new BlockEntityType<>(SignBlockEntity::new,
                         Set.of(standing.get(), wall.get())));
     }
+
+    // ── Oven ──────────────────────────────────────────────────────────────────
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OvenBlockEntity>> OVEN =
+            REGISTRY.register("oven", () ->
+                    new BlockEntityType<>(OvenBlockEntity::new,
+                            Set.of(GotModBlocks.OVEN.get())));
 
     // ── Signs ─────────────────────────────────────────────────────────────────
 

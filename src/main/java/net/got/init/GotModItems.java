@@ -1689,6 +1689,9 @@ public class GotModItems {
             REGISTRY.registerItem("bolton_banner_pattern",
                     p -> new BannerPatternItem(GotModBannerPatterns.BOLTON_PATTERN_TAG, p));
 
+    // ── Utility block items ───────────────────────────────────────────────────
+    public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);
+
     // ── Helpers ───────────────────────────────────────────────────────────
 
     private static DeferredItem<Item> simple(String name) {

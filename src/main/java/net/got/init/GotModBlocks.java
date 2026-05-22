@@ -1,6 +1,7 @@
 package net.got.init;
 
 import net.got.block.*;
+import net.got.block.OvenBlock;
 import net.got.block.GotSaplingBlock;
 import net.got.block.GotStrippedLogBlock;
 import net.got.block.RegionalRockBlock;
@@ -1458,6 +1459,10 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WORMTREE_FENCE_GATE     = woodBlock("wormtree_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.WORMTREE, p));
     public static final DeferredBlock<Block> WORMTREE_PRESSURE_PLATE = woodBlock("wormtree_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
     public static final DeferredBlock<Block> WORMTREE_BUTTON         = woodBlock("wormtree_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
+
+    // ── Utility blocks ───────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> OVEN = REGISTRY.registerBlock("oven",
+            OvenBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
 
     // ── Basalt ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BASALT_ROCK = registerBasalt("basalt_rock", RegionalRockBlock::new);
