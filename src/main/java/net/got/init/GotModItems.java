@@ -1434,8 +1434,6 @@ public class GotModItems {
     public static final DeferredItem<Item> THISTLE            = block(GotModBlocks.THISTLE);
     public static final DeferredItem<Item> WILD_RADISH        = block(GotModBlocks.WILD_RADISH);
 
-    // ── Oven ──────────────────────────────────────────────────────────────────
-    public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);
 
     // ── NPC Workstations ─────────────────────────────────────────────────────
 

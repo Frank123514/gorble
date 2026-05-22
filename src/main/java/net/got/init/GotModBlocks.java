@@ -16,7 +16,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.got.block.GotSeedCropBlock;
 import net.got.block.GotProduceCropBlock;
 import net.got.block.GotBerryBushBlock;
-import net.got.block.OvenBlock;
 import net.minecraft.world.item.Item;
 import net.got.block.GotStandingSignBlock;
 import net.got.block.GotWallSignBlock;
@@ -1236,10 +1235,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILD_RADISH        = flowerBlock("wild_radish");
 
 
-    // ── Oven ──────────────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> OVEN = REGISTRY.registerBlock("oven",
-            p -> new OvenBlock(p),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
 
     // ── Grasses ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> DEVILGRASS = REGISTRY.registerBlock("devilgrass",

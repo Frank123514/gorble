@@ -1206,7 +1206,7 @@ public class GotModTabs {
 
     /* ─────────────────────────────────────────────────────────────────────
      * TAB 3 — GOT: DECORATIVE BLOCKS
-     * Leaves, saplings, flowers, grasses, wild plants, and the oven.
+     * Leaves, saplings, flowers, grasses, wild plants.
      * Ores, gems, ingots, and coins live in GOT: INGREDIENTS.
      * Tools and armour live in GOT: ARMORY.
      * Spawn eggs live in GOT: SPAWN EGGS.
@@ -1331,8 +1331,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SHORT_REEDS.get());
                         safeAccept(output, GotModBlocks.QUAGMIRE.get());
 
-                        // ── Oven & Utility ────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.OVEN.get());
 
                     })
                     .build());
@@ -1346,7 +1344,7 @@ public class GotModTabs {
             REGISTRY.register("got_food", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_DECORATIVE.getId())
                     .title(Component.translatable("itemGroup.got.got_food"))
-                    .icon(() -> new ItemStack(GotModBlocks.OVEN.get()))
+                    .icon(() -> new ItemStack(net.minecraft.world.item.Items.BREAD))
                     .displayItems((params, output) -> {
 
                         // ── Bread ─────────────────────────────────────────────────────

@@ -39,7 +39,6 @@ import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.got.client.gui.OvenScreen;
 import net.got.init.GotModMenus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -58,7 +57,6 @@ public final class ClientSetup {
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(GotModMenus.OVEN.get(), OvenScreen::new);
         // NPC_TRADE menu type is kept registered but NpcTradeScreen is opened directly
         // via OpenTradeScreenPayload — no ScreenConstructor registration needed.
     }
