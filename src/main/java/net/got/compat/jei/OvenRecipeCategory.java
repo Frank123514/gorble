@@ -57,17 +57,17 @@ public class OvenRecipeCategory implements IRecipeCategory<OvenRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, OvenRecipe recipe, IFocusGroup focuses) {
-        var ingredients = recipe.getIngredients(); // NonNullList<Ingredient>, 9 slots
+        var slots = recipe.getIngredientSlots(); // List<Optional<Ingredient>>, 9 slots
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                Ingredient ing = ingredients.get(col + row * 3);
-                if (ing.isEmpty()) continue;
+                var opt = slots.get(col + row * 3);
+                if (opt.isEmpty()) continue;
 
                 builder.addSlot(RecipeIngredientRole.INPUT,
                                 GRID_X + col * SLOT_SIZE,
                                 GRID_Y + row * SLOT_SIZE)
-                        .addIngredients(ing);
+                        .addIngredients(opt.get());
             }
         }
 
