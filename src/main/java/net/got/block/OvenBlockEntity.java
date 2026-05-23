@@ -1,5 +1,4 @@
 package net.got.block;
-
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModRecipeTypes;
 import net.got.menu.OvenMenu;
@@ -26,10 +25,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
 import javax.annotation.Nullable;
 import java.util.Optional;
-
 /**
  * OvenBlockEntity — ported from OFAW (1.16.5) to NeoForge 1.21.4.
  *
@@ -45,34 +42,26 @@ import java.util.Optional;
  *   3 — litDuration
  */
 public class OvenBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
-
     // ── Slot indices ──────────────────────────────────────────────────────────
-
     public static final int NUM_INPUT_SLOTS = 9;
     public static final int SLOT_OUTPUT     = 9;
     public static final int SLOT_FUEL       = 10;
     public static final int NUM_SLOTS       = 11;
-
     // ── ContainerData indices ─────────────────────────────────────────────────
-
     public static final int DATA_COOKING_PROGRESS = 0;
     public static final int DATA_COOKING_TOTAL    = 1;
     public static final int DATA_LIT_TIME         = 2;
     public static final int DATA_LIT_DURATION     = 3;
     public static final int NUM_DATA              = 4;
-
     // ── State ─────────────────────────────────────────────────────────────────
-
     private NonNullList<ItemStack> items =
             NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
-
     private int cookingProgress  = 0;
     private int cookingTotalTime = 200;
     private int litTime          = 0;
     private int litDuration      = 0;
-
+    private int debugTickCounter = 0;
     private final RecipeManager.CachedCheck<CraftingInput, OvenRecipe> quickCheck;
-
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
         public int get(int i) {
@@ -84,7 +73,6 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
                 default -> 0;
             };
         }
-
         @Override
         public void set(int i, int v) {
             switch (i) {
@@ -94,30 +82,50 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
                 case DATA_LIT_DURATION     -> litDuration      = v;
             }
         }
-
         @Override
         public int getCount() { return NUM_DATA; }
     };
-
     public OvenBlockEntity(BlockPos pos, BlockState state) {
         super(GotModBlockEntities.OVEN.get(), pos, state);
         this.quickCheck = RecipeManager.createCheck(GotModRecipeTypes.OVEN.get());
     }
-
     // ── Tick ─────────────────────────────────────────────────────────────────
-
     public static void serverTick(Level level, BlockPos pos, BlockState state,
                                   OvenBlockEntity be) {
         if (!(level instanceof ServerLevel serverLevel)) return;
-
         boolean wasLit = be.isLit();
         boolean dirty  = false;
-
         if (be.isLit()) be.litTime--;
-
         CraftingInput input = be.buildCraftingInput();
         Optional<RecipeHolder<OvenRecipe>> recipe = be.quickCheck.getRecipeFor(input, serverLevel);
-
+        if (be.debugTickCounter == 0) {
+            be.debugTickCounter = 1;
+            try {
+                Object rm = serverLevel.getServer().getRecipeManager();
+                net.got.GotMod.LOGGER.info("[OvenDebug] RecipeManager class: {}", rm.getClass().getName());
+                boolean foundRecipe = false;
+                for (java.lang.reflect.Method m : rm.getClass().getMethods()) {
+                    if (m.getParameterCount() == 1 && m.getParameterTypes()[0].isAssignableFrom(net.minecraft.world.item.crafting.RecipeType.class)) {
+                        Object result = m.invoke(rm, GotModRecipeTypes.OVEN.get());
+                        if (result instanceof java.util.Collection coll) {
+                            net.got.GotMod.LOGGER.info("[OvenDebug] Loaded Oven Recipes Count (via {}): {}", m.getName(), coll.size());
+                            for (Object r : coll) net.got.GotMod.LOGGER.info("[OvenDebug]  - Recipe: {}", r);
+                            foundRecipe = true;
+                        } else if (result instanceof Iterable iter) {
+                            int count = 0;
+                            for (Object r : iter) { count++; net.got.GotMod.LOGGER.info("[OvenDebug]  - Recipe: {}", r); }
+                            net.got.GotMod.LOGGER.info("[OvenDebug] Loaded Oven Recipes Count (via {}): {}", m.getName(), count);
+                            foundRecipe = true;
+                        }
+                    }
+                }
+                if (!foundRecipe) {
+                    net.got.GotMod.LOGGER.info("[OvenDebug] Could not cleanly count oven recipes, but QuickCheck returned: {}", recipe.isPresent());
+                }
+            } catch (Exception e) {
+                net.got.GotMod.LOGGER.info("[OvenDebug] Reflection error: {}", e.toString());
+            }
+        }
         if (be.isLit() || (recipe.isPresent() && be.hasFuel(level))) {
             if (!be.isLit() && be.canBurn(serverLevel, recipe, input)) {
                 be.litDuration = be.getBurnDuration(level, be.items.get(SLOT_FUEL));
@@ -134,7 +142,6 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
                     }
                 }
             }
-
             if (be.isLit() && be.canBurn(serverLevel, recipe, input)) {
                 be.cookingProgress++;
                 if (be.cookingProgress >= be.cookingTotalTime) {
@@ -148,48 +155,38 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         } else if (!be.isLit() && be.cookingProgress > 0) {
             be.cookingProgress = Math.max(0, be.cookingProgress - 2);
         }
-
         if (wasLit != be.isLit()) {
             dirty = true;
             level.setBlock(pos, state.setValue(OvenBlock.LIT, be.isLit()), 3);
         }
-
         if (dirty) setChanged(level, pos, state);
     }
-
     // ── Internal helpers ──────────────────────────────────────────────────────
-
     /** Build a 3×3 CraftingInput from the 9 input slots. */
     private CraftingInput buildCraftingInput() {
         java.util.List<ItemStack> grid = new java.util.ArrayList<>(NUM_INPUT_SLOTS);
         for (int i = 0; i < NUM_INPUT_SLOTS; i++) grid.add(items.get(i));
         return CraftingInput.of(3, 3, grid);
     }
-
     public boolean isLit() { return litTime > 0; }
-
     private boolean hasFuel(Level level) {
         return getBurnDuration(level, items.get(SLOT_FUEL)) > 0;
     }
-
     private int getBurnDuration(Level level, ItemStack stack) {
         if (stack.isEmpty()) return 0;
         return stack.getBurnTime(GotModRecipeTypes.OVEN.get(), level.fuelValues());
     }
-
     private boolean canBurn(ServerLevel level,
-                             Optional<RecipeHolder<OvenRecipe>> recipe,
-                             CraftingInput input) {
+                            Optional<RecipeHolder<OvenRecipe>> recipe,
+                            CraftingInput input) {
         if (recipe.isEmpty()) return false;
         ItemStack result = recipe.get().value().assemble(input, level.registryAccess());
         if (result.isEmpty()) return false;
-
         ItemStack output = items.get(SLOT_OUTPUT);
         if (output.isEmpty()) return true;
         if (!ItemStack.isSameItemSameComponents(output, result)) return false;
         return output.getCount() + result.getCount() <= output.getMaxStackSize();
     }
-
     /**
      * Perform one craft cycle: consume one item from each non-empty input slot,
      * deposit the result into the output slot. Buckets (water/lava/milk) are
@@ -199,7 +196,6 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
                          Optional<RecipeHolder<OvenRecipe>> recipe,
                          CraftingInput input) {
         if (recipe.isEmpty() || !canBurn(level, recipe, input)) return false;
-
         ItemStack result = recipe.get().value().assemble(input, level.registryAccess());
         ItemStack output = items.get(SLOT_OUTPUT);
         if (output.isEmpty()) {
@@ -207,7 +203,6 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         } else if (ItemStack.isSameItemSameComponents(output, result)) {
             output.grow(result.getCount());
         }
-
         // Consume one item from each occupied input slot
         for (int i = 0; i < NUM_INPUT_SLOTS; i++) {
             ItemStack s = items.get(i);
@@ -224,33 +219,26 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         }
         return true;
     }
-
     private int getRecipeCookTime(ServerLevel level) {
         CraftingInput input = buildCraftingInput();
         return quickCheck.getRecipeFor(input, level)
                 .map(r -> r.value().getCookingTime())
                 .orElse(200);
     }
-
     // ── Container ─────────────────────────────────────────────────────────────
-
     @Override public NonNullList<ItemStack> getItems() { return items; }
     @Override public void setItems(NonNullList<ItemStack> items) { this.items = items; }
-
     @Override public int  getContainerSize() { return NUM_SLOTS; }
     @Override public boolean isEmpty()       { return items.stream().allMatch(ItemStack::isEmpty); }
     @Override public ItemStack getItem(int slot) { return items.get(slot); }
-
     @Override
     public ItemStack removeItem(int slot, int amount) {
         return ContainerHelper.removeItem(items, slot, amount);
     }
-
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
         return ContainerHelper.takeItem(items, slot);
     }
-
     @Override
     public void setItem(int slot, ItemStack stack) {
         ItemStack existing = items.get(slot);
@@ -258,7 +246,6 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
                 && ItemStack.isSameItemSameComponents(stack, existing);
         items.set(slot, stack);
         if (stack.getCount() > getMaxStackSize()) stack.setCount(getMaxStackSize());
-
         // If an input slot changed, recalculate total cook time
         if (slot < NUM_INPUT_SLOTS && !sameItem) {
             if (level instanceof ServerLevel serverLevel) {
@@ -268,38 +255,30 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
             setChanged();
         }
     }
-
     @Override
     public boolean stillValid(Player player) {
         return Container.stillValidBlockEntity(this, player);
     }
-
     @Override public void clearContent() { items.clear(); }
-
     // ── WorldlyContainer ──────────────────────────────────────────────────────
-
     // Matching OFAW: up=input[0], down={output,fuel}, sides={fuel}
     private static final int[] SLOTS_TOP    = { 0 };
     private static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT, SLOT_FUEL };
     private static final int[] SLOTS_SIDE   = { SLOT_FUEL };
-
     @Override
     public int[] getSlotsForFace(Direction side) {
         if (side == Direction.DOWN) return SLOTS_BOTTOM;
         if (side == Direction.UP)   return SLOTS_TOP;
         return SLOTS_SIDE;
     }
-
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction dir) {
         return canPlaceItem(slot, stack);
     }
-
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
         return slot == SLOT_OUTPUT;
     }
-
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == SLOT_OUTPUT) return false;
@@ -307,23 +286,17 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
             return level != null && getBurnDuration(level, stack) > 0;
         return true; // input slots accept anything
     }
-
     // ── Menu ─────────────────────────────────────────────────────────────────
-
     @Override
     protected Component getDefaultName() {
         return Component.translatable("container.got.oven");
     }
-
     @Override
     protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
         return new OvenMenu(id, inventory, this, dataAccess);
     }
-
     public ContainerData getDataAccess() { return dataAccess; }
-
     // ── NBT ──────────────────────────────────────────────────────────────────
-
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
@@ -334,7 +307,6 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         litTime          = tag.getInt("BurnTime");
         litDuration      = tag.getInt("BurnDuration");
     }
-
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);

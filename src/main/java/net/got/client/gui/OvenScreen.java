@@ -1,5 +1,4 @@
 package net.got.client.gui;
-
 import net.got.GotMod;
 import net.got.menu.OvenMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,7 +7,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-
 /**
  * OvenScreen — ported from OFAW (1.16.5) to NeoForge 1.21.4.
  *
@@ -17,48 +15,47 @@ import net.minecraft.world.entity.player.Inventory;
  * match the OFAW original layout.
  */
 public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
-
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "textures/gui/oven.png");
-
+    private static final ResourceLocation CRAFTING_TABLE_LOCATION = ResourceLocation.withDefaultNamespace("textures/gui/container/crafting_table.png");
+    private static final ResourceLocation LIT_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
+    private static final ResourceLocation BURN_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
     public OvenScreen(OvenMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
-        // Standard 176×166 GUI (same as OFAW default)
         this.imageWidth  = 176;
         this.imageHeight = 166;
         this.inventoryLabelY = this.imageHeight - 94;
     }
-
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
-
-        // Draw the full GUI background
-        graphics.blit(RenderType::guiTextured, TEXTURE,
+        // Draw the crafting table background (this gives us the 3x3 grid, inventory, and arrow)
+        graphics.blit(RenderType::guiTextured, CRAFTING_TABLE_LOCATION,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
-
-        // ── Flame indicator (fuel remaining) ──────────────────────────────────
-        // OFAW position: x+9, y+36+12-k, with sprite at (176, 12-k), size 14×(k+1)
+        // Draw a single slot background for our fuel slot at (8, 53)
+        // We just grab the texture of one of the crafting slots
+        graphics.blit(RenderType::guiTextured, CRAFTING_TABLE_LOCATION,
+                x + 8 - 1, y + 53 - 1, 29, 16, 18, 18, 256, 256);
+        // Draw Flame indicator (fuel remaining) above the fuel slot
         if (menu.isFlaming()) {
-            int k = menu.getFlameScaledProgress(); // 0–13
-            graphics.blit(RenderType::guiTextured, TEXTURE,
-                    x + 9, y + 36 + 12 - k,
-                    176, 12 - k,
-                    14, k + 1, 256, 256);
+            int k = menu.getFlameScaledProgress(); // 0-13
+            if (k > 0) {
+                graphics.blitSprite(RenderType::guiTextured, LIT_PROGRESS_SPRITE,
+                        14, 14, 0, 14 - k,
+                        x + 10, y + 36 + 14 - k,
+                        14, k);
+            }
         }
-
-        // ── Progress arrow (cooking) ──────────────────────────────────────────
-        // OFAW position: x+89, y+35, sprite at (176,14), width l+1, height 16
+        // Draw Progress arrow (cooking) over the crafting table's static arrow
         if (menu.isCrafting()) {
-            int l = menu.getArrowScaledProgress(); // 0–26
-            graphics.blit(RenderType::guiTextured, TEXTURE,
-                    x + 89, y + 35,
-                    176, 14,
-                    l + 1, 16, 256, 256);
+            int l = menu.getArrowScaledProgress(); // 0-24
+            if (l > 0) {
+                graphics.blitSprite(RenderType::guiTextured, BURN_PROGRESS_SPRITE,
+                        24, 16, 0, 0,
+                        x + 90, y + 35,
+                        l, 16);
+            }
         }
     }
-
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(graphics, mouseX, mouseY, partialTick);
