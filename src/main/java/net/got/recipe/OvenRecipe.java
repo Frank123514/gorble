@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.got.init.GotModRecipeSerializers;
 import net.got.init.GotModRecipeTypes;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -46,19 +45,21 @@ public class OvenRecipe implements Recipe<SingleRecipeInput> {
         return result.copy();
     }
 
+    /**
+     * MC 1.21.4: placementInfo() replaces getIngredients() / canCraftInDimensions().
+     */
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries) {
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.create(ingredient);
+    }
+
+    /**
+     * MC 1.21.4: getResultItem() was removed from Recipe; expose result via a plain getter instead.
+     */
+    public ItemStack getResult() {
         return result;
     }
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> list = NonNullList.create();
-        list.add(ingredient);
-        return list;
-    }
-
-    /** Required in 1.21.4 — oven doesn't belong to a vanilla recipe book category. */
     @Override
     public RecipeBookCategory recipeBookCategory() {
         return RecipeBookCategories.FURNACE_MISC;

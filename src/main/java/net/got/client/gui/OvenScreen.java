@@ -1,10 +1,9 @@
 package net.got.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.got.GotMod;
 import net.got.menu.OvenMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,30 +34,30 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-
         int x = this.leftPos;
         int y = this.topPos;
 
-        // Draw the GUI background
-        graphics.blit(TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
+        // Draw the GUI background.
+        // MC 1.21.4: blit now requires a RenderType function as the first argument.
+        graphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // ── Flame indicator (fuel remaining) ─────────────────────────────────
         if (menu.isLit()) {
             int flameHeight = Math.round(menu.getFuelProgress() * 13f); // max 13 px tall
-            // Vanilla furnace flame: u=176, v=300 → 14×14 px sprite
-            // We draw from the bottom up, so offset v accordingly
-            graphics.blit(TEXTURE, x + 56, y + 36 + (13 - flameHeight),
+            // Vanilla furnace flame: u=176, v=300 → 14×14 px sprite, drawn bottom-up
+            graphics.blit(RenderType::guiTextured, TEXTURE,
+                    x + 56, y + 36 + (13 - flameHeight),
                     176, 300 - flameHeight,
-                    14, flameHeight + 1);
+                    14, flameHeight + 1, 256, 256);
         }
 
         // ── Progress arrow (cooking) ──────────────────────────────────────────
         int arrowWidth = Math.round(menu.getCookProgress() * 24f); // max 24 px wide
         // Vanilla furnace arrow: u=176, v=14 → 24×16 px sprite
-        graphics.blit(TEXTURE, x + 79, y + 34,
+        graphics.blit(RenderType::guiTextured, TEXTURE,
+                x + 79, y + 34,
                 176, 14,
-                arrowWidth, 16);
+                arrowWidth, 16, 256, 256);
     }
 
     @Override
