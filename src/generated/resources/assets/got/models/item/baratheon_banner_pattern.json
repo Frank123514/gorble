@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "got:item/baratheon_banner_pattern"
+    "layer0": "got:item/banner_pattern"
   }
 }

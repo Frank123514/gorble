@@ -1331,6 +1331,17 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SHORT_REEDS.get());
                         safeAccept(output, GotModBlocks.QUAGMIRE.get());
 
+                        // ── Banner Patterns ───────────────────────────────────────────
+                        output.accept(GotModItems.STARK_BANNER_PATTERN.get());
+                        output.accept(GotModItems.LANNISTER_BANNER_PATTERN.get());
+                        output.accept(GotModItems.TARGARYEN_BANNER_PATTERN.get());
+                        output.accept(GotModItems.BARATHEON_BANNER_PATTERN.get());
+                        output.accept(GotModItems.GREYJOY_BANNER_PATTERN.get());
+                        output.accept(GotModItems.TYRELL_BANNER_PATTERN.get());
+                        output.accept(GotModItems.MARTELL_BANNER_PATTERN.get());
+                        output.accept(GotModItems.TULLY_BANNER_PATTERN.get());
+                        output.accept(GotModItems.ARRYN_BANNER_PATTERN.get());
+                        output.accept(GotModItems.BOLTON_BANNER_PATTERN.get());
 
                     })
                     .build());
@@ -1346,6 +1357,9 @@ public class GotModTabs {
                     .title(Component.translatable("itemGroup.got.got_food"))
                     .icon(() -> new ItemStack(net.minecraft.world.item.Items.BREAD))
                     .displayItems((params, output) -> {
+
+                        // ── Cooking Equipment ─────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.OVEN.get());
 
                         // ── Bread ─────────────────────────────────────────────────────
                         output.accept(GotModItems.OAT_BREAD.get());
