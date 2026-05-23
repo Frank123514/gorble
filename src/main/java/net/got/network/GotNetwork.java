@@ -173,6 +173,17 @@ public final class GotNetwork {
                     }
                 }));
 
+        // ── Select smithy recipe (C→S) ───────────────────────────────────────────
+        r.playToServer(SelectSmithyRecipePayload.TYPE, SelectSmithyRecipePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    if (player.containerMenu instanceof net.got.menu.SmithyMenu menu &&
+                            menu.getContainer() instanceof net.got.block.SmithyBlockEntity be) {
+                        be.setSelectedRecipeIndex(payload.recipeIndex());
+                    }
+                }));
+
         // ── Season sync (S→C) ────────────────────────────────────────────────────
         r.playToClient(SeasonSyncPayload.TYPE, SeasonSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {

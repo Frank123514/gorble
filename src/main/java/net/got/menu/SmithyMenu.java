@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
@@ -131,19 +132,29 @@ public class SmithyMenu extends AbstractContainerMenu {
         return container.getItem(SmithyBlockEntity.SLOT_INPUT);
     }
 
+    /** Exposes the backing container so the network handler can reach the block entity. */
+    public Container getContainer() { return container; }
+
     // ── Client-side recipe list ───────────────────────────────────────────────
 
     /**
      * Returns all SmithyRecipes that match the current input item,
      * sorted by their ResourceLocation so ordering is stable on both sides.
+     *
+     * Works on both the server (ServerLevel) and the client (ClientLevel),
+     * because recipeAccess() is available on the base Level class and recipes
+     * are synced to the client by vanilla.
      */
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes() {
         ItemStack input = getInputItem();
         if (input.isEmpty()) return List.of();
-        if (!(level instanceof net.minecraft.server.level.ServerLevel serverLevel)) return List.of();
+        // RecipeAccess is a narrow interface — cast to the concrete RecipeManager,
+        // which is what both ClientLevel and ServerLevel actually return.
+        // This gives us access to recipeMap(), consistent with SmithyBlockEntity.
+        if (!(level.recipeAccess() instanceof RecipeManager rm)) return List.of();
         SingleRecipeInput ri = new SingleRecipeInput(input);
-        return serverLevel.recipeAccess().recipeMap()
-                .getRecipesFor(GotModRecipeTypes.SMITHY.get(), ri, serverLevel)
+        return rm.recipeMap()
+                .getRecipesFor(GotModRecipeTypes.SMITHY.get(), ri, level)
                 .map(h -> (RecipeHolder<SmithyRecipe>) (Object) h)
                 .sorted(Comparator.comparing((RecipeHolder<SmithyRecipe> h) -> h.id().toString()))
                 .collect(Collectors.toList());

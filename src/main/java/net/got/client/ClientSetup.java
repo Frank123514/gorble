@@ -41,6 +41,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.got.init.GotModMenus;
 import net.got.client.gui.OvenScreen;
+import net.got.client.gui.SmithyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -61,6 +62,7 @@ public final class ClientSetup {
         // NPC_TRADE menu type is kept registered but NpcTradeScreen is opened directly
         // via OpenTradeScreenPayload — no ScreenConstructor registration needed.
         event.register(GotModMenus.OVEN.get(), OvenScreen::new);
+        event.register(GotModMenus.SMITHY.get(), SmithyScreen::new);
     }
 
     @SubscribeEvent
