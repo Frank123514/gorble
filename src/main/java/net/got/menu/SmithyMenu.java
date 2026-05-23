@@ -37,12 +37,14 @@ import java.util.stream.Collectors;
 public class SmithyMenu extends AbstractContainerMenu {
 
     // GUI pixel positions of the three smithy slots
-    public static final int INPUT_X  = 27;
+    // Left column: input (top) + fuel (bottom)
+    // Right column: output (with smelt button beside it)
+    public static final int INPUT_X  = 11;
     public static final int INPUT_Y  = 17;
-    public static final int FUEL_X   = 27;
+    public static final int FUEL_X   = 11;
     public static final int FUEL_Y   = 55;
-    public static final int OUTPUT_X = 77;
-    public static final int OUTPUT_Y = 35;
+    public static final int OUTPUT_X = 196;
+    public static final int OUTPUT_Y = 20;
 
     private final Container   container;
     private final ContainerData data;

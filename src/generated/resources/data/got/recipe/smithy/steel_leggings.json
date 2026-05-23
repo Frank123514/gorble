@@ -1,0 +1,7 @@
+{
+  "type": "got:smithy",
+  "ingredient": "got:steel_ingot",
+  "result": { "id": "got:steel_leggings", "count": 1 },
+  "cookingtime": 300,
+  "experience": 0.8
+}

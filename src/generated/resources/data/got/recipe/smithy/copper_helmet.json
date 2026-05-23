@@ -1,0 +1,7 @@
+{
+  "type": "got:smithy",
+  "ingredient": "minecraft:copper_ingot",
+  "result": { "id": "got:copper_helmet", "count": 1 },
+  "cookingtime": 180,
+  "experience": 0.4
+}
