@@ -227,12 +227,12 @@ public class SmithyBlockEntity extends BaseContainerBlockEntity implements World
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes(Level level) {
         ItemStack input = items.get(SLOT_INPUT);
         if (input.isEmpty()) return List.of();
+        if (!(level instanceof ServerLevel serverLevel)) return List.of();
         SingleRecipeInput recipeInput = new SingleRecipeInput(input);
-        return level.getRecipeManager()
-                .getAllRecipesFor(GotModRecipeTypes.SMITHY.get())
-                .stream()
-                .filter(h -> h.value().matches(recipeInput, level))
-                .sorted(Comparator.comparing(h -> h.id().toString()))
+        return serverLevel.recipeAccess().recipeMap()
+                .getRecipesFor(GotModRecipeTypes.SMITHY.get(), recipeInput, serverLevel)
+                .map(h -> (RecipeHolder<SmithyRecipe>) (Object) h)
+                .sorted(Comparator.comparing((RecipeHolder<SmithyRecipe> h) -> h.id().toString()))
                 .collect(Collectors.toList());
     }
 

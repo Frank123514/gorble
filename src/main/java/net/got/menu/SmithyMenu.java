@@ -140,12 +140,12 @@ public class SmithyMenu extends AbstractContainerMenu {
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes() {
         ItemStack input = getInputItem();
         if (input.isEmpty()) return List.of();
+        if (!(level instanceof net.minecraft.server.level.ServerLevel serverLevel)) return List.of();
         SingleRecipeInput ri = new SingleRecipeInput(input);
-        return level.getRecipeManager()
-                .getAllRecipesFor(GotModRecipeTypes.SMITHY.get())
-                .stream()
-                .filter(h -> h.value().matches(ri, level))
-                .sorted(Comparator.comparing(h -> h.id().toString()))
+        return serverLevel.recipeAccess().recipeMap()
+                .getRecipesFor(GotModRecipeTypes.SMITHY.get(), ri, serverLevel)
+                .map(h -> (RecipeHolder<SmithyRecipe>) (Object) h)
+                .sorted(Comparator.comparing((RecipeHolder<SmithyRecipe> h) -> h.id().toString()))
                 .collect(Collectors.toList());
     }
 

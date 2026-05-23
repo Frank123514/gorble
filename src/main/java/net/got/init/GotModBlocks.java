@@ -1464,6 +1464,9 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> OVEN = REGISTRY.registerBlock("oven",
             OvenBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
 
+    public static final DeferredBlock<Block> SMITHY = REGISTRY.registerBlock("smithy",
+            net.got.block.SmithyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
+
     // ── Basalt ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BASALT_ROCK = registerBasalt("basalt_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> BASALT_BRICK = registerBasalt("basalt_brick", RegionalRockBlock::new);

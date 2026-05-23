@@ -2,6 +2,7 @@ package net.got.init;
 
 import net.got.GotMod;
 import net.got.menu.OvenMenu;
+import net.got.menu.SmithyMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -22,4 +23,8 @@ public class GotModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<OvenMenu>> OVEN =
             REGISTRY.register("oven", () ->
                     new MenuType<>(OvenMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<SmithyMenu>> SMITHY =
+            REGISTRY.register("smithy", () ->
+                    new MenuType<>(SmithyMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

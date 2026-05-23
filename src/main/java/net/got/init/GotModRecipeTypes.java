@@ -2,6 +2,7 @@ package net.got.init;
 
 import net.got.GotMod;
 import net.got.recipe.OvenRecipe;
+import net.got.recipe.SmithyRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -14,4 +15,7 @@ public class GotModRecipeTypes {
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<OvenRecipe>> OVEN =
             REGISTRY.register("oven", () -> RecipeType.simple(GotMod.id("oven")));
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<SmithyRecipe>> SMITHY =
+            REGISTRY.register("smithy", () -> RecipeType.simple(GotMod.id("smithy")));
 }
