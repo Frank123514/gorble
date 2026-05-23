@@ -12,20 +12,33 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * OvenMenu — container screen wiring for the Oven.
+ * OvenMenu — ported from OFAW (1.16.5) to NeoForge 1.21.4.
+ *
+ * Slot layout visible in the GUI:
+ *   - 3×3 input grid  (container slots 0–8)  at positions (30+col*18, 17+row*18)
+ *   - output slot      (container slot 9)     at (124, 35)
+ *   - fuel slot        (container slot 10)    at (8, 53)
+ *   - player inventory 27 slots              at (8+col*18, 84+row*18)
+ *   - hotbar 9 slots                         at (8+col*18, 142)
+ *
+ * ContainerData (4 ints):
+ *   0 = cookingProgress, 1 = cookingTotalTime, 2 = litTime, 3 = litDuration
  */
 public class OvenMenu extends AbstractContainerMenu {
 
     private final Container   container;
     private final ContainerData data;
 
+    /** Client-side constructor (called by MenuType factory). */
     public OvenMenu(int windowId, Inventory playerInv) {
         this(windowId, playerInv,
                 new SimpleContainer(OvenBlockEntity.NUM_SLOTS),
                 new SimpleContainerData(OvenBlockEntity.NUM_DATA));
     }
 
-    public OvenMenu(int windowId, Inventory playerInv, Container container, ContainerData data) {
+    /** Server-side constructor. */
+    public OvenMenu(int windowId, Inventory playerInv,
+                    Container container, ContainerData data) {
         super(GotModMenus.OVEN.get(), windowId);
         this.container = container;
         this.data      = data;
@@ -36,72 +49,97 @@ public class OvenMenu extends AbstractContainerMenu {
 
         Level level = playerInv.player.level();
 
-        this.addSlot(new Slot(container, OvenBlockEntity.SLOT_INPUT,  56, 17));
-        this.addSlot(new FuelSlot(container, OvenBlockEntity.SLOT_FUEL, 56, 53, level));
-        this.addSlot(new ResultSlot(playerInv.player, container, OvenBlockEntity.SLOT_OUTPUT, 116, 35));
-
+        // Player inventory (rows 0-2)
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
-                this.addSlot(new Slot(playerInv, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+                this.addSlot(new Slot(playerInv, col + row * 9 + 9,
+                        8 + col * 18, 84 + row * 18));
 
+        // Hotbar
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
+
+        // Output slot (container slot 9) — players cannot place items here
+        this.addSlot(new ResultSlot(playerInv.player, container,
+                OvenBlockEntity.SLOT_OUTPUT, 124, 35));
+
+        // Fuel slot (container slot 10)
+        this.addSlot(new FuelSlot(container, OvenBlockEntity.SLOT_FUEL,
+                8, 53, level));
+
+        // 3×3 input grid (container slots 0–8)
+        for (int row = 0; row < 3; row++)
+            for (int col = 0; col < 3; col++)
+                this.addSlot(new Slot(container, col + row * 3,
+                        30 + col * 18, 17 + row * 18));
 
         this.addDataSlots(data);
     }
 
-    public boolean isLit() {
+    // ── Progress helpers (used by OvenScreen) ─────────────────────────────────
+
+    public boolean isCrafting() {
+        return data.get(OvenBlockEntity.DATA_COOKING_PROGRESS) > 0;
+    }
+
+    public boolean isFlaming() {
         return data.get(OvenBlockEntity.DATA_LIT_TIME) > 0;
     }
 
-    public float getFuelProgress() {
-        int duration = data.get(OvenBlockEntity.DATA_LIT_DURATION);
-        return duration == 0 ? 0f :
-                (float) data.get(OvenBlockEntity.DATA_LIT_TIME) / (float) duration;
+    /** Arrow progress scaled to [0, 26] pixels. */
+    public int getArrowScaledProgress() {
+        int progress    = data.get(OvenBlockEntity.DATA_COOKING_PROGRESS);
+        int maxProgress = data.get(OvenBlockEntity.DATA_COOKING_TOTAL);
+        return maxProgress != 0 && progress != 0 ? progress * 26 / maxProgress : 0;
     }
 
-    public float getCookProgress() {
-        int total = data.get(OvenBlockEntity.DATA_COOKING_TOTAL);
-        return total == 0 ? 0f :
-                (float) data.get(OvenBlockEntity.DATA_COOKING_PROGRESS) / (float) total;
+    /** Flame height scaled to [0, 13] pixels. */
+    public int getFlameScaledProgress() {
+        int duration = data.get(OvenBlockEntity.DATA_LIT_DURATION);
+        if (duration == 0) duration = 200;
+        return data.get(OvenBlockEntity.DATA_LIT_TIME) * 13 / duration;
     }
+
+    // ── Shift-click logic ─────────────────────────────────────────────────────
+
+    private static final int PLAYER_INV_START = 0;
+    private static final int PLAYER_INV_END   = 36; // 27 + 9 hotbar
+    private static final int TE_FIRST         = 36; // output, fuel, then grid
+    private static final int TE_LAST          = TE_FIRST + OvenBlockEntity.NUM_SLOTS; // 47
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack copy = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
+        if (!slot.hasItem()) return ItemStack.EMPTY;
 
-        if (slot.hasItem()) {
-            ItemStack stack = slot.getItem();
-            copy = stack.copy();
+        ItemStack stack  = slot.getItem();
+        ItemStack copy   = stack.copy();
 
-            int invStart = OvenBlockEntity.NUM_SLOTS;
-            int invEnd   = invStart + 27;
-            int hotEnd   = invEnd + 9;
-
-            if (index == OvenBlockEntity.SLOT_OUTPUT) {
-                if (!this.moveItemStackTo(stack, invStart, hotEnd, true)) return ItemStack.EMPTY;
-                slot.onQuickCraft(stack, copy);
-            } else if (index >= invStart) {
-                if (!this.moveItemStackTo(stack, OvenBlockEntity.SLOT_FUEL, OvenBlockEntity.SLOT_FUEL + 1, false)) {
-                    if (!this.moveItemStackTo(stack, OvenBlockEntity.SLOT_INPUT, OvenBlockEntity.SLOT_INPUT + 1, false)) {
-                        if (index < invEnd) {
-                            if (!this.moveItemStackTo(stack, invEnd, hotEnd, false)) return ItemStack.EMPTY;
-                        } else {
-                            if (!this.moveItemStackTo(stack, invStart, invEnd, false)) return ItemStack.EMPTY;
-                        }
+        if (index >= TE_FIRST && index < TE_LAST) {
+            // TE slot → player inventory
+            if (!this.moveItemStackTo(stack, PLAYER_INV_START, PLAYER_INV_END, false))
+                return ItemStack.EMPTY;
+        } else {
+            // Player slot → try fuel first, then input grid
+            if (!this.moveItemStackTo(stack, TE_FIRST + 1, TE_FIRST + 2, false)) { // fuel slot
+                if (!this.moveItemStackTo(stack, TE_FIRST + 2, TE_LAST, false)) {  // input grid
+                    // Fall back within player inv
+                    if (index < 27) {
+                        if (!this.moveItemStackTo(stack, 27, PLAYER_INV_END, false))
+                            return ItemStack.EMPTY;
+                    } else {
+                        if (!this.moveItemStackTo(stack, PLAYER_INV_START, 27, false))
+                            return ItemStack.EMPTY;
                     }
                 }
-            } else {
-                if (!this.moveItemStackTo(stack, invStart, hotEnd, false)) return ItemStack.EMPTY;
             }
-
-            if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
-            else slot.setChanged();
-
-            if (stack.getCount() == copy.getCount()) return ItemStack.EMPTY;
-            slot.onTake(player, stack);
         }
+
+        if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
+        else slot.setChanged();
+
+        if (stack.getCount() == copy.getCount()) return ItemStack.EMPTY;
+        slot.onTake(player, stack);
         return copy;
     }
 
@@ -114,6 +152,8 @@ public class OvenMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
+    // ── Inner slot types ──────────────────────────────────────────────────────
+
     private static class FuelSlot extends Slot {
         private final Level level;
 
@@ -124,9 +164,9 @@ public class OvenMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            // MC 1.21.4: getBurnTime(RecipeType<?>, FuelValues) via IItemStackExtension
-            // fuelValues() is on Level — no import of FuelValues needed
-            return stack.getBurnTime(GotModRecipeTypes.OVEN.get(), level.fuelValues()) > 0;
+            return stack.getBurnTime(
+                    GotModRecipeTypes.OVEN.get(),
+                    level.fuelValues()) > 0;
         }
     }
 

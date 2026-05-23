@@ -19,9 +19,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,54 +31,72 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
- * OvenBlockEntity — furnace-style block entity for the Oven block.
+ * OvenBlockEntity — ported from OFAW (1.16.5) to NeoForge 1.21.4.
  *
- * Slot layout:
- *   0 — input ingredient
- *   1 — fuel
- *   2 — output
+ * Slot layout (11 slots total, matching OFAW):
+ *   0–8  — 3×3 shaped input grid
+ *   9    — output
+ *   10   — fuel
+ *
+ * ContainerData layout:
+ *   0 — cookingProgress
+ *   1 — cookingTotalTime (maxProgress)
+ *   2 — litTime
+ *   3 — litDuration
  */
 public class OvenBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
-    public static final int SLOT_INPUT   = 0;
-    public static final int SLOT_FUEL    = 1;
-    public static final int SLOT_OUTPUT  = 2;
-    public static final int NUM_SLOTS    = 3;
+    // ── Slot indices ──────────────────────────────────────────────────────────
 
-    public static final int DATA_LIT_TIME         = 0;
-    public static final int DATA_LIT_DURATION     = 1;
-    public static final int DATA_COOKING_PROGRESS = 2;
-    public static final int DATA_COOKING_TOTAL    = 3;
+    public static final int NUM_INPUT_SLOTS = 9;
+    public static final int SLOT_OUTPUT     = 9;
+    public static final int SLOT_FUEL       = 10;
+    public static final int NUM_SLOTS       = 11;
+
+    // ── ContainerData indices ─────────────────────────────────────────────────
+
+    public static final int DATA_COOKING_PROGRESS = 0;
+    public static final int DATA_COOKING_TOTAL    = 1;
+    public static final int DATA_LIT_TIME         = 2;
+    public static final int DATA_LIT_DURATION     = 3;
     public static final int NUM_DATA              = 4;
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
+    // ── State ─────────────────────────────────────────────────────────────────
 
-    private final RecipeManager.CachedCheck<SingleRecipeInput, OvenRecipe> quickCheck;
+    private NonNullList<ItemStack> items =
+            NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
 
-    private int litTime;
-    private int litDuration;
-    private int cookingProgress;
-    private int cookingTotalTime;
+    private int cookingProgress  = 0;
+    private int cookingTotalTime = 200;
+    private int litTime          = 0;
+    private int litDuration      = 0;
+
+    private final RecipeManager.CachedCheck<CraftingInput, OvenRecipe> quickCheck;
 
     protected final ContainerData dataAccess = new ContainerData() {
-        @Override public int get(int i) {
+        @Override
+        public int get(int i) {
             return switch (i) {
-                case DATA_LIT_TIME         -> litTime;
-                case DATA_LIT_DURATION     -> litDuration;
                 case DATA_COOKING_PROGRESS -> cookingProgress;
                 case DATA_COOKING_TOTAL    -> cookingTotalTime;
+                case DATA_LIT_TIME         -> litTime;
+                case DATA_LIT_DURATION     -> litDuration;
                 default -> 0;
             };
         }
-        @Override public void set(int i, int v) {
+
+        @Override
+        public void set(int i, int v) {
             switch (i) {
-                case DATA_LIT_TIME         -> litTime = v;
-                case DATA_LIT_DURATION     -> litDuration = v;
-                case DATA_COOKING_PROGRESS -> cookingProgress = v;
+                case DATA_COOKING_PROGRESS -> cookingProgress  = v;
                 case DATA_COOKING_TOTAL    -> cookingTotalTime = v;
+                case DATA_LIT_TIME         -> litTime          = v;
+                case DATA_LIT_DURATION     -> litDuration      = v;
             }
         }
-        @Override public int getCount() { return NUM_DATA; }
+
+        @Override
+        public int getCount() { return NUM_DATA; }
     };
 
     public OvenBlockEntity(BlockPos pos, BlockState state) {
@@ -85,12 +104,10 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         this.quickCheck = RecipeManager.createCheck(GotModRecipeTypes.OVEN.get());
     }
 
-    @Override public NonNullList<ItemStack> getItems() { return items; }
-    @Override public void setItems(NonNullList<ItemStack> items) { this.items = items; }
+    // ── Tick ─────────────────────────────────────────────────────────────────
 
-    // ── Server tick ───────────────────────────────────────────────────────────
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, OvenBlockEntity be) {
+    public static void serverTick(Level level, BlockPos pos, BlockState state,
+                                  OvenBlockEntity be) {
         if (!(level instanceof ServerLevel serverLevel)) return;
 
         boolean wasLit = be.isLit();
@@ -98,29 +115,32 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
 
         if (be.isLit()) be.litTime--;
 
-        ItemStack inputStack = be.items.get(SLOT_INPUT);
-        Optional<RecipeHolder<OvenRecipe>> recipe = inputStack.isEmpty()
-                ? Optional.empty()
-                : be.quickCheck.getRecipeFor(new SingleRecipeInput(inputStack), serverLevel);
+        CraftingInput input = be.buildCraftingInput();
+        Optional<RecipeHolder<OvenRecipe>> recipe = be.quickCheck.getRecipeFor(input, serverLevel);
 
         if (be.isLit() || (recipe.isPresent() && be.hasFuel(level))) {
-            if (!be.isLit() && be.canBurn(serverLevel, recipe)) {
+            if (!be.isLit() && be.canBurn(serverLevel, recipe, input)) {
                 be.litDuration = be.getBurnDuration(level, be.items.get(SLOT_FUEL));
                 be.litTime     = be.litDuration;
                 if (be.isLit()) {
                     dirty = true;
                     ItemStack fuel = be.items.get(SLOT_FUEL);
-                    fuel.shrink(1);
-                    if (fuel.isEmpty()) be.items.set(SLOT_FUEL, ItemStack.EMPTY);
+                    // Consume fuel; lava buckets leave an empty bucket
+                    if (fuel.getItem() == Items.LAVA_BUCKET) {
+                        be.items.set(SLOT_FUEL, new ItemStack(Items.BUCKET));
+                    } else {
+                        fuel.shrink(1);
+                        if (fuel.isEmpty()) be.items.set(SLOT_FUEL, ItemStack.EMPTY);
+                    }
                 }
             }
 
-            if (be.isLit() && be.canBurn(serverLevel, recipe)) {
+            if (be.isLit() && be.canBurn(serverLevel, recipe, input)) {
                 be.cookingProgress++;
                 if (be.cookingProgress >= be.cookingTotalTime) {
                     be.cookingProgress   = 0;
-                    be.cookingTotalTime  = be.getCookingTime(serverLevel);
-                    if (be.burn(serverLevel, recipe)) dirty = true;
+                    be.cookingTotalTime  = be.getRecipeCookTime(serverLevel);
+                    if (be.burn(serverLevel, recipe, input)) dirty = true;
                 }
             } else {
                 be.cookingProgress = 0;
@@ -139,60 +159,86 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
 
     // ── Internal helpers ──────────────────────────────────────────────────────
 
+    /** Build a 3×3 CraftingInput from the 9 input slots. */
+    private CraftingInput buildCraftingInput() {
+        java.util.List<ItemStack> grid = new java.util.ArrayList<>(NUM_INPUT_SLOTS);
+        for (int i = 0; i < NUM_INPUT_SLOTS; i++) grid.add(items.get(i));
+        return CraftingInput.of(3, 3, grid);
+    }
+
     public boolean isLit() { return litTime > 0; }
 
     private boolean hasFuel(Level level) {
         return getBurnDuration(level, items.get(SLOT_FUEL)) > 0;
     }
 
-    /**
-     * MC 1.21.4: IItemStackExtension.getBurnTime(RecipeType, FuelValues)
-     * FuelValues is obtained from level.fuelValues() — we pass Level to avoid importing
-     * the FuelValues class directly (its package changed between MC versions).
-     */
     private int getBurnDuration(Level level, ItemStack stack) {
         if (stack.isEmpty()) return 0;
         return stack.getBurnTime(GotModRecipeTypes.OVEN.get(), level.fuelValues());
     }
 
-    private boolean canBurn(ServerLevel level, Optional<RecipeHolder<OvenRecipe>> recipe) {
-        if (items.get(SLOT_INPUT).isEmpty() || recipe.isEmpty()) return false;
-        ItemStack result = recipe.get().value().assemble(
-                new SingleRecipeInput(items.get(SLOT_INPUT)), level.registryAccess());
+    private boolean canBurn(ServerLevel level,
+                             Optional<RecipeHolder<OvenRecipe>> recipe,
+                             CraftingInput input) {
+        if (recipe.isEmpty()) return false;
+        ItemStack result = recipe.get().value().assemble(input, level.registryAccess());
         if (result.isEmpty()) return false;
+
         ItemStack output = items.get(SLOT_OUTPUT);
         if (output.isEmpty()) return true;
         if (!ItemStack.isSameItemSameComponents(output, result)) return false;
         return output.getCount() + result.getCount() <= output.getMaxStackSize();
     }
 
-    private boolean burn(ServerLevel level, Optional<RecipeHolder<OvenRecipe>> recipe) {
-        if (recipe.isEmpty() || !canBurn(level, recipe)) return false;
-        ItemStack result = recipe.get().value().assemble(
-                new SingleRecipeInput(items.get(SLOT_INPUT)), level.registryAccess());
+    /**
+     * Perform one craft cycle: consume one item from each non-empty input slot,
+     * deposit the result into the output slot. Buckets (water/lava/milk) are
+     * replaced with empty buckets (matching OFAW's behaviour).
+     */
+    private boolean burn(ServerLevel level,
+                         Optional<RecipeHolder<OvenRecipe>> recipe,
+                         CraftingInput input) {
+        if (recipe.isEmpty() || !canBurn(level, recipe, input)) return false;
+
+        ItemStack result = recipe.get().value().assemble(input, level.registryAccess());
         ItemStack output = items.get(SLOT_OUTPUT);
         if (output.isEmpty()) {
             items.set(SLOT_OUTPUT, result.copy());
         } else if (ItemStack.isSameItemSameComponents(output, result)) {
             output.grow(result.getCount());
         }
-        items.get(SLOT_INPUT).shrink(1);
-        if (items.get(SLOT_INPUT).isEmpty()) items.set(SLOT_INPUT, ItemStack.EMPTY);
+
+        // Consume one item from each occupied input slot
+        for (int i = 0; i < NUM_INPUT_SLOTS; i++) {
+            ItemStack s = items.get(i);
+            if (!s.isEmpty()) {
+                if (s.getItem() == Items.WATER_BUCKET
+                        || s.getItem() == Items.LAVA_BUCKET
+                        || s.getItem() == Items.MILK_BUCKET) {
+                    items.set(i, new ItemStack(Items.BUCKET));
+                } else {
+                    s.shrink(1);
+                    if (s.isEmpty()) items.set(i, ItemStack.EMPTY);
+                }
+            }
+        }
         return true;
     }
 
-    private int getCookingTime(ServerLevel level) {
-        ItemStack input = items.get(SLOT_INPUT);
-        if (input.isEmpty()) return 200;
-        return quickCheck.getRecipeFor(new SingleRecipeInput(input), level)
+    private int getRecipeCookTime(ServerLevel level) {
+        CraftingInput input = buildCraftingInput();
+        return quickCheck.getRecipeFor(input, level)
                 .map(r -> r.value().getCookingTime())
                 .orElse(200);
     }
 
     // ── Container ─────────────────────────────────────────────────────────────
 
-    @Override public int getContainerSize()      { return NUM_SLOTS; }
-    @Override public boolean isEmpty()           { return items.stream().allMatch(ItemStack::isEmpty); }
+    @Override public NonNullList<ItemStack> getItems() { return items; }
+    @Override public void setItems(NonNullList<ItemStack> items) { this.items = items; }
+
+    @Override public int  getContainerSize() { return NUM_SLOTS; }
+    @Override public boolean isEmpty()       { return items.stream().allMatch(ItemStack::isEmpty); }
     @Override public ItemStack getItem(int slot) { return items.get(slot); }
 
     @Override
@@ -208,12 +254,15 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
     @Override
     public void setItem(int slot, ItemStack stack) {
         ItemStack existing = items.get(slot);
-        boolean sameItem = !stack.isEmpty() && ItemStack.isSameItemSameComponents(stack, existing);
+        boolean sameItem = !stack.isEmpty()
+                && ItemStack.isSameItemSameComponents(stack, existing);
         items.set(slot, stack);
         if (stack.getCount() > getMaxStackSize()) stack.setCount(getMaxStackSize());
-        if (slot == SLOT_INPUT && !sameItem) {
+
+        // If an input slot changed, recalculate total cook time
+        if (slot < NUM_INPUT_SLOTS && !sameItem) {
             if (level instanceof ServerLevel serverLevel) {
-                cookingTotalTime = getCookingTime(serverLevel);
+                cookingTotalTime = getRecipeCookTime(serverLevel);
             }
             cookingProgress = 0;
             setChanged();
@@ -229,7 +278,8 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
 
     // ── WorldlyContainer ──────────────────────────────────────────────────────
 
-    private static final int[] SLOTS_TOP    = { SLOT_INPUT };
+    // Matching OFAW: up=input[0], down={output,fuel}, sides={fuel}
+    private static final int[] SLOTS_TOP    = { 0 };
     private static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT, SLOT_FUEL };
     private static final int[] SLOTS_SIDE   = { SLOT_FUEL };
 
@@ -253,8 +303,9 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == SLOT_OUTPUT) return false;
-        if (slot == SLOT_FUEL)   return level != null && getBurnDuration(level, stack) > 0;
-        return true;
+        if (slot == SLOT_FUEL)
+            return level != null && getBurnDuration(level, stack) > 0;
+        return true; // input slots accept anything
     }
 
     // ── Menu ─────────────────────────────────────────────────────────────────
@@ -269,6 +320,8 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         return new OvenMenu(id, inventory, this, dataAccess);
     }
 
+    public ContainerData getDataAccess() { return dataAccess; }
+
     // ── NBT ──────────────────────────────────────────────────────────────────
 
     @Override
@@ -276,21 +329,19 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         super.loadAdditional(tag, registries);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items, registries);
-        litTime          = tag.getInt("BurnTime");
-        litDuration      = tag.getInt("BurnDuration");
         cookingProgress  = tag.getInt("CookTime");
         cookingTotalTime = tag.getInt("CookTimeTotal");
+        litTime          = tag.getInt("BurnTime");
+        litDuration      = tag.getInt("BurnDuration");
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, items, registries);
-        tag.putInt("BurnTime",      litTime);
-        tag.putInt("BurnDuration",  litDuration);
         tag.putInt("CookTime",      cookingProgress);
         tag.putInt("CookTimeTotal", cookingTotalTime);
+        tag.putInt("BurnTime",      litTime);
+        tag.putInt("BurnDuration",  litDuration);
     }
-
-    public ContainerData getDataAccess() { return dataAccess; }
 }

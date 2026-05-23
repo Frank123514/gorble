@@ -1,7 +1,6 @@
 package net.got.block;
 
 import com.mojang.serialization.MapCodec;
-import net.got.block.OvenBlockEntity;
 import net.got.init.GotModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,6 +28,10 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
+/**
+ * OvenBlock — ported from OFAW (1.16.5) to NeoForge 1.21.4.
+ * Provides a 3×3 shaped-cooking block with a fuel slot.
+ */
 public class OvenBlock extends BaseEntityBlock {
 
     public static final MapCodec<OvenBlock> CODEC = simpleCodec(OvenBlock::new);
@@ -73,6 +77,19 @@ public class OvenBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
+    /** Drop inventory contents when the block is broken (ported from OFAW). */
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos,
+                         BlockState newState, boolean movedByPiston) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof OvenBlockEntity oven) {
+                Containers.dropContents(level, pos, oven);
+            }
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hitResult) {
@@ -115,16 +132,14 @@ public class OvenBlock extends BaseEntityBlock {
                     SoundSource.BLOCKS, 1.0F, 1.0F, false);
         }
 
-        double offX  = facing.getStepX() * 0.52;
-        double offZ  = facing.getStepZ() * 0.52;
-        double sideX = facing.getClockWise().getStepX() * (random.nextDouble() * 0.6 - 0.3);
-        double sideZ = facing.getClockWise().getStepZ() * (random.nextDouble() * 0.6 - 0.3);
+        Direction.Axis axis = facing.getAxis();
+        double d3 = 0.52;
+        double d4 = random.nextDouble() * 0.6 - 0.3;
+        double d5 = axis == Direction.Axis.X ? facing.getStepX() * d3 : d4;
+        double d6 = random.nextDouble() * 6.0 / 16.0;
+        double d7 = axis == Direction.Axis.Z ? facing.getStepZ() * d3 : d4;
 
-        level.addParticle(ParticleTypes.SMOKE,
-                x + offX + sideX, y + 0.7 + random.nextDouble() * 0.2, z + offZ + sideZ,
-                0, 0, 0);
-        level.addParticle(ParticleTypes.FLAME,
-                x + offX + sideX, y + 0.7 + random.nextDouble() * 0.1, z + offZ + sideZ,
-                0, 0, 0);
+        level.addParticle(ParticleTypes.SMOKE,  x + d5, y + d6, z + d7, 0, 0, 0);
+        level.addParticle(ParticleTypes.FLAME,  x + d5, y + d6, z + d7, 0, 0, 0);
     }
 }

@@ -1,5 +1,6 @@
 package net.got.client.gui;
 
+import net.got.GotMod;
 import net.got.menu.OvenMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -9,26 +10,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 /**
- * OvenScreen — renders the oven GUI using the vanilla furnace texture layout.
+ * OvenScreen — ported from OFAW (1.16.5) to NeoForge 1.21.4.
  *
- * You can replace the TEXTURE path with a custom texture once you have art.
- * The layout mirrors the vanilla furnace (176×166 GUI) so the vanilla furnace
- * texture works as a placeholder out of the box.
+ * Renders the 3×3 oven GUI using the OFAW oven texture (copied to
+ * assets/got/textures/gui/oven.png). Arrow and flame sprite coordinates
+ * match the OFAW original layout.
  */
 public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
-    // Use the vanilla furnace texture as a placeholder.
-    // Replace with ResourceLocation.fromNamespaceAndPath("got", "textures/gui/oven.png")
-    // once you have a custom texture.
     private static final ResourceLocation TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");
+            ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "textures/gui/oven.png");
 
     public OvenScreen(OvenMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
-        // Standard furnace GUI dimensions
+        // Standard 176×166 GUI (same as OFAW default)
         this.imageWidth  = 176;
         this.imageHeight = 166;
-        // Move the inventory label down to match furnace layout
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
@@ -37,27 +34,29 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         int x = this.leftPos;
         int y = this.topPos;
 
-        // Draw the GUI background.
-        // MC 1.21.4: blit now requires a RenderType function as the first argument.
-        graphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        // Draw the full GUI background
+        graphics.blit(RenderType::guiTextured, TEXTURE,
+                x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // ── Flame indicator (fuel remaining) ─────────────────────────────────
-        if (menu.isLit()) {
-            int flameHeight = Math.round(menu.getFuelProgress() * 13f); // max 13 px tall
-            // Vanilla furnace flame: u=176, v=300 → 14×14 px sprite, drawn bottom-up
+        // ── Flame indicator (fuel remaining) ──────────────────────────────────
+        // OFAW position: x+9, y+36+12-k, with sprite at (176, 12-k), size 14×(k+1)
+        if (menu.isFlaming()) {
+            int k = menu.getFlameScaledProgress(); // 0–13
             graphics.blit(RenderType::guiTextured, TEXTURE,
-                    x + 56, y + 36 + (13 - flameHeight),
-                    176, 300 - flameHeight,
-                    14, flameHeight + 1, 256, 256);
+                    x + 9, y + 36 + 12 - k,
+                    176, 12 - k,
+                    14, k + 1, 256, 256);
         }
 
         // ── Progress arrow (cooking) ──────────────────────────────────────────
-        int arrowWidth = Math.round(menu.getCookProgress() * 24f); // max 24 px wide
-        // Vanilla furnace arrow: u=176, v=14 → 24×16 px sprite
-        graphics.blit(RenderType::guiTextured, TEXTURE,
-                x + 79, y + 34,
-                176, 14,
-                arrowWidth, 16, 256, 256);
+        // OFAW position: x+89, y+35, sprite at (176,14), width l+1, height 16
+        if (menu.isCrafting()) {
+            int l = menu.getArrowScaledProgress(); // 0–26
+            graphics.blit(RenderType::guiTextured, TEXTURE,
+                    x + 89, y + 35,
+                    176, 14,
+                    l + 1, 16, 256, 256);
+        }
     }
 
     @Override

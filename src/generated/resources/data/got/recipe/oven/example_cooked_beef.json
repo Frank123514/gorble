@@ -1,9 +1,12 @@
 {
-  "_comment": "Example: cooking raw beef in the oven gives a cooked beef. Copy this file, rename it, and place it under data/got/recipe/oven/",
-
   "type": "got:oven",
-  "ingredient": {
-    "item": "minecraft:beef"
+  "pattern": [
+    "   ",
+    " A ",
+    "   "
+  ],
+  "key": {
+    "A": { "item": "minecraft:beef" }
   },
   "result": {
     "id": "minecraft:cooked_beef",

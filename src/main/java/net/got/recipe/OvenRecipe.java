@@ -6,58 +6,67 @@ import net.got.init.GotModRecipeSerializers;
 import net.got.init.GotModRecipeTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 /**
- * Single-input, single-output recipe processed by the Oven.
- * Only recipes with "type": "got:oven" are accepted.
+ * OvenRecipe — ported from OFAW (1.16.5) to NeoForge 1.21.4.
+ *
+ * A shaped, 3×3 recipe processed by the Oven block with a cooking timer and
+ * fuel consumption (like a furnace-grid hybrid).
+ *
+ * JSON format (type "got:oven"):
+ * <pre>
+ * {
+ *   "type": "got:oven",
+ *   "pattern": ["ABC", "DEF", "GHI"],
+ *   "key": { "A": {"item": "minecraft:..."}, ... },
+ *   "result": { "id": "minecraft:...", "count": 1 },
+ *   "cookingtime": 200,
+ *   "experience": 0.1
+ * }
+ * </pre>
  */
-public class OvenRecipe implements Recipe<SingleRecipeInput> {
+public class OvenRecipe implements Recipe<CraftingInput> {
 
-    private final Ingredient ingredient;
-    private final ItemStack  result;
-    private final float      experience;
-    private final int        cookingTime;
+    private final ShapedRecipePattern pattern;
+    private final ItemStack           result;
+    private final float               experience;
+    private final int                 cookingTime;
 
-    public OvenRecipe(Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
-        this.ingredient  = ingredient;
+    public OvenRecipe(ShapedRecipePattern pattern, ItemStack result,
+                      float experience, int cookingTime) {
+        this.pattern     = pattern;
         this.result      = result;
         this.experience  = experience;
         this.cookingTime = cookingTime;
     }
 
-    public Ingredient getIngredient() { return ingredient; }
-    public float      getExperience() { return experience; }
-    public int        getCookingTime(){ return cookingTime; }
+    // ── Getters ───────────────────────────────────────────────────────────────
 
-    // ── Recipe<SingleRecipeInput> ─────────────────────────────────────────────
+    public float getExperience()  { return experience; }
+    public int   getCookingTime() { return cookingTime; }
+    public ItemStack getResult()  { return result; }
+
+    // ── Recipe<CraftingInput> ─────────────────────────────────────────────────
 
     @Override
-    public boolean matches(SingleRecipeInput input, Level level) {
-        return ingredient.test(input.item());
+    public boolean matches(CraftingInput input, Level level) {
+        return pattern.matches(input);
     }
 
     @Override
-    public ItemStack assemble(SingleRecipeInput input, HolderLookup.Provider registries) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         return result.copy();
     }
 
-    /**
-     * MC 1.21.4: placementInfo() replaces getIngredients() / canCraftInDimensions().
-     */
+    /** Exposes ingredient positions for the recipe book. */
     @Override
     public PlacementInfo placementInfo() {
-        return PlacementInfo.create(ingredient);
-    }
-
-    /**
-     * MC 1.21.4: getResultItem() was removed from Recipe; expose result via a plain getter instead.
-     */
-    public ItemStack getResult() {
-        return result;
+        return PlacementInfo.createFromOptionals(pattern.ingredients());
     }
 
     @Override
@@ -79,25 +88,36 @@ public class OvenRecipe implements Recipe<SingleRecipeInput> {
 
     public static class Serializer implements RecipeSerializer<OvenRecipe> {
 
-        public static final MapCodec<OvenRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC.fieldOf("ingredient").forGetter(r -> r.ingredient),
-                ItemStack.CODEC.fieldOf("result").forGetter(r -> r.result),
-                com.mojang.serialization.Codec.FLOAT
-                        .optionalFieldOf("experience", 0.0F).forGetter(r -> r.experience),
-                com.mojang.serialization.Codec.INT
-                        .optionalFieldOf("cookingtime", 200).forGetter(r -> r.cookingTime)
-        ).apply(inst, OvenRecipe::new));
+        public static final MapCodec<OvenRecipe> CODEC =
+                RecordCodecBuilder.mapCodec(inst -> inst.group(
+                        ShapedRecipePattern.MAP_CODEC
+                                .forGetter(r -> r.pattern),
+                        ItemStack.STRICT_CODEC
+                                .fieldOf("result")
+                                .forGetter(r -> r.result),
+                        com.mojang.serialization.Codec.FLOAT
+                                .optionalFieldOf("experience", 0.0F)
+                                .forGetter(r -> r.experience),
+                        com.mojang.serialization.Codec.INT
+                                .optionalFieldOf("cookingtime", 200)
+                                .forGetter(r -> r.cookingTime)
+                ).apply(inst, OvenRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, OvenRecipe> STREAM_CODEC =
                 StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC,                         r -> r.ingredient,
-                        ItemStack.STREAM_CODEC,                                   r -> r.result,
-                        net.minecraft.network.codec.ByteBufCodecs.FLOAT,          r -> r.experience,
-                        net.minecraft.network.codec.ByteBufCodecs.INT,            r -> r.cookingTime,
+                        ShapedRecipePattern.STREAM_CODEC,      r -> r.pattern,
+                        ItemStack.STREAM_CODEC,                r -> r.result,
+                        ByteBufCodecs.FLOAT,                   r -> r.experience,
+                        ByteBufCodecs.INT,                     r -> r.cookingTime,
                         OvenRecipe::new
                 );
 
-        @Override public MapCodec<OvenRecipe> codec()             { return CODEC; }
-        @Override public StreamCodec<RegistryFriendlyByteBuf, OvenRecipe> streamCodec() { return STREAM_CODEC; }
+        @Override
+        public MapCodec<OvenRecipe> codec() { return CODEC; }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, OvenRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
     }
 }
