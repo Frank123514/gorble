@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
@@ -150,9 +149,11 @@ public class SmithyMenu extends AbstractContainerMenu {
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes() {
         ItemStack input = getInputItem();
         if (input.isEmpty()) return List.of();
-        if (!(level.recipeAccess() instanceof RecipeManager rm)) return List.of();
+        // In NeoForge 1.21.4 custom recipes are NOT auto-synced to the client.
+        // We use SmithyClientRecipes (populated by SmithyRecipeSyncClient on
+        // RecipesReceivedEvent) instead of querying the local RecipeManager.
         SingleRecipeInput ri = new SingleRecipeInput(input);
-        return rm.getAllRecipesFor(GotModRecipeTypes.SMITHY.get())
+        return net.got.client.SmithyClientRecipes.get()
                 .stream()
                 .filter(h -> h.value().matches(ri, level))
                 .sorted(Comparator.comparing(h -> h.id().toString()))

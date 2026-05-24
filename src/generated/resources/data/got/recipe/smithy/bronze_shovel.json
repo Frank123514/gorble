@@ -1,8 +1,6 @@
 {
   "type": "got:smithy",
-  "ingredient": {
-    "item": "got:bronze_ingot"
-  },
+  "ingredient": "got:bronze_ingot",
   "result": {
     "id": "got:bronze_shovel",
     "count": 1

@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.got.GotMod;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
@@ -226,15 +227,48 @@ public class SmithyBlockEntity extends BaseContainerBlockEntity implements World
     /** All smithy recipes matching the current input, sorted by resource-location string. */
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes(Level level) {
         ItemStack input = items.get(SLOT_INPUT);
+
+        // DEBUG 1: input slot
+        GotMod.LOGGER.info("[SmithyDebug] getMatchingRecipes called. Input: {}",
+                input.isEmpty() ? "EMPTY" : input.getItem().toString() + " x" + input.getCount());
+
         if (input.isEmpty()) return List.of();
-        if (!(level instanceof ServerLevel serverLevel)) return List.of();
-        if (!(serverLevel.recipeAccess() instanceof RecipeManager rm)) return List.of();
+
+        // DEBUG 2: is this actually a ServerLevel?
+        if (!(level instanceof ServerLevel serverLevel)) {
+            GotMod.LOGGER.warn("[SmithyDebug] Level is NOT a ServerLevel - it is: {}", level.getClass().getName());
+            return List.of();
+        }
+
+        // DEBUG 3: does recipeAccess() give us a RecipeManager?
+        var access = serverLevel.recipeAccess();
+        GotMod.LOGGER.info("[SmithyDebug] recipeAccess() class: {}", access.getClass().getName());
+        if (!(access instanceof RecipeManager rm)) {
+            GotMod.LOGGER.error("[SmithyDebug] recipeAccess() is NOT a RecipeManager - recipes will never load!");
+            return List.of();
+        }
+
+        // DEBUG 4: how many recipes of our type are registered at all?
+        var allSmithyRecipes = rm.recipeMap().byType(GotModRecipeTypes.SMITHY.get());
+        GotMod.LOGGER.info("[SmithyDebug] RecipeType key: {}", GotModRecipeTypes.SMITHY.getId());
+        GotMod.LOGGER.info("[SmithyDebug] Total smithy recipes in RecipeManager: {}", allSmithyRecipes.size());
+        if (allSmithyRecipes.isEmpty()) {
+            GotMod.LOGGER.error("[SmithyDebug] NO smithy recipes found - check your recipe JSONs are loading (type must be 'got:smithy')");
+        } else {
+            allSmithyRecipes.forEach(h ->
+                GotMod.LOGGER.info("[SmithyDebug]   recipe: {} | ingredient: {}",
+                    h.id(), h.value().getIngredient()));
+        }
+
+        // DEBUG 5: how many match this specific input?
         SingleRecipeInput recipeInput = new SingleRecipeInput(input);
-        return rm.getAllRecipesFor(GotModRecipeTypes.SMITHY.get())
-                .stream()
+        List<RecipeHolder<SmithyRecipe>> matches = allSmithyRecipes.stream()
                 .filter(h -> h.value().matches(recipeInput, serverLevel))
                 .sorted(Comparator.comparing(h -> h.id().toString()))
                 .collect(Collectors.toList());
+        GotMod.LOGGER.info("[SmithyDebug] Recipes matching input '{}': {}", input.getItem(), matches.size());
+
+        return matches;
     }
 
     // ── Public API used by menu / network ─────────────────────────────────────
