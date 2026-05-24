@@ -1,7 +1,11 @@
 {
   "type": "got:smithy",
-  "ingredient": "got:steel_ingot",
-  "result": { "id": "got:steel_hoe", "count": 1 },
-  "cookingtime": 300,
-  "experience": 0.8
+  "ingredient": {
+    "item": "got:steel_ingot"
+  },
+  "result": {
+    "id": "got:steel_hoe",
+    "count": 1
+  },
+  "cookingtime": 300
 }

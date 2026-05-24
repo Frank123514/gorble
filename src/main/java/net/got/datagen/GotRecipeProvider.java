@@ -13,6 +13,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.world.item.crafting.Recipe;
+import net.got.recipe.SmithyRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.core.registries.BuiltInRegistries;
 
@@ -47,6 +49,7 @@ public class GotRecipeProvider extends RecipeProvider {
         buildAlloyRecipes(items);
         buildToolRecipes(items);
         buildArmourRecipes(items);
+        buildSmithyRecipes(items);
     }
 
     // ── Wood crafting ─────────────────────────────────────────────────
@@ -262,13 +265,13 @@ public class GotRecipeProvider extends RecipeProvider {
             // ── Slabs, stairs, walls ───────────────────────────────────
             // Generated for each sub-variant of this stone type
             String[] subs = {
-                r + "_rock",
-                r + "_brick",
-                "cracked_" + r + "_brick",
-                "mossy_"   + r + "_brick",
-                r + "_cobblestone",
-                "mossy_"   + r + "_cobblestone",
-                "smooth_"  + r + "_rock",
+                    r + "_rock",
+                    r + "_brick",
+                    "cracked_" + r + "_brick",
+                    "mossy_"   + r + "_brick",
+                    r + "_cobblestone",
+                    "mossy_"   + r + "_cobblestone",
+                    "smooth_"  + r + "_rock",
             };
             for (String id : subs) {
                 Item base   = item(id);
@@ -476,6 +479,71 @@ public class GotRecipeProvider extends RecipeProvider {
                 .pattern("I I").pattern("I I")
                 .unlockedBy("has_ingot", has(ingot))
                 .save(this.output, rk(tier + "_boots"));
+    }
+
+    // ── Smithy recipes ────────────────────────────────────────────────
+
+    private void buildSmithyRecipes(HolderGetter<Item> items) {
+        // copper (180 ticks)
+        smithy(Items.COPPER_INGOT,             item("copper_sword"),      180, "smithy/copper_sword");
+        smithy(Items.COPPER_INGOT,             item("copper_pickaxe"),    180, "smithy/copper_pickaxe");
+        smithy(Items.COPPER_INGOT,             item("copper_axe"),        180, "smithy/copper_axe");
+        smithy(Items.COPPER_INGOT,             item("copper_shovel"),     180, "smithy/copper_shovel");
+        smithy(Items.COPPER_INGOT,             item("copper_hoe"),        180, "smithy/copper_hoe");
+        smithy(Items.COPPER_INGOT,             item("copper_helmet"),     180, "smithy/copper_helmet");
+        smithy(Items.COPPER_INGOT,             item("copper_chestplate"), 180, "smithy/copper_chestplate");
+        smithy(Items.COPPER_INGOT,             item("copper_leggings"),   180, "smithy/copper_leggings");
+        smithy(Items.COPPER_INGOT,             item("copper_boots"),      180, "smithy/copper_boots");
+        // bronze (240 ticks)
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_sword"),      240, "smithy/bronze_sword");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_pickaxe"),    240, "smithy/bronze_pickaxe");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_axe"),        240, "smithy/bronze_axe");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_shovel"),     240, "smithy/bronze_shovel");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_hoe"),        240, "smithy/bronze_hoe");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_helmet"),     240, "smithy/bronze_helmet");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_chestplate"), 240, "smithy/bronze_chestplate");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_leggings"),   240, "smithy/bronze_leggings");
+        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_boots"),      240, "smithy/bronze_boots");
+        // golden (160 ticks)
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_SWORD,      160, "smithy/golden_sword");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_PICKAXE,    160, "smithy/golden_pickaxe");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_AXE,        160, "smithy/golden_axe");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_SHOVEL,     160, "smithy/golden_shovel");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_HOE,        160, "smithy/golden_hoe");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_HELMET,     160, "smithy/golden_helmet");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_CHESTPLATE, 160, "smithy/golden_chestplate");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_LEGGINGS,   160, "smithy/golden_leggings");
+        smithy(Items.GOLD_INGOT, Items.GOLDEN_BOOTS,      160, "smithy/golden_boots");
+        // iron (200 ticks)
+        smithy(Items.IRON_INGOT, Items.IRON_SWORD,      200, "smithy/iron_sword");
+        smithy(Items.IRON_INGOT, Items.IRON_PICKAXE,    200, "smithy/iron_pickaxe");
+        smithy(Items.IRON_INGOT, Items.IRON_AXE,        200, "smithy/iron_axe");
+        smithy(Items.IRON_INGOT, Items.IRON_SHOVEL,     200, "smithy/iron_shovel");
+        smithy(Items.IRON_INGOT, Items.IRON_HOE,        200, "smithy/iron_hoe");
+        smithy(Items.IRON_INGOT, Items.IRON_HELMET,     200, "smithy/iron_helmet");
+        smithy(Items.IRON_INGOT, Items.IRON_CHESTPLATE, 200, "smithy/iron_chestplate");
+        smithy(Items.IRON_INGOT, Items.IRON_LEGGINGS,   200, "smithy/iron_leggings");
+        smithy(Items.IRON_INGOT, Items.IRON_BOOTS,      200, "smithy/iron_boots");
+        // steel (300 ticks)
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_sword"),      300, "smithy/steel_sword");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_pickaxe"),    300, "smithy/steel_pickaxe");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_axe"),        300, "smithy/steel_axe");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_shovel"),     300, "smithy/steel_shovel");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_hoe"),        300, "smithy/steel_hoe");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_helmet"),     300, "smithy/steel_helmet");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_chestplate"), 300, "smithy/steel_chestplate");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_leggings"),   300, "smithy/steel_leggings");
+        smithy(GotModItems.STEEL_INGOT.get(), item("steel_boots"),      300, "smithy/steel_boots");
+    }
+
+    private void smithy(ItemLike ingredient, ItemLike result, int cookingTime, String path) {
+        this.output.accept(
+                rk(path),
+                new net.got.recipe.SmithyRecipe(
+                        Ingredient.of(ingredient),
+                        new net.minecraft.world.item.ItemStack(result),
+                        cookingTime),
+                null);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────

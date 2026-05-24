@@ -1,7 +1,11 @@
 {
   "type": "got:smithy",
-  "ingredient": "minecraft:copper_ingot",
-  "result": { "id": "got:copper_axe", "count": 1 },
-  "cookingtime": 180,
-  "experience": 0.4
+  "ingredient": {
+    "item": "minecraft:copper_ingot"
+  },
+  "result": {
+    "id": "got:copper_axe",
+    "count": 1
+  },
+  "cookingtime": 180
 }

@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -148,8 +149,7 @@ public class SmithyBlockEntity extends BaseContainerBlockEntity implements World
                     be.cookingTotalTime = recipe.value().getCookingTime();
                     if (be.burn(recipe)) {
                         dirty = true;
-                        // After one successful burn, deselect so player must choose again
-                        be.selectedRecipeIdx = -1;
+                        // Keep selectedRecipeIdx so it keeps producing (stonecutter-style)
                     }
                 }
             } else if (!be.isLit()) {
@@ -228,11 +228,12 @@ public class SmithyBlockEntity extends BaseContainerBlockEntity implements World
         ItemStack input = items.get(SLOT_INPUT);
         if (input.isEmpty()) return List.of();
         if (!(level instanceof ServerLevel serverLevel)) return List.of();
+        if (!(serverLevel.recipeAccess() instanceof RecipeManager rm)) return List.of();
         SingleRecipeInput recipeInput = new SingleRecipeInput(input);
-        return serverLevel.recipeAccess().recipeMap()
-                .getRecipesFor(GotModRecipeTypes.SMITHY.get(), recipeInput, serverLevel)
-                .map(h -> (RecipeHolder<SmithyRecipe>) (Object) h)
-                .sorted(Comparator.comparing((RecipeHolder<SmithyRecipe> h) -> h.id().toString()))
+        return rm.getAllRecipesFor(GotModRecipeTypes.SMITHY.get())
+                .stream()
+                .filter(h -> h.value().matches(recipeInput, serverLevel))
+                .sorted(Comparator.comparing(h -> h.id().toString()))
                 .collect(Collectors.toList());
     }
 

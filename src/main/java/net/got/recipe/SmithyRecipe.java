@@ -1,5 +1,6 @@
 package net.got.recipe;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.got.init.GotModRecipeSerializers;
@@ -15,14 +16,13 @@ import net.minecraft.world.level.Level;
 /**
  * SmithyRecipe — single-ingredient recipe processed by the Smithy block.
  *
- * JSON format (type "got:smithy"):
+ * JSON format (type "got:smithy") — mirrors stonecutter recipe format:
  * <pre>
  * {
  *   "type": "got:smithy",
- *   "ingredient": { "item": "minecraft:iron_ingot" },
- *   "result": { "id": "minecraft:iron_sword", "count": 1 },
- *   "cookingtime": 200,
- *   "experience": 0.35
+ *   "ingredient": { "item": "got:bronze_ingot" },
+ *   "result": { "id": "got:bronze_sword", "count": 1 },
+ *   "cookingtime": 200
  * }
  * </pre>
  */
@@ -30,14 +30,11 @@ public class SmithyRecipe implements Recipe<SingleRecipeInput> {
 
     private final Ingredient ingredient;
     private final ItemStack  result;
-    private final float      experience;
     private final int        cookingTime;
 
-    public SmithyRecipe(Ingredient ingredient, ItemStack result,
-                        float experience, int cookingTime) {
+    public SmithyRecipe(Ingredient ingredient, ItemStack result, int cookingTime) {
         this.ingredient  = ingredient;
         this.result      = result;
-        this.experience  = experience;
         this.cookingTime = cookingTime;
     }
 
@@ -45,7 +42,6 @@ public class SmithyRecipe implements Recipe<SingleRecipeInput> {
 
     public Ingredient getIngredient() { return ingredient; }
     public ItemStack  getResult()     { return result; }
-    public float      getExperience() { return experience; }
     public int        getCookingTime(){ return cookingTime; }
 
     // ── Recipe<SingleRecipeInput> ─────────────────────────────────────────────
@@ -93,10 +89,7 @@ public class SmithyRecipe implements Recipe<SingleRecipeInput> {
                         ItemStack.STRICT_CODEC
                                 .fieldOf("result")
                                 .forGetter(r -> r.result),
-                        com.mojang.serialization.Codec.FLOAT
-                                .optionalFieldOf("experience", 0.0F)
-                                .forGetter(r -> r.experience),
-                        com.mojang.serialization.Codec.INT
+                        Codec.INT
                                 .optionalFieldOf("cookingtime", 200)
                                 .forGetter(r -> r.cookingTime)
                 ).apply(inst, SmithyRecipe::new));
@@ -105,7 +98,6 @@ public class SmithyRecipe implements Recipe<SingleRecipeInput> {
                 StreamCodec.composite(
                         Ingredient.CONTENTS_STREAM_CODEC, r -> r.ingredient,
                         ItemStack.STREAM_CODEC,            r -> r.result,
-                        ByteBufCodecs.FLOAT,               r -> r.experience,
                         ByteBufCodecs.INT,                 r -> r.cookingTime,
                         SmithyRecipe::new
                 );

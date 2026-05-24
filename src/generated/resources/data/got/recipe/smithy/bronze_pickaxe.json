@@ -1,7 +1,11 @@
 {
   "type": "got:smithy",
-  "ingredient": "got:bronze_ingot",
-  "result": { "id": "got:bronze_pickaxe", "count": 1 },
-  "cookingtime": 240,
-  "experience": 0.6
+  "ingredient": {
+    "item": "got:bronze_ingot"
+  },
+  "result": {
+    "id": "got:bronze_pickaxe",
+    "count": 1
+  },
+  "cookingtime": 240
 }

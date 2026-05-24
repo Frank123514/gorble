@@ -67,15 +67,8 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
     private static final int C_ROW_NORMAL  = 0xFF_1E1912;
     private static final int C_ROW_HOVER   = 0xFF_38301F;
     private static final int C_ROW_SEL     = 0xFF_56441A;
-    private static final int C_ROW_PENDING = 0xFF_3D3018;
     private static final int C_NAME_NORMAL = 0xFF_C8BC9A;
     private static final int C_NAME_SEL    = 0xFF_FFD700;
-    private static final int C_NAME_PEND   = 0xFF_E8CF80;
-    private static final int C_BTN_NORM    = 0xFF_4A3B20;
-    private static final int C_BTN_HOVER   = 0xFF_6A5528;
-    private static final int C_BTN_DIM     = 0xFF_252016;
-    private static final int C_BTN_TXT     = 0xFF_E8D49A;
-    private static final int C_BTN_TXT_DIM = 0xFF_4A4030;
     private static final int C_PROG_BG     = 0xFF_100E0A;
     private static final int C_PROG_FG     = 0xFF_C87820;
     private static final int C_PROG_CAP    = 0xFF_FFAE40;
@@ -88,15 +81,11 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
     private static final int VISIBLE_ROWS = 3;      // 3 rows → list ends at y=69, safely above inventory at y=84
     private static final int LIST_H       = VISIBLE_ROWS * ENTRY_H; // 54
 
-    // ── Smelt button / progress (relative) ────────────────────────────────────
+    // ── Smelt progress (relative) ─────────────────────────────────────────────
     private static final int PROG_X = 185;
     private static final int PROG_Y = 40;
     private static final int PROG_W = 60;
     private static final int PROG_H = 6;
-    private static final int BTN_X  = 185;
-    private static final int BTN_Y  = 50;
-    private static final int BTN_W  = 60;
-    private static final int BTN_H  = 14;
 
     // ── Header bar height ─────────────────────────────────────────────────────
     private static final int HDR_H = 13;
@@ -105,7 +94,6 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
     private int scrollOffset = 0;
     private List<RecipeHolder<SmithyRecipe>> recipes   = List.of();
     private ItemStack lastInput = ItemStack.EMPTY;
-    private int pendingIdx = -1;   // locally highlighted, sent on Smelt press
 
     // ──────────────────────────────────────────────────────────────────────────
 
@@ -222,16 +210,14 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
             boolean hovered  = mouseX >= px && mouseX < px + LIST_W
                     && mouseY >= ry && mouseY < ry + ENTRY_H;
             boolean isActive  = (ri == selectedIdx);
-            boolean isPending = (ri == pendingIdx);
 
             int rowBg = isActive ? C_ROW_SEL
-                    : isPending  ? C_ROW_PENDING
                     : hovered    ? C_ROW_HOVER
                     :              C_ROW_NORMAL;
             g.fill(px, ry, px + LIST_W, ry + ENTRY_H, rowBg);
 
-            if (isActive || isPending) {
-                g.fill(px, ry, px + 2, ry + ENTRY_H, isActive ? 0xFF_D4A830 : 0xFF_8A7040);
+            if (isActive) {
+                g.fill(px, ry, px + 2, ry + ENTRY_H, 0xFF_D4A830);
             }
 
             g.renderItem(result, px + 1, ry + 1);
@@ -242,7 +228,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
             if (font.width(name) > maxW)
                 name = font.plainSubstrByWidth(name, maxW - 6) + "…";
 
-            int nameCol = isActive ? C_NAME_SEL : isPending ? C_NAME_PEND : C_NAME_NORMAL;
+            int nameCol = isActive ? C_NAME_SEL : C_NAME_NORMAL;
             g.drawString(font, name, px + 20, ry + 5, nameCol, false);
         }
 
@@ -276,23 +262,6 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
                 g.fill(px + filled, py + 1, px + 1 + filled, py + PROG_H - 1, C_PROG_CAP);
             }
         }
-
-        // Smelt button
-        int bx = x + BTN_X, by = y + BTN_Y;
-        boolean canSmelt = pendingIdx >= 0 || menu.getSelectedRecipeIndex() >= 0;
-        boolean btnHov   = mouseX >= bx && mouseX < bx + BTN_W
-                        && mouseY >= by && mouseY < by + BTN_H;
-
-        int btnBg = !canSmelt ? C_BTN_DIM : btnHov ? C_BTN_HOVER : C_BTN_NORM;
-        g.fill(bx,     by,     bx + BTN_W,     by + BTN_H,     C_BORDER_DK);
-        g.fill(bx,     by,     bx + BTN_W - 1, by + BTN_H - 1, C_BORDER_LT);
-        g.fill(bx + 1, by + 1, bx + BTN_W - 1, by + BTN_H - 1, btnBg);
-
-        String lbl = "SMELT";
-        int lw = font.width(lbl);
-        g.drawString(font, lbl,
-                bx + (BTN_W - lw) / 2, by + (BTN_H - 8) / 2 + 1,
-                canSmelt ? C_BTN_TXT : C_BTN_TXT_DIM, false);
     }
 
     // ── Recipe tooltip ────────────────────────────────────────────────────────
@@ -321,17 +290,11 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
             if (mx >= lx && mx < lx + LIST_W && my >= ly && my < ly + LIST_H) {
                 int ri = (my - ly) / ENTRY_H + scrollOffset;
                 if (ri >= 0 && ri < recipes.size()) {
-                    pendingIdx = (ri == pendingIdx) ? -1 : ri;
+                    // Toggle: clicking the already-selected recipe deselects (-1), otherwise select it
+                    int toSend = (ri == menu.getSelectedRecipeIndex()) ? -1 : ri;
+                    PacketDistributor.sendToServer(new SelectSmithyRecipePayload(toSend));
                     return true;
                 }
-            }
-
-            int bx = leftPos + BTN_X, by = topPos + BTN_Y;
-            if (mx >= bx && mx < bx + BTN_W && my >= by && my < by + BTN_H) {
-                int toSend = pendingIdx >= 0 ? pendingIdx : menu.getSelectedRecipeIndex();
-                if (toSend >= 0)
-                    PacketDistributor.sendToServer(new SelectSmithyRecipePayload(toSend));
-                return true;
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -356,7 +319,6 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
             lastInput  = input.copy();
             recipes    = menu.getMatchingRecipes();
             scrollOffset = 0;
-            pendingIdx   = -1;
         }
     }
 

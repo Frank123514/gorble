@@ -150,15 +150,12 @@ public class SmithyMenu extends AbstractContainerMenu {
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes() {
         ItemStack input = getInputItem();
         if (input.isEmpty()) return List.of();
-        // RecipeAccess is a narrow interface — cast to the concrete RecipeManager,
-        // which is what both ClientLevel and ServerLevel actually return.
-        // This gives us access to recipeMap(), consistent with SmithyBlockEntity.
         if (!(level.recipeAccess() instanceof RecipeManager rm)) return List.of();
         SingleRecipeInput ri = new SingleRecipeInput(input);
-        return rm.recipeMap()
-                .getRecipesFor(GotModRecipeTypes.SMITHY.get(), ri, level)
-                .map(h -> (RecipeHolder<SmithyRecipe>) (Object) h)
-                .sorted(Comparator.comparing((RecipeHolder<SmithyRecipe> h) -> h.id().toString()))
+        return rm.getAllRecipesFor(GotModRecipeTypes.SMITHY.get())
+                .stream()
+                .filter(h -> h.value().matches(ri, level))
+                .sorted(Comparator.comparing(h -> h.id().toString()))
                 .collect(Collectors.toList());
     }
 
