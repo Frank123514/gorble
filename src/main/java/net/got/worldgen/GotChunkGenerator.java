@@ -135,11 +135,10 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // ── buildSurface ────────────────────────────────────────────────────────
 
     @Override
-    public void buildSurface(@NotNull WorldGenRegion region,
-                             @NotNull StructureManager structures,
-                             @NotNull RandomState random,
-                             @NotNull ChunkAccess chunk) {
+    public void buildSurface(WorldGenRegion region, StructureManager structures,
+                             RandomState random, ChunkAccess chunk) {
         vanilla.buildSurface(region, structures, random, chunk);
+        RoadWorldGen.buildRoadsInChunk(chunk);   // ← ADD THIS LINE
     }
 
     // ── Surface height ─────────────────────────────────────────────────────
