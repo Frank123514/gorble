@@ -1,6 +1,5 @@
 package net.got.client.gui;
 
-import net.got.block.SmithyBlockEntity;
 import net.got.menu.SmithyMenu;
 import net.got.network.SelectSmithyRecipePayload;
 import net.got.recipe.SmithyRecipe;
@@ -17,103 +16,111 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.List;
 
 /**
- * SmithyScreen — GUI for the Smithy block.
+ * SmithyScreen — stonecutter GUI base + furnace fuel/progress overlaid on top.
  *
- * imageWidth=256, imageHeight=166
+ * Exactly mirrors the OvenScreen pattern:
+ *   • Blits the vanilla stonecutter.png as the full background
+ *     (gives input slot at (20,33), recipe panel, scroller track,
+ *      output slot at (143,33), arrow, and player inventory — all for free)
+ *   • Borrows one slot patch from the stonecutter texture UV for the extra fuel slot
+ *   • Overlays furnace lit_progress (flame) and burn_progress (arrow) sprites
  *
- * Section layout (all coordinates relative to leftPos / topPos):
+ * Vanilla stonecutter.png layout (176×166 GUI, 256×256 sheet):
+ *   Input  slot : (20,  33)
+ *   Output slot : (143, 33)
+ *   Recipe panel: inset at (52,14), 4 cols × 3 rows of 16×18 cells
+ *   Scroller    : x=119, y=14, 12×15 sprite
+ *   Arrow       : drawn in texture at ~(92,33), 22×16
+ *   Player inv  : (8+col*18, 84+row*18) and hotbar at (8+col*18, 142)
  *
- *   LEFT COLUMN  (x 4–35):
- *     Header bar  y = 0–13
- *     Input slot  (11, 17)
- *     Fire anim   (12, 36–50)
- *     Fuel slot   (11, 55)
- *
- *   DIVIDER      x = 36–37
- *
- *   MIDDLE       (x 38–182):
- *     Header bar  y = 0–13
- *     Recipe list y = 14–68   ← 3 rows × 18 px  (ends at 68, safe above inventory)
- *
- *   DIVIDER      x = 183–184
- *
- *   RIGHT COLUMN (x 185–255):
- *     Header bar  y = 0–13
- *     Output slot (196, 17)
- *     Progress    y = 38–44
- *     Smelt btn   y = 48–61
- *
- *   PLAYER INV   y = 84 / 142  (vanilla positions – unchanged in SmithyMenu)
+ * We add (not in stonecutter texture):
+ *   Fuel slot   : (20, 53) — directly below input (+20px), painted over the texture
+ *   Flame sprite: 14×14, base at (22, 36), grows upward as fuel burns
  */
 public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
 
-    // ── Sprites ───────────────────────────────────────────────────────────────
+    // ── Vanilla stonecutter texture ───────────────────────────────────────────
+    private static final ResourceLocation STONECUTTER_TEXTURE =
+            ResourceLocation.withDefaultNamespace("textures/gui/container/stonecutter.png");
+
+    // ── Furnace animated sprites ──────────────────────────────────────────────
     private static final ResourceLocation LIT_SPRITE =
             ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
-    private static final ResourceLocation BURN_SPRITE =
+    private static final ResourceLocation ARROW_SPRITE =
             ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
+    
+    // ── Sprite dimensions ─────────────────────────────────────────────────────
+    private static final int FLAME_SPRITE_W = 14;
+    private static final int FLAME_SPRITE_H = 14;
+    private static final int ARROW_SPRITE_W = 24;
+    private static final int ARROW_SPRITE_H = 16;
 
-    // ── Palette ───────────────────────────────────────────────────────────────
-    private static final int C_BG          = 0xFF_1E1A14;
-    private static final int C_PANEL       = 0xFF_27201A;
-    private static final int C_PANEL_DARK  = 0xFF_15100D;
-    private static final int C_HDR         = 0xFF_342A1E;
-    private static final int C_BORDER_LT   = 0xFF_60503A;
-    private static final int C_BORDER_DK   = 0xFF_0D0B08;
-    private static final int C_SLOT_BG     = 0xFF_0F0D0A;
-    private static final int C_SLOT_BDR    = 0xFF_6B5B3E;
-    private static final int C_DIV         = 0xFF_3A2F1F;
-    private static final int C_HDR_TXT     = 0xFF_C8A86A;
-    private static final int C_ROW_NORMAL  = 0xFF_1E1912;
-    private static final int C_ROW_HOVER   = 0xFF_38301F;
-    private static final int C_ROW_SEL     = 0xFF_56441A;
-    private static final int C_NAME_NORMAL = 0xFF_C8BC9A;
-    private static final int C_NAME_SEL    = 0xFF_FFD700;
-    private static final int C_PROG_BG     = 0xFF_100E0A;
-    private static final int C_PROG_FG     = 0xFF_C87820;
-    private static final int C_PROG_CAP    = 0xFF_FFAE40;
+    // ── Stonecutter recipe-button sprites ─────────────────────────────────────
+    private static final ResourceLocation RECIPE_SELECTED =
+            ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected");
+    private static final ResourceLocation RECIPE_HIGHLIGHTED =
+            ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted");
+    private static final ResourceLocation SCROLLER =
+            ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
+    private static final ResourceLocation SCROLLER_DISABLED =
+            ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
 
-    // ── Recipe list (relative) ────────────────────────────────────────────────
-    private static final int LIST_X       = 38;
-    private static final int LIST_Y       = 15;     // below the header bar
-    private static final int LIST_W       = 145;
-    private static final int ENTRY_H      = 18;
-    private static final int VISIBLE_ROWS = 3;      // 3 rows → list ends at y=69, safely above inventory at y=84
-    private static final int LIST_H       = VISIBLE_ROWS * ENTRY_H; // 54
+    // ── Recipe grid — mirrors stonecutter.png's panel exactly ─────────────────
+    // Panel inset starts at (52,14); 4 cols × 3 rows of 16×18 cells.
+    private static final int GRID_X    = 52;
+    private static final int GRID_Y    = 14;
+    private static final int CELL_W    = 16;
+    private static final int CELL_H    = 18;
+    private static final int GRID_COLS = 4;
+    private static final int GRID_ROWS = 3;
+    private static final int GRID_W    = GRID_COLS * CELL_W;  // 64 px
+    private static final int GRID_H    = GRID_ROWS * CELL_H;  // 54 px
 
-    // ── Smelt progress (relative) ─────────────────────────────────────────────
-    private static final int PROG_X = 185;
-    private static final int PROG_Y = 40;
-    private static final int PROG_W = 60;
-    private static final int PROG_H = 6;
+    // Scroller matches vanilla stonecutter (x=119, track from y=14)
+    private static final int SCROLLER_W = 12;
+    private static final int SCROLLER_H = 15;
+    private static final int SCROLL_X   = 119;
 
-    // ── Header bar height ─────────────────────────────────────────────────────
-    private static final int HDR_H = 13;
+    // ── Furnace overlay positions (relative to GUI top-left) ─────────────────
+    // Flame: 14×14 sprite, sits between input slot and fuel slot.
+    // Input slot at y=14 (bottom at y=30), fuel slot at y=53.
+    // Flame positioned at y=36 to fit in the gap.
+    private static final int FLAME_X = 20;
+    private static final int FLAME_Y = 36;
+
+    // Arrow: positioned below the output/result slot.
+    // Output slot at x=143, y=33 (width=16, height=16).
+    // Arrow centered horizontally under the slot, starting below it.
+    private static final int ARROW_X = 140;
+    private static final int ARROW_Y = 55;
+
+    // ── Slot bevel for the extra fuel slot (not in stonecutter texture) ───────
+    private static final int C_SLOT_BG = 0xFF_8B8B8B;
+    private static final int C_LT      = 0xFF_FFFFFF;
+    private static final int C_DK      = 0xFF_555555;
+    private static final int C_TEXT    = 0xFF_404040;
 
     // ── State ─────────────────────────────────────────────────────────────────
-    private int scrollOffset = 0;
-    private List<RecipeHolder<SmithyRecipe>> recipes   = List.of();
+    private int     scrollOffset       = 0;
+    private boolean isDraggingScroller = false;
+    private List<RecipeHolder<SmithyRecipe>> recipes = List.of();
     private ItemStack lastInput = ItemStack.EMPTY;
 
-    // ──────────────────────────────────────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────────────────
 
     public SmithyScreen(SmithyMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
-        this.imageWidth      = 256;
+        this.imageWidth      = 176;
         this.imageHeight     = 166;
-        // Suppress default label positions – we override renderLabels() below.
-        this.titleLabelX     = -9999;
-        this.titleLabelY     = -9999;
-        this.inventoryLabelX = -9999;
-        this.inventoryLabelY = -9999;
+        this.inventoryLabelY = this.imageHeight - 94;  // = 72, matches stonecutter
     }
 
-    // ── Override renderLabels so default "Smithy" / "Inventory" don't appear ──
+    // ── Labels ────────────────────────────────────────────────────────────────
 
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
-        // Intentionally empty – we draw our own section headers in renderBg.
-        // This prevents the container title from stomping our layout.
+        g.drawString(font, this.title,               8, 6,                    C_TEXT, false);
+        g.drawString(font, this.playerInventoryTitle, 8, this.imageHeight - 94, C_TEXT, false);
     }
 
     // ── Main render ───────────────────────────────────────────────────────────
@@ -123,8 +130,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
         refreshRecipeList();
         renderBackground(g, mouseX, mouseY, partialTick);
         super.render(g, mouseX, mouseY, partialTick);
-        renderRecipePanel(g, mouseX, mouseY);
-        renderOutputPanel(g, mouseX, mouseY);
+        renderRecipeGrid(g, mouseX, mouseY);
         renderTooltip(g, mouseX, mouseY);
         renderRecipeTooltip(g, mouseX, mouseY);
     }
@@ -132,180 +138,175 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
     // ── Background ────────────────────────────────────────────────────────────
 
     @Override
-    protected void renderBg(GuiGraphics g, float pt, int mouseX, int mouseY) {
-        int x = leftPos;
-        int y = topPos;
+    protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
+        int x = this.leftPos;
+        int y = this.topPos;
 
-        // ── Outer frame ───────────────────────────────────────────────────────
-        outerPanel(g, x, y, imageWidth, imageHeight);
+        // 1. Blit the full vanilla stonecutter background.
+        //    This draws: outer panel, input slot, recipe panel inset, scroller track,
+        //    static arrow, output slot, and all 36 player-inventory slot backgrounds.
+        g.blit(RenderType::guiTextured, STONECUTTER_TEXTURE,
+                x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // ── Header bar (full width) ───────────────────────────────────────────
-        g.fill(x + 1,      y + 1, x + imageWidth - 1, y + HDR_H, C_HDR);
-        // Thin gold underline
-        g.fill(x + 1, y + HDR_H, x + imageWidth - 1, y + HDR_H + 1, C_BORDER_LT);
+        // Paint over the stonecutter texture's built-in input slot at (20,33)
+        // so the flame area is clean panel background, not a slot box.
+        // The standard inventory panel gray is 0xFFC6C6C6.
+        g.fill(x + 19, y + 32, x + 37, y + 50, 0xFFC6C6C6);
 
-        // Section labels in header
-        g.drawString(font, "INPUT",
-                x + 4,           y + 3, C_HDR_TXT, false);
-        g.drawString(font, "RECIPES",
-                x + LIST_X + 2,  y + 3, C_HDR_TXT, false);
-        g.drawString(font, "OUTPUT",
-                x + 185,         y + 3, C_HDR_TXT, false);
+        // 2. Draw slot backgrounds for positions not covered by the stonecutter texture.
+        //    The stonecutter PNG has its input slot drawn at y=33; we moved ours to y=14,
+        //    so we paint both the input and fuel slots programmatically.
+        vanillaSlot(g, x + SmithyMenu.INPUT_X - 1, y + SmithyMenu.INPUT_Y - 1);  // input at y=14
+        vanillaSlot(g, x + SmithyMenu.FUEL_X  - 1, y + SmithyMenu.FUEL_Y  - 1);  // fuel  at y=53
 
-        // Inventory label (drawn manually so it's in the right spot)
-        g.drawString(font, "Inventory",
-                x + 8, y + imageHeight - 94, 0xFF_888070, false);
-
-        // ── Vertical dividers ─────────────────────────────────────────────────
-        divV(g, x + 36,  y + HDR_H + 1, imageHeight - HDR_H - 26);
-        divV(g, x + 183, y + HDR_H + 1, imageHeight - HDR_H - 26);
-
-        // ── Left column: slots and fire ───────────────────────────────────────
-        drawSlot(g, x + SmithyMenu.INPUT_X - 1, y + SmithyMenu.INPUT_Y - 1);
-
-        // Fire animation (between input and fuel)
+        // 3. Flame indicator — uses vanilla furnace lit_progress sprite.
+        //    The sprite grows upward from the bottom (height 0-13px).
         if (menu.isFlaming()) {
-            int k = menu.getFlameProgress(); // 0..13
-            if (k > 0) {
+            int flameHeight = menu.getFlameProgress();  // 0-13
+            if (flameHeight > 0) {
                 g.blitSprite(RenderType::guiTextured, LIT_SPRITE,
-                        14, 14, 0, 14 - k,
-                        x + 12, y + 36 + (14 - k), 14, k);
+                        FLAME_SPRITE_W, FLAME_SPRITE_H,
+                        0, FLAME_SPRITE_H - flameHeight,
+                        x + FLAME_X, y + FLAME_Y + FLAME_SPRITE_H - flameHeight,
+                        FLAME_SPRITE_W, flameHeight);
             }
         }
 
-        drawSlot(g, x + SmithyMenu.FUEL_X - 1, y + SmithyMenu.FUEL_Y - 1);
+        // 4. Progress arrow — uses vanilla furnace burn_progress sprite.
+        //    The sprite fills from left to right (width 0-24px).
+        if (menu.isCrafting()) {
+            int arrowWidth = menu.getArrowProgress();  // 0-24
+            if (arrowWidth > 0) {
+                g.blitSprite(RenderType::guiTextured, ARROW_SPRITE,
+                        ARROW_SPRITE_W, ARROW_SPRITE_H,
+                        0, 0,
+                        x + ARROW_X, y + ARROW_Y,
+                        arrowWidth, ARROW_SPRITE_H);
+            }
+        }
     }
 
-    // ── Recipe list panel ─────────────────────────────────────────────────────
+    // ── Stonecutter-style recipe grid ─────────────────────────────────────────
 
-    private void renderRecipePanel(GuiGraphics g, int mouseX, int mouseY) {
-        int px = leftPos + LIST_X;
-        int py = topPos  + LIST_Y;
+    private void renderRecipeGrid(GuiGraphics g, int mouseX, int mouseY) {
+        int gx = leftPos + GRID_X;
+        int gy = topPos  + GRID_Y;
+
+        int total     = recipes.size();
+        int maxRows   = total == 0 ? 0 : (int) Math.ceil((double) total / GRID_COLS);
+        int maxScroll = Math.max(0, maxRows - GRID_ROWS);
+        scrollOffset  = Math.min(scrollOffset, maxScroll);
 
         int selectedIdx = menu.getSelectedRecipeIndex();
-        int maxScroll   = Math.max(0, recipes.size() - VISIBLE_ROWS);
-        scrollOffset    = Math.min(scrollOffset, maxScroll);
 
-        // Inset background
-        inset(g, px - 2, py - 2, LIST_W + 4, LIST_H + 4);
+        for (int row = 0; row < GRID_ROWS; row++) {
+            for (int col = 0; col < GRID_COLS; col++) {
+                int ri = (row + scrollOffset) * GRID_COLS + col;
+                if (ri >= total) break;
 
-        if (recipes.isEmpty()) {
-            String msg = lastInput.isEmpty() ? "Put an ingot in the input slot" : "No smithy recipes";
-            int tw = font.width(msg);
-            g.drawString(font, msg,
-                    px + (LIST_W - tw) / 2,
-                    py + LIST_H / 2 - 4,
-                    0xFF_554A30, false);
-            return;
-        }
+                int bx = gx + col * CELL_W;
+                int by = gy + row * CELL_H;
 
-        for (int i = 0; i < VISIBLE_ROWS; i++) {
-            int ri = i + scrollOffset;
-            if (ri >= recipes.size()) break;
+                boolean hovered  = mouseX >= bx && mouseX < bx + CELL_W
+                        && mouseY >= by && mouseY < by + CELL_H;
+                boolean isActive = (ri == selectedIdx);
 
-            RecipeHolder<SmithyRecipe> holder = recipes.get(ri);
-            ItemStack result = holder.value().getResult();
-            int ry = py + i * ENTRY_H;
+                if (isActive) {
+                    g.blitSprite(RenderType::guiTextured, RECIPE_SELECTED,
+                            bx, by, CELL_W, CELL_H);
+                } else if (hovered) {
+                    g.blitSprite(RenderType::guiTextured, RECIPE_HIGHLIGHTED,
+                            bx, by, CELL_W, CELL_H);
+                }
 
-            boolean hovered  = mouseX >= px && mouseX < px + LIST_W
-                    && mouseY >= ry && mouseY < ry + ENTRY_H;
-            boolean isActive  = (ri == selectedIdx);
-
-            int rowBg = isActive ? C_ROW_SEL
-                    : hovered    ? C_ROW_HOVER
-                    :              C_ROW_NORMAL;
-            g.fill(px, ry, px + LIST_W, ry + ENTRY_H, rowBg);
-
-            if (isActive) {
-                g.fill(px, ry, px + 2, ry + ENTRY_H, 0xFF_D4A830);
-            }
-
-            g.renderItem(result, px + 1, ry + 1);
-            g.renderItemDecorations(font, result, px + 1, ry + 1);
-
-            String name = result.getHoverName().getString();
-            int maxW = LIST_W - 22;
-            if (font.width(name) > maxW)
-                name = font.plainSubstrByWidth(name, maxW - 6) + "…";
-
-            int nameCol = isActive ? C_NAME_SEL : C_NAME_NORMAL;
-            g.drawString(font, name, px + 20, ry + 5, nameCol, false);
-        }
-
-        // Scrollbar
-        if (recipes.size() > VISIBLE_ROWS) {
-            int sbX    = px + LIST_W + 2;
-            int thumbH = Math.max(6, LIST_H * VISIBLE_ROWS / recipes.size());
-            int thumbY = py + (LIST_H - thumbH) * scrollOffset / Math.max(1, maxScroll);
-            g.fill(sbX, py, sbX + 3, py + LIST_H, 0xFF_1A1510);
-            g.fill(sbX, thumbY, sbX + 3, thumbY + thumbH, C_BORDER_LT);
-        }
-    }
-
-    // ── Output panel ─────────────────────────────────────────────────────────
-
-    private void renderOutputPanel(GuiGraphics g, int mouseX, int mouseY) {
-        int x = leftPos;
-        int y = topPos;
-
-        drawSlot(g, x + SmithyMenu.OUTPUT_X - 1, y + SmithyMenu.OUTPUT_Y - 1);
-
-        // Progress bar
-        int px = x + PROG_X, py = y + PROG_Y;
-        g.fill(px, py, px + PROG_W, py + PROG_H, C_PROG_BG);
-        g.fill(px, py, px + 1, py + PROG_H, 0xFF_080705); // left shadow
-        g.fill(px, py, px + PROG_W, py + 1, 0xFF_080705); // top shadow
-        if (menu.isCrafting()) {
-            int filled = menu.getArrowProgress() * PROG_W / 22;
-            if (filled > 0) {
-                g.fill(px + 1, py + 1, px + 1 + filled, py + PROG_H - 1, C_PROG_FG);
-                g.fill(px + filled, py + 1, px + 1 + filled, py + PROG_H - 1, C_PROG_CAP);
+                g.renderItem(recipes.get(ri).value().getResult(), bx, by + 1);
             }
         }
+
+        // Scroller thumb
+        boolean canScroll = maxScroll > 0;
+        int trackH = GRID_H - SCROLLER_H;
+        int thumbY  = canScroll
+                ? gy + (int) Math.round((double) scrollOffset / maxScroll * trackH)
+                : gy;
+
+        g.blitSprite(RenderType::guiTextured,
+                canScroll ? SCROLLER : SCROLLER_DISABLED,
+                leftPos + SCROLL_X, thumbY, SCROLLER_W, SCROLLER_H);
     }
 
-    // ── Recipe tooltip ────────────────────────────────────────────────────────
+    // ── Tooltips ──────────────────────────────────────────────────────────────
 
     private void renderRecipeTooltip(GuiGraphics g, int mouseX, int mouseY) {
-        int px = leftPos + LIST_X, py = topPos + LIST_Y;
-        for (int i = 0; i < VISIBLE_ROWS; i++) {
-            int ri = i + scrollOffset;
-            if (ri >= recipes.size()) break;
-            int ry = py + i * ENTRY_H;
-            if (mouseX >= px && mouseX < px + LIST_W && mouseY >= ry && mouseY < ry + ENTRY_H) {
-                g.renderTooltip(font, recipes.get(ri).value().getResult(), mouseX, mouseY);
-                break;
+        int gx = leftPos + GRID_X, gy = topPos + GRID_Y;
+        for (int row = 0; row < GRID_ROWS; row++) {
+            for (int col = 0; col < GRID_COLS; col++) {
+                int ri = (row + scrollOffset) * GRID_COLS + col;
+                if (ri >= recipes.size()) return;
+                int bx = gx + col * CELL_W, by = gy + row * CELL_H;
+                if (mouseX >= bx && mouseX < bx + CELL_W && mouseY >= by && mouseY < by + CELL_H) {
+                    g.renderTooltip(font, recipes.get(ri).value().getResult(), mouseX, mouseY);
+                    return;
+                }
             }
         }
     }
 
-    // ── Input ─────────────────────────────────────────────────────────────────
+    // ── Mouse input ───────────────────────────────────────────────────────────
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        isDraggingScroller = false;
+
         if (button == 0) {
             int mx = (int) mouseX, my = (int) mouseY;
 
-            int lx = leftPos + LIST_X, ly = topPos + LIST_Y;
-            if (mx >= lx && mx < lx + LIST_W && my >= ly && my < ly + LIST_H) {
-                int ri = (my - ly) / ENTRY_H + scrollOffset;
+            // Recipe grid click
+            int gx = leftPos + GRID_X, gy = topPos + GRID_Y;
+            if (mx >= gx && mx < gx + GRID_W && my >= gy && my < gy + GRID_H) {
+                int col = (mx - gx) / CELL_W;
+                int row = (my - gy) / CELL_H;
+                int ri  = (row + scrollOffset) * GRID_COLS + col;
                 if (ri >= 0 && ri < recipes.size()) {
-                    // Toggle: clicking the already-selected recipe deselects (-1), otherwise select it
                     int toSend = (ri == menu.getSelectedRecipeIndex()) ? -1 : ri;
                     PacketDistributor.sendToServer(new SelectSmithyRecipePayload(toSend));
                     return true;
                 }
+            }
+
+            // Scroller drag start
+            int sx = leftPos + SCROLL_X, sy = topPos + GRID_Y;
+            if (mx >= sx && mx < sx + SCROLLER_W && my >= sy && my < sy + GRID_H) {
+                isDraggingScroller = true;
+                updateScrollFromMouse(my);
+                return true;
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (isDraggingScroller && button == 0) {
+            updateScrollFromMouse((int) mouseY);
+            return true;
+        }
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (isDraggingScroller) { isDraggingScroller = false; return true; }
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
     public boolean mouseScrolled(double mx, double my, double sx, double sy) {
-        int lx = leftPos + LIST_X - 2, ly = topPos + LIST_Y - 2;
-        if (mx >= lx && mx < lx + LIST_W + 8 && my >= ly && my < ly + LIST_H + 4) {
-            int maxS = Math.max(0, recipes.size() - VISIBLE_ROWS);
-            scrollOffset = (int) Math.max(0, Math.min(maxS, scrollOffset - sy));
+        int gx = leftPos + GRID_X - 1, gy = topPos + GRID_Y - 1;
+        if (mx >= gx && mx < gx + GRID_W + SCROLLER_W + 6 && my >= gy && my < gy + GRID_H + 2) {
+            int maxRows   = (int) Math.ceil((double) recipes.size() / GRID_COLS);
+            int maxScroll = Math.max(0, maxRows - GRID_ROWS);
+            scrollOffset  = (int) Math.max(0, Math.min(maxScroll, scrollOffset - sy));
             return true;
         }
         return super.mouseScrolled(mx, my, sx, sy);
@@ -313,39 +314,31 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
+    private void updateScrollFromMouse(int mouseY) {
+        int maxRows   = (int) Math.ceil((double) recipes.size() / GRID_COLS);
+        int maxScroll = Math.max(0, maxRows - GRID_ROWS);
+        if (maxScroll == 0) return;
+        int gy     = topPos + GRID_Y;
+        int trackH = GRID_H - SCROLLER_H;
+        scrollOffset = (int) Math.round((double)(mouseY - gy - SCROLLER_H / 2) / trackH * maxScroll);
+        scrollOffset = Math.max(0, Math.min(maxScroll, scrollOffset));
+    }
+
     private void refreshRecipeList() {
         ItemStack input = menu.getInputItem();
         if (!ItemStack.isSameItemSameComponents(input, lastInput)) {
-            lastInput  = input.copy();
-            recipes    = menu.getMatchingRecipes();
+            lastInput    = input.copy();
+            recipes      = menu.getMatchingRecipes();
             scrollOffset = 0;
         }
     }
 
-    // ── Draw primitives ───────────────────────────────────────────────────────
-
-    private void outerPanel(GuiGraphics g, int x, int y, int w, int h) {
-        g.fill(x, y, x + w, y + h, C_PANEL);
-        g.fill(x,         y,         x + w,     y + 1,     C_BORDER_LT);
-        g.fill(x,         y,         x + 1,     y + h,     C_BORDER_LT);
-        g.fill(x,         y + h - 1, x + w,     y + h,     C_BORDER_DK);
-        g.fill(x + w - 1, y,         x + w,     y + h,     C_BORDER_DK);
-    }
-
-    private void inset(GuiGraphics g, int x, int y, int w, int h) {
-        g.fill(x,         y,         x + w,     y + h,     C_BORDER_DK);
-        g.fill(x + 1,     y + 1,     x + w - 1, y + h - 1, C_PANEL_DARK);
-        g.fill(x + w - 1, y,         x + w,     y + h,     C_BORDER_LT);
-        g.fill(x,         y + h - 1, x + w,     y + h,     C_BORDER_LT);
-    }
-
-    private void drawSlot(GuiGraphics g, int x, int y) {
-        g.fill(x,     y,     x + 18, y + 18, C_SLOT_BDR);
-        g.fill(x + 1, y + 1, x + 17, y + 17, C_SLOT_BG);
-    }
-
-    private void divV(GuiGraphics g, int x, int y, int h) {
-        g.fill(x,     y, x + 1, y + h, C_BORDER_DK);
-        g.fill(x + 1, y, x + 2, y + h, C_DIV);
+    /** Standard 18×18 inventory slot bevel — dark top/left, light bottom/right. */
+    private void vanillaSlot(GuiGraphics g, int x, int y) {
+        g.fill(x,      y,      x + 18, y + 1,  C_DK);
+        g.fill(x,      y,      x + 1,  y + 18, C_DK);
+        g.fill(x,      y + 17, x + 18, y + 18, C_LT);
+        g.fill(x + 17, y,      x + 18, y + 18, C_LT);
+        g.fill(x + 1,  y + 1,  x + 17, y + 17, C_SLOT_BG);
     }
 }

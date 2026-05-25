@@ -28,22 +28,27 @@ import java.util.stream.Collectors;
  *   37    — smithy fuel   (container slot 1)
  *   38    — smithy output (container slot 2)
  *
- * GUI positions (relative to window top-left):
- *   Input  : (27, 17)
- *   Fuel   : (27, 55)
- *   Output : (77, 35)
+ * GUI positions (relative to window top-left) — match the vanilla stonecutter texture:
+ *   Input  : (20, 35)  — stonecutter's input slot position
+ *   Fuel   : (20, 55)  — directly below input (same column, +20px; not in stonecutter PNG)
+ *   Output : (143, 35) — stonecutter's output slot position
  */
 public class SmithyMenu extends AbstractContainerMenu {
 
-    // GUI pixel positions of the three smithy slots
-    // Left column: input (top) + fuel (bottom)
-    // Right column: output (with smelt button beside it)
-    public static final int INPUT_X  = 11;
-    public static final int INPUT_Y  = 17;
-    public static final int FUEL_X   = 11;
-    public static final int FUEL_Y   = 55;
-    public static final int OUTPUT_X = 196;
-    public static final int OUTPUT_Y = 20;
+    // GUI pixel positions of the three smithy slots.
+    // INPUT and OUTPUT match the vanilla stonecutter.png slot positions exactly.
+    // FUEL sits directly below INPUT — it's drawn on top of the stonecutter texture.
+    // GUI pixel positions — INPUT and OUTPUT match the vanilla stonecutter.png slot
+    // positions exactly. FUEL sits below INPUT (not in the stonecutter PNG).
+    // Input sits at the top, above the flame (y=14).
+    // Flame occupies y=33-47 (14px). Fuel slot below flame at y=53.
+    // Output is right of the recipe panel; arrow goes below it at y=53.
+    public static final int INPUT_X  = 20;
+    public static final int INPUT_Y  = 19;   // above the flame
+    public static final int FUEL_X   = 20;
+    public static final int FUEL_Y   = 53;   // below the flame
+    public static final int OUTPUT_X = 143;
+    public static final int OUTPUT_Y = 33;   // vertically centred in the panel
 
     private final Container   container;
     private final ContainerData data;
@@ -110,11 +115,11 @@ public class SmithyMenu extends AbstractContainerMenu {
         return data.get(SmithyBlockEntity.DATA_LIT_TIME) > 0;
     }
 
-    /** Arrow progress scaled to [0, 22]. */
+    /** Arrow progress scaled to [0, 24]. */
     public int getArrowProgress() {
         int progress = data.get(SmithyBlockEntity.DATA_COOKING_PROGRESS);
         int total    = data.get(SmithyBlockEntity.DATA_COOKING_TOTAL);
-        return (total != 0 && progress != 0) ? progress * 22 / total : 0;
+        return (total != 0 && progress != 0) ? progress * 24 / total : 0;
     }
 
     /** Flame height scaled to [0, 13]. */
