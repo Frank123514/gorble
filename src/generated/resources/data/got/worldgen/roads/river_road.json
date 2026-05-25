@@ -1,0 +1,24 @@
+{
+  "id":   "river_road",
+  "name": "The River Road",
+  "type": "road",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 390, "pixelY": 1195 },
+    { "pixelX": 420, "pixelY": 1175 },
+    { "pixelX": 448, "pixelY": 1155 },
+    { "pixelX": 476, "pixelY": 1140 },
+    { "pixelX": 495, "pixelY": 1175 },
+    { "pixelX": 510, "pixelY": 1210 },
+    { "pixelX": 520, "pixelY": 1240 },
+    { "pixelX": 525, "pixelY": 1240 }
+  ]
+}

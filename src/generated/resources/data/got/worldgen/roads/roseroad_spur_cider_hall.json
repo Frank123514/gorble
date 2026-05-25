@@ -1,0 +1,19 @@
+{
+  "id":   "roseroad_spur_cider_hall",
+  "name": "Cider Hall Spur",
+  "type": "path",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 428, "pixelY": 1638 },
+    { "pixelX": 420, "pixelY": 1668 },
+    { "pixelX": 415, "pixelY": 1698 }
+  ]
+}

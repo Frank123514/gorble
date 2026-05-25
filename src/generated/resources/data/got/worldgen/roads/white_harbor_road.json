@@ -1,0 +1,22 @@
+{
+  "id":   "white_harbor_road",
+  "name": "White Harbor Road",
+  "type": "road",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 614, "pixelY": 1036 },
+    { "pixelX": 645, "pixelY": 1060 },
+    { "pixelX": 672, "pixelY": 1090 },
+    { "pixelX": 695, "pixelY": 1130 },
+    { "pixelX": 710, "pixelY": 1160 },
+    { "pixelX": 724, "pixelY": 1192 }
+  ]
+}

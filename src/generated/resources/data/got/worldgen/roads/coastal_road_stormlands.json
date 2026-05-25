@@ -1,0 +1,21 @@
+{
+  "id":   "coastal_road_stormlands",
+  "name": "The Stormlands Coast Road",
+  "type": "road",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 578, "pixelY": 1378 },
+    { "pixelX": 578, "pixelY": 1430 },
+    { "pixelX": 578, "pixelY": 1500 },
+    { "pixelX": 579, "pixelY": 1580 },
+    { "pixelX": 580, "pixelY": 1678 }
+  ]
+}

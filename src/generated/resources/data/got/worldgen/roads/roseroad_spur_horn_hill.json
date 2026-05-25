@@ -1,0 +1,20 @@
+{
+  "id":   "roseroad_spur_horn_hill",
+  "name": "Horn Hill Spur",
+  "type": "road",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 428, "pixelY": 1638 },
+    { "pixelX": 434, "pixelY": 1676 },
+    { "pixelX": 440, "pixelY": 1715 },
+    { "pixelX": 443, "pixelY": 1728 }
+  ]
+}

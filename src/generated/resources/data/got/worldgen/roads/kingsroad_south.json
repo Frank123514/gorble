@@ -1,0 +1,24 @@
+{
+  "id":   "kingsroad_south",
+  "name": "The Kingsroad (South)",
+  "type": "kingsroad",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 638, "pixelY": 1231 },
+    { "pixelX": 610, "pixelY": 1240 },
+    { "pixelX": 585, "pixelY": 1238 },
+    { "pixelX": 555, "pixelY": 1240 },
+    { "pixelX": 525, "pixelY": 1240 },
+    { "pixelX": 545, "pixelY": 1280 },
+    { "pixelX": 558, "pixelY": 1320 },
+    { "pixelX": 578, "pixelY": 1378 }
+  ]
+}

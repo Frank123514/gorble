@@ -18,6 +18,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -138,7 +139,10 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public void buildSurface(WorldGenRegion region, StructureManager structures,
                              RandomState random, ChunkAccess chunk) {
         vanilla.buildSurface(region, structures, random, chunk);
-        RoadWorldGen.buildRoadsInChunk(chunk);   // ← ADD THIS LINE
+        RoadWorldGen.buildRoadsInChunk(chunk);
+        // Clear any vegetation/features from roads after surface is built
+        // This ensures roads stay clear during world generation
+        RoadWorldGen.clearVegetationFromRoads(chunk);
     }
 
     // ── Surface height ─────────────────────────────────────────────────────

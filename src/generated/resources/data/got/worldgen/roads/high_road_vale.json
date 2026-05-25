@@ -1,0 +1,24 @@
+{
+  "id":   "high_road_vale",
+  "name": "The High Road",
+  "type": "path",
+  "palette": {
+    "surface": [
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:rooted_dirt"
+    ],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 476, "pixelY": 1140 },
+    { "pixelX": 510, "pixelY": 1100 },
+    { "pixelX": 545, "pixelY": 1060 },
+    { "pixelX": 575, "pixelY": 1020 },
+    { "pixelX": 610, "pixelY": 970  },
+    { "pixelX": 630, "pixelY": 920  },
+    { "pixelX": 638, "pixelY": 870  },
+    { "pixelX": 648, "pixelY": 870  }
+  ]
+}
