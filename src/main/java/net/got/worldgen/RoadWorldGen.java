@@ -19,6 +19,11 @@ import java.util.Random;
  * {@code GotChunkGenerator.buildSurface}, after
  * {@code vanilla.buildSurface(...)} has already run.
  *
+ * <p>Road paths are smoothed using <b>Catmull-Rom splines</b> before being
+ * tessellated into short straight {@link Segment}s for distance queries.
+ * This means block placement follows a natural curve instead of the
+ * jagged polyline defined by the raw control-point list.
+ *
  * <h2>Road cross-section (Kingsroad example, 9 wide)</h2>
  * <pre>
  *   B  B  B  B  B  B  B  B  B
@@ -41,6 +46,17 @@ public final class RoadWorldGen {
     private static final double HALF_KINGSROAD = 4.0; // 9 blocks wide
     private static final double HALF_ROAD      = 2.0; // 5 blocks wide
     private static final double HALF_PATH      = 1.0; // 3 blocks wide
+
+    // ── Catmull-Rom tessellation ──────────────────────────────────────────
+
+    /**
+     * Number of sub-steps used to tessellate each Catmull-Rom segment.
+     * Higher values give smoother curves at the cost of more segments in the
+     * cache. 8 is a good balance: it keeps total segment count manageable
+     * while ensuring block-level accuracy (each tiny segment is ~1–2 blocks
+     * long for typical road waypoint spacing).
+     */
+    private static final int BEZIER_STEPS = 8;
 
     // ── Block palette ─────────────────────────────────────────────────────
 
@@ -87,12 +103,11 @@ public final class RoadWorldGen {
 
                 if (isPositionOnRoad(wx, wz)) {
                     int surfaceY = GotChunkGenerator.computeSurfaceY(wx, wz);
-                    
+
                     // Skip underwater roads
                     if (surfaceY < GotChunkGenerator.SEA_LEVEL) continue;
 
                     // Clear everything above the road surface up to a reasonable height
-                    // This removes grass, flowers, crops, tall grass, etc.
                     for (int y = surfaceY + 1; y <= surfaceY + 3; y++) {
                         chunk.setBlockState(new BlockPos(lx, y, lz), AIR, false);
                     }
@@ -108,9 +123,11 @@ public final class RoadWorldGen {
                     List<Segment> list = new ArrayList<>();
                     for (RoadData road : RoadRegistry.ALL) {
                         if ("sea_lane".equals(road.type())) continue; // no blocks in water
-                        List<RoadData.Point> pts = road.points();
-                        for (int i = 0; i < pts.size() - 1; i++) {
-                            list.add(new Segment(pts.get(i), pts.get(i + 1), road.type()));
+                        // Smooth the raw waypoints into a dense Catmull-Rom curve, then
+                        // create one Segment per consecutive pair of tessellated points.
+                        List<RoadData.Point> smoothed = catmullRomTessellate(road.points(), BEZIER_STEPS);
+                        for (int i = 0; i < smoothed.size() - 1; i++) {
+                            list.add(new Segment(smoothed.get(i), smoothed.get(i + 1), road.type()));
                         }
                     }
                     cachedSegments = list;
@@ -179,17 +196,14 @@ public final class RoadWorldGen {
 
     /**
      * Selects a random surface block from the road's configured palette.
-     * The palette allows weighted probabilities by repeating entries.
      */
     private static BlockState surfaceBlock(Segment seg) {
-        // Get the road data to access its palette
         for (RoadData road : RoadRegistry.ALL) {
             if (road.type().equals(seg.type)) {
                 List<String> palette = road.palette().surface();
                 if (palette.isEmpty()) {
                     return AIR; // e.g., sea_lane
                 }
-                // Random selection from weighted palette
                 String blockId = palette.get(RANDOM.nextInt(palette.size()));
                 try {
                     return net.minecraft.core.registries.BuiltInRegistries.BLOCK
@@ -202,6 +216,81 @@ public final class RoadWorldGen {
             }
         }
         return GRAVEL; // fallback
+    }
+
+    // ── Catmull-Rom spline tessellation ───────────────────────────────────
+
+    /**
+     * Converts a polyline of control points into a smooth Catmull-Rom spline
+     * by inserting {@code steps} interpolated points between each consecutive
+     * pair of control points.
+     *
+     * <p>Each interior segment uses its neighbouring control points for the
+     * Catmull-Rom tangent calculation.  The first and last segments are given
+     * phantom endpoints that mirror the interior neighbours so the spline
+     * starts and ends tangentially at the first / last control points.
+     *
+     * @param pts   Original road waypoints (pixel coordinates).
+     * @param steps Number of subdivisions per segment (must be ≥ 1).
+     * @return A new, denser list of pixel-coordinate points that follows the
+     *         same path but as a smooth curve.
+     */
+    static List<RoadData.Point> catmullRomTessellate(List<RoadData.Point> pts, int steps) {
+        int n = pts.size();
+        if (n < 2) return new ArrayList<>(pts);
+
+        List<RoadData.Point> result = new ArrayList<>(n * steps);
+
+        for (int i = 0; i < n - 1; i++) {
+            // Four Catmull-Rom control points; clamp indices at the ends.
+            RoadData.Point p0 = pts.get(Math.max(0, i - 1));
+            RoadData.Point p1 = pts.get(i);
+            RoadData.Point p2 = pts.get(i + 1);
+            RoadData.Point p3 = pts.get(Math.min(n - 1, i + 2));
+
+            for (int step = 0; step < steps; step++) {
+                double t  = step / (double) steps;
+                result.add(catmullRomPoint(p0, p1, p2, p3, t));
+            }
+        }
+        // Always include the final control point.
+        result.add(pts.get(n - 1));
+        return result;
+    }
+
+    /**
+     * Evaluates a single Catmull-Rom point at parameter {@code t} ∈ [0, 1)
+     * for the segment from {@code p1} to {@code p2}.
+     *
+     * <p>Catmull-Rom formula (α = 0.5):
+     * <pre>
+     *   q(t) = 0.5 * [ (2·P1)
+     *                + (-P0 + P2)·t
+     *                + (2·P0 − 5·P1 + 4·P2 − P3)·t²
+     *                + (-P0 + 3·P1 − 3·P2 + P3)·t³ ]
+     * </pre>
+     */
+    private static RoadData.Point catmullRomPoint(
+            RoadData.Point p0, RoadData.Point p1,
+            RoadData.Point p2, RoadData.Point p3,
+            double t) {
+
+        double t2 = t * t;
+        double t3 = t2 * t;
+
+        double x = 0.5 * (
+                (2.0 * p1.pixelX())
+                + (-p0.pixelX() + p2.pixelX()) * t
+                + (2.0 * p0.pixelX() - 5.0 * p1.pixelX() + 4.0 * p2.pixelX() - p3.pixelX()) * t2
+                + (-p0.pixelX() + 3.0 * p1.pixelX() - 3.0 * p2.pixelX() + p3.pixelX()) * t3
+        );
+        double y = 0.5 * (
+                (2.0 * p1.pixelY())
+                + (-p0.pixelY() + p2.pixelY()) * t
+                + (2.0 * p0.pixelY() - 5.0 * p1.pixelY() + 4.0 * p2.pixelY() - p3.pixelY()) * t2
+                + (-p0.pixelY() + 3.0 * p1.pixelY() - 3.0 * p2.pixelY() + p3.pixelY()) * t3
+        );
+        return new RoadData.Point((int) Math.round(x), (int) Math.round(y));
     }
 
     // ── Segment ───────────────────────────────────────────────────────────
