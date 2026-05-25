@@ -24,7 +24,9 @@
         "got:frozen_lake",
         "got:iron_hills",
         "got:lake",
-        "got:sheepshead_hills"
+        "got:sheepshead_hills",
+
+        "got:subbiome/maple_forest"
       ]
     },
     "settings": "got:overworld"

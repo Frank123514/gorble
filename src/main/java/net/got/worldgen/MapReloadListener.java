@@ -7,29 +7,48 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 /**
- * Loads {@code biomemap.png} and {@code biome_colors.json} off-thread,
- * then pushes both into their respective static stores on the main thread.
+ * Loads {@code biomemap.png}, {@code biome_colors.json}, and
+ * {@code subbiomes.json} off-thread, then pushes all three into their
+ * respective static stores on the main thread.
+ *
+ * <p>Registered via {@link net.got.registry.ModWorldgen} on the
+ * {@code AddServerReloadListenersEvent}.
  */
 public class MapReloadListener extends SimplePreparableReloadListener<MapReloadListener.Prepared> {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    record Prepared(int[][] pixels, int width, int height,
-                    Map<Integer, GotBiomeTerrainParams.Params> params) {}
+    record Prepared(
+            int[][] pixels,
+            int width,
+            int height,
+            Map<Integer, GotBiomeTerrainParams.Params> params,
+            Map<String, List<SubbiomeDef>> subbiomes
+    ) {}
 
     @Override
     protected @NotNull Prepared prepare(@NotNull ResourceManager manager,
                                         @NotNull ProfilerFiller profiler) {
         profiler.push("got/biomemap_load");
         try {
+            // ── Biomemap PNG ───────────────────────────────────────────────
             int[][] pixels = BiomemapLoader.load(manager);
             int w = 0, h = 0;
             if (pixels != null) { w = pixels.length; h = pixels[0].length; }
-            Map<Integer, GotBiomeTerrainParams.Params> params = GotBiomeTerrainParams.load(manager);
-            return new Prepared(pixels, w, h, params);
+
+            // ── Biome-colour params ────────────────────────────────────────
+            Map<Integer, GotBiomeTerrainParams.Params> params =
+                    GotBiomeTerrainParams.load(manager);
+
+            // ── Subbiome definitions ───────────────────────────────────────
+            Map<String, List<SubbiomeDef>> subbiomes =
+                    SubbiomeResolver.load(manager);
+
+            return new Prepared(pixels, w, h, params, subbiomes);
         } finally {
             profiler.pop();
         }
@@ -43,11 +62,16 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
         try {
             if (prepared.pixels() != null)
                 BiomemapLoader.apply(prepared.pixels(), prepared.width(), prepared.height());
+
             GotBiomeTerrainParams.apply(prepared.params());
+            SubbiomeResolver.apply(prepared.subbiomes());
+
             // Notify GotBiomeSource so getNoiseBiome re-reads the new data.
             GotBiomeSource.onMapReloaded();
-            LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors)",
-                    prepared.width(), prepared.height(), prepared.params().size());
+
+            LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents)",
+                    prepared.width(), prepared.height(),
+                    prepared.params().size(), prepared.subbiomes().size());
         } finally {
             profiler.pop();
         }

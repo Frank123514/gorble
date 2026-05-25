@@ -38,6 +38,14 @@ import java.util.stream.Stream;
  *       ocean or lake shores.  Adjust {@link #CREEK_FRINGE_THRESHOLD} to
  *       change the strip width.
  * </ol>
+ *
+ * <h3>Sub-biome system</h3>
+ * <p>After all map-based and creek/containment logic resolves the final
+ * winner, {@link SubbiomeResolver#resolve(String, int, int)} is called.
+ * If any registered subbiome's noise field exceeds its threshold at this
+ * position, the subbiome ID replaces the winner.  Subbiomes are defined in
+ * {@code data/got/worldgen/subbiomes/subbiomes.json} — see
+ * {@link SubbiomeResolver} for the full format and tuning guide.
  */
 public final class GotBiomeSource extends BiomeSource {
 
@@ -238,6 +246,20 @@ public final class GotBiomeSource extends BiomeSource {
                 // Fully surrounded by water pixels — keep the water winner.
             }
         }
+
+        // ── SUB-BIOME CHECK ───────────────────────────────────────────────────
+        // After all map-based and creek/containment logic has resolved the winner,
+        // ask the SubbiomeResolver whether a smaller procedural biome should be
+        // placed here instead.  Water biomes are excluded so creek / river / ocean
+        // cells are never accidentally overridden (unless the user explicitly adds
+        // them as parent biomes in subbiomes.json, which is a deliberate choice).
+        if (!WATER_BIOME_IDS.contains(winner)) {
+            String subbiome = SubbiomeResolver.resolve(winner, worldX, worldZ);
+            if (subbiome != null) {
+                winner = subbiome;
+            }
+        }
+        // ─────────────────────────────────────────────────────────────────────
 
         ResourceLocation loc = ResourceLocation.tryParse(winner);
         if (loc == null) return fallback;

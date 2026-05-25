@@ -230,9 +230,9 @@ public final class WallWorldGen {
     public static final int WALL_HEIGHT = 200;
 
     /** North–south thickness in blocks (wide enough for a dozen men abreast). */
-    public static final int WALL_THICKNESS = 12;
+    public static final int WALL_THICKNESS = 24;
 
-    private static final int HALF = WALL_THICKNESS / 2; // 6
+    private static final int HALF = WALL_THICKNESS / 2; // 12
 
     /** Battlement merlon spacing along the south parapet. */
     private static final int BATTLEMENT_PERIOD = 4;
@@ -256,9 +256,27 @@ public final class WallWorldGen {
     // ── Spine lookup ──────────────────────────────────────────────────────
 
     /**
-     * Returns the wall centre Z for the given world X by linearly interpolating
-     * between the two nearest spine points.  Returns {@link Integer#MIN_VALUE}
-     * if {@code worldX} is outside the spine's X range.
+     * Returns the wall centre Z for the given world X using a uniform cubic
+     * B-spline evaluated over the four nearest spine control points.
+     * Returns {@link Integer#MIN_VALUE} if {@code worldX} is outside the
+     * spine's X range.
+     *
+     * <h3>Why B-spline?</h3>
+     * Unlike Catmull-Rom, a B-spline does <em>not</em> interpolate its control
+     * points — the curve passes near them but is pulled toward the weighted
+     * average of the surrounding four points.  This gives C² continuity
+     * (curvature is also continuous), producing a visually smoother result with
+     * no inflection kinks at control-point boundaries.
+     *
+     * <h3>Basis matrix (uniform cubic B-spline)</h3>
+     * <pre>
+     *   q(t) = (1/6) · [t³ t² t 1] · M · [P₀ P₁ P₂ P₃]ᵀ
+     *
+     *   M = [ -1  3 -3  1 ]
+     *       [  3 -6  3  0 ]
+     *       [ -3  0  3  0 ]
+     *       [  1  4  1  0 ]
+     * </pre>
      */
     public static int wallCentreZ(int worldX) {
         if (worldX < WALL_X_WEST || worldX > WALL_X_EAST) return Integer.MIN_VALUE;
@@ -272,12 +290,34 @@ public final class WallWorldGen {
 
         if (lo == WALL_SPINE.length - 1) return WALL_SPINE[lo][1];
 
-        int x0 = WALL_SPINE[lo][0],     z0 = WALL_SPINE[lo][1];
-        int x1 = WALL_SPINE[lo + 1][0], z1 = WALL_SPINE[lo + 1][1];
-        if (x0 == x1) return z0;
+        // Four control-point indices; clamp at the ends of the spine array
+        int i0 = Math.max(0, lo - 1);
+        int i1 = lo;
+        int i2 = lo + 1;
+        int i3 = Math.min(WALL_SPINE.length - 1, lo + 2);
 
-        // Linear interpolation
-        return (int) Math.round(z0 + (double)(z1 - z0) * (worldX - x0) / (x1 - x0));
+        double z0 = WALL_SPINE[i0][1];
+        double z1 = WALL_SPINE[i1][1];
+        double z2 = WALL_SPINE[i2][1];
+        double z3 = WALL_SPINE[i3][1];
+
+        double x1 = WALL_SPINE[i1][0];
+        double x2 = WALL_SPINE[i2][0];
+        if (x1 == x2) return (int) Math.round(z1);
+
+        // Normalised parameter t ∈ [0, 1] across the i1→i2 span
+        double t  = (worldX - x1) / (x2 - x1);
+        double t2 = t * t;
+        double t3 = t2 * t;
+
+        // Uniform cubic B-spline basis (1/6 factor applied below)
+        double b0 = -t3 + 3*t2 - 3*t + 1;
+        double b1 =  3*t3 - 6*t2       + 4;
+        double b2 = -3*t3 + 3*t2 + 3*t + 1;
+        double b3 =  t3;
+
+        double z = (b0*z0 + b1*z1 + b2*z2 + b3*z3) / 6.0;
+        return (int) Math.round(z);
     }
 
     // ── Entry point ───────────────────────────────────────────────────────

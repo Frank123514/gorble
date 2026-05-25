@@ -1,0 +1,19 @@
+{
+  "got:north": [
+    {
+      "subbiome":    "got:subbiome/maple_forest",
+      "noise_scale": 280.0,
+      "threshold":   0.15,
+      "priority":    0
+    }
+  ],
+
+  "got:north_hills": [
+    {
+      "subbiome":    "got:subbiome/maple_forest",
+      "noise_scale": 200.0,
+      "threshold":   0.70,
+      "priority":    0
+    }
+  ]
+}
