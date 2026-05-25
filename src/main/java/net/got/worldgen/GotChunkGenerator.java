@@ -143,6 +143,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         // Clear any vegetation/features from roads after surface is built
         // This ensures roads stay clear during world generation
         RoadWorldGen.clearVegetationFromRoads(chunk);
+        WallWorldGen.buildWallInChunk(chunk);
     }
 
     // ── Surface height ─────────────────────────────────────────────────────
