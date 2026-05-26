@@ -229,7 +229,7 @@ public final class WallWorldGen {
     public static final int WALL_X_EAST = WALL_SPINE[WALL_SPINE.length - 1][0];
 
     /** X coordinate of the Castle Black gate tunnel. */
-    public static final int CASTLE_BLACK_X = -66_309;
+    public static final int CASTLE_BLACK_X = -62180;
 
     // ── Wall dimensions ────────────────────────────────────────────────────
 
@@ -251,7 +251,13 @@ public final class WallWorldGen {
      * </pre>
      * so it is {@code WALL_BATTER} at the base and 0 at the top.
      */
-    private static final int WALL_BATTER = 10;
+    private static final int WALL_BATTER = 20;
+
+    /**
+     * How many blocks the north face is pushed outward at the base relative to
+     * the top.  Mirrors the south batter for a symmetrical profile.
+     */
+    private static final int NORTH_BATTER = WALL_BATTER;
 
     /**
      * Noise amplitude (in blocks) applied to the south face surface.
@@ -259,6 +265,12 @@ public final class WallWorldGen {
      * Noise is sampled at two octaves (large scale + detail).
      */
     private static final double FACE_NOISE_AMPLITUDE = 3.5;
+
+    /**
+     * Noise amplitude (in blocks) applied to the north face surface.
+     * Mirrors the south face noise for symmetrical undulations.
+     */
+    private static final double NORTH_FACE_NOISE_AMPLITUDE = FACE_NOISE_AMPLITUDE;
 
     /**
      * How many blocks of snow are built up as a drift against the south
@@ -349,6 +361,14 @@ public final class WallWorldGen {
     }
 
     /**
+     * Returns the linear north batter offset in blocks at the given relative height.
+     * Positive = outward (north), so the face leans outward toward the base.
+     */
+    private static double northBatterAt(int relY) {
+        return NORTH_BATTER * (1.0 - (double) relY / WALL_HEIGHT);
+    }
+
+    /**
      * Returns the noisy south-face edge offset (from centreZ) for a given
      * world (X, Y) position.  Two noise octaves add large-scale undulations
      * and fine-scale chipping.
@@ -367,12 +387,32 @@ public final class WallWorldGen {
     }
 
     /**
+     * Returns the noisy north-face edge offset (from centreZ) for a given
+     * world (X, Y) position.  Mirrors the south face noise.
+     */
+    private static double northFaceNoise(int worldX, int relY) {
+        // Use different offsets for independent north/south noise patterns
+        double n1 = SimplexNoise.noise(worldX / 40.0 + 50.0, relY / 60.0 + 50.0);
+        double n2 = SimplexNoise.noise(worldX / 12.0 + 81.7, relY / 18.0 + 67.3);
+        return n1 * 0.7 + n2 * 0.3;
+    }
+
+    /**
      * Returns the effective south edge of the wall (offset from centreZ)
      * at the given world X and relative height.  Combines the linear batter
      * with surface noise.
      */
     private static double southEdgeAt(int worldX, int relY) {
         return HALF + batterAt(relY) + faceNoise(worldX, relY) * FACE_NOISE_AMPLITUDE;
+    }
+
+    /**
+     * Returns the effective north edge of the wall (offset from centreZ)
+     * at the given world X and relative height.  Negative values indicate
+     * positions north of centre.  Combines the linear batter with surface noise.
+     */
+    private static double northEdgeAt(int worldX, int relY) {
+        return -(HALF + northBatterAt(relY) + northFaceNoise(worldX, relY) * NORTH_FACE_NOISE_AMPLITUDE);
     }
 
     /**
@@ -414,9 +454,10 @@ public final class WallWorldGen {
         }
         if (minCentreZ == Integer.MAX_VALUE) return;
 
-        // Worst-case south extent = HALF + WALL_BATTER + face noise amplitude + drift radius
+        // Worst-case south/north extent = HALF + WALL_BATTER + face noise amplitude + drift radius
         int maxSouthReach = HALF + WALL_BATTER + (int) Math.ceil(FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
-        if (chunkMaxZ < minCentreZ - HALF || chunkMinZ > maxCentreZ + maxSouthReach + BATTLEMENT_HEIGHT) return;
+        int maxNorthReach = HALF + NORTH_BATTER + (int) Math.ceil(NORTH_FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
+        if (chunkMaxZ < minCentreZ - maxNorthReach || chunkMinZ > maxCentreZ + maxSouthReach + BATTLEMENT_HEIGHT) return;
 
         for (int lx = 0; lx < 16; lx++) {
             int wx = chunkMinX + lx;
@@ -438,11 +479,11 @@ public final class WallWorldGen {
                 int wz = chunkMinZ + lz;
                 int dz = wz - centreZ;
 
-                // ── North fixed half ──────────────────────────────────────
-                // North face and core are not battered — the wall is a sheer
-                // cliff on the Wildling side (true to lore).
-                boolean inNorthHalf = dz >= -HALF && dz < 0;
-                boolean isNorthFace = dz == -HALF;
+                // ── North battered half ───────────────────────────────────
+                // The north face is now battered with noise, mirroring the south side.
+                // We need to process this Z column if it could possibly be inside
+                // the wall at any height.
+                boolean couldBeNorth = dz >= -HALF - NORTH_BATTER - (int) Math.ceil(NORTH_FACE_NOISE_AMPLITUDE) && dz < 0;
 
                 // ── South battered half ───────────────────────────────────
                 // The south face is determined per-Y; we only need to process
@@ -450,27 +491,36 @@ public final class WallWorldGen {
                 // any height.
                 boolean couldBeSouth = dz >= 0 && dz <= HALF + WALL_BATTER + (int) Math.ceil(FACE_NOISE_AMPLITUDE);
 
-                // ── Snow drift ────────────────────────────────────────────
+                // ── Snow drift (south) ────────────────────────────────────
                 // The drift extends further south than the wall batter.
-                int driftDist = dz - HALF; // positive = south of north-face wall edge
+                int driftDist = dz - HALF; // positive = south of south-face wall edge
                 boolean inDriftZone = driftDist > 0 && driftDist <= SNOW_DRIFT_RADIUS;
 
-                if (!inNorthHalf && !isNorthFace && !couldBeSouth && !inDriftZone) continue;
+                // ── Snow drift (north) ────────────────────────────────────
+                // Mirrors the south drift on the north side.
+                int northDriftDist = -HALF - dz; // positive = north of north-face wall edge
+                boolean inNorthDriftZone = northDriftDist > 0 && northDriftDist <= SNOW_DRIFT_RADIUS;
+
+                if (!couldBeNorth && !couldBeSouth && !inDriftZone && !inNorthDriftZone) continue;
 
                 // ── Per-Y placement ───────────────────────────────────────
-                if (inNorthHalf || isNorthFace) {
-                    // North side: simple rectangular body, no batter
+                if (couldBeNorth) {
+                    // North side: battered — check each Y to see if this Z is inside
                     for (int y = baseY; y <= baseY + WALL_HEIGHT; y++) {
                         int relY = y - baseY;
+                        double northEdge = northEdgeAt(wx, relY);
+                        boolean insideBody = dz <= 0 && dz >= northEdge;
+                        if (!insideBody) continue;
 
                         if (inTunnel && relY >= 0 && relY < TUNNEL_HEIGHT) {
                             chunk.setBlockState(new BlockPos(lx, y, lz), AIR, false);
                             continue;
                         }
 
+                        boolean isNorthFace = dz <= northEdge + 1.0; // outermost layer
+
                         if (relY == WALL_HEIGHT) {
                             chunk.setBlockState(new BlockPos(lx, y, lz), PACKED_ICE, false);
-                            // Snow fill on walkway interior (not the exact face columns)
                             if (!isNorthFace) {
                                 chunk.setBlockState(new BlockPos(lx, y + 1, lz), SNOW, false);
                             }
@@ -479,6 +529,22 @@ public final class WallWorldGen {
 
                         chunk.setBlockState(new BlockPos(lx, y, lz),
                                 isNorthFace ? BLUE_ICE : PACKED_ICE, false);
+                    }
+
+                    // North battlement merlons (placed at top of north face column,
+                    // one block outside the wall face at the parapet level)
+                    double topEdge = northEdgeAt(wx, WALL_HEIGHT);
+                    if (dz < topEdge && dz >= topEdge - 1) {
+                        int merlonBase = baseY + WALL_HEIGHT + 1;
+                        boolean isMerlon =
+                                Math.abs(wx - WALL_X_WEST) % BATTLEMENT_PERIOD < BATTLEMENT_PERIOD / 2;
+                        if (isMerlon) {
+                            for (int h = 0; h < BATTLEMENT_HEIGHT; h++) {
+                                chunk.setBlockState(
+                                        new BlockPos(lx, merlonBase + h, lz),
+                                        PACKED_ICE, false);
+                            }
+                        }
                     }
 
                 } else if (couldBeSouth) {
@@ -532,6 +598,15 @@ public final class WallWorldGen {
                     for (int y = fillFrom; y <= driftTop; y++) {
                         chunk.setBlockState(new BlockPos(lx, y, lz), SNOW, false);
                     }
+
+                } else if (inNorthDriftZone) {
+                    // Snow drift against north base — mirrors the south drift
+                    int driftTop = driftHeightAt(northDriftDist, baseY);
+                    int terrainY = GotChunkGenerator.computeSurfaceY(wx, wz);
+                    int fillFrom = Math.min(terrainY, baseY);
+                    for (int y = fillFrom; y <= driftTop; y++) {
+                        chunk.setBlockState(new BlockPos(lx, y, lz), SNOW, false);
+                    }
                 }
             }
         }
@@ -541,16 +616,17 @@ public final class WallWorldGen {
 
     /**
      * Returns {@code true} if (worldX, worldZ) falls within the wall's
-     * footprint (including batter, battlement row, and snow drift).
+     * footprint (including batter, battlement row, and snow drift on both sides).
      * Useful for suppressing vegetation and mob spawns on the structure.
      */
     public static boolean isPositionOnWall(int worldX, int worldZ) {
         int cz = wallCentreZ(worldX);
         if (cz == Integer.MIN_VALUE) return false;
         int dz = worldZ - cz;
-        // Conservative check: north face to max possible south extent
+        // Conservative check: max possible north extent to max possible south extent
+        int maxNorth = HALF + NORTH_BATTER + (int) Math.ceil(NORTH_FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
         int maxSouth = HALF + WALL_BATTER + (int) Math.ceil(FACE_NOISE_AMPLITUDE) + BATTLEMENT_HEIGHT;
-        return dz >= -HALF && dz <= maxSouth;
+        return dz >= -maxNorth && dz <= maxSouth;
     }
 
     private WallWorldGen() {}
