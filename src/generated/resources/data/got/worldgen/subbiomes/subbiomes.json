@@ -2,8 +2,8 @@
   "got:north": [
     {
       "subbiome":    "got:subbiome/maple_forest",
-      "noise_scale": 280.0,
-      "threshold":   0.15,
+      "noise_scale": 240.0,
+      "threshold":   0.85,
       "priority":    0
     }
   ],
