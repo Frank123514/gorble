@@ -142,7 +142,7 @@ public final class SubbiomeResolver {
         SimplexNoise n = noise; // capture volatile once
         for (SubbiomeDef def : defs) {
             // Simplex returns [-1, 1]; normalise to [0, 1] for threshold comparison.
-            double raw        = n.noise(
+            double raw        = n.eval(
                     (worldX + def.noiseOffsetX()) / def.noiseScale(),
                     (worldZ + def.noiseOffsetZ()) / def.noiseScale()
             );
@@ -228,5 +228,25 @@ public final class SubbiomeResolver {
      */
     public static void apply(Map<String, List<SubbiomeDef>> map) {
         subbiomeMap = map;
+    }
+
+    // ── Debug helpers ──────────────────────────────────────────────────────
+
+    /** Returns an unmodifiable view of the loaded subbiome map for debugging. */
+    public static Map<String, List<SubbiomeDef>> getSubbiomeMap() {
+        return Collections.unmodifiableMap(subbiomeMap);
+    }
+
+    /**
+     * Returns the raw normalised noise value (0-1) that would be compared
+     * against the threshold for a given subbiome def at world position (x, z).
+     */
+    public static double sampleNoise(SubbiomeDef def, int worldX, int worldZ) {
+        SimplexNoise n = noise;
+        double raw = n.eval(
+                (worldX + def.noiseOffsetX()) / def.noiseScale(),
+                (worldZ + def.noiseOffsetZ()) / def.noiseScale()
+        );
+        return (raw + 1.0) * 0.5;
     }
 }

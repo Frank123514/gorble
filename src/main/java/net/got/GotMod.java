@@ -17,6 +17,7 @@ import net.got.init.GotModTabs;
 import net.got.network.GotNetwork;
 import net.got.registry.WorldgenRegistries;
 import net.got.sounds.ModSounds;
+import net.got.worldgen.GotChunkGenerator;
 import net.got.worldgen.MapReloadListener;
 
 import net.minecraft.resources.ResourceLocation;
@@ -131,6 +132,14 @@ public final class GotMod {
     private void registerNetworking(final RegisterPayloadHandlersEvent event) {
         GotNetwork.register(event);
         LOGGER.info("GoT networking registered");
+    }
+
+    @SubscribeEvent
+    public void onLevelLoad(LevelEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel level
+                && level.dimension() == Level.OVERWORLD) {
+            GotChunkGenerator.initNoise(level.getSeed());
+        }
     }
 
     @SubscribeEvent

@@ -93,7 +93,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     public static void initNoise(long worldSeed) {
         seededNoise = SimplexNoise.seeded(worldSeed);
-        SubbiomeResolver.initSeed(worldSeed);   // ← ADD THIS LINE
+        SubbiomeResolver.initSeed(worldSeed);
     }
 
     @Override

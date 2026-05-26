@@ -1,0 +1,236 @@
+package net.got.worldgen;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import net.got.GotMod;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.biome.Biome;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * /gotsubdebug — diagnoses why subbiomes aren't appearing.
+ *
+ * <pre>
+ *   /gotsubdebug              — full pipeline report at your position
+ *   /gotsubdebug scan [r]     — scans radius r (default 512) for nearest
+ *                               spot where each subbiome would trigger
+ * </pre>
+ */
+public final class GotSubbiomeDebugCommand {
+
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(
+                Commands.literal("gotsubdebug")
+                        .requires(src -> src.hasPermission(2))
+
+                        // /gotsubdebug  — report at current position
+                        .executes(GotSubbiomeDebugCommand::executeReport)
+
+                        // /gotsubdebug scan [radius]
+                        .then(Commands.literal("scan")
+                                .executes(ctx -> executeScan(ctx, 512))
+                                .then(Commands.argument("radius", IntegerArgumentType.integer(32, 4096))
+                                        .executes(ctx -> executeScan(
+                                                ctx,
+                                                IntegerArgumentType.getInteger(ctx, "radius")))))
+        );
+    }
+
+    // ── /gotsubdebug ──────────────────────────────────────────────────────────
+
+    private static int executeReport(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack src = ctx.getSource();
+
+        send(src, "§6════ GoT Subbiome Debug ════");
+
+        // 1. Is the biomemap loaded?
+        boolean mapLoaded = BiomemapLoader.isLoaded();
+        send(src, "§eBiomemap loaded: §f" + (mapLoaded ? "§aYES" : "§cNO — chunk gen returning fallback biome"));
+        if (!mapLoaded) return 1;
+
+        // 2. Is the subbiome map populated?
+        Map<String, List<SubbiomeDef>> subMap = SubbiomeResolver.getSubbiomeMap();
+        if (subMap.isEmpty()) {
+            send(src, "§eSubbiome map: §cEMPTY — subbiomes.json was not loaded or apply() was never called");
+            send(src, "§7  Check: MapReloadListener registered? Server fully started before this command?");
+            return 1;
+        }
+        send(src, "§eSubbiome map: §a" + subMap.size() + " parent(s) loaded");
+        for (Map.Entry<String, List<SubbiomeDef>> e : subMap.entrySet()) {
+            send(src, "§7  " + e.getKey() + " → " + e.getValue().size() + " subbiome(s):");
+            for (SubbiomeDef def : e.getValue()) {
+                send(src, "§7    • " + def.subbiomeId()
+                        + "  scale=" + def.noiseScale()
+                        + "  threshold=" + def.threshold()
+                        + "  priority=" + def.priority());
+            }
+        }
+
+        // 3. Get player position
+        ServerPlayer player;
+        try { player = src.getPlayerOrException(); }
+        catch (Exception e) {
+            send(src, "§cNot a player — position-specific checks skipped.");
+            return 1;
+        }
+
+        int worldX = (int) player.getX();
+        int worldZ = (int) player.getZ();
+        send(src, "§ePosition: §f" + worldX + ", " + worldZ);
+
+        // 4. What biome does the registry think is here?
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = player.blockPosition();
+        ResourceLocation actualBiome = level.registryAccess()
+                .lookupOrThrow(Registries.BIOME)
+                .getKey(level.getBiome(pos).value());
+        send(src, "§eActual biome at pos: §f" + actualBiome);
+
+        // 5. What color/biome does the biomemap read here?
+        if (mapLoaded) {
+            float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+            float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+            int px = (int) Math.floor(cx);
+            int pz = (int) Math.floor(cz);
+            int rgb = BiomemapLoader.getRawPixel(px, pz);
+            GotBiomeTerrainParams.Params params = GotBiomeTerrainParams.forColor(rgb);
+            send(src, "§eBiomemap pixel (" + px + "," + pz + "): §f#"
+                    + String.format("%06X", rgb) + " → biomeId=§a" + params.biomeId());
+
+            // 6. Is this parent registered in subbiomeMap?
+            String parentId = params.biomeId();
+            List<SubbiomeDef> defs = subMap.get(parentId);
+            if (defs == null) {
+                send(src, "§eSubbiome check: §7parent §f" + parentId + " §7has NO subbiomes registered — nothing to place here");
+                send(src, "§7  (Try walking into a §fgot:north§7 or §fgot:north_hills§7 area)");
+            } else {
+                send(src, "§eSubbiome noise samples for parent §f" + parentId + "§e:");
+                for (SubbiomeDef def : defs) {
+                    double sample = SubbiomeResolver.sampleNoise(def, worldX, worldZ);
+                    boolean would = sample >= def.threshold();
+                    send(src, "§7  " + def.subbiomeId()
+                            + ":  noise=§f" + String.format("%.4f", sample)
+                            + " §7threshold=§f" + def.threshold()
+                            + (would ? " §a✔ WOULD PLACE" : " §c✘ below threshold"));
+                }
+            }
+        }
+
+        // 7. Check the biome holder actually exists in the registry
+        send(src, "§eRegistry check for subbiome biomes:");
+        for (List<SubbiomeDef> defs : subMap.values()) {
+            for (SubbiomeDef def : defs) {
+                ResourceLocation loc = ResourceLocation.tryParse(def.subbiomeId());
+                boolean inRegistry = loc != null && level.registryAccess()
+                        .lookupOrThrow(Registries.BIOME)
+                        .containsKey(loc);
+                send(src, "§7  " + def.subbiomeId() + ": "
+                        + (inRegistry ? "§aFOUND in registry" : "§cMISSING from registry — biome was never bootstrapped!"));
+            }
+        }
+
+        // 8. World seed
+        send(src, "§eWorld seed: §f" + level.getSeed()
+                + "  (if 0 something might be wrong with seed propagation)");
+
+        return 1;
+    }
+
+    // ── /gotsubdebug scan [radius] ────────────────────────────────────────────
+
+    private static int executeScan(CommandContext<CommandSourceStack> ctx, int radius) {
+        CommandSourceStack src = ctx.getSource();
+
+        ServerPlayer player;
+        try { player = src.getPlayerOrException(); }
+        catch (Exception e) { src.sendFailure(Component.literal("Must be a player.")); return 0; }
+
+        Map<String, List<SubbiomeDef>> subMap = SubbiomeResolver.getSubbiomeMap();
+        if (subMap.isEmpty()) {
+            src.sendFailure(Component.literal("§cSubbiome map is empty — nothing to scan for."));
+            return 0;
+        }
+
+        int originX = (int) player.getX();
+        int originZ = (int) player.getZ();
+
+        send(src, "§6Scanning " + (radius * 2 + 1) + "² area for subbiome triggers (step=8 blocks)…");
+
+        // Track nearest hit per subbiome
+        record Hit(String subbiomeId, int x, int z, double noise, double threshold) {}
+        java.util.Map<String, Hit> nearest = new java.util.HashMap<>();
+
+        outer:
+        for (int dx = -radius; dx <= radius; dx += 8) {
+            for (int dz = -radius; dz <= radius; dz += 8) {
+                int wx = originX + dx;
+                int wz = originZ + dz;
+
+                if (!BiomemapLoader.isLoaded()) break outer;
+                float cx = wx / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+                float cz = wz / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+                int px = (int) Math.floor(cx);
+                int pz = (int) Math.floor(cz);
+                int rgb = BiomemapLoader.getRawPixel(px, pz);
+                GotBiomeTerrainParams.Params params = GotBiomeTerrainParams.forColor(rgb);
+                String parentId = params.biomeId();
+
+                List<SubbiomeDef> defs = subMap.get(parentId);
+                if (defs == null) continue;
+
+                for (SubbiomeDef def : defs) {
+                    double sample = SubbiomeResolver.sampleNoise(def, wx, wz);
+                    if (sample >= def.threshold()) {
+                        int distSq = dx * dx + dz * dz;
+                        Hit existing = nearest.get(def.subbiomeId());
+                        if (existing == null) {
+                            nearest.put(def.subbiomeId(), new Hit(def.subbiomeId(), wx, wz, sample, def.threshold()));
+                        } else {
+                            int existDist = (existing.x() - originX) * (existing.x() - originX)
+                                    + (existing.z() - originZ) * (existing.z() - originZ);
+                            if (distSq < existDist)
+                                nearest.put(def.subbiomeId(), new Hit(def.subbiomeId(), wx, wz, sample, def.threshold()));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (nearest.isEmpty()) {
+            send(src, "§cNo subbiome trigger found in radius §f" + radius + "§c.");
+            send(src, "§7  Either the parent biome doesn't appear in this area,");
+            send(src, "§7  or the noise never exceeds the threshold here.");
+            send(src, "§7  Try §f/gotsubdebug§7 to check noise values at your exact position.");
+        } else {
+            send(src, "§aNeareast trigger(s) found:");
+            for (Hit h : nearest.values()) {
+                int dist = (int) Math.sqrt((h.x() - originX) * (double)(h.x() - originX)
+                        + (h.z() - originZ) * (double)(h.z() - originZ));
+                send(src, "§7  §a" + h.subbiomeId()
+                        + "§7  at (" + h.x() + ", " + h.z() + ")"
+                        + "  dist=§f" + dist + "§7 blocks"
+                        + "  noise=§f" + String.format("%.3f", h.noise())
+                        + "§7/§f" + h.threshold());
+                send(src, "§7    §e/tp @s " + h.x() + " ~ " + h.z());
+            }
+        }
+
+        return 1;
+    }
+
+    private static void send(CommandSourceStack src, String text) {
+        src.sendSuccess(() -> Component.literal(text), false);
+    }
+
+    private GotSubbiomeDebugCommand() {}
+}

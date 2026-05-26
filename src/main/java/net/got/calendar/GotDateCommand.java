@@ -8,6 +8,7 @@ import net.got.GotMod;
 import net.got.climate.GotSeason;
 import net.got.climate.SeasonManager;
 import net.got.client.command.GotMapCommand;
+import net.got.worldgen.GotSubbiomeDebugCommand;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -36,6 +37,7 @@ public final class GotDateCommand {
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         register(event.getDispatcher());
         GotMapCommand.register(event.getDispatcher()); // wire up the existing map command too
+        GotSubbiomeDebugCommand.register(event.getDispatcher()); // wire up the subbiome debug command
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
