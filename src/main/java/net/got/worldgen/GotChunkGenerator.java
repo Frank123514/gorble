@@ -94,6 +94,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static void initNoise(long worldSeed) {
         seededNoise = SimplexNoise.seeded(worldSeed);
         SubbiomeResolver.initSeed(worldSeed);
+        SlopeSurfaceResolver.initSeed(worldSeed);
     }
 
     @Override
@@ -145,6 +146,8 @@ public final class GotChunkGenerator extends ChunkGenerator {
         // This ensures roads stay clear during world generation
         RoadWorldGen.clearVegetationFromRoads(chunk);
         WallWorldGen.buildWallInChunk(chunk);
+        // Replace surface blocks on steep terrain with biome-specific exposed rock
+        SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
     }
 
     // ── Surface height ─────────────────────────────────────────────────────
@@ -303,5 +306,8 @@ public final class GotChunkGenerator extends ChunkGenerator {
         info.add(String.format(
                 "[GoT] Y=%d  base=%.0f  var=%.1f  px=(%d,%d)",
                 surfY, p.baseHeight(), p.heightVariation(), px, pz));
+
+        // Slope / exposed-rock debug line
+        info.add("[GoT] " + SlopeSurfaceResolver.debugInfo(p.biomeId(), pos.getX(), pos.getZ()));
     }
 }

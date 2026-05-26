@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Loads {@code biomemap.png}, {@code biome_colors.json}, and
- * {@code subbiomes.json} off-thread, then pushes all three into their
+ * Loads {@code biomemap.png}, {@code biome_colors.json}, {@code subbiomes.json},
+ * and {@code slope_rules.json} off-thread, then pushes all four into their
  * respective static stores on the main thread.
  *
  * <p>Registered via {@link net.got.registry.ModWorldgen} on the
@@ -27,7 +27,8 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             int width,
             int height,
             Map<Integer, GotBiomeTerrainParams.Params> params,
-            Map<String, List<SubbiomeDef>> subbiomes
+            Map<String, List<SubbiomeDef>> subbiomes,
+            Map<String, List<SlopeRuleDef>> slopeRules
     ) {}
 
     @Override
@@ -48,7 +49,11 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             Map<String, List<SubbiomeDef>> subbiomes =
                     SubbiomeResolver.load(manager);
 
-            return new Prepared(pixels, w, h, params, subbiomes);
+            // ── Slope surface rules ────────────────────────────────────────
+            Map<String, List<SlopeRuleDef>> slopeRules =
+                    SlopeSurfaceResolver.load(manager);
+
+            return new Prepared(pixels, w, h, params, subbiomes, slopeRules);
         } finally {
             profiler.pop();
         }
@@ -65,13 +70,15 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
 
             GotBiomeTerrainParams.apply(prepared.params());
             SubbiomeResolver.apply(prepared.subbiomes());
+            SlopeSurfaceResolver.apply(prepared.slopeRules());
 
             // Notify GotBiomeSource so getNoiseBiome re-reads the new data.
             GotBiomeSource.onMapReloaded();
 
-            LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents)",
+            LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents, {} slope biomes)",
                     prepared.width(), prepared.height(),
-                    prepared.params().size(), prepared.subbiomes().size());
+                    prepared.params().size(), prepared.subbiomes().size(),
+                    prepared.slopeRules().size());
         } finally {
             profiler.pop();
         }

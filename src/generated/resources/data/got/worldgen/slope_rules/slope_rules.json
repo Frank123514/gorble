@@ -1,0 +1,47 @@
+{
+  "_comment": "Slope = max integer block height-diff to immediate neighbours. 1=step edge, 2=steep, 3+=cliff.",
+  "_jitter_note": "Keep jitter small (0.1-0.15). It only roughens band edges slightly — high values punch holes in coverage.",
+
+  "got:north_mountains": [
+    { "min_slope": 4, "block": "minecraft:stone",       "depth": 6, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:cobblestone", "depth": 3, "jitter": 0.1 }
+  ],
+
+  "got:frostfangs": [
+    { "min_slope": 4, "block": "minecraft:stone",       "depth": 5, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:packed_ice",  "depth": 2, "jitter": 0.1 }
+  ],
+
+  "got:the_wall": [
+    { "min_slope": 4, "block": "minecraft:blue_ice",    "depth": 4, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:packed_ice",  "depth": 3, "jitter": 0.1 }
+  ],
+
+  "got:iron_hills": [
+    { "min_slope": 3, "block": "minecraft:stone",       "depth": 5, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:gravel",      "depth": 2, "jitter": 0.1 }
+  ],
+
+  "got:barrowlands": [
+    { "min_slope": 3, "block": "minecraft:stone",       "depth": 4, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:coarse_dirt", "depth": 2, "jitter": 0.1 }
+  ],
+
+  "got:north_hills": [
+    { "min_slope": 3, "block": "minecraft:stone",       "depth": 4, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:coarse_dirt", "depth": 2, "jitter": 0.1 }
+  ],
+
+  "got:sheepshead_hills": [
+    { "min_slope": 3, "block": "minecraft:sandstone",   "depth": 4, "jitter": 0.1 },
+    { "min_slope": 2, "block": "minecraft:coarse_dirt", "depth": 2, "jitter": 0.1 }
+  ],
+
+  "got:flint_cliffs": [
+    { "min_slope": 2, "block": "minecraft:gravel",      "depth": 3, "jitter": 0.1 }
+  ],
+
+  "got:stony_shore": [
+    { "min_slope": 2, "block": "minecraft:stone",       "depth": 3, "jitter": 0.1 }
+  ]
+}
