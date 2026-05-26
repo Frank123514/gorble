@@ -85,6 +85,20 @@ public class GotBiomes {
     public static final ResourceKey<Biome> WOLFSWOOD =
             ResourceKey.create(Registries.BIOME, GotMod.id("wolfswood"));
 
+    // Southern biomes ──────────────────────────────────────────────────────────
+
+    public static final ResourceKey<Biome> RIVERLANDS =
+            ResourceKey.create(Registries.BIOME, GotMod.id("riverlands"));
+
+    public static final ResourceKey<Biome> VALE =
+            ResourceKey.create(Registries.BIOME, GotMod.id("vale"));
+
+    public static final ResourceKey<Biome> WESTERLANDS =
+            ResourceKey.create(Registries.BIOME, GotMod.id("westerlands"));
+
+    public static final ResourceKey<Biome> REACH =
+            ResourceKey.create(Registries.BIOME, GotMod.id("reach"));
+
     // Sub-biomes ───────────────────────────────────────────────────────────────
 
     public static final ResourceKey<Biome> MAPLE_FOREST =
@@ -121,6 +135,10 @@ public class GotBiomes {
         context.register(STONY_SHORE,      stonyShore(context));
         context.register(WOLFSWOOD,        wolfswood(context));
         context.register(MAPLE_FOREST,     mapleForest(context));
+        context.register(RIVERLANDS,       riverlands(context));
+        context.register(VALE,             vale(context));
+        context.register(WESTERLANDS,      westerlands(context));
+        context.register(REACH,            reach(context));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -1083,6 +1101,182 @@ public class GotBiomes {
                         .grassColorOverride(6067036)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .backgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST))
+                        .build())
+                .build();
+    }
+
+    // Riverlands ───────────────────────────────────────────────────────────────
+
+    private static Biome riverlands(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT,  4, 2, 3));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP,  12, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG,    10, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN,10, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW,     8, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE,   5, 2, 6));
+
+        BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
+        globalOverworldGeneration(biomeBuilder);
+        addGotDisks(biomeBuilder);
+        addRockOres(biomeBuilder);
+
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CavePlacements.GLOW_LICHEN);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.HAWTHORN_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ASH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.BEECH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ELM_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.SHRUB);
+        addBoulders(biomeBuilder);
+        addOpenLandVegetation(biomeBuilder);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(0.8f)
+                .downfall(0.6f)
+                .generationSettings(biomeBuilder.build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .waterColor(4159204)
+                        .waterFogColor(329011)
+                        .fogColor(12638463)
+                        .skyColor(7907327)
+                        .grassColorOverride(2391380)
+                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .build();
+    }
+
+    // Vale ─────────────────────────────────────────────────────────────────────
+
+    private static Biome vale(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP,  10, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG,    8, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN,8, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW,     6, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE,   4, 2, 5));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT,  3, 2, 3));
+
+        BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
+        globalOverworldGeneration(biomeBuilder);
+        addGotDisks(biomeBuilder);
+        addRockOres(biomeBuilder);
+
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CavePlacements.GLOW_LICHEN);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.HAWTHORN_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ASH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.BEECH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ELM_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.SHRUB);
+        addBoulders(biomeBuilder);
+        addOpenLandVegetation(biomeBuilder);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(0.7f)
+                .downfall(0.7f)
+                .generationSettings(biomeBuilder.build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .waterColor(4159204)
+                        .waterFogColor(329011)
+                        .fogColor(12638463)
+                        .skyColor(8036351)
+                        .grassColorOverride(3487232)
+                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .build();
+    }
+
+    // Westerlands ──────────────────────────────────────────────────────────────
+
+    private static Biome westerlands(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT,  4, 2, 3));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP,  10, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG,    8, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN,8, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW,     6, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE,   5, 2, 5));
+
+        BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
+        globalOverworldGeneration(biomeBuilder);
+        addGotDisks(biomeBuilder);
+        addRockOres(biomeBuilder);
+
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CavePlacements.GLOW_LICHEN);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.HAWTHORN_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ASH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.BEECH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ELM_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.SHRUB);
+        addBoulders(biomeBuilder);
+        addOpenLandVegetation(biomeBuilder);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(0.8f)
+                .downfall(0.5f)
+                .generationSettings(biomeBuilder.build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .waterColor(4159204)
+                        .waterFogColor(329011)
+                        .fogColor(12638463)
+                        .skyColor(7973647)
+                        .grassColorOverride(4539008)
+                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .build();
+    }
+
+    // Reach ────────────────────────────────────────────────────────────────────
+
+    private static Biome reach(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT,  6, 2, 3));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.SHEEP,  15, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PIG,    12, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN,12, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW,    10, 4, 4));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.HORSE,   8, 2, 6));
+
+        BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
+        globalOverworldGeneration(biomeBuilder);
+        addGotDisks(biomeBuilder);
+        addRockOres(biomeBuilder);
+
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CavePlacements.GLOW_LICHEN);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.HAWTHORN_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ASH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.BEECH_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ELM_SPARSE);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.SHRUB);
+        addBoulders(biomeBuilder);
+        addOpenLandVegetation(biomeBuilder);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(0.9f)
+                .downfall(0.7f)
+                .generationSettings(biomeBuilder.build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .waterColor(4159204)
+                        .waterFogColor(329011)
+                        .fogColor(12638463)
+                        .skyColor(8103167)
+                        .grassColorOverride(5658112)
+                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
                 .build();
     }

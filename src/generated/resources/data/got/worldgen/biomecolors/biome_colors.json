@@ -129,5 +129,29 @@
     "biome": "got:the_wall",
     "base_height": 150,
     "height_variation": 0
+  },
+
+  "#3D8042": {
+    "biome": "got:riverlands",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#4D8C46": {
+    "biome": "got:vale",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#708A3D": {
+    "biome": "got:westerlands",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#408539": {
+    "biome": "got:reach",
+    "base_height": 70,
+    "height_variation": 10
   }
 }
