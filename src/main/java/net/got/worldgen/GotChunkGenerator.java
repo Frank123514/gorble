@@ -29,20 +29,29 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     public static final int SEA_LEVEL = 63;
 
-    /** Base noise frequency. Larger = more zoomed-in features. */
+    /** Base noise frequency for broad terrain shape. */
     private static final double NOISE_SCALE_X = 220.0;
     private static final double NOISE_SCALE_Z = 190.0;
 
-    /**
-     * fBm settings — slightly rougher than before.
-     *
-     * 3 octaves: the first gives broad sweeping hills, the second adds
-     * gentle undulation, and the third adds a bit of texture on top.
-     * Gain raised to 0.35 so the extra detail is slightly more audible.
-     */
+    /** Standard fBm — smooth broad shape, same as original. */
     private static final int    FBM_OCTAVES    = 3;
-    private static final double FBM_LACUNARITY = 2.0;   // each octave doubles frequency
-    private static final double FBM_GAIN       = 0.35;  // slightly more detail than before
+    private static final double FBM_LACUNARITY = 2.0;
+    private static final double FBM_GAIN       = 0.35;
+
+    /**
+     * Mountain ridge system — mirrors the Middle Earth mod's approach:
+     * a medium-scale noise layer whose amplitude grows with elevation.
+     *
+     * The noise scale is broad (80 blocks) so ridges are wide and smooth,
+     * not spiky. The height range is kept small (4 blocks) so the effect
+     * is a subtle directional sculpting rather than chaotic roughness.
+     * Higher terrain gets more of this noise, so ridges naturally converge
+     * toward the summit.
+     */
+    private static final float  MOUNTAIN_THRESHOLD   = 90f;
+    private static final double MOUNTAIN_NOISE_SCALE = 80.0;
+    private static final float  MOUNTAIN_HEIGHT_RANGE = 4f;
+    private static final float  MOUNTAIN_RAMP_OVER    = 60f;
 
     // ── Codec ──────────────────────────────────────────────────────────────
 
@@ -177,14 +186,14 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 int px = ipx + col - 1;
                 int pz = ipz + row - 1;
                 GotBiomeTerrainParams.Params p = paramsAt(px, pz);
-                // Only amplify terrain that is genuinely mountain-level (base > 90).
-                // Below that threshold the height is passed through untouched so
-                // plains/hills are completely unaffected. Exponent 1.15 gives a
-                // subtle steepening at mountain edges without being too aggressive.
+                // Amplify terrain above the mountain threshold so peaks spike
+                // sharply upward rather than rounding off into domes.
+                // Exponent 1.65: below threshold nothing changes; above it the
+                // extra height compounds, pulling peaks up while valleys stay low.
                 float bh = p.baseHeight();
-                if (bh > 90f) {
-                    float aboveMtn = bh - 90f;
-                    bh = (float) Math.pow(aboveMtn, 1.15) + 90f;
+                if (bh > MOUNTAIN_THRESHOLD) {
+                    float aboveMtn = bh - MOUNTAIN_THRESHOLD;
+                    bh = (float) Math.pow(aboveMtn, 1.25f) + MOUNTAIN_THRESHOLD;
                 }
                 h[row * 4 + col] = bh;
                 v[row * 4 + col] = p.heightVariation();
@@ -194,12 +203,30 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float baseHeight      = bicubicBspline(h, fx, fz);
         float heightVariation = bicubicBspline(v, fx, fz);
 
+        // Standard fBm — smooth broad variation, same as always
         double noiseVal = seededNoise.fbm(
                 worldX / NOISE_SCALE_X,
                 worldZ / NOISE_SCALE_Z,
                 FBM_OCTAVES,
                 FBM_LACUNARITY,
                 FBM_GAIN);
+
+        // Mountain ridge system (mirrors the Middle Earth mod):
+        // Add a fine-scale noise layer whose amplitude grows with elevation.
+        // At the threshold the contribution is 0; at (threshold + MOUNTAIN_RAMP_OVER)
+        // it reaches full MOUNTAIN_HEIGHT_RANGE. Because the extra height is proportional
+        // to how high the terrain already is, noise peaks naturally align into ridges
+        // that radiate outward and slope upward toward the summit.
+        if (baseHeight > MOUNTAIN_THRESHOLD) {
+            float mountainness = Math.min((baseHeight - MOUNTAIN_THRESHOLD) / MOUNTAIN_RAMP_OVER, 1.0f);
+            // Single broad octave only — ME uses one noise sample per mountain column.
+            // A second fine-scale octave was causing the chaotic spiky peak.
+            float ridgeAdd = (float) seededNoise.eval(
+                    worldX / MOUNTAIN_NOISE_SCALE,
+                    worldZ / MOUNTAIN_NOISE_SCALE)
+                    * mountainness * MOUNTAIN_HEIGHT_RANGE;
+            baseHeight += ridgeAdd;
+        }
 
         return baseHeight + (float) noiseVal * heightVariation;
     }
