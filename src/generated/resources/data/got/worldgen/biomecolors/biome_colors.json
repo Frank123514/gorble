@@ -79,7 +79,7 @@
 
   "#BBCCCD": {
     "biome": "got:frostfangs",
-    "base_height": 120,
+    "base_height": 110,
     "height_variation": 20
   },
 
@@ -91,11 +91,11 @@
 
   "#A5B7B9": {
     "biome": "got:north_mountains",
-    "base_height": 100,
+    "base_height": 105,
     "height_variation": 20
   },
 
-  "#537053": {
+  "#2A5D2A": {
     "biome": "got:haunted_forest",
     "base_height": 70,
     "height_variation": 3
