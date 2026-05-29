@@ -79,8 +79,8 @@
 
   "#BBCCCD": {
     "biome": "got:frostfangs",
-    "base_height": 110,
-    "height_variation": 20
+    "base_height": 125,
+    "height_variation": 75
   },
 
   "#FFFFFF": {
@@ -91,8 +91,8 @@
 
   "#A5B7B9": {
     "biome": "got:north_mountains",
-    "base_height": 105,
-    "height_variation": 20
+    "base_height": 110,
+    "height_variation": 65
   },
 
   "#2A5D2A": {

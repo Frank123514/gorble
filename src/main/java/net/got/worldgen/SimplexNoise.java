@@ -103,33 +103,6 @@ public final class SimplexNoise {
     }
 
 
-    /**
-     * Ridged multifractal fBm — produces sharp upward-pointing ridges and peaks
-     * instead of the smooth rounded hills of standard fBm.
-     *
-     * <p>Each octave contributes {@code (1 - |noise|)²} instead of raw noise.
-     * The absolute-value fold creates a sharp crease at zero, and squaring
-     * tightens the ridge so peaks are narrow and pointed rather than broad.
-     * The result is normalized to approximately [−1, 1].
-     *
-     * <p>Use this for mountain terrain where you want natural-looking sharp peaks
-     * and rugged ridgelines rather than gentle dome-shaped hills.
-     */
-    public double ridgedFbm(double x, double y, int octaves, double lacunarity, double gain) {
-        double value = 0, amplitude = 1, frequency = 1, maxAmp = 0;
-        for (int o = 0; o < octaves; o++) {
-            double signal = 1.0 - Math.abs(eval(x * frequency, y * frequency));
-            signal *= signal; // square: tightens ridge into a narrow spike
-            value    += signal * amplitude;
-            maxAmp   += amplitude;
-            amplitude *= gain;
-            frequency *= lacunarity;
-        }
-        // Shift from [0,1]-ish range back to roughly [-1,1] so it can be used
-        // as a signed additive offset the same way regular fbm output is used.
-        return (value / maxAmp) * 2.0 - 1.0;
-    }
-
     /** Static convenience — uses the default (non-seeded) instance. */
     public static double noise(double x, double y) {
         return DEFAULT.eval(x, y);
