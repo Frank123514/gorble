@@ -30,7 +30,8 @@
         "got:westerlands",
         "got:reach",
 
-        "got:subbiome/maple_forest"
+        "got:subbiome/maple_forest",
+        "got:subbiome/beech_forest"
       ]
     },
     "settings": "got:overworld"

@@ -6,8 +6,7 @@
   "mixins": [
     "BiomeMixin",
     "LevelMixin",
-    "ServerLevelMixin",
-    "SnowAndFreezeMixin"
+    "ServerLevelMixin"
   ],
   "client": [
     "WeatherEffectRendererMixin",

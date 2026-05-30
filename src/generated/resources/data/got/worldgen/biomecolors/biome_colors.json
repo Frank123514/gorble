@@ -25,8 +25,8 @@
 
   "#808F81": {
     "biome": "got:north_hills",
-    "base_height": 85,
-    "height_variation": 18
+    "base_height": 90,
+    "height_variation": 30
   },
 
   "#2F4A33": {
