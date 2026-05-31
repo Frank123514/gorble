@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/sandalwood_slab"
+    },
+    "type=top": {
+      "model": "got:block/sandalwood_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/sandalwood_slab_full"
+    }
+  }
+}

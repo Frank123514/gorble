@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/persimmon_roofing",
+    "top": "got:block/persimmon_roofing",
+    "side": "got:block/persimmon_roofing",
+    "wall": "got:block/persimmon_roofing",
+    "particle": "got:block/persimmon_roofing"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "got:block/alder_branch_inventory",
+  "textures": {
+    "texture": "got:block/nutmeg_log_side"
+  }
+}

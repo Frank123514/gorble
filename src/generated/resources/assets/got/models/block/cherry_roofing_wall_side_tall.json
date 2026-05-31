@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/template_wall_side_tall",
+  "parent": "block/wall_side_tall",
   "textures": {
-    "wall": "got:block/cherry_roofing"
+    "wall": "got:block/cherry_roofing",
+    "particle": "got:block/cherry_roofing"
   }
 }

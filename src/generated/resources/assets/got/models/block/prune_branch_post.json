@@ -1,0 +1,6 @@
+{
+  "parent": "got:block/alder_branch_post",
+  "textures": {
+    "texture": "got:block/prune_log_side"
+  }
+}

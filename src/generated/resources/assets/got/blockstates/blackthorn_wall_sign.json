@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "got:block/blackthorn_wall_sign",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "got:block/blackthorn_wall_sign"
+    },
+    "facing=west": {
+      "model": "got:block/blackthorn_wall_sign",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "got:block/blackthorn_wall_sign",
+      "y": 270
+    }
+  }
+}

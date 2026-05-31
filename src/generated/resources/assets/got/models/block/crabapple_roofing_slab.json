@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/crabapple_roofing",
+    "top": "got:block/crabapple_roofing",
+    "side": "got:block/crabapple_roofing",
+    "wall": "got:block/crabapple_roofing",
+    "particle": "got:block/crabapple_roofing"
+  }
+}

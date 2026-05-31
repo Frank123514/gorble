@@ -1,0 +1,7 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "got:block/nightwood_leaves",
+    "particle": "got:block/nightwood_leaves"
+  }
+}

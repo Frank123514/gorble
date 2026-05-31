@@ -1,0 +1,6 @@
+{
+  "parent": "got:block/alder_branch_side_tall",
+  "textures": {
+    "texture": "got:block/cherry_log_side"
+  }
+}

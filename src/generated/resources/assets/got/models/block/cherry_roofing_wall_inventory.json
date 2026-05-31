@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/wall_inventory",
+  "parent": "block/wall_inventory",
   "textures": {
-    "wall": "got:block/cherry_roofing"
+    "wall": "got:block/cherry_roofing",
+    "particle": "got:block/cherry_roofing"
   }
 }

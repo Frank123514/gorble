@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/prune_log_top",
+    "up": "got:block/prune_log_top",
+    "north": "got:block/prune_log_side",
+    "east": "got:block/prune_log_side",
+    "south": "got:block/prune_log_side",
+    "west": "got:block/prune_log_side",
+    "particle": "got:block/prune_log_top"
+  },
+  "render_type": "solid"
+}

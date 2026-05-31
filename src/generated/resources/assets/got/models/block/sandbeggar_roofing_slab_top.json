@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/sandbeggar_roofing",
+    "top": "got:block/sandbeggar_roofing",
+    "side": "got:block/sandbeggar_roofing",
+    "wall": "got:block/sandbeggar_roofing",
+    "particle": "got:block/sandbeggar_roofing"
+  }
+}

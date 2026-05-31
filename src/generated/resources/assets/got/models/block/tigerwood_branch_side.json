@@ -1,0 +1,6 @@
+{
+  "parent": "got:block/alder_branch_side",
+  "textures": {
+    "texture": "got:block/tigerwood_log_side"
+  }
+}

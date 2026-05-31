@@ -1,0 +1,6 @@
+{
+  "parent": "got:block/alder_branch_post",
+  "textures": {
+    "texture": "got:block/date_palm_log_side"
+  }
+}

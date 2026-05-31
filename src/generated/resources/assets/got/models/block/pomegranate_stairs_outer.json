@@ -1,0 +1,10 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "particle": "got:block/pomegranate_planks",
+    "bottom": "got:block/pomegranate_planks",
+    "top": "got:block/pomegranate_planks",
+    "side": "got:block/pomegranate_planks"
+  },
+  "render_type": "solid"
+}

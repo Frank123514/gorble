@@ -1,0 +1,9 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/date_palm_roofing",
+    "bottom": "got:block/date_palm_roofing",
+    "top": "got:block/date_palm_roofing",
+    "side": "got:block/date_palm_roofing"
+  }
+}

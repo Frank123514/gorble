@@ -1,0 +1,6 @@
+{
+  "parent": "got:block/alder_branch_inventory",
+  "textures": {
+    "texture": "got:block/lime_log_side"
+  }
+}

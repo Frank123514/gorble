@@ -1,0 +1,7 @@
+{
+  "parent": "block/wall_inventory",
+  "textures": {
+    "wall": "got:block/burl_roofing",
+    "particle": "got:block/burl_roofing"
+  }
+}

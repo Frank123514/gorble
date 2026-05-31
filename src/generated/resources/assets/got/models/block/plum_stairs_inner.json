@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/plum_planks",
+    "bottom": "got:block/plum_planks",
+    "top": "got:block/plum_planks",
+    "side": "got:block/plum_planks"
+  },
+  "render_type": "solid"
+}

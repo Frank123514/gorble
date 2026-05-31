@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/peach_planks",
+    "bottom": "got:block/peach_planks",
+    "top": "got:block/peach_planks",
+    "side": "got:block/peach_planks"
+  },
+  "render_type": "solid"
+}

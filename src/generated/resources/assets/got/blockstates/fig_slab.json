@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/fig_slab"
+    },
+    "type=top": {
+      "model": "got:block/fig_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/fig_slab_full"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/date_palm_log_top",
+    "up": "got:block/date_palm_log_top",
+    "north": "got:block/date_palm_log_side",
+    "east": "got:block/date_palm_log_side",
+    "south": "got:block/date_palm_log_side",
+    "west": "got:block/date_palm_log_side",
+    "particle": "got:block/date_palm_log_top"
+  },
+  "render_type": "solid"
+}

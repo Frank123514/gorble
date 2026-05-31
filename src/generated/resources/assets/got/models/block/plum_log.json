@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/plum_log_top",
+    "up": "got:block/plum_log_top",
+    "north": "got:block/plum_log_side",
+    "east": "got:block/plum_log_side",
+    "south": "got:block/plum_log_side",
+    "west": "got:block/plum_log_side",
+    "particle": "got:block/plum_log_top"
+  },
+  "render_type": "solid"
+}

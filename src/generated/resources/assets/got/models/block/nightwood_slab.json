@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/nightwood_planks",
+    "bottom": "got:block/nightwood_planks",
+    "top": "got:block/nightwood_planks",
+    "side": "got:block/nightwood_planks"
+  },
+  "render_type": "solid"
+}

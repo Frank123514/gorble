@@ -1,0 +1,7 @@
+{
+  "parent": "block/wall_side_tall",
+  "textures": {
+    "wall": "got:block/apricot_roofing",
+    "particle": "got:block/apricot_roofing"
+  }
+}
