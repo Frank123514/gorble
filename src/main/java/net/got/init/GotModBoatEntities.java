@@ -29,6 +29,23 @@ public class GotModBoatEntities {
                         .clientTrackingRange(10)
                         .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                 ResourceLocation.fromNamespaceAndPath(GotMod.MODID, name + "_boat"))));
+    }
+
+    private static DeferredHolder<EntityType<?>, EntityType<GotChestBoat>> chestBoat(String name,
+            java.util.function.Supplier<net.minecraft.world.item.Item> dropItem) {
+        ResourceLocation tex = ResourceLocation.fromNamespaceAndPath(GotMod.MODID,
+                "textures/entity/chest_boat/" + name + ".png");
+        return REGISTRY.register(name + "_chest_boat", () ->
+                EntityType.Builder.<GotChestBoat>of(
+                                (type, level) -> new GotChestBoat(type, level, tex, dropItem), MobCategory.MISC)
+                        .sized(1.375f, 0.5625f)
+                        .clientTrackingRange(10)
+                        .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                ResourceLocation.fromNamespaceAndPath(GotMod.MODID, name + "_chest_boat"))));
+    }
+
+    // ── Boat entity types ─────────────────────────────────────────────────────
+
     public static final DeferredHolder<EntityType<?>, EntityType<GotBoat>>      NIGHTWOOD_BOAT       = boat("nightwood", () -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "nightwood_boat")));
     public static final DeferredHolder<EntityType<?>, EntityType<GotChestBoat>> NIGHTWOOD_CHEST_BOAT = chestBoat("nightwood", () -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "nightwood_chest_boat")));
     public static final DeferredHolder<EntityType<?>, EntityType<GotBoat>>      PURPLEHEART_BOAT       = boat("purpleheart", () -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "purpleheart_boat")));
@@ -82,22 +99,8 @@ public class GotModBoatEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<GotBoat>>      HEMLOCK_BOAT       = boat("hemlock", () -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "hemlock_boat")));
     public static final DeferredHolder<EntityType<?>, EntityType<GotChestBoat>> HEMLOCK_CHEST_BOAT = chestBoat("hemlock", () -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "hemlock_chest_boat")));
 
-}
 
-    private static DeferredHolder<EntityType<?>, EntityType<GotChestBoat>> chestBoat(String name,
-            java.util.function.Supplier<net.minecraft.world.item.Item> dropItem) {
-        ResourceLocation tex = ResourceLocation.fromNamespaceAndPath(GotMod.MODID,
-                "textures/entity/chest_boat/" + name + ".png");
-        return REGISTRY.register(name + "_chest_boat", () ->
-                EntityType.Builder.<GotChestBoat>of(
-                                (type, level) -> new GotChestBoat(type, level, tex, dropItem), MobCategory.MISC)
-                        .sized(1.375f, 0.5625f)
-                        .clientTrackingRange(10)
-                        .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                                ResourceLocation.fromNamespaceAndPath(GotMod.MODID, name + "_chest_boat"))));
-    }
-
-    // ── Boat entity types ─────────────────────────────────────────────────────
+    // ── Original boat entity types ────────────────────────────────────────────
 
     public static final DeferredHolder<EntityType<?>, EntityType<GotBoat>>      WEIRWOOD_BOAT            = boat("weirwood", () -> net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(
                 ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "weirwood_boat")));

@@ -1929,10 +1929,6 @@ public class GotModItems {
     public static final DeferredItem<Item> CHERRY_SAPLING        = block(GotModBlocks.CHERRY_SAPLING);
     public static final DeferredItem<Item> STRIPPED_CHERRY_LOG   = block(GotModBlocks.STRIPPED_CHERRY_LOG);
     public static final DeferredItem<Item> STRIPPED_CHERRY_WOOD  = block(GotModBlocks.STRIPPED_CHERRY_WOOD);
-    public static final DeferredItem<BlockItem> CHERRY_ROOFING = REGISTRY.registerSimpleBlockItem("cherry_roofing", GotModBlocks.CHERRY_ROOFING);
-    public static final DeferredItem<BlockItem> CHERRY_ROOFING_SLAB = REGISTRY.registerSimpleBlockItem("cherry_roofing_slab", GotModBlocks.CHERRY_ROOFING_SLAB);
-    public static final DeferredItem<BlockItem> CHERRY_ROOFING_STAIRS = REGISTRY.registerSimpleBlockItem("cherry_roofing_stairs", GotModBlocks.CHERRY_ROOFING_STAIRS);
-    public static final DeferredItem<BlockItem> CHERRY_ROOFING_WALL = REGISTRY.registerSimpleBlockItem("cherry_roofing_wall", GotModBlocks.CHERRY_ROOFING_WALL);
     public static final DeferredItem<Item> CHERRY = REGISTRY.registerItem("cherry", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
 
     // ── crabapple items ──

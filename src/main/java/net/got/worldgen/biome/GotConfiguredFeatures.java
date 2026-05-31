@@ -89,33 +89,6 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> WEIRWOOD         = key("weirwood");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WORMTREE         = key("wormtree");
 
-public static final ResourceKey<ConfiguredFeature<?, ?>> NIGHTWOOD                = key("nightwood");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PURPLEHEART              = key("purpleheart");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TIGERWOOD                = key("tigerwood");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BURL                     = key("burl");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SANDALWOOD               = key("sandalwood");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SANDBEGGAR               = key("sandbeggar");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> APRICOT                  = key("apricot");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BLACKTHORN               = key("blackthorn");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CHERRY                   = key("cherry");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CRABAPPLE                = key("crabapple");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DATE_PALM                = key("date_palm");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> FIG                      = key("fig");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LEMON                    = key("lemon");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LIME                     = key("lime");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> OLIVE                    = key("olive");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE                   = key("orange");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PEACH                    = key("peach");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PEAR                     = key("pear");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PERSIMMON                = key("persimmon");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_IVORY               = key("pink_ivory");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PLUM                     = key("plum");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> POMEGRANATE              = key("pomegranate");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PRUNE                    = key("prune");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ALMOND                   = key("almond");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> NUTMEG                   = key("nutmeg");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> HEMLOCK                  = key("hemlock");
-
 
     // Boulders
     public static final ResourceKey<ConfiguredFeature<?, ?>> BOULDER              = key("boulder");
@@ -166,6 +139,34 @@ public static final ResourceKey<ConfiguredFeature<?, ?>> NIGHTWOOD              
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_RYE         = key("wild_rye");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_TURNIP      = key("wild_turnip");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_WHEAT       = key("wild_wheat");
+
+    // ── New trees (registered via JSON datapacks, keys needed for TreeGrowers) ─
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NIGHTWOOD    = key("nightwood");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PURPLEHEART  = key("purpleheart");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TIGERWOOD    = key("tigerwood");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BURL         = key("burl");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SANDALWOOD   = key("sandalwood");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SANDBEGGAR   = key("sandbeggar");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> APRICOT      = key("apricot");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BLACKTHORN   = key("blackthorn");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CHERRY       = key("cherry");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CRABAPPLE    = key("crabapple");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DATE_PALM    = key("date_palm");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FIG          = key("fig");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LEMON        = key("lemon");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LIME         = key("lime");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> OLIVE        = key("olive");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORANGE       = key("orange");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PEACH        = key("peach");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PEAR         = key("pear");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PERSIMMON    = key("persimmon");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_IVORY   = key("pink_ivory");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PLUM         = key("plum");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> POMEGRANATE  = key("pomegranate");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PRUNE        = key("prune");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ALMOND       = key("almond");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NUTMEG       = key("nutmeg");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> HEMLOCK      = key("hemlock");
 
     // ─────────────────────────────────────────────────────────────────────────
     // Bootstrap – registers every feature's configuration at world-gen time
@@ -675,296 +676,6 @@ public static final ResourceKey<ConfiguredFeature<?, ?>> NIGHTWOOD              
     // ─────────────────────────────────────────────────────────────────────────
     // Helpers
     // ─────────────────────────────────────────────────────────────────────────
-
-    /**
-     * Berry bush patch — spawns the bush at {@code age=3} (fully ripe) and only
-     * places into air, matching the JSON's block_predicate_filter.
-     */
-// nightwood
-        register(ctx, NIGHTWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.NIGHTWOOD_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.NIGHTWOOD_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // purpleheart
-        register(ctx, PURPLEHEART, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PURPLEHEART_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
-                BlockStateProvider.simple(GotModBlocks.PURPLEHEART_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 4),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // tigerwood
-        register(ctx, TIGERWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.TIGERWOOD_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
-                BlockStateProvider.simple(GotModBlocks.TIGERWOOD_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 4),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // burl
-        register(ctx, BURL, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.BURL_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.BURL_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // sandalwood
-        register(ctx, SANDALWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.SANDALWOOD_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.SANDALWOOD_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // sandbeggar
-        register(ctx, SANDBEGGAR, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.SANDBEGGAR_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.SANDBEGGAR_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // apricot
-        register(ctx, APRICOT, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.APRICOT_LOG.get()),
-                new FancyTrunkPlacer(6, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.APRICOT_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), ConstantInt.of(4), 0.25f, 0.25f, 0.5f, 0.8f),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // blackthorn
-        register(ctx, BLACKTHORN, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.BLACKTHORN_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.BLACKTHORN_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // cherry
-        register(ctx, CHERRY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.CHERRY_LOG.get()),
-                new FancyTrunkPlacer(6, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.CHERRY_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), ConstantInt.of(4), 0.25f, 0.25f, 0.5f, 0.8f),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // crabapple
-        register(ctx, CRABAPPLE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.CRABAPPLE_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.CRABAPPLE_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // date_palm
-        register(ctx, DATE_PALM, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.DATE_PALM_LOG.get()),
-                new StraightTrunkPlacer(9, 2, 3),
-                BlockStateProvider.simple(GotModBlocks.DATE_PALM_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
-                new TwoLayersFeatureSize(1, 1, 2))
-                .ignoreVines()
-                .build());
-
-        // fig
-        register(ctx, FIG, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.FIG_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.FIG_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // lemon
-        register(ctx, LEMON, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.LEMON_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.LEMON_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // lime
-        register(ctx, LIME, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.LIME_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.LIME_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // olive
-        register(ctx, OLIVE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.OLIVE_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.OLIVE_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // orange
-        register(ctx, ORANGE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.ORANGE_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.ORANGE_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // peach
-        register(ctx, PEACH, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PEACH_LOG.get()),
-                new FancyTrunkPlacer(6, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.PEACH_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), ConstantInt.of(4), 0.25f, 0.25f, 0.5f, 0.8f),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // pear
-        register(ctx, PEAR, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PEAR_LOG.get()),
-                new FancyTrunkPlacer(6, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.PEAR_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), ConstantInt.of(4), 0.25f, 0.25f, 0.5f, 0.8f),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // persimmon
-        register(ctx, PERSIMMON, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PERSIMMON_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.PERSIMMON_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // pink_ivory
-        register(ctx, PINK_IVORY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PINK_IVORY_LOG.get()),
-                new FancyTrunkPlacer(6, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.PINK_IVORY_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), ConstantInt.of(4), 0.25f, 0.25f, 0.5f, 0.8f),
-                new TwoLayersFeatureSize(1, 0, 2))
-                .ignoreVines()
-                .build());
-
-        // plum
-        register(ctx, PLUM, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PLUM_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.PLUM_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // pomegranate
-        register(ctx, POMEGRANATE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.POMEGRANATE_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.POMEGRANATE_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // prune
-        register(ctx, PRUNE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.PRUNE_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.PRUNE_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // almond
-        register(ctx, ALMOND, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.ALMOND_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.ALMOND_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // nutmeg
-        register(ctx, NUTMEG, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.NUTMEG_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 2),
-                BlockStateProvider.simple(GotModBlocks.NUTMEG_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
-                new TwoLayersFeatureSize(1, 0, 1))
-                .ignoreVines()
-                .build());
-
-        // hemlock
-        register(ctx, HEMLOCK, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(GotModBlocks.HEMLOCK_LOG.get()),
-                new StraightTrunkPlacer(5, 2, 3),
-                BlockStateProvider.simple(GotModBlocks.HEMLOCK_LEAVES.get().defaultBlockState()
-                        .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(UniformInt.of(2,3), UniformInt.of(0,2), UniformInt.of(1,2)),
-                new TwoLayersFeatureSize(2, 0, 2))
-                .ignoreVines()
-                .build());
 
     private static RandomPatchConfiguration berryPatch(
             net.neoforged.neoforge.registries.DeferredBlock<?> block,

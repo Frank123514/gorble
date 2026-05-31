@@ -1,6 +1,8 @@
 package net.got.block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-public class CherryWoodBlock extends GotStrippedWoodBlock {{
-    public CherryWoodBlock(Properties p) {{ super(p); }}
-}}
+
+public class CherryWoodBlock extends GotFlammableRotatedPillarBlock {
+
+    public CherryWoodBlock(Properties properties) {
+        super(properties);
+    }
+}

@@ -631,59 +631,6 @@ public final class GotPlacedFeatures {
                 BiomeFilter.biome());
     }
 
-public static final ResourceKey<PlacedFeature> NIGHTWOOD                    = key("nightwood");
-    public static final ResourceKey<PlacedFeature> NIGHTWOOD_SPARSE             = key("nightwood_sparse");
-    public static final ResourceKey<PlacedFeature> PURPLEHEART                  = key("purpleheart");
-    public static final ResourceKey<PlacedFeature> PURPLEHEART_SPARSE           = key("purpleheart_sparse");
-    public static final ResourceKey<PlacedFeature> TIGERWOOD                    = key("tigerwood");
-    public static final ResourceKey<PlacedFeature> TIGERWOOD_SPARSE             = key("tigerwood_sparse");
-    public static final ResourceKey<PlacedFeature> BURL                         = key("burl");
-    public static final ResourceKey<PlacedFeature> BURL_SPARSE                  = key("burl_sparse");
-    public static final ResourceKey<PlacedFeature> SANDALWOOD                   = key("sandalwood");
-    public static final ResourceKey<PlacedFeature> SANDALWOOD_SPARSE            = key("sandalwood_sparse");
-    public static final ResourceKey<PlacedFeature> SANDBEGGAR                   = key("sandbeggar");
-    public static final ResourceKey<PlacedFeature> SANDBEGGAR_SPARSE            = key("sandbeggar_sparse");
-    public static final ResourceKey<PlacedFeature> APRICOT                      = key("apricot");
-    public static final ResourceKey<PlacedFeature> APRICOT_SPARSE               = key("apricot_sparse");
-    public static final ResourceKey<PlacedFeature> BLACKTHORN                   = key("blackthorn");
-    public static final ResourceKey<PlacedFeature> BLACKTHORN_SPARSE            = key("blackthorn_sparse");
-    public static final ResourceKey<PlacedFeature> CHERRY                       = key("cherry");
-    public static final ResourceKey<PlacedFeature> CHERRY_SPARSE                = key("cherry_sparse");
-    public static final ResourceKey<PlacedFeature> CRABAPPLE                    = key("crabapple");
-    public static final ResourceKey<PlacedFeature> CRABAPPLE_SPARSE             = key("crabapple_sparse");
-    public static final ResourceKey<PlacedFeature> DATE_PALM                    = key("date_palm");
-    public static final ResourceKey<PlacedFeature> DATE_PALM_SPARSE             = key("date_palm_sparse");
-    public static final ResourceKey<PlacedFeature> FIG                          = key("fig");
-    public static final ResourceKey<PlacedFeature> FIG_SPARSE                   = key("fig_sparse");
-    public static final ResourceKey<PlacedFeature> LEMON                        = key("lemon");
-    public static final ResourceKey<PlacedFeature> LEMON_SPARSE                 = key("lemon_sparse");
-    public static final ResourceKey<PlacedFeature> LIME                         = key("lime");
-    public static final ResourceKey<PlacedFeature> LIME_SPARSE                  = key("lime_sparse");
-    public static final ResourceKey<PlacedFeature> OLIVE                        = key("olive");
-    public static final ResourceKey<PlacedFeature> OLIVE_SPARSE                 = key("olive_sparse");
-    public static final ResourceKey<PlacedFeature> ORANGE                       = key("orange");
-    public static final ResourceKey<PlacedFeature> ORANGE_SPARSE                = key("orange_sparse");
-    public static final ResourceKey<PlacedFeature> PEACH                        = key("peach");
-    public static final ResourceKey<PlacedFeature> PEACH_SPARSE                 = key("peach_sparse");
-    public static final ResourceKey<PlacedFeature> PEAR                         = key("pear");
-    public static final ResourceKey<PlacedFeature> PEAR_SPARSE                  = key("pear_sparse");
-    public static final ResourceKey<PlacedFeature> PERSIMMON                    = key("persimmon");
-    public static final ResourceKey<PlacedFeature> PERSIMMON_SPARSE             = key("persimmon_sparse");
-    public static final ResourceKey<PlacedFeature> PINK_IVORY                   = key("pink_ivory");
-    public static final ResourceKey<PlacedFeature> PINK_IVORY_SPARSE            = key("pink_ivory_sparse");
-    public static final ResourceKey<PlacedFeature> PLUM                         = key("plum");
-    public static final ResourceKey<PlacedFeature> PLUM_SPARSE                  = key("plum_sparse");
-    public static final ResourceKey<PlacedFeature> POMEGRANATE                  = key("pomegranate");
-    public static final ResourceKey<PlacedFeature> POMEGRANATE_SPARSE           = key("pomegranate_sparse");
-    public static final ResourceKey<PlacedFeature> PRUNE                        = key("prune");
-    public static final ResourceKey<PlacedFeature> PRUNE_SPARSE                 = key("prune_sparse");
-    public static final ResourceKey<PlacedFeature> ALMOND                       = key("almond");
-    public static final ResourceKey<PlacedFeature> ALMOND_SPARSE                = key("almond_sparse");
-    public static final ResourceKey<PlacedFeature> NUTMEG                       = key("nutmeg");
-    public static final ResourceKey<PlacedFeature> NUTMEG_SPARSE                = key("nutmeg_sparse");
-    public static final ResourceKey<PlacedFeature> HEMLOCK                      = key("hemlock");
-    public static final ResourceKey<PlacedFeature> HEMLOCK_SPARSE               = key("hemlock_sparse");
-
 
     /**
      * Standard rock-pocket ore placement:
@@ -698,160 +645,56 @@ public static final ResourceKey<PlacedFeature> NIGHTWOOD                    = ke
     }
 
 // nightwood
-        register(ctx, NIGHTWOOD, cf.getOrThrow(GotConfiguredFeatures.NIGHTWOOD),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, NIGHTWOOD_SPARSE, cf.getOrThrow(GotConfiguredFeatures.NIGHTWOOD),
-                treeMods(35, CountPlacement.of(1)));
 
         // purpleheart
-        register(ctx, PURPLEHEART, cf.getOrThrow(GotConfiguredFeatures.PURPLEHEART),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PURPLEHEART_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PURPLEHEART),
-                treeMods(35, CountPlacement.of(1)));
 
         // tigerwood
-        register(ctx, TIGERWOOD, cf.getOrThrow(GotConfiguredFeatures.TIGERWOOD),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, TIGERWOOD_SPARSE, cf.getOrThrow(GotConfiguredFeatures.TIGERWOOD),
-                treeMods(35, CountPlacement.of(1)));
 
         // burl
-        register(ctx, BURL, cf.getOrThrow(GotConfiguredFeatures.BURL),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, BURL_SPARSE, cf.getOrThrow(GotConfiguredFeatures.BURL),
-                treeMods(35, CountPlacement.of(1)));
 
         // sandalwood
-        register(ctx, SANDALWOOD, cf.getOrThrow(GotConfiguredFeatures.SANDALWOOD),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, SANDALWOOD_SPARSE, cf.getOrThrow(GotConfiguredFeatures.SANDALWOOD),
-                treeMods(35, CountPlacement.of(1)));
 
         // sandbeggar
-        register(ctx, SANDBEGGAR, cf.getOrThrow(GotConfiguredFeatures.SANDBEGGAR),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, SANDBEGGAR_SPARSE, cf.getOrThrow(GotConfiguredFeatures.SANDBEGGAR),
-                treeMods(35, CountPlacement.of(1)));
 
         // apricot
-        register(ctx, APRICOT, cf.getOrThrow(GotConfiguredFeatures.APRICOT),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, APRICOT_SPARSE, cf.getOrThrow(GotConfiguredFeatures.APRICOT),
-                treeMods(35, CountPlacement.of(1)));
 
         // blackthorn
-        register(ctx, BLACKTHORN, cf.getOrThrow(GotConfiguredFeatures.BLACKTHORN),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, BLACKTHORN_SPARSE, cf.getOrThrow(GotConfiguredFeatures.BLACKTHORN),
-                treeMods(35, CountPlacement.of(1)));
 
         // cherry
-        register(ctx, CHERRY, cf.getOrThrow(GotConfiguredFeatures.CHERRY),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, CHERRY_SPARSE, cf.getOrThrow(GotConfiguredFeatures.CHERRY),
-                treeMods(35, CountPlacement.of(1)));
 
         // crabapple
-        register(ctx, CRABAPPLE, cf.getOrThrow(GotConfiguredFeatures.CRABAPPLE),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, CRABAPPLE_SPARSE, cf.getOrThrow(GotConfiguredFeatures.CRABAPPLE),
-                treeMods(35, CountPlacement.of(1)));
 
         // date_palm
-        register(ctx, DATE_PALM, cf.getOrThrow(GotConfiguredFeatures.DATE_PALM),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, DATE_PALM_SPARSE, cf.getOrThrow(GotConfiguredFeatures.DATE_PALM),
-                treeMods(35, CountPlacement.of(1)));
 
         // fig
-        register(ctx, FIG, cf.getOrThrow(GotConfiguredFeatures.FIG),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, FIG_SPARSE, cf.getOrThrow(GotConfiguredFeatures.FIG),
-                treeMods(35, CountPlacement.of(1)));
 
         // lemon
-        register(ctx, LEMON, cf.getOrThrow(GotConfiguredFeatures.LEMON),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, LEMON_SPARSE, cf.getOrThrow(GotConfiguredFeatures.LEMON),
-                treeMods(35, CountPlacement.of(1)));
 
         // lime
-        register(ctx, LIME, cf.getOrThrow(GotConfiguredFeatures.LIME),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, LIME_SPARSE, cf.getOrThrow(GotConfiguredFeatures.LIME),
-                treeMods(35, CountPlacement.of(1)));
 
         // olive
-        register(ctx, OLIVE, cf.getOrThrow(GotConfiguredFeatures.OLIVE),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, OLIVE_SPARSE, cf.getOrThrow(GotConfiguredFeatures.OLIVE),
-                treeMods(35, CountPlacement.of(1)));
 
         // orange
-        register(ctx, ORANGE, cf.getOrThrow(GotConfiguredFeatures.ORANGE),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, ORANGE_SPARSE, cf.getOrThrow(GotConfiguredFeatures.ORANGE),
-                treeMods(35, CountPlacement.of(1)));
 
         // peach
-        register(ctx, PEACH, cf.getOrThrow(GotConfiguredFeatures.PEACH),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PEACH_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PEACH),
-                treeMods(35, CountPlacement.of(1)));
 
         // pear
-        register(ctx, PEAR, cf.getOrThrow(GotConfiguredFeatures.PEAR),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PEAR_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PEAR),
-                treeMods(35, CountPlacement.of(1)));
 
         // persimmon
-        register(ctx, PERSIMMON, cf.getOrThrow(GotConfiguredFeatures.PERSIMMON),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PERSIMMON_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PERSIMMON),
-                treeMods(35, CountPlacement.of(1)));
 
         // pink_ivory
-        register(ctx, PINK_IVORY, cf.getOrThrow(GotConfiguredFeatures.PINK_IVORY),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PINK_IVORY_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PINK_IVORY),
-                treeMods(35, CountPlacement.of(1)));
 
         // plum
-        register(ctx, PLUM, cf.getOrThrow(GotConfiguredFeatures.PLUM),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PLUM_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PLUM),
-                treeMods(35, CountPlacement.of(1)));
 
         // pomegranate
-        register(ctx, POMEGRANATE, cf.getOrThrow(GotConfiguredFeatures.POMEGRANATE),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, POMEGRANATE_SPARSE, cf.getOrThrow(GotConfiguredFeatures.POMEGRANATE),
-                treeMods(35, CountPlacement.of(1)));
 
         // prune
-        register(ctx, PRUNE, cf.getOrThrow(GotConfiguredFeatures.PRUNE),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, PRUNE_SPARSE, cf.getOrThrow(GotConfiguredFeatures.PRUNE),
-                treeMods(35, CountPlacement.of(1)));
 
         // almond
-        register(ctx, ALMOND, cf.getOrThrow(GotConfiguredFeatures.ALMOND),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, ALMOND_SPARSE, cf.getOrThrow(GotConfiguredFeatures.ALMOND),
-                treeMods(35, CountPlacement.of(1)));
 
         // nutmeg
-        register(ctx, NUTMEG, cf.getOrThrow(GotConfiguredFeatures.NUTMEG),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, NUTMEG_SPARSE, cf.getOrThrow(GotConfiguredFeatures.NUTMEG),
-                treeMods(35, CountPlacement.of(1)));
 
         // hemlock
-        register(ctx, HEMLOCK, cf.getOrThrow(GotConfiguredFeatures.HEMLOCK),
-                treeMods(2, CountPlacement.of(UniformInt.of(1, 2))));
-        register(ctx, HEMLOCK_SPARSE, cf.getOrThrow(GotConfiguredFeatures.HEMLOCK),
-                treeMods(35, CountPlacement.of(1)));
 
     // ─────────────────────────────────────────────────────────────────────────
     // Registry helpers

@@ -1,6 +1,8 @@
 package net.got.block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-public class PersimmonWoodBlock extends GotStrippedWoodBlock {{
-    public PersimmonWoodBlock(Properties p) {{ super(p); }}
-}}
+
+public class PersimmonWoodBlock extends GotFlammableRotatedPillarBlock {
+
+    public PersimmonWoodBlock(Properties properties) {
+        super(properties);
+    }
+}

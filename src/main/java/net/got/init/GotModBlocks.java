@@ -2447,10 +2447,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> CHERRY_SAPLING        = woodBlock("cherry_sapling",        p -> new GotSaplingBlock(GotTreeGrowers.CHERRY, p));
     public static final DeferredBlock<Block> STRIPPED_CHERRY_LOG   = logBlock("stripped_cherry_log",   GotStrippedLogBlock::new);
     public static final DeferredBlock<Block> STRIPPED_CHERRY_WOOD  = logBlock("stripped_cherry_wood",  GotStrippedLogBlock::new);
-    public static final DeferredBlock<Block> CHERRY_ROOFING        = REGISTRY.registerBlock("cherry_roofing",        p -> new Block(p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> CHERRY_ROOFING_SLAB   = REGISTRY.registerBlock("cherry_roofing_slab",   p -> new SlabBlock(p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> CHERRY_ROOFING_STAIRS = REGISTRY.registerBlock("cherry_roofing_stairs", p -> new StairBlock(CHERRY_ROOFING.get().defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> CHERRY_ROOFING_WALL   = REGISTRY.registerBlock("cherry_roofing_wall",   p -> new WallBlock(p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
     // LOGS.put("cherry", CHERRY_LOG); STRIPPED_LOGS.put("cherry", STRIPPED_CHERRY_LOG);
     // WOODS.put("cherry", CHERRY_WOOD); STRIPPED_WOODS.put("cherry", STRIPPED_CHERRY_WOOD);
 

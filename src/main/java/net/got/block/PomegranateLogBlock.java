@@ -1,4 +1,8 @@
 package net.got.block;
-public class PomegranateLogBlock extends GotFlammableRotatedPillarBlock {{
-    public PomegranateLogBlock(Properties p) {{ super(p); }}
-}}
+
+public class PomegranateLogBlock extends GotFlammableRotatedPillarBlock {
+
+    public PomegranateLogBlock(Properties properties) {
+        super(properties);
+    }
+}
