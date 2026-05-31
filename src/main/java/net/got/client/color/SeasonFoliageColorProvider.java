@@ -80,7 +80,9 @@ public final class SeasonFoliageColorProvider {
     private static final int[] SANDBEGGAR         = { 0xA09858, 0x887840, 0xB07828, 0x806858 };
     private static final int[] APRICOT            = { 0x88C048, 0x60902C, 0xC87020, 0x706050 };
     private static final int[] BLACKTHORN         = { 0x506828, 0x304818, 0x804810, 0x585048 };
-    private static final int[] CHERRY             = { 0xF0A0B8, 0x70B038, 0xD02828, 0x685060 };
+    private static final int[] RED_CHERRY             = { 0xF0A0B8, 0x70B038, 0xD02828, 0x685060 };
+    private static final int[] BLACK_CHERRY           = { 0x882848, 0x304820, 0x8C1820, 0x483840 };
+    private static final int[] WHITE_CHERRY           = { 0xF8E0E8, 0x78B840, 0xD8A818, 0x807068 };
     private static final int[] CRABAPPLE          = { 0x90C848, 0x68A030, 0xD05018, 0x706050 };
     private static final int[] DATE_PALM          = { 0x709858, 0x507840, 0xB08828, 0x707060 };
     private static final int[] FIG                = { 0x80A040, 0x587830, 0xA06828, 0x686050 };
@@ -161,7 +163,9 @@ public final class SeasonFoliageColorProvider {
         event.register(treeColor(SANDBEGGAR),        GotModBlocks.SANDBEGGAR_LEAVES.get());
         event.register(treeColor(APRICOT),        GotModBlocks.APRICOT_LEAVES.get());
         event.register(treeColor(BLACKTHORN),        GotModBlocks.BLACKTHORN_LEAVES.get());
-        event.register(treeColor(CHERRY),        GotModBlocks.CHERRY_LEAVES.get());
+        event.register(treeColor(RED_CHERRY),        GotModBlocks.RED_CHERRY_LEAVES.get());
+        event.register(treeColor(BLACK_CHERRY),      GotModBlocks.BLACK_CHERRY_LEAVES.get());
+        event.register(treeColor(WHITE_CHERRY),      GotModBlocks.WHITE_CHERRY_LEAVES.get());
         event.register(treeColor(CRABAPPLE),        GotModBlocks.CRABAPPLE_LEAVES.get());
         event.register(treeColor(DATE_PALM),        GotModBlocks.DATE_PALM_LEAVES.get());
         event.register(treeColor(FIG),        GotModBlocks.FIG_LEAVES.get());

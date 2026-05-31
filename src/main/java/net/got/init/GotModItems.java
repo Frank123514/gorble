@@ -1908,28 +1908,73 @@ public class GotModItems {
     public static final DeferredItem<BlockItem> BLACKTHORN_ROOFING_WALL = REGISTRY.registerSimpleBlockItem("blackthorn_roofing_wall", GotModBlocks.BLACKTHORN_ROOFING_WALL);
     public static final DeferredItem<Item> SLOE = REGISTRY.registerItem("sloe", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build()));
 
-    // ── cherry items ──
-    public static final DeferredItem<Item> CHERRY_LOG            = block(GotModBlocks.CHERRY_LOG);
-    public static final DeferredItem<Item> CHERRY_WOOD           = block(GotModBlocks.CHERRY_WOOD);
-    public static final DeferredItem<Item> CHERRY_PLANKS         = block(GotModBlocks.CHERRY_PLANKS);
-    public static final DeferredItem<Item> CHERRY_LEAVES         = block(GotModBlocks.CHERRY_LEAVES);
-    public static final DeferredItem<Item> CHERRY_STAIRS         = block(GotModBlocks.CHERRY_STAIRS);
-    public static final DeferredItem<Item> CHERRY_SLAB           = block(GotModBlocks.CHERRY_SLAB);
-    public static final DeferredItem<Item> CHERRY_FENCE          = block(GotModBlocks.CHERRY_FENCE);
-    public static final DeferredItem<Item> CHERRY_FENCE_GATE     = block(GotModBlocks.CHERRY_FENCE_GATE);
-    public static final DeferredItem<Item> CHERRY_PRESSURE_PLATE = block(GotModBlocks.CHERRY_PRESSURE_PLATE);
-    public static final DeferredItem<Item> CHERRY_BUTTON         = block(GotModBlocks.CHERRY_BUTTON);
-    public static final DeferredItem<Item> CHERRY_DOOR           = door(GotModBlocks.CHERRY_DOOR);
-    public static final DeferredItem<Item> CHERRY_TRAPDOOR       = block(GotModBlocks.CHERRY_TRAPDOOR);
-    public static final DeferredItem<Item> CHERRY_BRANCH         = block(GotModBlocks.CHERRY_BRANCH);
-    public static final DeferredItem<Item> CHERRY_SIGN           = REGISTRY.registerItem("cherry_sign",         p -> new SignItem(GotModBlocks.CHERRY_SIGN.get(), GotModBlocks.CHERRY_WALL_SIGN.get(), p));
-    public static final DeferredItem<Item> CHERRY_HANGING_SIGN   = REGISTRY.registerItem("cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.CHERRY_HANGING_SIGN.get(), GotModBlocks.CHERRY_WALL_HANGING_SIGN.get(), p));
-    public static final DeferredItem<Item> CHERRY_BOAT           = REGISTRY.registerItem("cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.CHERRY_BOAT.get(), p));
-    public static final DeferredItem<Item> CHERRY_CHEST_BOAT     = REGISTRY.registerItem("cherry_chest_boat", p -> new GotBoatItem(GotModBoatEntities.CHERRY_CHEST_BOAT.get(), p));
-    public static final DeferredItem<Item> CHERRY_SAPLING        = block(GotModBlocks.CHERRY_SAPLING);
-    public static final DeferredItem<Item> STRIPPED_CHERRY_LOG   = block(GotModBlocks.STRIPPED_CHERRY_LOG);
-    public static final DeferredItem<Item> STRIPPED_CHERRY_WOOD  = block(GotModBlocks.STRIPPED_CHERRY_WOOD);
-    public static final DeferredItem<Item> CHERRY = REGISTRY.registerItem("cherry", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
+    // ── red_cherry items ──
+    public static final DeferredItem<Item> RED_CHERRY_LOG            = block(GotModBlocks.RED_CHERRY_LOG);
+    public static final DeferredItem<Item> RED_CHERRY_WOOD           = block(GotModBlocks.RED_CHERRY_WOOD);
+    public static final DeferredItem<Item> RED_CHERRY_PLANKS         = block(GotModBlocks.RED_CHERRY_PLANKS);
+    public static final DeferredItem<Item> RED_CHERRY_LEAVES         = block(GotModBlocks.RED_CHERRY_LEAVES);
+    public static final DeferredItem<Item> RED_CHERRY_STAIRS         = block(GotModBlocks.RED_CHERRY_STAIRS);
+    public static final DeferredItem<Item> RED_CHERRY_SLAB           = block(GotModBlocks.RED_CHERRY_SLAB);
+    public static final DeferredItem<Item> RED_CHERRY_FENCE          = block(GotModBlocks.RED_CHERRY_FENCE);
+    public static final DeferredItem<Item> RED_CHERRY_FENCE_GATE     = block(GotModBlocks.RED_CHERRY_FENCE_GATE);
+    public static final DeferredItem<Item> RED_CHERRY_PRESSURE_PLATE = block(GotModBlocks.RED_CHERRY_PRESSURE_PLATE);
+    public static final DeferredItem<Item> RED_CHERRY_BUTTON         = block(GotModBlocks.RED_CHERRY_BUTTON);
+    public static final DeferredItem<Item> RED_CHERRY_DOOR           = door(GotModBlocks.RED_CHERRY_DOOR);
+    public static final DeferredItem<Item> RED_CHERRY_TRAPDOOR       = block(GotModBlocks.RED_CHERRY_TRAPDOOR);
+    public static final DeferredItem<Item> RED_CHERRY_BRANCH         = block(GotModBlocks.RED_CHERRY_BRANCH);
+    public static final DeferredItem<Item> RED_CHERRY_SIGN           = REGISTRY.registerItem("red_cherry_sign",         p -> new SignItem(GotModBlocks.RED_CHERRY_SIGN.get(), GotModBlocks.RED_CHERRY_WALL_SIGN.get(), p));
+    public static final DeferredItem<Item> RED_CHERRY_HANGING_SIGN   = REGISTRY.registerItem("red_cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.RED_CHERRY_HANGING_SIGN.get(), GotModBlocks.RED_CHERRY_WALL_HANGING_SIGN.get(), p));
+    public static final DeferredItem<Item> RED_CHERRY_BOAT           = REGISTRY.registerItem("red_cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.RED_CHERRY_BOAT.get(), p));
+    public static final DeferredItem<Item> RED_CHERRY_CHEST_BOAT     = REGISTRY.registerItem("red_cherry_chest_boat", p -> new GotBoatItem(GotModBoatEntities.RED_CHERRY_CHEST_BOAT.get(), p));
+    public static final DeferredItem<Item> RED_CHERRY_SAPLING        = block(GotModBlocks.RED_CHERRY_SAPLING);
+    public static final DeferredItem<Item> STRIPPED_RED_CHERRY_LOG   = block(GotModBlocks.STRIPPED_RED_CHERRY_LOG);
+    public static final DeferredItem<Item> STRIPPED_RED_CHERRY_WOOD  = block(GotModBlocks.STRIPPED_RED_CHERRY_WOOD);
+    // ── black_cherry items ──
+    public static final DeferredItem<Item> BLACK_CHERRY_LOG            = block(GotModBlocks.BLACK_CHERRY_LOG);
+    public static final DeferredItem<Item> BLACK_CHERRY_WOOD           = block(GotModBlocks.BLACK_CHERRY_WOOD);
+    public static final DeferredItem<Item> BLACK_CHERRY_PLANKS         = block(GotModBlocks.BLACK_CHERRY_PLANKS);
+    public static final DeferredItem<Item> BLACK_CHERRY_LEAVES         = block(GotModBlocks.BLACK_CHERRY_LEAVES);
+    public static final DeferredItem<Item> BLACK_CHERRY_STAIRS         = block(GotModBlocks.BLACK_CHERRY_STAIRS);
+    public static final DeferredItem<Item> BLACK_CHERRY_SLAB           = block(GotModBlocks.BLACK_CHERRY_SLAB);
+    public static final DeferredItem<Item> BLACK_CHERRY_FENCE          = block(GotModBlocks.BLACK_CHERRY_FENCE);
+    public static final DeferredItem<Item> BLACK_CHERRY_FENCE_GATE     = block(GotModBlocks.BLACK_CHERRY_FENCE_GATE);
+    public static final DeferredItem<Item> BLACK_CHERRY_PRESSURE_PLATE = block(GotModBlocks.BLACK_CHERRY_PRESSURE_PLATE);
+    public static final DeferredItem<Item> BLACK_CHERRY_BUTTON         = block(GotModBlocks.BLACK_CHERRY_BUTTON);
+    public static final DeferredItem<Item> BLACK_CHERRY_DOOR           = door(GotModBlocks.BLACK_CHERRY_DOOR);
+    public static final DeferredItem<Item> BLACK_CHERRY_TRAPDOOR       = block(GotModBlocks.BLACK_CHERRY_TRAPDOOR);
+    public static final DeferredItem<Item> BLACK_CHERRY_BRANCH         = block(GotModBlocks.BLACK_CHERRY_BRANCH);
+    public static final DeferredItem<Item> BLACK_CHERRY_SIGN           = REGISTRY.registerItem("black_cherry_sign",         p -> new SignItem(GotModBlocks.BLACK_CHERRY_SIGN.get(), GotModBlocks.BLACK_CHERRY_WALL_SIGN.get(), p));
+    public static final DeferredItem<Item> BLACK_CHERRY_HANGING_SIGN   = REGISTRY.registerItem("black_cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.BLACK_CHERRY_HANGING_SIGN.get(), GotModBlocks.BLACK_CHERRY_WALL_HANGING_SIGN.get(), p));
+    public static final DeferredItem<Item> BLACK_CHERRY_BOAT           = REGISTRY.registerItem("black_cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.BLACK_CHERRY_BOAT.get(), p));
+    public static final DeferredItem<Item> BLACK_CHERRY_CHEST_BOAT     = REGISTRY.registerItem("black_cherry_chest_boat", p -> new GotBoatItem(GotModBoatEntities.BLACK_CHERRY_CHEST_BOAT.get(), p));
+    public static final DeferredItem<Item> BLACK_CHERRY_SAPLING        = block(GotModBlocks.BLACK_CHERRY_SAPLING);
+    public static final DeferredItem<Item> STRIPPED_BLACK_CHERRY_LOG   = block(GotModBlocks.STRIPPED_BLACK_CHERRY_LOG);
+    public static final DeferredItem<Item> STRIPPED_BLACK_CHERRY_WOOD  = block(GotModBlocks.STRIPPED_BLACK_CHERRY_WOOD);
+    public static final DeferredItem<Item> BLACK_CHERRY = REGISTRY.registerItem("black_cherry", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
+
+    // ── white_cherry items ──
+    public static final DeferredItem<Item> WHITE_CHERRY_LOG            = block(GotModBlocks.WHITE_CHERRY_LOG);
+    public static final DeferredItem<Item> WHITE_CHERRY_WOOD           = block(GotModBlocks.WHITE_CHERRY_WOOD);
+    public static final DeferredItem<Item> WHITE_CHERRY_PLANKS         = block(GotModBlocks.WHITE_CHERRY_PLANKS);
+    public static final DeferredItem<Item> WHITE_CHERRY_LEAVES         = block(GotModBlocks.WHITE_CHERRY_LEAVES);
+    public static final DeferredItem<Item> WHITE_CHERRY_STAIRS         = block(GotModBlocks.WHITE_CHERRY_STAIRS);
+    public static final DeferredItem<Item> WHITE_CHERRY_SLAB           = block(GotModBlocks.WHITE_CHERRY_SLAB);
+    public static final DeferredItem<Item> WHITE_CHERRY_FENCE          = block(GotModBlocks.WHITE_CHERRY_FENCE);
+    public static final DeferredItem<Item> WHITE_CHERRY_FENCE_GATE     = block(GotModBlocks.WHITE_CHERRY_FENCE_GATE);
+    public static final DeferredItem<Item> WHITE_CHERRY_PRESSURE_PLATE = block(GotModBlocks.WHITE_CHERRY_PRESSURE_PLATE);
+    public static final DeferredItem<Item> WHITE_CHERRY_BUTTON         = block(GotModBlocks.WHITE_CHERRY_BUTTON);
+    public static final DeferredItem<Item> WHITE_CHERRY_DOOR           = door(GotModBlocks.WHITE_CHERRY_DOOR);
+    public static final DeferredItem<Item> WHITE_CHERRY_TRAPDOOR       = block(GotModBlocks.WHITE_CHERRY_TRAPDOOR);
+    public static final DeferredItem<Item> WHITE_CHERRY_BRANCH         = block(GotModBlocks.WHITE_CHERRY_BRANCH);
+    public static final DeferredItem<Item> WHITE_CHERRY_SIGN           = REGISTRY.registerItem("white_cherry_sign",         p -> new SignItem(GotModBlocks.WHITE_CHERRY_SIGN.get(), GotModBlocks.WHITE_CHERRY_WALL_SIGN.get(), p));
+    public static final DeferredItem<Item> WHITE_CHERRY_HANGING_SIGN   = REGISTRY.registerItem("white_cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.WHITE_CHERRY_HANGING_SIGN.get(), GotModBlocks.WHITE_CHERRY_WALL_HANGING_SIGN.get(), p));
+    public static final DeferredItem<Item> WHITE_CHERRY_BOAT           = REGISTRY.registerItem("white_cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.WHITE_CHERRY_BOAT.get(), p));
+    public static final DeferredItem<Item> WHITE_CHERRY_CHEST_BOAT     = REGISTRY.registerItem("white_cherry_chest_boat", p -> new GotBoatItem(GotModBoatEntities.WHITE_CHERRY_CHEST_BOAT.get(), p));
+    public static final DeferredItem<Item> WHITE_CHERRY_SAPLING        = block(GotModBlocks.WHITE_CHERRY_SAPLING);
+    public static final DeferredItem<Item> STRIPPED_WHITE_CHERRY_LOG   = block(GotModBlocks.STRIPPED_WHITE_CHERRY_LOG);
+    public static final DeferredItem<Item> STRIPPED_WHITE_CHERRY_WOOD  = block(GotModBlocks.STRIPPED_WHITE_CHERRY_WOOD);
+    public static final DeferredItem<Item> WHITE_CHERRY = REGISTRY.registerItem("white_cherry", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
+    public static final DeferredItem<Item> RED_CHERRY = REGISTRY.registerItem("red_cherry", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
 
     // ── crabapple items ──
     public static final DeferredItem<Item> CRABAPPLE_LOG            = block(GotModBlocks.CRABAPPLE_LOG);

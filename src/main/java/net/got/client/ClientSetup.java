@@ -108,8 +108,8 @@ public final class ClientSetup {
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.APRICOT_TRAPDOOR.get(), RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.BLACKTHORN_DOOR.get(),     RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.BLACKTHORN_TRAPDOOR.get(), RenderType.cutout());
-            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.CHERRY_DOOR.get(),     RenderType.cutout());
-            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.CHERRY_TRAPDOOR.get(), RenderType.cutout());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.RED_CHERRY_DOOR.get(),     RenderType.cutout());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.RED_CHERRY_TRAPDOOR.get(), RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.CRABAPPLE_DOOR.get(),     RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.CRABAPPLE_TRAPDOOR.get(), RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.DATE_PALM_DOOR.get(),     RenderType.cutout());
@@ -271,8 +271,12 @@ net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.A
         event.registerEntityRenderer(boat(GotModBoatEntities.APRICOT_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "apricot"));
         event.registerEntityRenderer(boat(GotModBoatEntities.BLACKTHORN_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "blackthorn"));
         event.registerEntityRenderer(boat(GotModBoatEntities.BLACKTHORN_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "blackthorn"));
-        event.registerEntityRenderer(boat(GotModBoatEntities.CHERRY_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "cherry"));
-        event.registerEntityRenderer(boat(GotModBoatEntities.CHERRY_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "cherry"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.RED_CHERRY_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "red_cherry"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.RED_CHERRY_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "red_cherry"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.WHITE_CHERRY_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "white_cherry"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.WHITE_CHERRY_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "white_cherry"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.BLACK_CHERRY_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "black_cherry"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.BLACK_CHERRY_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "black_cherry"));
         event.registerEntityRenderer(boat(GotModBoatEntities.CRABAPPLE_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "crabapple"));
         event.registerEntityRenderer(boat(GotModBoatEntities.CRABAPPLE_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "crabapple"));
         event.registerEntityRenderer(boat(GotModBoatEntities.DATE_PALM_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "date_palm"));
@@ -381,7 +385,7 @@ event.registerEntityRenderer(boat(GotModBoatEntities.ALDER_BOAT.get()),         
         event.registerBlockEntityRenderer(GotModBlockEntities.SANDBEGGAR_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.APRICOT_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.BLACKTHORN_SIGN.get(), SignRenderer::new);
-        event.registerBlockEntityRenderer(GotModBlockEntities.CHERRY_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(GotModBlockEntities.RED_CHERRY_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.CRABAPPLE_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.DATE_PALM_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.FIG_SIGN.get(), SignRenderer::new);

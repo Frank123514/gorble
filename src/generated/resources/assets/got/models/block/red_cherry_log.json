@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/red_cherry_log_top",
+    "up": "got:block/red_cherry_log_top",
+    "north": "got:block/red_cherry_log_side",
+    "east": "got:block/red_cherry_log_side",
+    "south": "got:block/red_cherry_log_side",
+    "west": "got:block/red_cherry_log_side",
+    "particle": "got:block/red_cherry_log_top"
+  },
+  "render_type": "solid"
+}

@@ -131,7 +131,11 @@ public class GotModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             BLACKTHORN_SIGN = sign("blackthorn", GotModBlocks.BLACKTHORN_SIGN, GotModBlocks.BLACKTHORN_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
-            CHERRY_SIGN = sign("cherry", GotModBlocks.CHERRY_SIGN, GotModBlocks.CHERRY_WALL_SIGN);
+            RED_CHERRY_SIGN = sign("red_cherry", GotModBlocks.RED_CHERRY_SIGN, GotModBlocks.RED_CHERRY_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+        WHITE_CHERRY_SIGN = sign("white_cherry", GotModBlocks.WHITE_CHERRY_SIGN, GotModBlocks.WHITE_CHERRY_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+        BLACK_CHERRY_SIGN = sign("black_cherry", GotModBlocks.BLACK_CHERRY_SIGN, GotModBlocks.BLACK_CHERRY_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             CRABAPPLE_SIGN = sign("crabapple", GotModBlocks.CRABAPPLE_SIGN, GotModBlocks.CRABAPPLE_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>

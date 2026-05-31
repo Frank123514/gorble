@@ -149,7 +149,9 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SANDBEGGAR   = key("sandbeggar");
     public static final ResourceKey<ConfiguredFeature<?, ?>> APRICOT      = key("apricot");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BLACKTHORN   = key("blackthorn");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CHERRY       = key("cherry");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RED_CHERRY       = key("red_cherry");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> WHITE_CHERRY       = key("white_cherry");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BLACK_CHERRY       = key("black_cherry");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CRABAPPLE    = key("crabapple");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DATE_PALM    = key("date_palm");
     public static final ResourceKey<ConfiguredFeature<?, ?>> FIG          = key("fig");

@@ -660,7 +660,7 @@ public final class GotPlacedFeatures {
 
         // blackthorn
 
-        // cherry
+        // red_cherry / black_cherry / white_cherry
 
         // crabapple
 

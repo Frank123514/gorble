@@ -2079,7 +2079,7 @@ public class GotModBlocks {
         LOGS.put("sandbeggar", SANDBEGGAR_LOG);
         LOGS.put("apricot", APRICOT_LOG);
         LOGS.put("blackthorn", BLACKTHORN_LOG);
-        LOGS.put("cherry", CHERRY_LOG);
+        LOGS.put("red_cherry", RED_CHERRY_LOG);
         LOGS.put("crabapple", CRABAPPLE_LOG);
         LOGS.put("date_palm", DATE_PALM_LOG);
         LOGS.put("fig", FIG_LOG);
@@ -2105,7 +2105,9 @@ public class GotModBlocks {
         STRIPPED_LOGS.put("sandbeggar", STRIPPED_SANDBEGGAR_LOG);
         STRIPPED_LOGS.put("apricot", STRIPPED_APRICOT_LOG);
         STRIPPED_LOGS.put("blackthorn", STRIPPED_BLACKTHORN_LOG);
-        STRIPPED_LOGS.put("cherry", STRIPPED_CHERRY_LOG);
+        STRIPPED_LOGS.put("red_cherry", STRIPPED_RED_CHERRY_LOG);
+        STRIPPED_LOGS.put("black_cherry", STRIPPED_BLACK_CHERRY_LOG);
+        STRIPPED_LOGS.put("white_cherry", STRIPPED_WHITE_CHERRY_LOG);
         STRIPPED_LOGS.put("crabapple", STRIPPED_CRABAPPLE_LOG);
         STRIPPED_LOGS.put("date_palm", STRIPPED_DATE_PALM_LOG);
         STRIPPED_LOGS.put("fig", STRIPPED_FIG_LOG);
@@ -2131,7 +2133,7 @@ public class GotModBlocks {
         WOODS.put("sandbeggar", SANDBEGGAR_WOOD);
         WOODS.put("apricot", APRICOT_WOOD);
         WOODS.put("blackthorn", BLACKTHORN_WOOD);
-        WOODS.put("cherry", CHERRY_WOOD);
+        WOODS.put("red_cherry", RED_CHERRY_WOOD);
         WOODS.put("crabapple", CRABAPPLE_WOOD);
         WOODS.put("date_palm", DATE_PALM_WOOD);
         WOODS.put("fig", FIG_WOOD);
@@ -2157,7 +2159,9 @@ public class GotModBlocks {
         STRIPPED_WOODS.put("sandbeggar", STRIPPED_SANDBEGGAR_WOOD);
         STRIPPED_WOODS.put("apricot", STRIPPED_APRICOT_WOOD);
         STRIPPED_WOODS.put("blackthorn", STRIPPED_BLACKTHORN_WOOD);
-        STRIPPED_WOODS.put("cherry", STRIPPED_CHERRY_WOOD);
+        STRIPPED_WOODS.put("red_cherry", STRIPPED_RED_CHERRY_WOOD);
+        STRIPPED_WOODS.put("black_cherry", STRIPPED_BLACK_CHERRY_WOOD);
+        STRIPPED_WOODS.put("white_cherry", STRIPPED_WHITE_CHERRY_WOOD);
         STRIPPED_WOODS.put("crabapple", STRIPPED_CRABAPPLE_WOOD);
         STRIPPED_WOODS.put("date_palm", STRIPPED_DATE_PALM_WOOD);
         STRIPPED_WOODS.put("fig", STRIPPED_FIG_WOOD);
@@ -2427,28 +2431,73 @@ public class GotModBlocks {
     // WOODS.put("blackthorn", BLACKTHORN_WOOD); STRIPPED_WOODS.put("blackthorn", STRIPPED_BLACKTHORN_WOOD);
 
     // ── Cherry ──
-    public static final DeferredBlock<Block> CHERRY_LOG            = logBlock("cherry_log",            CherryLogBlock::new);
-    public static final DeferredBlock<Block> CHERRY_WOOD           = logBlock("cherry_wood",           CherryWoodBlock::new);
-    public static final DeferredBlock<Block> CHERRY_PLANKS         = woodBlock("cherry_planks",         CherryPlanksBlock::new);
-    public static final DeferredBlock<Block> CHERRY_LEAVES         = woodBlock("cherry_leaves",         CherryLeavesBlock::new);
-    public static final DeferredBlock<Block> CHERRY_STAIRS         = woodBlock("cherry_stairs",         p -> new CherryStairsBlock(CHERRY_PLANKS.get().defaultBlockState(), p));
-    public static final DeferredBlock<Block> CHERRY_SLAB           = woodBlock("cherry_slab",           CherrySlabBlock::new);
-    public static final DeferredBlock<Block> CHERRY_FENCE          = woodBlock("cherry_fence",          CherryFenceBlock::new);
-    public static final DeferredBlock<Block> CHERRY_FENCE_GATE     = woodBlock("cherry_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.CHERRY, p));
-    public static final DeferredBlock<Block> CHERRY_PRESSURE_PLATE = woodBlock("cherry_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
-    public static final DeferredBlock<Block> CHERRY_BUTTON         = woodBlock("cherry_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
-    public static final DeferredBlock<Block> CHERRY_DOOR           = doorBlock("cherry_door",     p -> new DoorBlock(BlockSetType.OAK, p));
-    public static final DeferredBlock<Block> CHERRY_TRAPDOOR       = trapdoorBlock("cherry_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
-    public static final DeferredBlock<Block> CHERRY_SIGN           = woodBlock("cherry_sign",      p -> new GotStandingSignBlock(GotWoodTypes.CHERRY, p, () -> GotModBlockEntities.CHERRY_SIGN.get()));
-    public static final DeferredBlock<Block> CHERRY_WALL_SIGN      = woodBlock("cherry_wall_sign", p -> new GotWallSignBlock(GotWoodTypes.CHERRY, p, () -> GotModBlockEntities.CHERRY_SIGN.get()));
-    public static final DeferredBlock<Block> CHERRY_HANGING_SIGN      = woodBlock("cherry_hanging_sign",      p -> new CeilingHangingSignBlock(GotWoodTypes.CHERRY, p));
-    public static final DeferredBlock<Block> CHERRY_WALL_HANGING_SIGN = woodBlock("cherry_wall_hanging_sign", p -> new WallHangingSignBlock(GotWoodTypes.CHERRY, p));
-    public static final DeferredBlock<Block> CHERRY_BRANCH         = woodBlock("cherry_branch",         WoodBranchBlock::new);
-    public static final DeferredBlock<Block> CHERRY_SAPLING        = woodBlock("cherry_sapling",        p -> new GotSaplingBlock(GotTreeGrowers.CHERRY, p));
-    public static final DeferredBlock<Block> STRIPPED_CHERRY_LOG   = logBlock("stripped_cherry_log",   GotStrippedLogBlock::new);
-    public static final DeferredBlock<Block> STRIPPED_CHERRY_WOOD  = logBlock("stripped_cherry_wood",  GotStrippedLogBlock::new);
-    // LOGS.put("cherry", CHERRY_LOG); STRIPPED_LOGS.put("cherry", STRIPPED_CHERRY_LOG);
-    // WOODS.put("cherry", CHERRY_WOOD); STRIPPED_WOODS.put("cherry", STRIPPED_CHERRY_WOOD);
+    public static final DeferredBlock<Block> RED_CHERRY_LOG            = logBlock("red_cherry_log",            CherryLogBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_WOOD           = logBlock("red_cherry_wood",           CherryWoodBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_PLANKS         = woodBlock("red_cherry_planks",         CherryPlanksBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_LEAVES         = woodBlock("red_cherry_leaves",         CherryLeavesBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_STAIRS         = woodBlock("red_cherry_stairs",         p -> new CherryStairsBlock(RED_CHERRY_PLANKS.get().defaultBlockState(), p));
+    public static final DeferredBlock<Block> RED_CHERRY_SLAB           = woodBlock("red_cherry_slab",           CherrySlabBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_FENCE          = woodBlock("red_cherry_fence",          CherryFenceBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_FENCE_GATE     = woodBlock("red_cherry_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.RED_CHERRY, p));
+    public static final DeferredBlock<Block> RED_CHERRY_PRESSURE_PLATE = woodBlock("red_cherry_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> RED_CHERRY_BUTTON         = woodBlock("red_cherry_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
+    public static final DeferredBlock<Block> RED_CHERRY_DOOR           = doorBlock("red_cherry_door",     p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> RED_CHERRY_TRAPDOOR       = trapdoorBlock("red_cherry_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> RED_CHERRY_SIGN           = woodBlock("red_cherry_sign",      p -> new GotStandingSignBlock(GotWoodTypes.RED_CHERRY, p, () -> GotModBlockEntities.RED_CHERRY_SIGN.get()));
+    public static final DeferredBlock<Block> RED_CHERRY_WALL_SIGN      = woodBlock("red_cherry_wall_sign", p -> new GotWallSignBlock(GotWoodTypes.RED_CHERRY, p, () -> GotModBlockEntities.RED_CHERRY_SIGN.get()));
+    public static final DeferredBlock<Block> RED_CHERRY_HANGING_SIGN      = woodBlock("red_cherry_hanging_sign",      p -> new CeilingHangingSignBlock(GotWoodTypes.RED_CHERRY, p));
+    public static final DeferredBlock<Block> RED_CHERRY_WALL_HANGING_SIGN = woodBlock("red_cherry_wall_hanging_sign", p -> new WallHangingSignBlock(GotWoodTypes.RED_CHERRY, p));
+    public static final DeferredBlock<Block> RED_CHERRY_BRANCH         = woodBlock("red_cherry_branch",         WoodBranchBlock::new);
+    public static final DeferredBlock<Block> RED_CHERRY_SAPLING        = woodBlock("red_cherry_sapling",        p -> new GotSaplingBlock(GotTreeGrowers.RED_CHERRY, p));
+    public static final DeferredBlock<Block> STRIPPED_RED_CHERRY_LOG   = logBlock("stripped_red_cherry_log",   GotStrippedLogBlock::new);
+    public static final DeferredBlock<Block> STRIPPED_RED_CHERRY_WOOD  = logBlock("stripped_red_cherry_wood",  GotStrippedLogBlock::new);
+
+    // ── black_cherry ──────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> BLACK_CHERRY_LOG            = logBlock("black_cherry_log",            CherryLogBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_WOOD           = logBlock("black_cherry_wood",           CherryWoodBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_PLANKS         = woodBlock("black_cherry_planks",         CherryPlanksBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_LEAVES         = woodBlock("black_cherry_leaves",         CherryLeavesBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_STAIRS         = woodBlock("black_cherry_stairs",         p -> new CherryStairsBlock(BLACK_CHERRY_PLANKS.get().defaultBlockState(), p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_SLAB           = woodBlock("black_cherry_slab",           CherrySlabBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_FENCE          = woodBlock("black_cherry_fence",          CherryFenceBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_FENCE_GATE     = woodBlock("black_cherry_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.BLACK_CHERRY, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_PRESSURE_PLATE = woodBlock("black_cherry_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_BUTTON         = woodBlock("black_cherry_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_DOOR           = doorBlock("black_cherry_door",     p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_TRAPDOOR       = trapdoorBlock("black_cherry_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_SIGN           = woodBlock("black_cherry_sign",      p -> new GotStandingSignBlock(GotWoodTypes.BLACK_CHERRY, p, () -> GotModBlockEntities.BLACK_CHERRY_SIGN.get()));
+    public static final DeferredBlock<Block> BLACK_CHERRY_WALL_SIGN      = woodBlock("black_cherry_wall_sign", p -> new GotWallSignBlock(GotWoodTypes.BLACK_CHERRY, p, () -> GotModBlockEntities.BLACK_CHERRY_SIGN.get()));
+    public static final DeferredBlock<Block> BLACK_CHERRY_HANGING_SIGN      = woodBlock("black_cherry_hanging_sign",      p -> new CeilingHangingSignBlock(GotWoodTypes.BLACK_CHERRY, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_WALL_HANGING_SIGN = woodBlock("black_cherry_wall_hanging_sign", p -> new WallHangingSignBlock(GotWoodTypes.BLACK_CHERRY, p));
+    public static final DeferredBlock<Block> BLACK_CHERRY_BRANCH         = woodBlock("black_cherry_branch",         WoodBranchBlock::new);
+    public static final DeferredBlock<Block> BLACK_CHERRY_SAPLING        = woodBlock("black_cherry_sapling",        p -> new GotSaplingBlock(GotTreeGrowers.BLACK_CHERRY, p));
+    public static final DeferredBlock<Block> STRIPPED_BLACK_CHERRY_LOG   = logBlock("stripped_black_cherry_log",   GotStrippedLogBlock::new);
+    public static final DeferredBlock<Block> STRIPPED_BLACK_CHERRY_WOOD  = logBlock("stripped_black_cherry_wood",  GotStrippedLogBlock::new);
+
+    // ── white_cherry ──────────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> WHITE_CHERRY_LOG            = logBlock("white_cherry_log",            CherryLogBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_WOOD           = logBlock("white_cherry_wood",           CherryWoodBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_PLANKS         = woodBlock("white_cherry_planks",         CherryPlanksBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_LEAVES         = woodBlock("white_cherry_leaves",         CherryLeavesBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_STAIRS         = woodBlock("white_cherry_stairs",         p -> new CherryStairsBlock(WHITE_CHERRY_PLANKS.get().defaultBlockState(), p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_SLAB           = woodBlock("white_cherry_slab",           CherrySlabBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_FENCE          = woodBlock("white_cherry_fence",          CherryFenceBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_FENCE_GATE     = woodBlock("white_cherry_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.WHITE_CHERRY, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_PRESSURE_PLATE = woodBlock("white_cherry_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_BUTTON         = woodBlock("white_cherry_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_DOOR           = doorBlock("white_cherry_door",     p -> new DoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_TRAPDOOR       = trapdoorBlock("white_cherry_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_SIGN           = woodBlock("white_cherry_sign",      p -> new GotStandingSignBlock(GotWoodTypes.WHITE_CHERRY, p, () -> GotModBlockEntities.WHITE_CHERRY_SIGN.get()));
+    public static final DeferredBlock<Block> WHITE_CHERRY_WALL_SIGN      = woodBlock("white_cherry_wall_sign", p -> new GotWallSignBlock(GotWoodTypes.WHITE_CHERRY, p, () -> GotModBlockEntities.WHITE_CHERRY_SIGN.get()));
+    public static final DeferredBlock<Block> WHITE_CHERRY_HANGING_SIGN      = woodBlock("white_cherry_hanging_sign",      p -> new CeilingHangingSignBlock(GotWoodTypes.WHITE_CHERRY, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_WALL_HANGING_SIGN = woodBlock("white_cherry_wall_hanging_sign", p -> new WallHangingSignBlock(GotWoodTypes.WHITE_CHERRY, p));
+    public static final DeferredBlock<Block> WHITE_CHERRY_BRANCH         = woodBlock("white_cherry_branch",         WoodBranchBlock::new);
+    public static final DeferredBlock<Block> WHITE_CHERRY_SAPLING        = woodBlock("white_cherry_sapling",        p -> new GotSaplingBlock(GotTreeGrowers.WHITE_CHERRY, p));
+    public static final DeferredBlock<Block> STRIPPED_WHITE_CHERRY_LOG   = logBlock("stripped_white_cherry_log",   GotStrippedLogBlock::new);
+    public static final DeferredBlock<Block> STRIPPED_WHITE_CHERRY_WOOD  = logBlock("stripped_white_cherry_wood",  GotStrippedLogBlock::new);
+
+    // LOGS.put("red_cherry", RED_CHERRY_LOG); STRIPPED_LOGS.put("red_cherry", STRIPPED_RED_CHERRY_LOG);
+    // WOODS.put("red_cherry", RED_CHERRY_WOOD); STRIPPED_WOODS.put("red_cherry", STRIPPED_RED_CHERRY_WOOD);
 
     // ── Crabapple ──
     public static final DeferredBlock<Block> CRABAPPLE_LOG            = logBlock("crabapple_log",            CrabappleLogBlock::new);
