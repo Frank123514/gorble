@@ -108,6 +108,32 @@ public final class GotTreeGrowers {
     public static final TreeGrower WEIRWOOD  = simple("weirwood",  GotConfiguredFeatures.WEIRWOOD);
     public static final TreeGrower WORMTREE  = simple("wormtree",  GotConfiguredFeatures.WORMTREE);
 
+public static final TreeGrower NIGHTWOOD            = simple("nightwood", GotConfiguredFeatures.NIGHTWOOD);
+    public static final TreeGrower PURPLEHEART          = simple("purpleheart", GotConfiguredFeatures.PURPLEHEART);
+    public static final TreeGrower TIGERWOOD            = simple("tigerwood", GotConfiguredFeatures.TIGERWOOD);
+    public static final TreeGrower BURL                 = simple("burl", GotConfiguredFeatures.BURL);
+    public static final TreeGrower SANDALWOOD           = simple("sandalwood", GotConfiguredFeatures.SANDALWOOD);
+    public static final TreeGrower SANDBEGGAR           = simple("sandbeggar", GotConfiguredFeatures.SANDBEGGAR);
+    public static final TreeGrower APRICOT              = simple("apricot", GotConfiguredFeatures.APRICOT);
+    public static final TreeGrower BLACKTHORN           = simple("blackthorn", GotConfiguredFeatures.BLACKTHORN);
+    public static final TreeGrower CHERRY               = simple("cherry", GotConfiguredFeatures.CHERRY);
+    public static final TreeGrower CRABAPPLE            = simple("crabapple", GotConfiguredFeatures.CRABAPPLE);
+    public static final TreeGrower DATE_PALM            = simple("date_palm", GotConfiguredFeatures.DATE_PALM);
+    public static final TreeGrower FIG                  = simple("fig", GotConfiguredFeatures.FIG);
+    public static final TreeGrower LEMON                = simple("lemon", GotConfiguredFeatures.LEMON);
+    public static final TreeGrower LIME                 = simple("lime", GotConfiguredFeatures.LIME);
+    public static final TreeGrower OLIVE                = simple("olive", GotConfiguredFeatures.OLIVE);
+    public static final TreeGrower ORANGE               = simple("orange", GotConfiguredFeatures.ORANGE);
+    public static final TreeGrower PEACH                = simple("peach", GotConfiguredFeatures.PEACH);
+    public static final TreeGrower PEAR                 = simple("pear", GotConfiguredFeatures.PEAR);
+    public static final TreeGrower PERSIMMON            = simple("persimmon", GotConfiguredFeatures.PERSIMMON);
+    public static final TreeGrower PINK_IVORY           = simple("pink_ivory", GotConfiguredFeatures.PINK_IVORY);
+    public static final TreeGrower PLUM                 = simple("plum", GotConfiguredFeatures.PLUM);
+    public static final TreeGrower POMEGRANATE          = simple("pomegranate", GotConfiguredFeatures.POMEGRANATE);
+    public static final TreeGrower PRUNE                = simple("prune", GotConfiguredFeatures.PRUNE);
+    public static final TreeGrower ALMOND               = simple("almond", GotConfiguredFeatures.ALMOND);
+    public static final TreeGrower NUTMEG               = simple("nutmeg", GotConfiguredFeatures.NUTMEG);
+    public static final TreeGrower HEMLOCK              = simple("hemlock", GotConfiguredFeatures.HEMLOCK);
     // ─────────────────────────────────────────────────────────────────────────
 
     private GotTreeGrowers() {}

@@ -44,6 +44,32 @@ public final class GotWoodTypes {
     public static final WoodType WILLOW           = WoodType.register(new WoodType(GotMod.MODID + ":willow",            BlockSetType.OAK));
     public static final WoodType WORMTREE         = WoodType.register(new WoodType(GotMod.MODID + ":wormtree",          BlockSetType.OAK));
 
+public static final WoodType NIGHTWOOD            = WoodType.register(new WoodType(GotMod.MODID + ":nightwood",  BlockSetType.OAK));
+    public static final WoodType PURPLEHEART          = WoodType.register(new WoodType(GotMod.MODID + ":purpleheart",  BlockSetType.OAK));
+    public static final WoodType TIGERWOOD            = WoodType.register(new WoodType(GotMod.MODID + ":tigerwood",  BlockSetType.OAK));
+    public static final WoodType BURL                 = WoodType.register(new WoodType(GotMod.MODID + ":burl",  BlockSetType.OAK));
+    public static final WoodType SANDALWOOD           = WoodType.register(new WoodType(GotMod.MODID + ":sandalwood",  BlockSetType.OAK));
+    public static final WoodType SANDBEGGAR           = WoodType.register(new WoodType(GotMod.MODID + ":sandbeggar",  BlockSetType.OAK));
+    public static final WoodType APRICOT              = WoodType.register(new WoodType(GotMod.MODID + ":apricot",  BlockSetType.OAK));
+    public static final WoodType BLACKTHORN           = WoodType.register(new WoodType(GotMod.MODID + ":blackthorn",  BlockSetType.OAK));
+    public static final WoodType CHERRY               = WoodType.register(new WoodType(GotMod.MODID + ":cherry",  BlockSetType.OAK));
+    public static final WoodType CRABAPPLE            = WoodType.register(new WoodType(GotMod.MODID + ":crabapple",  BlockSetType.OAK));
+    public static final WoodType DATE_PALM            = WoodType.register(new WoodType(GotMod.MODID + ":date_palm",  BlockSetType.OAK));
+    public static final WoodType FIG                  = WoodType.register(new WoodType(GotMod.MODID + ":fig",  BlockSetType.OAK));
+    public static final WoodType LEMON                = WoodType.register(new WoodType(GotMod.MODID + ":lemon",  BlockSetType.OAK));
+    public static final WoodType LIME                 = WoodType.register(new WoodType(GotMod.MODID + ":lime",  BlockSetType.OAK));
+    public static final WoodType OLIVE                = WoodType.register(new WoodType(GotMod.MODID + ":olive",  BlockSetType.OAK));
+    public static final WoodType ORANGE               = WoodType.register(new WoodType(GotMod.MODID + ":orange",  BlockSetType.OAK));
+    public static final WoodType PEACH                = WoodType.register(new WoodType(GotMod.MODID + ":peach",  BlockSetType.OAK));
+    public static final WoodType PEAR                 = WoodType.register(new WoodType(GotMod.MODID + ":pear",  BlockSetType.OAK));
+    public static final WoodType PERSIMMON            = WoodType.register(new WoodType(GotMod.MODID + ":persimmon",  BlockSetType.OAK));
+    public static final WoodType PINK_IVORY           = WoodType.register(new WoodType(GotMod.MODID + ":pink_ivory",  BlockSetType.OAK));
+    public static final WoodType PLUM                 = WoodType.register(new WoodType(GotMod.MODID + ":plum",  BlockSetType.OAK));
+    public static final WoodType POMEGRANATE          = WoodType.register(new WoodType(GotMod.MODID + ":pomegranate",  BlockSetType.OAK));
+    public static final WoodType PRUNE                = WoodType.register(new WoodType(GotMod.MODID + ":prune",  BlockSetType.OAK));
+    public static final WoodType ALMOND               = WoodType.register(new WoodType(GotMod.MODID + ":almond",  BlockSetType.OAK));
+    public static final WoodType NUTMEG               = WoodType.register(new WoodType(GotMod.MODID + ":nutmeg",  BlockSetType.OAK));
+    public static final WoodType HEMLOCK              = WoodType.register(new WoodType(GotMod.MODID + ":hemlock",  BlockSetType.OAK));
     /** Call once before block registration to load all statics. */
     public static void init() {}
 }

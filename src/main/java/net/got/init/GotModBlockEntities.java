@@ -36,7 +36,60 @@ public class GotModBlockEntities {
         return REGISTRY.register(name + "_sign", () ->
                 new BlockEntityType<>(SignBlockEntity::new,
                         Set.of(standing.get(), wall.get())));
-    }
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            NIGHTWOOD_SIGN = sign("nightwood", GotModBlocks.NIGHTWOOD_SIGN, GotModBlocks.NIGHTWOOD_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PURPLEHEART_SIGN = sign("purpleheart", GotModBlocks.PURPLEHEART_SIGN, GotModBlocks.PURPLEHEART_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            TIGERWOOD_SIGN = sign("tigerwood", GotModBlocks.TIGERWOOD_SIGN, GotModBlocks.TIGERWOOD_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            BURL_SIGN = sign("burl", GotModBlocks.BURL_SIGN, GotModBlocks.BURL_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            SANDALWOOD_SIGN = sign("sandalwood", GotModBlocks.SANDALWOOD_SIGN, GotModBlocks.SANDALWOOD_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            SANDBEGGAR_SIGN = sign("sandbeggar", GotModBlocks.SANDBEGGAR_SIGN, GotModBlocks.SANDBEGGAR_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            APRICOT_SIGN = sign("apricot", GotModBlocks.APRICOT_SIGN, GotModBlocks.APRICOT_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            BLACKTHORN_SIGN = sign("blackthorn", GotModBlocks.BLACKTHORN_SIGN, GotModBlocks.BLACKTHORN_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            CHERRY_SIGN = sign("cherry", GotModBlocks.CHERRY_SIGN, GotModBlocks.CHERRY_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            CRABAPPLE_SIGN = sign("crabapple", GotModBlocks.CRABAPPLE_SIGN, GotModBlocks.CRABAPPLE_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            DATE_PALM_SIGN = sign("date_palm", GotModBlocks.DATE_PALM_SIGN, GotModBlocks.DATE_PALM_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            FIG_SIGN = sign("fig", GotModBlocks.FIG_SIGN, GotModBlocks.FIG_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            LEMON_SIGN = sign("lemon", GotModBlocks.LEMON_SIGN, GotModBlocks.LEMON_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            LIME_SIGN = sign("lime", GotModBlocks.LIME_SIGN, GotModBlocks.LIME_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            OLIVE_SIGN = sign("olive", GotModBlocks.OLIVE_SIGN, GotModBlocks.OLIVE_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            ORANGE_SIGN = sign("orange", GotModBlocks.ORANGE_SIGN, GotModBlocks.ORANGE_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PEACH_SIGN = sign("peach", GotModBlocks.PEACH_SIGN, GotModBlocks.PEACH_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PEAR_SIGN = sign("pear", GotModBlocks.PEAR_SIGN, GotModBlocks.PEAR_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PERSIMMON_SIGN = sign("persimmon", GotModBlocks.PERSIMMON_SIGN, GotModBlocks.PERSIMMON_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PINK_IVORY_SIGN = sign("pink_ivory", GotModBlocks.PINK_IVORY_SIGN, GotModBlocks.PINK_IVORY_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PLUM_SIGN = sign("plum", GotModBlocks.PLUM_SIGN, GotModBlocks.PLUM_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            POMEGRANATE_SIGN = sign("pomegranate", GotModBlocks.POMEGRANATE_SIGN, GotModBlocks.POMEGRANATE_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            PRUNE_SIGN = sign("prune", GotModBlocks.PRUNE_SIGN, GotModBlocks.PRUNE_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            ALMOND_SIGN = sign("almond", GotModBlocks.ALMOND_SIGN, GotModBlocks.ALMOND_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            NUTMEG_SIGN = sign("nutmeg", GotModBlocks.NUTMEG_SIGN, GotModBlocks.NUTMEG_WALL_SIGN);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
+            HEMLOCK_SIGN = sign("hemlock", GotModBlocks.HEMLOCK_SIGN, GotModBlocks.HEMLOCK_WALL_SIGN);
+
+}
 
     // ── Oven ──────────────────────────────────────────────────────────────────
 

@@ -44,7 +44,7 @@ public final class SeasonFoliageColorProvider {
     private static final int[] APPLE        = { 0x7AB828, 0x606E2A, 0xB06010, 0x706050 };
     private static final int[] ASH          = { 0x60A028, 0x315023, 0xA09010, 0x6A6050 };
     private static final int[] ASPEN        = { 0x78B028, 0x4D5C12, 0xD0BC10, 0x787060 };
-    private static final int[] BEECH        = { 0x90C030, 0xE2B114, 0xC88810, 0x807060 };
+    private static final int[] BEECH        = { 0x90C030, 0x4D991C, 0xC88810, 0x807060 };
     private static final int[] BLACK_COTTON = { 0x60A030, 0x385635, 0xB88810, 0x6A6858 };
     private static final int[] BLACKBARK    = { 0x486020, 0x1E2C0F, 0x844010, 0x5A5248 };
     private static final int[] BLOODWOOD    = { 0x6A7828, 0x475625, 0xA01010, 0x6A5A50 };
@@ -71,6 +71,34 @@ public final class SeasonFoliageColorProvider {
     private static final int[] SOLDIER_PINE = { 0x608020, 0x3D5A1A, 0x3C6018, 0x4A5440 };
     private static final int[] WILLOW       = { 0x688830, 0x436532, 0x98941C, 0x606050 };
     private static final int[] WORMTREE     = { 0x687828, 0x42531A, 0x787C10, 0x626050 };
+
+    private static final int[] NIGHTWOOD          = { 0x506838, 0x2A3C1E, 0x6A4830, 0x484038 };
+    private static final int[] PURPLEHEART        = { 0x7868A0, 0x5C4A80, 0x8C5460, 0x605868 };
+    private static final int[] TIGERWOOD          = { 0x789040, 0x587030, 0xC07818, 0x686050 };
+    private static final int[] BURL               = { 0x708850, 0x507040, 0xB07020, 0x686058 };
+    private static final int[] SANDALWOOD         = { 0x90A860, 0x708048, 0xC09030, 0x787060 };
+    private static final int[] SANDBEGGAR         = { 0xA09858, 0x887840, 0xB07828, 0x806858 };
+    private static final int[] APRICOT            = { 0x88C048, 0x60902C, 0xC87020, 0x706050 };
+    private static final int[] BLACKTHORN         = { 0x506828, 0x304818, 0x804810, 0x585048 };
+    private static final int[] CHERRY             = { 0xF0A0B8, 0x70B038, 0xD02828, 0x685060 };
+    private static final int[] CRABAPPLE          = { 0x90C848, 0x68A030, 0xD05018, 0x706050 };
+    private static final int[] DATE_PALM          = { 0x709858, 0x507840, 0xB08828, 0x707060 };
+    private static final int[] FIG                = { 0x80A040, 0x587830, 0xA06828, 0x686050 };
+    private static final int[] LEMON              = { 0xA0C850, 0x78A038, 0xD0A020, 0x787060 };
+    private static final int[] LIME               = { 0x88C848, 0x60A030, 0xC09820, 0x707060 };
+    private static final int[] OLIVE              = { 0x8AA858, 0x688040, 0x908830, 0x707060 };
+    private static final int[] ORANGE             = { 0x98C850, 0x70A038, 0xD07818, 0x707050 };
+    private static final int[] PEACH              = { 0xF8C8A0, 0x78A830, 0xE08028, 0x706050 };
+    private static final int[] PEAR               = { 0x90C048, 0x68902C, 0xC89018, 0x706050 };
+    private static final int[] PERSIMMON          = { 0x90B848, 0x689028, 0xD07018, 0x706050 };
+    private static final int[] PINK_IVORY         = { 0xF0B0C8, 0xC888A0, 0xD07090, 0x806878 };
+    private static final int[] PLUM               = { 0x88A848, 0x608030, 0xB85820, 0x686050 };
+    private static final int[] POMEGRANATE        = { 0x98C048, 0x709030, 0xC85028, 0x706858 };
+    private static final int[] PRUNE              = { 0x88A848, 0x608030, 0xA86828, 0x686050 };
+    private static final int[] ALMOND             = { 0xF0D0B0, 0x789038, 0xC09020, 0x706858 };
+    private static final int[] NUTMEG             = { 0x80B048, 0x608830, 0xA07828, 0x686050 };
+    private static final int[] HEMLOCK            = { 0x508838, 0x386830, 0x306830, 0x406050 };
+
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -124,6 +152,33 @@ public final class SeasonFoliageColorProvider {
         event.register(treeColor(SOLDIER_PINE), GotModBlocks.SOLDIER_PINE_LEAVES.get());
         event.register(treeColor(WILLOW),       GotModBlocks.WILLOW_LEAVES.get());
         event.register(treeColor(WORMTREE),     GotModBlocks.WORMTREE_LEAVES.get());
+
+        event.register(treeColor(NIGHTWOOD),        GotModBlocks.NIGHTWOOD_LEAVES.get());
+        event.register(treeColor(PURPLEHEART),        GotModBlocks.PURPLEHEART_LEAVES.get());
+        event.register(treeColor(TIGERWOOD),        GotModBlocks.TIGERWOOD_LEAVES.get());
+        event.register(treeColor(BURL),        GotModBlocks.BURL_LEAVES.get());
+        event.register(treeColor(SANDALWOOD),        GotModBlocks.SANDALWOOD_LEAVES.get());
+        event.register(treeColor(SANDBEGGAR),        GotModBlocks.SANDBEGGAR_LEAVES.get());
+        event.register(treeColor(APRICOT),        GotModBlocks.APRICOT_LEAVES.get());
+        event.register(treeColor(BLACKTHORN),        GotModBlocks.BLACKTHORN_LEAVES.get());
+        event.register(treeColor(CHERRY),        GotModBlocks.CHERRY_LEAVES.get());
+        event.register(treeColor(CRABAPPLE),        GotModBlocks.CRABAPPLE_LEAVES.get());
+        event.register(treeColor(DATE_PALM),        GotModBlocks.DATE_PALM_LEAVES.get());
+        event.register(treeColor(FIG),        GotModBlocks.FIG_LEAVES.get());
+        event.register(treeColor(LEMON),        GotModBlocks.LEMON_LEAVES.get());
+        event.register(treeColor(LIME),        GotModBlocks.LIME_LEAVES.get());
+        event.register(treeColor(OLIVE),        GotModBlocks.OLIVE_LEAVES.get());
+        event.register(treeColor(ORANGE),        GotModBlocks.ORANGE_LEAVES.get());
+        event.register(treeColor(PEACH),        GotModBlocks.PEACH_LEAVES.get());
+        event.register(treeColor(PEAR),        GotModBlocks.PEAR_LEAVES.get());
+        event.register(treeColor(PERSIMMON),        GotModBlocks.PERSIMMON_LEAVES.get());
+        event.register(treeColor(PINK_IVORY),        GotModBlocks.PINK_IVORY_LEAVES.get());
+        event.register(treeColor(PLUM),        GotModBlocks.PLUM_LEAVES.get());
+        event.register(treeColor(POMEGRANATE),        GotModBlocks.POMEGRANATE_LEAVES.get());
+        event.register(treeColor(PRUNE),        GotModBlocks.PRUNE_LEAVES.get());
+        event.register(treeColor(ALMOND),        GotModBlocks.ALMOND_LEAVES.get());
+        event.register(treeColor(NUTMEG),        GotModBlocks.NUTMEG_LEAVES.get());
+        event.register(treeColor(HEMLOCK),        GotModBlocks.HEMLOCK_LEAVES.get());
 
         // Weirwood — registered with a white (0xFFFFFF) no-op tint so neither
         // seasonal nor biome foliage color is ever multiplied onto the texture.
