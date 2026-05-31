@@ -1,3 +1,5 @@
 {
-  "parent": "minecraft:block/air"
+  "textures": {
+    "particle": "got:block/date_palm_planks"
+  }
 }

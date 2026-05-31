@@ -385,7 +385,9 @@ event.registerEntityRenderer(boat(GotModBoatEntities.ALDER_BOAT.get()),         
         event.registerBlockEntityRenderer(GotModBlockEntities.SANDBEGGAR_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.APRICOT_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.BLACKTHORN_SIGN.get(), SignRenderer::new);
-        event.registerBlockEntityRenderer(GotModBlockEntities.RED_CHERRY_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(GotModBlockEntities.RED_CHERRY_SIGN.get(),   SignRenderer::new);
+        event.registerBlockEntityRenderer(GotModBlockEntities.WHITE_CHERRY_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(GotModBlockEntities.BLACK_CHERRY_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.CRABAPPLE_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.DATE_PALM_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.FIG_SIGN.get(), SignRenderer::new);

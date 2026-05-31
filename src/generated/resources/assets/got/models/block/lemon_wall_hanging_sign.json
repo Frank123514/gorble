@@ -1,3 +1,5 @@
 {
-  "parent": "minecraft:block/air"
+  "textures": {
+    "particle": "got:block/stripped_lemon_log_side"
+  }
 }

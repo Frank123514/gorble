@@ -1,3 +1,5 @@
 {
-  "parent": "minecraft:block/air"
+  "textures": {
+    "particle": "got:block/stripped_hemlock_log_side"
+  }
 }

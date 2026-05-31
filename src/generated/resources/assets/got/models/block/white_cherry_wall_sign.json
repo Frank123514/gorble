@@ -1,3 +1,5 @@
 {
-  "parent": "minecraft:block/air"
+  "textures": {
+    "particle": "got:block/white_cherry_planks"
+  }
 }
