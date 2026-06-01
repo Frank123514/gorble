@@ -1,0 +1,9 @@
+{
+  "type": "got:smithy",
+  "ingredient": "got:bronze_ingot",
+  "result": {
+    "id": "got:bronze_faceted_pommel",
+    "count": 1
+  },
+  "cookingtime": 240
+}

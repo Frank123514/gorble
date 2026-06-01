@@ -1,0 +1,9 @@
+{
+  "type": "got:smithy",
+  "ingredient": "minecraft:iron_ingot",
+  "result": {
+    "id": "got:iron_sloped_crossguard",
+    "count": 1
+  },
+  "cookingtime": 200
+}

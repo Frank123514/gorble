@@ -2254,6 +2254,15 @@ public class GotModTabs {
                         output.accept(GotModItems.IRON_BASTARD_SWORD_BLADE.get());
                         output.accept(GotModItems.IRON_SHORTSWORD_BLADE.get());
                         output.accept(GotModItems.IRON_FALCHION_BLADE.get());
+                        output.accept(GotModItems.IRON_GREATSWORD_BLADE.get());
+                        output.accept(GotModItems.IRON_ROUND_POMMEL.get());
+                        output.accept(GotModItems.IRON_DIAMOND_POMMEL.get());
+                        output.accept(GotModItems.IRON_FACETED_POMMEL.get());
+                        output.accept(GotModItems.IRON_REGULAR_HILT.get());
+                        output.accept(GotModItems.IRON_LONG_HILT.get());
+                        output.accept(GotModItems.IRON_STRAIGHT_CROSSGUARD.get());
+                        output.accept(GotModItems.IRON_CURVED_CROSSGUARD.get());
+                        output.accept(GotModItems.IRON_SLOPED_CROSSGUARD.get());
                         output.accept(GotModItems.IRON_ARMOR_PLATE.get());
 
                         // ── Smithy Components — Bronze ────────────────────────────────
@@ -2265,6 +2274,15 @@ public class GotModTabs {
                         output.accept(GotModItems.BRONZE_BASTARD_SWORD_BLADE.get());
                         output.accept(GotModItems.BRONZE_SHORTSWORD_BLADE.get());
                         output.accept(GotModItems.BRONZE_FALCHION_BLADE.get());
+                        output.accept(GotModItems.BRONZE_GREATSWORD_BLADE.get());
+                        output.accept(GotModItems.BRONZE_ROUND_POMMEL.get());
+                        output.accept(GotModItems.BRONZE_DIAMOND_POMMEL.get());
+                        output.accept(GotModItems.BRONZE_FACETED_POMMEL.get());
+                        output.accept(GotModItems.BRONZE_REGULAR_HILT.get());
+                        output.accept(GotModItems.BRONZE_LONG_HILT.get());
+                        output.accept(GotModItems.BRONZE_STRAIGHT_CROSSGUARD.get());
+                        output.accept(GotModItems.BRONZE_CURVED_CROSSGUARD.get());
+                        output.accept(GotModItems.BRONZE_SLOPED_CROSSGUARD.get());
                         output.accept(GotModItems.BRONZE_ARMOR_PLATE.get());
 
                         // ── Smithy Components — Steel ─────────────────────────────────
@@ -2276,6 +2294,15 @@ public class GotModTabs {
                         output.accept(GotModItems.STEEL_BASTARD_SWORD_BLADE.get());
                         output.accept(GotModItems.STEEL_SHORTSWORD_BLADE.get());
                         output.accept(GotModItems.STEEL_FALCHION_BLADE.get());
+                        output.accept(GotModItems.STEEL_GREATSWORD_BLADE.get());
+                        output.accept(GotModItems.STEEL_ROUND_POMMEL.get());
+                        output.accept(GotModItems.STEEL_DIAMOND_POMMEL.get());
+                        output.accept(GotModItems.STEEL_FACETED_POMMEL.get());
+                        output.accept(GotModItems.STEEL_REGULAR_HILT.get());
+                        output.accept(GotModItems.STEEL_LONG_HILT.get());
+                        output.accept(GotModItems.STEEL_STRAIGHT_CROSSGUARD.get());
+                        output.accept(GotModItems.STEEL_CURVED_CROSSGUARD.get());
+                        output.accept(GotModItems.STEEL_SLOPED_CROSSGUARD.get());
                         output.accept(GotModItems.STEEL_ARMOR_PLATE.get());
 
                     })

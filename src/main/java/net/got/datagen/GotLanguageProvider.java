@@ -114,6 +114,24 @@ public class GotLanguageProvider extends LanguageProvider {
             item(tier + "_boots",     t + " Boots");
         }
 
+        // ── Smithy blade components ───────────────────────────────────────────
+        for (String tier : new String[]{"iron", "bronze", "steel"}) {
+            String t = capitalize(tier);
+            item(tier + "_longsword_blade",     t + " Longsword Blade");
+            item(tier + "_bastard_sword_blade", t + " Bastard Sword Blade");
+            item(tier + "_shortsword_blade",    t + " Shortsword Blade");
+            item(tier + "_falchion_blade",      t + " Falchion Blade");
+            item(tier + "_greatsword_blade",    t + " Greatsword Blade");
+            item(tier + "_round_pommel",        t + " Round Pommel");
+            item(tier + "_diamond_pommel",      t + " Diamond Pommel");
+            item(tier + "_faceted_pommel",      t + " Faceted Pommel");
+            item(tier + "_regular_hilt",        t + " Regular Hilt");
+            item(tier + "_long_hilt",           t + " Long Hilt");
+            item(tier + "_straight_crossguard", t + " Straight Crossguard");
+            item(tier + "_curved_crossguard",   t + " Curved Crossguard");
+            item(tier + "_sloped_crossguard",   t + " Sloped Crossguard");
+        }
+
         // ── Wetland plants & terrain ──────────────────────────────────────────
         block("wheatgrass",  "Wheatgrass");
         block("reeds",       "Reeds");

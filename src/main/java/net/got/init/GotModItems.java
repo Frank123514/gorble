@@ -1637,6 +1637,15 @@ public class GotModItems {
     public static final DeferredItem<Item> IRON_BASTARD_SWORD_BLADE = simple("iron_bastard_sword_blade");
     public static final DeferredItem<Item> IRON_SHORTSWORD_BLADE    = simple("iron_shortsword_blade");
     public static final DeferredItem<Item> IRON_FALCHION_BLADE      = simple("iron_falchion_blade");
+    public static final DeferredItem<Item> IRON_GREATSWORD_BLADE    = simple("iron_greatsword_blade");
+    public static final DeferredItem<Item> IRON_ROUND_POMMEL        = simple("iron_round_pommel");
+    public static final DeferredItem<Item> IRON_DIAMOND_POMMEL      = simple("iron_diamond_pommel");
+    public static final DeferredItem<Item> IRON_FACETED_POMMEL      = simple("iron_faceted_pommel");
+    public static final DeferredItem<Item> IRON_REGULAR_HILT        = simple("iron_regular_hilt");
+    public static final DeferredItem<Item> IRON_LONG_HILT           = simple("iron_long_hilt");
+    public static final DeferredItem<Item> IRON_STRAIGHT_CROSSGUARD = simple("iron_straight_crossguard");
+    public static final DeferredItem<Item> IRON_CURVED_CROSSGUARD   = simple("iron_curved_crossguard");
+    public static final DeferredItem<Item> IRON_SLOPED_CROSSGUARD   = simple("iron_sloped_crossguard");
     public static final DeferredItem<Item> IRON_ARMOR_PLATE         = simple("iron_armor_plate");
     // ── Smithy components — bronze ────────────────────────────────────────────
     public static final DeferredItem<Item> BRONZE_SPEAR_HEAD          = simple("bronze_spear_head");
@@ -1647,6 +1656,15 @@ public class GotModItems {
     public static final DeferredItem<Item> BRONZE_BASTARD_SWORD_BLADE = simple("bronze_bastard_sword_blade");
     public static final DeferredItem<Item> BRONZE_SHORTSWORD_BLADE    = simple("bronze_shortsword_blade");
     public static final DeferredItem<Item> BRONZE_FALCHION_BLADE      = simple("bronze_falchion_blade");
+    public static final DeferredItem<Item> BRONZE_GREATSWORD_BLADE    = simple("bronze_greatsword_blade");
+    public static final DeferredItem<Item> BRONZE_ROUND_POMMEL        = simple("bronze_round_pommel");
+    public static final DeferredItem<Item> BRONZE_DIAMOND_POMMEL      = simple("bronze_diamond_pommel");
+    public static final DeferredItem<Item> BRONZE_FACETED_POMMEL      = simple("bronze_faceted_pommel");
+    public static final DeferredItem<Item> BRONZE_REGULAR_HILT        = simple("bronze_regular_hilt");
+    public static final DeferredItem<Item> BRONZE_LONG_HILT           = simple("bronze_long_hilt");
+    public static final DeferredItem<Item> BRONZE_STRAIGHT_CROSSGUARD = simple("bronze_straight_crossguard");
+    public static final DeferredItem<Item> BRONZE_CURVED_CROSSGUARD   = simple("bronze_curved_crossguard");
+    public static final DeferredItem<Item> BRONZE_SLOPED_CROSSGUARD   = simple("bronze_sloped_crossguard");
     public static final DeferredItem<Item> BRONZE_ARMOR_PLATE         = simple("bronze_armor_plate");
     // ── Smithy components — steel ─────────────────────────────────────────────
     public static final DeferredItem<Item> STEEL_SPEAR_HEAD          = simple("steel_spear_head");
@@ -1657,6 +1675,15 @@ public class GotModItems {
     public static final DeferredItem<Item> STEEL_BASTARD_SWORD_BLADE = simple("steel_bastard_sword_blade");
     public static final DeferredItem<Item> STEEL_SHORTSWORD_BLADE    = simple("steel_shortsword_blade");
     public static final DeferredItem<Item> STEEL_FALCHION_BLADE      = simple("steel_falchion_blade");
+    public static final DeferredItem<Item> STEEL_GREATSWORD_BLADE    = simple("steel_greatsword_blade");
+    public static final DeferredItem<Item> STEEL_ROUND_POMMEL        = simple("steel_round_pommel");
+    public static final DeferredItem<Item> STEEL_DIAMOND_POMMEL      = simple("steel_diamond_pommel");
+    public static final DeferredItem<Item> STEEL_FACETED_POMMEL      = simple("steel_faceted_pommel");
+    public static final DeferredItem<Item> STEEL_REGULAR_HILT        = simple("steel_regular_hilt");
+    public static final DeferredItem<Item> STEEL_LONG_HILT           = simple("steel_long_hilt");
+    public static final DeferredItem<Item> STEEL_STRAIGHT_CROSSGUARD = simple("steel_straight_crossguard");
+    public static final DeferredItem<Item> STEEL_CURVED_CROSSGUARD   = simple("steel_curved_crossguard");
+    public static final DeferredItem<Item> STEEL_SLOPED_CROSSGUARD   = simple("steel_sloped_crossguard");
     public static final DeferredItem<Item> STEEL_ARMOR_PLATE         = simple("steel_armor_plate");
 
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
