@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/tigerwood_leaves"
+    "model": "got:item/tigerwood_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 5795888
+      }
+    ]
   }
 }

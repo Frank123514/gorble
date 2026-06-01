@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/hemlock_leaves"
+    "model": "got:item/hemlock_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3696688
+      }
+    ]
   }
 }

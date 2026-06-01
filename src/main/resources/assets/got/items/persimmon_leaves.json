@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/persimmon_leaves"
+    "model": "got:item/persimmon_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6852648
+      }
+    ]
   }
 }

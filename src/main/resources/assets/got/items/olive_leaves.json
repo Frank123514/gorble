@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/olive_leaves"
+    "model": "got:item/olive_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6848576
+      }
+    ]
   }
 }

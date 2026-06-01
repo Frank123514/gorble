@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/black_cherry_roofing",
+    "top": "got:block/black_cherry_roofing",
+    "side": "got:block/black_cherry_roofing",
+    "wall": "got:block/black_cherry_roofing",
+    "particle": "got:block/black_cherry_roofing"
+  }
+}

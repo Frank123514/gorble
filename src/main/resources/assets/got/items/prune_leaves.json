@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/prune_leaves"
+    "model": "got:item/prune_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6324272
+      }
+    ]
   }
 }

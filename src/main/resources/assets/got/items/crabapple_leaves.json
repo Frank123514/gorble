@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/crabapple_leaves"
+    "model": "got:item/crabapple_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6856752
+      }
+    ]
   }
 }

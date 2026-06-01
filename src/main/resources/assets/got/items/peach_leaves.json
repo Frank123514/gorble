@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/peach_leaves"
+    "model": "got:item/peach_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7907376
+      }
+    ]
   }
 }

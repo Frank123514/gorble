@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/white_cherry_leaves"
+    "model": "got:block/white_cherry_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7911488
+      }
+    ]
   }
 }

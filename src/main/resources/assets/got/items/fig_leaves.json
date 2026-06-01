@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/fig_leaves"
+    "model": "got:item/fig_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 5797936
+      }
+    ]
   }
 }

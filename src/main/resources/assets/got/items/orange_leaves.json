@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/orange_leaves"
+    "model": "got:item/orange_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7381048
+      }
+    ]
   }
 }

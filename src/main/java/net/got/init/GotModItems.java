@@ -680,6 +680,30 @@ public class GotModItems {
             REGISTRY.registerSimpleBlockItem("cherry_roofing_stairs", GotModBlocks.CHERRY_ROOFING_STAIRS);
     public static final DeferredItem<BlockItem> CHERRY_ROOFING_WALL =
             REGISTRY.registerSimpleBlockItem("cherry_roofing_wall", GotModBlocks.CHERRY_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> RED_CHERRY_ROOFING =
+            REGISTRY.registerSimpleBlockItem("red_cherry_roofing", GotModBlocks.RED_CHERRY_ROOFING);
+    public static final DeferredItem<BlockItem> RED_CHERRY_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("red_cherry_roofing_slab", GotModBlocks.RED_CHERRY_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> RED_CHERRY_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("red_cherry_roofing_stairs", GotModBlocks.RED_CHERRY_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> RED_CHERRY_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("red_cherry_roofing_wall", GotModBlocks.RED_CHERRY_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> BLACK_CHERRY_ROOFING =
+            REGISTRY.registerSimpleBlockItem("black_cherry_roofing", GotModBlocks.BLACK_CHERRY_ROOFING);
+    public static final DeferredItem<BlockItem> BLACK_CHERRY_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("black_cherry_roofing_slab", GotModBlocks.BLACK_CHERRY_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> BLACK_CHERRY_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("black_cherry_roofing_stairs", GotModBlocks.BLACK_CHERRY_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> BLACK_CHERRY_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("black_cherry_roofing_wall", GotModBlocks.BLACK_CHERRY_ROOFING_WALL);
+    public static final DeferredItem<BlockItem> WHITE_CHERRY_ROOFING =
+            REGISTRY.registerSimpleBlockItem("white_cherry_roofing", GotModBlocks.WHITE_CHERRY_ROOFING);
+    public static final DeferredItem<BlockItem> WHITE_CHERRY_ROOFING_SLAB =
+            REGISTRY.registerSimpleBlockItem("white_cherry_roofing_slab", GotModBlocks.WHITE_CHERRY_ROOFING_SLAB);
+    public static final DeferredItem<BlockItem> WHITE_CHERRY_ROOFING_STAIRS =
+            REGISTRY.registerSimpleBlockItem("white_cherry_roofing_stairs", GotModBlocks.WHITE_CHERRY_ROOFING_STAIRS);
+    public static final DeferredItem<BlockItem> WHITE_CHERRY_ROOFING_WALL =
+            REGISTRY.registerSimpleBlockItem("white_cherry_roofing_wall", GotModBlocks.WHITE_CHERRY_ROOFING_WALL);
     public static final DeferredItem<BlockItem> BAMBOO_ROOFING =
             REGISTRY.registerSimpleBlockItem("bamboo_roofing", GotModBlocks.BAMBOO_ROOFING);
     public static final DeferredItem<BlockItem> BAMBOO_ROOFING_SLAB =

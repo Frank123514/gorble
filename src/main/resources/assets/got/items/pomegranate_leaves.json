@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/pomegranate_leaves"
+    "model": "got:item/pomegranate_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7376944
+      }
+    ]
   }
 }

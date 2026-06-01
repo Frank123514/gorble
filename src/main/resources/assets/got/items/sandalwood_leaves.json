@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/sandalwood_leaves"
+    "model": "got:item/sandalwood_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7372872
+      }
+    ]
   }
 }

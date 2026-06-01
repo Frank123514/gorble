@@ -319,6 +319,18 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_SLAB.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_STAIRS.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_SLAB.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_STAIRS.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_WALL.get());
 
                         // ── Chestnut ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CHESTNUT_LOG.get());
@@ -1105,6 +1117,18 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_SLAB.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_STAIRS.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING_STAIRS.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_SLAB.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_STAIRS.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_HANGING_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_BOAT.get()));

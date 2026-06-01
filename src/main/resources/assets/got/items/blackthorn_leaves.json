@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/blackthorn_leaves"
+    "model": "got:item/blackthorn_leaves",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 3164184
+      }
+    ]
   }
 }
