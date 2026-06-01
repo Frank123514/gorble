@@ -1628,6 +1628,37 @@ public class GotModItems {
     public static final DeferredItem<ArmorItem> STEEL_BOOTS       = REGISTRY.registerItem("steel_boots",
             p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.BOOTS, p));
 
+    // ── Smithy components — iron ──────────────────────────────────────────────
+    public static final DeferredItem<Item> IRON_SPEAR_HEAD          = simple("iron_spear_head");
+    public static final DeferredItem<Item> IRON_ARROWHEAD           = simple("iron_arrowhead");
+    public static final DeferredItem<Item> IRON_SHORT_AXE_HEAD      = simple("iron_short_axe_head");
+    public static final DeferredItem<Item> IRON_LONG_AXE_HEAD       = simple("iron_long_axe_head");
+    public static final DeferredItem<Item> IRON_LONGSWORD_BLADE     = simple("iron_longsword_blade");
+    public static final DeferredItem<Item> IRON_BASTARD_SWORD_BLADE = simple("iron_bastard_sword_blade");
+    public static final DeferredItem<Item> IRON_SHORTSWORD_BLADE    = simple("iron_shortsword_blade");
+    public static final DeferredItem<Item> IRON_FALCHION_BLADE      = simple("iron_falchion_blade");
+    public static final DeferredItem<Item> IRON_ARMOR_PLATE         = simple("iron_armor_plate");
+    // ── Smithy components — bronze ────────────────────────────────────────────
+    public static final DeferredItem<Item> BRONZE_SPEAR_HEAD          = simple("bronze_spear_head");
+    public static final DeferredItem<Item> BRONZE_ARROWHEAD           = simple("bronze_arrowhead");
+    public static final DeferredItem<Item> BRONZE_SHORT_AXE_HEAD      = simple("bronze_short_axe_head");
+    public static final DeferredItem<Item> BRONZE_LONG_AXE_HEAD       = simple("bronze_long_axe_head");
+    public static final DeferredItem<Item> BRONZE_LONGSWORD_BLADE     = simple("bronze_longsword_blade");
+    public static final DeferredItem<Item> BRONZE_BASTARD_SWORD_BLADE = simple("bronze_bastard_sword_blade");
+    public static final DeferredItem<Item> BRONZE_SHORTSWORD_BLADE    = simple("bronze_shortsword_blade");
+    public static final DeferredItem<Item> BRONZE_FALCHION_BLADE      = simple("bronze_falchion_blade");
+    public static final DeferredItem<Item> BRONZE_ARMOR_PLATE         = simple("bronze_armor_plate");
+    // ── Smithy components — steel ─────────────────────────────────────────────
+    public static final DeferredItem<Item> STEEL_SPEAR_HEAD          = simple("steel_spear_head");
+    public static final DeferredItem<Item> STEEL_ARROWHEAD           = simple("steel_arrowhead");
+    public static final DeferredItem<Item> STEEL_SHORT_AXE_HEAD      = simple("steel_short_axe_head");
+    public static final DeferredItem<Item> STEEL_LONG_AXE_HEAD       = simple("steel_long_axe_head");
+    public static final DeferredItem<Item> STEEL_LONGSWORD_BLADE     = simple("steel_longsword_blade");
+    public static final DeferredItem<Item> STEEL_BASTARD_SWORD_BLADE = simple("steel_bastard_sword_blade");
+    public static final DeferredItem<Item> STEEL_SHORTSWORD_BLADE    = simple("steel_shortsword_blade");
+    public static final DeferredItem<Item> STEEL_FALCHION_BLADE      = simple("steel_falchion_blade");
+    public static final DeferredItem<Item> STEEL_ARMOR_PLATE         = simple("steel_armor_plate");
+
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
             "northman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTHMAN.get(), p));

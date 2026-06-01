@@ -1,9 +1,0 @@
-{
-  "type": "got:smithy",
-  "ingredient": "minecraft:gold_ingot",
-  "result": {
-    "id": "minecraft:golden_helmet",
-    "count": 1
-  },
-  "cookingtime": 160
-}

@@ -2245,6 +2245,39 @@ public class GotModTabs {
                         output.accept(GotModItems.STEEL_LEGGINGS.get());
                         output.accept(GotModItems.STEEL_BOOTS.get());
 
+                        // ── Smithy Components — Iron ──────────────────────────────────
+                        output.accept(GotModItems.IRON_SPEAR_HEAD.get());
+                        output.accept(GotModItems.IRON_ARROWHEAD.get());
+                        output.accept(GotModItems.IRON_SHORT_AXE_HEAD.get());
+                        output.accept(GotModItems.IRON_LONG_AXE_HEAD.get());
+                        output.accept(GotModItems.IRON_LONGSWORD_BLADE.get());
+                        output.accept(GotModItems.IRON_BASTARD_SWORD_BLADE.get());
+                        output.accept(GotModItems.IRON_SHORTSWORD_BLADE.get());
+                        output.accept(GotModItems.IRON_FALCHION_BLADE.get());
+                        output.accept(GotModItems.IRON_ARMOR_PLATE.get());
+
+                        // ── Smithy Components — Bronze ────────────────────────────────
+                        output.accept(GotModItems.BRONZE_SPEAR_HEAD.get());
+                        output.accept(GotModItems.BRONZE_ARROWHEAD.get());
+                        output.accept(GotModItems.BRONZE_SHORT_AXE_HEAD.get());
+                        output.accept(GotModItems.BRONZE_LONG_AXE_HEAD.get());
+                        output.accept(GotModItems.BRONZE_LONGSWORD_BLADE.get());
+                        output.accept(GotModItems.BRONZE_BASTARD_SWORD_BLADE.get());
+                        output.accept(GotModItems.BRONZE_SHORTSWORD_BLADE.get());
+                        output.accept(GotModItems.BRONZE_FALCHION_BLADE.get());
+                        output.accept(GotModItems.BRONZE_ARMOR_PLATE.get());
+
+                        // ── Smithy Components — Steel ─────────────────────────────────
+                        output.accept(GotModItems.STEEL_SPEAR_HEAD.get());
+                        output.accept(GotModItems.STEEL_ARROWHEAD.get());
+                        output.accept(GotModItems.STEEL_SHORT_AXE_HEAD.get());
+                        output.accept(GotModItems.STEEL_LONG_AXE_HEAD.get());
+                        output.accept(GotModItems.STEEL_LONGSWORD_BLADE.get());
+                        output.accept(GotModItems.STEEL_BASTARD_SWORD_BLADE.get());
+                        output.accept(GotModItems.STEEL_SHORTSWORD_BLADE.get());
+                        output.accept(GotModItems.STEEL_FALCHION_BLADE.get());
+                        output.accept(GotModItems.STEEL_ARMOR_PLATE.get());
+
                     })
                     .build());
 

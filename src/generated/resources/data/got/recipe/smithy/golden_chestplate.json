@@ -1,9 +1,0 @@
-{
-  "type": "got:smithy",
-  "ingredient": "minecraft:gold_ingot",
-  "result": {
-    "id": "minecraft:golden_chestplate",
-    "count": 1
-  },
-  "cookingtime": 160
-}
