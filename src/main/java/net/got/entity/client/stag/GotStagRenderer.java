@@ -11,20 +11,18 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Renderer for {@link GotStagEntity}.
  *
- * <p>Extends {@link MobRenderer} (replacing the old {@code AbstractHorseRenderer})
- * so the fully custom {@link GotStagModel} — which no longer extends
- * {@code HorseModel} — can be used without any horse-specific machinery.
+ * <p>Extends {@link MobRenderer} so the fully custom {@link GotStagModel}
+ * can be used without any horse-specific machinery.
  *
  * <h3>Animation dispatch</h3>
  * <p>{@link #render} calls {@link #selectAndApplyAnimation} before the
  * super-call, writing bone transforms into the model via
  * {@link GotStagModel#applyAnimation}. Priority (highest first):
  * <ol>
- *   <li>Rearing     → {@link GotStagAnimations#REAR}</li>
- *   <li>Sprinting   → {@link GotStagAnimations#RUN}</li>
- *   <li>Moving / swimming → {@link GotStagAnimations#WALK}</li>
- *   <li>Idle + tamed → {@link GotStagAnimations#IDLE} + {@link GotStagAnimations#TAIL_WAG}</li>
- *   <li>Default     → {@link GotStagAnimations#IDLE}</li>
+ *   <li>Sprinting / swimming → {@link GotStagAnimations#RUN}</li>
+ *   <li>Moving / in water    → {@link GotStagAnimations#WALK}</li>
+ *   <li>Idle (default)       → {@link GotStagAnimations#IDLE} +
+ *                              {@link GotStagAnimations#TAIL_WAG}</li>
  * </ol>
  */
 public class GotStagRenderer
@@ -51,19 +49,17 @@ public class GotStagRenderer
                                    GotStagRenderState state,
                                    float partialTick) {
         super.extractRenderState(entity, state, partialTick);
-        state.isStanding  = entity.isStanding();
         state.isInWater   = entity.isInWater();
         state.isSprinting = entity.isSprinting();
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-        state.isTame      = entity.isTamed();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
 
     /**
-     * In 1.21.4, {@code render} takes {@code (state, poseStack, bufferSource, packedLight)}
-     * — the entity is no longer passed. We apply the animation here so the model's
-     * bone transforms are ready before {@code super.render} calls {@code setupAnim}.
+     * In 1.21.4+, {@code render} takes {@code (state, poseStack, bufferSource, packedLight)}.
+     * We apply the animation here so the model's bone transforms are ready before
+     * {@code super.render} calls {@code setupAnim}.
      */
     @Override
     public void render(GotStagRenderState state,
@@ -76,17 +72,13 @@ public class GotStagRenderer
 
     private void selectAndApplyAnimation(GotStagRenderState state) {
         float t = state.ageInTicks;
-        if (state.isStanding) {
-            model.applyAnimation(GotStagAnimations.REAR, t, 1.0F);
-        } else if (state.isSprinting) {
+        if (state.isSprinting || state.isInWater) {
             model.applyAnimation(GotStagAnimations.RUN, t, 1.0F);
-        } else if (state.isMoving || state.isInWater) {
+        } else if (state.isMoving) {
             model.applyAnimation(GotStagAnimations.WALK, t, 1.0F);
         } else {
             model.applyAnimation(GotStagAnimations.IDLE, t, 1.0F);
-            if (state.isTame) {
-                model.applyAnimation(GotStagAnimations.TAIL_WAG, t, 1.0F);
-            }
+            model.applyAnimation(GotStagAnimations.TAIL_WAG, t, 1.0F);
         }
     }
 
@@ -103,6 +95,8 @@ public class GotStagRenderer
     protected void scale(GotStagRenderState state, PoseStack poseStack) {
         if (state.isBaby) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
+        } else {
+            poseStack.scale(1.2F, 1.2F, 1.2F);
         }
         super.scale(state, poseStack);
     }

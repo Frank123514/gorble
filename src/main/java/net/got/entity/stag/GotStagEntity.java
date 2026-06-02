@@ -1,15 +1,18 @@
 package net.got.entity.stag;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
@@ -18,46 +21,80 @@ import org.jetbrains.annotations.Nullable;
 /**
  * GOT Stag — a great red deer stag of the Westerosi forests.
  *
- * <p>Uses the custom stag geo model with antlers and a deer-like silhouette.
- * Extends vanilla {@link Horse} to reuse all horse behaviour (taming,
- * saddling, riding, breeding, health) while being rendered via GeckoLib
- * with its own model and the horse animation set remapped to stag bone names.
+ * <p>Extends {@link Animal} directly (not {@link net.minecraft.world.entity.animal.horse.Horse})
+ * because the stag uses a fully custom geo model ({@code gotdeer.bbmodel}) and its own
+ * animation set ({@link net.got.entity.client.stag.GotStagAnimations}).  No horse-specific
+ * machinery (taming, saddle slots, AbstractHorse data-accessors) is needed or wanted.
  *
- * <p>Animation states (same logic as the warhorse, using stag-prefixed clips):
+ * <p>Behaviour summary:
  * <ul>
- *   <li>{@code idle}    — subtle breathing bob.</li>
- *   <li>{@code walk}    — 4-beat walk gait.</li>
- *   <li>{@code run}     — bounding gallop.</li>
- *   <li>{@code rear}    — rearing when {@link #isStanding()}.</li>
- *   <li>{@code swim}    — paddling motion in water.</li>
- *   <li>{@code eat}     — grazing head-dip.</li>
- *   <li>{@code tail_wag}— tail flick when tamed and idle.</li>
+ *   <li>Passive herbivore — flees players and hostile mobs.</li>
+ *   <li>Breeds with wheat (consistent with vanilla deer-like animals).</li>
+ *   <li>Spawns like other woodland creatures via {@link #checkSpawnRules}.</li>
+ * </ul>
+ *
+ * <p>Animation states driven by {@link net.got.entity.client.stag.GotStagRenderer}:
+ * <ul>
+ *   <li>{@code idle}     — subtle breathing bob.</li>
+ *   <li>{@code walk}     — 4-beat walk gait.</li>
+ *   <li>{@code run}      — bounding gallop.</li>
+ *   <li>{@code swim}     — paddling motion in water.</li>
+ *   <li>{@code tail_wag} — idle tail flick.</li>
  * </ul>
  */
-public class GotStagEntity extends Horse {
+public class GotStagEntity extends Animal {
 
+    // ── Constructor ───────────────────────────────────────────────────────────
 
-
+    public GotStagEntity(EntityType<? extends GotStagEntity> type, Level level) {
+        super(type, level);
+    }
 
     // ── Attributes ────────────────────────────────────────────────────────────
 
     /**
-     * Called by {@link net.got.entity.GotEntityEvents} during
-     * {@code EntityAttributeCreationEvent} to register the stag's attribute set.
-     * Stags are fast and nimble but not quite as tough as the warhorse.
+     * Registered by {@link net.got.entity.GotEntityEvents} during
+     * {@code EntityAttributeCreationEvent}.
+     * Stags are fast and nimble — lighter stats than a warhorse.
      */
     public static AttributeSupplier.Builder createAttributes() {
-        return AbstractHorse.createBaseHorseAttributes()
+        return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 18.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
-                .add(Attributes.JUMP_STRENGTH, 0.65);
+                .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
+    // ── AI goals ──────────────────────────────────────────────────────────────
 
-    public GotStagEntity(EntityType<? extends Horse> type, Level level) {
-        super(type, level);
+    @Override
+    protected void registerGoals() {
+        // Panic + flee
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
+        // Breeding
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
+        // Follow parent when baby
+        this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.25));
+        // Wander and look around
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        // Flee players and hostile mobs
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
+    // ── Breeding ──────────────────────────────────────────────────────────────
+
+    /** Stags breed with wheat, like other vanilla deer-like animals. */
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return stack.is(Items.WHEAT);
+    }
+
+    @Override
+    public @Nullable GotStagEntity getBreedOffspring(ServerLevel level, AgeableMob mate) {
+        return (GotStagEntity) getType().create(level, EntitySpawnReason.BREEDING);
+    }
 
     // ── Spawn rules ───────────────────────────────────────────────────────────
 
