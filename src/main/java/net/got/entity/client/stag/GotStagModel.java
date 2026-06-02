@@ -1,167 +1,233 @@
 package net.got.entity.client.stag;
 
-import net.minecraft.client.model.HorseModel;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.HorseRenderState;
+import org.joml.Vector3f;
 
 /**
- * Stag model extending vanilla {@link HorseModel}.
+ * Custom deer model for {@link net.got.entity.stag.GotStagEntity}.
+ * Geometry is a direct port of the Blockbench export (gotdeer.bbmodel).
+ * Animations are driven by {@link KeyframeAnimations} via
+ * {@link #applyAnimation}, called from {@link GotStagRenderer}.
  *
- * <p>The createBodyLayer() skeleton mirrors the EXACT bone names and hierarchy
- * that vanilla 1.21.4 {@code AbstractEquineModel} expects, the same way
- * {@code GotSmallfolkModel} mirrors {@code HumanoidModel}'s skeleton.
- * Only the cube geometry differs — stag silhouette instead of horse.
- *
- * <p>Vanilla 1.21.4 AbstractEquineModel bone tree (root-level children):
- * <pre>
- *   head_parts
- *     neck
- *       head
- *         upper_mouth
- *         lower_mouth
- *         left_ear   / right_ear
- *         left_cheek_ear / right_cheek_ear
- *         head_saddle
- *         mouth_saddle_wrap1 / mouth_saddle_wrap2
- *   body
- *     tail
- *     saddle
- *     left_saddle_mouth / right_saddle_mouth
- *     left_saddle_line  / right_saddle_line
- *     left_chest / right_chest
- *   left_front_leg  / right_front_leg
- *   left_back_leg   / right_back_leg
- *   left_front_baby_leg / right_front_baby_leg
- *   left_back_baby_leg  / right_back_baby_leg
- *   mane  (child of neck in old model; now top-level stub expected by HorseModel)
- * </pre>
+ * <p>In 1.21.4, {@code EntityModel<T>} is parameterised on the
+ * <em>render state</em> type, not the entity.  {@code setupAnim} receives
+ * a {@link GotStagRenderState}; actual animation selection is done in
+ * {@link GotStagRenderer#render} before the super-call so the model just
+ * delegates to the last animation applied via {@link #applyAnimation}.
  */
-public class GotStagModel extends HorseModel {
+public class GotStagModel extends EntityModel<GotStagRenderState> {
+
+    // ── Root-level bones ──────────────────────────────────────────────────────
+
+    final ModelPart Body;
+    final ModelPart TailA;
+    final ModelPart Leg1A;
+    final ModelPart Leg2A;
+    final ModelPart Leg3A;
+    final ModelPart Leg4A;
+    final ModelPart Head;
+    final ModelPart Ear1;
+    final ModelPart Ear2;
+    final ModelPart Neck;
 
     public GotStagModel(ModelPart root) {
         super(root);
+        this.Body   = root.getChild("Body");
+        this.TailA  = root.getChild("TailA");
+        this.Leg1A  = root.getChild("Leg1A");
+        this.Leg2A  = root.getChild("Leg2A");
+        this.Leg3A  = root.getChild("Leg3A");
+        this.Leg4A  = root.getChild("Leg4A");
+        this.Head   = root.getChild("Head");
+        this.Ear1   = root.getChild("Ear1");
+        this.Ear2   = root.getChild("Ear2");
+        this.Neck   = root.getChild("Neck");
+        // hitbox: invisible pivot — obtained lazily via root if needed
     }
+
+    // ── Layer definition ──────────────────────────────────────────────────────
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition pd   = mesh.getRoot();
 
-        // ── head_parts  (AnimatedPart container — AbstractEquineModel fetches this first) ─
-        // Zero-size pivot at origin; all head/neck animation goes through this group.
-        PartDefinition headParts = pd.addOrReplaceChild("head_parts",
+        // ── Body ──────────────────────────────────────────────────────────────
+        PartDefinition Body = pd.addOrReplaceChild("Body",
+                CubeListBuilder.create()
+                        .texOffs(0, 20).addBox(-4.5F, -6.7F, -21.0F, 9, 9, 9, new CubeDeformation(0.0F)),
+                PartPose.offset(-0.5F, 11.0F, 10.0F));
+
+        Body.addOrReplaceChild("Body_r1",
+                CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-3.0F, -21.0F, -13.0F, 8, 8, 12, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-1.0F, 15.5F, -0.7F, -0.0349F, 0.0F, 0.0F));
+
+        // ── TailA ─────────────────────────────────────────────────────────────
+        PartDefinition TailA = pd.addOrReplaceChild("TailA",
                 CubeListBuilder.create(),
-                PartPose.ZERO);
+                PartPose.offsetAndRotation(-0.5F, 4.0F, 12.0F, 0.5236F, 0.0F, 0.0F));
 
-        // neck  (child of head_parts)
-        // Vanilla pivot: (0, 4, -12).  Stag neck same placement, slight forward lean baked in.
-        PartDefinition neck = headParts.addOrReplaceChild("neck",
+        TailA.addOrReplaceChild("TailA_r1",
                 CubeListBuilder.create()
-                        .texOffs(36, 31).addBox(-2.5f, -5.86f, -1.94f, 5, 5, 5, new CubeDeformation(0f))
-                        .texOffs(40,  0).addBox(-2.0f, -9.08f, -4.39f, 4, 5, 4, new CubeDeformation(0f)),
-                PartPose.offsetAndRotation(0f, 4f, -12f, 0.5236f, 0f, 0f));
+                        .texOffs(54, 50).addBox(-1.5F, -19.1986F, 9.3012F, 2, 3, 2, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.5F, 15.0F, -19.5F, -0.3142F, 0.0F, 0.0F));
 
-        // mane  (child of neck — vanilla HorseModel looks this up; stag has none so invisible stub)
-        neck.addOrReplaceChild("mane",
+        // ── Leg1A (front-right) ───────────────────────────────────────────────
+        PartDefinition Leg1A = pd.addOrReplaceChild("Leg1A",
                 CubeListBuilder.create(),
-                PartPose.ZERO);
+                PartPose.offset(2.5F, 13.0F, 10.0F));
 
-        // head  (child of neck)
-        PartDefinition head = neck.addOrReplaceChild("head",
+        Leg1A.addOrReplaceChild("Leg1A_r1",
                 CubeListBuilder.create()
-                        // cranium
-                        .texOffs(36, 20).addBox(-2.0f, -5.5f, -6.5f, 4, 5, 6, new CubeDeformation(0f))
-                        // right antler flat plane
-                        .texOffs(46, 41).addBox(-7.74f, -9.0f, -2.06f, 7, 9, 0, new CubeDeformation(0f))
-                        // left antler flat plane
-                        .texOffs(40,  9).addBox( 0.74f, -9.0f, -2.06f, 7, 9, 0, new CubeDeformation(0f))
-                        // nose
-                        .texOffs(32, 38).addBox(-0.5f, -2.0f, -10.2f, 1, 1, 1, new CubeDeformation(0f)),
-                PartPose.offsetAndRotation(0f, -11f, -3f, 0.5236f, 0f, 0f));
+                        .texOffs(34, 50).addBox(1.0F, -7.8F, -10.0F, 2, 8, 3, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-2.5F, 10.4F, 5.6F, 0.0698F, 0.0F, 0.0F));
 
-        head.addOrReplaceChild("upper_mouth",
+        Leg1A.addOrReplaceChild("Leg1A_r2",
                 CubeListBuilder.create()
-                        .texOffs(54,  9).addBox(-1.5f, -1.0f, -8.5f, 3, 2, 3, new CubeDeformation(0f)),
-                PartPose.ZERO);
-        head.addOrReplaceChild("lower_mouth",
+                        .texOffs(0, 38).addBox(-2.0F, -4.0F, -1.0F, 3, 6, 5, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.3F, 1.6F, -5.5F, 0.1309F, 0.0F, 0.0F));
+
+        // ── Leg2A (front-left) ────────────────────────────────────────────────
+        PartDefinition Leg2A = pd.addOrReplaceChild("Leg2A",
+                CubeListBuilder.create(),
+                PartPose.offset(-3.5F, 13.0F, 10.0F));
+
+        Leg2A.addOrReplaceChild("Leg2A_r1",
                 CubeListBuilder.create()
-                        .texOffs(54, 14).addBox(-1.5f,  0.5f, -8.0f, 3, 1, 3, new CubeDeformation(0f)),
-                PartPose.ZERO);
+                        .texOffs(44, 50).addBox(-3.0F, -7.6F, -10.0F, 2, 8, 3, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(2.5F, 10.4F, 5.6F, 0.0698F, 0.0F, 0.0F));
 
-        head.addOrReplaceChild("left_ear",
+        Leg2A.addOrReplaceChild("Leg2A_r2",
                 CubeListBuilder.create()
-                        .texOffs(54, 55).addBox(-1.0f, -3.5f, 3.5f, 2, 3, 1, new CubeDeformation(0f)),
-                PartPose.offsetAndRotation(-3.0f, -6.5f, 0f, 0f, 0f,  0.35f));
-        head.addOrReplaceChild("right_ear",
+                        .texOffs(16, 38).addBox(-2.0F, -4.0F, -1.0F, 3, 6, 5, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.7F, 1.6F, -5.5F, 0.0873F, 0.0F, 0.0F));
+
+        // ── Leg3A (back-right) ────────────────────────────────────────────────
+        pd.addOrReplaceChild("Leg3A",
                 CubeListBuilder.create()
-                        .texOffs(56,  0).addBox(-1.0f, -3.5f, 3.5f, 2, 3, 1, new CubeDeformation(0f)),
-                PartPose.offsetAndRotation( 3.0f, -6.5f, 0f, 0f, 0f, -0.35f));
+                        .texOffs(14, 49).addBox(-1.5F,  2.8F, -1.3F, 2, 8, 3, new CubeDeformation(0.0F))
+                        .texOffs(40,  9).addBox(-1.7F, -2.2F, -1.8F, 3, 5, 4, new CubeDeformation(0.0F)),
+                PartPose.offset(2.5F, 13.0F, -8.0F));
 
-        // Invisible stubs required by HorseModel/AbstractEquineModel constructor
-        head.addOrReplaceChild("left_cheek_ear",   CubeListBuilder.create(), PartPose.ZERO);
-        head.addOrReplaceChild("right_cheek_ear",  CubeListBuilder.create(), PartPose.ZERO);
-
-        // head_saddle and mouth_saddle_wrap are children of head_parts (this.head in vanilla), not the deep head bone
-        headParts.addOrReplaceChild("head_saddle",       CubeListBuilder.create(), PartPose.ZERO);
-        headParts.addOrReplaceChild("mouth_saddle_wrap", CubeListBuilder.create(), PartPose.ZERO);
-        head.addOrReplaceChild("mouth_saddle_wrap2", CubeListBuilder.create().texOffs(54, 14).addBox(-1.5f,  0.5f, -8.0f, 3, 1, 3, new CubeDeformation(0f)), PartPose.ZERO);
-
-        // ── body  (root-level) ───────────────────────────────────────────────
-        PartDefinition body = pd.addOrReplaceChild("body",
+        // ── Leg4A (back-left) ─────────────────────────────────────────────────
+        pd.addOrReplaceChild("Leg4A",
                 CubeListBuilder.create()
-                        // rump
-                        .texOffs(0, 20).addBox(-4.5f, -6.7f, -21.0f, 9, 9,  9, new CubeDeformation(0f))
-                        // torso
-                        .texOffs(0,  0).addBox(-4.0f, -5.5f, -31.0f, 8, 8, 12, new CubeDeformation(0f)),
-                PartPose.offset(0f, 11f, 10f));
+                        .texOffs(24, 50).addBox(-0.5F,  2.8F, -1.3F, 2, 8, 3, new CubeDeformation(0.0F))
+                        .texOffs( 0, 49).addBox(-1.3F, -1.2F, -1.8F, 3, 4, 4, new CubeDeformation(0.0F)),
+                PartPose.offset(-3.5F, 13.0F, -8.0F));
 
-        body.addOrReplaceChild("tail",
+        // ── Head ──────────────────────────────────────────────────────────────
+        PartDefinition Head = pd.addOrReplaceChild("Head",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-0.5F, -4.0F, -10.0F, 0.5236F, 0.0F, 0.0F));
+
+        Head.addOrReplaceChild("Head_r1",
                 CubeListBuilder.create()
-                        .texOffs(54, 50).addBox(-1.5f, -1.0f, -0.5f, 2, 3, 2, new CubeDeformation(0f)),
-                PartPose.offsetAndRotation(0f, -7f, 2f, 0.5236f, 0f, 0f));
+                        .texOffs(46, 41).addBox(-7.7396F, -8.9634F, -1.0642F, 7, 9, 0, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-0.4F, -0.1F, -1.0F, -0.6404F, 0.284F, -0.5112F));
 
-        // Saddle / strap stubs
-        body.addOrReplaceChild("saddle",             CubeListBuilder.create(), PartPose.ZERO);
-        // saddle mouth/line stubs are children of head_parts (this.head in vanilla)
-        headParts.addOrReplaceChild("left_saddle_mouth",  CubeListBuilder.create(), PartPose.ZERO);
-        headParts.addOrReplaceChild("right_saddle_mouth", CubeListBuilder.create(), PartPose.ZERO);
-        headParts.addOrReplaceChild("left_saddle_line",   CubeListBuilder.create(), PartPose.ZERO);
-        headParts.addOrReplaceChild("right_saddle_line",  CubeListBuilder.create(), PartPose.ZERO);
-        body.addOrReplaceChild("left_chest",         CubeListBuilder.create(), PartPose.ZERO);
-        body.addOrReplaceChild("right_chest",        CubeListBuilder.create(), PartPose.ZERO);
-
-        // ── Legs (root-level) ────────────────────────────────────────────────
-        pd.addOrReplaceChild("left_front_leg",
+        Head.addOrReplaceChild("Head_r2",
                 CubeListBuilder.create()
-                        .texOffs( 0, 38).addBox(-1.5f, -2.0f, -2.5f, 3, 6, 5, new CubeDeformation(0f))
-                        .texOffs(34, 50).addBox(-0.5f,  3.5f, -1.5f, 2, 8, 3, new CubeDeformation(0f)),
-                PartPose.offset(2.5f, 13f, 10f));
+                        .texOffs(32, 41).addBox(0.7396F, -8.9634F, -1.0642F, 7, 9, 0, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.4F, -0.1F, -1.0F, -0.6404F, -0.284F, 0.5112F));
 
-        pd.addOrReplaceChild("right_front_leg",
+        Head.addOrReplaceChild("Head_r3",
                 CubeListBuilder.create()
-                        .texOffs(16, 38).addBox(-1.5f, -2.0f, -2.5f, 3, 6, 5, new CubeDeformation(0f))
-                        .texOffs(44, 50).addBox(-1.5f,  3.5f, -1.5f, 2, 8, 3, new CubeDeformation(0f)),
-                PartPose.offset(-3.5f, 13f, 10f));
+                        .texOffs(32, 38).addBox(-1.0F, -1.9848F, 0.1737F, 1, 1, 1, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.5F, -0.4F, -9.6F, -0.3491F, 0.0F, 0.0F));
 
-        pd.addOrReplaceChild("left_hind_leg",
+        Head.addOrReplaceChild("Head_r4",
                 CubeListBuilder.create()
-                        .texOffs(32, 41).addBox(-1.7f, -1.2f, -1.8f, 3, 4, 4, new CubeDeformation(0f))
-                        .texOffs(14, 49).addBox(-1.5f,  2.8f, -1.3f, 2, 8, 3, new CubeDeformation(0f)),
-                PartPose.offset(2.5f, 13f, -8f));
+                        .texOffs(54, 14).addBox(-2.0F, -1.9724F, -1.7665F, 3, 1, 3, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.5F, 2.5F, -8.0F, -0.288F, 0.0F, 0.0F));
 
-        pd.addOrReplaceChild("right_hind_leg",
+        Head.addOrReplaceChild("Head_r5",
                 CubeListBuilder.create()
-                        .texOffs( 0, 49).addBox(-1.3f, -1.2f, -1.8f, 3, 4, 4, new CubeDeformation(0f))
-                        .texOffs(24, 50).addBox(-0.5f,  2.8f, -1.3f, 2, 8, 3, new CubeDeformation(0f)),
-                PartPose.offset(-3.5f, 13f, -8f));
+                        .texOffs(54, 9).addBox(-2.0F, -25.0938F, -30.5109F, 3, 2, 3, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.5F, 32.7F, 10.3F, -0.384F, 0.0F, 0.0F));
 
-        // Baby leg stubs — AgeableMobRenderer scales these for foals
-        pd.addOrReplaceChild("left_front_baby_leg",  CubeListBuilder.create(), PartPose.offset( 2.5f, 13f,  10f));
-        pd.addOrReplaceChild("right_front_baby_leg", CubeListBuilder.create(), PartPose.offset(-3.5f, 13f,  10f));
-        pd.addOrReplaceChild("left_hind_baby_leg",   CubeListBuilder.create(), PartPose.offset( 2.5f, 13f,  -8f));
-        pd.addOrReplaceChild("right_hind_baby_leg",  CubeListBuilder.create(), PartPose.offset(-3.5f, 13f,  -8f));
+        Head.addOrReplaceChild("Head_r6",
+                CubeListBuilder.create()
+                        .texOffs(36, 20).addBox(-2.0F, -26.0938F, -26.5109F, 4, 5, 6, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, 32.1F, 9.5F, -0.384F, 0.0F, 0.0F));
+
+        // ── Ear1 ──────────────────────────────────────────────────────────────
+        PartDefinition Ear1 = pd.addOrReplaceChild("Ear1",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-0.5F, 7.0F, -7.0F, 0.5236F, 0.0F, 0.0873F));
+
+        Ear1.addOrReplaceChild("Ear1_r1",
+                CubeListBuilder.create()
+                        .texOffs(54, 55).mirror()
+                        .addBox(10.1795F, -31.4863F, -15.0362F, 2, 2, 1, new CubeDeformation(0.0F))
+                        .mirror(false),
+                PartPose.offsetAndRotation(17.3F, 17.5F, -4.6F, -0.4638F, -0.4179F, -0.9008F));
+
+        // ── Ear2 ──────────────────────────────────────────────────────────────
+        PartDefinition Ear2 = pd.addOrReplaceChild("Ear2",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-0.5F, 7.0F, -7.0F, 0.5236F, 0.0F, -0.0873F));
+
+        Ear2.addOrReplaceChild("Ear2_r1",
+                CubeListBuilder.create()
+                        .texOffs(56, 0).addBox(-12.1795F, -31.4863F, -15.0362F, 2, 2, 1, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-17.3F, 17.5F, -4.6F, -0.4638F, 0.4179F, 0.9008F));
+
+        // ── Neck ──────────────────────────────────────────────────────────────
+        PartDefinition Neck = pd.addOrReplaceChild("Neck",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-0.5F, 7.0F, -7.0F, 0.5236F, 0.0F, 0.0F));
+
+        Neck.addOrReplaceChild("Neck_r1",
+                CubeListBuilder.create()
+                        .texOffs(40, 0).addBox(-1.0F, -21.0795F, -10.3907F, 4, 5, 4, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-1.0F, 12.0F, 6.0F, -0.1222F, 0.0F, 0.0F));
+
+        Neck.addOrReplaceChild("Neck_r2",
+                CubeListBuilder.create()
+                        .texOffs(36, 31).addBox(-3.0F, -21.1613F, -11.5446F, 5, 5, 5, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.5F, 15.3F, 9.6F, 0.0524F, 0.0F, 0.0F));
+
+        // ── Hitbox pivot (invisible, no cubes) ────────────────────────────────
+        pd.addOrReplaceChild("hitbox", CubeListBuilder.create(),
+                PartPose.offset(-1.5F, 26.5F, 7.3F));
 
         return LayerDefinition.create(mesh, 128, 128);
+    }
+
+    // ── Animation ─────────────────────────────────────────────────────────────
+
+    /** Reusable scratch vector — avoids allocation every frame. */
+    private static final Vector3f ANIMATION_VEC = new Vector3f();
+
+    /**
+     * Applies a {@link AnimationDefinition} clip to this model.
+     * Called from {@link GotStagRenderer} before the render super-call.
+     *
+     * @param definition animation clip to play
+     * @param ageInTicks running tick counter used as the animation clock
+     * @param weight     blend weight in [0, 1]
+     */
+    public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
+        KeyframeAnimations.animate(this, definition, (long) ageInTicks, weight, ANIMATION_VEC);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>In 1.21.4, {@code setupAnim} receives the pre-built render state.
+     * Actual animation selection happens in {@link GotStagRenderer#render}
+     * via {@link #applyAnimation} before the super-call, so this override
+     * is intentionally empty — {@code renderToBuffer} (final in
+     * {@code Model}) reads whatever the animator already wrote.
+     */
+    @Override
+    public void setupAnim(GotStagRenderState state) {
+        // Animation is driven externally by GotStagRenderer.
     }
 }

@@ -9,8 +9,12 @@ import net.minecraft.resources.ResourceLocation;
  * <p>Register each in {@code ClientSetup.registerLayerDefinitions}:
  * <pre>{@code
  * event.registerLayerDefinition(GotModelLayers.SMALLFOLK, GotSmallfolkModel::createBodyLayer);
- * event.registerLayerDefinition(GotModelLayers.GOT_HORSE,  GotHorseModel::createBodyLayer);
- * event.registerLayerDefinition(GotModelLayers.GOT_STAG,   GotStagModel::createBodyLayer);
+ * event.registerLayerDefinition(GotModelLayers.GOT_STAG,  GotStagModel::createBodyLayer);
+ * }</pre>
+ *
+ * <p>And register the renderer in {@code ClientSetup.registerRenderers} (or equivalent):
+ * <pre>{@code
+ * event.registerEntityRenderer(GotEntityTypes.STAG.get(), GotStagRenderer::new);
  * }</pre>
  */
 public final class GotModelLayers {
@@ -24,12 +28,18 @@ public final class GotModelLayers {
 
     // ── Animals ───────────────────────────────────────────────────────────────
 
+    /**
+     * Layer location for the custom deer model ({@code GotStagModel}).
+     * Matches {@code GotStagModel#LAYER_LOCATION} — both resolve to
+     * {@code got:got_stag#main}.
+     */
     public static final ModelLayerLocation GOT_STAG =
             location("got_stag");
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static ModelLayerLocation location(String name) {
-        return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("got", name), "main");
+        return new ModelLayerLocation(
+                ResourceLocation.fromNamespaceAndPath("got", name), "main");
     }
 }
