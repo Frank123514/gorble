@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.world.item.crafting.Recipe;
@@ -49,6 +50,7 @@ public class GotRecipeProvider extends RecipeProvider {
         buildAlloyRecipes(items);
         buildToolRecipes(items);
         buildArmourRecipes(items);
+        buildHiltPommelGuardRecipes(items);
         buildSmithyRecipes(items);
     }
 
@@ -481,6 +483,28 @@ public class GotRecipeProvider extends RecipeProvider {
                 .save(this.output, rk(tier + "_boots"));
     }
 
+    // ── Hilt, pommel & guard crafting ─────────────────────────────────────────
+
+    private void buildHiltPommelGuardRecipes(HolderGetter<Item> items) {
+        // Hilts — crafted from planks + stick (no metal)
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, item("hilt"), 1)
+                .define('P', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .pattern("P")
+                .pattern("S")
+                .unlockedBy("has_stick", has(Items.STICK))
+                .save(this.output, rk("hilt"));
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, item("long_hilt"), 1)
+                .define('P', ItemTags.PLANKS)
+                .define('S', Items.STICK)
+                .pattern("P")
+                .pattern("S")
+                .pattern("S")
+                .unlockedBy("has_stick", has(Items.STICK))
+                .save(this.output, rk("long_hilt"));
+    }
+
     // ── Smithy recipes ────────────────────────────────────────────────
 
     private void buildSmithyRecipes(HolderGetter<Item> items) {
@@ -510,14 +534,6 @@ public class GotRecipeProvider extends RecipeProvider {
         smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_shortsword_blade"),    240, "smithy/bronze_shortsword_blade");
         smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_falchion_blade"),      240, "smithy/bronze_falchion_blade");
         smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_greatsword_blade"),    240, "smithy/bronze_greatsword_blade");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_round_pommel"),        240, "smithy/bronze_round_pommel");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_diamond_pommel"),      240, "smithy/bronze_diamond_pommel");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_faceted_pommel"),      240, "smithy/bronze_faceted_pommel");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_regular_hilt"),        240, "smithy/bronze_regular_hilt");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_long_hilt"),           240, "smithy/bronze_long_hilt");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_straight_crossguard"), 240, "smithy/bronze_straight_crossguard");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_curved_crossguard"),   240, "smithy/bronze_curved_crossguard");
-        smithy(GotModItems.BRONZE_INGOT.get(), item("bronze_sloped_crossguard"),   240, "smithy/bronze_sloped_crossguard");
         // golden (160 ticks)
         smithy(Items.GOLD_INGOT, Items.GOLDEN_SWORD,      160, "smithy/golden_sword");
         smithy(Items.GOLD_INGOT, Items.GOLDEN_PICKAXE,    160, "smithy/golden_pickaxe");
@@ -544,14 +560,13 @@ public class GotRecipeProvider extends RecipeProvider {
         smithy(Items.IRON_INGOT, item("iron_shortsword_blade"),    200, "smithy/iron_shortsword_blade");
         smithy(Items.IRON_INGOT, item("iron_falchion_blade"),      200, "smithy/iron_falchion_blade");
         smithy(Items.IRON_INGOT, item("iron_greatsword_blade"),    200, "smithy/iron_greatsword_blade");
-        smithy(Items.IRON_INGOT, item("iron_round_pommel"),        200, "smithy/iron_round_pommel");
-        smithy(Items.IRON_INGOT, item("iron_diamond_pommel"),      200, "smithy/iron_diamond_pommel");
-        smithy(Items.IRON_INGOT, item("iron_faceted_pommel"),      200, "smithy/iron_faceted_pommel");
-        smithy(Items.IRON_INGOT, item("iron_regular_hilt"),        200, "smithy/iron_regular_hilt");
-        smithy(Items.IRON_INGOT, item("iron_long_hilt"),           200, "smithy/iron_long_hilt");
-        smithy(Items.IRON_INGOT, item("iron_straight_crossguard"), 200, "smithy/iron_straight_crossguard");
-        smithy(Items.IRON_INGOT, item("iron_curved_crossguard"),   200, "smithy/iron_curved_crossguard");
-        smithy(Items.IRON_INGOT, item("iron_sloped_crossguard"),   200, "smithy/iron_sloped_crossguard");
+        // iron pommel & guard components (200 ticks)
+        smithy(Items.IRON_INGOT, item("round_pommel"),        200, "smithy/round_pommel");
+        smithy(Items.IRON_INGOT, item("diamond_pommel"),      200, "smithy/diamond_pommel");
+        smithy(Items.IRON_INGOT, item("faceted_pommel"),      200, "smithy/faceted_pommel");
+        smithy(Items.IRON_INGOT, item("straight_crossguard"), 200, "smithy/straight_crossguard");
+        smithy(Items.IRON_INGOT, item("curved_crossguard"),   200, "smithy/curved_crossguard");
+        smithy(Items.IRON_INGOT, item("sloped_crossguard"),   200, "smithy/sloped_crossguard");
         // steel (300 ticks)
         smithy(GotModItems.STEEL_INGOT.get(), item("steel_sword"),      300, "smithy/steel_sword");
         smithy(GotModItems.STEEL_INGOT.get(), item("steel_pickaxe"),    300, "smithy/steel_pickaxe");
@@ -568,14 +583,6 @@ public class GotRecipeProvider extends RecipeProvider {
         smithy(GotModItems.STEEL_INGOT.get(), item("steel_shortsword_blade"),    300, "smithy/steel_shortsword_blade");
         smithy(GotModItems.STEEL_INGOT.get(), item("steel_falchion_blade"),      300, "smithy/steel_falchion_blade");
         smithy(GotModItems.STEEL_INGOT.get(), item("steel_greatsword_blade"),    300, "smithy/steel_greatsword_blade");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_round_pommel"),        300, "smithy/steel_round_pommel");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_diamond_pommel"),      300, "smithy/steel_diamond_pommel");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_faceted_pommel"),      300, "smithy/steel_faceted_pommel");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_regular_hilt"),        300, "smithy/steel_regular_hilt");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_long_hilt"),           300, "smithy/steel_long_hilt");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_straight_crossguard"), 300, "smithy/steel_straight_crossguard");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_curved_crossguard"),   300, "smithy/steel_curved_crossguard");
-        smithy(GotModItems.STEEL_INGOT.get(), item("steel_sloped_crossguard"),   300, "smithy/steel_sloped_crossguard");
     }
 
     private void smithy(ItemLike ingredient, ItemLike result, int cookingTime, String path) {

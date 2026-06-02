@@ -3099,5 +3099,13 @@
   "item.got.white_cherry_boat": "White Cherry Boat",
   "item.got.red_cherry_chest_boat": "Red Cherry Chest Boat",
   "item.got.black_cherry_chest_boat": "Black Cherry Chest Boat",
-  "item.got.white_cherry_chest_boat": "White Cherry Chest Boat"
+  "item.got.white_cherry_chest_boat": "White Cherry Chest Boat",
+  "item.got.hilt": "Hilt",
+  "item.got.long_hilt": "Long Hilt",
+  "item.got.round_pommel": "Round Pommel",
+  "item.got.diamond_pommel": "Diamond Pommel",
+  "item.got.faceted_pommel": "Faceted Pommel",
+  "item.got.straight_crossguard": "Straight Crossguard",
+  "item.got.curved_crossguard": "Curved Crossguard",
+  "item.got.sloped_crossguard": "Sloped Crossguard"
 }

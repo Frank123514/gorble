@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "got:item/bronze_short_axe_head"
+    "layer0": "got:item/diamond_pommel"
   }
 }

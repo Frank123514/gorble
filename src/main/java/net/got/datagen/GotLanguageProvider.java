@@ -122,15 +122,17 @@ public class GotLanguageProvider extends LanguageProvider {
             item(tier + "_shortsword_blade",    t + " Shortsword Blade");
             item(tier + "_falchion_blade",      t + " Falchion Blade");
             item(tier + "_greatsword_blade",    t + " Greatsword Blade");
-            item(tier + "_round_pommel",        t + " Round Pommel");
-            item(tier + "_diamond_pommel",      t + " Diamond Pommel");
-            item(tier + "_faceted_pommel",      t + " Faceted Pommel");
-            item(tier + "_regular_hilt",        t + " Regular Hilt");
-            item(tier + "_long_hilt",           t + " Long Hilt");
-            item(tier + "_straight_crossguard", t + " Straight Crossguard");
-            item(tier + "_curved_crossguard",   t + " Curved Crossguard");
-            item(tier + "_sloped_crossguard",   t + " Sloped Crossguard");
         }
+        // ── Hilt components (wood) ────────────────────────────────────────────
+        item("hilt",      "Hilt");
+        item("long_hilt", "Long Hilt");
+        // ── Pommel & guard components (iron) ─────────────────────────────────
+        item("round_pommel",        "Round Pommel");
+        item("diamond_pommel",      "Diamond Pommel");
+        item("faceted_pommel",      "Faceted Pommel");
+        item("straight_crossguard", "Straight Crossguard");
+        item("curved_crossguard",   "Curved Crossguard");
+        item("sloped_crossguard",   "Sloped Crossguard");
 
         // ── Wetland plants & terrain ──────────────────────────────────────────
         block("wheatgrass",  "Wheatgrass");
