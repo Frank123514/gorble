@@ -2398,7 +2398,6 @@ public class GotModTabs {
                         output.accept(GotModItems.VALE_KNIGHT_SPAWN_EGG.get());
 
                         // ── Mounts & Wildlife ─────────────────────────────────────────
-                        output.accept(GotModItems.GOT_HORSE_SPAWN_EGG.get());
                         output.accept(GotModItems.GOT_STAG_SPAWN_EGG.get());
 
                     })

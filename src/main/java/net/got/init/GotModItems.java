@@ -1718,10 +1718,6 @@ public class GotModItems {
 
     // ── Mount & Wildlife Spawn Eggs ───────────────────────────────────────────
 
-    /** Warhorse spawn egg — dapple grey with light-grey spots. */
-    public static final DeferredItem<SpawnEggItem> GOT_HORSE_SPAWN_EGG = REGISTRY.registerItem(
-            "got_horse_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_HORSE.get(), p));
-
     /** Stag spawn egg — bark brown with antler-cream spots. */
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
             "got_stag_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_STAG.get(), p));

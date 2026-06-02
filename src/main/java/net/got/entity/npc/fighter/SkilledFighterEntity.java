@@ -5,13 +5,13 @@ import net.got.entity.npc.goal.GotHurtByTargetGoal;
 import net.got.entity.npc.goal.GotMeleeAttackGoal;
 import net.got.entity.npc.goal.GotNearestTargetGoal;
 import net.got.entity.npc.smallfolk.SmallfolkEntity;
-import net.got.init.GotModEntities;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,7 +22,8 @@ import org.jetbrains.annotations.Nullable;
  * Abstract base for all Tier-3 Skilled Fighter NPC entities.
  *
  * <p>Like LOTR's mannish warriors — always male, aggressively seek targets,
- * and have a configurable chance to spawn mounted on a {@link GotHorseEntity}.
+ * and have a configurable chance to spawn mounted on a vanilla {@link Horse}
+ * (TODO: replace with GotHorseEntity once implemented).
  */
 public abstract class SkilledFighterEntity extends SmallfolkEntity {
 
@@ -82,7 +83,8 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
     }
 
     private void trySpawnMounted(ServerLevel serverLevel) {
-        GotHorseEntity horse = GotModEntities.GOT_HORSE.get()
+        // TODO: Replace with GotHorseEntity / GotModEntities.GOT_HORSE once that entity is added.
+        Horse horse = EntityType.HORSE
                 .create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
         if (horse == null) return;
         horse.moveTo(getX(), getY(), getZ(), getYRot(), 0f);

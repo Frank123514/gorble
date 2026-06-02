@@ -27,7 +27,16 @@ public class GotStagRenderer
             ResourceLocation.fromNamespaceAndPath("got", "textures/entity/got_stag.png");
 
     public GotStagRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new GotStagModel(ctx.bakeLayer(GotModelLayers.GOT_STAG)), 0.9f);
+        // In 1.21.4, AbstractHorseRenderer takes (Context, adultModel, babyModel).
+        // The float shadow-radius parameter was removed entirely.
+        // The stag has no distinct baby model, so we pass the same layer for both.
+        // super() must be first — model is built via a private static helper to avoid
+        // a local-variable declaration before the super() call.
+        super(ctx, buildModel(ctx), buildModel(ctx));
+    }
+
+    private static GotStagModel buildModel(EntityRendererProvider.Context ctx) {
+        return new GotStagModel(ctx.bakeLayer(GotModelLayers.GOT_STAG));
     }
 
     // ── Render state ──────────────────────────────────────────────────────────
