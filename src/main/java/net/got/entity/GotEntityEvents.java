@@ -1,7 +1,6 @@
 package net.got.entity;
 
 // ── Tier-1 Smallfolk ──────────────────────────────────────────────────────────
-import net.got.entity.horse.GotHorseEntity;
 import net.got.entity.stag.GotStagEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
@@ -60,14 +59,6 @@ public class GotEntityEvents {
         event.put(GotModEntities.NORTH_SOLDIER.get(), NorthSoldierEntity.createAttributes().build());
         event.put(GotModEntities.VALE_KNIGHT.get(),   ValeKnightEntity.createAttributes().build());
 
-        // ── GOT Horse ──────────────────────────────────────────────────────────
-        event.put(GotModEntities.GOT_HORSE.get(),
-                net.minecraft.world.entity.animal.horse.AbstractHorse.createBaseHorseAttributes()
-                        .add(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH, 20.0)
-                        .add(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED, 0.265)
-                        .add(net.minecraft.world.entity.ai.attributes.Attributes.JUMP_STRENGTH, 0.7)
-                        .build());
-
         // ── GOT Stag ───────────────────────────────────────────────────────────
         event.put(GotModEntities.GOT_STAG.get(), GotStagEntity.createAttributes().build());
     }
@@ -97,9 +88,6 @@ public class GotEntityEvents {
         // ── Skilled Fighters (Tier 3) ──────────────────────────────────────────
         event.register(GotModEntities.NORTH_SOLDIER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NorthSoldierEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(GotModEntities.VALE_KNIGHT.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ValeKnightEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
-
-        // ── GOT Horse ──────────────────────────────────────────────────────────
-        event.register(GotModEntities.GOT_HORSE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotHorseEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         // ── GOT Stag ───────────────────────────────────────────────────────────
         event.register(GotModEntities.GOT_STAG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotStagEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);

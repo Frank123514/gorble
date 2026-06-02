@@ -4,7 +4,6 @@ import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
 import net.got.entity.client.model.GotModelLayers;
 import net.got.entity.client.npc.smallfolk.GotSmallfolkModel;
-import net.got.entity.client.horse.GotHorseModel;
 import net.got.entity.client.stag.GotStagModel;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
@@ -26,7 +25,6 @@ import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
 // ── Horse / Stag renderers ────────────────────────────────────────────────────
-import net.got.entity.client.horse.GotHorseRenderer;
 import net.got.entity.client.stag.GotStagRenderer;
 import net.got.init.GotModBlockEntities;
 import net.got.init.GotModBlocks;
@@ -82,7 +80,6 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(GotSmallfolkModel.LAYER_LOCATION, GotSmallfolkModel::createBodyLayer);
-        event.registerLayerDefinition(GotModelLayers.GOT_HORSE,        GotHorseModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_STAG,         GotStagModel::createBodyLayer);
     }
 
@@ -247,7 +244,6 @@ net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.A
         event.registerEntityRenderer(GotModEntities.VALE_KNIGHT.get(),   ctx -> new SmallfolkRenderer<>(ctx, ValeKnightEntity.MALE_TEXTURES,   ValeKnightEntity.FEMALE_TEXTURES));
 
         // ── GOT Horse / Stag renderers ───────────────────────────────────────
-        event.registerEntityRenderer(GotModEntities.GOT_HORSE.get(), GotHorseRenderer::new);
         event.registerEntityRenderer(GotModEntities.GOT_STAG.get(),  GotStagRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────

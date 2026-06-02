@@ -3,19 +3,25 @@ package net.got.entity.client.stag;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.got.entity.client.model.GotModelLayers;
 import net.got.entity.stag.GotStagEntity;
+import net.minecraft.client.model.HorseModel;
+import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.HorseRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 /**
  * Renderer for {@link GotStagEntity}.
  *
- * <p>Uses the custom {@link GotStagModel} (converted from
- * {@code assets/got/geo/got_stag.geo.json}).  All animation is driven inside
- * {@link GotStagModel#setupAnim}.
+ * <p>Extends vanilla {@link AbstractHorseRenderer} — the same base used by
+ * vanilla {@code HorseRenderer}, {@code DonkeyRenderer}, etc. — so all horse
+ * rendering logic (saddle layers, baby scaling, shadow) is inherited for free.
+ *
+ * <p>The model is {@link GotStagModel}, which itself extends vanilla
+ * {@link HorseModel}, meaning the full vanilla animation pipeline runs
+ * unchanged on the stag's geometry.
  */
 public class GotStagRenderer
-        extends MobRenderer<GotStagEntity, GotStagRenderState, GotStagModel> {
+        extends AbstractHorseRenderer<GotStagEntity, HorseRenderState, GotStagModel> {
 
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/entity/got_stag.png");
@@ -27,28 +33,33 @@ public class GotStagRenderer
     // ── Render state ──────────────────────────────────────────────────────────
 
     @Override
-    public GotStagRenderState createRenderState() {
+    public HorseRenderState createRenderState() {
         return new GotStagRenderState();
     }
 
+    /**
+     * {@code AbstractHorseRenderer#extractRenderState} already populates all
+     * horse animation fields from the entity.  We just call super — nothing
+     * stag-specific is needed here.
+     */
     @Override
-    public void extractRenderState(GotStagEntity entity, GotStagRenderState state, float partialTick) {
+    public void extractRenderState(GotStagEntity entity,
+                                   HorseRenderState state,
+                                   float partialTick) {
         super.extractRenderState(entity, state, partialTick);
-        state.isStanding = entity.isStanding();
-        state.isEating   = entity.isEating();
-        state.yHeadRot   = entity.getYHeadRot();
-        state.xRot       = entity.getXRot();
     }
 
-    // ── Texture & scale ───────────────────────────────────────────────────────
+    // ── Texture ───────────────────────────────────────────────────────────────
 
     @Override
-    public ResourceLocation getTextureLocation(GotStagRenderState state) {
+    public ResourceLocation getTextureLocation(HorseRenderState state) {
         return TEXTURE;
     }
 
+    // ── Scale ─────────────────────────────────────────────────────────────────
+
     @Override
-    protected void scale(GotStagRenderState state, PoseStack poseStack) {
-        if (state.isBaby) poseStack.scale(0.65f, 0.65f, 0.65f);
+    protected void scale(HorseRenderState state, PoseStack poseStack) {
+        super.scale(state, poseStack);   // handles baby scaling automatically
     }
 }

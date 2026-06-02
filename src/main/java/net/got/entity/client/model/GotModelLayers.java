@@ -24,9 +24,6 @@ public final class GotModelLayers {
 
     // ── Animals ───────────────────────────────────────────────────────────────
 
-    public static final ModelLayerLocation GOT_HORSE =
-            location("got_horse");
-
     public static final ModelLayerLocation GOT_STAG =
             location("got_stag");
 

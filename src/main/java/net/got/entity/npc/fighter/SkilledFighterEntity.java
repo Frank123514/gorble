@@ -1,6 +1,5 @@
 package net.got.entity.npc.fighter;
 
-import net.got.entity.horse.GotHorseEntity;
 import net.got.entity.npc.data.GotGenderProvider;
 import net.got.entity.npc.goal.GotHurtByTargetGoal;
 import net.got.entity.npc.goal.GotMeleeAttackGoal;

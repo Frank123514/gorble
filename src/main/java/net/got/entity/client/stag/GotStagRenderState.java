@@ -1,27 +1,17 @@
 package net.got.entity.client.stag;
 
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.HorseRenderState;
 
 /**
- * Per-frame snapshot of {@link net.got.entity.stag.GotStagEntity} fields
- * needed by {@link GotStagModel}.
+ * Per-frame render snapshot for {@link net.got.entity.stag.GotStagEntity}.
  *
- * <p>Inherits {@code walkAnimationPos}, {@code walkAnimationSpeed},
- * {@code ageInTicks}, {@code isInWater}, and {@code isBaby} from
- * {@link LivingEntityRenderState}. {@code yHeadRot} and {@code xRot} are
- * declared here explicitly because they are not part of the base class in
- * 1.21.4.
+ * <p>Extends vanilla {@link HorseRenderState} so the inherited
+ * {@link net.minecraft.client.model.HorseModel#setupAnim} receives every
+ * field it expects ({@code walkAnimationPos}, {@code walkAnimationSpeed},
+ * {@code ageInTicks}, {@code isInWater}, {@code isBaby}, {@code isStanding},
+ * {@code isEating}, {@code isSaddled}, etc.) without us having to declare any
+ * of them.  No new fields are needed for the stag.
  */
-public class GotStagRenderState extends LivingEntityRenderState {
-
-    /** Head Y-rotation in degrees, copied from {@code entity.getYHeadRot()}. */
-    public float yHeadRot;
-    /** Head X-rotation (pitch) in degrees, copied from {@code entity.getXRot()}. */
-    public float xRot;
-
-    /** True when the stag is rearing on its hind legs. */
-    public boolean isStanding;
-
-    /** True when the stag has its head lowered to eat. */
-    public boolean isEating;
+public class GotStagRenderState extends HorseRenderState {
+    // intentionally empty — all state lives in HorseRenderState
 }
