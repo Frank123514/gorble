@@ -5,6 +5,8 @@ import net.got.client.renderer.GotBoatRenderer;
 import net.got.entity.client.model.GotModelLayers;
 import net.got.entity.client.npc.smallfolk.GotSmallfolkModel;
 import net.got.entity.client.stag.GotStagModel;
+import net.got.entity.client.heron.GotHeronModel;
+import net.got.entity.client.heron.GotHeronRenderer;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -81,6 +83,7 @@ public final class ClientSetup {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(GotSmallfolkModel.LAYER_LOCATION, GotSmallfolkModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_STAG,         GotStagModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_HERON,        GotHeronModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -142,7 +145,7 @@ public final class ClientSetup {
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.HEMLOCK_DOOR.get(),     RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.HEMLOCK_TRAPDOOR.get(), RenderType.cutout());
 
-net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.ALDER_DOOR.get(),              RenderType.cutout());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.ALDER_DOOR.get(),              RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.PINE_DOOR.get(),               RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.FIR_DOOR.get(),                RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.SENTINAL_DOOR.get(),           RenderType.cutout());
@@ -245,6 +248,7 @@ net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.A
 
         // ── GOT Horse / Stag renderers ───────────────────────────────────────
         event.registerEntityRenderer(GotModEntities.GOT_STAG.get(),  GotStagRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_HERON.get(), GotHeronRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));
@@ -308,7 +312,7 @@ net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.A
         event.registerEntityRenderer(boat(GotModBoatEntities.HEMLOCK_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "hemlock"));
         event.registerEntityRenderer(boat(GotModBoatEntities.HEMLOCK_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "hemlock"));
 
-event.registerEntityRenderer(boat(GotModBoatEntities.ALDER_BOAT.get()),                 ctx -> new GotBoatRenderer(ctx, false, "alder"));
+        event.registerEntityRenderer(boat(GotModBoatEntities.ALDER_BOAT.get()),                 ctx -> new GotBoatRenderer(ctx, false, "alder"));
         event.registerEntityRenderer(boat(GotModBoatEntities.ALDER_CHEST_BOAT.get()),           ctx -> new GotBoatRenderer(ctx, true,  "alder"));
         event.registerEntityRenderer(boat(GotModBoatEntities.PINE_BOAT.get()),                  ctx -> new GotBoatRenderer(ctx, false, "pine"));
         event.registerEntityRenderer(boat(GotModBoatEntities.PINE_CHEST_BOAT.get()),            ctx -> new GotBoatRenderer(ctx, true,  "pine"));
@@ -402,7 +406,7 @@ event.registerEntityRenderer(boat(GotModBoatEntities.ALDER_BOAT.get()),         
         event.registerBlockEntityRenderer(GotModBlockEntities.NUTMEG_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.HEMLOCK_SIGN.get(), SignRenderer::new);
 
-event.registerBlockEntityRenderer(GotModBlockEntities.ALDER_SIGN.get(),              SignRenderer::new);
+        event.registerBlockEntityRenderer(GotModBlockEntities.ALDER_SIGN.get(),              SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.PINE_SIGN.get(),               SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.FIR_SIGN.get(),                SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.SENTINAL_SIGN.get(),           SignRenderer::new);

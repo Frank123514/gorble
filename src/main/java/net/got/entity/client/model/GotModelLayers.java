@@ -36,6 +36,13 @@ public final class GotModelLayers {
     public static final ModelLayerLocation GOT_STAG =
             location("got_stag");
 
+    /**
+     * Layer location for the custom heron model ({@code GotHeronModel}).
+     * Resolves to {@code got:got_heron#main}.
+     */
+    public static final ModelLayerLocation GOT_HERON =
+            location("got_heron");
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static ModelLayerLocation location(String name) {

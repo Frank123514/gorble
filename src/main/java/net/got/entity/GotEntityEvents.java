@@ -2,6 +2,7 @@ package net.got.entity;
 
 // ── Tier-1 Smallfolk ──────────────────────────────────────────────────────────
 import net.got.entity.stag.GotStagEntity;
+import net.got.entity.heron.GotHeronEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
 import net.got.entity.npc.smallfolk.ValemanEntity;
@@ -61,6 +62,9 @@ public class GotEntityEvents {
 
         // ── GOT Stag ───────────────────────────────────────────────────────────
         event.put(GotModEntities.GOT_STAG.get(), GotStagEntity.createAttributes().build());
+
+        // ── GOT Heron ──────────────────────────────────────────────────────────
+        event.put(GotModEntities.GOT_HERON.get(), GotHeronEntity.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -91,5 +95,8 @@ public class GotEntityEvents {
 
         // ── GOT Stag ───────────────────────────────────────────────────────────
         event.register(GotModEntities.GOT_STAG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotStagEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        // ── GOT Heron ──────────────────────────────────────────────────────────
+        event.register(GotModEntities.GOT_HERON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotHeronEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

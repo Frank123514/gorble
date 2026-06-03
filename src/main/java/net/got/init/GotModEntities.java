@@ -3,6 +3,7 @@ package net.got.init;
 import net.got.GotMod;
 // ── Tier-1 Smallfolk imports ───────────────────────────────────────────────────
 import net.got.entity.stag.GotStagEntity;
+import net.got.entity.heron.GotHeronEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
 import net.got.entity.npc.smallfolk.RiverlanderEntity;
 import net.got.entity.npc.smallfolk.ValemanEntity;
@@ -156,4 +157,12 @@ public class GotModEntities {
                             .sized(1.4f, 1.6f).clientTrackingRange(10).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_stag"))));
+
+    /** GOT Heron — a wading bird found near rivers and beaches. */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotHeronEntity>> GOT_HERON =
+            REGISTRY.register("got_heron", () ->
+                    EntityType.Builder.<GotHeronEntity>of(GotHeronEntity::new, MobCategory.CREATURE)
+                            .sized(0.5f, 1.4f).clientTrackingRange(10).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_heron"))));
 }
