@@ -24,6 +24,9 @@ import net.got.entity.npc.levy.arryn.ArrynLevyEntity;
 // ── Skilled Fighter imports ───────────────────────────────────────────────────
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
+import net.got.entity.direwolf.GotDirewolfEntity;
+import net.got.entity.crow.GotCrowEntity;
+import net.got.entity.mammoth.GotMammothEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -165,4 +168,28 @@ public class GotModEntities {
                             .sized(0.5f, 1.4f).clientTrackingRange(10).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_heron"))));
+
+    /** GOT Direwolf — the great wolves of the North, symbol of House Stark. */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotDirewolfEntity>> GOT_DIREWOLF =
+            REGISTRY.register("got_direwolf", () ->
+                    EntityType.Builder.<GotDirewolfEntity>of(GotDirewolfEntity::new, MobCategory.CREATURE)
+                            .sized(1.5f, 1.2f).clientTrackingRange(12).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_direwolf"))));
+
+    /** GOT Crow — the ravens and crows of Westeros. */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotCrowEntity>> GOT_CROW =
+            REGISTRY.register("got_crow", () ->
+                    EntityType.Builder.<GotCrowEntity>of(GotCrowEntity::new, MobCategory.CREATURE)
+                            .sized(0.4f, 0.6f).clientTrackingRange(8).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_crow"))));
+
+    /** GOT Mammoth — the great shaggy mammoths of the lands Beyond the Wall. */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotMammothEntity>> GOT_MAMMOTH =
+            REGISTRY.register("got_mammoth", () ->
+                    EntityType.Builder.<GotMammothEntity>of(GotMammothEntity::new, MobCategory.CREATURE)
+                            .sized(3.0f, 3.5f).clientTrackingRange(16).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_mammoth"))));
 }

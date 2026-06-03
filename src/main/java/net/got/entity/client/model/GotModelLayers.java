@@ -43,6 +43,27 @@ public final class GotModelLayers {
     public static final ModelLayerLocation GOT_HERON =
             location("got_heron");
 
+    /**
+     * Layer location for the custom direwolf model ({@code GotDirewolfModel}).
+     * Resolves to {@code got:got_direwolf#main}.
+     */
+    public static final ModelLayerLocation GOT_DIREWOLF =
+            location("got_direwolf");
+
+    /**
+     * Layer location for the custom crow model ({@code GotCrowModel}).
+     * Resolves to {@code got:got_crow#main}.
+     */
+    public static final ModelLayerLocation GOT_CROW =
+            location("got_crow");
+
+    /**
+     * Layer location for the custom mammoth model ({@code GotMammothModel}).
+     * Resolves to {@code got:got_mammoth#main}.
+     */
+    public static final ModelLayerLocation GOT_MAMMOTH =
+            location("got_mammoth");
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static ModelLayerLocation location(String name) {
