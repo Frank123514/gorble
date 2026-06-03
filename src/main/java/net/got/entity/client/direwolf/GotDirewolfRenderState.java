@@ -10,9 +10,6 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
  */
 public class GotDirewolfRenderState extends LivingEntityRenderState {
 
-    /** True when the direwolf is submerged in liquid. */
-    public boolean isInWater;
-
     /** True when the direwolf is sprinting / fleeing / chasing. */
     public boolean isSprinting;
 
@@ -24,4 +21,7 @@ public class GotDirewolfRenderState extends LivingEntityRenderState {
 
     /** True when the direwolf has an active attack target. */
     public boolean isAttacking;
+
+    /** True when the direwolf is sitting (ordered to sit or resting). */
+    public boolean isSitting;
 }

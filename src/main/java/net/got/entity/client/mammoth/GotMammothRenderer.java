@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
  *
  * <h3>Animation priority (highest first)</h3>
  * <ol>
- *   <li>Swimming                           → {@link GotMammothAnimations#SWIM}</li>
  *   <li>Sprinting / attacking (charge run) → {@link GotMammothAnimations#CHARGE}</li>
  *   <li>Moving                             → {@link GotMammothAnimations#WALK}</li>
  *   <li>Idle (default)                     → {@link GotMammothAnimations#IDLE}</li>
@@ -43,7 +42,6 @@ public class GotMammothRenderer
                                    GotMammothRenderState state,
                                    float partialTick) {
         super.extractRenderState(entity, state, partialTick);
-        state.isInWater   = entity.isInWater();
         state.isSprinting = entity.isSprinting();
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
         state.isAttacking = entity.isAttacking;
@@ -62,9 +60,7 @@ public class GotMammothRenderer
 
     private void selectAndApplyAnimation(GotMammothRenderState state) {
         float t = state.ageInTicks;
-        if (state.isInWater) {
-            model.applyAnimation(GotMammothAnimations.SWIM, t, 1.0F);
-        } else if (state.isSprinting || state.isAttacking) {
+        if (state.isSprinting || state.isAttacking) {
             model.applyAnimation(GotMammothAnimations.CHARGE, t, 1.0F);
         } else if (state.isMoving) {
             model.applyAnimation(GotMammothAnimations.WALK, t, 1.0F);

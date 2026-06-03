@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
  *
  * <h3>Animation priority (highest first)</h3>
  * <ol>
- *   <li>Swimming                       → {@link GotDirewolfAnimations#SWIM}</li>
- *   <li>Attacking + running            → {@link GotDirewolfAnimations#ATTACK}</li>
+ *   <li>Sitting                        → {@link GotDirewolfAnimations#SIT}</li>
+ *   <li>Attacking                      → {@link GotDirewolfAnimations#ATTACK}</li>
  *   <li>Running / sprinting            → {@link GotDirewolfAnimations#RUN}</li>
  *   <li>Walking                        → {@link GotDirewolfAnimations#WALK}</li>
  *   <li>Idle (default)                 → {@link GotDirewolfAnimations#IDLE}</li>
@@ -44,10 +44,10 @@ public class GotDirewolfRenderer
                                    GotDirewolfRenderState state,
                                    float partialTick) {
         super.extractRenderState(entity, state, partialTick);
-        state.isInWater   = entity.isInWater();
         state.isSprinting = entity.isSprinting();
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
         state.isAttacking = entity.isAttacking;
+        state.isSitting   = entity.isSitting();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
@@ -63,11 +63,11 @@ public class GotDirewolfRenderer
 
     private void selectAndApplyAnimation(GotDirewolfRenderState state) {
         float t = state.ageInTicks;
-        if (state.isInWater) {
-            model.applyAnimation(GotDirewolfAnimations.SWIM, t, 1.0F);
+        if (state.isSitting) {
+            model.applyAnimation(GotDirewolfAnimations.SIT, t, 1.0F);
         } else if (state.isAttacking) {
             model.applyAnimation(GotDirewolfAnimations.ATTACK, t, 1.0F);
-        } else if (state.isSprinting || (state.isMoving && state.isAttacking)) {
+        } else if (state.isSprinting) {
             model.applyAnimation(GotDirewolfAnimations.RUN, t, 1.0F);
         } else if (state.isMoving) {
             model.applyAnimation(GotDirewolfAnimations.WALK, t, 1.0F);
