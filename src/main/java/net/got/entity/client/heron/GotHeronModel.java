@@ -1,9 +1,12 @@
 package net.got.entity.client.heron;
 
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import org.joml.Vector3f;
 
 /**
  * Custom heron model for {@link net.got.entity.heron.GotHeronEntity},
@@ -122,8 +125,23 @@ public class GotHeronModel extends EntityModel<GotHeronRenderState> {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
+    private static final Vector3f ANIM_VEC = new Vector3f();
+
+    public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
+        body.resetPose();
+        head.resetPose();
+        beak.resetPose();
+        neck.resetPose();
+        leg0.resetPose();
+        leg1.resetPose();
+        wing0.resetPose();
+        wing1.resetPose();
+        tail.resetPose();
+        KeyframeAnimations.animate(this, definition, (long)(ageInTicks * 50F), weight, ANIM_VEC);
+    }
+
     @Override
     public void setupAnim(GotHeronRenderState state) {
-        super.setupAnim(state);
+        // Intentionally empty — handled by applyAnimation() in GotHeronRenderer.
     }
 }

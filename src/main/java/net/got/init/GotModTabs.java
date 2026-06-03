@@ -2399,6 +2399,7 @@ public class GotModTabs {
 
                         // ── Mounts & Wildlife ─────────────────────────────────────────
                         output.accept(GotModItems.GOT_STAG_SPAWN_EGG.get());
+                        output.accept(GotModItems.GOT_HERON_SPAWN_EGG.get());
 
                     })
                     .build());

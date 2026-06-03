@@ -1722,6 +1722,10 @@ public class GotModItems {
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
             "got_stag_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_STAG.get(), p));
 
+    /** Heron spawn egg — pale grey body with a yellow-gold beak accent. */
+    public static final DeferredItem<SpawnEggItem> GOT_HERON_SPAWN_EGG = REGISTRY.registerItem(
+            "got_heron_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_HERON.get(), p));
+
     // ── Great House Banner Pattern Items (used in the loom) ──────────────────
 
     public static final DeferredItem<BannerPatternItem> STARK_BANNER_PATTERN =

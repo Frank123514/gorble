@@ -132,60 +132,68 @@ public final class GotHeronAnimations {
                     .build();
 
     // ── FLY ──────────────────────────────────────────────────────────────────
-    // Full wing-flap flight. Wings sweep down ~50° then back up, body pitches
-    // slightly forward, legs tuck back, neck extends. Cycle 0.8 s.
+    // Accurate great blue heron flight:
+    //   • Neck pulled back into tight S-curve against the shoulders (NOT extended)
+    //   • Wings sweep in a wide arc: tips high on upstroke, well below body on downstroke
+    //   • Body rocks forward on the power stroke, recovers on the upstroke
+    //   • Legs trail straight back, nearly horizontal, feet together
+    // Cycle 1.0 s — herons flap slowly, about 2 Hz in real life.
 
     public static final AnimationDefinition FLY =
-            AnimationDefinition.Builder.withLength(0.8F).looping()
+            AnimationDefinition.Builder.withLength(1.0F).looping()
 
-                    // Body — slight forward pitch on down-stroke
+                    // Body — pitches forward on the downstroke (power), levels on upstroke
                     .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.2F,  KeyframeAnimations.degreeVec(-5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.4F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.6F,  KeyframeAnimations.degreeVec( 2.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.25F, KeyframeAnimations.degreeVec(-8.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75F, KeyframeAnimations.degreeVec( 3.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Neck — extends forward and slightly down in flight
+                    // Neck — folded back in tight S-curve, base rotates UP (positive X)
+                    // so the neck humps rearward against the shoulders
                     .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(-10.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F, KeyframeAnimations.degreeVec(-10.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Head — level in flight
+                    // Head — positive rotation to counteract the +55° neck parent,
+                    // netting out to roughly forward-facing in world space.
                     .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(-5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F, KeyframeAnimations.degreeVec(-5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(32.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F, KeyframeAnimations.degreeVec(32.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wing0 — left wing flap: up (+Z rotation from body side), down (-Z)
+                    // Wing0 (left) — wide arc. Upstroke: tips reach well above body (+Z = up from body).
+                    // Downstroke: tips sweep past horizontal below the body (-Z).
+                    // Peak up at 0.0 / 1.0, peak down at 0.5.
                     .addAnimation("wing0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.2F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -50.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.4F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.6F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  20.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -10.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  55.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  20.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -45.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  20.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  55.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wing1 — right wing, mirrored Z
+                    // Wing1 (right) — mirrored Z
                     .addAnimation("wing1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  10.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.2F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  50.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.4F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  10.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.6F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -20.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  10.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -55.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -20.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  45.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -20.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -55.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Legs tuck back during flight
+                    // Legs — trail straight back, nearly horizontal, both together
                     .addAnimation("leg0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
                     .addAnimation("leg1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.8F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
                     .build();
