@@ -1726,6 +1726,18 @@ public class GotModItems {
     public static final DeferredItem<SpawnEggItem> GOT_HERON_SPAWN_EGG = REGISTRY.registerItem(
             "got_heron_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_HERON.get(), p));
 
+    /** Direwolf spawn egg — dark grey fur with pale grey underbelly. */
+    public static final DeferredItem<SpawnEggItem> GOT_DIREWOLF_SPAWN_EGG = REGISTRY.registerItem(
+            "got_direwolf_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_DIREWOLF.get(), p));
+
+    /** Crow spawn egg — jet black body with dark grey wing-tip accent. */
+    public static final DeferredItem<SpawnEggItem> GOT_CROW_SPAWN_EGG = REGISTRY.registerItem(
+            "got_crow_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_CROW.get(), p));
+
+    /** Mammoth spawn egg — shaggy dark brown body with ivory tusk accent. */
+    public static final DeferredItem<SpawnEggItem> GOT_MAMMOTH_SPAWN_EGG = REGISTRY.registerItem(
+            "got_mammoth_spawn_egg", p -> new SpawnEggItem(GotModEntities.GOT_MAMMOTH.get(), p));
+
     // ── Great House Banner Pattern Items (used in the loom) ──────────────────
 
     public static final DeferredItem<BannerPatternItem> STARK_BANNER_PATTERN =

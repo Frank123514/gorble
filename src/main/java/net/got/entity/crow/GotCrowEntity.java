@@ -1,6 +1,6 @@
 package net.got.entity.crow;
 
-import net.got.entity.heron.GotHeronFlyGoal;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
  * <p>Behaviour summary:
  * <ul>
  *   <li>Passive — flees players when approached closely.</li>
- *   <li>Occasionally takes flight via {@link GotHeronFlyGoal} (reused), gliding
+ *   <li>Occasionally takes flight via {@link GotCrowFlyGoal}, gliding
  *       to new perch positions before landing.</li>
  *   <li>Breeds with wheat seeds or pumpkin seeds.</li>
  *   <li>Prefers forests, cold biomes, and elevated terrain.</li>
@@ -77,9 +77,7 @@ public class GotCrowEntity extends Animal {
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.8));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.1));
-        // Reuse heron fly goal — crows share the same flap-and-glide behaviour
-        this.goalSelector.addGoal(4, new GotHeronFlyGoal(
-                (net.got.entity.heron.GotHeronEntity)(Object) this));  // safe cast not needed — extract as interface or reuse
+        this.goalSelector.addGoal(4, new GotCrowFlyGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 5.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));

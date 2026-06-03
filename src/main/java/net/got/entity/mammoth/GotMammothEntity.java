@@ -1,12 +1,13 @@
 package net.got.entity.mammoth;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -99,12 +100,6 @@ public class GotMammothEntity extends Animal {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.RAVAGER_DEATH;
-    }
-
-    @Override
-    protected SoundEvent getStepSound(BlockPos pos,
-                                      net.minecraft.world.level.block.state.BlockState state) {
-        return SoundEvents.RAVAGER_AMBIENT;  // heavy footfall
     }
 
     // ── Breeding ──────────────────────────────────────────────────────────────

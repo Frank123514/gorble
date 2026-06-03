@@ -23,6 +23,9 @@ import net.got.entity.npc.levy.arryn.ArrynLevyEntity;
 // ── Skilled Fighters ──────────────────────────────────────────────────────────
 import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
+import net.got.entity.direwolf.GotDirewolfEntity;
+import net.got.entity.crow.GotCrowEntity;
+import net.got.entity.mammoth.GotMammothEntity;
 import net.got.init.GotModEntities;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -65,6 +68,15 @@ public class GotEntityEvents {
 
         // ── GOT Heron ──────────────────────────────────────────────────────────
         event.put(GotModEntities.GOT_HERON.get(), GotHeronEntity.createAttributes().build());
+
+        // ── GOT Direwolf ───────────────────────────────────────────────────────
+        event.put(GotModEntities.GOT_DIREWOLF.get(), GotDirewolfEntity.createAttributes().build());
+
+        // ── GOT Crow ───────────────────────────────────────────────────────────
+        event.put(GotModEntities.GOT_CROW.get(), GotCrowEntity.createAttributes().build());
+
+        // ── GOT Mammoth ────────────────────────────────────────────────────────
+        event.put(GotModEntities.GOT_MAMMOTH.get(), GotMammothEntity.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -98,5 +110,14 @@ public class GotEntityEvents {
 
         // ── GOT Heron ──────────────────────────────────────────────────────────
         event.register(GotModEntities.GOT_HERON.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotHeronEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        // ── GOT Direwolf ───────────────────────────────────────────────────────
+        event.register(GotModEntities.GOT_DIREWOLF.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotDirewolfEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        // ── GOT Crow ───────────────────────────────────────────────────────────
+        event.register(GotModEntities.GOT_CROW.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotCrowEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        // ── GOT Mammoth ────────────────────────────────────────────────────────
+        event.register(GotModEntities.GOT_MAMMOTH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotMammothEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

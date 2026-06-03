@@ -7,6 +7,12 @@ import net.got.entity.client.npc.smallfolk.GotSmallfolkModel;
 import net.got.entity.client.stag.GotStagModel;
 import net.got.entity.client.heron.GotHeronModel;
 import net.got.entity.client.heron.GotHeronRenderer;
+import net.got.entity.client.direwolf.GotDirewolfModel;
+import net.got.entity.client.direwolf.GotDirewolfRenderer;
+import net.got.entity.client.crow.GotCrowModel;
+import net.got.entity.client.crow.GotCrowRenderer;
+import net.got.entity.client.mammoth.GotMammothModel;
+import net.got.entity.client.mammoth.GotMammothRenderer;
 import net.got.entity.client.npc.smallfolk.SmallfolkRenderer;
 // ── Smallfolk entity imports — hold texture constants for all three tiers ─────
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -82,8 +88,11 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(GotSmallfolkModel.LAYER_LOCATION, GotSmallfolkModel::createBodyLayer);
-        event.registerLayerDefinition(GotModelLayers.GOT_STAG,         GotStagModel::createBodyLayer);
-        event.registerLayerDefinition(GotModelLayers.GOT_HERON,        GotHeronModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_STAG,          GotStagModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_HERON,         GotHeronModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_DIREWOLF,      GotDirewolfModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_CROW,          GotCrowModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_MAMMOTH,       GotMammothModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -246,9 +255,12 @@ public final class ClientSetup {
         event.registerEntityRenderer(GotModEntities.NORTH_SOLDIER.get(), ctx -> new SmallfolkRenderer<>(ctx, NorthSoldierEntity.MALE_TEXTURES, NorthSoldierEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(GotModEntities.VALE_KNIGHT.get(),   ctx -> new SmallfolkRenderer<>(ctx, ValeKnightEntity.MALE_TEXTURES,   ValeKnightEntity.FEMALE_TEXTURES));
 
-        // ── GOT Horse / Stag renderers ───────────────────────────────────────
-        event.registerEntityRenderer(GotModEntities.GOT_STAG.get(),  GotStagRenderer::new);
-        event.registerEntityRenderer(GotModEntities.GOT_HERON.get(), GotHeronRenderer::new);
+        // ── GOT Horse / Stag / Animal renderers ──────────────────────────────
+        event.registerEntityRenderer(GotModEntities.GOT_STAG.get(),     GotStagRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_HERON.get(),    GotHeronRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_DIREWOLF.get(), GotDirewolfRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_CROW.get(),     GotCrowRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_MAMMOTH.get(),  GotMammothRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));
