@@ -25,4 +25,7 @@ public class GotHeronRenderState extends LivingEntityRenderState {
      * Derived from {@code !Entity#onGround()}.
      */
     public boolean isFlying;
+
+    /** Ticks the heron has been continuously airborne. */
+    public int airTicks;
 }

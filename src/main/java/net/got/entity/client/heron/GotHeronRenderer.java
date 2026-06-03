@@ -45,7 +45,8 @@ public class GotHeronRenderer
         super.extractRenderState(entity, state, partialTick);
         state.isInWater = entity.isInWater();
         state.isMoving  = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-        state.isFlying  = !entity.onGround() && !entity.isInWater();
+        state.airTicks  = entity.airTicks;
+        state.isFlying  = entity.airTicks >= 15 && !entity.isInWater();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────

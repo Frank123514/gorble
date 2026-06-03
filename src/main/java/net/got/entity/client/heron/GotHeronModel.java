@@ -14,6 +14,9 @@ import org.joml.Vector3f;
  *
  * <p>Animations are driven by {@link GotHeronAnimations} via
  * {@link #applyAnimation}, called each frame from {@link GotHeronRenderer}.
+ *
+ * <p>neck is now a root-level sibling of head so the two can be animated
+ * independently (fixes the flying pose head/neck detachment).
  */
 public class GotHeronModel extends EntityModel<GotHeronRenderState> {
 
@@ -32,7 +35,7 @@ public class GotHeronModel extends EntityModel<GotHeronRenderState> {
         this.body  = root.getChild("body");
         this.head  = root.getChild("head");
         this.beak  = this.head.getChild("beak");
-        this.neck  = this.head.getChild("neck");
+        this.neck  = root.getChild("neck");   // now a root child, not under head
         this.leg0  = root.getChild("leg0");
         this.leg1  = root.getChild("leg1");
         this.wing0 = root.getChild("wing0");
@@ -53,6 +56,7 @@ public class GotHeronModel extends EntityModel<GotHeronRenderState> {
                         .addBox(-3.0F, -12.0F, -3.0F, 6.0F, 10.0F, 6.0F, new CubeDeformation(0.0F)),
                 PartPose.offsetAndRotation(0.0F, 6.0F, -2.0F, -0.4363F, 0.0F, 0.0F));
 
+        // head pivot — same offset as before, neck removed from here
         PartDefinition head = partdefinition.addOrReplaceChild("head",
                 CubeListBuilder.create(),
                 PartPose.offset(0.0F, 8.0F, -4.0F));
@@ -76,9 +80,10 @@ public class GotHeronModel extends EntityModel<GotHeronRenderState> {
                         .addBox(-1.0F, -3.0219F, -7.3722F, 1.0F, 1.0F, 3.0F, new CubeDeformation(0.0F)),
                 PartPose.offsetAndRotation(0.6F, -5.9F, 3.3F, -0.0873F, 0.0F, 0.0F));
 
-        PartDefinition neck = head.addOrReplaceChild("neck",
+        // neck is now a root-level part — same world-space pivot as before (0, 8, -4)
+        PartDefinition neck = partdefinition.addOrReplaceChild("neck",
                 CubeListBuilder.create(),
-                PartPose.offset(0.0F, 0.0F, 0.0F));
+                PartPose.offset(0.0F, 8.0F, -4.0F));
 
         neck.addOrReplaceChild("head_r2",
                 CubeListBuilder.create().texOffs(12, 30)

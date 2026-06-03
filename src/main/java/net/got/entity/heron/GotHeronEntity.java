@@ -35,8 +35,21 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GotHeronEntity extends Animal {
 
+    /** Ticks spent continuously off the ground. Resets to 0 on landing. */
+    public int airTicks = 0;
+
     public GotHeronEntity(EntityType<? extends GotHeronEntity> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.onGround() || this.isInWater()) {
+            airTicks = 0;
+        } else {
+            airTicks++;
+        }
     }
 
     // ── Attributes ────────────────────────────────────────────────────────────

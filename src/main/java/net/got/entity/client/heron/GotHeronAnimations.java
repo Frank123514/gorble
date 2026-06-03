@@ -15,26 +15,25 @@ import net.minecraft.client.animation.KeyframeAnimations;
  *   <li>{@link #FLY}   — wing flapping flight cycle (0.8 s, looping)</li>
  *   <li>{@link #WADE}  — high-stepping wade through water with neck alert pose (1.4 s, looping)</li>
  * </ul>
+ *
+ * <p>neck is now a root-level part (sibling of head), so head and neck
+ * can be keyframed independently in every animation.
  */
 public final class GotHeronAnimations {
 
     private GotHeronAnimations() {}
 
     // ── IDLE ─────────────────────────────────────────────────────────────────
-    // Slow breathing: body bobs gently, neck dips and rises, tail sways,
-    // wings settle slightly. Total length 4.0 s.
 
     public static final AnimationDefinition IDLE =
             AnimationDefinition.Builder.withLength(4.0F).looping()
 
-                    // Body — gentle breath bob
                     .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
                             new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.3F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(4.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Neck — slow curious dip
                     .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F,  0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.5F, KeyframeAnimations.degreeVec(4.0F,  0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -42,14 +41,12 @@ public final class GotHeronAnimations {
                             new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F,  0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Head — slight nod
                     .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.5F, KeyframeAnimations.degreeVec(3.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Tail — slow side-to-side sway
                     .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F,  0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F,  4.0F,  0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -58,14 +55,12 @@ public final class GotHeronAnimations {
                             new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F,  0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wing0 — tiny settle flutter
                     .addAnimation("wing0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(2.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -2.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(4.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wing1 — mirror
                     .addAnimation("wing1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(2.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 2.0F), AnimationChannel.Interpolations.LINEAR),
@@ -75,14 +70,10 @@ public final class GotHeronAnimations {
                     .build();
 
     // ── WALK ─────────────────────────────────────────────────────────────────
-    // Deliberate stalking walk. Each leg swings 25° forward/back, offset by
-    // half a cycle. Body bobs once per stride. Neck pumps slightly.
-    // Cycle length 1.2 s.
 
     public static final AnimationDefinition WALK =
             AnimationDefinition.Builder.withLength(1.2F).looping()
 
-                    // Body bob — once per full stride
                     .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
                             new Keyframe(0.0F,  KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.3F,  KeyframeAnimations.posVec(0.0F, 0.5F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -91,16 +82,14 @@ public final class GotHeronAnimations {
                             new Keyframe(1.2F,  KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Neck — characteristic heron head-pump
                     .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.3F,  KeyframeAnimations.degreeVec(-5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.3F,  KeyframeAnimations.degreeVec(-2.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.6F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.9F,  KeyframeAnimations.degreeVec(-5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.9F,  KeyframeAnimations.degreeVec(-2.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.2F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Leg 0 — left leg, forward on [0, 0.6], back on [0.6, 1.2]
                     .addAnimation("leg0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.3F,  KeyframeAnimations.degreeVec(-25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -109,7 +98,6 @@ public final class GotHeronAnimations {
                             new Keyframe(1.2F,  KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Leg 1 — right leg, offset by half cycle
                     .addAnimation("leg1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.3F,  KeyframeAnimations.degreeVec( 20.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -118,7 +106,6 @@ public final class GotHeronAnimations {
                             new Keyframe(1.2F,  KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wings fold tighter while walking
                     .addAnimation("wing0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  5.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.2F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  5.0F), AnimationChannel.Interpolations.LINEAR)
@@ -132,17 +119,12 @@ public final class GotHeronAnimations {
                     .build();
 
     // ── FLY ──────────────────────────────────────────────────────────────────
-    // Accurate great blue heron flight:
-    //   • Neck pulled back into tight S-curve against the shoulders (NOT extended)
-    //   • Wings sweep in a wide arc: tips high on upstroke, well below body on downstroke
-    //   • Body rocks forward on the power stroke, recovers on the upstroke
-    //   • Legs trail straight back, nearly horizontal, feet together
-    // Cycle 1.0 s — herons flap slowly, about 2 Hz in real life.
+    // neck and head are now independent — neck folds back, head rotates
+    // separately to stay attached at the top of the neck.
 
     public static final AnimationDefinition FLY =
             AnimationDefinition.Builder.withLength(1.0F).looping()
 
-                    // Body — pitches forward on the downstroke (power), levels on upstroke
                     .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.25F, KeyframeAnimations.degreeVec(-8.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -151,23 +133,18 @@ public final class GotHeronAnimations {
                             new Keyframe(1.0F,  KeyframeAnimations.degreeVec( 0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Neck — folded back in tight S-curve, base rotates UP (positive X)
-                    // so the neck humps rearward against the shoulders
+                    // Neck folds back into S-curve against shoulders
                     .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Head — positive rotation to counteract the +55° neck parent,
-                    // netting out to roughly forward-facing in world space.
+                    // Head rotates independently to sit on top of the folded neck
                     .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(32.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(1.0F, KeyframeAnimations.degreeVec(32.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(54.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.0F, KeyframeAnimations.degreeVec(54.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wing0 (left) — wide arc. Upstroke: tips reach well above body (+Z = up from body).
-                    // Downstroke: tips sweep past horizontal below the body (-Z).
-                    // Peak up at 0.0 / 1.0, peak down at 0.5.
                     .addAnimation("wing0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  55.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F,  20.0F), AnimationChannel.Interpolations.LINEAR),
@@ -176,7 +153,6 @@ public final class GotHeronAnimations {
                             new Keyframe(1.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F,  55.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Wing1 (right) — mirrored Z
                     .addAnimation("wing1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -55.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -20.0F), AnimationChannel.Interpolations.LINEAR),
@@ -185,7 +161,6 @@ public final class GotHeronAnimations {
                             new Keyframe(1.0F,  KeyframeAnimations.degreeVec(0.0F, 0.0F, -55.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Legs — trail straight back, nearly horizontal, both together
                     .addAnimation("leg0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
@@ -199,14 +174,10 @@ public final class GotHeronAnimations {
                     .build();
 
     // ── WADE ─────────────────────────────────────────────────────────────────
-    // Slow, deliberate high-step wading. Legs lift higher than the normal walk,
-    // neck is alert and still (watching for fish), body remains relatively stable.
-    // Cycle 1.4 s.
 
     public static final AnimationDefinition WADE =
             AnimationDefinition.Builder.withLength(1.4F).looping()
 
-                    // Body — very subtle sway, mostly still
                     .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
                             new Keyframe(0.0F,  KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.35F, KeyframeAnimations.posVec(0.0F, 0.2F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -215,20 +186,17 @@ public final class GotHeronAnimations {
                             new Keyframe(1.4F,  KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Neck — locked forward and down, scanning water
                     .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F, KeyframeAnimations.degreeVec(8.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.4F, KeyframeAnimations.degreeVec(8.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Head — scanning tilt
                     .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec(10.0F,  0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.7F,  KeyframeAnimations.degreeVec(10.0F,  5.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(1.4F,  KeyframeAnimations.degreeVec(10.0F,  0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Leg 0 — high lift with exaggerated knee raise
                     .addAnimation("leg0", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.2F,  KeyframeAnimations.degreeVec(-40.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -238,7 +206,6 @@ public final class GotHeronAnimations {
                             new Keyframe(1.4F,  KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
 
-                    // Leg 1 — offset by half cycle
                     .addAnimation("leg1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                             new Keyframe(0.0F,  KeyframeAnimations.degreeVec( 15.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.35F, KeyframeAnimations.degreeVec(  0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
