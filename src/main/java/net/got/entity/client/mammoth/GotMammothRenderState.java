@@ -7,12 +7,15 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
  */
 public class GotMammothRenderState extends LivingEntityRenderState {
 
-    /** True when the mammoth is sprinting (charging). */
+    /** True when the mammoth is submerged in water. */
+    public boolean isInWater;
+
+    /** True when the mammoth is actively charging (sprinting). */
     public boolean isSprinting;
 
     /** True when the mammoth has meaningful horizontal velocity. */
     public boolean isMoving;
 
-    /** True when the mammoth has an active attack target. */
-    public boolean isAttacking;
+    /** True when the mammoth is in combat / angered state. */
+    public boolean isAngry;
 }

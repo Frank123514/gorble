@@ -11,13 +11,13 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Renderer for {@link GotDirewolfEntity}.
  *
- * <h3>Animation priority (highest first)</h3>
+ * <h3>Animation dispatch (highest priority first):</h3>
  * <ol>
- *   <li>Sitting                        → {@link GotDirewolfAnimations#SIT}</li>
- *   <li>Attacking                      → {@link GotDirewolfAnimations#ATTACK}</li>
- *   <li>Running / sprinting            → {@link GotDirewolfAnimations#RUN}</li>
- *   <li>Walking                        → {@link GotDirewolfAnimations#WALK}</li>
- *   <li>Idle (default)                 → {@link GotDirewolfAnimations#IDLE}</li>
+ *   <li>Attacking                    → {@link GotDirewolfAnimations#ATTACK}</li>
+ *   <li>Sprinting / swimming         → {@link GotDirewolfAnimations#RUN}</li>
+ *   <li>Moving                       → {@link GotDirewolfAnimations#WALK}</li>
+ *   <li>Howling (idle + angry)       → {@link GotDirewolfAnimations#HOWL}</li>
+ *   <li>Default idle                 → {@link GotDirewolfAnimations#IDLE}</li>
  * </ol>
  */
 public class GotDirewolfRenderer
@@ -44,10 +44,11 @@ public class GotDirewolfRenderer
                                    GotDirewolfRenderState state,
                                    float partialTick) {
         super.extractRenderState(entity, state, partialTick);
+        state.isInWater   = entity.isInWater();
         state.isSprinting = entity.isSprinting();
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-        state.isAttacking = entity.isAttacking;
-        state.isSitting   = entity.isSitting();
+        state.isAttacking = entity.isAttacking();
+        state.isHowling   = entity.isHowling();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
@@ -63,14 +64,14 @@ public class GotDirewolfRenderer
 
     private void selectAndApplyAnimation(GotDirewolfRenderState state) {
         float t = state.ageInTicks;
-        if (state.isSitting) {
-            model.applyAnimation(GotDirewolfAnimations.SIT, t, 1.0F);
-        } else if (state.isAttacking) {
+        if (state.isAttacking) {
             model.applyAnimation(GotDirewolfAnimations.ATTACK, t, 1.0F);
-        } else if (state.isSprinting) {
+        } else if (state.isSprinting || state.isInWater) {
             model.applyAnimation(GotDirewolfAnimations.RUN, t, 1.0F);
         } else if (state.isMoving) {
             model.applyAnimation(GotDirewolfAnimations.WALK, t, 1.0F);
+        } else if (state.isHowling) {
+            model.applyAnimation(GotDirewolfAnimations.HOWL, t, 1.0F);
         } else {
             model.applyAnimation(GotDirewolfAnimations.IDLE, t, 1.0F);
         }
@@ -88,9 +89,9 @@ public class GotDirewolfRenderer
     @Override
     protected void scale(GotDirewolfRenderState state, PoseStack poseStack) {
         if (state.isBaby) {
-            poseStack.scale(0.45F, 0.45F, 0.45F);
+            poseStack.scale(0.5F, 0.5F, 0.5F);
         } else {
-            poseStack.scale(1.5F, 1.5F, 1.5F);   // direwolves are huge
+            poseStack.scale(1.3F, 1.3F, 1.3F);
         }
         super.scale(state, poseStack);
     }

@@ -4,24 +4,21 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 /**
  * Per-frame render snapshot for {@link net.got.entity.direwolf.GotDirewolfEntity}.
- *
- * <p>Fields populated each frame by {@link GotDirewolfRenderer#extractRenderState}
- * and consumed by the animation selector in {@link GotDirewolfRenderer#render}.
  */
 public class GotDirewolfRenderState extends LivingEntityRenderState {
 
-    /** True when the direwolf is sprinting / fleeing / chasing. */
+    /** True when submerged in water. */
+    public boolean isInWater;
+
+    /** True when sprinting / fleeing / chasing. */
     public boolean isSprinting;
 
-    /**
-     * True when the direwolf has meaningful horizontal velocity.
-     * Derived from {@code Entity#getDeltaMovement().horizontalDistanceSqr() > 1e-6}.
-     */
+    /** True when the wolf has meaningful horizontal velocity. */
     public boolean isMoving;
 
-    /** True when the direwolf has an active attack target. */
+    /** True when actively attacking a target. */
     public boolean isAttacking;
 
-    /** True when the direwolf is sitting (ordered to sit or resting). */
-    public boolean isSitting;
+    /** True when sitting and idle — triggers the howl animation. */
+    public boolean isHowling;
 }

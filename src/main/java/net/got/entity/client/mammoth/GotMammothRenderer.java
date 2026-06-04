@@ -11,11 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * Renderer for {@link GotMammothEntity}.
  *
- * <h3>Animation priority (highest first)</h3>
+ * <h3>Animation dispatch (highest priority first):</h3>
  * <ol>
- *   <li>Sprinting / attacking (charge run) → {@link GotMammothAnimations#CHARGE}</li>
- *   <li>Moving                             → {@link GotMammothAnimations#WALK}</li>
- *   <li>Idle (default)                     → {@link GotMammothAnimations#IDLE}</li>
+ *   <li>Angry / sprinting → {@link GotMammothAnimations#RUN} (charge)</li>
+ *   <li>Moving / swimming → {@link GotMammothAnimations#WALK}</li>
+ *   <li>Idle               → {@link GotMammothAnimations#IDLE} +
+ *                            {@link GotMammothAnimations#ROAR} if angry and still</li>
  * </ol>
  */
 public class GotMammothRenderer
@@ -27,7 +28,7 @@ public class GotMammothRenderer
     public GotMammothRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
                 new GotMammothModel(ctx.bakeLayer(GotModelLayers.GOT_MAMMOTH)),
-                2.5F);    // large shadow radius
+                1.4F);
     }
 
     // ── Render state ──────────────────────────────────────────────────────────
@@ -42,9 +43,10 @@ public class GotMammothRenderer
                                    GotMammothRenderState state,
                                    float partialTick) {
         super.extractRenderState(entity, state, partialTick);
+        state.isInWater   = entity.isInWater();
         state.isSprinting = entity.isSprinting();
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-        state.isAttacking = entity.isAttacking;
+        state.isAngry     = entity.isAngry();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
@@ -60,10 +62,12 @@ public class GotMammothRenderer
 
     private void selectAndApplyAnimation(GotMammothRenderState state) {
         float t = state.ageInTicks;
-        if (state.isSprinting || state.isAttacking) {
-            model.applyAnimation(GotMammothAnimations.CHARGE, t, 1.0F);
-        } else if (state.isMoving) {
+        if (state.isSprinting || (state.isAngry && state.isMoving)) {
+            model.applyAnimation(GotMammothAnimations.RUN, t, 1.0F);
+        } else if (state.isMoving || state.isInWater) {
             model.applyAnimation(GotMammothAnimations.WALK, t, 1.0F);
+        } else if (state.isAngry) {
+            model.applyAnimation(GotMammothAnimations.ROAR, t, 1.0F);
         } else {
             model.applyAnimation(GotMammothAnimations.IDLE, t, 1.0F);
         }
@@ -81,9 +85,9 @@ public class GotMammothRenderer
     @Override
     protected void scale(GotMammothRenderState state, PoseStack poseStack) {
         if (state.isBaby) {
-            poseStack.scale(0.5F, 0.5F, 0.5F);
+            poseStack.scale(0.55F, 0.55F, 0.55F);
         } else {
-            poseStack.scale(1.8F, 1.8F, 1.8F);   // mammoths tower over everything
+            poseStack.scale(1.4F, 1.4F, 1.4F);
         }
         super.scale(state, poseStack);
     }
