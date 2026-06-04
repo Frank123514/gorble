@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -74,12 +75,10 @@ public class GotMammothEntity extends Animal {
     }
 
     @Override
-    public boolean hurt(net.minecraft.world.damagesource.DamageSource source, float amount) {
-        boolean result = super.hurt(source, amount);
-        if (result && !this.level().isClientSide) {
-            angry = true;
-        }
-        return result;
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        super.hurtServer(level, source, amount);
+        angry = true;
+        return false;
     }
 
     public boolean isAngry() {
