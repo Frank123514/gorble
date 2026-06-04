@@ -21,4 +21,7 @@ public class GotDirewolfRenderState extends LivingEntityRenderState {
 
     /** True when sitting and idle — triggers the howl animation. */
     public boolean isHowling;
+
+    /** True when ordered to sit (tamed only). */
+    public boolean isSitting;
 }

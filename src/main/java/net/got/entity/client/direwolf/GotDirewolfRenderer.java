@@ -10,15 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * Renderer for {@link GotDirewolfEntity}.
- *
- * <h3>Animation dispatch (highest priority first):</h3>
- * <ol>
- *   <li>Attacking                    → {@link GotDirewolfAnimations#ATTACK}</li>
- *   <li>Sprinting / swimming         → {@link GotDirewolfAnimations#RUN}</li>
- *   <li>Moving                       → {@link GotDirewolfAnimations#WALK}</li>
- *   <li>Howling (idle + angry)       → {@link GotDirewolfAnimations#HOWL}</li>
- *   <li>Default idle                 → {@link GotDirewolfAnimations#IDLE}</li>
- * </ol>
  */
 public class GotDirewolfRenderer
         extends MobRenderer<GotDirewolfEntity, GotDirewolfRenderState, GotDirewolfModel> {
@@ -31,8 +22,6 @@ public class GotDirewolfRenderer
                 new GotDirewolfModel(ctx.bakeLayer(GotModelLayers.GOT_DIREWOLF)),
                 0.8F);
     }
-
-    // ── Render state ──────────────────────────────────────────────────────────
 
     @Override
     public GotDirewolfRenderState createRenderState() {
@@ -49,9 +38,8 @@ public class GotDirewolfRenderer
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
         state.isAttacking = entity.isAttacking();
         state.isHowling   = entity.isHowling();
+        state.isSitting   = entity.isInSittingPose();  // Use visual pose, not ordered state
     }
-
-    // ── Animation ─────────────────────────────────────────────────────────────
 
     @Override
     public void render(GotDirewolfRenderState state,
@@ -70,6 +58,8 @@ public class GotDirewolfRenderer
             model.applyAnimation(GotDirewolfAnimations.RUN, t, 1.0F);
         } else if (state.isMoving) {
             model.applyAnimation(GotDirewolfAnimations.WALK, t, 1.0F);
+        } else if (state.isSitting) {
+            model.applyAnimation(GotDirewolfAnimations.SIT, t, 1.0F);
         } else if (state.isHowling) {
             model.applyAnimation(GotDirewolfAnimations.HOWL, t, 1.0F);
         } else {
@@ -77,21 +67,17 @@ public class GotDirewolfRenderer
         }
     }
 
-    // ── Texture ───────────────────────────────────────────────────────────────
-
     @Override
     public ResourceLocation getTextureLocation(GotDirewolfRenderState state) {
         return TEXTURE;
     }
-
-    // ── Scale ─────────────────────────────────────────────────────────────────
 
     @Override
     protected void scale(GotDirewolfRenderState state, PoseStack poseStack) {
         if (state.isBaby) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
         } else {
-            poseStack.scale(1.3F, 1.3F, 1.3F);
+            poseStack.scale(1.0F, 1.0F, 1.0F);
         }
         super.scale(state, poseStack);
     }

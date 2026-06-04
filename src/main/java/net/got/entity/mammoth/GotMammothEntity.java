@@ -27,15 +27,19 @@ import org.jetbrains.annotations.Nullable;
  *
  * <p>Animation states:
  * <ul>
- *   <li>{@code idle}  — breathing sway, slow trunk curl.</li>
- *   <li>{@code walk}  — heavy plodding walk with shoulder roll.</li>
- *   <li>{@code run}   — lumbering charge with trunk raised.</li>
- *   <li>{@code roar}  — trunk-up threat display when angered at rest.</li>
+ *   <li>{@code idle}   — breathing sway, slow trunk curl.</li>
+ *   <li>{@code walk}   — heavy plodding walk with shoulder roll.</li>
+ *   <li>{@code run}    — lumbering charge with trunk raised.</li>
+ *   <li>{@code attack} — head-and-tusk lunge on melee hit.</li>
+ *   <li>{@code death}  — topple to the side on death.</li>
  * </ul>
  */
 public class GotMammothEntity extends Animal {
 
     private boolean angry = false;
+
+    /** Ticks remaining in the attack animation window (set on doHurtTarget). */
+    private int attackAnimTicks = 0;
 
     public GotMammothEntity(EntityType<? extends GotMammothEntity> type, Level level) {
         super(type, level);
@@ -64,7 +68,6 @@ public class GotMammothEntity extends Animal {
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 
-        // Retaliate when hurt
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
             @Override
@@ -74,6 +77,28 @@ public class GotMammothEntity extends Animal {
         });
     }
 
+    // ── Tick ──────────────────────────────────────────────────────────────────
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (attackAnimTicks > 0) {
+            attackAnimTicks--;
+        }
+    }
+
+    // ── Combat ────────────────────────────────────────────────────────────────
+
+    @Override
+    public boolean doHurtTarget(ServerLevel level, Entity target) {
+        boolean result = super.doHurtTarget(level, target);
+        if (result) {
+            // 1.0 s attack animation = 20 ticks
+            attackAnimTicks = 20;
+        }
+        return result;
+    }
+
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         super.hurtServer(level, source, amount);
@@ -81,9 +106,10 @@ public class GotMammothEntity extends Animal {
         return false;
     }
 
-    public boolean isAngry() {
-        return angry;
-    }
+    public boolean isAngry() { return angry; }
+
+    /** True for ~1 second after landing a melee hit. */
+    public boolean isAttacking() { return attackAnimTicks > 0; }
 
     // ── Breeding ──────────────────────────────────────────────────────────────
 

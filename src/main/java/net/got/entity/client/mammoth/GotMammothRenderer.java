@@ -13,10 +13,11 @@ import net.minecraft.resources.ResourceLocation;
  *
  * <h3>Animation dispatch (highest priority first):</h3>
  * <ol>
- *   <li>Angry / sprinting → {@link GotMammothAnimations#RUN} (charge)</li>
- *   <li>Moving / swimming → {@link GotMammothAnimations#WALK}</li>
- *   <li>Idle               → {@link GotMammothAnimations#IDLE} +
- *                            {@link GotMammothAnimations#ROAR} if angry and still</li>
+ *   <li>Dead                          → {@link GotMammothAnimations#DEATH} (one-shot)</li>
+ *   <li>Angry / sprinting             → {@link GotMammothAnimations#RUN} (charge)</li>
+ *   <li>Attacking (angry + not moving)→ {@link GotMammothAnimations#ATTACK} (one-shot)</li>
+ *   <li>Moving / swimming             → {@link GotMammothAnimations#WALK}</li>
+ *   <li>Idle                          → {@link GotMammothAnimations#IDLE}</li>
  * </ol>
  */
 public class GotMammothRenderer
@@ -43,10 +44,12 @@ public class GotMammothRenderer
                                    GotMammothRenderState state,
                                    float partialTick) {
         super.extractRenderState(entity, state, partialTick);
-        state.isInWater   = entity.isInWater();
-        state.isSprinting = entity.isSprinting();
-        state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-        state.isAngry     = entity.isAngry();
+        state.isInWater    = entity.isInWater();
+        state.isSprinting  = entity.isSprinting();
+        state.isMoving     = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
+        state.isAngry      = entity.isAngry();
+        state.isDeadOrDying = entity.isDeadOrDying();
+        state.isAttacking  = entity.isAttacking();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
@@ -62,12 +65,14 @@ public class GotMammothRenderer
 
     private void selectAndApplyAnimation(GotMammothRenderState state) {
         float t = state.ageInTicks;
-        if (state.isSprinting || (state.isAngry && state.isMoving)) {
+        if (state.isDeadOrDying) {
+            model.applyAnimation(GotMammothAnimations.DEATH, t, 1.0F);
+        } else if (state.isSprinting || (state.isAngry && state.isMoving)) {
             model.applyAnimation(GotMammothAnimations.RUN, t, 1.0F);
+        } else if (state.isAttacking) {
+            model.applyAnimation(GotMammothAnimations.ATTACK, t, 1.0F);
         } else if (state.isMoving || state.isInWater) {
             model.applyAnimation(GotMammothAnimations.WALK, t, 1.0F);
-        } else if (state.isAngry) {
-            model.applyAnimation(GotMammothAnimations.ROAR, t, 1.0F);
         } else {
             model.applyAnimation(GotMammothAnimations.IDLE, t, 1.0F);
         }

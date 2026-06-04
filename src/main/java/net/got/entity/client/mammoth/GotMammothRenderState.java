@@ -18,4 +18,10 @@ public class GotMammothRenderState extends LivingEntityRenderState {
 
     /** True when the mammoth is in combat / angered state. */
     public boolean isAngry;
+
+    /** True when the mammoth is dead or dying (triggers death fall animation). */
+    public boolean isDeadOrDying;
+
+    /** True when the mammoth is executing a melee attack swing. */
+    public boolean isAttacking;
 }
