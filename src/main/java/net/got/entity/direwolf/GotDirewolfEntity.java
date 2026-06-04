@@ -1,6 +1,9 @@
 package net.got.entity.direwolf;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -30,13 +33,32 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GotDirewolfEntity extends TamableAnimal {
 
-    private boolean attacking = false;
-    private boolean howling   = false;
-    private int howlCooldown  = 0;
+    // Synced to client so the renderer can read them
+    private static final EntityDataAccessor<Boolean> DATA_ATTACKING =
+            SynchedEntityData.defineId(GotDirewolfEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HOWLING =
+            SynchedEntityData.defineId(GotDirewolfEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private int howlCooldown = 0;
 
     public GotDirewolfEntity(EntityType<? extends GotDirewolfEntity> type, Level level) {
         super(type, level);
     }
+
+    // ── Synced data ───────────────────────────────────────────────────────────
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ATTACKING, false);
+        builder.define(DATA_HOWLING,   false);
+    }
+
+    private void setAttacking(boolean value) { this.entityData.set(DATA_ATTACKING, value); }
+    private void setHowling(boolean value)   { this.entityData.set(DATA_HOWLING,   value); }
+
+    public boolean isAttacking() { return this.entityData.get(DATA_ATTACKING); }
+    public boolean isHowling()   { return this.entityData.get(DATA_HOWLING); }
 
     // ── Attributes ────────────────────────────────────────────────────────────
 
@@ -64,13 +86,19 @@ public class GotDirewolfEntity extends TamableAnimal {
             @Override
             public void start() {
                 super.start();
-                attacking = true;
-                howling   = false;
+                setAttacking(true);
+                setHowling(false);
+            }
+            @Override
+            public void tick() {
+                super.tick();
+                setAttacking(true);
+                setHowling(false);
             }
             @Override
             public void stop() {
                 super.stop();
-                attacking = false;
+                setAttacking(false);
             }
             @Override
             public boolean canUse() {
@@ -170,17 +198,17 @@ public class GotDirewolfEntity extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide && !attacking && !this.isInSittingPose()) {
+        if (!this.level().isClientSide && !isAttacking() && !this.isInSittingPose()) {
             if (howlCooldown > 0) {
                 howlCooldown--;
-                if (howlCooldown == 0) howling = false;
+                if (howlCooldown == 0) setHowling(false);
             } else if (!isMoving() && this.random.nextInt(600) == 0) {
-                howling      = true;
+                setHowling(true);
                 howlCooldown = 40;
             }
         }
         if (this.isInSittingPose()) {
-            howling = false;
+            setHowling(false);
             howlCooldown = 0;
         }
     }
@@ -188,11 +216,6 @@ public class GotDirewolfEntity extends TamableAnimal {
     private boolean isMoving() {
         return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
     }
-
-    // ── State accessors ───────────────────────────────────────────────────────
-
-    public boolean isAttacking() { return attacking; }
-    public boolean isHowling()   { return howling; }
 
     // ── Breeding ──────────────────────────────────────────────────────────────
 

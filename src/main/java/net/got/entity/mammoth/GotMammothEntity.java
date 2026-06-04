@@ -1,6 +1,9 @@
 package net.got.entity.mammoth;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -36,14 +39,33 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GotMammothEntity extends Animal {
 
-    private boolean angry = false;
+    // Synced to client so the renderer can read them
+    private static final EntityDataAccessor<Boolean> DATA_ANGRY =
+            SynchedEntityData.defineId(GotMammothEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_ATTACKING =
+            SynchedEntityData.defineId(GotMammothEntity.class, EntityDataSerializers.BOOLEAN);
 
-    /** Ticks remaining in the attack animation window (set on doHurtTarget). */
+    /** Ticks remaining in the attack animation hold after landing a hit. */
     private int attackAnimTicks = 0;
 
     public GotMammothEntity(EntityType<? extends GotMammothEntity> type, Level level) {
         super(type, level);
     }
+
+    // ── Synced data ───────────────────────────────────────────────────────────
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ANGRY,     false);
+        builder.define(DATA_ATTACKING, false);
+    }
+
+    private void setAngry(boolean value)    { this.entityData.set(DATA_ANGRY,     value); }
+    private void setAttacking(boolean value){ this.entityData.set(DATA_ATTACKING, value); }
+
+    public boolean isAngry()     { return this.entityData.get(DATA_ANGRY); }
+    public boolean isAttacking() { return this.entityData.get(DATA_ATTACKING); }
 
     // ── Attributes ────────────────────────────────────────────────────────────
 
@@ -61,7 +83,26 @@ public class GotMammothEntity extends Animal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true) {
+            @Override
+            public void start() {
+                super.start();
+                setAttacking(true);
+            }
+            @Override
+            public void tick() {
+                super.tick();
+                setAttacking(true);
+            }
+            @Override
+            public void stop() {
+                super.stop();
+                // Only clear if the post-hit anim window has also expired
+                if (attackAnimTicks <= 0) {
+                    setAttacking(false);
+                }
+            }
+        });
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.1));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -72,7 +113,7 @@ public class GotMammothEntity extends Animal {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
             @Override
             public boolean canUse() {
-                return angry && super.canUse();
+                return isAngry() && super.canUse();
             }
         });
     }
@@ -82,8 +123,13 @@ public class GotMammothEntity extends Animal {
     @Override
     public void tick() {
         super.tick();
-        if (attackAnimTicks > 0) {
-            attackAnimTicks--;
+        if (!this.level().isClientSide) {
+            if (attackAnimTicks > 0) {
+                attackAnimTicks--;
+                if (attackAnimTicks == 0 && !isAttacking()) {
+                    setAttacking(false);
+                }
+            }
         }
     }
 
@@ -93,8 +139,8 @@ public class GotMammothEntity extends Animal {
     public boolean doHurtTarget(ServerLevel level, Entity target) {
         boolean result = super.doHurtTarget(level, target);
         if (result) {
-            // 1.0 s attack animation = 20 ticks
-            attackAnimTicks = 20;
+            attackAnimTicks = 20; // hold anim for 1 s after the hit lands
+            setAttacking(true);
         }
         return result;
     }
@@ -102,14 +148,9 @@ public class GotMammothEntity extends Animal {
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         super.hurtServer(level, source, amount);
-        angry = true;
+        setAngry(true);
         return false;
     }
-
-    public boolean isAngry() { return angry; }
-
-    /** True for ~1 second after landing a melee hit. */
-    public boolean isAttacking() { return attackAnimTicks > 0; }
 
     // ── Breeding ──────────────────────────────────────────────────────────────
 
