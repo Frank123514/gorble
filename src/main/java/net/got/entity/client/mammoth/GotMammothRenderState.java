@@ -1,6 +1,5 @@
 package net.got.entity.client.mammoth;
 
-import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 /**
@@ -25,20 +24,5 @@ public class GotMammothRenderState extends LivingEntityRenderState {
 
     /** True when the mammoth is executing a melee attack swing. */
     public boolean isAttacking;
-
-    // ── One-shot animation tracking ──────────────────────────────────────────
-
-    /**
-     * The animation that was selected on the previous render frame.
-     * Used to detect when a new one-shot animation begins so the local
-     * timer can be reset to zero.
-     */
-    public AnimationDefinition lastAnimation = null;
-
-    /**
-     * The {@code ageInTicks} value recorded when the current one-shot
-     * animation started.  Subtracted from {@code ageInTicks} to give a
-     * local timer that always starts at 0 for one-shot animations.
-     */
-    public float animationStartTick = 0F;
 }
+

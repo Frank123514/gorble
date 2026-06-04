@@ -40,6 +40,8 @@ public class GotDirewolfEntity extends TamableAnimal {
             SynchedEntityData.defineId(GotDirewolfEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int howlCooldown = 0;
+    /** Ticks remaining in the attack-animation hold after landing a hit. */
+    private int attackAnimTicks = 0;
 
     public GotDirewolfEntity(EntityType<? extends GotDirewolfEntity> type, Level level) {
         super(type, level);
@@ -86,13 +88,11 @@ public class GotDirewolfEntity extends TamableAnimal {
             @Override
             public void start() {
                 super.start();
-                setAttacking(true);
                 setHowling(false);
             }
             @Override
             public void tick() {
                 super.tick();
-                setAttacking(true);
                 setHowling(false);
             }
             @Override
@@ -198,19 +198,35 @@ public class GotDirewolfEntity extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide && !isAttacking() && !this.isInSittingPose()) {
-            if (howlCooldown > 0) {
-                howlCooldown--;
-                if (howlCooldown == 0) setHowling(false);
-            } else if (!isMoving() && this.random.nextInt(600) == 0) {
-                setHowling(true);
-                howlCooldown = 40;
+        if (!this.level().isClientSide) {
+            if (attackAnimTicks > 0) {
+                attackAnimTicks--;
+                if (attackAnimTicks == 0) setAttacking(false);
+            }
+            if (!isAttacking() && !this.isInSittingPose()) {
+                if (howlCooldown > 0) {
+                    howlCooldown--;
+                    if (howlCooldown == 0) setHowling(false);
+                } else if (!isMoving() && this.random.nextInt(600) == 0) {
+                    setHowling(true);
+                    howlCooldown = 40;
+                }
+            }
+            if (this.isInSittingPose()) {
+                setHowling(false);
+                howlCooldown = 0;
             }
         }
-        if (this.isInSittingPose()) {
-            setHowling(false);
-            howlCooldown = 0;
+    }
+
+    @Override
+    public boolean doHurtTarget(ServerLevel level, Entity target) {
+        boolean result = super.doHurtTarget(level, target);
+        if (result) {
+            attackAnimTicks = 15; // hold anim for ~0.75 s after the bite lands
+            setAttacking(true);
         }
+        return result;
     }
 
     private boolean isMoving() {

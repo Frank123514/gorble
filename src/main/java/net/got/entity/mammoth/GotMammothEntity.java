@@ -87,17 +87,14 @@ public class GotMammothEntity extends Animal {
             @Override
             public void start() {
                 super.start();
-                setAttacking(true);
             }
             @Override
             public void tick() {
                 super.tick();
-                setAttacking(true);
             }
             @Override
             public void stop() {
                 super.stop();
-                // Only clear if the post-hit anim window has also expired
                 if (attackAnimTicks <= 0) {
                     setAttacking(false);
                 }
@@ -126,7 +123,7 @@ public class GotMammothEntity extends Animal {
         if (!this.level().isClientSide) {
             if (attackAnimTicks > 0) {
                 attackAnimTicks--;
-                if (attackAnimTicks == 0 && !isAttacking()) {
+                if (attackAnimTicks == 0) {
                     setAttacking(false);
                 }
             }
