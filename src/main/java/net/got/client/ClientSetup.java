@@ -2,6 +2,8 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
+import net.got.entity.client.brownbear.GotBrownBearModel;
+import net.got.entity.client.brownbear.GotBrownBearRenderer;
 import net.got.entity.client.model.GotModelLayers;
 import net.got.entity.client.npc.smallfolk.GotSmallfolkModel;
 import net.got.entity.client.stag.GotStagModel;
@@ -93,6 +95,7 @@ public final class ClientSetup {
         event.registerLayerDefinition(GotModelLayers.GOT_DIREWOLF,      GotDirewolfModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_CROW,          GotCrowModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_MAMMOTH,       GotMammothModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.GOT_BROWN_BEAR, GotBrownBearModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -261,6 +264,7 @@ public final class ClientSetup {
         event.registerEntityRenderer(GotModEntities.GOT_DIREWOLF.get(), GotDirewolfRenderer::new);
         event.registerEntityRenderer(GotModEntities.GOT_CROW.get(),     GotCrowRenderer::new);
         event.registerEntityRenderer(GotModEntities.GOT_MAMMOTH.get(),  GotMammothRenderer::new);
+        event.registerEntityRenderer(GotModEntities.GOT_BROWN_BEAR.get(), GotBrownBearRenderer::new);
 
         // ── Boat renderers ───────────────────────────────────────────────
         event.registerEntityRenderer(boat(GotModBoatEntities.WEIRWOOD_BOAT.get()),              ctx -> new GotBoatRenderer(ctx, false, "weirwood"));

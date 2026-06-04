@@ -64,6 +64,9 @@ public final class GotModelLayers {
     public static final ModelLayerLocation GOT_MAMMOTH =
             location("got_mammoth");
 
+    public static final ModelLayerLocation GOT_BROWN_BEAR =
+            location("got_brown_bear");
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static ModelLayerLocation location(String name) {

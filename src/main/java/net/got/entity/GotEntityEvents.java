@@ -1,6 +1,7 @@
 package net.got.entity;
 
 // ── Tier-1 Smallfolk ──────────────────────────────────────────────────────────
+import net.got.entity.brownbear.GotBrownBearEntity;
 import net.got.entity.stag.GotStagEntity;
 import net.got.entity.heron.GotHeronEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -77,6 +78,8 @@ public class GotEntityEvents {
 
         // ── GOT Mammoth ────────────────────────────────────────────────────────
         event.put(GotModEntities.GOT_MAMMOTH.get(), GotMammothEntity.createAttributes().build());
+
+        event.put(GotModEntities.GOT_BROWN_BEAR.get(), GotBrownBearEntity.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -119,5 +122,7 @@ public class GotEntityEvents {
 
         // ── GOT Mammoth ────────────────────────────────────────────────────────
         event.register(GotModEntities.GOT_MAMMOTH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotMammothEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(GotModEntities.GOT_BROWN_BEAR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GotBrownBearEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

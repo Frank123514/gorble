@@ -2,6 +2,7 @@ package net.got.init;
 
 import net.got.GotMod;
 // ── Tier-1 Smallfolk imports ───────────────────────────────────────────────────
+import net.got.entity.brownbear.GotBrownBearEntity;
 import net.got.entity.stag.GotStagEntity;
 import net.got.entity.heron.GotHeronEntity;
 import net.got.entity.npc.smallfolk.NorthmanEntity;
@@ -192,4 +193,12 @@ public class GotModEntities {
                             .sized(3.0f, 3.5f).clientTrackingRange(16).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_mammoth"))));
+
+    /** GOT Brown Bear — a large bear found in the forests of Westeros. */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotBrownBearEntity>> GOT_BROWN_BEAR =
+            REGISTRY.register("got_brown_bear", () ->
+                    EntityType.Builder.<GotBrownBearEntity>of(GotBrownBearEntity::new, MobCategory.CREATURE)
+                            .sized(1.4f, 1.4f).clientTrackingRange(12).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_brown_bear"))));
 }
