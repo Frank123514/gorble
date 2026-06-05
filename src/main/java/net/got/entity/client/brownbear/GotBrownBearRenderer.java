@@ -15,7 +15,6 @@ public class GotBrownBearRenderer
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_brown_bear.png");
 
-    // Clip lengths in ticks — must match Builder.withLength() in GotBrownBearAnimations.
     private static final float ATTACK_LENGTH_TICKS = 1.2F * 20F;
     private static final float STAND_LENGTH_TICKS  = 1.6667F * 20F;
 
@@ -69,17 +68,15 @@ public class GotBrownBearRenderer
             localTime          = 0F;
         }
 
-        // Looping animations use the raw global clock so they never jump on switch.
         if (!isOneShot(anim)) {
             localTime = state.ageInTicks;
         }
 
-        model.applyAnimation(anim, localTime / 20F, 1.0F);
+        model.applyAnimation(anim, localTime, 1.0F);
     }
 
     private static AnimationDefinition chooseAnimation(GotBrownBearRenderState state) {
         if (state.isDeadOrDying) {
-            // No dedicated death animation in the Blockbench export — fall back to idle.
             return GotBrownBearAnimations.IDLE;
         } else if (state.isAttacking) {
             return GotBrownBearAnimations.ATTACK;
@@ -115,7 +112,7 @@ public class GotBrownBearRenderer
         if (state.isBaby) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
         } else {
-            poseStack.scale(1.1F, 1.1F, 1.1F);
+            poseStack.scale(1.6F, 1.6F, 1.6F);
         }
         super.scale(state, poseStack);
     }

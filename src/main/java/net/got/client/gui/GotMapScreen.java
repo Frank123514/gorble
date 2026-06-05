@@ -46,6 +46,7 @@ public class GotMapScreen extends Screen {
 
     // Window bounds (the whole shrunken panel including the header bar)
     private int winX, winY, winW, winH;
+    private int scaledBorder;
 
     // Map canvas bounds (inside the window, below the header bar)
     private int canvasX, canvasY, canvasW, canvasH;
@@ -62,17 +63,30 @@ public class GotMapScreen extends Screen {
     protected void init() {
         mapWidget = null;
 
-        // Window is exactly the parchment image size, centred on screen
-        winW = MAP_BG_W;
-        winH = MAP_BG_H;
-        winX = (width  - winW) / 2;
-        winY = (height - winH) / 2;
+        // Size the window as a fraction of the screen so it naturally scales
+        // with GUI scale (larger GUI scale = smaller screen dims = smaller map).
+        // Clamp so it always fits with room for the button above.
+        float targetW = width  * 0.82f;
+        float targetH = height * 0.82f;
+        float scaleX  = targetW / MAP_BG_W;
+        float scaleY  = targetH / MAP_BG_H;
+        float scale   = Math.min(scaleX, scaleY);
+        // Hard clamp: ensure button + map + margins never exceed screen height
+        float maxScale = (float)(height - BUTTON_H - 16) / MAP_BG_H;
+        scale = Math.min(scale, maxScale);
 
-        // Canvas sits inside the torn-edge border of the parchment
-        canvasX = winX + PARCHMENT_BORDER;
-        canvasY = winY + PARCHMENT_BORDER;
-        canvasW = winW - PARCHMENT_BORDER * 2;
-        canvasH = winH - PARCHMENT_BORDER * 2;
+        winW = Math.round(MAP_BG_W * scale);
+        winH = Math.round(MAP_BG_H * scale);
+        winX = (width  - winW) / 2;
+        winY = (height - winH) / 2 + (BUTTON_H / 2); // shift down slightly for button
+
+        // Canvas sits inside the torn-edge border of the parchment.
+        // Scale the border inset to match the parchment scale.
+        scaledBorder = Math.round(PARCHMENT_BORDER * ((float) winW / MAP_BG_W));
+        canvasX = winX + scaledBorder;
+        canvasY = winY + scaledBorder;
+        canvasW = winW - scaledBorder * 2;
+        canvasH = winH - scaledBorder * 2;
 
         mapWidget = new GotMapWidget(
                 canvasX, canvasY,
@@ -85,7 +99,7 @@ public class GotMapScreen extends Screen {
         addRenderableWidget(mapWidget);
 
         // Button sits above the parchment entirely, like a tab
-        btnX = winX + PARCHMENT_BORDER;
+        btnX = winX + scaledBorder;
         btnY = winY - BUTTON_H - 4;
     }
 
@@ -96,14 +110,18 @@ public class GotMapScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 
-        // ── 1. Parchment background — scaled via pose matrix ──
-        //    map_background.png is 128×128; we scale the pose so a native-size
-        //    blit fills the entire window panel.
-        // Blit parchment at native size (window == image size, no scaling needed)
+        // ── 1. Parchment background — scaled to fit the window ──
+        //    We use pose scale so the blit fills winW×winH regardless of GUI scale.
+        float bgScaleX = (float) winW / MAP_BG_W;
+        float bgScaleY = (float) winH / MAP_BG_H;
+        gfx.pose().pushPose();
+        gfx.pose().translate(winX, winY, 0);
+        gfx.pose().scale(bgScaleX, bgScaleY, 1f);
         gfx.blit(RenderType::guiTextured, MAP_BG_TEXTURE,
-                winX, winY, 0f, 0f,
+                0, 0, 0f, 0f,
                 MAP_BG_W, MAP_BG_H,
                 MAP_BG_W, MAP_BG_H);
+        gfx.pose().popPose();
 
         // ── 2. Map canvas widget (also draws the iron border) ──
         super.render(gfx, mouseX, mouseY, partialTick);

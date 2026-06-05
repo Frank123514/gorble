@@ -6,6 +6,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import org.joml.Vector3f;
 
 /**
  * Custom brown bear model for {@link net.got.entity.brownbear.GotBrownBearEntity},
@@ -32,6 +33,8 @@ public class GotBrownBearModel extends EntityModel<GotBrownBearRenderState> {
     final ModelPart leg_back_right_lower;
     final ModelPart leg_back_left;
     final ModelPart leg_back_left_lower;
+
+    private static final Vector3f ANIM_VEC = new Vector3f();
 
     public GotBrownBearModel(ModelPart root) {
         super(root);
@@ -187,22 +190,28 @@ public class GotBrownBearModel extends EntityModel<GotBrownBearRenderState> {
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-    /**
-     * Apply a keyframe animation to this model's parts.
-     * Called once per frame from {@link GotBrownBearRenderer}.
-     *
-     * @param animation  the animation to drive
-     * @param animTime   seconds elapsed (use raw {@code ageInTicks / 20F} for looping,
-     *                   or a local counter for one-shots)
-     * @param speed      playback multiplier (pass {@code 1.0F} normally)
-     */
-    public void applyAnimation(AnimationDefinition animation, float animTime, float speed) {
-        KeyframeAnimations.animate(this, animation, (long) (animTime * 20F), speed, new org.joml.Vector3f());
+    public void applyAnimation(AnimationDefinition animation, float ageInTicks, float weight) {
+        body.resetPose();
+        head.resetPose();
+        snout.resetPose();
+        jaw.resetPose();
+        ear_right.resetPose();
+        ear_left.resetPose();
+        tail.resetPose();
+        neck.resetPose();
+        leg_front_right.resetPose();
+        leg_front_right_lower.resetPose();
+        leg_front_left.resetPose();
+        leg_front_left_lower.resetPose();
+        leg_back_right.resetPose();
+        leg_back_right_lower.resetPose();
+        leg_back_left.resetPose();
+        leg_back_left_lower.resetPose();
+        KeyframeAnimations.animate(this, animation, (long)(ageInTicks * 50F), weight, ANIM_VEC);
     }
 
     @Override
     public void setupAnim(GotBrownBearRenderState renderState) {
-        // Animation is applied by the renderer via applyAnimation — nothing to do here.
-        super.setupAnim(renderState);
+        // Intentionally empty — handled by applyAnimation() in GotBrownBearRenderer.
     }
 }
