@@ -1,27 +1,26 @@
 package net.got.client.animation;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.RenderType;
 import org.joml.Vector3f;
 
-import net.minecraft.client.renderer.RenderType;
-
-import java.util.Optional;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
- * Drives {@link GotPlayerCombatAnimations} onto the vanilla player model arms.
+ * Drives {@link GotPlayerCombatAnimations} onto the vanilla player model.
  *
- * <p>Uses the same {@link KeyframeAnimations#animate} call as every other
- * animation in the mod.  A lightweight {@link BoneAdapter} resolves bone name
- * lookups without needing to extend {@link net.minecraft.client.model.Model}
- * or touch its private fields.
+ * In MC 1.21.4 the render state system means the model's bones are set by
+ * vanilla's setupAnim() on every frame, overwriting anything we put there
+ * from a tick event. The fix is to apply our animation inside the render
+ * pipeline itself, after setupAnim — see {@link net.got.mixin.PlayerRendererMixin}.
+ *
+ * This class manages animation state (current pose, time, playing/blocking)
+ * and provides {@link #applyToModel(PlayerModel)} for the Mixin to call.
  */
 public final class GotPlayerAnimator {
 
@@ -39,6 +38,10 @@ public final class GotPlayerAnimator {
     private static final Vector3f ANIM_VEC = new Vector3f();
 
     // ── Public API ────────────────────────────────────────────────────────────
+
+    public boolean hasActiveAnimation() {
+        return currentAnim != null;
+    }
 
     public void triggerAttack(GotArmPose pose) {
         if (pose == GotArmPose.NONE || pose == GotArmPose.BLOCK) return;
@@ -80,31 +83,21 @@ public final class GotPlayerAnimator {
         }
     }
 
-    /** Apply the current animation frame to the local player's arm model. */
+    /**
+     * Apply the current animation frame directly to a {@link PlayerModel}.
+     * Called by {@link net.got.mixin.PlayerRendererMixin} after vanilla's
+     * setupAnim() has already set the rest pose, so our transforms win.
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public void applyToPlayer(Player player) {
-        if (currentAnim == null || player == null) return;
-
-        Minecraft mc = Minecraft.getInstance();
-        // getRenderer() is wildcarded; cast through Object to avoid the capture error
-        Object renderer = mc.getEntityRenderDispatcher().getRenderer(player);
-        if (!(renderer instanceof PlayerRenderer playerRenderer)) return;
-
-        // PlayerModel is non-generic in 1.21.4 — use raw type
-        PlayerModel playerModel = playerRenderer.getModel();
-
-        // Reset the four bones we touch so each frame starts from rest pose
-        playerModel.rightArm.resetPose();
-        playerModel.leftArm.resetPose();
-        playerModel.body.resetPose();
-        playerModel.head.resetPose();
+    public void applyToModel(PlayerModel model) {
+        if (currentAnim == null || model == null) return;
 
         float t = animPlaying
                 ? Math.min(animTime, currentAnim.lengthInSeconds())
                 : currentAnim.lengthInSeconds();
 
         KeyframeAnimations.animate(
-                new BoneAdapter(playerModel),
+                new BoneAdapter(model),
                 currentAnim,
                 (long)(t * 1000F),
                 1.0F,
@@ -134,17 +127,6 @@ public final class GotPlayerAnimator {
 
     // ── Bone adapter ──────────────────────────────────────────────────────────
 
-    /**
-     * Minimal {@link net.minecraft.client.model.Model} subclass whose only job
-     * is to route {@link #getAnyDescendantWithName} to the four player model
-     * parts we animate.
-     *
-     * <p>We do NOT override {@code renderToBuffer} (it is {@code final} in
-     * {@link net.minecraft.client.model.Model} in 1.21.4) and do NOT touch
-     * {@code allParts} (it is {@code private}).  The superclass constructor
-     * takes a {@link net.minecraft.client.renderer.RenderType}; we pull it
-     * from the wrapped {@link PlayerModel} so nothing is hard-coded.
-     */
     @SuppressWarnings("rawtypes")
     private static final class BoneAdapter extends net.minecraft.client.model.Model {
 
