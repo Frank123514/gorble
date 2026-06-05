@@ -15,6 +15,19 @@ public final class GotPlayerAnimator {
     private boolean isBlocking = false;
     private float animTicks = 0F;   // counts up each client tick while playing
 
+    // ── Internal helpers ──────────────────────────────────────────────────────
+
+    private AnimationDefinition animationFor(GotArmPose pose) {
+        return switch (pose) {
+            case SWORD      -> GotPlayerCombatAnimations.SWORD_ATTACK;
+            case GREATSWORD -> GotPlayerCombatAnimations.GREATSWORD_ATTACK;
+            case AXE        -> GotPlayerCombatAnimations.AXE_ATTACK;
+            case SPEAR      -> GotPlayerCombatAnimations.SPEAR_ATTACK;
+            case BLOCK      -> GotPlayerCombatAnimations.SWORD_BLOCK;
+            default         -> null;
+        };
+    }
+
     // ── Called by GotCombatAnimationHandler ───────────────────────────────────
 
     public void triggerAttack(GotArmPose pose) {
@@ -54,7 +67,7 @@ public final class GotPlayerAnimator {
         }
     }
 
-    // ── Called by PlayerRendererMixin ─────────────────────────────────────────
+    // ── Called by GotPlayerRenderer ───────────────────────────────────────────
 
     public AnimationDefinition getCurrentAnimation() {
         return currentAnimation;
@@ -62,5 +75,24 @@ public final class GotPlayerAnimator {
 
     public float getCurrentAnimationTicks() {
         return animTicks;
+    }
+
+    /**
+     * Returns true when a finished one-shot animation should hold its last
+     * frame (e.g. the player is still blocking).
+     */
+    public boolean shouldHoldLastFrame() {
+        return isBlocking;
+    }
+
+    /**
+     * Called by the renderer when a one-shot animation has finished and is
+     * NOT being held. Clears animation state so the next call to
+     * getCurrentAnimation() returns null.
+     */
+    public void onAnimationFinished() {
+        currentAnimation = null;
+        currentPose      = GotArmPose.NONE;
+        animTicks        = 0F;
     }
 }
