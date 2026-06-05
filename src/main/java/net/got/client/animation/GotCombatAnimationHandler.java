@@ -1,5 +1,6 @@
 package net.got.client.animation;
 
+import net.got.client.input.GotKeybinds;
 import net.got.network.GotCombatAnimPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -30,8 +31,7 @@ public final class GotCombatAnimationHandler {
 
     /**
      * Fires every time the player presses the attack key — including air swings.
-     * This is the primary trigger for client-side combat animations so they feel
-     * immediate and responsive without a server round-trip.
+     * Primary trigger for client-side combat animations (immediate, no round-trip).
      */
     @SubscribeEvent
     public static void onAttackInput(InputEvent.InteractionKeyMappingTriggered event) {
@@ -52,12 +52,44 @@ public final class GotCombatAnimationHandler {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.isPaused()) return;
 
-        GotPlayerAnimator.INSTANCE.tick();
+        GotPlayerAnimator animator = GotPlayerAnimator.INSTANCE;
+
+        // ── Tick the animator (handles combo firing, looping, etc.) ───────────
+        animator.tick();
 
         LocalPlayer player = mc.player;
-        boolean blocking = player.isUsingItem()
+
+        // ── Block detection: dedicated BLOCK key (Q) OR right-click with sword ─
+        // The block key lets players block without consuming a right-click use item.
+        boolean blockKeyHeld = GotKeybinds.BLOCK.isDown();
+        boolean usingItem    = player.isUsingItem()
                 && player.getUsedItemHand() == InteractionHand.MAIN_HAND;
-        GotPlayerAnimator.INSTANCE.setBlocking(blocking);
+        // Only activate block guard when holding a sword/shield-able weapon
+        GotArmPose currentWeaponPose = GotWeaponPoseClassifier.of(player.getMainHandItem());
+        boolean canBlock = currentWeaponPose == GotArmPose.SWORD
+                        || currentWeaponPose == GotArmPose.GREATSWORD;
+
+        boolean blocking = canBlock && (blockKeyHeld || usingItem);
+        animator.setBlocking(blocking);
+
+        // ── Base locomotion animation ─────────────────────────────────────────
+        // Select the right base anim from GotPlayerBaseAnimations based on
+        // player movement state so idle/walk/run play when not in combat.
+        if (!player.onGround()) {
+            animator.setBaseAnimation(GotPlayerBaseAnimations.FALLING);
+        } else if (player.isCrouching()) {
+            animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_SNEAK);
+        } else {
+            // Check movement speed to pick walk vs run vs idle
+            double speedSq = player.getDeltaMovement().horizontalDistanceSqr();
+            if (speedSq > 0.08) {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.RUNNING);
+            } else if (speedSq > 0.001) {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.WALKING);
+            } else {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_STANDING);
+            }
+        }
     }
 
     private GotCombatAnimationHandler() {}

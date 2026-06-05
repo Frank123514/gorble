@@ -10,6 +10,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * Injects GOT animation layers into vanilla PlayerModel.setupAnim().
+ *
+ * Two passes, applied after vanilla:
+ *   1. Base locomotion (idle/walk/run/fall from GotPlayerBaseAnimations).
+ *   2. Combat animation (attack combo, block) — overrides base on affected bones.
+ */
 @Mixin(PlayerModel.class)
 public abstract class PlayerRendererMixin {
 
@@ -17,18 +24,34 @@ public abstract class PlayerRendererMixin {
 
     @Inject(method = "setupAnim", at = @At("TAIL"), remap = false)
     private void got_applyAnimation(PlayerRenderState state, CallbackInfo ci) {
-        var anim = GotPlayerAnimator.INSTANCE.getCurrentAnimation();
-        if (anim == null) return;
+        GotPlayerAnimator animator = GotPlayerAnimator.INSTANCE;
 
-        float ticks = GotPlayerAnimator.INSTANCE.getCurrentAnimationTicks();
         @SuppressWarnings("unchecked")
         PlayerModel model = (PlayerModel)(Object) this;
-        KeyframeAnimations.animate(
-                model,
-                anim,
-                (long)(ticks * 50F),
-                1.0F,
-                GOT_ANIM_VEC
-        );
+
+        // ── Layer 1: base locomotion ──────────────────────────────────────────
+        var baseAnim = animator.getBaseAnimation();
+        if (baseAnim != null) {
+            KeyframeAnimations.animate(
+                    model,
+                    baseAnim,
+                    (long)(animator.getBaseAnimationTicks() * 50F),
+                    1.0F,
+                    GOT_ANIM_VEC
+            );
+        }
+
+        // ── Layer 2: combat (overrides base for affected bones) ───────────────
+        var combatAnim = animator.getCurrentAnimation();
+        if (combatAnim != null) {
+            float ticks = animator.getCurrentAnimationTicks();
+            KeyframeAnimations.animate(
+                    model,
+                    combatAnim,
+                    (long)(ticks * 50F),
+                    1.0F,
+                    GOT_ANIM_VEC
+            );
+        }
     }
 }

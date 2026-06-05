@@ -77,6 +77,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(GotKeybinds.OPEN_MAP);
+        event.register(GotKeybinds.BLOCK);
     }
 
     /**
@@ -242,7 +243,7 @@ public final class ClientSetup {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-                // ── Tier-1 Smallfolk renderers (SmallfolkGeoRenderer with culture textures) ─
+        // ── Tier-1 Smallfolk renderers (SmallfolkGeoRenderer with culture textures) ─
         event.registerEntityRenderer(GotModEntities.NORTHMAN.get(),    ctx -> new SmallfolkRenderer<>(ctx, NorthmanEntity.MALE_TEXTURES,    NorthmanEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(GotModEntities.RIVERLANDER.get(), ctx -> new SmallfolkRenderer<>(ctx, RiverlanderEntity.MALE_TEXTURES, RiverlanderEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(GotModEntities.VALEMAN.get(),     ctx -> new SmallfolkRenderer<>(ctx, ValemanEntity.MALE_TEXTURES,     ValemanEntity.FEMALE_TEXTURES));
