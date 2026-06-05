@@ -395,78 +395,77 @@ public final class GotPlayerBaseAnimations {
                     .build();
 
     // ─────────────────────────────────────────────────────────────────────────
-    // JUMP (idle / airborne)  –  body squash on takeoff, legs tuck, 0.36 s loop
+    // JUMP (idle / airborne)  –  body squash on takeoff, legs tuck, 0.8824 s loop
     // ─────────────────────────────────────────────────────────────────────────
     public static final AnimationDefinition JUMP =
-            AnimationDefinition.Builder.withLength(0.36F).looping()
-                    .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.00F, KeyframeAnimations.posVec(0,  0,    0),    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.08F, KeyframeAnimations.posVec(0,-10.11F, 2.33F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.posVec(0,-13.0F, 3.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.posVec(0,  0,    0),    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.posVec(0,  0,    0),    AnimationChannel.Interpolations.LINEAR)
-                    ))
+            AnimationDefinition.Builder.withLength(0.8824F).looping()
                     .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.00F, KeyframeAnimations.degreeVec( 0,   0,0), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.degreeVec(21.84F,-4.13F,0), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.degreeVec(-7.5F, 0, 0),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.degreeVec(-7.5F, 0, 0),AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.degreeVec(  0.0F,    0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.degreeVec( 21.84F,  -4.13F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.degreeVec( -7.5F,    0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.degreeVec( -7.5F,    0.0F,  0.0F), AnimationChannel.Interpolations.LINEAR)
+                    ))
+                    .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
+                            new Keyframe(0.0F,    KeyframeAnimations.posVec( 0.0F,  0.0F,  0.0F),    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.posVec( 0.0F,  3.0F, -4.0F),    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.posVec( 0.0F,  2.0F,  0.0F),    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.posVec( 0.0F,  0.0F,  0.0F),    AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.00F, KeyframeAnimations.posVec(0,  0,   0),    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.posVec(0,-1.99F,-3.69F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.posVec(0,  0,   1.12F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.posVec(0,  0,   1.12F),AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.posVec( 0.0F,  0.0F,  0.0F),    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.posVec( 0.0F, -1.99F,-3.69F),   AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.posVec( 0.0F,  0.0F,  1.12F),   AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.posVec( 0.0F,  0.0F,  1.12F),   AnimationChannel.Interpolations.LINEAR)
                     ))
                     // arms flare outward on the jump squash
                     .addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.00F, KeyframeAnimations.degreeVec(  0,0,   0),    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.degreeVec(-22.5F,0,104.1F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.degreeVec(  0,0,  15.0F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.degreeVec( 15,0,  37.5F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.degreeVec(  0.0F,  0.0F,   0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.degreeVec(-22.5F,  0.0F, 104.1F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.degreeVec(  0.0F,  0.0F,  15.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.degreeVec( 15.0F,  0.0F,  37.5F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.00F, KeyframeAnimations.posVec(0,  0,    0),    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.posVec(-0.99F,-1.48F,-2.79F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.posVec(0,-0.87F,0.55F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.posVec(0,-0.87F,0.55F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.posVec( 0.0F,  0.0F,   0.0F),  AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.posVec(-0.99F,-1.48F, -2.79F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.posVec( 0.0F, -0.87F,  0.55F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.posVec( 0.0F, -0.87F,  0.55F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.00F, KeyframeAnimations.degreeVec(  0,0,    0),     AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.degreeVec(-22.5F,0,-104.1F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.degreeVec(  0,0,  -15.0F),  AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.degreeVec( 15,0,  -37.5F),  AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.degreeVec(  0.0F,  0.0F,    0.0F),  AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.degreeVec(-22.5F,  0.0F, -104.1F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.degreeVec(  0.0F,  0.0F,  -15.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.degreeVec( 15.0F,  0.0F,  -37.5F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.00F, KeyframeAnimations.posVec(0,  0,    0),    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.posVec(0.99F,-1.48F,-2.79F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.posVec(0,-0.87F,0.55F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.posVec(0,-0.87F,0.55F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.posVec( 0.0F,  0.0F,   0.0F),  AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.posVec( 0.99F,-1.48F, -2.79F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.posVec( 0.0F, -0.87F,  0.55F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.posVec( 0.0F, -0.87F,  0.55F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     // legs tuck up
                     .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.00F, KeyframeAnimations.degreeVec( 0,0,0),   AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.degreeVec(-11.24F,0,0),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.degreeVec( 42.5F,0,0),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.degreeVec( 17.5F,0,0),AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.degreeVec(  0.0F, 0, 0), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.degreeVec(-11.24F, 0, 0), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.degreeVec( 42.5F,  0, 0), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.degreeVec( 17.5F,  0, 0), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.00F, KeyframeAnimations.posVec(0,0,0),     AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.posVec(0,1.66F,-0.2F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.posVec(0,1.79F, 0),  AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.posVec(0,2.74F,-0.3F),AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.posVec(0,  0.0F,   0.0F),  AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.posVec(0,  3.66F,  -0.2F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.posVec(0,  2.79F,  -1.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.posVec(0,  0.74F,  -1.3F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("left_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.00F, KeyframeAnimations.degreeVec( 0,0,0),   AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.degreeVec(-11.24F,0,0),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.degreeVec( 17.5F,0,0),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.degreeVec(-11.34F,0,0),AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.degreeVec(  0.0F,  0, 0), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.degreeVec(-11.24F, 0, 0), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.degreeVec( 17.5F,  0, 0), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.degreeVec(-11.34F, 0, 0), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("left_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.00F, KeyframeAnimations.posVec(0,0,0),     AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.12F, KeyframeAnimations.posVec(0,1.66F,-0.2F),AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.24F, KeyframeAnimations.posVec(0,1.79F, 0),  AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.36F, KeyframeAnimations.posVec(0,4.63F,-3.31F),AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F,    KeyframeAnimations.posVec(0,  0.0F,   0.0F),  AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.2941F, KeyframeAnimations.posVec(0,  3.66F,  -0.2F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.5882F, KeyframeAnimations.posVec(0,  2.79F,  -1.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.8824F, KeyframeAnimations.posVec(0,  0.63F,  -1.31F),AnimationChannel.Interpolations.LINEAR)
                     ))
                     .build();
 
@@ -516,26 +515,25 @@ public final class GotPlayerBaseAnimations {
                             new Keyframe(2.0F, KeyframeAnimations.posVec(0, 0.0F,0), AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(4.0F, KeyframeAnimations.posVec(0,-0.5F,0), AnimationChannel.Interpolations.LINEAR)
                     ))
-                    // legs splayed out in stirrups
+                    // legs splayed out in stirrups — vanilla leg pivot is top-of-leg, 0° = hanging down
+                    // Rotate outward (Z) to splay over the saddle, slight forward bend (X)
                     .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(-77.29F, 22.48F, 1.04F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(2.0F, KeyframeAnimations.degreeVec(-76.04F, 22.48F, 1.04F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(4.0F, KeyframeAnimations.degreeVec(-77.29F, 22.48F, 1.04F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F,  35.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(2.0F, KeyframeAnimations.degreeVec(28.0F, 0.0F,  35.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(4.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F,  35.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.0F, KeyframeAnimations.posVec(-0.547F,0.23F,2.284F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(2.0F, KeyframeAnimations.posVec(-0.547F,0.43F,1.984F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(4.0F, KeyframeAnimations.posVec(-0.547F,0.23F,2.284F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(4.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("left_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(-77.29F,-22.48F,-1.04F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(2.0F, KeyframeAnimations.degreeVec(-76.04F,-22.48F,-1.04F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(4.0F, KeyframeAnimations.degreeVec(-77.29F,-22.48F,-1.04F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, -35.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(2.0F, KeyframeAnimations.degreeVec(28.0F, 0.0F, -35.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(4.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, -35.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .addAnimation("left_leg", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0.0F, KeyframeAnimations.posVec(0.547F,0.23F,2.284F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(2.0F, KeyframeAnimations.posVec(0.547F,0.43F,1.984F), AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(4.0F, KeyframeAnimations.posVec(0.547F,0.23F,2.284F), AnimationChannel.Interpolations.LINEAR)
+                            new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(4.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
                     ))
                     .build();
 

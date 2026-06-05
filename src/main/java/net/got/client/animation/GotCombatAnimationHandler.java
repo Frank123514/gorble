@@ -67,7 +67,7 @@ public final class GotCombatAnimationHandler {
         // Only activate block guard when holding a sword/shield-able weapon
         GotArmPose currentWeaponPose = GotWeaponPoseClassifier.of(player.getMainHandItem());
         boolean canBlock = currentWeaponPose == GotArmPose.SWORD
-                        || currentWeaponPose == GotArmPose.GREATSWORD;
+                || currentWeaponPose == GotArmPose.GREATSWORD;
 
         boolean blocking = canBlock && (blockKeyHeld || usingItem);
         animator.setBlocking(blocking);
@@ -75,8 +75,23 @@ public final class GotCombatAnimationHandler {
         // ── Base locomotion animation ─────────────────────────────────────────
         // Select the right base anim from GotPlayerBaseAnimations based on
         // player movement state so idle/walk/run play when not in combat.
-        if (!player.onGround()) {
-            animator.setBaseAnimation(GotPlayerBaseAnimations.FALLING);
+        if (player.isPassenger() && player.getVehicle() instanceof net.minecraft.world.entity.animal.horse.AbstractHorse) {
+            // Riding a horse — pick idle vs running based on the horse's speed
+            net.minecraft.world.entity.Entity horse = player.getVehicle();
+            double horseSpdSq = horse.getDeltaMovement().horizontalDistanceSqr();
+            if (horseSpdSq > 0.001) {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.HORSE_RUNNING);
+            } else {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.HORSE_IDLE);
+            }
+        } else if (!player.onGround() && !player.isPassenger()) {
+            // Only show FALLING/JUMP when truly airborne (not riding something)
+            double verticalVel = player.getDeltaMovement().y;
+            if (verticalVel > 0.1) {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.JUMP);
+            } else {
+                animator.setBaseAnimation(GotPlayerBaseAnimations.FALLING);
+            }
         } else if (player.isCrouching()) {
             animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_SNEAK);
         } else {
