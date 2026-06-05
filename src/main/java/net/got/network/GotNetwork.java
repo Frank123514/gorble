@@ -209,6 +209,15 @@ public final class GotNetwork {
                                 .setClientVitals(payload.bodyTemp(), payload.thirst());
                     }
                 }));
+
+        // ── Combat animation trigger (S→C) ────────────────────────────────────
+        r.playToClient(GotCombatAnimPayload.TYPE, GotCombatAnimPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.client.animation.GotCombatAnimationHandler
+                                .onCombatAnimPayload(payload);
+                    }
+                }));
     }
 
     public static void init() {}
