@@ -1,55 +1,46 @@
 package net.got.mixin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.got.client.animation.GotPlayerAnimator;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
-import net.minecraft.client.renderer.MultiBufferSource;
-import com.mojang.blaze3d.vertex.PoseStack;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Injects our combat animation AFTER vanilla's setupAnim() has set bone poses.
- *
- * The injection point is the HEAD of renderToBuffer, which executes after
- * setupAnim() but before vertices are emitted — so our KeyframeAnimations
- * call is the last thing to touch the bones.
- *
- * We avoid @Shadow entirely (getModel() is on the parent LivingEntityRenderer,
- * not declared on PlayerRenderer, so Mixin can't shadow it without a refMap).
- * Instead we cast `this` to PlayerRenderer and call getModel() directly —
- * it's a public method so no access tricks needed.
- *
- * remap=false: same pattern as the other mixins in this project.
- */
 @Mixin(PlayerRenderer.class)
-public class PlayerRendererMixin {
+public abstract class PlayerRendererMixin {
 
-    @Inject(
-        method = "renderToBuffer",
-        at = @At("HEAD"),
-        remap = false
-    )
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private void gotAnim_applyAfterSetupAnim(
-            PlayerRenderState renderState,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight,
-            CallbackInfo ci) {
+    @Shadow
+    public abstract PlayerModel getModel();
 
-        GotPlayerAnimator animator = GotPlayerAnimator.INSTANCE;
-        if (!animator.hasActiveAnimation()) return;
+    private static final Vector3f ANIM_VEC = new Vector3f();
 
-        // Cast this to PlayerRenderer — safe since we're inside a mixin on it.
-        // getModel() is public and inherited from LivingEntityRenderer.
-        PlayerRenderer self = (PlayerRenderer) (Object) this;
-        PlayerModel model = (PlayerModel) self.getModel();
-        if (model == null) return;
+    /**
+     * Inject at the END of setupAnim so vanilla has already positioned all bones,
+     * and we layer our keyframe animation on top.
+     *
+     * setupAnim(RenderState) is the method that actually writes bone rotations
+     * from the render state — it exists on PlayerRenderer in 1.21.4.
+     */
+    @Inject(method = "setupAnim", at = @At("TAIL"))
+    private void got_applyAnimation(PlayerRenderState state, CallbackInfo ci) {
+        var anim = GotPlayerAnimator.INSTANCE.getCurrentAnimation();
+        if (anim == null) return;
 
-        animator.applyToModel(model);
+        float ticks = GotPlayerAnimator.INSTANCE.getCurrentAnimationTicks();
+        KeyframeAnimations.animate(
+                getModel(),
+                anim,
+                (long)(ticks * 50F),
+                1.0F,
+                ANIM_VEC
+        );
     }
 }

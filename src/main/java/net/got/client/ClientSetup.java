@@ -2,6 +2,7 @@ package net.got.client;
 
 import net.got.client.input.GotKeybinds;
 import net.got.client.renderer.GotBoatRenderer;
+import net.got.client.renderer.GotPlayerRenderer;
 import net.got.entity.client.brownbear.GotBrownBearModel;
 import net.got.entity.client.brownbear.GotBrownBearRenderer;
 import net.got.entity.client.model.GotModelLayers;
@@ -231,6 +232,12 @@ public final class ClientSetup {
     @SuppressWarnings("unchecked")
     private static EntityType<AbstractBoat> boat(EntityType<?> type) {
         return (EntityType<AbstractBoat>) type;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends net.minecraft.world.entity.player.Player>
+    EntityType<T> player(EntityType<?> type) {
+        return (EntityType<T>) type;
     }
 
     @SubscribeEvent

@@ -22,15 +22,30 @@ import net.neoforged.neoforge.network.PacketDistributor;
 @EventBusSubscriber(modid = "got")
 public final class GotCombatEvents {
 
+    private static final org.slf4j.Logger LOGGER =
+            org.slf4j.LoggerFactory.getLogger("GotCombatEvents");
+
     @SubscribeEvent
     public static void onPlayerAttack(AttackEntityEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        LOGGER.info("[GOT-ANIM] AttackEntityEvent fired by: {}", event.getEntity().getClass().getSimpleName());
+
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            LOGGER.info("[GOT-ANIM] Not a ServerPlayer, ignoring");
+            return;
+        }
 
         ItemStack held = player.getMainHandItem();
+        LOGGER.info("[GOT-ANIM] Player {} attacking with: {}", player.getName().getString(), held);
+
         GotArmPose pose = GotWeaponPoseClassifier.of(held);
+        LOGGER.info("[GOT-ANIM] Classified pose: {}", pose);
 
-        if (pose == GotArmPose.NONE) return; // vanilla weapon — no override
+        if (pose == GotArmPose.NONE) {
+            LOGGER.info("[GOT-ANIM] Pose is NONE, no animation sent");
+            return;
+        }
 
+        LOGGER.info("[GOT-ANIM] Sending GotCombatAnimPayload poseId={} to {}", pose.ordinal(), player.getName().getString());
         PacketDistributor.sendToPlayer(player,
                 new GotCombatAnimPayload(pose.ordinal()));
     }
