@@ -1,20 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "ingredients": [
-    {
-      "item": "got:iron_falchion_blade"
-    },
-    {
-      "item": "got:hilt"
-    },
-    {
-      "item": "got:curved_crossguard"
-    },
-    {
-      "item": "got:faceted_pommel"
-    }
+  "pattern": [
+    "  B",
+    "CH ",
+    "P  "
   ],
+  "key": {
+    "B": "got:iron_falchion_blade",
+    "C": "got:curved_crossguard",
+    "H": "got:hilt",
+    "P": "got:faceted_pommel"
+  },
   "result": {
     "count": 1,
     "id": "got:iron_falchion"

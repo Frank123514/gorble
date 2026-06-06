@@ -1,20 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "ingredients": [
-    {
-      "item": "got:bronze_falchion_blade"
-    },
-    {
-      "item": "got:hilt"
-    },
-    {
-      "item": "got:straight_crossguard"
-    },
-    {
-      "item": "got:diamond_pommel"
-    }
+  "pattern": [
+    "  B",
+    "CH ",
+    "P  "
   ],
+  "key": {
+    "B": "got:bronze_falchion_blade",
+    "C": "got:straight_crossguard",
+    "H": "got:hilt",
+    "P": "got:diamond_pommel"
+  },
   "result": {
     "count": 1,
     "id": "got:bronze_falchion"

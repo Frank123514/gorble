@@ -3117,5 +3117,26 @@
   "item.got.faceted_pommel": "Faceted Pommel",
   "item.got.straight_crossguard": "Straight Crossguard",
   "item.got.curved_crossguard": "Curved Crossguard",
-  "item.got.sloped_crossguard": "Sloped Crossguard"
+  "item.got.sloped_crossguard": "Sloped Crossguard",
+
+  "item.got.iron_shortsword": "Iron Short Sword",
+  "item.got.iron_falchion": "Iron Falchion",
+  "item.got.iron_longsword": "Iron Longsword",
+  "item.got.iron_bastard_sword": "Iron Bastard Sword",
+  "item.got.iron_greatsword": "Iron Greatsword",
+  "item.got.iron_claymore": "Iron Claymore",
+
+  "item.got.bronze_shortsword": "Bronze Short Sword",
+  "item.got.bronze_falchion": "Bronze Falchion",
+  "item.got.bronze_longsword": "Bronze Longsword",
+  "item.got.bronze_bastard_sword": "Bronze Bastard Sword",
+  "item.got.bronze_greatsword": "Bronze Greatsword",
+  "item.got.bronze_claymore": "Bronze Claymore",
+
+  "item.got.steel_shortsword": "Steel Short Sword",
+  "item.got.steel_falchion": "Steel Falchion",
+  "item.got.steel_longsword": "Steel Longsword",
+  "item.got.steel_bastard_sword": "Steel Bastard Sword",
+  "item.got.steel_greatsword": "Steel Greatsword",
+  "item.got.steel_claymore": "Steel Claymore"
 }

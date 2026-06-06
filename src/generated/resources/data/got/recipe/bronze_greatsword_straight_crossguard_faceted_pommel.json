@@ -1,20 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "ingredients": [
-    {
-      "item": "got:bronze_greatsword_blade"
-    },
-    {
-      "item": "got:long_hilt"
-    },
-    {
-      "item": "got:straight_crossguard"
-    },
-    {
-      "item": "got:faceted_pommel"
-    }
+  "pattern": [
+    "  B",
+    "CH ",
+    "P  "
   ],
+  "key": {
+    "B": "got:bronze_greatsword_blade",
+    "C": "got:straight_crossguard",
+    "H": "got:long_hilt",
+    "P": "got:faceted_pommel"
+  },
   "result": {
     "count": 1,
     "id": "got:bronze_greatsword"

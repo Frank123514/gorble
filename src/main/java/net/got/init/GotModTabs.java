@@ -2289,6 +2289,30 @@ public class GotModTabs {
                         output.accept(GotModItems.STEEL_GREATSWORD_BLADE.get());
                         output.accept(GotModItems.STEEL_ARMOR_PLATE.get());
 
+                        // ── Assembled Swords — Iron ───────────────────────────────────
+                        output.accept(GotModItems.IRON_SHORTSWORD.get());
+                        output.accept(GotModItems.IRON_FALCHION.get());
+                        output.accept(GotModItems.IRON_LONGSWORD.get());
+                        output.accept(GotModItems.IRON_BASTARD_SWORD.get());
+                        output.accept(GotModItems.IRON_GREATSWORD.get());
+                        output.accept(GotModItems.IRON_CLAYMORE.get());
+
+                        // ── Assembled Swords — Bronze ─────────────────────────────────
+                        output.accept(GotModItems.BRONZE_SHORTSWORD.get());
+                        output.accept(GotModItems.BRONZE_FALCHION.get());
+                        output.accept(GotModItems.BRONZE_LONGSWORD.get());
+                        output.accept(GotModItems.BRONZE_BASTARD_SWORD.get());
+                        output.accept(GotModItems.BRONZE_GREATSWORD.get());
+                        output.accept(GotModItems.BRONZE_CLAYMORE.get());
+
+                        // ── Assembled Swords — Steel ──────────────────────────────────
+                        output.accept(GotModItems.STEEL_SHORTSWORD.get());
+                        output.accept(GotModItems.STEEL_FALCHION.get());
+                        output.accept(GotModItems.STEEL_LONGSWORD.get());
+                        output.accept(GotModItems.STEEL_BASTARD_SWORD.get());
+                        output.accept(GotModItems.STEEL_GREATSWORD.get());
+                        output.accept(GotModItems.STEEL_CLAYMORE.get());
+
                     })
                     .build());
 

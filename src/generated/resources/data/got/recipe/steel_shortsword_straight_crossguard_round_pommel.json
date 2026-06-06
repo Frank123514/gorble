@@ -1,20 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "ingredients": [
-    {
-      "item": "got:steel_shortsword_blade"
-    },
-    {
-      "item": "got:hilt"
-    },
-    {
-      "item": "got:straight_crossguard"
-    },
-    {
-      "item": "got:round_pommel"
-    }
+  "pattern": [
+    "  B",
+    "CH ",
+    "P  "
   ],
+  "key": {
+    "B": "got:steel_shortsword_blade",
+    "C": "got:straight_crossguard",
+    "H": "got:hilt",
+    "P": "got:round_pommel"
+  },
   "result": {
     "count": 1,
     "id": "got:steel_shortsword"
