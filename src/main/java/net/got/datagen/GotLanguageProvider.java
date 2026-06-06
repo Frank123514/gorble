@@ -133,6 +133,48 @@ public class GotLanguageProvider extends LanguageProvider {
         item("straight_crossguard", "Straight Crossguard");
         item("curved_crossguard",   "Curved Crossguard");
         item("sloped_crossguard",   "Sloped Crossguard");
+        // ── Greatsword variants ───────────────────────────────────────────────
+        for (String tier : new String[]{"iron", "bronze", "steel"}) {
+            String t = capitalize(tier);
+            item(tier + "_greatsword_straight_crossguard_round_pommel",   t + " Greatsword (Straight Guard, Round Pommel)");
+            item(tier + "_greatsword_straight_crossguard_diamond_pommel", t + " Greatsword (Straight Guard, Diamond Pommel)");
+            item(tier + "_greatsword_straight_crossguard_faceted_pommel", t + " Greatsword (Straight Guard, Faceted Pommel)");
+            item(tier + "_greatsword_curved_crossguard_round_pommel",     t + " Greatsword (Curved Guard, Round Pommel)");
+            item(tier + "_greatsword_curved_crossguard_diamond_pommel",   t + " Greatsword (Curved Guard, Diamond Pommel)");
+            item(tier + "_greatsword_curved_crossguard_faceted_pommel",   t + " Greatsword (Curved Guard, Faceted Pommel)");
+        }
+
+        // ── All other sword variants ──────────────────────────────────────────
+        for (String tier : new String[]{"iron", "bronze", "steel"}) {
+            String t = capitalize(tier);
+            item(tier + "_shortsword_straight_crossguard_round_pommel", t + " Short Sword (Straight Guard, Round Pommel)");
+            item(tier + "_shortsword_straight_crossguard_diamond_pommel", t + " Short Sword (Straight Guard, Diamond Pommel)");
+            item(tier + "_shortsword_straight_crossguard_faceted_pommel", t + " Short Sword (Straight Guard, Faceted Pommel)");
+            item(tier + "_shortsword_curved_crossguard_round_pommel", t + " Short Sword (Curved Guard, Round Pommel)");
+            item(tier + "_shortsword_curved_crossguard_diamond_pommel", t + " Short Sword (Curved Guard, Diamond Pommel)");
+            item(tier + "_shortsword_curved_crossguard_faceted_pommel", t + " Short Sword (Curved Guard, Faceted Pommel)");
+            item(tier + "_longsword_straight_crossguard_round_pommel", t + " Longsword (Straight Guard, Round Pommel)");
+            item(tier + "_longsword_straight_crossguard_diamond_pommel", t + " Longsword (Straight Guard, Diamond Pommel)");
+            item(tier + "_longsword_straight_crossguard_faceted_pommel", t + " Longsword (Straight Guard, Faceted Pommel)");
+            item(tier + "_longsword_curved_crossguard_round_pommel", t + " Longsword (Curved Guard, Round Pommel)");
+            item(tier + "_longsword_curved_crossguard_diamond_pommel", t + " Longsword (Curved Guard, Diamond Pommel)");
+            item(tier + "_longsword_curved_crossguard_faceted_pommel", t + " Longsword (Curved Guard, Faceted Pommel)");
+            item(tier + "_bastard_sword_straight_crossguard_round_pommel", t + " Bastard Sword (Straight Guard, Round Pommel)");
+            item(tier + "_bastard_sword_straight_crossguard_diamond_pommel", t + " Bastard Sword (Straight Guard, Diamond Pommel)");
+            item(tier + "_bastard_sword_straight_crossguard_faceted_pommel", t + " Bastard Sword (Straight Guard, Faceted Pommel)");
+            item(tier + "_bastard_sword_curved_crossguard_round_pommel", t + " Bastard Sword (Curved Guard, Round Pommel)");
+            item(tier + "_bastard_sword_curved_crossguard_diamond_pommel", t + " Bastard Sword (Curved Guard, Diamond Pommel)");
+            item(tier + "_bastard_sword_curved_crossguard_faceted_pommel", t + " Bastard Sword (Curved Guard, Faceted Pommel)");
+            item(tier + "_falchion_straight_crossguard_round_pommel", t + " Falchion (Straight Guard, Round Pommel)");
+            item(tier + "_falchion_straight_crossguard_diamond_pommel", t + " Falchion (Straight Guard, Diamond Pommel)");
+            item(tier + "_falchion_straight_crossguard_faceted_pommel", t + " Falchion (Straight Guard, Faceted Pommel)");
+            item(tier + "_falchion_curved_crossguard_round_pommel", t + " Falchion (Curved Guard, Round Pommel)");
+            item(tier + "_falchion_curved_crossguard_diamond_pommel", t + " Falchion (Curved Guard, Diamond Pommel)");
+            item(tier + "_falchion_curved_crossguard_faceted_pommel", t + " Falchion (Curved Guard, Faceted Pommel)");
+            item(tier + "_claymore_sloped_crossguard_round_pommel", t + " Claymore (Sloped Guard, Round Pommel)");
+            item(tier + "_claymore_sloped_crossguard_diamond_pommel", t + " Claymore (Sloped Guard, Diamond Pommel)");
+            item(tier + "_claymore_sloped_crossguard_faceted_pommel", t + " Claymore (Sloped Guard, Faceted Pommel)");
+        }
 
         // ── Wetland plants & terrain ──────────────────────────────────────────
         block("wheatgrass",  "Wheatgrass");

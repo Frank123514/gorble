@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "got:item/bronze_falchion_straight_crossguard_faceted_pommel"
+  }
+}

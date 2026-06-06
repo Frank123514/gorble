@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "got:item/bronze_longsword_straight_crossguard_diamond_pommel"
+  }
+}

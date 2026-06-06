@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "got:item/steel_greatsword_curved_crossguard_faceted_pommel"
+  }
+}
