@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "got:steel_greatsword_blade"
+    },
+    {
+      "item": "got:long_hilt"
+    },
+    {
+      "item": "got:curved_crossguard"
+    },
+    {
+      "item": "got:faceted_pommel"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:steel_greatsword"
+  }
+}

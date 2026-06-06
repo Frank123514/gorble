@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "got:iron_shortsword_blade"
+    },
+    {
+      "item": "got:hilt"
+    },
+    {
+      "item": "got:straight_crossguard"
+    },
+    {
+      "item": "got:diamond_pommel"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:iron_shortsword"
+  }
+}

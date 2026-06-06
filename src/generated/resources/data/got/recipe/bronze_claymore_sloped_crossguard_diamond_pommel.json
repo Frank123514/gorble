@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "got:bronze_greatsword_blade"
+    },
+    {
+      "item": "got:long_hilt"
+    },
+    {
+      "item": "got:sloped_crossguard"
+    },
+    {
+      "item": "got:diamond_pommel"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:bronze_claymore"
+  }
+}

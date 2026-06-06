@@ -1674,6 +1674,48 @@ public class GotModItems {
 
     public static final DeferredItem<Item> STEEL_ARMOR_PLATE         = simple("steel_armor_plate");
 
+    // ── Assembled swords (blade + hilt + crossguard + pommel) ────────────────
+    // Iron swords
+    public static final DeferredItem<SwordItem> IRON_SHORTSWORD    = REGISTRY.registerItem("iron_shortsword",
+            p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> IRON_FALCHION      = REGISTRY.registerItem("iron_falchion",
+            p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
+    public static final DeferredItem<SwordItem> IRON_LONGSWORD     = REGISTRY.registerItem("iron_longsword",
+            p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD = REGISTRY.registerItem("iron_bastard_sword",
+            p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
+    public static final DeferredItem<SwordItem> IRON_GREATSWORD    = REGISTRY.registerItem("iron_greatsword",
+            p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> IRON_CLAYMORE      = REGISTRY.registerItem("iron_claymore",
+            p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
+    // Bronze swords
+    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD    = REGISTRY.registerItem("bronze_shortsword",
+            p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> BRONZE_FALCHION      = REGISTRY.registerItem("bronze_falchion",
+            p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
+    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD     = REGISTRY.registerItem("bronze_longsword",
+            p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD = REGISTRY.registerItem("bronze_bastard_sword",
+            p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
+    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD    = REGISTRY.registerItem("bronze_greatsword",
+            p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> BRONZE_CLAYMORE      = REGISTRY.registerItem("bronze_claymore",
+            p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
+    // Steel swords
+    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD    = REGISTRY.registerItem("steel_shortsword",
+            p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> STEEL_FALCHION      = REGISTRY.registerItem("steel_falchion",
+            p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
+    public static final DeferredItem<SwordItem> STEEL_LONGSWORD     = REGISTRY.registerItem("steel_longsword",
+            p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD = REGISTRY.registerItem("steel_bastard_sword",
+            p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
+    public static final DeferredItem<SwordItem> STEEL_GREATSWORD    = REGISTRY.registerItem("steel_greatsword",
+            p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> STEEL_CLAYMORE      = REGISTRY.registerItem("steel_claymore",
+            p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
+
+
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
             "northman_spawn_egg", p -> new SpawnEggItem(GotModEntities.NORTHMAN.get(), p));
