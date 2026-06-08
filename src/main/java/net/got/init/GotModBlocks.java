@@ -1257,7 +1257,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> GORSE              = flowerBlock("gorse");
     public static final DeferredBlock<Block> LADYS_LACE         = flowerBlock("ladys_lace");
     public static final DeferredBlock<Block> LAVENDER           = flowerBlock("lavender");
-    public static final DeferredBlock<Block> LILAC_FLOWER       = flowerBlock("lilac_flower");
     public static final DeferredBlock<Block> LIVERWORT          = flowerBlock("liverwort");
     public static final DeferredBlock<Block> LUNGWORT           = flowerBlock("lungwort");
     public static final DeferredBlock<Block> MOONBLOOM          = flowerBlock("moonbloom");

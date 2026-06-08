@@ -2045,7 +2045,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.GORSE.get());
                         safeAccept(output, GotModBlocks.LADYS_LACE.get());
                         safeAccept(output, GotModBlocks.LAVENDER.get());
-                        safeAccept(output, GotModBlocks.LILAC_FLOWER.get());
                         safeAccept(output, GotModBlocks.LIVERWORT.get());
                         safeAccept(output, GotModBlocks.LUNGWORT.get());
                         safeAccept(output, GotModBlocks.MOONBLOOM.get());

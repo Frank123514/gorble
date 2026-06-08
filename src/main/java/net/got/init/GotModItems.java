@@ -1438,7 +1438,6 @@ public class GotModItems {
     public static final DeferredItem<Item> GORSE              = block(GotModBlocks.GORSE);
     public static final DeferredItem<Item> LADYS_LACE         = block(GotModBlocks.LADYS_LACE);
     public static final DeferredItem<Item> LAVENDER           = block(GotModBlocks.LAVENDER);
-    public static final DeferredItem<Item> LILAC_FLOWER       = block(GotModBlocks.LILAC_FLOWER);
     public static final DeferredItem<Item> LIVERWORT          = block(GotModBlocks.LIVERWORT);
     public static final DeferredItem<Item> LUNGWORT           = block(GotModBlocks.LUNGWORT);
     public static final DeferredItem<Item> MOONBLOOM          = block(GotModBlocks.MOONBLOOM);
