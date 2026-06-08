@@ -2042,7 +2042,14 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.GOLDENCUP.get());
                         safeAccept(output, GotModBlocks.GOLDENROD.get());
                         safeAccept(output, GotModBlocks.GOLDEN_ROSE.get());
+                        safeAccept(output, GotModBlocks.GOLDEN_ROSE_BUSH.get());
                         safeAccept(output, GotModBlocks.GORSE.get());
+                        safeAccept(output, GotModBlocks.RED_ROSE.get());
+                        safeAccept(output, GotModBlocks.RED_ROSE_BUSH.get());
+                        safeAccept(output, GotModBlocks.WHITE_ROSE.get());
+                        safeAccept(output, GotModBlocks.WHITE_ROSE_BUSH.get());
+                        safeAccept(output, GotModBlocks.WINTER_ROSE.get());
+                        safeAccept(output, GotModBlocks.WINTER_ROSE_BUSH.get());
                         safeAccept(output, GotModBlocks.LADYS_LACE.get());
                         safeAccept(output, GotModBlocks.LAVENDER.get());
                         safeAccept(output, GotModBlocks.LIVERWORT.get());
@@ -2052,16 +2059,13 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OPIUM_POPPY.get());
                         safeAccept(output, GotModBlocks.PENNYROYAL.get());
                         safeAccept(output, GotModBlocks.POISON_KISSES.get());
-                        safeAccept(output, GotModBlocks.RED_ROSE.get());
                         safeAccept(output, GotModBlocks.SAFFRON_CROCUS.get());
                         safeAccept(output, GotModBlocks.SEDGE.get());
                         safeAccept(output, GotModBlocks.SPICEFLOWER.get());
                         safeAccept(output, GotModBlocks.TANSY.get());
                         safeAccept(output, GotModBlocks.THISTLE.get());
                         safeAccept(output, GotModBlocks.THORNBUSH.get());
-                        safeAccept(output, GotModBlocks.WHITE_ROSE.get());
                         safeAccept(output, GotModBlocks.WILD_RADISH.get());
-                        safeAccept(output, GotModBlocks.WINTER_ROSE.get());
 
                         // ── Grasses & Wetland Plants ──────────────────────────────────
                         safeAccept(output, GotModBlocks.DEVILGRASS.get());

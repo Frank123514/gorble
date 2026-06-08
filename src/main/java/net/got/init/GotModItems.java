@@ -1457,6 +1457,11 @@ public class GotModItems {
     public static final DeferredItem<Item> THISTLE            = block(GotModBlocks.THISTLE);
     public static final DeferredItem<Item> WILD_RADISH        = block(GotModBlocks.WILD_RADISH);
 
+    public static final DeferredItem<BlockItem> RED_ROSE_BUSH   = REGISTRY.registerSimpleBlockItem("red_rose_bush",   GotModBlocks.RED_ROSE_BUSH);
+    public static final DeferredItem<BlockItem> GOLDEN_ROSE_BUSH = REGISTRY.registerSimpleBlockItem("golden_rose_bush", GotModBlocks.GOLDEN_ROSE_BUSH);
+    public static final DeferredItem<BlockItem> WHITE_ROSE_BUSH  = REGISTRY.registerSimpleBlockItem("white_rose_bush",  GotModBlocks.WHITE_ROSE_BUSH);
+    public static final DeferredItem<BlockItem> WINTER_ROSE_BUSH = REGISTRY.registerSimpleBlockItem("winter_rose_bush", GotModBlocks.WINTER_ROSE_BUSH);
+
 
     // ── NPC Workstations ─────────────────────────────────────────────────────
 

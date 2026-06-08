@@ -1276,6 +1276,26 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> THISTLE            = flowerBlock("thistle");
     public static final DeferredBlock<Block> WILD_RADISH        = flowerBlock("wild_radish");
 
+    public static final DeferredBlock<Block> RED_ROSE_BUSH =
+            REGISTRY.registerBlock("red_rose_bush",
+                    RoseBushBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH));
+
+    public static final DeferredBlock<Block> GOLDEN_ROSE_BUSH =
+            REGISTRY.registerBlock("golden_rose_bush",
+                    RoseBushBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH));
+
+    public static final DeferredBlock<Block> WHITE_ROSE_BUSH =
+            REGISTRY.registerBlock("white_rose_bush",
+                    RoseBushBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH));
+
+    public static final DeferredBlock<Block> WINTER_ROSE_BUSH =
+            REGISTRY.registerBlock("winter_rose_bush",
+                    RoseBushBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH));
+
 
 
     // ── Grasses ──────────────────────────────────────────────────────────
