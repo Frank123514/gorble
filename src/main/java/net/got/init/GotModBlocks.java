@@ -1334,6 +1334,62 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILD_HORSERADISH = flowerBlock("wild_horseradish");
     public static final DeferredBlock<Block> WILD_LEEK = flowerBlock("wild_leek");
 
+    // ── Potted versions ──────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> POTTED_BELLFLOWER         = pottedBlock("potted_bellflower",         () -> BELLFLOWER);
+    public static final DeferredBlock<Block> POTTED_BLACK_LOTUS        = pottedBlock("potted_black_lotus",        () -> BLACK_LOTUS);
+    public static final DeferredBlock<Block> POTTED_BLOOD_BLOOM        = pottedBlock("potted_blood_bloom",        () -> BLOOD_BLOOM);
+    public static final DeferredBlock<Block> POTTED_COLDSNAPS          = pottedBlock("potted_coldsnaps",          () -> COLDSNAPS);
+    public static final DeferredBlock<Block> POTTED_DRAGONS_BREATH     = pottedBlock("potted_dragons_breath",     () -> DRAGONS_BREATH);
+    public static final DeferredBlock<Block> POTTED_EVENING_STAR       = pottedBlock("potted_evening_star",       () -> EVENING_STAR);
+    public static final DeferredBlock<Block> POTTED_FORGET_ME_NOT      = pottedBlock("potted_forget_me_not",      () -> FORGET_ME_NOT);
+    public static final DeferredBlock<Block> POTTED_FROSTFIRES         = pottedBlock("potted_frostfires",         () -> FROSTFIRES);
+    public static final DeferredBlock<Block> POTTED_GILLYFLOWER        = pottedBlock("potted_gillyflower",        () -> GILLYFLOWER);
+    public static final DeferredBlock<Block> POTTED_GINGER             = pottedBlock("potted_ginger",             () -> GINGER);
+    public static final DeferredBlock<Block> POTTED_GOATHEAD           = pottedBlock("potted_goathead",           () -> GOATHEAD);
+    public static final DeferredBlock<Block> POTTED_GOLDENCUP          = pottedBlock("potted_goldencup",          () -> GOLDENCUP);
+    public static final DeferredBlock<Block> POTTED_GOLDENROD          = pottedBlock("potted_goldenrod",          () -> GOLDENROD);
+    public static final DeferredBlock<Block> POTTED_GORSE              = pottedBlock("potted_gorse",              () -> GORSE);
+    public static final DeferredBlock<Block> POTTED_LADYS_LACE         = pottedBlock("potted_ladys_lace",         () -> LADYS_LACE);
+    public static final DeferredBlock<Block> POTTED_LAVENDER           = pottedBlock("potted_lavender",           () -> LAVENDER);
+    public static final DeferredBlock<Block> POTTED_LIVERWORT          = pottedBlock("potted_liverwort",          () -> LIVERWORT);
+    public static final DeferredBlock<Block> POTTED_LUNGWORT           = pottedBlock("potted_lungwort",           () -> LUNGWORT);
+    public static final DeferredBlock<Block> POTTED_MOONBLOOM          = pottedBlock("potted_moonbloom",          () -> MOONBLOOM);
+    public static final DeferredBlock<Block> POTTED_NIGHTSHADE         = pottedBlock("potted_nightshade",         () -> NIGHTSHADE);
+    public static final DeferredBlock<Block> POTTED_PENNYROYAL         = pottedBlock("potted_pennyroyal",         () -> PENNYROYAL);
+    public static final DeferredBlock<Block> POTTED_POISON_KISSES      = pottedBlock("potted_poison_kisses",      () -> POISON_KISSES);
+    public static final DeferredBlock<Block> POTTED_THORNBUSH          = pottedBlock("potted_thornbush",          () -> THORNBUSH);
+    public static final DeferredBlock<Block> POTTED_OPIUM_POPPY        = pottedBlock("potted_opium_poppy",        () -> OPIUM_POPPY);
+    public static final DeferredBlock<Block> POTTED_GOLDEN_ROSE        = pottedBlock("potted_golden_rose",        () -> GOLDEN_ROSE);
+    public static final DeferredBlock<Block> POTTED_RED_ROSE           = pottedBlock("potted_red_rose",           () -> RED_ROSE);
+    public static final DeferredBlock<Block> POTTED_WHITE_ROSE         = pottedBlock("potted_white_rose",         () -> WHITE_ROSE);
+    public static final DeferredBlock<Block> POTTED_WINTER_ROSE        = pottedBlock("potted_winter_rose",        () -> WINTER_ROSE);
+    public static final DeferredBlock<Block> POTTED_SAFFRON_CROCUS     = pottedBlock("potted_saffron_crocus",     () -> SAFFRON_CROCUS);
+    public static final DeferredBlock<Block> POTTED_SEDGE              = pottedBlock("potted_sedge",              () -> SEDGE);
+    public static final DeferredBlock<Block> POTTED_SPICEFLOWER        = pottedBlock("potted_spiceflower",        () -> SPICEFLOWER);
+    public static final DeferredBlock<Block> POTTED_TANSY              = pottedBlock("potted_tansy",              () -> TANSY);
+    public static final DeferredBlock<Block> POTTED_THISTLE            = pottedBlock("potted_thistle",            () -> THISTLE);
+    public static final DeferredBlock<Block> POTTED_WILD_RADISH        = pottedBlock("potted_wild_radish",        () -> WILD_RADISH);
+    public static final DeferredBlock<Block> POTTED_HRANNA             = pottedBlock("potted_hranna",             () -> HRANNA);
+    public static final DeferredBlock<Block> POTTED_WILD_WHEAT         = pottedBlock("potted_wild_wheat",         () -> WILD_WHEAT);
+    public static final DeferredBlock<Block> POTTED_WILD_OAT           = pottedBlock("potted_wild_oat",           () -> WILD_OAT);
+    public static final DeferredBlock<Block> POTTED_WILD_RYE           = pottedBlock("potted_wild_rye",           () -> WILD_RYE);
+    public static final DeferredBlock<Block> POTTED_WILD_BARLEY        = pottedBlock("potted_wild_barley",        () -> WILD_BARLEY);
+    public static final DeferredBlock<Block> POTTED_WILD_BEETROOT      = pottedBlock("potted_wild_beetroot",      () -> WILD_BEETROOT);
+    public static final DeferredBlock<Block> POTTED_WILD_COTTON        = pottedBlock("potted_wild_cotton",        () -> WILD_COTTON);
+    public static final DeferredBlock<Block> POTTED_WILD_PEPPERCORN    = pottedBlock("potted_wild_peppercorn",    () -> WILD_PEPPERCORN);
+    public static final DeferredBlock<Block> POTTED_WILD_CARROT        = pottedBlock("potted_wild_carrot",        () -> WILD_CARROT);
+    public static final DeferredBlock<Block> POTTED_WILD_PARSNIP       = pottedBlock("potted_wild_parsnip",       () -> WILD_PARSNIP);
+    public static final DeferredBlock<Block> POTTED_WILD_ONION         = pottedBlock("potted_wild_onion",         () -> WILD_ONION);
+    public static final DeferredBlock<Block> POTTED_WILD_TURNIP        = pottedBlock("potted_wild_turnip",        () -> WILD_TURNIP);
+    public static final DeferredBlock<Block> POTTED_WILD_NEEP          = pottedBlock("potted_wild_neep",          () -> WILD_NEEP);
+    public static final DeferredBlock<Block> POTTED_WILD_PEAS          = pottedBlock("potted_wild_peas",          () -> WILD_PEAS);
+    public static final DeferredBlock<Block> POTTED_WILD_CABBAGE       = pottedBlock("potted_wild_cabbage",       () -> WILD_CABBAGE);
+    public static final DeferredBlock<Block> POTTED_WILD_GARLIC        = pottedBlock("potted_wild_garlic",        () -> WILD_GARLIC);
+    public static final DeferredBlock<Block> POTTED_WILD_HORSERADISH   = pottedBlock("potted_wild_horseradish",   () -> WILD_HORSERADISH);
+    public static final DeferredBlock<Block> POTTED_WILD_LEEK          = pottedBlock("potted_wild_leek",          () -> WILD_LEEK);
+
+
+
     // ── Quagmire ──────────────────────────────────────────────────────────────
     /**
      * Quagmire block — a boggy mud-terrain block that causes entities to sink
@@ -1896,6 +1952,20 @@ public class GotModBlocks {
                 GotShortGrassBlock::new,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
     }
+
+    /**
+     * Potted plant block: a FlowerPotBlock that holds the given plant.
+     * Register one for every plant you pass to addPlant() in GotMod.java.
+     */
+    private static DeferredBlock<Block> pottedBlock(String name, java.util.function.Supplier<DeferredBlock<Block>> plant) {
+        return REGISTRY.registerBlock(name,
+                p -> new FlowerPotBlock(plant.get().get(), p),
+                BlockBehaviour.Properties.of()
+                        .instabreak()
+                        .noOcclusion()
+                        .pushReaction(PushReaction.DESTROY));
+    }
+
 
     /**
      * Berry bush (blackberry, blueberry, raspberry, strawberry).
@@ -2802,6 +2872,67 @@ public class GotModBlocks {
 
 
 
+
+    // Sapling potted versions
+    public static final DeferredBlock<Block> POTTED_WEIRWOOD_SAPLING        = pottedBlock("potted_weirwood_sapling",        () -> WEIRWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_ASPEN_SAPLING           = pottedBlock("potted_aspen_sapling",           () -> ASPEN_SAPLING);
+    public static final DeferredBlock<Block> POTTED_ALDER_SAPLING           = pottedBlock("potted_alder_sapling",           () -> ALDER_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PINE_SAPLING            = pottedBlock("potted_pine_sapling",            () -> PINE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_FIR_SAPLING             = pottedBlock("potted_fir_sapling",             () -> FIR_SAPLING);
+    public static final DeferredBlock<Block> POTTED_SENTINAL_SAPLING        = pottedBlock("potted_sentinal_sapling",        () -> SENTINAL_SAPLING);
+    public static final DeferredBlock<Block> POTTED_IRONWOOD_SAPLING        = pottedBlock("potted_ironwood_sapling",        () -> IRONWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BEECH_SAPLING           = pottedBlock("potted_beech_sapling",           () -> BEECH_SAPLING);
+    public static final DeferredBlock<Block> POTTED_SOLDIER_PINE_SAPLING    = pottedBlock("potted_soldier_pine_sapling",    () -> SOLDIER_PINE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_ASH_SAPLING             = pottedBlock("potted_ash_sapling",             () -> ASH_SAPLING);
+    public static final DeferredBlock<Block> POTTED_HAWTHORN_SAPLING        = pottedBlock("potted_hawthorn_sapling",        () -> HAWTHORN_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BLACKBARK_SAPLING       = pottedBlock("potted_blackbark_sapling",       () -> BLACKBARK_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BLOODWOOD_SAPLING       = pottedBlock("potted_bloodwood_sapling",       () -> BLOODWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BLUE_MAHOE_SAPLING      = pottedBlock("potted_blue_mahoe_sapling",      () -> BLUE_MAHOE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_COTTONWOOD_SAPLING      = pottedBlock("potted_cottonwood_sapling",      () -> COTTONWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BLACK_COTTONWOOD_SAPLING = pottedBlock("potted_black_cottonwood_sapling", () -> BLACK_COTTONWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_CINNAMON_SAPLING        = pottedBlock("potted_cinnamon_sapling",        () -> CINNAMON_SAPLING);
+    public static final DeferredBlock<Block> POTTED_CLOVE_SAPLING           = pottedBlock("potted_clove_sapling",           () -> CLOVE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_EBONY_SAPLING           = pottedBlock("potted_ebony_sapling",           () -> EBONY_SAPLING);
+    public static final DeferredBlock<Block> POTTED_ELM_SAPLING             = pottedBlock("potted_elm_sapling",             () -> ELM_SAPLING);
+    public static final DeferredBlock<Block> POTTED_CEDAR_SAPLING           = pottedBlock("potted_cedar_sapling",           () -> CEDAR_SAPLING);
+    public static final DeferredBlock<Block> POTTED_APPLE_SAPLING           = pottedBlock("potted_apple_sapling",           () -> APPLE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_GOLDENHEART_SAPLING     = pottedBlock("potted_goldenheart_sapling",     () -> GOLDENHEART_SAPLING);
+    public static final DeferredBlock<Block> POTTED_LINDEN_SAPLING          = pottedBlock("potted_linden_sapling",          () -> LINDEN_SAPLING);
+    public static final DeferredBlock<Block> POTTED_MAHOGANY_SAPLING        = pottedBlock("potted_mahogany_sapling",        () -> MAHOGANY_SAPLING);
+    public static final DeferredBlock<Block> POTTED_MAPLE_SAPLING           = pottedBlock("potted_maple_sapling",           () -> MAPLE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_MYRRH_SAPLING           = pottedBlock("potted_myrrh_sapling",           () -> MYRRH_SAPLING);
+    public static final DeferredBlock<Block> POTTED_REDWOOD_SAPLING         = pottedBlock("potted_redwood_sapling",         () -> REDWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_CHESTNUT_SAPLING        = pottedBlock("potted_chestnut_sapling",        () -> CHESTNUT_SAPLING);
+    public static final DeferredBlock<Block> POTTED_WILLOW_SAPLING          = pottedBlock("potted_willow_sapling",          () -> WILLOW_SAPLING);
+    public static final DeferredBlock<Block> POTTED_WORMTREE_SAPLING        = pottedBlock("potted_wormtree_sapling",        () -> WORMTREE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_NIGHTWOOD_SAPLING       = pottedBlock("potted_nightwood_sapling",       () -> NIGHTWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PURPLEHEART_SAPLING     = pottedBlock("potted_purpleheart_sapling",     () -> PURPLEHEART_SAPLING);
+    public static final DeferredBlock<Block> POTTED_TIGERWOOD_SAPLING       = pottedBlock("potted_tigerwood_sapling",       () -> TIGERWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BURL_SAPLING            = pottedBlock("potted_burl_sapling",            () -> BURL_SAPLING);
+    public static final DeferredBlock<Block> POTTED_SANDALWOOD_SAPLING      = pottedBlock("potted_sandalwood_sapling",      () -> SANDALWOOD_SAPLING);
+    public static final DeferredBlock<Block> POTTED_SANDBEGGAR_SAPLING      = pottedBlock("potted_sandbeggar_sapling",      () -> SANDBEGGAR_SAPLING);
+    public static final DeferredBlock<Block> POTTED_APRICOT_SAPLING         = pottedBlock("potted_apricot_sapling",         () -> APRICOT_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BLACKTHORN_SAPLING      = pottedBlock("potted_blackthorn_sapling",      () -> BLACKTHORN_SAPLING);
+    public static final DeferredBlock<Block> POTTED_RED_CHERRY_SAPLING      = pottedBlock("potted_red_cherry_sapling",      () -> RED_CHERRY_SAPLING);
+    public static final DeferredBlock<Block> POTTED_BLACK_CHERRY_SAPLING    = pottedBlock("potted_black_cherry_sapling",    () -> BLACK_CHERRY_SAPLING);
+    public static final DeferredBlock<Block> POTTED_WHITE_CHERRY_SAPLING    = pottedBlock("potted_white_cherry_sapling",    () -> WHITE_CHERRY_SAPLING);
+    public static final DeferredBlock<Block> POTTED_CRABAPPLE_SAPLING       = pottedBlock("potted_crabapple_sapling",       () -> CRABAPPLE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_DATE_PALM_SAPLING       = pottedBlock("potted_date_palm_sapling",       () -> DATE_PALM_SAPLING);
+    public static final DeferredBlock<Block> POTTED_FIG_SAPLING             = pottedBlock("potted_fig_sapling",             () -> FIG_SAPLING);
+    public static final DeferredBlock<Block> POTTED_LEMON_SAPLING           = pottedBlock("potted_lemon_sapling",           () -> LEMON_SAPLING);
+    public static final DeferredBlock<Block> POTTED_LIME_SAPLING            = pottedBlock("potted_lime_sapling",            () -> LIME_SAPLING);
+    public static final DeferredBlock<Block> POTTED_OLIVE_SAPLING           = pottedBlock("potted_olive_sapling",           () -> OLIVE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_ORANGE_SAPLING          = pottedBlock("potted_orange_sapling",          () -> ORANGE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PEACH_SAPLING           = pottedBlock("potted_peach_sapling",           () -> PEACH_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PEAR_SAPLING            = pottedBlock("potted_pear_sapling",            () -> PEAR_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PERSIMMON_SAPLING       = pottedBlock("potted_persimmon_sapling",       () -> PERSIMMON_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PINK_IVORY_SAPLING      = pottedBlock("potted_pink_ivory_sapling",      () -> PINK_IVORY_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PLUM_SAPLING            = pottedBlock("potted_plum_sapling",            () -> PLUM_SAPLING);
+    public static final DeferredBlock<Block> POTTED_POMEGRANATE_SAPLING     = pottedBlock("potted_pomegranate_sapling",     () -> POMEGRANATE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_PRUNE_SAPLING           = pottedBlock("potted_prune_sapling",           () -> PRUNE_SAPLING);
+    public static final DeferredBlock<Block> POTTED_ALMOND_SAPLING          = pottedBlock("potted_almond_sapling",          () -> ALMOND_SAPLING);
+    public static final DeferredBlock<Block> POTTED_NUTMEG_SAPLING          = pottedBlock("potted_nutmeg_sapling",          () -> NUTMEG_SAPLING);
+    public static final DeferredBlock<Block> POTTED_HEMLOCK_SAPLING         = pottedBlock("potted_hemlock_sapling",         () -> HEMLOCK_SAPLING);
 
     static {
         LOGS.put("weirwood",         WEIRWOOD_LOG);
