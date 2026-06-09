@@ -28,6 +28,7 @@ import net.got.entity.npc.fighter.vale.ValeKnightEntity;
 import net.got.entity.direwolf.GotDirewolfEntity;
 import net.got.entity.crow.GotCrowEntity;
 import net.got.entity.mammoth.GotMammothEntity;
+import net.got.entity.giant.GotGiantEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -202,4 +203,12 @@ public class GotModEntities {
                             .sized(1.4f, 1.4f).clientTrackingRange(12).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_brown_bear"))));
+
+    /** GOT Giant — a towering humanoid creature that roams the frozen lands Beyond the Wall. */
+    public static final DeferredHolder<EntityType<?>, EntityType<GotGiantEntity>> GOT_GIANT =
+            REGISTRY.register("got_giant", () ->
+                    EntityType.Builder.<GotGiantEntity>of(GotGiantEntity::new, MobCategory.MONSTER)
+                            .sized(2.0f, 5.0f).clientTrackingRange(20).updateInterval(3)
+                            .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_giant"))));
 }

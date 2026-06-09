@@ -67,6 +67,13 @@ public final class GotModelLayers {
     public static final ModelLayerLocation GOT_BROWN_BEAR =
             location("got_brown_bear");
 
+    /**
+     * Layer location for the custom giant model ({@code GotGiantModel}).
+     * Resolves to {@code got:got_giant#main}.
+     */
+    public static final ModelLayerLocation GOT_GIANT =
+            location("got_giant");
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static ModelLayerLocation location(String name) {

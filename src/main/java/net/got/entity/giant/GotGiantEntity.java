@@ -65,7 +65,6 @@ public class GotGiantEntity extends PathfinderMob {
 
     public GotGiantEntity(EntityType<? extends GotGiantEntity> type, Level level) {
         super(type, level);
-        this.maxUpStep = 2.0F; // can walk up 2-block steps naturally
     }
 
     // ── Synced data ───────────────────────────────────────────────────────────
@@ -95,7 +94,8 @@ public class GotGiantEntity extends PathfinderMob {
                 .add(Attributes.ATTACK_DAMAGE,        30.0)  // one-shots most armour
                 .add(Attributes.FOLLOW_RANGE,         40.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE,  1.0)  // completely unmovable
-                .add(Attributes.ARMOR,                 8.0); // thick hide
+                .add(Attributes.ARMOR,                 8.0) // thick hide
+                .add(Attributes.STEP_HEIGHT,            2.0); // can walk up 2-block steps naturally
     }
 
     // ── AI goals ──────────────────────────────────────────────────────────────
