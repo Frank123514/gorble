@@ -15,18 +15,18 @@ public class GotGiantRenderer
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/entity/giant/got_giant.png");
 
-    // One-shot clip lengths in ticks (must match GotGiantAnimations durations)
+    // One-shot clip lengths in ticks (must match GotGiantAnimations durations × 20)
     private static final float ATTACK_LENGTH_TICKS = 1.25F * 20F;
     private static final float ROAR_LENGTH_TICKS   = 2.5F  * 20F;
     private static final float DEATH_LENGTH_TICKS  = 3.0F  * 20F;
 
-    private AnimationDefinition lastAnimation = null;
-    private float animationStartTick = 0F;
+    private AnimationDefinition lastAnimation  = null;
+    private float animationStartTick           = 0F;
 
     public GotGiantRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
                 new GotGiantModel(ctx.bakeLayer(GotModelLayers.GOT_GIANT)),
-                2.5F); // shadow radius — large creature
+                0.8F); // shadow radius scaled down to match new entity size
     }
 
     @Override
@@ -45,21 +45,13 @@ public class GotGiantRenderer
         state.isMoving      = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
         state.isSprinting   = entity.isSprinting();
         state.isDeadOrDying = entity.isDeadOrDying();
-    }
 
-    @Override
-    public void render(GotGiantRenderState state,
-                       PoseStack poseStack,
-                       MultiBufferSource bufferSource,
-                       int packedLight) {
-        selectAndApplyAnimation(state);
-        super.render(state, poseStack, bufferSource, packedLight);
-    }
-
-    private void selectAndApplyAnimation(GotGiantRenderState state) {
+        // Resolve which animation to play and store it in the render state so
+        // the model's setupAnim can apply it (setupAnim runs inside super.render,
+        // which is the correct place — applying animations from render() runs
+        // before setupAnim and gets overwritten).
         AnimationDefinition anim = chooseAnimation(state);
-
-        float localTime  = state.ageInTicks - animationStartTick;
+        float localTime = state.ageInTicks - animationStartTick;
         float clipLength = clipLengthFor(anim);
         boolean clipDone = isOneShot(anim) && localTime >= clipLength;
 
@@ -69,11 +61,9 @@ public class GotGiantRenderer
             localTime          = 0F;
         }
 
-        if (!isOneShot(anim)) {
-            localTime = state.ageInTicks;
-        }
-
-        model.applyAnimation(anim, localTime, 1.0F);
+        // Looping animations use absolute game time; one-shots use elapsed time.
+        state.animationToPlay = anim;
+        state.animationTime   = isOneShot(anim) ? localTime : state.ageInTicks;
     }
 
     private static AnimationDefinition chooseAnimation(GotGiantRenderState state) {
@@ -112,7 +102,8 @@ public class GotGiantRenderer
 
     @Override
     protected void scale(GotGiantRenderState state, PoseStack poseStack) {
-        poseStack.scale(3.5F, 3.5F, 3.5F);
+        // Roughly 1.3× a player's height — just taller than a mammoth.
+        poseStack.scale(1.3F, 1.3F, 1.3F);
         super.scale(state, poseStack);
     }
 }

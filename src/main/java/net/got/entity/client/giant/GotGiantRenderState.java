@@ -1,5 +1,6 @@
 package net.got.entity.client.giant;
 
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 /**
@@ -28,4 +29,17 @@ public class GotGiantRenderState extends LivingEntityRenderState {
 
     /** True when the giant is dead or dying. */
     public boolean isDeadOrDying;
+
+    /**
+     * The animation clip chosen this frame by the renderer.
+     * Read by {@link GotGiantModel#setupAnim} to drive keyframe playback.
+     */
+    public AnimationDefinition animationToPlay = GotGiantAnimations.IDLE;
+
+    /**
+     * Time value (in ticks) to pass to the animation system.
+     * Looping clips use absolute {@code ageInTicks}; one-shot clips use
+     * elapsed ticks since the clip started.
+     */
+    public float animationTime = 0F;
 }

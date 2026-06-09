@@ -14,14 +14,16 @@ import org.joml.Vector3f;
  * <p>Anatomy overview — all measurements in model units (1 mu = 1/16 block):
  * <ul>
  *   <li>Body core: wide barrel chest, massive shoulders.</li>
- *   <li>Head: broad skull, heavy brow-ridge, thick neck.</li>
+ *   <li>Head: broad skull, heavy brow-ridge, thick neck, full beard.</li>
  *   <li>Arms: extremely long, reaching near the ground when idle.</li>
- *   <li>Legs: thick pillars; digitigrade posture.</li>
+ *   <li>Legs: thick pillars; slightly digitigrade posture.</li>
  *   <li>Club: attached to right hand as a child part.</li>
  * </ul>
  *
- * <p>Animations are applied per-frame by {@link GotGiantRenderer} via
- * {@link #applyAnimation(AnimationDefinition, float, float)}.
+ * <p>Animations are applied each frame inside {@link #setupAnim(GotGiantRenderState)}
+ * using the clip selected by {@link GotGiantRenderer#extractRenderState}.
+ *
+ * <p>Model exported from Blockbench 5.1.4 (256×256 texture atlas).
  */
 public class GotGiantModel extends EntityModel<GotGiantRenderState> {
 
@@ -29,17 +31,16 @@ public class GotGiantModel extends EntityModel<GotGiantRenderState> {
 
     final ModelPart root;
     final ModelPart body;
-    final ModelPart chest;
+    final ModelPart shoulders;   // replaces "chest" — child of body
     final ModelPart waist;
-    final ModelPart head;
-    final ModelPart brow;
-    final ModelPart jaw;
     final ModelPart neck;
+    final ModelPart head;
+    final ModelPart beard;       // replaces "brow"/"jaw" — child of head
     // Arms
     final ModelPart arm_upper_right;
     final ModelPart arm_lower_right;
     final ModelPart hand_right;
-    final ModelPart club;             // child of hand_right
+    final ModelPart club;        // child of hand_right
     final ModelPart arm_upper_left;
     final ModelPart arm_lower_left;
     final ModelPart hand_left;
@@ -57,154 +58,198 @@ public class GotGiantModel extends EntityModel<GotGiantRenderState> {
 
     public GotGiantModel(ModelPart root) {
         super(root);
-        this.root             = root;
-        this.body             = root.getChild("body");
-        this.chest            = this.body.getChild("chest");
-        this.waist            = this.body.getChild("waist");
-        this.head             = root.getChild("head");
-        this.brow             = this.head.getChild("brow");
-        this.jaw              = this.head.getChild("jaw");
-        this.neck             = root.getChild("neck");
+        this.root            = root;
+        this.body            = root.getChild("body");
+        this.shoulders       = this.body.getChild("shoulders");
+        this.waist           = this.body.getChild("waist");
+        this.neck            = root.getChild("neck");
+        this.head            = root.getChild("head");
+        this.beard           = this.head.getChild("beard");
         // Right arm chain
-        this.arm_upper_right  = root.getChild("arm_upper_right");
-        this.arm_lower_right  = this.arm_upper_right.getChild("arm_lower_right");
-        this.hand_right       = this.arm_lower_right.getChild("hand_right");
-        this.club             = this.hand_right.getChild("club");
+        this.arm_upper_right = root.getChild("arm_upper_right");
+        this.arm_lower_right = this.arm_upper_right.getChild("arm_lower_right");
+        this.hand_right      = this.arm_lower_right.getChild("hand_right");
+        this.club            = this.hand_right.getChild("club");
         // Left arm chain
-        this.arm_upper_left   = root.getChild("arm_upper_left");
-        this.arm_lower_left   = this.arm_upper_left.getChild("arm_lower_left");
-        this.hand_left        = this.arm_lower_left.getChild("hand_left");
+        this.arm_upper_left  = root.getChild("arm_upper_left");
+        this.arm_lower_left  = this.arm_upper_left.getChild("arm_lower_left");
+        this.hand_left       = this.arm_lower_left.getChild("hand_left");
         // Right leg chain
-        this.leg_upper_right  = root.getChild("leg_upper_right");
-        this.leg_lower_right  = this.leg_upper_right.getChild("leg_lower_right");
-        this.foot_right       = this.leg_lower_right.getChild("foot_right");
+        this.leg_upper_right = root.getChild("leg_upper_right");
+        this.leg_lower_right = this.leg_upper_right.getChild("leg_lower_right");
+        this.foot_right      = this.leg_lower_right.getChild("foot_right");
         // Left leg chain
-        this.leg_upper_left   = root.getChild("leg_upper_left");
-        this.leg_lower_left   = this.leg_upper_left.getChild("leg_lower_left");
-        this.foot_left        = this.leg_lower_left.getChild("foot_left");
+        this.leg_upper_left  = root.getChild("leg_upper_left");
+        this.leg_lower_left  = this.leg_upper_left.getChild("leg_lower_left");
+        this.foot_left       = this.leg_lower_left.getChild("foot_left");
     }
 
     // ── Layer definition (geometry) ───────────────────────────────────────────
 
     /**
-     * Builds the giant mesh.
+     * Builds the giant mesh from the Blockbench 5.1.4 export.
      *
      * <p>The giant's neutral pose has arms hanging long at the sides,
      * knees very slightly bent, and a forward head-tilt for the
      * heavy-browed look.
      */
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition parts = mesh.getRoot();
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
 
         // ── Body ──────────────────────────────────────────────────────────────
-        PartDefinition body = parts.addOrReplaceChild("body",
-                CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-9F, -12F, -5F, 18, 12, 10),
-                PartPose.offset(0F, -12F, 0F));
+        PartDefinition body = partdefinition.addOrReplaceChild("body",
+                CubeListBuilder.create(),
+                PartPose.offset(0.0F, -15.0F, 0.0F));
 
-        body.addOrReplaceChild("chest",
-                CubeListBuilder.create()
-                        .texOffs(56, 0).addBox(-10F, -5F, -5F, 20, 10, 11),
-                PartPose.offset(0F, -6F, 0F));
+        body.addOrReplaceChild("body_r1",
+                CubeListBuilder.create().texOffs(60, 47)
+                        .addBox(-10.0F, -11.0F, -6.0F, 19.0F, 13.0F, 11.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, -0.0873F, 0.0F, 0.0F));
 
-        body.addOrReplaceChild("waist",
-                CubeListBuilder.create()
-                        .texOffs(0, 22).addBox(-8F, 0F, -4F, 16, 6, 8),
-                PartPose.offset(0F, 0F, 0F));
+        PartDefinition shoulders = body.addOrReplaceChild("shoulders",
+                CubeListBuilder.create(),
+                PartPose.offset(0.0F, -6.0F, 0.0F));
 
-        // ── Head & neck ───────────────────────────────────────────────────────
-        parts.addOrReplaceChild("neck",
-                CubeListBuilder.create()
-                        .texOffs(96, 0).addBox(-4F, -5F, -3F, 8, 5, 6),
-                PartPose.offset(0F, -24F, 1F));
+        shoulders.addOrReplaceChild("shoulders_r1",
+                CubeListBuilder.create().texOffs(0, 0)
+                        .addBox(-14.0F, -6.0F, -5.0F, 27.0F, 10.0F, 11.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, -5.0F, 0.4F, 0.2182F, 0.0F, 0.0F));
 
-        PartDefinition head = parts.addOrReplaceChild("head",
-                CubeListBuilder.create()
-                        .texOffs(0, 60).addBox(-8F, -12F, -7F, 16, 12, 14),
-                PartPose.offsetAndRotation(0F, -29F, 0F, 0.15F, 0F, 0F));
+        PartDefinition waist = body.addOrReplaceChild("waist",
+                CubeListBuilder.create(),
+                PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        head.addOrReplaceChild("brow",
-                CubeListBuilder.create()
-                        .texOffs(60, 60).addBox(-8F, -2F, -8F, 16, 3, 3),
-                PartPose.offset(0F, -8F, 0F));
+        waist.addOrReplaceChild("waist_r1",
+                CubeListBuilder.create().texOffs(0, 21)
+                        .addBox(-11.0F, -6.0F, -6.0F, 21.0F, 14.0F, 12.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, 9.0F, -0.2F, -0.1309F, 0.0F, 0.0F));
 
-        head.addOrReplaceChild("jaw",
-                CubeListBuilder.create()
-                        .texOffs(60, 66).addBox(-5F, 0F, -6F, 10, 4, 6),
-                PartPose.offset(0F, -2F, 0F));
+        // ── Neck ──────────────────────────────────────────────────────────────
+        partdefinition.addOrReplaceChild("neck",
+                CubeListBuilder.create().texOffs(104, 36)
+                        .addBox(-4.0F, -8.0F, -3.0F, 8.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)),
+                PartPose.offset(0.0F, -27.0F, 1.0F));
+
+        // ── Head ──────────────────────────────────────────────────────────────
+        PartDefinition head = partdefinition.addOrReplaceChild("head",
+                CubeListBuilder.create().texOffs(0, 47)
+                        .addBox(-8.0F, -16.9663F, -7.4483F, 16.0F, 14.0F, 14.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, -26.0F, -5.0F, -0.15F, 0.0F, 0.0F));
+
+        head.addOrReplaceChild("beard",
+                CubeListBuilder.create().texOffs(110, 107)
+                        .addBox(-6.0F, -3.9663F, -7.4483F, 12.0F, 8.0F, 7.0F, new CubeDeformation(0.0F)),
+                PartPose.offset(0.0F, -2.0F, 0.0F));
 
         // ── Right arm (weapon arm) ────────────────────────────────────────────
-        PartDefinition armUR = parts.addOrReplaceChild("arm_upper_right",
-                CubeListBuilder.create()
-                        .texOffs(112, 0).addBox(-5F, 0F, -4F, 7, 16, 7),
-                PartPose.offsetAndRotation(-11F, -24F, 0F, 0.1F, 0F, 0.15F));
+        PartDefinition arm_upper_right = partdefinition.addOrReplaceChild("arm_upper_right",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(-11.0F, -27.0F, 0.0F, -0.1F, 0.0F, -0.15F));
 
-        PartDefinition armLR = armUR.addOrReplaceChild("arm_lower_right",
-                CubeListBuilder.create()
-                        .texOffs(112, 23).addBox(-4F, 0F, -3F, 6, 15, 6),
-                PartPose.offset(-1F, 16F, 0F));
+        arm_upper_right.addOrReplaceChild("arm_upper_right_r1",
+                CubeListBuilder.create().texOffs(76, 97)
+                        .addBox(-6.3327F, -2.9813F, -4.0349F, 8.0F, 16.0F, 9.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.0865F, -0.0114F, 0.2613F));
 
-        PartDefinition handR = armLR.addOrReplaceChild("hand_right",
-                CubeListBuilder.create()
-                        .texOffs(112, 44).addBox(-4F, 0F, -3F, 7, 6, 6),
-                PartPose.offset(0F, 15F, 0F));
+        PartDefinition arm_lower_right = arm_upper_right.addOrReplaceChild("arm_lower_right",
+                CubeListBuilder.create(),
+                PartPose.offset(-1.0F, 16.0F, 0.0F));
 
-        // Club — wooden log weapon in right hand
-        handR.addOrReplaceChild("club",
-                CubeListBuilder.create()
-                        .texOffs(140, 0).addBox(-2F, -32F, -2F, 5, 34, 5),  // long pole
-                PartPose.offsetAndRotation(0F, -2F, 2F, -0.3F, 0F, 0F));
+        PartDefinition hand_right = arm_lower_right.addOrReplaceChild("hand_right",
+                CubeListBuilder.create(),
+                PartPose.offset(0.0F, 15.0F, 0.0F));
+
+        hand_right.addOrReplaceChild("hand_right_r1",
+                CubeListBuilder.create().texOffs(66, 21)
+                        .addBox(-6.3327F, -2.8707F, -5.8053F, 9.0F, 16.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-4.3F, -17.0F, 1.9F, -0.1753F, -0.0114F, 0.2613F));
+
+        // Club — child of hand_right
+        hand_right.addOrReplaceChild("club",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(0.0F, -2.0F, 2.0F, 0.3F, 0.0F, 0.0F));
 
         // ── Left arm ──────────────────────────────────────────────────────────
-        PartDefinition armUL = parts.addOrReplaceChild("arm_upper_left",
-                CubeListBuilder.create()
-                        .texOffs(112, 0).mirror().addBox(-2F, 0F, -4F, 7, 16, 7),
-                PartPose.offsetAndRotation(11F, -24F, 0F, 0.1F, 0F, -0.15F));
+        PartDefinition arm_upper_left = partdefinition.addOrReplaceChild("arm_upper_left",
+                CubeListBuilder.create(),
+                PartPose.offsetAndRotation(11.0F, -27.0F, 0.0F, -0.1F, 0.0F, 0.15F));
 
-        PartDefinition armLL = armUL.addOrReplaceChild("arm_lower_left",
-                CubeListBuilder.create()
-                        .texOffs(112, 23).mirror().addBox(-2F, 0F, -3F, 6, 15, 6),
-                PartPose.offset(1F, 16F, 0F));
+        arm_upper_left.addOrReplaceChild("arm_upper_left_r1",
+                CubeListBuilder.create().texOffs(0, 98)
+                        .addBox(-1.6679F, -2.9814F, -4.0349F, 8.0F, 16.0F, 9.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0869F, 0.0076F, -0.2615F));
 
-        armLL.addOrReplaceChild("hand_left",
-                CubeListBuilder.create()
-                        .texOffs(112, 44).mirror().addBox(-3F, 0F, -3F, 7, 6, 6),
-                PartPose.offset(0F, 15F, 0F));
+        PartDefinition arm_lower_left = arm_upper_left.addOrReplaceChild("arm_lower_left",
+                CubeListBuilder.create(),
+                PartPose.offset(1.0F, 16.0F, 0.0F));
+
+        PartDefinition hand_left = arm_lower_left.addOrReplaceChild("hand_left",
+                CubeListBuilder.create(),
+                PartPose.offset(0.0F, 15.0F, 0.0F));
+
+        hand_left.addOrReplaceChild("hand_right_r2",
+                CubeListBuilder.create().texOffs(60, 71)
+                        .addBox(-2.6673F, -2.8707F, -5.8053F, 9.0F, 16.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(3.3F, -17.0F, 1.9F, -0.1753F, 0.0114F, -0.2613F));
 
         // ── Right leg ─────────────────────────────────────────────────────────
-        PartDefinition legUR = parts.addOrReplaceChild("leg_upper_right",
-                CubeListBuilder.create()
-                        .texOffs(56, 28).addBox(-5F, 0F, -5F, 10, 18, 10),
-                PartPose.offset(-5F, -12F, 0F));
+        PartDefinition leg_upper_right = partdefinition.addOrReplaceChild("leg_upper_right",
+                CubeListBuilder.create(),
+                PartPose.offset(-7.0F, 6.0F, -0.4F));
 
-        PartDefinition legLR = legUR.addOrReplaceChild("leg_lower_right",
-                CubeListBuilder.create()
-                        .texOffs(56, 56).addBox(-4F, 0F, -4F, 8, 16, 8),
-                PartPose.offset(0F, 18F, 0F));
+        leg_upper_right.addOrReplaceChild("leg_upper_right_r1",
+                CubeListBuilder.create().texOffs(0, 75)
+                        .addBox(-5.0F, 10.0F, -6.0F, 9.0F, 13.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(2.0F, -16.0F, 1.0F, -0.0869F, 0.0076F, 0.1306F));
 
-        legLR.addOrReplaceChild("foot_right",
-                CubeListBuilder.create()
-                        .texOffs(56, 80).addBox(-5F, 0F, -8F, 10, 5, 12),
-                PartPose.offset(0F, 16F, 0F));
+        PartDefinition leg_lower_right = leg_upper_right.addOrReplaceChild("leg_lower_right",
+                CubeListBuilder.create(),
+                PartPose.offset(-1.0F, 11.0F, -2.0F));
+
+        leg_lower_right.addOrReplaceChild("leg_lower_right_r1",
+                CubeListBuilder.create().texOffs(76, 0)
+                        .addBox(-4.0F, 5.0F, -5.0F, 9.0F, 11.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-0.8F, -11.1818F, -0.0308F, 0.0872F, -0.0038F, 0.0435F));
+
+        PartDefinition foot_right = leg_lower_right.addOrReplaceChild("foot_right",
+                CubeListBuilder.create(),
+                PartPose.offset(-1.0F, 5.8182F, -0.0308F));
+
+        foot_right.addOrReplaceChild("foot_right_r1",
+                CubeListBuilder.create().texOffs(110, 92)
+                        .addBox(-5.0F, 13.0F, -8.0F, 9.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(1.1F, -15.0F, 2.0F, 0.0F, 0.0F, 0.0436F));
 
         // ── Left leg ──────────────────────────────────────────────────────────
-        PartDefinition legUL = parts.addOrReplaceChild("leg_upper_left",
-                CubeListBuilder.create()
-                        .texOffs(56, 28).mirror().addBox(-5F, 0F, -5F, 10, 18, 10),
-                PartPose.offset(5F, -12F, 0F));
+        PartDefinition leg_upper_left = partdefinition.addOrReplaceChild("leg_upper_left",
+                CubeListBuilder.create(),
+                PartPose.offset(7.0F, 6.0F, -0.4F));
 
-        PartDefinition legLL = legUL.addOrReplaceChild("leg_lower_left",
-                CubeListBuilder.create()
-                        .texOffs(56, 56).mirror().addBox(-4F, 0F, -4F, 8, 16, 8),
-                PartPose.offset(0F, 18F, 0F));
+        leg_upper_left.addOrReplaceChild("leg_upper_left_r1",
+                CubeListBuilder.create().texOffs(38, 97)
+                        .addBox(-4.0F, 10.0F, -6.0F, 9.0F, 13.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-3.0F, -16.0F, 1.0F, -0.0869F, -0.0076F, -0.1306F));
 
-        legLL.addOrReplaceChild("foot_left",
-                CubeListBuilder.create()
-                        .texOffs(56, 80).mirror().addBox(-5F, 0F, -8F, 10, 5, 12),
-                PartPose.offset(0F, 16F, 0F));
+        PartDefinition leg_lower_left = leg_upper_left.addOrReplaceChild("leg_lower_left",
+                CubeListBuilder.create(),
+                PartPose.offset(-2.0F, 10.0F, -1.0F));
 
-        return LayerDefinition.create(mesh, 256, 128);
+        leg_lower_left.addOrReplaceChild("leg_lower_left_r1",
+                CubeListBuilder.create().texOffs(98, 71)
+                        .addBox(-5.0F, 5.0F, -5.0F, 9.0F, 11.0F, 10.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(2.8F, -9.9761F, -0.7274F, 0.0872F, 0.0038F, -0.0435F));
+
+        PartDefinition foot_left = leg_lower_left.addOrReplaceChild("foot_left",
+                CubeListBuilder.create(),
+                PartPose.offset(3.0F, 7.0239F, 1.2726F));
+
+        foot_left.addOrReplaceChild("foot_right_r2",
+                CubeListBuilder.create().texOffs(104, 21)
+                        .addBox(-4.0F, 13.0F, -8.0F, 9.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-1.1F, -15.0F, 0.0F, 0.0F, 0.0F, -0.0436F));
+
+        return LayerDefinition.create(meshdefinition, 256, 256);
     }
 
     // ── Render ────────────────────────────────────────────────────────────────
@@ -212,25 +257,22 @@ public class GotGiantModel extends EntityModel<GotGiantRenderState> {
     @Override
     public void setupAnim(GotGiantRenderState state) {
         super.setupAnim(state);
-        // Bobbing idle breathe is driven by animations; reset each frame first.
-        this.head.xRot     = 0.15F; // maintain natural forward-lean of head
-        this.arm_upper_right.zRot =  0.15F;
-        this.arm_upper_left.zRot  = -0.15F;
-    }
+        // Reset to natural rest-pose offsets before applying keyframes.
+        this.head.xRot            = -0.15F;
+        this.arm_upper_right.zRot = -0.15F;
+        this.arm_upper_left.zRot  =  0.15F;
 
-    // ── Animation application ─────────────────────────────────────────────────
-
-    /**
-     * Applies a {@link AnimationDefinition} to all model parts.
-     *
-     * <p>This is called once per frame from the renderer with the pre-selected
-     * animation and the appropriate time value (looping or one-shot).
-     *
-     * @param animation  the definition to apply
-     * @param time       animation time in ticks (looping) or elapsed ticks (one-shot)
-     * @param weight     blend weight (0..1); pass 1.0 for full override
-     */
-    public void applyAnimation(AnimationDefinition animation, float time, float weight) {
-        KeyframeAnimations.animate(this, animation, (long)(time * 1000L / 20L), weight, ANIM_VEC);
+        // Apply the animation chosen by the renderer.
+        // This MUST live here inside setupAnim — if it were called from
+        // render() it would run before setupAnim and be overwritten by
+        // super.setupAnim()'s reset pass.
+        if (state.animationToPlay != null) {
+            KeyframeAnimations.animate(
+                    this,
+                    state.animationToPlay,
+                    (long)(state.animationTime * 1000L / 20L),
+                    1.0F,
+                    ANIM_VEC);
+        }
     }
 }
