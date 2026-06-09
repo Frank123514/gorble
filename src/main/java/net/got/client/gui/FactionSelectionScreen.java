@@ -29,10 +29,13 @@ import java.util.*;
  *  │                                                                │
  *  │  ┌─────────────────┐   ┌──────────────────────────────────┐   │
  *  │  │  Full scrollable│   │ House Stark                      │   │
- *  │  │  zoomable map   │   │ Lord Paramount of The North      │   │
- *  │  │  widget         │   │ Seat:   Winterfell               │   │
- *  │  └─────────────────┘   │ Fealty: The Iron Throne          │   │
- *  │  [<] Winterfell [>]    │ <lore>                           │   │
+ *  │  │  zoomable map   │   │ "Winter is Coming"               │   │
+ *  │  │  widget         │   │ Seat:     Winterfell             │   │
+ *  │  └─────────────────┘   │ Fealty:   The Iron Throne        │   │
+ *  │  [<] Winterfell [>]    │ Faith:    The Old Gods           │   │
+ *  │                        │ Economy:  Martial                │   │
+ *  │                        │ Military: Heavy Infantry         │   │
+ *  │                        │ <lore>                           │   │
  *  │                        └──────────────────────────────────┘   │
  *  │                    [  Confirm Selection  ]                      │
  *  └────────────────────────────────────────────────────────────────┘
@@ -78,11 +81,12 @@ public final class FactionSelectionScreen extends Screen {
     private static final int CONFIRM_H = 20;
     private static final int CONFIRM_B = 8;
 
-    // ── Colours ───────────────────────────────────────────────────────────────
-    private static final int COL_TITLE      = 0xFFE8C060;
-    private static final int COL_HOUSE_NAME = 0xFFFFD700;
-    private static final int COL_LABEL      = 0xFFCCCCAA;
-    private static final int COL_LORE       = 0xFFAAAAAA;
+    // ── Default colours (overridden per-faction with primaryColour) ───────────
+    private static final int COL_TITLE   = 0xFFE8C060;
+    private static final int COL_WORDS   = 0xFFDDCC88; // house words / motto
+    private static final int COL_LABEL   = 0xFFCCCCAA;
+    private static final int COL_LORE    = 0xFFAAAAAA;
+    private static final int COL_BORDER  = 0xFF887733;
 
     // ── GUI scale override ────────────────────────────────────────────────────
     private static final int MIN_SCALE = 3;
@@ -92,7 +96,7 @@ public final class FactionSelectionScreen extends Screen {
     private final List<String> continentKeys;
     private int continentIndex = 0;
     private int regionIndex    = 0;
-    private int locationIndex  = 0; // which location is "active"
+    private int locationIndex  = 0;
 
     /** The live scrollable/zoomable map widget. Persisted across rebuildWidgets. */
     private GotMapWidget mapWidget;
@@ -131,13 +135,11 @@ public final class FactionSelectionScreen extends Screen {
         return wps.get(locationIndex);
     }
 
-    /** Returns just the display name of the active waypoint (or empty string). */
     private String currentLocationName() {
         WaypointData wp = currentWaypoint();
         return wp != null ? wp.name() : "";
     }
 
-    /** Pushes the current faction's waypoints and active index into the map widget. */
     private void syncWaypointsToMap() {
         if (mapWidget == null) return;
         List<WaypointData> wps = currentWaypoints();
@@ -154,7 +156,6 @@ public final class FactionSelectionScreen extends Screen {
         int px = (width  - PANEL_W) / 2;
         int py = (height - PANEL_H) / 2;
 
-        // Map widget — created once, repositioned on rebuild
         int mx = px + MAP_X_OFF;
         int my = py + MAP_Y_OFF;
         if (mapWidget == null) {
@@ -185,7 +186,7 @@ public final class FactionSelectionScreen extends Screen {
             continentIndex = (continentIndex - 1 + continentKeys.size()) % continentKeys.size();
             regionIndex = 0;
             locationIndex = 0;
-            mapWidget = null; // let map reset
+            mapWidget = null;
             rebuildWidgets();
         }).bounds(leftX, ry, NAV_ARROW_W, NAV_ARROW_H).build());
         addRenderableWidget(Button.builder(Component.literal(">"), b -> {
@@ -215,12 +216,7 @@ public final class FactionSelectionScreen extends Screen {
         }).bounds(rightX, ry, NAV_ARROW_W, NAV_ARROW_H).build());
     }
 
-    /**
-     * Single location tab with left/right arrows, centered below the map.
-     * Cycling through locations smoothly pans+zooms the mini-map to each waypoint.
-     */
     private void buildLocationNav(int px, int py) {
-        List<WaypointData> wps = currentWaypoints();
         int areaX = px + MAP_X_OFF;
         int areaW = MAP_W;
         int ly    = py + LOC_NAV_Y_OFF;
@@ -228,17 +224,15 @@ public final class FactionSelectionScreen extends Screen {
         int leftX  = areaX;
         int rightX = areaX + areaW - NAV_ARROW_W;
 
-        // Left arrow
         addRenderableWidget(Button.builder(Component.literal("<"), b -> {
             int sz = currentWaypoints().size();
             if (sz > 0) {
                 locationIndex = (locationIndex - 1 + sz) % sz;
-                syncWaypointsToMap(); // smooth pan — no full rebuild needed
+                syncWaypointsToMap();
                 rebuildWidgets();
             }
         }).bounds(leftX, ly, NAV_ARROW_W, LOC_NAV_H).build());
 
-        // Right arrow
         addRenderableWidget(Button.builder(Component.literal(">"), b -> {
             int sz = currentWaypoints().size();
             if (sz > 0) {
@@ -279,10 +273,8 @@ public final class FactionSelectionScreen extends Screen {
         renderBackground(gfx, mouseX, mouseY, partialTick);
         renderPanelBorder(gfx, px, py);
 
-        // Widgets (map, buttons) rendered by super
         super.render(gfx, mouseX, mouseY, partialTick);
 
-        // Text always drawn last for crispness
         renderInfoPanel(gfx, px, py);
 
         // Title
@@ -309,7 +301,6 @@ public final class FactionSelectionScreen extends Screen {
                     py + NAV_REGION_Y + 3 + font.lineHeight + 1, 0xFF777766, false);
         }
 
-        // Location label (drawn over the location nav area, between arrows)
         renderLocationLabel(gfx, px, py);
     }
 
@@ -323,7 +314,6 @@ public final class FactionSelectionScreen extends Screen {
         int labelW = areaW - NAV_ARROW_W * 2 - 4;
         int lx    = areaX + NAV_ARROW_W + 2;
 
-        // Center the text in the gap between arrows
         gfx.drawString(font, loc,
                 lx + (labelW - font.width(loc)) / 2,
                 ly + (LOC_NAV_H - font.lineHeight) / 2 + 1,
@@ -333,14 +323,14 @@ public final class FactionSelectionScreen extends Screen {
     // ── Panel border ──────────────────────────────────────────────────────────
 
     private void renderPanelBorder(GuiGraphics gfx, int px, int py) {
-        gfx.hLine(px,              px + PANEL_W - 1, py,               0xFF887733);
-        gfx.hLine(px,              px + PANEL_W - 1, py + PANEL_H - 1, 0xFF887733);
-        gfx.vLine(px,              py,               py + PANEL_H - 1, 0xFF887733);
-        gfx.vLine(px + PANEL_W - 1, py,              py + PANEL_H - 1, 0xFF887733);
-        gfx.hLine(px + 1,          px + PANEL_W - 2, py + 1,           0xFFCCAA44);
-        gfx.hLine(px + 1,          px + PANEL_W - 2, py + PANEL_H - 2, 0xFFCCAA44);
-        gfx.vLine(px + 1,          py + 1,           py + PANEL_H - 2, 0xFFCCAA44);
-        gfx.vLine(px + PANEL_W - 2, py + 1,          py + PANEL_H - 2, 0xFFCCAA44);
+        gfx.hLine(px,               px + PANEL_W - 1, py,               COL_BORDER);
+        gfx.hLine(px,               px + PANEL_W - 1, py + PANEL_H - 1, COL_BORDER);
+        gfx.vLine(px,               py,               py + PANEL_H - 1, COL_BORDER);
+        gfx.vLine(px + PANEL_W - 1, py,               py + PANEL_H - 1, COL_BORDER);
+        gfx.hLine(px + 1,           px + PANEL_W - 2, py + 1,           0xFFCCAA44);
+        gfx.hLine(px + 1,           px + PANEL_W - 2, py + PANEL_H - 2, 0xFFCCAA44);
+        gfx.vLine(px + 1,           py + 1,           py + PANEL_H - 2, 0xFFCCAA44);
+        gfx.vLine(px + PANEL_W - 2, py + 1,           py + PANEL_H - 2, 0xFFCCAA44);
     }
 
     // ── Info panel ────────────────────────────────────────────────────────────
@@ -351,12 +341,13 @@ public final class FactionSelectionScreen extends Screen {
         int infoX = px + INFO_X_OFF;
         int infoY = py + INFO_Y_OFF;
 
-        // Subtle tint + gold border
+        // Subtle tint + border (use faction's primary colour if available)
+        int borderCol = (f != null) ? f.primaryColour() : COL_BORDER;
         gfx.fill(infoX, infoY, infoX + INFO_W, infoY + INFO_H, 0x44000000);
-        gfx.hLine(infoX, infoX + INFO_W - 1, infoY,              0xFF887733);
-        gfx.hLine(infoX, infoX + INFO_W - 1, infoY + INFO_H - 1, 0xFF887733);
-        gfx.vLine(infoX, infoY, infoY + INFO_H - 1, 0xFF887733);
-        gfx.vLine(infoX + INFO_W - 1, infoY, infoY + INFO_H - 1, 0xFF887733);
+        gfx.hLine(infoX, infoX + INFO_W - 1, infoY,              borderCol);
+        gfx.hLine(infoX, infoX + INFO_W - 1, infoY + INFO_H - 1, borderCol);
+        gfx.vLine(infoX, infoY, infoY + INFO_H - 1,               borderCol);
+        gfx.vLine(infoX + INFO_W - 1, infoY, infoY + INFO_H - 1,  borderCol);
 
         if (f == null) return;
 
@@ -364,12 +355,30 @@ public final class FactionSelectionScreen extends Screen {
         int lh = font.lineHeight + 2;
         int cy = infoY + 5;
 
-        gfx.drawString(font, f.lordParamount(), tx, cy, COL_HOUSE_NAME, false); cy += lh + 1;
-        gfx.drawString(font, "Lord Paramount of " + f.displayName(), tx, cy, COL_LABEL, false); cy += lh + 3;
-        gfx.hLine(tx, infoX + INFO_W - 6, cy, 0xFF554422); cy += 4;
-        gfx.drawString(font, "Seat:     " + f.seat(),     tx, cy, COL_LABEL, false); cy += lh + 1;
-        gfx.drawString(font, "Fealty:   " + f.fealtyTo(), tx, cy, COL_LABEL, false); cy += lh + 5;
+        // House name (tinted with faction's primary colour)
+        gfx.drawString(font, f.greatHouse(), tx, cy, f.primaryColour(), false); cy += lh + 1;
 
+        // House words in italics-esque colour
+        gfx.drawString(font, "\"" + f.words() + "\"", tx, cy, COL_WORDS, false); cy += lh + 3;
+
+        // Separator
+        gfx.hLine(tx, infoX + INFO_W - 6, cy, 0xFF554422); cy += 4;
+
+        // Key facts
+        gfx.drawString(font, "Seat:     " + f.seat(),                tx, cy, COL_LABEL, false); cy += lh + 1;
+        gfx.drawString(font, "Fealty:   " + f.fealtyTo(),            tx, cy, COL_LABEL, false); cy += lh + 1;
+        gfx.drawString(font, "Faith:    " + f.religion().displayName, tx, cy, COL_LABEL, false); cy += lh + 1;
+
+        // Short one-word economy / military summary (truncate long descriptions)
+        String econ = f.economy().description;
+        String mil  = f.militaryStyle().description;
+        // Show only the first word/phrase before the dash for compactness
+        String econShort = econ.contains("—") ? econ.substring(0, econ.indexOf("—")).trim() : econ;
+        String milShort  = mil.contains("—")  ? mil.substring(0,  mil.indexOf("—")).trim()  : mil;
+        gfx.drawString(font, "Economy:  " + econShort, tx, cy, COL_LABEL, false); cy += lh + 1;
+        gfx.drawString(font, "Military: " + milShort,  tx, cy, COL_LABEL, false); cy += lh + 5;
+
+        // Lore text (word-wrapped)
         for (net.minecraft.util.FormattedCharSequence line :
                 font.split(Component.literal(f.lore()), INFO_W - 10)) {
             if (cy + lh > infoY + INFO_H - 4) break;
