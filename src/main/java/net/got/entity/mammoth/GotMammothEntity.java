@@ -71,11 +71,11 @@ public class GotMammothEntity extends Animal {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 80.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.20)
-                .add(Attributes.ATTACK_DAMAGE, 12.0)
-                .add(Attributes.FOLLOW_RANGE, 20.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.9);
+                .add(Attributes.MAX_HEALTH,          150.0)  // titanic resilience
+                .add(Attributes.MOVEMENT_SPEED,       0.18)  // slower — more weight
+                .add(Attributes.ATTACK_DAMAGE,        20.0)  // devastating charge
+                .add(Attributes.FOLLOW_RANGE,         28.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE,  1.0); // virtually unmovable
     }
 
     // ── AI goals ──────────────────────────────────────────────────────────────

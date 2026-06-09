@@ -102,9 +102,10 @@ public class GotMammothRenderer
     @Override
     protected void scale(GotMammothRenderState state, PoseStack poseStack) {
         if (state.isBaby) {
-            poseStack.scale(0.55F, 0.55F, 0.55F);
+            poseStack.scale(0.65F, 0.65F, 0.65F);
         } else {
-            poseStack.scale(1.4F, 1.4F, 1.4F);
+            // Larger render scale — matches the expanded 4.5×5.0 hitbox
+            poseStack.scale(2.2F, 2.2F, 2.2F);
         }
         super.scale(state, poseStack);
     }

@@ -186,11 +186,12 @@ public class GotModEntities {
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_crow"))));
 
-    /** GOT Mammoth — the great shaggy mammoths of the lands Beyond the Wall. */
+    /** GOT Mammoth — the great shaggy mammoths of the lands Beyond the Wall.
+     *  Hitbox scaled up significantly so the collision box matches the larger visual. */
     public static final DeferredHolder<EntityType<?>, EntityType<GotMammothEntity>> GOT_MAMMOTH =
             REGISTRY.register("got_mammoth", () ->
                     EntityType.Builder.<GotMammothEntity>of(GotMammothEntity::new, MobCategory.CREATURE)
-                            .sized(3.0f, 3.5f).clientTrackingRange(16).updateInterval(3)
+                            .sized(4.5f, 5.0f).clientTrackingRange(20).updateInterval(3)
                             .build(ResourceKey.create(Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(GotMod.MODID, "got_mammoth"))));
 

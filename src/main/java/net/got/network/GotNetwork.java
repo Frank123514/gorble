@@ -153,6 +153,14 @@ public final class GotNetwork {
                     inv.setChanged();
                 }));
 
+        // ── Faction sync (S→C) ───────────────────────────────────────────────
+        r.playToClient(FactionSyncPayload.TYPE, FactionSyncPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.client.ClientFactionCache.onSyncReceived(payload);
+                    }
+                }));
+
         // ── Open faction screen (S→C) ─────────────────────────────────────────
         r.playToClient(OpenFactionScreenPayload.TYPE, OpenFactionScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
