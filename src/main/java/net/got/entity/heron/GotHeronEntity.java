@@ -1,6 +1,9 @@
 package net.got.entity.heron;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -37,6 +40,28 @@ public class GotHeronEntity extends Animal {
 
     /** Ticks spent continuously off the ground. Resets to 0 on landing. */
     public int airTicks = 0;
+
+    // ── Variant ───────────────────────────────────────────────────────────────
+
+    /** 0 = grey (default), 1 = blue, 2 = white, 3 = night */
+    private static final EntityDataAccessor<Integer> DATA_VARIANT =
+            SynchedEntityData.defineId(GotHeronEntity.class, EntityDataSerializers.INT);
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_VARIANT, 0);
+    }
+
+    public int getVariant() {
+        return this.entityData.get(DATA_VARIANT);
+    }
+
+    private void setVariant(int variant) {
+        this.entityData.set(DATA_VARIANT, variant);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
 
     public GotHeronEntity(EntityType<? extends GotHeronEntity> type, Level level) {
         super(type, level);
@@ -124,6 +149,18 @@ public class GotHeronEntity extends Animal {
                                                   DifficultyInstance difficulty,
                                                   EntitySpawnReason spawnType,
                                                   @Nullable SpawnGroupData spawnGroupData) {
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+        spawnGroupData = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+        // Weighted variant selection: grey 50%, blue 25%, white 15%, night 10%
+        float r = level.getRandom().nextFloat();
+        if (r < 0.10F) {
+            this.setVariant(3); // night
+        } else if (r < 0.25F) {
+            this.setVariant(2); // white
+        } else if (r < 0.50F) {
+            this.setVariant(1); // blue
+        } else {
+            this.setVariant(0); // grey (default)
+        }
+        return spawnGroupData;
     }
 }

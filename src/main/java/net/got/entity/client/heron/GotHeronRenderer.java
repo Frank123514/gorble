@@ -22,8 +22,14 @@ import net.minecraft.resources.ResourceLocation;
 public class GotHeronRenderer
         extends MobRenderer<GotHeronEntity, GotHeronRenderState, GotHeronModel> {
 
-    private static final ResourceLocation TEXTURE =
+    private static final ResourceLocation TEXTURE_GREY =
             ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron.png");
+    private static final ResourceLocation TEXTURE_BLUE =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_blue.png");
+    private static final ResourceLocation TEXTURE_WHITE =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_white.png");
+    private static final ResourceLocation TEXTURE_NIGHT =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_night.png");
 
     public GotHeronRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
@@ -47,6 +53,7 @@ public class GotHeronRenderer
         state.isMoving  = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
         state.airTicks  = entity.airTicks;
         state.isFlying  = entity.airTicks >= 15 && !entity.isInWater();
+        state.variant   = entity.getVariant();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
@@ -77,7 +84,12 @@ public class GotHeronRenderer
 
     @Override
     public ResourceLocation getTextureLocation(GotHeronRenderState state) {
-        return TEXTURE;
+        return switch (state.variant) {
+            case 1  -> TEXTURE_BLUE;
+            case 2  -> TEXTURE_WHITE;
+            case 3  -> TEXTURE_NIGHT;
+            default -> TEXTURE_GREY;
+        };
     }
 
     // ── Scale ─────────────────────────────────────────────────────────────────

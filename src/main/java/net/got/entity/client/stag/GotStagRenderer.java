@@ -28,8 +28,10 @@ import net.minecraft.resources.ResourceLocation;
 public class GotStagRenderer
         extends MobRenderer<GotStagEntity, GotStagRenderState, GotStagModel> {
 
-    private static final ResourceLocation TEXTURE =
+    private static final ResourceLocation TEXTURE_RED =
             ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_stag.png");
+    private static final ResourceLocation TEXTURE_WHITE =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_stag_white.png");
 
     public GotStagRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
@@ -52,6 +54,7 @@ public class GotStagRenderer
         state.isInWater   = entity.isInWater();
         state.isSprinting = entity.isSprinting();
         state.isMoving    = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
+        state.variant     = entity.getVariant();
     }
 
     // ── Animation ─────────────────────────────────────────────────────────────
@@ -86,7 +89,7 @@ public class GotStagRenderer
 
     @Override
     public ResourceLocation getTextureLocation(GotStagRenderState state) {
-        return TEXTURE;
+        return state.variant == 1 ? TEXTURE_WHITE : TEXTURE_RED;
     }
 
     // ── Scale ─────────────────────────────────────────────────────────────────

@@ -20,12 +20,13 @@ public class GotHeronRenderState extends LivingEntityRenderState {
      */
     public boolean isMoving;
 
-    /**
-     * True when the heron is actively flying (not on the ground).
-     * Derived from {@code !Entity#onGround()}.
-     */
+    /** True when the heron is actively flying (not on the ground).
+     * Derived from {@code !Entity#onGround()}. */
     public boolean isFlying;
 
-    /** Ticks the heron has been continuously airborne. */
+    /** Raw airTicks from entity — heron enters flight mode after ~15 ticks airborne. */
     public int airTicks;
+
+    /** Texture variant: 0 = grey, 1 = blue, 2 = white, 3 = night. */
+    public int variant;
 }

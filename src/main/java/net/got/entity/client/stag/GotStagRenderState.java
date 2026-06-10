@@ -26,4 +26,7 @@ public class GotStagRenderState extends LivingEntityRenderState {
      * Derived from {@code Entity#getDeltaMovement().horizontalDistanceSqr() > 1e-6}.
      */
     public boolean isMoving;
+
+    /** Texture variant: 0 = red stag, 1 = white stag. */
+    public int variant;
 }
