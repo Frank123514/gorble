@@ -31,6 +31,21 @@ public class GotGiantRenderState extends LivingEntityRenderState {
     public boolean isDeadOrDying;
 
     /**
+     * True during the one-shot mounting climb animation
+     * (set on the entity for {@link #MOUNT_HOLD_TICKS} ticks after startRiding).
+     */
+    public boolean isMounting;
+
+    /** True while the giant is a passenger on a mammoth. */
+    public boolean isRiding;
+
+    // ── Per-entity animation tracking (moved from renderer to fix multi-giant bug) ──
+    /** The animation that was playing last frame, used to detect clip changes. */
+    public AnimationDefinition lastAnimation = null;
+    /** The ageInTicks when the current one-shot clip started. */
+    public float animationStartTick = 0F;
+
+    /**
      * The animation clip chosen this frame by the renderer.
      * Read by {@link GotGiantModel#setupAnim} to drive keyframe playback.
      */

@@ -24,5 +24,7 @@ public class GotMammothRenderState extends LivingEntityRenderState {
 
     /** True when the mammoth is executing a melee attack swing. */
     public boolean isAttacking;
-}
 
+    /** True when a giant is currently riding this mammoth. */
+    public boolean hasGiantRider;
+}

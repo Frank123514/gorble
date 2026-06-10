@@ -1,5 +1,6 @@
 package net.got.entity.mammoth;
 
+import net.got.entity.giant.GotGiantEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -27,6 +29,10 @@ import org.jetbrains.annotations.Nullable;
  *
  * <p>Passive unless provoked. When angered it charges relentlessly, dealing
  * heavy damage. Mammoth calves follow their parents.
+ *
+ * <p>Giants can ride mammoths. A giant within {@value #MOUNT_SEEK_RADIUS} blocks
+ * will seek an unmounted mammoth and climb aboard. The giant is seated high on
+ * the mammoth's back; it directs movement normally once mounted.
  *
  * <p>Animation states:
  * <ul>
@@ -39,7 +45,21 @@ import org.jetbrains.annotations.Nullable;
  */
 public class GotMammothEntity extends Animal {
 
-    // Synced to client so the renderer can read them
+    // ── Constants ─────────────────────────────────────────────────────────────
+
+    /** How far (blocks) a giant will search for a mammoth to mount. */
+    public static final double MOUNT_SEEK_RADIUS = 20.0;
+
+    /**
+     * Y-offset (in scaled world units) of the rider seat above the mammoth's
+     * origin. The mammoth is rendered at 2.2× scale; the back is ~2.2 blocks
+     * above origin in model space, so ≈ 2.2 * 2.2 ≈ 4.8 world units. Tune
+     * this if the giant floats or clips through the body.
+     */
+    private static final float RIDER_Y_OFFSET = 4.6F;
+
+    // ── Synced data ───────────────────────────────────────────────────────────
+
     private static final EntityDataAccessor<Boolean> DATA_ANGRY =
             SynchedEntityData.defineId(GotMammothEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ATTACKING =
@@ -147,6 +167,40 @@ public class GotMammothEntity extends Animal {
         super.hurtServer(level, source, amount);
         setAngry(true);
         return false;
+    }
+
+    // ── Rider / passenger support ─────────────────────────────────────────────
+
+    /**
+     * Returns true when a giant is currently riding this mammoth.
+     * Checked by the renderer to tweak animations if needed.
+     */
+    public boolean hasGiantRider() {
+        return this.getFirstPassenger() instanceof GotGiantEntity;
+    }
+
+    /**
+     * Seat position for passengers.  The Vec3 is in the mammoth's <em>local</em>
+     * (un-scaled) space; Minecraft multiplies it by the entity's scale when
+     * placing the rider, so we divide by the render scale to get the right
+     * world-space height.
+     *
+     * <p>Render scale is 2.2 (see {@code GotMammothRenderer#scale}).
+     * We want the rider to sit ~4.6 world-blocks above the mammoth's feet,
+     * so local Y = 4.6 / 2.2 ≈ 2.09.
+     */
+    @Override
+    public Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float partialTick) {
+        // Forward offset keeps the giant seated toward the shoulders, not the rump
+        return new Vec3(0.0, RIDER_Y_OFFSET / 2.2F, -0.3);
+    }
+
+    /**
+     * Only giants may ride mammoths.
+     */
+    @Override
+    public boolean canBeRiddenUnderFluidType(net.neoforged.neoforge.fluids.FluidType type, Entity rider) {
+        return false; // don't allow riding in water/lava
     }
 
     // ── Breeding ──────────────────────────────────────────────────────────────

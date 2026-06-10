@@ -3,6 +3,7 @@ package net.got.entity.client.mammoth;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.got.entity.client.model.GotModelLayers;
 import net.got.entity.mammoth.GotMammothEntity;
+import net.got.entity.giant.GotGiantEntity;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -44,6 +45,7 @@ public class GotMammothRenderer
         state.isAngry       = entity.isAngry();
         state.isDeadOrDying = entity.isDeadOrDying();
         state.isAttacking   = entity.isAttacking();
+        state.hasGiantRider = entity.hasGiantRider();
     }
 
     @Override

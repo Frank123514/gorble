@@ -1,5 +1,6 @@
 package net.got.entity.giant;
 
+import net.got.entity.mammoth.GotMammothEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,6 +24,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * GOT Giant — a towering humanoid creature that roams the frozen lands Beyond the Wall.
  *
@@ -30,6 +33,9 @@ import org.jetbrains.annotations.Nullable;
  * intensely hostile to the Night's Watch and any outsider who attacks first.
  * They wield enormous clubs (simulated via a massive hit-box reach) and can
  * smash through wooden doors.
+ *
+ * <p>When not in combat, a giant will seek a nearby unmounted mammoth and ride it.
+ * Giants dismount automatically when killed or when they enter combat.
  *
  * <p>Animation states (matched by {@link net.got.entity.client.giant.GotGiantAnimations}):
  * <ul>
@@ -52,14 +58,25 @@ public class GotGiantEntity extends PathfinderMob {
     /** Set once on first hurt so the roar plays only the first time. */
     private static final EntityDataAccessor<Boolean> DATA_ENRAGED   =
             SynchedEntityData.defineId(GotGiantEntity.class, EntityDataSerializers.BOOLEAN);
+    /** True during the 1.5 s mount-climb animation. */
+    private static final EntityDataAccessor<Boolean> DATA_MOUNTING  =
+            SynchedEntityData.defineId(GotGiantEntity.class, EntityDataSerializers.BOOLEAN);
+    /** True while the giant is riding a mammoth. */
+    private static final EntityDataAccessor<Boolean> DATA_RIDING    =
+            SynchedEntityData.defineId(GotGiantEntity.class, EntityDataSerializers.BOOLEAN);
 
     /** Ticks to hold the attack animation after a successful hit. */
     private int attackAnimTicks = 0;
     /** Ticks to hold the roar animation at the start of combat. */
     private int roarAnimTicks   = 0;
+    /** Ticks to hold the mount animation after climbing aboard. */
+    int mountAnimTicks  = 0;  // package-private: set by RideMammothGoal
 
     private static final int ATTACK_HOLD_TICKS = 25;
-    private static final int ROAR_HOLD_TICKS   = 50; // ~2.5 s
+    private static final int ROAR_HOLD_TICKS   = 50;  // ~2.5 s
+    /** Must match GotGiantAnimations.MOUNT length (1.5 s x 20 ticks). */
+    static final int MOUNT_HOLD_TICKS_PUBLIC    = 30;  // 1.5 s
+    private static final int MOUNT_HOLD_TICKS   = MOUNT_HOLD_TICKS_PUBLIC;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -75,6 +92,8 @@ public class GotGiantEntity extends PathfinderMob {
         builder.define(DATA_ATTACKING, false);
         builder.define(DATA_ROARING,   false);
         builder.define(DATA_ENRAGED,   false);
+        builder.define(DATA_MOUNTING,  false);
+        builder.define(DATA_RIDING,    false);
     }
 
     public boolean isAttacking() { return this.entityData.get(DATA_ATTACKING); }
@@ -84,6 +103,11 @@ public class GotGiantEntity extends PathfinderMob {
     private void setAttacking(boolean v) { this.entityData.set(DATA_ATTACKING, v); }
     private void setRoaring  (boolean v) { this.entityData.set(DATA_ROARING,   v); }
     private void setEnraged  (boolean v) { this.entityData.set(DATA_ENRAGED,   v); }
+
+    public boolean isMounting() { return this.entityData.get(DATA_MOUNTING); }
+    public boolean isRiding()   { return this.entityData.get(DATA_RIDING);   }
+    void setMounting(boolean v) { this.entityData.set(DATA_MOUNTING, v); }
+    private void setRiding  (boolean v) { this.entityData.set(DATA_RIDING,   v); }
 
     // ── Attributes ────────────────────────────────────────────────────────────
 
@@ -116,12 +140,15 @@ public class GotGiantEntity extends PathfinderMob {
         // Priority 2 — kick doors open
         this.goalSelector.addGoal(2, new OpenDoorGoal(this, true));
 
-        // Priority 3 — patrol
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.85));
+        // Priority 3 — seek and mount a nearby mammoth when not in combat
+        this.goalSelector.addGoal(3, new RideMammothGoal(this));
 
-        // Priority 4 — idle look
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 12.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        // Priority 4 — patrol
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.85));
+
+        // Priority 5 — idle look
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 12.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 
         // Target: retaliate on anything that hits us
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -141,6 +168,17 @@ public class GotGiantEntity extends PathfinderMob {
             if (attackAnimTicks > 0 && --attackAnimTicks == 0) setAttacking(false);
             // Count down roar hold
             if (roarAnimTicks   > 0 && --roarAnimTicks   == 0) setRoaring(false);
+            // Count down mount animation hold
+            if (mountAnimTicks  > 0 && --mountAnimTicks  == 0) setMounting(false);
+
+            // Keep DATA_RIDING in sync with actual vehicle state
+            boolean onMammoth = this.getVehicle() instanceof GotMammothEntity;
+            if (onMammoth != isRiding()) setRiding(onMammoth);
+
+            // Dismount automatically when enraged (giant wants to fight on foot)
+            if (isEnraged() && onMammoth) {
+                this.stopRiding();
+            }
         }
     }
 
@@ -218,5 +256,121 @@ public class GotGiantEntity extends PathfinderMob {
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // Inner goal — seek and ride a nearby mammoth
+    // ══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Makes the giant walk toward the nearest unmounted adult mammoth within
+     * {@link GotMammothEntity#MOUNT_SEEK_RADIUS} blocks and start riding it.
+     *
+     * <p>The goal is interrupted immediately if the giant becomes enraged
+     * (combat) so it can dismount and fight on foot.
+     */
+    private static class RideMammothGoal extends Goal {
+
+        private final GotGiantEntity giant;
+        @Nullable private GotMammothEntity targetMammoth;
+
+        RideMammothGoal(GotGiantEntity giant) {
+            this.giant = giant;
+            // Flag: affects movement (we navigate toward the mammoth)
+            setFlags(java.util.EnumSet.of(Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            // Already riding — let canContinueToUse handle it
+            if (giant.isPassenger()) return false;
+            // Don't mount while in combat
+            if (giant.isEnraged()) return false;
+
+            targetMammoth = findNearestFreeMammoth();
+            return targetMammoth != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            // Stop if we've mounted (goal fulfilled), got enraged, or mammoth gone
+            if (giant.isPassenger()) return false;
+            if (giant.isEnraged())   return false;
+            if (targetMammoth == null || !targetMammoth.isAlive()) return false;
+            // Stop if another giant already claimed this mammoth
+            if (targetMammoth.isVehicle()) return false;
+            return true;
+        }
+
+        @Override
+        public void start() {
+            if (targetMammoth != null) {
+                giant.getNavigation().moveTo(targetMammoth, 1.1);
+            }
+        }
+
+        @Override
+        public void tick() {
+            if (targetMammoth == null || !targetMammoth.isAlive()) return;
+
+            giant.getLookControl().setLookAt(targetMammoth, 30F, 30F);
+
+            // Use bounding-box gap rather than center-to-center distance.
+            // The mammoth is huge (2.2x scale), so their centers can be 8+ blocks
+            // apart even when visually touching. We mount as soon as the AABBs
+            // are within 2 blocks of each other.
+            double gap = aabbGap(giant, targetMammoth);
+            if (gap <= 2.0) {
+                giant.getNavigation().stop();
+                if (giant.startRiding(targetMammoth, true)) {
+                    giant.mountAnimTicks = GotGiantEntity.MOUNT_HOLD_TICKS_PUBLIC;
+                    giant.setMounting(true);
+                }
+            } else {
+                giant.getNavigation().moveTo(targetMammoth, 1.1);
+            }
+        }
+
+        /**
+         * Returns the shortest gap (in blocks) between the two entities'
+         * bounding boxes. Returns 0.0 if the boxes overlap.
+         */
+        private static double aabbGap(Entity a, Entity b) {
+            var ba = a.getBoundingBox();
+            var bb = b.getBoundingBox();
+            double dx = Math.max(0, Math.max(bb.minX - ba.maxX, ba.minX - bb.maxX));
+            double dy = Math.max(0, Math.max(bb.minY - ba.maxY, ba.minY - bb.maxY));
+            double dz = Math.max(0, Math.max(bb.minZ - ba.maxZ, ba.minZ - bb.maxZ));
+            return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        @Override
+        public void stop() {
+            targetMammoth = null;
+            giant.getNavigation().stop();
+        }
+
+        /** Find the closest adult, unmounted, living mammoth within seek radius. */
+        @Nullable
+        private GotMammothEntity findNearestFreeMammoth() {
+            double radius = GotMammothEntity.MOUNT_SEEK_RADIUS;
+            List<GotMammothEntity> nearby = giant.level().getEntitiesOfClass(
+                    GotMammothEntity.class,
+                    giant.getBoundingBox().inflate(radius),
+                    m -> m.isAlive() && !m.isBaby() && !m.isVehicle()
+            );
+            if (nearby.isEmpty()) return null;
+
+            GotMammothEntity closest = null;
+            double bestDist = Double.MAX_VALUE;
+            for (GotMammothEntity m : nearby) {
+                double d = giant.distanceToSqr(m);
+                if (d < bestDist) {
+                    bestDist = d;
+                    closest  = m;
+                }
+            }
+            return closest;
+        }
     }
 }

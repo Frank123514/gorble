@@ -19,9 +19,7 @@ public class GotGiantRenderer
     private static final float ATTACK_LENGTH_TICKS = 1.25F * 20F;
     private static final float ROAR_LENGTH_TICKS   = 2.5F  * 20F;
     private static final float DEATH_LENGTH_TICKS  = 3.0F  * 20F;
-
-    private AnimationDefinition lastAnimation  = null;
-    private float animationStartTick           = 0F;
+    private static final float MOUNT_LENGTH_TICKS  = 1.5F  * 20F;
 
     public GotGiantRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
@@ -45,23 +43,27 @@ public class GotGiantRenderer
         state.isMoving      = entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
         state.isSprinting   = entity.isSprinting();
         state.isDeadOrDying = entity.isDeadOrDying();
+        state.isMounting    = entity.isMounting();
+        state.isRiding      = entity.isRiding();
 
-        // Resolve which animation to play and store it in the render state so
-        // the model's setupAnim can apply it (setupAnim runs inside super.render,
-        // which is the correct place — applying animations from render() runs
-        // before setupAnim and gets overwritten).
+        // Animation selection — state is tracked per-entity on the render state
+        // (NOT on the renderer instance, which is shared across all giants).
         AnimationDefinition anim = chooseAnimation(state);
-        float localTime = state.ageInTicks - animationStartTick;
+        float localTime = state.ageInTicks - state.animationStartTick;
         float clipLength = clipLengthFor(anim);
         boolean clipDone = isOneShot(anim) && localTime >= clipLength;
 
-        if (anim != lastAnimation || clipDone) {
-            animationStartTick = state.ageInTicks;
-            lastAnimation      = anim;
-            localTime          = 0F;
+        if (anim != state.lastAnimation || clipDone) {
+            // New clip or one-shot finished — restart the clock.
+            // For attack: if isAttacking just became true again (re-hit during
+            // the hold window), we intentionally restart so the full swing plays.
+            state.animationStartTick = state.ageInTicks;
+            state.lastAnimation      = anim;
+            localTime                = 0F;
         }
 
-        // Looping animations use absolute game time; one-shots use elapsed time.
+        // Looping animations use absolute game time; one-shots use elapsed ticks
+        // since the clip started (so they don't seek into the middle).
         state.animationToPlay = anim;
         state.animationTime   = isOneShot(anim) ? localTime : state.ageInTicks;
     }
@@ -73,6 +75,13 @@ public class GotGiantRenderer
             return GotGiantAnimations.ATTACK;
         } else if (state.isRoaring) {
             return GotGiantAnimations.ROAR;
+        } else if (state.isMounting) {
+            // One-shot climb animation plays when the giant first mounts
+            return GotGiantAnimations.MOUNT;
+        } else if (state.isRiding) {
+            // Seated riding pose — moving or stationary
+            return state.isMoving ? GotGiantAnimations.RIDE_MOVING
+                                  : GotGiantAnimations.RIDE_IDLE;
         } else if (state.isSprinting || (state.isEnraged && state.isMoving)) {
             return GotGiantAnimations.RUN;
         } else if (state.isMoving) {
@@ -85,13 +94,15 @@ public class GotGiantRenderer
     private static boolean isOneShot(AnimationDefinition anim) {
         return anim == GotGiantAnimations.ATTACK
                 || anim == GotGiantAnimations.ROAR
-                || anim == GotGiantAnimations.DEATH;
+                || anim == GotGiantAnimations.DEATH
+                || anim == GotGiantAnimations.MOUNT;
     }
 
     private static float clipLengthFor(AnimationDefinition anim) {
         if (anim == GotGiantAnimations.ATTACK) return ATTACK_LENGTH_TICKS;
         if (anim == GotGiantAnimations.ROAR)   return ROAR_LENGTH_TICKS;
         if (anim == GotGiantAnimations.DEATH)  return DEATH_LENGTH_TICKS;
+        if (anim == GotGiantAnimations.MOUNT)  return MOUNT_LENGTH_TICKS;
         return 0F;
     }
 
