@@ -56,7 +56,7 @@ public class GotMammothEntity extends Animal {
      * above origin in model space, so ≈ 2.2 * 2.2 ≈ 4.8 world units. Tune
      * this if the giant floats or clips through the body.
      */
-    private static final float RIDER_Y_OFFSET = 4.6F;
+    private static final float RIDER_Y_OFFSET = 6.0F;
 
     // ── Synced data ───────────────────────────────────────────────────────────
 
@@ -186,8 +186,8 @@ public class GotMammothEntity extends Animal {
      * world-space height.
      *
      * <p>Render scale is 2.2 (see {@code GotMammothRenderer#scale}).
-     * We want the rider to sit ~4.6 world-blocks above the mammoth's feet,
-     * so local Y = 4.6 / 2.2 ≈ 2.09.
+     * We want the rider to sit ~6.0 world-blocks above the mammoth's feet,
+     * so local Y = 6.0 / 2.2 ≈ 2.73.
      */
     @Override
     public Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float partialTick) {
