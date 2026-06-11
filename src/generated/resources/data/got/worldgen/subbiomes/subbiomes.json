@@ -4,7 +4,10 @@
       "subbiome": "got:subbiome/maple_forest",
       "noise_scale": 240.0,
       "threshold": 0.85,
-      "priority": 0
+      "priority": 0,
+      "base_height": 90,
+      "height_variation": 6,
+      "blend_range": 0.3
     },
     {
       "subbiome": "got:subbiome/beech_forest",
@@ -18,7 +21,10 @@
       "subbiome": "got:subbiome/maple_forest",
       "noise_scale": 200.0,
       "threshold": 0.70,
-      "priority": 0
+      "priority": 0,
+      "base_height": 80,
+      "height_variation": 12,
+      "blend_range": 0.15
     }
   ]
 }

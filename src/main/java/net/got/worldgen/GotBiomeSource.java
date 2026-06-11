@@ -247,6 +247,18 @@ public final class GotBiomeSource extends BiomeSource {
             }
         }
 
+        // ── PROCEDURAL CREEK CHECK ────────────────────────────────────────────
+        // After the biomemap fringe logic, run the noise-based creek channel system.
+        // We pass the riverInfluence already computed above — it's the bicubic-weighted
+        // sum of river pixel votes, so it's smooth, domain-warped, and perfectly
+        // consistent with how biomes are placed. No redundant biomemap lookup needed.
+        if (!WATER_BIOME_IDS.contains(winner) && !CREEK_BIOME_ID.equals(winner)) {
+            if (CreekResolver.isCreek(winner, riverInfluence, worldX, worldZ)) {
+                winner = CREEK_BIOME_ID;
+            }
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
         // ── SUB-BIOME CHECK ───────────────────────────────────────────────────
         // After all map-based and creek/containment logic has resolved the winner,
         // ask the SubbiomeResolver whether a smaller procedural biome should be
