@@ -2,9 +2,8 @@
   "_comment": "Angles in degrees. Real mountains: grass holds to ~20deg, scree forms 25-40deg, bare rock cliffs 40deg+. Jitter 4-6 for organic band edges.",
 
   "got:north_mountains": [
-    { "min_slope": 48, "block": "got:grey_granite_rock",        "depth": 6, "jitter": 5 },
-    { "min_slope": 32, "block": "minecraft:snow_block",       "depth": 4, "jitter": 5 },
-    { "min_slope": 20, "block": "minecraft:snow_block",  "depth": 2, "jitter": 4 }
+    { "min_slope": 38, "block": "minecraft:stone",        "depth": 4, "jitter": 4 },
+    { "min_slope": 22, "block": "minecraft:stone",  "depth": 2, "jitter": 4 }
   ],
 
   "got:frostfangs": [

@@ -28,7 +28,11 @@
         "got:riverlands",
         "got:vale",
         "got:westerlands",
-        "got:reach"
+        "got:reach",
+
+        "got:subbiome/maple_forest",
+        "got:subbiome/beech_forest",
+        "got:subbiome/wheat_field"
       ]
     },
     "settings": "got:overworld"

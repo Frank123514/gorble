@@ -1,24 +1,29 @@
 {
   "got:north": [
     {
-      "subbiome": "got:north_hills",
+      "subbiome": "got:subbiome/maple_forest",
       "noise_scale": 240.0,
       "threshold": 0.85,
-      "priority": 0,
-      "blend_range": 0.3
+      "priority": 0
     },
     {
-      "subbiome": "got:river",
+      "subbiome": "got:subbiome/beech_forest",
       "noise_scale": 230.0,
       "threshold": 0.80,
       "priority": 0
+    },
+    {
+      "subbiome": "got:subbiome/wheat_field",
+      "noise_scale": 240.0,
+      "threshold": 0.85,
+      "priority": 0
     }
   ],
-  "got:north_hills": [
+  "got:barrowlands": [
     {
-      "subbiome": "got:ironwood",
-      "noise_scale": 200.0,
-      "threshold": 0.70,
+      "subbiome": "got:subbiome/wheat_field",
+      "noise_scale": 240.0,
+      "threshold": 0.85,
       "priority": 0
     }
   ]

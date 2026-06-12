@@ -88,7 +88,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         seededNoise = SimplexNoise.seeded(worldSeed);
         SubbiomeResolver.initSeed(worldSeed);
         SlopeSurfaceResolver.initSeed(worldSeed);
-        CreekResolver.initSeed(worldSeed);
     }
 
     @Override
@@ -164,23 +163,13 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float[] h = new float[16];
         float[] v = new float[16];
 
-        // Track the center pixel's biome ID so we can ask SubbiomeResolver.
-        String centerBiomeId = null;
-
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 int px = ipx + col - 1;
                 int pz = ipz + row - 1;
                 GotBiomeTerrainParams.Params p = paramsAt(px, pz);
-                float cellH = p.baseHeight();
-                float cellV = p.heightVariation();
-
-                h[row * 4 + col] = cellH;
-                v[row * 4 + col] = cellV;
-
-                if (col == 1 && row == 1) {
-                    centerBiomeId = p.biomeId();
-                }
+                h[row * 4 + col] = p.baseHeight();
+                v[row * 4 + col] = p.heightVariation();
             }
         }
 
