@@ -164,8 +164,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float[] h = new float[16];
         float[] v = new float[16];
 
-        // Track the center pixel's biome ID so we can ask SubbiomeResolver
-        // whether a subbiome at this position overrides the terrain params.
+        // Track the center pixel's biome ID so we can ask SubbiomeResolver.
         String centerBiomeId = null;
 
         for (int row = 0; row < 4; row++) {
@@ -173,10 +172,12 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 int px = ipx + col - 1;
                 int pz = ipz + row - 1;
                 GotBiomeTerrainParams.Params p = paramsAt(px, pz);
-                h[row * 4 + col] = p.baseHeight();
-                v[row * 4 + col] = p.heightVariation();
-                // The center of the 4×4 grid (col=1, row=1) is the pixel that
-                // owns this world position — that's whose biome ID we need.
+                float cellH = p.baseHeight();
+                float cellV = p.heightVariation();
+
+                h[row * 4 + col] = cellH;
+                v[row * 4 + col] = cellV;
+
                 if (col == 1 && row == 1) {
                     centerBiomeId = p.biomeId();
                 }
@@ -185,27 +186,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
         float rawHeight       = bicubicBspline(h, fx, fz);
         float heightVariation = bicubicBspline(v, fx, fz);
-
-        // If a subbiome is active at this position and it declares its own terrain
-        // parameters, blend smoothly from the parent's bicubic values toward the
-        // subbiome's target values.  blendWeight=0 at the noise threshold edge
-        // (fully parent), blendWeight=1 deep inside (fully subbiome) — same
-        // gradual slope behaviour as the biomemap's bicubic interpolation.
-        if (centerBiomeId != null) {
-            SubbiomeTerrainOverride override =
-                    SubbiomeResolver.resolveTerrainParams(centerBiomeId, worldX, worldZ);
-            if (override != null) {
-                float w = override.blendWeight();
-                if (override.baseHeight().isPresent()) {
-                    rawHeight = Mth.lerp(w, rawHeight,
-                            (float) override.baseHeight().getAsDouble());
-                }
-                if (override.heightVariation().isPresent()) {
-                    heightVariation = Mth.lerp(w, heightVariation,
-                            (float) override.heightVariation().getAsDouble());
-                }
-            }
-        }
 
         // Broad fBm noise for surface variation
         double noiseVal = seededNoise.fbm(

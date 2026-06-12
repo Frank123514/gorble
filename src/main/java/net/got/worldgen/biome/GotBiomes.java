@@ -99,11 +99,6 @@ public class GotBiomes {
     public static final ResourceKey<Biome> REACH =
             ResourceKey.create(Registries.BIOME, GotMod.id("reach"));
 
-    // Sub-biomes ───────────────────────────────────────────────────────────────
-
-    public static final ResourceKey<Biome> MAPLE_FOREST =
-            ResourceKey.create(Registries.BIOME, GotMod.id("subbiome/maple_forest"));
-
     // got:patch_leaves — registered in data gen but not yet in GotPlacedFeatures
     private static final ResourceKey<PlacedFeature> PATCH_LEAVES =
             ResourceKey.create(Registries.PLACED_FEATURE, GotMod.id("patch_leaves"));
@@ -134,7 +129,6 @@ public class GotBiomes {
         context.register(SHEEPSHEAD_HILLS, sheepsheadHills(context));
         context.register(STONY_SHORE,      stonyShore(context));
         context.register(WOLFSWOOD,        wolfswood(context));
-        context.register(MAPLE_FOREST,     mapleForest(context));
         context.register(RIVERLANDS,       riverlands(context));
         context.register(VALE,             vale(context));
         context.register(WESTERLANDS,      westerlands(context));
@@ -1059,46 +1053,6 @@ public class GotBiomes {
                         .fogColor(12638463)
                         .skyColor(8233983)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST))
-                        .build())
-                .build();
-    }
-
-    // Maple Forest (sub-biome of north / north_hills) ──────────────────────────
-
-    private static Biome mapleForest(BootstrapContext<Biome> context) {
-        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.WOLF,   8, 4, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.FOX,    8, 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(GotModEntities.NORTHMAN.get(),   5, 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(GotModEntities.STARK_LEVY.get(), 3, 1, 2));
-
-        BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
-                context.lookup(Registries.PLACED_FEATURE),
-                context.lookup(Registries.CONFIGURED_CARVER));
-        globalOverworldGeneration(biomeBuilder);
-        addRockOres(biomeBuilder);
-
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, CavePlacements.GLOW_LICHEN);
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_TALL_GRASS_2);
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_PLAIN);
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.MAPLE);
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.MAPLE_SPARSE);
-
-        return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
-                .temperature(0.2f)
-                .downfall(0.8f)
-                .generationSettings(biomeBuilder.build())
-                .mobSpawnSettings(spawnBuilder.build())
-                .specialEffects(new BiomeSpecialEffects.Builder()
-                        .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233983)
-                        .grassColorOverride(6067036)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .backgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST))
                         .build())
