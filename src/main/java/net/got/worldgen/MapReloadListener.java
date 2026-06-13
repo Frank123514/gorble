@@ -72,9 +72,6 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             SubbiomeResolver.apply(prepared.subbiomes());
             SlopeSurfaceResolver.apply(prepared.slopeRules());
 
-            // Notify GotBiomeSource so getNoiseBiome re-reads the new data.
-            GotBiomeSource.onMapReloaded();
-
             LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents, {} slope biomes)",
                     prepared.width(), prepared.height(),
                     prepared.params().size(), prepared.subbiomes().size(),
