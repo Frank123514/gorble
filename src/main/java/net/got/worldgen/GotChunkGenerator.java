@@ -88,6 +88,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         seededNoise = SimplexNoise.seeded(worldSeed);
         SubbiomeResolver.initSeed(worldSeed);
         SlopeSurfaceResolver.initSeed(worldSeed);
+        CreekResolver.initSeed(worldSeed);
     }
 
     @Override

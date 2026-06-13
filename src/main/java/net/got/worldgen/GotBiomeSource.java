@@ -19,10 +19,6 @@ import java.util.stream.Stream;
 
 public final class GotBiomeSource extends BiomeSource {
 
-    /**
-     * All water biome IDs — used for containment (prevents water biomes
-     * bleeding onto dry terrain).
-     */
     private static final Set<String> WATER_BIOME_IDS = Set.of(
             "got:ocean",
             "got:deep_ocean",
@@ -33,6 +29,7 @@ public final class GotBiomeSource extends BiomeSource {
             "got:frozen_lake",
             "got:creek"
     );
+
 
     public static final MapCodec<GotBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -67,15 +64,12 @@ public final class GotBiomeSource extends BiomeSource {
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.@NotNull Sampler sampler) {
         if (!BiomemapLoader.isLoaded()) return fallback;
 
-        // Biome-grid (quarter-resolution) → world block coordinates
         int worldX = x << 2;
         int worldZ = z << 2;
 
-        // World block → biomemap pixel
         float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
-        // Domain warp
         float warpX = (float) SimplexNoise.noise(worldX / 320.0, worldZ / 320.0);
         float warpZ = (float) SimplexNoise.noise(worldX / 320.0 + 3.7, worldZ / 320.0 + 8.1);
         cx += warpX * 0.9f;
@@ -86,9 +80,9 @@ public final class GotBiomeSource extends BiomeSource {
         float fx  = cx - ipx;
         float fz  = cz - ipz;
 
-        // Sample 4×4 grid
-        String[][] biomeIds = new String[4][4];
-        boolean[][] isWater = new boolean[4][4];
+        String[][]  biomeIds = new String[4][4];
+        boolean[][] isWater  = new boolean[4][4];
+
         for (int i = -1; i <= 2; i++) {
             for (int j = -1; j <= 2; j++) {
                 int px = ipx + i;
@@ -104,7 +98,6 @@ public final class GotBiomeSource extends BiomeSource {
             }
         }
 
-        // Bicubic B-spline voting
         Map<String, Float> biomeVotes = new HashMap<>();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -113,12 +106,11 @@ public final class GotBiomeSource extends BiomeSource {
                 float wx     = cubicBsplineWeight(i - 1, fx);
                 float wz     = cubicBsplineWeight(j - 1, fz);
                 float weight = wx * wz;
-                if (isWater[i][j]) weight *= 1.15f; // thin rivers survive
+                if (isWater[i][j]) weight *= 1.15f;
                 biomeVotes.merge(id, weight, Float::sum);
             }
         }
 
-        // Overall winner
         String winner    = null;
         float  maxWeight = -1f;
         for (Map.Entry<String, Float> entry : biomeVotes.entrySet()) {
@@ -129,14 +121,13 @@ public final class GotBiomeSource extends BiomeSource {
         }
         if (winner == null) return fallback;
 
-        // CONTAINMENT — if a water biome won but terrain is dry, promote best land candidate
+        // CONTAINMENT — water won but terrain is dry → promote to best land biome
         float surfaceY = GotChunkGenerator.computeRawSurfaceY(worldX, worldZ);
         if (surfaceY >= GotChunkGenerator.SEA_LEVEL && WATER_BIOME_IDS.contains(winner)) {
             String landCandidate  = null;
             float  landCandidateW = -1f;
             for (Map.Entry<String, Float> entry : biomeVotes.entrySet()) {
-                if (!WATER_BIOME_IDS.contains(entry.getKey())
-                        && entry.getValue() > landCandidateW) {
+                if (!WATER_BIOME_IDS.contains(entry.getKey()) && entry.getValue() > landCandidateW) {
                     landCandidateW = entry.getValue();
                     landCandidate  = entry.getKey();
                 }
@@ -144,7 +135,10 @@ public final class GotBiomeSource extends BiomeSource {
             if (landCandidate != null) winner = landCandidate;
         }
 
-        // CREEK SWAP — land biome sitting in a water depression → creek
+        // CREEK SWAP — land biome winner but terrain is actually underwater → creek.
+        // This catches ponds/puddles formed by height variation inside land biomes,
+        // and river-edge cells where the land biome won the vote but the ground
+        // has dipped below sea level.
         if (!WATER_BIOME_IDS.contains(winner) && surfaceY < GotChunkGenerator.SEA_LEVEL) {
             winner = "got:creek";
         }

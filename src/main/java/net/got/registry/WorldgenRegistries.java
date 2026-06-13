@@ -4,9 +4,12 @@ import com.mojang.serialization.MapCodec;
 import net.got.GotMod;
 import net.got.worldgen.GotChunkGenerator;
 import net.got.worldgen.GotBiomeSource;
+import net.got.worldgen.biome.placers.TripleReedsPatchFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -16,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * <ul>
  *   <li>{@code got:chunk_generator} — {@link GotChunkGenerator#CODEC}</li>
  *   <li>{@code got:biome_source}    — {@link GotBiomeSource#CODEC}</li>
+ *   <li>{@code got:triple_reeds_patch} — {@link TripleReedsPatchFeature}</li>
  * </ul>
  */
 public final class WorldgenRegistries {
@@ -35,6 +39,17 @@ public final class WorldgenRegistries {
             DeferredRegister.create(Registries.BIOME_SOURCE, GotMod.MODID);
 
     /* ------------------------------------------------------------------ */
+    /* Features                                                             */
+    /* ------------------------------------------------------------------ */
+
+    public static final DeferredRegister<Feature<?>> FEATURES =
+            DeferredRegister.create(Registries.FEATURE, GotMod.MODID);
+
+    public static final net.neoforged.neoforge.registries.DeferredHolder<Feature<?>, TripleReedsPatchFeature> TRIPLE_REEDS_PATCH = FEATURES.register(
+            "triple_reeds_patch",
+            () -> new TripleReedsPatchFeature(NoneFeatureConfiguration.CODEC));
+
+    /* ------------------------------------------------------------------ */
     /* Registration                                                         */
     /* ------------------------------------------------------------------ */
 
@@ -48,6 +63,7 @@ public final class WorldgenRegistries {
     public static void register(IEventBus bus) {
         CHUNK_GENERATORS.register(bus);
         BIOME_SOURCES   .register(bus);
+        FEATURES        .register(bus);
         System.out.println("[GoT] Worldgen registries registered to event bus");
     }
 

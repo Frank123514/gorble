@@ -104,6 +104,7 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_MUD         = key("disk_mud");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_QUAGMIRE    = key("disk_quagmire");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SHORT_REEDS_PATCH = key("short_reeds_patch");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> REEDS_PATCH       = key("reeds_patch");
 
     // Rock-pocket ores
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_BASALT_ROCK        = key("ore_basalt_rock");
@@ -606,6 +607,11 @@ public final class GotConfiguredFeatures {
 
         // short_reeds_patch: shoreline reeds, tries=12, xzSpread=5, ySpread=3
         register(ctx, SHORT_REEDS_PATCH, Feature.RANDOM_PATCH, cropPatch(GotModBlocks.SHORT_REEDS, 12, 5, 3));
+
+        // reeds_patch: 3-tall reeds in shallow water, placed by custom feature
+        register(ctx, REEDS_PATCH,
+                net.got.registry.WorldgenRegistries.TRIPLE_REEDS_PATCH.get(),
+                NoneFeatureConfiguration.INSTANCE);
 
         // ══════════════════════════════════════════════════════════════════════
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)

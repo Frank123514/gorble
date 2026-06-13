@@ -1,7 +1,7 @@
 {
   "#5C935C": {
     "biome": "got:north",
-    "base_height": 70,
+    "base_height": 68,
     "height_variation": 10
   },
 
@@ -73,7 +73,7 @@
 
   "#2D6796": {
     "biome": "got:river",
-    "base_height": 45,
+    "base_height": 50,
     "height_variation": 1
   },
 

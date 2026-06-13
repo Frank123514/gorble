@@ -147,6 +147,7 @@ public final class GotPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DISK_MUD          = key("disk_mud");
     public static final ResourceKey<PlacedFeature> DISK_QUAGMIRE     = key("disk_quagmire");
     public static final ResourceKey<PlacedFeature> SHORT_REEDS_PATCH = key("short_reeds_patch");
+    public static final ResourceKey<PlacedFeature> REEDS_PATCH       = key("reeds_patch");
 
     // Rock-pocket ores
     public static final ResourceKey<PlacedFeature> ORE_BASALT_ROCK        = key("ore_basalt_rock");
@@ -465,6 +466,13 @@ public final class GotPlacedFeatures {
                 List.of(CountPlacement.of(5),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP,
+                        BiomeFilter.biome()));
+
+        // reeds_patch: count=1 per chunk, ocean-floor heightmap — 3-tall reeds in shallow water
+        register(ctx, REEDS_PATCH, cf.getOrThrow(GotConfiguredFeatures.REEDS_PATCH),
+                List.of(CountPlacement.of(1),
+                        InSquarePlacement.spread(),
+                        HeightmapPlacement.onHeightmap(net.minecraft.world.level.levelgen.Heightmap.Types.OCEAN_FLOOR_WG),
                         BiomeFilter.biome()));
 
         // ══════════════════════════════════════════════════════════════════════

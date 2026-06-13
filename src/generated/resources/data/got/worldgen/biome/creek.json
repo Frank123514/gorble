@@ -1,20 +1,17 @@
 {
-  "has_precipitation": true,
-  "temperature": 0.7,
-  "downfall": 0.9,
+  "carvers": [],
+  "downfall": 0.5,
   "effects": {
-    "water_color": 3832426,
-    "water_fog_color": 2833197,
     "fog_color": 12638463,
-    "sky_color": 7842047,
-    "foliage_color": 6978884,
-    "grass_color_modifier": "swamp",
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
-    }
+    },
+    "sky_color": 8103167,
+    "water_color": 3499404,
+    "water_fog_color": 329011
   },
   "features": [
     [],
@@ -35,20 +32,25 @@
       "minecraft:ore_andesite_upper",
       "minecraft:ore_andesite_lower",
       "minecraft:ore_tuff",
-      "got:disk_mud",
-      "got:disk_quagmire",
-      "got:disk_clay"
+      "got:disk_sand",
+      "got:disk_clay",
+      "minecraft:disk_gravel"
     ],
     [],
     [],
     [
-      "got:short_reeds_patch"
+      "minecraft:glow_lichen",
+      "minecraft:seagrass_river",
+      "minecraft:patch_waterlily",
+      "got:short_reeds_patch",
+      "got:reeds_patch",
+      "got:willow"
     ],
     [
       "minecraft:freeze_top_layer"
     ]
   ],
-  "carvers": [],
+  "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],
@@ -59,5 +61,6 @@
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
-  }
+  },
+  "temperature": 0.5
 }
