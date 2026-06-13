@@ -132,7 +132,9 @@ public class GotHeronEntity extends Animal {
         var groundBlock = level.getBlockState(pos.below()).getBlock();
         if (groundBlock != Blocks.GRASS_BLOCK
                 && groundBlock != Blocks.SAND
-                && groundBlock != Blocks.GRAVEL) {
+                && groundBlock != Blocks.GRAVEL
+                && groundBlock != Blocks.MUD
+                && groundBlock != Blocks.CLAY) {
             return false;
         }
         for (BlockPos neighbour : BlockPos.withinManhattan(pos, 4, 1, 4)) {

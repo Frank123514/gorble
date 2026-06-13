@@ -454,9 +454,9 @@ public final class GotPlacedFeatures {
                                         net.minecraft.world.level.material.Fluids.WATER)),
                         BiomeFilter.biome()));
 
-        // disk_quagmire: count=3, surface heightmap, biome — boggy shore patches
+        // disk_quagmire: count=4, surface heightmap, biome — boggy shore patches
         register(ctx, DISK_QUAGMIRE, cf.getOrThrow(GotConfiguredFeatures.DISK_QUAGMIRE),
-                List.of(CountPlacement.of(3),
+                List.of(CountPlacement.of(4),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP,
                         BiomeFilter.biome()));
@@ -654,55 +654,55 @@ public final class GotPlacedFeatures {
 
 // nightwood
 
-        // purpleheart
+    // purpleheart
 
-        // tigerwood
+    // tigerwood
 
-        // burl
+    // burl
 
-        // sandalwood
+    // sandalwood
 
-        // sandbeggar
+    // sandbeggar
 
-        // apricot
+    // apricot
 
-        // blackthorn
+    // blackthorn
 
-        // red_cherry / black_cherry / white_cherry
+    // red_cherry / black_cherry / white_cherry
 
-        // crabapple
+    // crabapple
 
-        // date_palm
+    // date_palm
 
-        // fig
+    // fig
 
-        // lemon
+    // lemon
 
-        // lime
+    // lime
 
-        // olive
+    // olive
 
-        // orange
+    // orange
 
-        // peach
+    // peach
 
-        // pear
+    // pear
 
-        // persimmon
+    // persimmon
 
-        // pink_ivory
+    // pink_ivory
 
-        // plum
+    // plum
 
-        // pomegranate
+    // pomegranate
 
-        // prune
+    // prune
 
-        // almond
+    // almond
 
-        // nutmeg
+    // nutmeg
 
-        // hemlock
+    // hemlock
 
     // ─────────────────────────────────────────────────────────────────────────
     // Registry helpers

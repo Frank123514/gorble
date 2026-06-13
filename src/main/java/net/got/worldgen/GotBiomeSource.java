@@ -12,6 +12,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import org.jetbrains.annotations.NotNull;
+import org.joml.SimplexNoise;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,8 +71,8 @@ public final class GotBiomeSource extends BiomeSource {
         float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
-        float warpX = (float) SimplexNoise.noise(worldX / 320.0, worldZ / 320.0);
-        float warpZ = (float) SimplexNoise.noise(worldX / 320.0 + 3.7, worldZ / 320.0 + 8.1);
+        float warpX = (float) SimplexNoise.noise((float) (worldX / 320.0), (float) (worldZ / 320.0));
+        float warpZ = (float) SimplexNoise.noise((float) (worldX / 320.0 + 3.7), (float) (worldZ / 320.0 + 8.1));
         cx += warpX * 0.9f;
         cz += warpZ * 0.9f;
 

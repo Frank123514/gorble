@@ -87,22 +87,6 @@ public final class SimplexNoise {
         return 70.0 * (n0 + n1 + n2);
     }
 
-    /**
-     * fBm — sums octaves of simplex noise, normalised to [-1, 1].
-     * For smooth terrain use a low octave count (2) and low gain (0.25).
-     */
-    public double fbm(double x, double y, int octaves, double lacunarity, double gain) {
-        double value = 0, amplitude = 1, frequency = 1, maxAmp = 0;
-        for (int o = 0; o < octaves; o++) {
-            value    += eval(x * frequency, y * frequency) * amplitude;
-            maxAmp   += amplitude;
-            amplitude *= gain;
-            frequency *= lacunarity;
-        }
-        return value / maxAmp;
-    }
-
-
     /** Static convenience — uses the default (non-seeded) instance. */
     public static double noise(double x, double y) {
         return DEFAULT.eval(x, y);

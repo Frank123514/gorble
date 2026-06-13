@@ -598,11 +598,11 @@ public final class GotConfiguredFeatures {
                 UniformInt.of(1, 3),
                 1));
 
-        // disk_quagmire: quagmire, radius 1-2, half_height 1 — boggy shore patches
+        // disk_quagmire: quagmire, radius 1-3, half_height 1 — boggy shore patches
         register(ctx, DISK_QUAGMIRE, Feature.DISK, new DiskConfiguration(
                 RuleBasedBlockStateProvider.simple(GotModBlocks.QUAGMIRE.get().defaultBlockState().getBlock()),
                 BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.MUD, Blocks.CLAY),
-                UniformInt.of(1, 2),
+                UniformInt.of(1, 3),
                 1));
 
         // short_reeds_patch: shoreline reeds, tries=12, xzSpread=5, ySpread=3

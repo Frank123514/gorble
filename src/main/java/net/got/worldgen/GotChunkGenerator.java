@@ -29,12 +29,14 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     public static final int SEA_LEVEL = 63;
 
-    private static final double NOISE_SCALE_X = 220.0;
-    private static final double NOISE_SCALE_Z = 190.0;
+    // Base shape — large rolling hills
+    private static final double NOISE_SCALE_X = 280.0;
+    private static final double NOISE_SCALE_Z = 240.0;
 
-    private static final int    FBM_OCTAVES    = 4;
-    private static final double FBM_LACUNARITY = 2.0;
-    private static final double FBM_GAIN       = 0.35;
+    // Detail layer — smaller ridges on top of the base shape
+    private static final double DETAIL_SCALE_X = 80.0;
+    private static final double DETAIL_SCALE_Z = 80.0;
+    private static final double DETAIL_WEIGHT   = 0.35; // how much detail contributes vs base
 
 
     // ── Codec ──────────────────────────────────────────────────────────────
@@ -65,7 +67,17 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static volatile int configuredSpawnPixelX = -1;
     private static volatile int configuredSpawnPixelZ = -1;
 
-    private static volatile SimplexNoise seededNoise = SimplexNoise.seeded(0L);
+    // ── Inline simplex noise ───────────────────────────────────────────────
+    private static final double F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
+    private static final double G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
+    private static final double[][] GRAD2 = {
+            { 1, 1}, {-1, 1}, { 1,-1}, {-1,-1},
+            { 1, 0}, {-1, 0}, { 0, 1}, { 0,-1}
+    };
+    // Two independent perm tables so base and detail don't share the same pattern
+    private static volatile short[] noisePerm       = buildPerm(0L);
+    private static volatile short[] noisePermDetail = buildPerm(0x9E3779B97F4A7C15L);
+    private static volatile double  noiseOffX = 0, noiseOffZ = 0;
 
     // ── Constructor ────────────────────────────────────────────────────────
 
@@ -85,7 +97,10 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     public static void initNoise(long worldSeed) {
-        seededNoise = SimplexNoise.seeded(worldSeed);
+        noisePerm       = buildPerm(worldSeed);
+        noisePermDetail = buildPerm(worldSeed ^ 0x9E3779B97F4A7C15L);
+        noiseOffX = ((worldSeed       & 0xFFFFL) / 65536.0) * 1000.0;
+        noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
         SlopeSurfaceResolver.initSeed(worldSeed);
         CreekResolver.initSeed(worldSeed);
@@ -150,7 +165,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static float computeRawSurfaceY(int worldX, int worldZ) {
         if (!BiomemapLoader.isLoaded()) return SEA_LEVEL;
 
-        // Sample the 4x4 bicubic grid from the biomemap
         float cx = worldX / (float) BiomemapLoader.MAP_SCALE
                 + BiomemapLoader.getWidth()  * 0.5f;
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE
@@ -177,13 +191,15 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float rawHeight       = bicubicBspline(h, fx, fz);
         float heightVariation = bicubicBspline(v, fx, fz);
 
-        // Broad fBm noise for surface variation
-        double noiseVal = seededNoise.fbm(
-                worldX / NOISE_SCALE_X,
-                worldZ / NOISE_SCALE_Z,
-                FBM_OCTAVES,
-                FBM_LACUNARITY,
-                FBM_GAIN);
+        double ox = noiseOffX + worldX;
+        double oz = noiseOffZ + worldZ;
+
+        // Base shape — large smooth hills
+        double base   = simplexEval(noisePerm,       ox / NOISE_SCALE_X,  oz / NOISE_SCALE_Z);
+        // Detail layer — smaller rolling ridges, weighted down
+        double detail = simplexEval(noisePermDetail, ox / DETAIL_SCALE_X, oz / DETAIL_SCALE_Z);
+
+        double noiseVal = (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
 
         return rawHeight + (float) noiseVal * heightVariation;
     }
@@ -292,4 +308,40 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 surfY, p.baseHeight(), px, pz));
         info.add("[GoT] " + SlopeSurfaceResolver.debugInfo(p.biomeId(), pos.getX(), pos.getZ()));
     }
+
+    // ── Inline 2-D simplex helpers ─────────────────────────────────────────
+
+    private static short[] buildPerm(long seed) {
+        short[] p = new short[256];
+        for (short i = 0; i < 256; i++) p[i] = i;
+        long rng = seed ^ 0x6C62272E07BB0142L;
+        for (int i = 255; i > 0; i--) {
+            rng = rng * 6364136223846793005L + 1442695040888963407L;
+            int j = (int) ((rng >>> 33) % (i + 1));
+            short tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+        }
+        short[] perm = new short[512];
+        for (int i = 0; i < 512; i++) perm[i] = p[i & 255];
+        return perm;
+    }
+
+    private static double simplexEval(short[] perm, double xin, double yin) {
+        double s  = (xin + yin) * F2;
+        int i     = (int) Math.floor(xin + s);
+        int j     = (int) Math.floor(yin + s);
+        double t  = (i + j) * G2;
+        double x0 = xin - (i - t), y0 = yin - (j - t);
+        int i1 = x0 > y0 ? 1 : 0, j1 = x0 > y0 ? 0 : 1;
+        double x1 = x0 - i1 + G2,        y1 = y0 - j1 + G2;
+        double x2 = x0 - 1.0 + 2.0 * G2, y2 = y0 - 1.0 + 2.0 * G2;
+        int gi0 = perm[(i      + perm[ j      & 255]) & 255] & 7;
+        int gi1 = perm[(i + i1 + perm[(j + j1) & 255]) & 255] & 7;
+        int gi2 = perm[(i + 1  + perm[(j + 1)  & 255]) & 255] & 7;
+        double n0 = 0, n1 = 0, n2 = 0;
+        double t0 = 0.5 - x0*x0 - y0*y0; if (t0 > 0) { t0*=t0; n0 = t0*t0*(GRAD2[gi0][0]*x0 + GRAD2[gi0][1]*y0); }
+        double t1 = 0.5 - x1*x1 - y1*y1; if (t1 > 0) { t1*=t1; n1 = t1*t1*(GRAD2[gi1][0]*x1 + GRAD2[gi1][1]*y1); }
+        double t2 = 0.5 - x2*x2 - y2*y2; if (t2 > 0) { t2*=t2; n2 = t2*t2*(GRAD2[gi2][0]*x2 + GRAD2[gi2][1]*y2); }
+        return 70.0 * (n0 + n1 + n2);
+    }
+
 }

@@ -55,7 +55,20 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "minecraft:frog",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "got:got_heron",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      }
+    ],
     "misc": [],
     "monster": [],
     "underground_water_creature": [],

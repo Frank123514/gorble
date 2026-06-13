@@ -1,6 +1,7 @@
 package net.got.worldgen;
 
 import com.mojang.logging.LogUtils;
+import net.got.worldgen.SimplexNoise;
 import org.slf4j.Logger;
 
 import java.util.Set;
@@ -50,9 +51,11 @@ public final class CreekResolver {
     /**
      * Ridge noise threshold with zero river influence.
      * Ridge values are in [0,1]; the closer to 1, the narrower the channels.
-     * 0.68 gives medium-width channels at the tips of branches.
+     * Lowered from 0.68 → 0.62 so creek fingers reach a bit further into land.
+     * Note: this only affects land biome cells — river biomes are handled
+     * separately by GotBiomeSource and are unaffected by this value.
      */
-    private static final double BASE_THRESHOLD = 0.68;
+    private static final double BASE_THRESHOLD = 0.62;
 
     /**
      * How much each unit of riverInfluence lowers the effective threshold.
@@ -122,8 +125,8 @@ public final class CreekResolver {
      * @param worldZ          world Z block coordinate
      */
     public static boolean isCreek(String currentBiomeId,
-                                   float riverInfluence,
-                                   int worldX, int worldZ) {
+                                  float riverInfluence,
+                                  int worldX, int worldZ) {
         // No river influence at all — can't be a creek.
         if (riverInfluence < MIN_RIVER_INFLUENCE) return false;
 

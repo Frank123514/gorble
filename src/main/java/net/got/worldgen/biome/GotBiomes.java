@@ -316,6 +316,8 @@ public class GotBiomes {
      */
     private static Biome creek(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+        spawnBuilder.addSpawn(MobCategory.CREATURE,
+                new MobSpawnSettings.SpawnerData(GotModEntities.GOT_HERON.get(), 8, 1, 3));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),

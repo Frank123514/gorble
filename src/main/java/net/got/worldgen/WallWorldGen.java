@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.ChunkPos;
+import org.joml.SimplexNoise;
 
 /**
  * Generates The Wall — the 700-foot-tall barrier of ice that stretches
@@ -379,9 +380,9 @@ public final class WallWorldGen {
      */
     private static double faceNoise(int worldX, int relY) {
         // Large undulations (period ~40 blocks in X, ~60 in Y)
-        double n1 = SimplexNoise.noise(worldX / 40.0, relY / 60.0);
+        double n1 = SimplexNoise.noise((float) (worldX / 40.0), (float) (relY / 60.0));
         // Fine chipping detail (period ~12 blocks in X, ~18 in Y)
-        double n2 = SimplexNoise.noise(worldX / 12.0 + 31.7, relY / 18.0 + 17.3);
+        double n2 = SimplexNoise.noise((float) (worldX / 12.0 + 31.7), (float) (relY / 18.0 + 17.3));
         // Blend: 70% large, 30% fine.  Returns value in [-1, 1].
         return n1 * 0.7 + n2 * 0.3;
     }
@@ -392,8 +393,8 @@ public final class WallWorldGen {
      */
     private static double northFaceNoise(int worldX, int relY) {
         // Use different offsets for independent north/south noise patterns
-        double n1 = SimplexNoise.noise(worldX / 40.0 + 50.0, relY / 60.0 + 50.0);
-        double n2 = SimplexNoise.noise(worldX / 12.0 + 81.7, relY / 18.0 + 67.3);
+        double n1 = SimplexNoise.noise((float) (worldX / 40.0 + 50.0), (float) (relY / 60.0 + 50.0));
+        double n2 = SimplexNoise.noise((float) (worldX / 12.0 + 81.7), (float) (relY / 18.0 + 67.3));
         return n1 * 0.7 + n2 * 0.3;
     }
 

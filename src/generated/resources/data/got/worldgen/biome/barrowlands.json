@@ -1,9 +1,5 @@
 {
-  "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
-  ],
+  "carvers": [],
   "downfall": 0.8,
   "effects": {
     "fog_color": 12638463,
@@ -67,7 +63,7 @@
       "got:chestnut_sparse",
       "got:fir_sparse",
       "got:hawthorn_sparse",
-      "got:oak",
+      "got:oak_sparse",
       "got:pine_sparse",
       "got:shrub",
       "got:boulder",

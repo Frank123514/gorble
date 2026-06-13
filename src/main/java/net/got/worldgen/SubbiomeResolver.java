@@ -8,6 +8,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.got.worldgen.SimplexNoise;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 

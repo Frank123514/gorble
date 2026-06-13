@@ -14,6 +14,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.got.worldgen.SimplexNoise;
 import org.slf4j.Logger;
 
 import java.io.InputStreamReader;
@@ -119,9 +120,9 @@ public final class SlopeSurfaceResolver {
         float span = 2.0f * off;
 
         float dX = (GotChunkGenerator.computeRawSurfaceY(worldX + off, worldZ)
-                  - GotChunkGenerator.computeRawSurfaceY(worldX - off, worldZ)) / span;
+                - GotChunkGenerator.computeRawSurfaceY(worldX - off, worldZ)) / span;
         float dZ = (GotChunkGenerator.computeRawSurfaceY(worldX, worldZ + off)
-                  - GotChunkGenerator.computeRawSurfaceY(worldX, worldZ - off)) / span;
+                - GotChunkGenerator.computeRawSurfaceY(worldX, worldZ - off)) / span;
 
         float gradientMagnitude = (float) Math.sqrt(dX * dX + dZ * dZ);
         return (float) Math.toDegrees(Math.atan(gradientMagnitude));
