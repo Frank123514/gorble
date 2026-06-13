@@ -56,8 +56,8 @@
     [],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass",
-      "minecraft:patch_grass_normal",
+      "got:patch_tall_grass",
+      "got:patch_grass",
       "got:ash_sparse",
       "got:beech_sparse",
       "got:chestnut_sparse",

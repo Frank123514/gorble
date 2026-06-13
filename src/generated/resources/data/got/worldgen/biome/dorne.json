@@ -45,8 +45,8 @@
     [],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass",
-      "minecraft:patch_grass_normal",
+      "got:patch_tall_grass",
+      "got:patch_grass",
       "got:ash_sparse",
       "got:beech_sparse",
       "got:fir_sparse",
@@ -68,11 +68,7 @@
       "minecraft:freeze_top_layer"
     ]
   ],
-  "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
-  ],
+  "carvers": [],
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

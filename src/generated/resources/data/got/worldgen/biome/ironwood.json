@@ -49,8 +49,8 @@
     [],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass_2",
-      "minecraft:patch_grass_plain",
+      "got:patch_tall_grass",
+      "got:patch_grass",
       "got:aspen",
       "got:sentinal",
       "got:soldier_pine",
@@ -64,11 +64,7 @@
       "minecraft:freeze_top_layer"
     ]
   ],
-  "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
-  ],
+  "carvers": [],
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

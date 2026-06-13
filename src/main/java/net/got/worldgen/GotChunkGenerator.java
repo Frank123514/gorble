@@ -153,6 +153,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         RoadWorldGen.buildRoadsInChunk(chunk);
         RoadWorldGen.clearVegetationFromRoads(chunk);
         WallWorldGen.buildWallInChunk(chunk);
+        SlopeSurfaceResolver.applyMudPatches(chunk, region);
         SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
     }
 

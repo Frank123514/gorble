@@ -32,6 +32,10 @@
     { "min_slope": 22, "block": "minecraft:coarse_dirt",  "depth": 2, "jitter": 4 }
   ],
 
+  "got:western_hills": [
+    { "min_slope": 22, "block": "got:sandstone_rock",  "depth": 2, "jitter": 4 }
+  ],
+
   "got:north_hills": [
     { "min_slope": 38, "block": "minecraft:stone",        "depth": 4, "jitter": 4 },
     { "min_slope": 22, "block": "minecraft:stone",  "depth": 2, "jitter": 4 }

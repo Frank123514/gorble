@@ -12,8 +12,10 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.got.init.GotModBlocks;
 import net.got.worldgen.SimplexNoise;
 import org.slf4j.Logger;
 
@@ -73,6 +75,41 @@ public final class SlopeSurfaceResolver {
      */
     private static final int SLOPE_SAMPLE_OFFSET = 3;
 
+    // ── Mud / quagmire surface noise ────────────────────────────────────────
+
+    /**
+     * Primary noise scale for mud vs quagmire patches (in blocks).
+     * ~20 blocks gives natural hand-sized blobs rather than tiny speckle
+     * or giant uniform fills.
+     */
+    private static final double MUD_NOISE_SCALE = 20.0;
+
+    /**
+     * Secondary fine-detail noise scale — layered on top of the primary to
+     * break up blob edges so they read as organic shoreline rather than a
+     * smooth noise gradient.
+     */
+    private static final double MUD_DETAIL_SCALE = 7.0;
+
+    /**
+     * Combined noise threshold above which a column becomes quagmire.
+     * Range of eval() is roughly [-1, 1]; 0.15 keeps quagmire as a minority
+     * (~30–35 % of creek floor) while still forming contiguous blobs.
+     */
+    private static final double MUD_QUAGMIRE_THRESHOLD = 0.15;
+
+    /**
+     * Combined noise threshold below which a column stays as plain dirt/grass
+     * (no mud placed).  Columns between MUD_BARE_THRESHOLD and
+     * MUD_QUAGMIRE_THRESHOLD get vanilla Mud; columns above get Quagmire.
+     * Setting this to -0.6 means roughly 80 % of creek floor gets some mud
+     * coverage, leaving a little bare-dirt variety.
+     */
+    private static final double MUD_BARE_THRESHOLD = -0.6;
+
+    /** Biome ID that receives noise-driven mud / quagmire surface coverage. */
+    private static final String CREEK_BIOME = "got:creek";
+
     // ── Live state ─────────────────────────────────────────────────────────
 
     /** Biome ID → sorted (steepest-first) rule list. */
@@ -84,12 +121,19 @@ public final class SlopeSurfaceResolver {
      */
     private static volatile SimplexNoise jitterNoise = SimplexNoise.seeded(0L);
 
+    /**
+     * Noise used to choose mud vs quagmire surface blocks per-column.
+     * Seeded with a different offset to avoid correlation with jitter noise.
+     */
+    private static volatile SimplexNoise mudNoise = SimplexNoise.seeded(1L);
+
     private SlopeSurfaceResolver() {}
 
     // ── Seed initialisation ────────────────────────────────────────────────
 
     public static void initSeed(long worldSeed) {
         jitterNoise = SimplexNoise.seeded(worldSeed ^ 0xC0FFEE1AFADEL);
+        mudNoise    = SimplexNoise.seeded(worldSeed ^ 0xB06ED0E1DABL);
         LOGGER.debug("[GoT] SlopeSurfaceResolver seeded with world seed {}", worldSeed);
     }
 
@@ -129,6 +173,77 @@ public final class SlopeSurfaceResolver {
     }
 
     // ── Chunk post-processor ───────────────────────────────────────────────
+
+    /**
+     * Per-column noise-driven mud / quagmire surface placement for creek biomes.
+     *
+     * <p>Instead of the disk-feature scatter approach (which drops random blobs
+     * with no spatial coherence), this samples two octaves of simplex noise at
+     * each column and thresholds:
+     * <ul>
+     *   <li>noise &gt; {@link #MUD_QUAGMIRE_THRESHOLD} → Quagmire (boggy, sinking)</li>
+     *   <li>noise &gt; {@link #MUD_BARE_THRESHOLD} → Mud (vanilla)</li>
+     *   <li>otherwise → leave surface as-is</li>
+     * </ul>
+     *
+     * <p>Only replaces dirt, grass, and clay — never stone, gravel, or water —
+     * so it integrates cleanly with the existing creek floor without wiping road
+     * or slope blocks.
+     *
+     * <p>Call from {@link GotChunkGenerator#buildSurface} <em>before</em>
+     * {@link #applySlopeBlocks} so slope rock rules can overwrite mud on banks.
+     */
+    public static void applyMudPatches(ChunkAccess chunk, WorldGenLevel region) {
+        SimplexNoise noise = mudNoise;
+        int baseX = chunk.getPos().getMinBlockX();
+        int baseZ = chunk.getPos().getMinBlockZ();
+
+        BlockState mudState      = Blocks.MUD.defaultBlockState();
+        BlockState quagmireState = GotModBlocks.QUAGMIRE.get().defaultBlockState();
+
+        for (int lx = 0; lx < 16; lx++) {
+            for (int lz = 0; lz < 16; lz++) {
+
+                int wx = baseX + lx;
+                int wz = baseZ + lz;
+
+                int surfaceY = GotChunkGenerator.computeSurfaceY(wx, wz);
+                if (surfaceY <= region.getMinY()) continue;
+
+                // Only run in creek biome
+                String biomeId = region.getBiome(new BlockPos(wx, surfaceY, wz))
+                        .unwrapKey()
+                        .map(k -> k.location().toString())
+                        .orElse("");
+                if (!CREEK_BIOME.equals(biomeId)) continue;
+
+                // Two-octave noise: coarse blobs + fine edge break-up
+                double n = noise.eval(wx / MUD_NOISE_SCALE,   wz / MUD_NOISE_SCALE)
+                        + noise.eval(wx / MUD_DETAIL_SCALE,  wz / MUD_DETAIL_SCALE) * 0.4;
+                // Normalise to roughly [-1, 1]
+                n /= 1.4;
+
+                if (n <= MUD_BARE_THRESHOLD) continue; // leave as-is
+
+                BlockState target = n > MUD_QUAGMIRE_THRESHOLD ? quagmireState : mudState;
+
+                // Replace the top solid block if it's a replaceable surface type
+                for (int y = surfaceY; y >= region.getMinY(); y--) {
+                    BlockPos localPos = new BlockPos(lx, y, lz);
+                    BlockState curr = chunk.getBlockState(localPos);
+                    if (curr.isAir() || curr.liquid()) continue;
+
+                    // Only replace dirt-family blocks — leave stone/gravel/sand alone
+                    Block b = curr.getBlock();
+                    if (b == Blocks.DIRT || b == Blocks.GRASS_BLOCK || b == Blocks.CLAY
+                            || b == Blocks.COARSE_DIRT || b == Blocks.ROOTED_DIRT) {
+                        chunk.setBlockState(localPos, target, false);
+                    }
+                    break; // only touch the topmost solid block
+                }
+            }
+        }
+    }
 
     /**
      * Post-processes surface columns in {@code chunk}, replacing the top

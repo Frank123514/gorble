@@ -56,7 +56,7 @@
   "#047D17": {
     "biome": "got:wolfswood",
     "base_height": 71,
-    "height_variation": 4
+    "height_variation": 10
   },
 
   "#00229D": {
@@ -153,6 +153,12 @@
     "biome": "got:westerlands",
     "base_height": 70,
     "height_variation": 10
+  },
+
+  "#B1B9A3": {
+    "biome": "got:western_hills",
+    "base_height": 100,
+    "height_variation": 40
   },
 
   "#4C9644": {
