@@ -5,6 +5,18 @@
     "height_variation": 10
   },
 
+  "#699B6D": {
+    "biome": "got:gift",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#7BA181": {
+    "biome": "got:beyond_the_wall",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
   "#639E63": {
     "biome": "got:barrowlands",
     "base_height": 75,
@@ -95,7 +107,7 @@
     "height_variation": 65
   },
 
-  "#2A5D2A": {
+  "#2A5E2A": {
     "biome": "got:haunted_forest",
     "base_height": 70,
     "height_variation": 3
@@ -125,32 +137,50 @@
     "height_variation": 2
   },
 
-  "#A0D1CE": {
-    "biome": "got:the_wall",
-    "base_height": 150,
-    "height_variation": 0
-  },
-
-  "#3D8042": {
+  "#4C994F": {
     "biome": "got:riverlands",
     "base_height": 70,
     "height_variation": 10
   },
 
-  "#4D8C46": {
+  "#5A9955": {
     "biome": "got:vale",
     "base_height": 70,
     "height_variation": 10
   },
 
-  "#708A3D": {
+  "#69994B": {
     "biome": "got:westerlands",
     "base_height": 70,
     "height_variation": 10
   },
 
-  "#408539": {
+  "#4C9644": {
     "biome": "got:reach",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#478C40": {
+    "biome": "got:stormlands",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#629446": {
+    "biome": "got:lower_reach",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#899946": {
+    "biome": "got:dorne",
+    "base_height": 70,
+    "height_variation": 10
+  },
+
+  "#969C4E": {
+    "biome": "got:dorne_desert",
     "base_height": 70,
     "height_variation": 10
   }

@@ -7,7 +7,7 @@
   "downfall": 0.4,
   "effects": {
     "fog_color": 0,
-    "grass_color": 6067036,
+    "grass_color": 8102273,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -42,19 +42,22 @@
     [],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass_2",
-      "minecraft:patch_grass_plain",
-      "minecraft:fancy_oak_bees",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_normal",
       "got:sentinal",
       "got:soldier_pine",
       "got:hawthorn",
-      "got:beech",
       "got:ash",
       "got:chestnut",
       "got:ironwood_sparse",
       "got:fir",
       "got:pine",
-      "got:weirwood"
+      "got:weirwood",
+      "got:oak",
+      "got:frostfires",
+      "got:thistle",
+      "got:thornbush",
+      "got:winter_rose_bush"
     ],
     [
       "minecraft:freeze_top_layer"

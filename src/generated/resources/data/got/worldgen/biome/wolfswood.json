@@ -53,9 +53,8 @@
     [],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass_2",
-      "minecraft:patch_grass_plain",
-      "minecraft:fancy_oak_bees",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_normal",
       "got:sentinal",
       "got:soldier_pine",
       "got:hawthorn",
@@ -65,7 +64,8 @@
       "got:ironwood_sparse",
       "got:fir",
       "got:pine",
-      "got:weirwood"
+      "got:weirwood",
+      "got:oak"
     ],
     [
       "minecraft:freeze_top_layer"

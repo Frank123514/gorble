@@ -1,5 +1,5 @@
 {
-  "feature": "got:beech_fancy",
+  "feature": "got:oak",
   "placement": [
     {
       "type": "minecraft:count",
@@ -8,7 +8,7 @@
         "distribution": [
           {
             "data": 1,
-            "weight": 45
+            "weight": 12
           },
           {
             "data": 5,
@@ -36,7 +36,7 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "got:beech_sapling",
+          "Name": "got:nutmeg_sapling",
           "Properties": {
             "stage": "0"
           }
