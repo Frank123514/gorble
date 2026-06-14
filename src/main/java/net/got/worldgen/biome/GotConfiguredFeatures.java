@@ -106,6 +106,16 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> SHORT_REEDS_PATCH = key("short_reeds_patch");
     public static final ResourceKey<ConfiguredFeature<?, ?>> REEDS_PATCH       = key("reeds_patch");
 
+    // ── Noisy organic-blob patches ──────────────────────────────────────────
+    /** Fat, irregular mud splash — good for boggy/wet biome floors. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_MUD     = key("noisy_patch_mud");
+    /** Loose gravel scatter with ragged tendrils — riverbanks, hillsides. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_GRAVEL  = key("noisy_patch_gravel");
+    /** Wide sandy clearing — beach fringes, desert borders. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_SAND    = key("noisy_patch_sand");
+    /** Bare-earth dirt patch worn into grassland — grazed meadows. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_DIRT    = key("noisy_patch_dirt");
+
     // Rock-pocket ores
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_BASALT_ROCK        = key("ore_basalt_rock");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_FLINT_ROCK         = key("ore_flint_rock");
@@ -612,6 +622,77 @@ public final class GotConfiguredFeatures {
         register(ctx, REEDS_PATCH,
                 net.got.registry.WorldgenRegistries.TRIPLE_REEDS_PATCH.get(),
                 NoneFeatureConfiguration.INSTANCE);
+
+        // ── Noisy organic-blob patches ──────────────────────────────────────
+        // These use domain-warped simplex noise to produce irregular, naturally
+        // ragged patches — fat blobs with lumpy edges, not perfect disks.
+
+        // noisy_patch_mud: boggy wet splashes, replaces dirt/grass/clay
+        register(ctx, NOISY_PATCH_MUD,
+                net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
+                new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
+                        BlockStateProvider.simple(Blocks.MUD),
+                        List.of(Blocks.DIRT.defaultBlockState(),
+                                Blocks.GRASS_BLOCK.defaultBlockState(),
+                                Blocks.CLAY.defaultBlockState()),
+                        8,      // radius
+                        1.8,    // stretch_x — oval aspect ratio
+                        1.0,    // stretch_z
+                        0.10,   // threshold
+                        0.55,   // warp_weight
+                        0.18,   // scale_low
+                        0.42,   // scale_high
+                        0.25)); // scale_warp
+
+        // noisy_patch_gravel: loose riverbank gravel, replaces dirt/grass/sand
+        register(ctx, NOISY_PATCH_GRAVEL,
+                net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
+                new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
+                        BlockStateProvider.simple(Blocks.GRAVEL),
+                        List.of(Blocks.DIRT.defaultBlockState(),
+                                Blocks.GRASS_BLOCK.defaultBlockState(),
+                                Blocks.SAND.defaultBlockState()),
+                        7,      // radius
+                        2.0,    // stretch_x — longer, thinner scatters
+                        1.0,    // stretch_z
+                        0.20,   // threshold
+                        0.70,   // warp_weight
+                        0.22,   // scale_low
+                        0.55,   // scale_high
+                        0.30)); // scale_warp
+
+        // noisy_patch_sand: sandy clearing, replaces dirt/grass/gravel
+        register(ctx, NOISY_PATCH_SAND,
+                net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
+                new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
+                        BlockStateProvider.simple(Blocks.SAND),
+                        List.of(Blocks.DIRT.defaultBlockState(),
+                                Blocks.GRASS_BLOCK.defaultBlockState(),
+                                Blocks.GRAVEL.defaultBlockState()),
+                        9,      // radius
+                        1.6,    // stretch_x — wide but not as extreme
+                        1.0,    // stretch_z
+                        0.05,   // threshold
+                        0.40,   // warp_weight
+                        0.14,   // scale_low
+                        0.35,   // scale_high
+                        0.20)); // scale_warp
+
+        // noisy_patch_dirt: bare-earth grazed patches in grassland
+        register(ctx, NOISY_PATCH_DIRT,
+                net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
+                new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
+                        BlockStateProvider.simple(Blocks.DIRT),
+                        List.of(Blocks.GRASS_BLOCK.defaultBlockState(),
+                                Blocks.DIRT_PATH.defaultBlockState()),
+                        7,      // radius
+                        1.7,    // stretch_x
+                        1.0,    // stretch_z
+                        0.12,   // threshold
+                        0.60,   // warp_weight
+                        0.20,   // scale_low
+                        0.45,   // scale_high
+                        0.28)); // scale_warp
 
         // ══════════════════════════════════════════════════════════════════════
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)

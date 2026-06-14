@@ -155,6 +155,51 @@ public final class SubbiomeResolver {
         return null;
     }
 
+    /**
+     * Terrain-aware variant of {@link #resolve}.
+     *
+     * <p>Returns the matching {@link SubbiomeDef} if it has a terrain override
+     * ({@link SubbiomeDef#hasTerrainOverride()} is true), so the chunk generator
+     * can blend in the subbiome's {@code base_height} / {@code height_variation}.
+     * Returns {@code null} when there is no match or the match has no terrain
+     * override (terrain should be left as-is in that case).
+     *
+     * <p>Also exposes the raw normalised noise value via {@code noiseOut[0]}
+     * so the caller can compute an edge-blend weight without re-sampling noise.
+     *
+     * @param parentBiomeId parent biome ID
+     * @param worldX        world X block coordinate
+     * @param worldZ        world Z block coordinate
+     * @param noiseOut      single-element array; receives the normalised noise
+     *                      value [0,1] of the first matching def, or -1 if no
+     *                      match.  Pass {@code null} to skip.
+     * @return the first matching {@link SubbiomeDef} with a terrain override,
+     *         or {@code null}
+     */
+    @Nullable
+    public static SubbiomeDef resolveTerrain(String parentBiomeId,
+                                             int worldX, int worldZ,
+                                             float @Nullable [] noiseOut) {
+        List<SubbiomeDef> defs = subbiomeMap.get(parentBiomeId);
+        if (defs == null || defs.isEmpty()) return null;
+
+        SimplexNoise n = noise;
+        for (SubbiomeDef def : defs) {
+            if (!def.hasTerrainOverride()) continue;
+            double raw        = n.eval(
+                    (worldX + def.noiseOffsetX()) / def.noiseScale(),
+                    (worldZ + def.noiseOffsetZ()) / def.noiseScale()
+            );
+            double normalised = (raw + 1.0) * 0.5;
+            if (normalised >= def.threshold()) {
+                if (noiseOut != null) noiseOut[0] = (float) normalised;
+                return def;
+            }
+        }
+        if (noiseOut != null) noiseOut[0] = -1f;
+        return null;
+    }
+
     // ── Load / apply ───────────────────────────────────────────────────────
 
     /**
@@ -196,6 +241,14 @@ public final class SubbiomeResolver {
                     int    priority   = obj.has("priority")
                             ? obj.get("priority").getAsInt()        : 0;
 
+                    // Terrain override fields — negative sentinel = inherit from parent
+                    float baseHeight      = obj.has("base_height")
+                            ? obj.get("base_height").getAsFloat()       : -1f;
+                    float heightVariation = obj.has("height_variation")
+                            ? obj.get("height_variation").getAsFloat()   : -1f;
+                    float blendRadius     = obj.has("blend_radius")
+                            ? obj.get("blend_radius").getAsFloat()       : 24f;
+
                     // Derive unique, stable noise offsets from the subbiome ID's
                     // hash code so every subbiome has its own patch layout even
                     // within the same parent biome.
@@ -204,7 +257,8 @@ public final class SubbiomeResolver {
                     double offsetZ = (((hash >> 16) & 0xFFFF) - 32768) / 32768.0 * OFFSET_SPREAD;
 
                     defs.add(new SubbiomeDef(subbiomeId, noiseScale, threshold,
-                            priority, offsetX, offsetZ));
+                            priority, offsetX, offsetZ,
+                            baseHeight, heightVariation, blendRadius));
                 }
 
                 // Sort descending by priority so highest-priority entries are

@@ -184,8 +184,43 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 int px = ipx + col - 1;
                 int pz = ipz + row - 1;
                 GotBiomeTerrainParams.Params p = paramsAt(px, pz);
-                h[row * 4 + col] = p.baseHeight();
-                v[row * 4 + col] = p.heightVariation();
+
+                float gridH = p.baseHeight();
+                float gridV = p.heightVariation();
+
+                // If this grid cell is a land biome, check whether a
+                // terrain-overriding subbiome is active at this pixel's world
+                // position and lerp its h/v values in-place.
+                // The bicubic spline then blends these modified values with the
+                // surrounding unmodified cells — EXACTLY the same interpolation
+                // used for all normal biome borders.
+                if (!p.isWater()) {
+                    int gridWorldX = Math.round(
+                            (px - BiomemapLoader.getWidth()  * 0.5f) * BiomemapLoader.MAP_SCALE);
+                    int gridWorldZ = Math.round(
+                            (pz - BiomemapLoader.getHeight() * 0.5f) * BiomemapLoader.MAP_SCALE);
+
+                    float[] noiseOut = { -1f };
+                    SubbiomeDef sub = SubbiomeResolver.resolveTerrain(
+                            p.biomeId(), gridWorldX, gridWorldZ, noiseOut);
+
+                    if (sub != null) {
+                        // Map noise [threshold, 1] → blend weight [0, 1], smoothstepped.
+                        float t      = (float) sub.threshold();
+                        float range  = Math.max(1f - t, 0.001f);
+                        float blendT = Mth.clamp((noiseOut[0] - t) / range, 0f, 1f);
+                        float weight = blendT * blendT * (3f - 2f * blendT);
+
+                        float subH = sub.baseHeight()      >= 0 ? sub.baseHeight()      : gridH;
+                        float subV = sub.heightVariation() >= 0 ? sub.heightVariation() : gridV;
+
+                        gridH = Mth.lerp(weight, gridH, subH);
+                        gridV = Mth.lerp(weight, gridV, subV);
+                    }
+                }
+
+                h[row * 4 + col] = gridH;
+                v[row * 4 + col] = gridV;
             }
         }
 

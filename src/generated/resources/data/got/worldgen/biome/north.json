@@ -72,17 +72,15 @@
       "got:wild_cabbage",
       "got:blackberry_bush",
       "got:patch_leaves",
-      "got:wheatgrass"
+      "got:wheatgrass",
+      "got:noisy_patch_podzol",
+      "got:noisy_patch_coarse_dirt"
     ],
     [
       "minecraft:freeze_top_layer"
     ]
   ],
-  "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
-  ],
+  "carvers": [],
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.got.GotMod;
 import net.got.worldgen.GotChunkGenerator;
 import net.got.worldgen.GotBiomeSource;
+import net.got.worldgen.biome.placers.NoisyBlockPatchFeature;
 import net.got.worldgen.biome.placers.TripleReedsPatchFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -48,6 +49,15 @@ public final class WorldgenRegistries {
     public static final net.neoforged.neoforge.registries.DeferredHolder<Feature<?>, TripleReedsPatchFeature> TRIPLE_REEDS_PATCH = FEATURES.register(
             "triple_reeds_patch",
             () -> new TripleReedsPatchFeature(NoneFeatureConfiguration.CODEC));
+
+    /**
+     * Organic blob-shaped surface patch, driven by domain-warped simplex noise.
+     * Usage: place a JSON configured-feature with type {@code got:noisy_block_patch}
+     * and the fields described in {@link NoisyBlockPatchFeature.Config}.
+     */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<Feature<?>, NoisyBlockPatchFeature> NOISY_BLOCK_PATCH = FEATURES.register(
+            "noisy_block_patch",
+            () -> new NoisyBlockPatchFeature(NoisyBlockPatchFeature.CONFIG_CODEC));
 
     /* ------------------------------------------------------------------ */
     /* Registration                                                         */

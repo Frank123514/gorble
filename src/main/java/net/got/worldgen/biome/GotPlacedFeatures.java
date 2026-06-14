@@ -149,6 +149,12 @@ public final class GotPlacedFeatures {
     public static final ResourceKey<PlacedFeature> SHORT_REEDS_PATCH = key("short_reeds_patch");
     public static final ResourceKey<PlacedFeature> REEDS_PATCH       = key("reeds_patch");
 
+    // Noisy organic-blob patches
+    public static final ResourceKey<PlacedFeature> NOISY_PATCH_MUD    = key("noisy_patch_mud");
+    public static final ResourceKey<PlacedFeature> NOISY_PATCH_GRAVEL = key("noisy_patch_gravel");
+    public static final ResourceKey<PlacedFeature> NOISY_PATCH_SAND   = key("noisy_patch_sand");
+    public static final ResourceKey<PlacedFeature> NOISY_PATCH_DIRT   = key("noisy_patch_dirt");
+
     // Rock-pocket ores
     public static final ResourceKey<PlacedFeature> ORE_BASALT_ROCK        = key("ore_basalt_rock");
     public static final ResourceKey<PlacedFeature> ORE_FLINT_ROCK         = key("ore_flint_rock");
@@ -473,6 +479,38 @@ public final class GotPlacedFeatures {
                 List.of(CountPlacement.of(1),
                         InSquarePlacement.spread(),
                         HeightmapPlacement.onHeightmap(net.minecraft.world.level.levelgen.Heightmap.Types.OCEAN_FLOOR_WG),
+                        BiomeFilter.biome()));
+
+        // ── Noisy organic-blob patches ──────────────────────────────────────
+        // count=1 per chunk (low frequency), surface heightmap, biome filter.
+        // Biomes that want more coverage should add these with extra CountPlacement.
+
+        // noisy_patch_mud: ~1 per 4 chunks — boggy / wetland floors
+        register(ctx, NOISY_PATCH_MUD, cf.getOrThrow(GotConfiguredFeatures.NOISY_PATCH_MUD),
+                List.of(RarityFilter.onAverageOnceEvery(4),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP,
+                        BiomeFilter.biome()));
+
+        // noisy_patch_gravel: ~1 per 4 chunks — riverbanks, hillsides
+        register(ctx, NOISY_PATCH_GRAVEL, cf.getOrThrow(GotConfiguredFeatures.NOISY_PATCH_GRAVEL),
+                List.of(RarityFilter.onAverageOnceEvery(4),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP,
+                        BiomeFilter.biome()));
+
+        // noisy_patch_sand: ~1 per 4 chunks — beach fringes, desert edges
+        register(ctx, NOISY_PATCH_SAND, cf.getOrThrow(GotConfiguredFeatures.NOISY_PATCH_SAND),
+                List.of(RarityFilter.onAverageOnceEvery(4),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP,
+                        BiomeFilter.biome()));
+
+        // noisy_patch_dirt: ~1 per 4 chunks — grazed grassland
+        register(ctx, NOISY_PATCH_DIRT, cf.getOrThrow(GotConfiguredFeatures.NOISY_PATCH_DIRT),
+                List.of(RarityFilter.onAverageOnceEvery(4),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP,
                         BiomeFilter.biome()));
 
         // ══════════════════════════════════════════════════════════════════════
