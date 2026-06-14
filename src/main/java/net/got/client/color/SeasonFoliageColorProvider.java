@@ -101,6 +101,13 @@ public final class SeasonFoliageColorProvider {
     private static final int[] NUTMEG             = { 0x80B048, 0x608830, 0xA07828, 0x686050 };
     private static final int[] HEMLOCK            = { 0x508838, 0x386830, 0x306830, 0x406050 };
 
+    // Hranna: blood red in spring (flowers bloom), grass-tinted in summer,
+    // deep brown in autumn (dry season), grass-tinted in winter
+    // Hranna: blood red in spring (flowers bloom), grass-tinted in summer,
+    // deep brown in autumn (dry season), grass-tinted in winter
+    // Summer = SUMMER_GRASS (0x5DB535), Winter = WINTER_GRASS (0x8C7D5E)
+    private static final int[] HRANNA             = { 0x8B1010, 0x5DB535, 0x5C3208, 0x8C7D5E };
+
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -183,6 +190,9 @@ public final class SeasonFoliageColorProvider {
         event.register(treeColor(ALMOND),        GotModBlocks.ALMOND_LEAVES.get());
         event.register(treeColor(NUTMEG),        GotModBlocks.NUTMEG_LEAVES.get());
         event.register(treeColor(HEMLOCK),        GotModBlocks.HEMLOCK_LEAVES.get());
+
+        // Hranna — seasonal tint: blood red spring, grass summer, deep brown autumn, grass winter
+        event.register(treeColor(HRANNA), GotModBlocks.HRANNA.get());
 
         // Weirwood — registered with a white (0xFFFFFF) no-op tint so neither
         // seasonal nor biome foliage color is ever multiplied onto the texture.
