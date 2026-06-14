@@ -65,7 +65,20 @@
       "got:fir",
       "got:pine",
       "got:weirwood",
-      "got:oak"
+      "got:oak",
+      "got:spruce_shrub",
+      "got:forget_me_not",
+      "got:liverwort",
+      "got:lungwort",
+      "got:pennyroyal",
+      "got:red_rose_bush",
+      "got:thistle",
+      "got:thornbush",
+      "got:winter_rose_bush",
+      "got:patch_leaves",
+      "got:wheatgrass",
+      "got:noisy_patch_podzol",
+      "got:noisy_patch_coarse_dirt"
     ],
     [
       "minecraft:freeze_top_layer"

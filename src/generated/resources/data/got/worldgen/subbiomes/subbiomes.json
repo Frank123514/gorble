@@ -17,6 +17,14 @@
       "noise_scale": 240.0,
       "threshold": 0.85,
       "priority": 0
+    },
+    {
+      "subbiome": "got:north_hills",
+      "noise_scale": 280.0,
+      "threshold": 0.76,
+      "priority": 0,
+      "base_height": 95,
+      "height_variation": 22
     }
   ],
 
@@ -30,14 +38,6 @@
   ],
 
   "got:wolfswood": [
-    {
-      "subbiome": "got:lake",
-      "noise_scale": 200.0,
-      "threshold": 0.80,
-      "priority": 1,
-      "base_height": 10,
-      "height_variation": 2
-    },
     {
       "subbiome": "got:north_hills",
       "noise_scale": 280.0,

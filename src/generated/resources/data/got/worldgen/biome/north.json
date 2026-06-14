@@ -73,8 +73,7 @@
       "got:blackberry_bush",
       "got:patch_leaves",
       "got:wheatgrass",
-      "got:noisy_patch_podzol",
-      "got:noisy_patch_coarse_dirt"
+      "got:noisy_patch_dirt"
     ],
     [
       "minecraft:freeze_top_layer"

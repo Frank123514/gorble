@@ -57,7 +57,9 @@
       "got:boulder",
       "got:limestone_boulder",
       "got:grey_granite_boulder",
-      "got:slate_boulder"
+      "got:slate_boulder",
+      "got:noisy_patch_stone",
+      "got:noisy_patch_gravel"
     ],
     [
       "minecraft:freeze_top_layer"

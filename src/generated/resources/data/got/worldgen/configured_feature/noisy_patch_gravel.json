@@ -1,0 +1,21 @@
+{
+  "type": "got:noisy_block_patch",
+  "config": {
+    "block": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:gravel"
+      }
+    },
+    "targets": [
+      { "Name": "minecraft:grass_block", "Properties": { "snowy": "false" } },
+      { "Name": "minecraft:dirt_path" }
+    ],
+    "radius": 7,
+    "threshold": 0.12,
+    "warp_weight": 0.60,
+    "scale_low": 0.20,
+    "scale_high": 0.45,
+    "scale_warp": 0.28
+  }
+}

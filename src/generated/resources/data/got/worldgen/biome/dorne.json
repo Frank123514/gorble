@@ -47,22 +47,15 @@
       "minecraft:glow_lichen",
       "got:patch_tall_grass",
       "got:patch_grass",
-      "got:ash_sparse",
-      "got:beech_sparse",
-      "got:fir_sparse",
-      "got:hawthorn_sparse",
+      "got:oak_sparse",
+      "got:acacia_sparse",
       "got:shrub",
       "got:boulder",
       "got:limestone_boulder",
       "got:grey_granite_boulder",
       "got:slate_boulder",
-      "got:wild_cotton",
-      "got:wild_onion",
-      "got:wild_garlic",
-      "got:wild_carrot",
-      "got:wild_cabbage",
-      "got:blackberry_bush",
-      "got:patch_leaves"
+      "got:noisy_patch_sand",
+      "got:noisy_patch_mud"
     ],
     [
       "minecraft:freeze_top_layer"
