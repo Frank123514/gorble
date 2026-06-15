@@ -1,5 +1,5 @@
 {
-  "feature": "got:noisy_patch_dirt",
+  "feature": "got:noisy_patch_grass",
   "placement": [
     { "type": "minecraft:rarity_filter", "chance": 5 },
     { "type": "minecraft:in_square" },

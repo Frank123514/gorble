@@ -1,6 +1,6 @@
 {
   "carvers": [],
-  "downfall": 0.9,
+  "downfall": 0.7,
   "effects": {
     "fog_color": 0,
     "grass_color": 6067036,
@@ -70,5 +70,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.0
+  "temperature": -0.3
 }

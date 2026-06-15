@@ -1,6 +1,6 @@
 {
   "has_precipitation": true,
-  "downfall": 0.4,
+  "downfall": 0.5,
   "effects": {
     "fog_color": 12638463,
     "grass_color": 8102273,
@@ -149,5 +149,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.2
+  "temperature": 0.0
 }

@@ -1,22 +1,17 @@
 {
-  "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
-  ],
-  "downfall": 0.4,
+  "carvers": [],
+  "downfall": 0.3,
   "effects": {
     "fog_color": 12638463,
-    "grass_color": 6067036,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
-    "sky_color": 8233727,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "sky_color": 7907327,
+    "water_color": 176357,
+    "water_fog_color": 94888
   },
   "features": [
     [],
@@ -36,12 +31,17 @@
       "minecraft:ore_diorite_lower",
       "minecraft:ore_andesite_upper",
       "minecraft:ore_andesite_lower",
-      "minecraft:ore_tuff"
+      "minecraft:ore_tuff",
+      "got:disk_sand",
+      "got:disk_clay",
+      "minecraft:disk_gravel"
     ],
     [],
     [],
     [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "minecraft:seagrass_river",
+      "minecraft:patch_waterlily"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -52,12 +52,25 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "minecraft:frog",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "got:got_heron",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      }
+    ],
     "misc": [],
     "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.35
+  "temperature": 1.5
 }

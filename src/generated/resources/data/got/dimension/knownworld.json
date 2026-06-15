@@ -12,6 +12,7 @@
         "got:gift",
         "got:neck",
         "got:creek",
+        "got:oasis",
         "got:ironwood",
         "got:wolfswood",
         "got:ocean",
@@ -37,7 +38,6 @@
         "got:lower_reach",
         "got:dorne",
         "got:dorne_desert",
-
         "got:subbiome/maple_forest",
         "got:subbiome/beech_forest",
         "got:subbiome/wheat_field"

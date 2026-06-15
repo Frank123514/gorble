@@ -31,6 +31,9 @@ public class GotBiomes {
     public static final ResourceKey<Biome> CREEK =
             ResourceKey.create(Registries.BIOME, GotMod.id("creek"));
 
+    public static final ResourceKey<Biome> OASIS =
+            ResourceKey.create(Registries.BIOME, GotMod.id("oasis"));
+
     public static final ResourceKey<Biome> DEEP_OCEAN =
             ResourceKey.create(Registries.BIOME, GotMod.id("deep_ocean"));
 
@@ -111,6 +114,7 @@ public class GotBiomes {
         context.register(ALWAYS_WINTER,    alwaysWinter(context));
         context.register(BARROWLANDS,      barrowlands(context));
         context.register(CREEK,            creek(context));
+        context.register(OASIS,            oasis(context));
         context.register(DEEP_OCEAN,       deepOcean(context));
         context.register(FROSTFANGS,       frostfangs(context));
         context.register(FROZEN_LAKE,      frozenLake(context));
@@ -345,6 +349,41 @@ public class GotBiomes {
                         .skyColor(7842047)
                         .foliageColorOverride(0x6A7D44)
                         .grassColorModifier(BiomeSpecialEffects.GrassColorModifier.SWAMP)
+                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .build();
+    }
+
+    // Oasis ───────────────────────────────────────────────────────────────────
+
+    /**
+     * Hot oasis biome — assigned wherever hot land terrain (Dorne, Dorne Desert,
+     * Lower Reach) dips below sea level, replacing creek in those regions.
+     */
+    private static Biome oasis(BootstrapContext<Biome> context) {
+        MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+
+        BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
+                context.lookup(Registries.PLACED_FEATURE),
+                context.lookup(Registries.CONFIGURED_CARVER));
+        globalOverworldGeneration(biomeBuilder);
+
+        biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_SAND);
+        biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_CLAY);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_RIVER);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_WATERLILY);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(1.5f)
+                .downfall(0.3f)
+                .generationSettings(biomeBuilder.build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .waterColor(0x02B0E5)    // vivid turquoise
+                        .waterFogColor(0x0172A8) // deep cyan fog
+                        .fogColor(12638463)
+                        .skyColor(7907327)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
                 .build();

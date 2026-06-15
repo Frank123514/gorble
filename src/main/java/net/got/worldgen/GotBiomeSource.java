@@ -20,6 +20,12 @@ import java.util.stream.Stream;
 
 public final class GotBiomeSource extends BiomeSource {
 
+    private static final Set<String> HOT_BIOME_IDS = Set.of(
+            "got:dorne",
+            "got:dorne_desert",
+            "got:lower_reach"
+    );
+
     private static final Set<String> WATER_BIOME_IDS = Set.of(
             "got:ocean",
             "got:deep_ocean",
@@ -28,7 +34,8 @@ public final class GotBiomeSource extends BiomeSource {
             "got:frozen_river",
             "got:lake",
             "got:frozen_lake",
-            "got:creek"
+            "got:creek",
+            "got:oasis"
     );
 
 
@@ -137,11 +144,9 @@ public final class GotBiomeSource extends BiomeSource {
         }
 
         // CREEK SWAP — land biome winner but terrain is actually underwater → creek.
-        // This catches ponds/puddles formed by height variation inside land biomes,
-        // and river-edge cells where the land biome won the vote but the ground
-        // has dipped below sea level.
-        if (!WATER_BIOME_IDS.contains(winner) && surfaceY < GotChunkGenerator.SEA_LEVEL) {
-            winner = "got:creek";
+        // +4 above sea level extends creek/oasis a little into the shallow land edges.
+        if (!WATER_BIOME_IDS.contains(winner) && surfaceY < GotChunkGenerator.SEA_LEVEL + 1) {
+            winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
         }
 
         // SUB-BIOME CHECK

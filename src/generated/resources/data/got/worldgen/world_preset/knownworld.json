@@ -4,10 +4,8 @@
       "type": "got:knownworld",
       "generator": {
         "type": "got:chunk_generator",
-
         "spawn_pixel_x": 1500,
         "spawn_pixel_z": 677,
-
         "biome_source": {
           "type": "got:biome_source",
           "biomes": [
@@ -18,6 +16,7 @@
             "got:gift",
             "got:neck",
             "got:creek",
+            "got:oasis",
             "got:ironwood",
             "got:wolfswood",
             "got:ocean",
@@ -43,7 +42,6 @@
             "got:lower_reach",
             "got:dorne",
             "got:dorne_desert",
-
             "got:subbiome/maple_forest",
             "got:subbiome/beech_forest",
             "got:subbiome/wheat_field"

@@ -72,8 +72,7 @@
       "got:wild_cabbage",
       "got:blackberry_bush",
       "got:patch_leaves",
-      "got:wheatgrass",
-      "got:noisy_patch_dirt"
+      "got:wheatgrass"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -152,5 +151,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.2
+  "temperature": 0.25
 }

@@ -45,24 +45,14 @@
     [],
     [
       "minecraft:glow_lichen",
+      "minecraft:patch_cactus",
+      "minecraft:patch_dead_bush",
       "got:patch_tall_grass",
       "got:patch_grass",
-      "got:ash_sparse",
-      "got:beech_sparse",
-      "got:fir_sparse",
-      "got:hawthorn_sparse",
-      "got:shrub",
+      "got:dead_oak",
+      "got:acacia_sparse",
       "got:boulder",
-      "got:limestone_boulder",
-      "got:grey_granite_boulder",
-      "got:slate_boulder",
-      "got:wild_cotton",
-      "got:wild_onion",
-      "got:wild_garlic",
-      "got:wild_carrot",
-      "got:wild_cabbage",
-      "got:blackberry_bush",
-      "got:patch_leaves"
+      "got:noisy_patch_grass"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -75,64 +65,10 @@
     "axolotls": [],
     "creature": [
       {
-        "type": "got:northman",
-        "weight": 10,
-        "minCount": 2,
-        "maxCount": 4
-      },
-      {
-        "type": "minecraft:rabbit",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 4
-      },
-      {
-        "type": "minecraft:sheep",
+        "type": "minecraft:camel",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 12
-      },
-      {
-        "type": "minecraft:pig",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:chicken",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:cow",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 8
-      },
-      {
-        "type": "minecraft:horse",
-        "maxCount": 6,
-        "minCount": 2,
-        "weight": 5
-      },
-      {
-        "type": "minecraft:donkey",
-        "maxCount": 3,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "got:stark_levy",
-        "weight": 6,
-        "minCount": 1,
-        "maxCount": 3
-      },
-      {
-        "type": "got:north_soldier",
-        "weight": 3,
-        "minCount": 1,
-        "maxCount": 2
+        "weight": 6
       }
     ],
     "misc": [],
@@ -141,5 +77,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.2
+  "temperature": 2.0
 }
