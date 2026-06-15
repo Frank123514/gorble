@@ -101,10 +101,22 @@
     "height_variation": 10
   },
 
-  "#A5B7B9": {
+  "#93A4A6": {
     "biome": "got:north_mountains",
-    "base_height": 110,
-    "height_variation": 65
+    "base_height": 120,
+    "height_variation": 20
+  },
+
+  "#9EB0B3": {
+    "biome": "got:north_mountains_mid",
+    "base_height": 140,
+    "height_variation": 30
+  },
+
+  "#A9BCBF": {
+    "biome": "got:north_mountains_peak",
+    "base_height": 160,
+    "height_variation": 40
   },
 
   "#2A5E2A": {
