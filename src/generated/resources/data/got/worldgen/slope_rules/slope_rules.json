@@ -47,7 +47,7 @@
   ],
 
   "got:flint_cliffs": [
-    { "min_slope": 20, "block": "minecraft:gravel",       "depth": 3, "jitter": 4 }
+    { "min_slope": 20, "block": "minecraft:stone",       "depth": 3, "jitter": 4 }
   ],
 
   "got:stony_shore": [

@@ -3,7 +3,7 @@
   "downfall": 0.3,
   "effects": {
     "fog_color": 12638463,
-    "grass_color": 6067036,
+    "grass_color": 7979641,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -37,7 +37,25 @@
     [],
     [],
     [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "got:patch_tall_grass",
+      "got:patch_grass",
+      "got:ash_sparse",
+      "got:beech_sparse",
+      "got:fir_sparse",
+      "got:hawthorn_sparse",
+      "got:oak_sparse",
+      "got:shrub",
+      "got:boulder",
+      "got:limestone_boulder",
+      "got:grey_granite_boulder",
+      "got:slate_boulder",
+      "got:forget_me_not",
+      "got:liverwort",
+      "got:lungwort",
+      "got:pennyroyal",
+      "got:noisy_patch_stone",
+      "got:noisy_patch_gravel"
     ],
     [
       "minecraft:freeze_top_layer"

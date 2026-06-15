@@ -2,6 +2,8 @@ package net.got.worldgen.biome;
 
 import net.got.GotMod;
 import net.got.init.GotModBlocks;
+import net.got.worldgen.biome.placers.GotPalmFoliagePlacer;
+import net.got.worldgen.biome.placers.GotPalmTrunkPlacer;
 import net.got.worldgen.biome.placers.GotPineTrunkPlacer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -425,6 +427,24 @@ public final class GotConfiguredFeatures {
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
                 new TwoLayersFeatureSize(1, 1, 1))
+                .ignoreVines()
+                .build());
+
+        // date_palm: custom palm trunk(9,3,2) + custom palm foliage(fronds=8, length=6)
+        // GotPalmTrunkPlacer: gently-leaning segmented shaft with bulging base ring
+        // GotPalmFoliagePlacer: 8 radiating arched frond arms from the crown
+        register(ctx, DATE_PALM, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(GotModBlocks.DATE_PALM_LOG.get()),
+                new GotPalmTrunkPlacer(9, 3, 2),
+                BlockStateProvider.simple(GotModBlocks.DATE_PALM_LEAVES.get().defaultBlockState()
+                        .setValue(LeavesBlock.PERSISTENT, false)),
+                new GotPalmFoliagePlacer(
+                        ConstantInt.of(6),  // bounding-box radius (= frondLength)
+                        ConstantInt.of(0),  // vertical offset of attachment
+                        6,                  // frondLength: 6 blocks per arm
+                        8                   // frondCount:  8 arms (full compass star)
+                ),
+                new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .build());
 

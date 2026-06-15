@@ -43,7 +43,7 @@
       "noise_scale": 280.0,
       "threshold": 0.76,
       "priority": 0,
-      "base_height": 95,
+      "base_height": 105,
       "height_variation": 22
     }
   ]

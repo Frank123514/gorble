@@ -41,7 +41,8 @@
     [
       "minecraft:glow_lichen",
       "minecraft:seagrass_river",
-      "minecraft:patch_waterlily"
+      "minecraft:patch_waterlily",
+      "got:date_palm"
     ],
     [
       "minecraft:freeze_top_layer"

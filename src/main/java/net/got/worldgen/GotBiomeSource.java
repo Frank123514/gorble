@@ -38,7 +38,6 @@ public final class GotBiomeSource extends BiomeSource {
             "got:oasis"
     );
 
-
     public static final MapCodec<GotBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     RegistryCodecs.homogeneousList(Registries.BIOME)
@@ -107,6 +106,9 @@ public final class GotBiomeSource extends BiomeSource {
         }
 
         Map<String, Float> biomeVotes = new HashMap<>();
+        // Also accumulate total water influence for CreekResolver
+        float waterInfluence = 0f;
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 String id = biomeIds[i][j];
@@ -114,7 +116,10 @@ public final class GotBiomeSource extends BiomeSource {
                 float wx     = cubicBsplineWeight(i - 1, fx);
                 float wz     = cubicBsplineWeight(j - 1, fz);
                 float weight = wx * wz;
-                if (isWater[i][j]) weight *= 1.15f;
+                if (isWater[i][j]) {
+                    weight *= 1.15f;
+                    waterInfluence += weight;
+                }
                 biomeVotes.merge(id, weight, Float::sum);
             }
         }
@@ -143,10 +148,19 @@ public final class GotBiomeSource extends BiomeSource {
             if (landCandidate != null) winner = landCandidate;
         }
 
-        // CREEK SWAP — land biome winner but terrain is actually underwater → creek.
-        // +4 above sea level extends creek/oasis a little into the shallow land edges.
-        if (!WATER_BIOME_IDS.contains(winner) && surfaceY < GotChunkGenerator.SEA_LEVEL + 1) {
-            winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
+        // CREEK SWAP — fully submerged land cells always become creek/oasis.
+        // The fringe band (sea level to sea level+1) is routed through CreekResolver
+        // which uses domain-warped ridged noise to produce organic branching fingers
+        // rather than a uniform collar.
+        if (!WATER_BIOME_IDS.contains(winner)) {
+            if (surfaceY < GotChunkGenerator.SEA_LEVEL) {
+                // Genuinely underwater — always swap.
+                winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
+            } else if (surfaceY < GotChunkGenerator.SEA_LEVEL + 1
+                    && CreekResolver.isCreek(winner, waterInfluence, worldX, worldZ)) {
+                // Fringe band — only swap where CreekResolver's ridged noise says so.
+                winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
+            }
         }
 
         // SUB-BIOME CHECK

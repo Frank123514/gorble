@@ -23,10 +23,10 @@
     "height_variation": 18
   },
 
-  "#92B0AC": {
+  "#91AFAB": {
     "biome": "got:flint_cliffs",
-    "base_height": 67,
-    "height_variation": 3
+    "base_height": 80,
+    "height_variation": 5
   },
 
   "#5E876E": {
@@ -59,7 +59,7 @@
     "height_variation": 6
   },
 
-  "#00229D": {
+  "#036AA6": {
     "biome": "got:ocean",
     "base_height": 35,
     "height_variation": 4
