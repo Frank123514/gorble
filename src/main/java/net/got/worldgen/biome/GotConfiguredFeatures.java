@@ -3,6 +3,7 @@ package net.got.worldgen.biome;
 import net.got.GotMod;
 import net.got.init.GotModBlocks;
 import net.got.worldgen.biome.placers.GotBroadleafFoliagePlacer;
+import net.got.worldgen.biome.placers.GotBroadleafTrunkPlacer;
 import net.got.worldgen.biome.placers.GotConiferFoliagePlacer;
 import net.got.worldgen.biome.placers.GotOrchardFoliagePlacer;
 import net.got.worldgen.biome.placers.GotPalmFoliagePlacer;
@@ -224,10 +225,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // ash: fancy trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
+        // ash: broadleaf trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
         register(ctx, ASH, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.ASH_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.ASH_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
@@ -245,10 +246,10 @@ public final class GotConfiguredFeatures {
                 new TwoLayersFeatureSize(1, 1, 1))
                 .build());
 
-        // beech: fancy trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
+        // beech: broadleaf trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
         register(ctx, BEECH, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.BEECH_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.BEECH_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
@@ -256,10 +257,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // chestnut: fancy trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=chestnut_wood, minClipped=4
+        // chestnut: broadleaf trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=chestnut_wood, minClipped=4
         register(ctx, CHESTNUT, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.CHESTNUT_LOG.get()),
-                new FancyTrunkPlacer(8, 2, 3),
+                new GotBroadleafTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.CHESTNUT_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
@@ -268,10 +269,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // elm: fancy trunk(7,2,3), fancy foliage(r=2,o=4,h=4)
+        // elm: broadleaf trunk(7,2,3), fancy foliage(r=2,o=4,h=4)
         register(ctx, ELM, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.ELM_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.ELM_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
@@ -279,10 +280,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // hawthorn: fancy trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
+        // hawthorn: broadleaf trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
         register(ctx, HAWTHORN, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.HAWTHORN_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.HAWTHORN_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
@@ -311,10 +312,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // willow: fancy trunk(7,2,3), cherry foliage(r=4,o=3,h=5) + leave_vine(15%)
+        // willow: broadleaf trunk(7,2,3), broadleaf foliage(r=4,o=0,layers=6) + leave_vine(15%)
         register(ctx, WILLOW, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.WILLOW_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.WILLOW_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
@@ -447,10 +448,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // ebony: fancy trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=ebony_wood, minClipped=4
+        // ebony: broadleaf trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=ebony_wood, minClipped=4
         register(ctx, EBONY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.EBONY_LOG.get()),
-                new FancyTrunkPlacer(8, 2, 3),
+                new GotBroadleafTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.EBONY_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
@@ -459,10 +460,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // goldenheart: fancy trunk(7,2,3), fancy foliage(r=2,o=4,h=4)
+        // goldenheart: broadleaf trunk(7,2,3), fancy foliage(r=2,o=4,h=4)
         register(ctx, GOLDENHEART, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.GOLDENHEART_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.GOLDENHEART_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
@@ -493,10 +494,10 @@ public final class GotConfiguredFeatures {
 
         // ── Wetland / riverside ───────────────────────────────────────────────
 
-        // black_cottonwood: fancy trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
+        // black_cottonwood: broadleaf trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
         register(ctx, BLACK_COTTONWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.BLACK_COTTONWOOD_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.BLACK_COTTONWOOD_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
@@ -504,10 +505,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // cottonwood: fancy trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
+        // cottonwood: broadleaf trunk(7,2,3), cherry foliage(r=4,o=3,h=5)
         register(ctx, COTTONWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.COTTONWOOD_LOG.get()),
-                new FancyTrunkPlacer(7, 2, 3),
+                new GotBroadleafTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.COTTONWOOD_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
@@ -538,10 +539,10 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // ironwood: fancy trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=ironwood_wood, minClipped=4
+        // ironwood: broadleaf trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=ironwood_wood, minClipped=4
         register(ctx, IRONWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.IRONWOOD_LOG.get()),
-                new FancyTrunkPlacer(8, 2, 3),
+                new GotBroadleafTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.IRONWOOD_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
@@ -560,12 +561,12 @@ public final class GotConfiguredFeatures {
                 .dirt(BlockStateProvider.simple(Blocks.OAK_WOOD))
                 .build());
 
-        // weirwood: fancy trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=weirwood_wood
+        // weirwood: broadleaf trunk(8,2,3), fancy foliage(r=2,o=4,h=4), dirt=weirwood_wood
         //           TwoLayers(limit=0, lower=2, middle=1, upper=0) — the JSON uses
         //           lower_size=2 which maps to the "lower" param in the 3-arg constructor
         register(ctx, WEIRWOOD, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.WEIRWOOD_LOG.get()),
-                new FancyTrunkPlacer(8, 2, 3),
+                new GotBroadleafTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.WEIRWOOD_LEAVES.get().defaultBlockState()),
                 new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(0, 2, 0))

@@ -39,7 +39,7 @@
       "min_clipped_height": 4
     },
     "trunk_placer": {
-      "type": "minecraft:fancy_trunk_placer",
+      "type": "got:got_broadleaf_trunk_placer",
       "base_height": 6,
       "height_rand_a": 2,
       "height_rand_b": 2

@@ -30,6 +30,17 @@ public final class GotTreePlacers {
             TRUNK_PLACER_TYPES.register("got_palm_trunk_placer",
                     () -> new TrunkPlacerType<>(GotPalmTrunkPlacer.CODEC));
 
+    /**
+     * Broadleaf trunk: vanilla's fancy trunk shape (random branch scatter,
+     * pruned canopy) with a flared, root-thickened base. Used for our large
+     * hardwood species (ash, beech, chestnut, elm, hawthorn, willow, ebony,
+     * goldenheart, black cottonwood, cottonwood, ironwood, weirwood).
+     */
+    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<GotBroadleafTrunkPlacer>>
+            GOT_BROADLEAF_TRUNK_PLACER =
+            TRUNK_PLACER_TYPES.register("got_broadleaf_trunk_placer",
+                    () -> new TrunkPlacerType<>(GotBroadleafTrunkPlacer.CODEC));
+
     // ── Foliage placer registry ───────────────────────────────────────────────
 
     public static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES =
