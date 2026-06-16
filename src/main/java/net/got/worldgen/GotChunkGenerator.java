@@ -237,7 +237,29 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
         double noiseVal = (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
 
-        return rawHeight + (float) noiseVal * heightVariation;
+        // ── Slopemap height bonus ──────────────────────────────────────────
+        // For mountain biomes, add a bonus derived from how far this pixel
+        // sits from the edge of its mountain blob on the biomemap.
+        // Edge pixels → bonus 0.  Deep interior pixels → bonus up to MAX_HEIGHT_BONUS.
+        // The bicubic spline already smoothly interpolates between biomemap pixels,
+        // so the slope at the mountain border is already blended. The bonus is
+        // sampled at the same bilinear position and also interpolated across the
+        // 4x4 bicubic neighbourhood so it transitions seamlessly.
+        float slopemapBonus = 0f;
+        if (MountainSlopemapResolver.isLoaded()) {
+            // Sample the distance-field bonus at the same 4x4 bicubic grid as height
+            float[] sb = new float[16];
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 4; col++) {
+                    int px = ipx + col - 1;
+                    int pz = ipz + row - 1;
+                    sb[row * 4 + col] = MountainSlopemapResolver.heightBonus(px, pz);
+                }
+            }
+            slopemapBonus = bicubicBspline(sb, fx, fz);
+        }
+
+        return rawHeight + slopemapBonus + (float) noiseVal * heightVariation;
     }
 
     // ── Bicubic B-spline ───────────────────────────────────────────────────

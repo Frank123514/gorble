@@ -4,199 +4,156 @@
     "base_height": 68,
     "height_variation": 10
   },
-
   "#699B6D": {
     "biome": "got:gift",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#7BA181": {
     "biome": "got:beyond_the_wall",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#639E63": {
     "biome": "got:barrowlands",
-    "base_height": 75,
+    "base_height": 70,
     "height_variation": 18
   },
-
   "#91AFAB": {
     "biome": "got:flint_cliffs",
     "base_height": 80,
     "height_variation": 5
   },
-
   "#5E876E": {
     "biome": "got:stony_shore",
     "base_height": 67,
     "height_variation": 3
   },
-
   "#808F81": {
     "biome": "got:north_hills",
-    "base_height": 90,
-    "height_variation": 30
+    "base_height": 70,
+    "height_variation": 24
   },
-
   "#2F4A33": {
     "biome": "got:neck",
     "base_height": 65,
     "height_variation": 2
   },
-
   "#02450D": {
     "biome": "got:ironwood",
     "base_height": 71,
     "height_variation": 6
   },
-
   "#047D17": {
     "biome": "got:wolfswood",
     "base_height": 71,
     "height_variation": 6
   },
-
   "#036AA6": {
     "biome": "got:ocean",
     "base_height": 35,
     "height_variation": 4
   },
-
   "#110751": {
     "biome": "got:deep_ocean",
     "base_height": 25,
     "height_variation": 6
   },
-
   "#2D6796": {
     "biome": "got:river",
     "base_height": 50,
     "height_variation": 1
   },
-
   "#35A180": {
     "biome": "got:neck_river",
     "base_height": 45,
     "height_variation": 1
   },
-
   "#4B91E6": {
     "biome": "got:frozen_river",
     "base_height": 45,
     "height_variation": 1
   },
-
   "#BBCCCD": {
     "biome": "got:frostfangs",
-    "base_height": 125,
-    "height_variation": 75
+    "base_height": 75,
+    "height_variation": 30
   },
-
   "#FFFFFF": {
     "biome": "got:always_winter",
     "base_height": 75,
     "height_variation": 10
   },
-
-  "#93A4A6": {
+  "##93A4A6": {
     "biome": "got:north_mountains",
-    "base_height": 120,
-    "height_variation": 20
+    "base_height": 72,
+    "height_variation": 50
   },
-
-  "#9EB0B3": {
-    "biome": "got:north_mountains_mid",
-    "base_height": 140,
-    "height_variation": 30
-  },
-
-  "#A9BCBF": {
-    "biome": "got:north_mountains_peak",
-    "base_height": 160,
-    "height_variation": 40
-  },
-
   "#2A5E2A": {
     "biome": "got:haunted_forest",
     "base_height": 70,
     "height_variation": 3
   },
-
   "#6B5C3E": {
     "biome": "got:iron_hills",
-    "base_height": 85,
+    "base_height": 70,
     "height_variation": 20
   },
-
   "#C8B87A": {
     "biome": "got:sheepshead_hills",
-    "base_height": 77,
-    "height_variation": 16
+    "base_height": 70,
+    "height_variation": 18
   },
-
   "#1A5C8F": {
     "biome": "got:lake",
     "base_height": 51,
     "height_variation": 2
   },
-
   "#4B91C0": {
     "biome": "got:frozen_lake",
     "base_height": 51,
     "height_variation": 2
   },
-
   "#4C994F": {
     "biome": "got:riverlands",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#5A9955": {
     "biome": "got:vale",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#69994B": {
     "biome": "got:westerlands",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#B1B9A3": {
     "biome": "got:western_hills",
-    "base_height": 100,
-    "height_variation": 40
+    "base_height": 70,
+    "height_variation": 28
   },
-
   "#4C9644": {
     "biome": "got:reach",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#478C40": {
     "biome": "got:stormlands",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#629446": {
     "biome": "got:lower_reach",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#899946": {
     "biome": "got:dorne",
     "base_height": 70,
     "height_variation": 10
   },
-
   "#969C4E": {
     "biome": "got:dorne_desert",
     "base_height": 70,

@@ -28,7 +28,8 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             int height,
             Map<Integer, GotBiomeTerrainParams.Params> params,
             Map<String, List<SubbiomeDef>> subbiomes,
-            Map<String, List<SlopeRuleDef>> slopeRules
+            Map<String, List<SlopeRuleDef>> slopeRules,
+            short[][] mountainDistanceField
     ) {}
 
     @Override
@@ -53,7 +54,14 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             Map<String, List<SlopeRuleDef>> slopeRules =
                     SlopeSurfaceResolver.load(manager);
 
-            return new Prepared(pixels, w, h, params, subbiomes, slopeRules);
+            // ── Mountain slopemap distance field ───────────────────────────
+            // Apply params temporarily so forColor() works during compute.
+            // The main-thread apply() will overwrite this again — that's fine.
+            GotBiomeTerrainParams.apply(params);
+            short[][] mountainDistanceField =
+                    MountainSlopemapResolver.compute(pixels, w, h);
+
+            return new Prepared(pixels, w, h, params, subbiomes, slopeRules, mountainDistanceField);
         } finally {
             profiler.pop();
         }
@@ -71,6 +79,9 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             GotBiomeTerrainParams.apply(prepared.params());
             SubbiomeResolver.apply(prepared.subbiomes());
             SlopeSurfaceResolver.apply(prepared.slopeRules());
+            if (prepared.mountainDistanceField() != null)
+                MountainSlopemapResolver.apply(
+                        prepared.mountainDistanceField(), prepared.width(), prepared.height());
 
             LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents, {} slope biomes)",
                     prepared.width(), prepared.height(),
