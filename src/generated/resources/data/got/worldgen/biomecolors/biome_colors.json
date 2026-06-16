@@ -1,7 +1,7 @@
 {
   "#5C935C": {
     "biome": "got:north",
-    "base_height": 68,
+    "base_height": 70,
     "height_variation": 10
   },
   "#699B6D": {
@@ -16,7 +16,7 @@
   },
   "#639E63": {
     "biome": "got:barrowlands",
-    "base_height": 70,
+    "base_height": 75,
     "height_variation": 18
   },
   "#91AFAB": {
@@ -26,8 +26,8 @@
   },
   "#5E876E": {
     "biome": "got:stony_shore",
-    "base_height": 67,
-    "height_variation": 3
+    "base_height": 70,
+    "height_variation": 5
   },
   "#808F81": {
     "biome": "got:north_hills",
@@ -161,17 +161,17 @@
   },
   "#ADB2A0": {
     "biome": "got:dry_bone_mountains",
-    "base_height": 80,
-    "height_variation": 50
+    "base_height": 72,
+    "height_variation": 30
   },
   "#BDCACC": {
     "biome": "got:central_bone_mountains",
-    "base_height": 80,
-    "height_variation": 50
+    "base_height": 72,
+    "height_variation": 30
   },
   "#C9E1E5": {
     "biome": "got:white_bone_mountains",
-    "base_height": 90,
-    "height_variation": 60
+    "base_height": 72,
+    "height_variation": 30
   }
 }

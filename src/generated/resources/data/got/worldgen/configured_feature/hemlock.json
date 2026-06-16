@@ -9,7 +9,7 @@
       }
     },
     "foliage_placer": {
-      "type": "got:got_conifer_foliage_placer",
+      "type": "got:got_aspen_foliage_placer",
       "radius": {
         "type": "minecraft:constant",
         "value": 2

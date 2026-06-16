@@ -76,14 +76,14 @@ public final class GotTreePlacers {
                     () -> new FoliagePlacerType<>(GotOrchardFoliagePlacer.CODEC));
 
     /**
-     * Conifer foliage placer: distinct tiered whorls with air gaps between
-     * each tier, narrowing to a pointed tip.  Used for cedar, fir, sentinal,
-     * soldier pine, blackbark, hemlock, blue mahoe, clove, aspen.
+     * Aspen foliage placer: tall, ragged column of leaf discs with air gaps
+     * between each tier, narrowing to a thin spire tip.  Used for aspen and
+     * birch — slender hardwoods with a sparse, perforated canopy.
      */
-    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<GotConiferFoliagePlacer>>
-            GOT_CONIFER_FOLIAGE_PLACER =
-            FOLIAGE_PLACER_TYPES.register("got_conifer_foliage_placer",
-                    () -> new FoliagePlacerType<>(GotConiferFoliagePlacer.CODEC));
+    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<GotAspenFoliagePlacer>>
+            GOT_ASPEN_FOLIAGE_PLACER =
+            FOLIAGE_PLACER_TYPES.register("got_aspen_foliage_placer",
+                    () -> new FoliagePlacerType<>(GotAspenFoliagePlacer.CODEC));
 
     // ── Registration ──────────────────────────────────────────────────────────
 

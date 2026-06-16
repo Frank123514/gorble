@@ -2,9 +2,9 @@ package net.got.worldgen.biome;
 
 import net.got.GotMod;
 import net.got.init.GotModBlocks;
+import net.got.worldgen.biome.placers.GotAspenFoliagePlacer;
 import net.got.worldgen.biome.placers.GotBroadleafFoliagePlacer;
 import net.got.worldgen.biome.placers.GotBroadleafTrunkPlacer;
-import net.got.worldgen.biome.placers.GotConiferFoliagePlacer;
 import net.got.worldgen.biome.placers.GotOrchardFoliagePlacer;
 import net.got.worldgen.biome.placers.GotPalmFoliagePlacer;
 import net.got.worldgen.biome.placers.GotPalmTrunkPlacer;
@@ -59,6 +59,7 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ASH              = key("ash");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ASPEN            = key("aspen");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BEECH            = key("beech");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BIRCH            = key("birch");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CHESTNUT         = key("chestnut");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ELM              = key("elm");
     public static final ResourceKey<ConfiguredFeature<?, ?>> HAWTHORN         = key("hawthorn");
@@ -236,13 +237,24 @@ public final class GotConfiguredFeatures {
                 .ignoreVines()
                 .build());
 
-        // aspen: straight trunk(7,2,2), spruce foliage(r=2,o=2,trunk_height=2)
+        // aspen: straight trunk(7,2,2), aspen foliage(r=2,o=0,tiers=4) — tall, ragged, perforated canopy
         register(ctx, ASPEN, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(GotModBlocks.ASPEN_LOG.get()),
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.ASPEN_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new GotAspenFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new TwoLayersFeatureSize(1, 1, 1))
+                .build());
+
+        // birch: straight trunk(7,2,2), aspen foliage(r=2,o=0,tiers=4) — vanilla birch wood/leaves,
+        // same tall ragged canopy as aspen so the two read as a matched pair in the field
+        register(ctx, BIRCH, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(Blocks.BIRCH_LOG),
+                new StraightTrunkPlacer(7, 2, 2),
+                BlockStateProvider.simple(Blocks.BIRCH_LEAVES.defaultBlockState()
+                        .setValue(LeavesBlock.PERSISTENT, true)),
+                new GotAspenFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .build());
 
@@ -332,7 +344,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(10, 3, 2),
                 BlockStateProvider.simple(GotModBlocks.CEDAR_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 5),
+                new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(4, 5)),
                 new TwoLayersFeatureSize(2, 0, 2))
                 .ignoreVines()
                 .build());
@@ -343,7 +355,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 1),
                 BlockStateProvider.simple(GotModBlocks.FIR_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 5),
+                new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(4, 5)),
                 new TwoLayersFeatureSize(2, 0, 2))
                 .dirt(BlockStateProvider.simple(GotModBlocks.FIR_WOOD.get()))
                 .ignoreVines()
@@ -378,7 +390,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(12, 3, 3),
                 BlockStateProvider.simple(GotModBlocks.SENTINAL_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 4),
+                new SpruceFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), ConstantInt.of(3)),
                 new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .build());
@@ -389,7 +401,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(8, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.SOLDIER_PINE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 5),
+                new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(4, 5)),
                 new TwoLayersFeatureSize(2, 0, 2))
                 .dirt(BlockStateProvider.simple(GotModBlocks.SOLDIER_PINE_WOOD.get()))
                 .ignoreVines()
@@ -403,7 +415,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.BLUE_MAHOE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());
@@ -425,7 +437,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.CLOVE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());
@@ -524,7 +536,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.BLACKBARK_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());

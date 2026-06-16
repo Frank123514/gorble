@@ -596,6 +596,7 @@ public class GotBiomes {
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_TALL_GRASS_2);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_PLAIN);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ASPEN);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.BIRCH);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.IRONWOOD);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.SENTINAL);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.PINE);
@@ -1072,6 +1073,7 @@ public class GotBiomes {
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_TALL_GRASS_2);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_PLAIN);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.ASPEN);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.BIRCH);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.IRONWOOD_SPARSE);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.SENTINAL);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, GotPlacedFeatures.PINE);

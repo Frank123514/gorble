@@ -9,7 +9,7 @@
       }
     },
     "foliage_placer": {
-      "type": "minecraft:spruce_foliage_placer",
+      "type": "got:got_aspen_foliage_placer",
       "offset": 2,
       "radius": 2,
       "trunk_height": 2

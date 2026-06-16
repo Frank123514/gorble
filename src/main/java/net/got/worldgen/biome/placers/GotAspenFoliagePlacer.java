@@ -12,24 +12,23 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 /**
- * Foliage placer for conifer trees (cedar, fir, sentinal, soldier pine,
- * blackbark, blue mahoe, clove, hemlock, aspen).
+ * Foliage placer for aspen and birch — tall, slender hardwoods whose canopy
+ * reads as a thin, ragged column rather than a rounded dome.
  *
  * <h3>Shape</h3>
- * Produces a classic conifer silhouette: a series of distinct horizontal
- * branch tiers that narrow progressively from base to crown, with a real
- * air gap of one empty block between each tier.  This is the key visual
- * difference from vanilla's {@code SpruceFoliagePlacer}, which fills in
- * a continuous cone with no gaps.
+ * Produces a tall narrow stack of leaf discs with a real air gap of one
+ * empty block between each disc, so the canopy looks airy and "perforated"
+ * rather than a solid blob, and rises well above where a normal hardwood
+ * crown would stop.
  *
  * <ul>
  *   <li>Each tier is a flat disc of leaves 1–2 blocks thick.  The bottom
  *       disc is the widest (tiers * 2 blocks across); each tier up shrinks
  *       by one block of radius.</li>
- *   <li>Between tiers, one Y-level is left completely empty so the layered
- *       "skirt" structure of a real spruce or fir is clear.</li>
- *   <li>The tip is a 3-tall pointed cap with radius 1, giving the tree a
- *       sharp crown rather than a flat top.</li>
+ *   <li>Between tiers, one Y-level is left completely empty so light and
+ *       sky show through the canopy in patches.</li>
+ *   <li>The tip is a 3-tall pointed cap with radius 1, giving the silhouette
+ *       a thin spire rather than a flat top.</li>
  *   <li>A randomised ±1-block jitter on each tier's disc radius breaks
  *       perfect symmetry between trees of the same species.</li>
  * </ul>
@@ -37,31 +36,31 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerTy
  * <h3>Parameters</h3>
  * <ul>
  *   <li>{@code radius} (IntProvider) — radius of the widest (base) tier.
- *       Should match roughly half the tree's visual width.  Typical: 2–3.</li>
+ *       Typical: 2.</li>
  *   <li>{@code offset} (IntProvider) — vertical offset of the attachment.
  *       Usually 0.</li>
- *   <li>{@code tiers} — number of distinct branch tiers below the tip cap.
- *       Typical: 3–5.  More tiers = taller canopy.</li>
+ *   <li>{@code tiers} — number of distinct disc tiers below the tip cap.
+ *       Typical: 4.  More tiers = taller canopy.</li>
  * </ul>
  */
-public class GotConiferFoliagePlacer extends FoliagePlacer {
+public class GotAspenFoliagePlacer extends FoliagePlacer {
 
-    public static final MapCodec<GotConiferFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
+    public static final MapCodec<GotAspenFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
             foliagePlacerParts(instance)
                     .and(ExtraCodecs.POSITIVE_INT.fieldOf("tiers").forGetter(p -> p.tiers))
-                    .apply(instance, GotConiferFoliagePlacer::new));
+                    .apply(instance, GotAspenFoliagePlacer::new));
 
-    /** Number of distinct branch tiers below the tip spike. */
+    /** Number of distinct disc tiers below the tip spike. */
     private final int tiers;
 
-    public GotConiferFoliagePlacer(IntProvider radius, IntProvider offset, int tiers) {
+    public GotAspenFoliagePlacer(IntProvider radius, IntProvider offset, int tiers) {
         super(radius, offset);
         this.tiers = tiers;
     }
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return GotTreePlacers.GOT_CONIFER_FOLIAGE_PLACER.get();
+        return GotTreePlacers.GOT_ASPEN_FOLIAGE_PLACER.get();
     }
 
     @Override

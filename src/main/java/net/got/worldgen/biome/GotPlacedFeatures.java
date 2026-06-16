@@ -52,6 +52,9 @@ public final class GotPlacedFeatures {
     public static final ResourceKey<PlacedFeature> BEECH              = key("beech");
     public static final ResourceKey<PlacedFeature> BEECH_SPARSE       = key("beech_sparse");
 
+    public static final ResourceKey<PlacedFeature> BIRCH              = key("birch");
+    public static final ResourceKey<PlacedFeature> BIRCH_SPARSE       = key("birch_sparse");
+
     public static final ResourceKey<PlacedFeature> CHESTNUT           = key("chestnut");
     public static final ResourceKey<PlacedFeature> CHESTNUT_SPARSE    = key("chestnut_sparse");
 
@@ -232,6 +235,12 @@ public final class GotPlacedFeatures {
         register(ctx, ASPEN, cf.getOrThrow(GotConfiguredFeatures.ASPEN),
                 treeMods(2, CountPlacement.of(net.minecraft.util.valueproviders.UniformInt.of(1, 3))));
         register(ctx, ASPEN_SPARSE, cf.getOrThrow(GotConfiguredFeatures.ASPEN),
+                treeMods(35, CountPlacement.of(1)));
+
+        // birch: rarity=2 count=1-3 / sparse: rarity=35 count=1 — same density as aspen
+        register(ctx, BIRCH, cf.getOrThrow(GotConfiguredFeatures.BIRCH),
+                treeMods(2, CountPlacement.of(net.minecraft.util.valueproviders.UniformInt.of(1, 3))));
+        register(ctx, BIRCH_SPARSE, cf.getOrThrow(GotConfiguredFeatures.BIRCH),
                 treeMods(35, CountPlacement.of(1)));
 
         // beech: rarity=1 count=2 / sparse: rarity=35 count=1

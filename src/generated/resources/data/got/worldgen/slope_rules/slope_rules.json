@@ -67,6 +67,10 @@
   ],
 
   "got:stony_shore": [
+    { "min_slope": 20, "block": "minecraft:stone",       "depth": 3, "jitter": 4 }
+  ],
+
+  "got:stony_shore": [
     { "min_slope": 20, "block": "minecraft:stone",        "depth": 3, "jitter": 4 }
   ]
 }

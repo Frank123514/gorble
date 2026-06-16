@@ -2213,7 +2213,7 @@
                             "if_true": {
                               "type": "minecraft:biome",
                               "biome_is": [
-                                "got:stony_shore"
+                                "minecraft:warm_ocean"
                               ]
                             },
                             "then_run": {
