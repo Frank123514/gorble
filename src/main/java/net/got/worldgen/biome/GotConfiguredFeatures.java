@@ -2,6 +2,9 @@ package net.got.worldgen.biome;
 
 import net.got.GotMod;
 import net.got.init.GotModBlocks;
+import net.got.worldgen.biome.placers.GotBroadleafFoliagePlacer;
+import net.got.worldgen.biome.placers.GotConiferFoliagePlacer;
+import net.got.worldgen.biome.placers.GotOrchardFoliagePlacer;
 import net.got.worldgen.biome.placers.GotPalmFoliagePlacer;
 import net.got.worldgen.biome.placers.GotPalmTrunkPlacer;
 import net.got.worldgen.biome.placers.GotPineTrunkPlacer;
@@ -205,7 +208,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.ALDER_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 1))
                 .dirt(BlockStateProvider.simple(GotModBlocks.ALDER_WOOD.get()))
                 .ignoreVines()
@@ -216,7 +219,7 @@ public final class GotConfiguredFeatures {
                 BlockStateProvider.simple(GotModBlocks.APPLE_LOG.get()),
                 new StraightTrunkPlacer(4, 2, 0),
                 BlockStateProvider.simple(GotModBlocks.APPLE_LEAVES.get().defaultBlockState()),
-                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                new GotOrchardFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .build());
@@ -227,8 +230,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.ASH_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(3), ConstantInt.of(5),
-                        0.25f, 0.25f, 0.5f, 0.8f),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -239,7 +241,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.ASPEN_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
+                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .build());
 
@@ -249,8 +251,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.BEECH_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(3), ConstantInt.of(5),
-                        0.25f, 0.25f, 0.5f, 0.8f),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -261,7 +262,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.CHESTNUT_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)))
                 .dirt(BlockStateProvider.simple(GotModBlocks.CHESTNUT_WOOD.get()))
                 .ignoreVines()
@@ -273,7 +274,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.ELM_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -284,8 +285,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.HAWTHORN_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(3), ConstantInt.of(5),
-                        0.25f, 0.25f, 0.5f, 0.8f),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -296,7 +296,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(8, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.LINDEN_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 3),
+                new GotOrchardFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());
@@ -306,7 +306,7 @@ public final class GotConfiguredFeatures {
                 BlockStateProvider.simple(GotModBlocks.MAPLE_LOG.get()),
                 new StraightTrunkPlacer(4, 2, 0),
                 BlockStateProvider.simple(GotModBlocks.MAPLE_LEAVES.get().defaultBlockState()),
-                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                new GotOrchardFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .build());
@@ -317,8 +317,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.WILLOW_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(3), ConstantInt.of(5),
-                        0.25f, 0.25f, 0.5f, 0.8f),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .decorators(List.of(new LeaveVineDecorator(0.15f)))
@@ -332,7 +331,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(10, 3, 2),
                 BlockStateProvider.simple(GotModBlocks.CEDAR_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(4, 5)),
+                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 5),
                 new TwoLayersFeatureSize(2, 0, 2))
                 .ignoreVines()
                 .build());
@@ -343,7 +342,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 1),
                 BlockStateProvider.simple(GotModBlocks.FIR_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(4, 5)),
+                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 5),
                 new TwoLayersFeatureSize(2, 0, 2))
                 .dirt(BlockStateProvider.simple(GotModBlocks.FIR_WOOD.get()))
                 .ignoreVines()
@@ -378,7 +377,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(12, 3, 3),
                 BlockStateProvider.simple(GotModBlocks.SENTINAL_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), ConstantInt.of(3)),
+                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 4),
                 new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .build());
@@ -389,7 +388,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(8, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.SOLDIER_PINE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(4, 5)),
+                new GotConiferFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 5),
                 new TwoLayersFeatureSize(2, 0, 2))
                 .dirt(BlockStateProvider.simple(GotModBlocks.SOLDIER_PINE_WOOD.get()))
                 .ignoreVines()
@@ -403,7 +402,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.BLUE_MAHOE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
+                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());
@@ -413,7 +412,7 @@ public final class GotConfiguredFeatures {
                 BlockStateProvider.simple(GotModBlocks.CINNAMON_LOG.get()),
                 new StraightTrunkPlacer(5, 2, 6),
                 BlockStateProvider.simple(GotModBlocks.CINNAMON_LEAVES.get().defaultBlockState()),
-                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                new GotOrchardFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 1))
                 .ignoreVines()
                 .decorators(List.of(new BeehiveDecorator(1.0f)))
@@ -425,7 +424,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.CLOVE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
+                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());
@@ -454,7 +453,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.EBONY_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)))
                 .dirt(BlockStateProvider.simple(GotModBlocks.EBONY_WOOD.get()))
                 .ignoreVines()
@@ -466,7 +465,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.GOLDENHEART_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -477,7 +476,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(10, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.MAHOGANY_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
+                new GotOrchardFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 1, 2))
                 .ignoreVines()
                 .build());
@@ -500,8 +499,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.BLACK_COTTONWOOD_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(3), ConstantInt.of(5),
-                        0.25f, 0.25f, 0.5f, 0.8f),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -512,8 +510,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(7, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.COTTONWOOD_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(3), ConstantInt.of(5),
-                        0.25f, 0.25f, 0.5f, 0.8f),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(1, 0, 2))
                 .ignoreVines()
                 .build());
@@ -526,7 +523,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(7, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.BLACKBARK_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new SpruceFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(2)),
+                new GotConiferFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());
@@ -547,7 +544,7 @@ public final class GotConfiguredFeatures {
                 new FancyTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.IRONWOOD_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4)))
                 .dirt(BlockStateProvider.simple(GotModBlocks.IRONWOOD_WOOD.get()))
                 .ignoreVines()
@@ -570,7 +567,7 @@ public final class GotConfiguredFeatures {
                 BlockStateProvider.simple(GotModBlocks.WEIRWOOD_LOG.get()),
                 new FancyTrunkPlacer(8, 2, 3),
                 BlockStateProvider.simple(GotModBlocks.WEIRWOOD_LEAVES.get().defaultBlockState()),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
+                new GotBroadleafFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), 6),
                 new TwoLayersFeatureSize(0, 2, 0))
                 .dirt(BlockStateProvider.simple(GotModBlocks.WEIRWOOD_WOOD.get()))
                 .ignoreVines()
@@ -582,7 +579,7 @@ public final class GotConfiguredFeatures {
                 new StraightTrunkPlacer(8, 2, 2),
                 BlockStateProvider.simple(GotModBlocks.WORMTREE_LEAVES.get().defaultBlockState()
                         .setValue(LeavesBlock.PERSISTENT, true)),
-                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
+                new GotOrchardFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 1, 1))
                 .ignoreVines()
                 .build());

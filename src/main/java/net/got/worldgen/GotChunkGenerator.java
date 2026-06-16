@@ -259,7 +259,27 @@ public final class GotChunkGenerator extends ChunkGenerator {
             slopemapBonus = bicubicBspline(sb, fx, fz);
         }
 
-        return rawHeight + slopemapBonus + (float) noiseVal * heightVariation;
+        // ── River valley depth bonus ───────────────────────────────────────
+        // Analogous to the mountain slopemap, but applies a negative height
+        // delta that carves rivers deeper into the terrain.  This prevents
+        // narrow river pixels from being blended upward out of existence when
+        // surrounded by high land, and also naturally widens the visible valley
+        // because the bicubic interpolation spreads the depression into the
+        // land pixels adjacent to each river pixel.
+        float riverDepthBonus = 0f;
+        if (RiverSlopemapResolver.isLoaded()) {
+            float[] rb = new float[16];
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 4; col++) {
+                    int px = ipx + col - 1;
+                    int pz = ipz + row - 1;
+                    rb[row * 4 + col] = RiverSlopemapResolver.depthBonus(px, pz);
+                }
+            }
+            riverDepthBonus = bicubicBspline(rb, fx, fz);
+        }
+
+        return rawHeight + slopemapBonus + riverDepthBonus + (float) noiseVal * heightVariation;
     }
 
     // ── Bicubic B-spline ───────────────────────────────────────────────────

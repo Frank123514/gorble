@@ -31,7 +31,7 @@
   },
   "#808F81": {
     "biome": "got:north_hills",
-    "base_height": 70,
+    "base_height": 85,
     "height_variation": 24
   },
   "#2F4A33": {
@@ -87,7 +87,7 @@
   "##93A4A6": {
     "biome": "got:north_mountains",
     "base_height": 72,
-    "height_variation": 50
+    "height_variation": 30
   },
   "#2A5E2A": {
     "biome": "got:haunted_forest",
@@ -131,7 +131,7 @@
   },
   "#B1B9A3": {
     "biome": "got:western_hills",
-    "base_height": 70,
+    "base_height": 90,
     "height_variation": 28
   },
   "#4C9644": {
@@ -158,5 +158,20 @@
     "biome": "got:dorne_desert",
     "base_height": 70,
     "height_variation": 10
+  },
+  "#ADB2A0": {
+    "biome": "got:dry_bone_mountains",
+    "base_height": 80,
+    "height_variation": 50
+  },
+  "#BDCACC": {
+    "biome": "got:central_bone_mountains",
+    "base_height": 80,
+    "height_variation": 50
+  },
+  "#C9E1E5": {
+    "biome": "got:white_bone_mountains",
+    "base_height": 90,
+    "height_variation": 60
   }
 }

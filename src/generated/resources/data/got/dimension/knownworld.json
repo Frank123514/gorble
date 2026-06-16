@@ -25,8 +25,6 @@
         "got:frostfangs",
         "got:always_winter",
         "got:north_mountains",
-        "got:north_mountains_mid",
-        "got:north_mountains_peak",
         "got:haunted_forest",
         "got:frozen_lake",
         "got:iron_hills",
@@ -41,6 +39,9 @@
         "got:lower_reach",
         "got:dorne",
         "got:dorne_desert",
+        "got:dry_bone_mountains",
+        "got:central_bone_mountains",
+        "got:white_bone_mountains",
         "got:subbiome/maple_forest",
         "got:subbiome/beech_forest",
         "got:subbiome/wheat_field"

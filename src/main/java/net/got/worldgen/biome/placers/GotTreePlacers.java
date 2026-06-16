@@ -44,6 +44,36 @@ public final class GotTreePlacers {
             FOLIAGE_PLACER_TYPES.register("got_palm_foliage_placer",
                     () -> new FoliagePlacerType<>(GotPalmFoliagePlacer.CODEC));
 
+    /**
+     * Broadleaf foliage placer: wide irregular layered dome for large hardwood
+     * trees (ash, beech, elm, chestnut, willow, cottonwood, ironwood, weirwood,
+     * ebony, nightwood, purpleheart, tigerwood, burl, pink ivory, etc.).
+     */
+    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<GotBroadleafFoliagePlacer>>
+            GOT_BROADLEAF_FOLIAGE_PLACER =
+            FOLIAGE_PLACER_TYPES.register("got_broadleaf_foliage_placer",
+                    () -> new FoliagePlacerType<>(GotBroadleafFoliagePlacer.CODEC));
+
+    /**
+     * Orchard foliage placer: compact Euclidean sphere crown with a drooping
+     * lower skirt, for small fruit and nut trees (apple, pear, cherry, plum,
+     * peach, fig, olive, pomegranate, almond, citrus, crabapple, etc.).
+     */
+    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<GotOrchardFoliagePlacer>>
+            GOT_ORCHARD_FOLIAGE_PLACER =
+            FOLIAGE_PLACER_TYPES.register("got_orchard_foliage_placer",
+                    () -> new FoliagePlacerType<>(GotOrchardFoliagePlacer.CODEC));
+
+    /**
+     * Conifer foliage placer: distinct tiered whorls with air gaps between
+     * each tier, narrowing to a pointed tip.  Used for cedar, fir, sentinal,
+     * soldier pine, blackbark, hemlock, blue mahoe, clove, aspen.
+     */
+    public static final DeferredHolder<FoliagePlacerType<?>, FoliagePlacerType<GotConiferFoliagePlacer>>
+            GOT_CONIFER_FOLIAGE_PLACER =
+            FOLIAGE_PLACER_TYPES.register("got_conifer_foliage_placer",
+                    () -> new FoliagePlacerType<>(GotConiferFoliagePlacer.CODEC));
+
     // ── Registration ──────────────────────────────────────────────────────────
 
     public static void register(IEventBus bus) {

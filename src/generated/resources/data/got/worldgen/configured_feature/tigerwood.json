@@ -9,10 +9,16 @@
       }
     },
     "foliage_placer": {
-      "type": "minecraft:fancy_foliage_placer",
-      "radius": 2,
-      "offset": 4,
-      "height": 4
+      "type": "got:got_broadleaf_foliage_placer",
+      "radius": {
+        "type": "minecraft:constant",
+        "value": 4
+      },
+      "offset": {
+        "type": "minecraft:constant",
+        "value": 0
+      },
+      "layers": 6
     },
     "foliage_provider": {
       "type": "minecraft:simple_state_provider",
