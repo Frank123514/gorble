@@ -11,38 +11,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
-/**
- * Foliage placer for aspen and birch — tall, slender hardwoods whose canopy
- * reads as a thin, ragged column rather than a rounded dome.
- *
- * <h3>Shape</h3>
- * Produces a tall narrow stack of leaf discs with a real air gap of one
- * empty block between each disc, so the canopy looks airy and "perforated"
- * rather than a solid blob, and rises well above where a normal hardwood
- * crown would stop.
- *
- * <ul>
- *   <li>Each tier is a flat disc of leaves 1–2 blocks thick.  The bottom
- *       disc is the widest (tiers * 2 blocks across); each tier up shrinks
- *       by one block of radius.</li>
- *   <li>Between tiers, one Y-level is left completely empty so light and
- *       sky show through the canopy in patches.</li>
- *   <li>The tip is a 3-tall pointed cap with radius 1, giving the silhouette
- *       a thin spire rather than a flat top.</li>
- *   <li>A randomised ±1-block jitter on each tier's disc radius breaks
- *       perfect symmetry between trees of the same species.</li>
- * </ul>
- *
- * <h3>Parameters</h3>
- * <ul>
- *   <li>{@code radius} (IntProvider) — radius of the widest (base) tier.
- *       Typical: 2.</li>
- *   <li>{@code offset} (IntProvider) — vertical offset of the attachment.
- *       Usually 0.</li>
- *   <li>{@code tiers} — number of distinct disc tiers below the tip cap.
- *       Typical: 4.  More tiers = taller canopy.</li>
- * </ul>
- */
 public class GotAspenFoliagePlacer extends FoliagePlacer {
 
     public static final MapCodec<GotAspenFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -50,7 +18,6 @@ public class GotAspenFoliagePlacer extends FoliagePlacer {
                     .and(ExtraCodecs.POSITIVE_INT.fieldOf("tiers").forGetter(p -> p.tiers))
                     .apply(instance, GotAspenFoliagePlacer::new));
 
-    /** Number of distinct disc tiers below the tip spike. */
     private final int tiers;
 
     public GotAspenFoliagePlacer(IntProvider radius, IntProvider offset, int tiers) {
@@ -75,54 +42,56 @@ public class GotAspenFoliagePlacer extends FoliagePlacer {
             int foliageRadius,
             int offset) {
 
-        BlockPos crown = attachment.pos().above(offset);
-        int baseRadius = foliageRadius;
+        double maxR = foliageRadius;
+        BlockPos base = attachment.pos().above(offset).below(5);
 
-        // Build tiers from bottom to top.
-        // Each tier occupies 2 Y-levels (double layer for thickness), then
-        // 1 Y-level gap (empty) before the next tier.
-        // stride = 3 (2 leaf + 1 gap)
-        int stride = 3;
+        for (int y = 0; y < foliageHeight; y++) {
+            double t = (double) y / (foliageHeight - 1); // 0=bottom, 1=tip
 
-        for (int tier = 0; tier < tiers; tier++) {
-            int y = tier * stride;
+            double sliceR;
+            double coneJoin = 0.6;
+            if (t <= coneJoin) {
+                double u = (t / coneJoin) - 1.0;
+                sliceR = maxR * Math.sqrt(1.0 - u * u);
+            } else {
+                sliceR = maxR * (1.0 - t) / (1.0 - coneJoin);
+            }
 
-            // Radius shrinks linearly from baseRadius at tier=0 to 1 at tier=tiers-1
-            int r = Math.max(1, baseRadius - tier);
-
-            // Small random jitter so each tree is slightly different
-            int jitter = random.nextInt(2) == 0 ? -1 : 0;  // 0 or -1
-            int actualR = Math.max(1, r + jitter);
-
-            // Two leaf layers per tier — gives visual thickness like a real branch whorl
-            placeTierDisc(level, setter, random, config, crown.above(y),     actualR);
-            placeTierDisc(level, setter, random, config, crown.above(y + 1), Math.max(1, actualR - 1));
-            // y+2 is the gap — left empty intentionally
+            // In the body, blocks near the edge randomly drop out to create jagged texture.
+            // Dropout chance scales from 0 at the centre to ~60% at the outer edge.
+            // Spike stays clean.
+            boolean applyDropout = t <= coneJoin;
+            placeDisc(level, setter, random, config, base.offset(0, y, 0),
+                    Math.max(0.3, sliceR), applyDropout);
         }
-
-        // Pointed tip: 3 layers narrowing to a single block
-        int tipBase = tiers * stride;
-        placeTierDisc(level, setter, random, config, crown.above(tipBase),     1);
-        placeTierDisc(level, setter, random, config, crown.above(tipBase + 1), 1);
-        tryPlaceLeaf(level, setter, random, config, crown.above(tipBase + 2)); // single apex block
     }
 
-    /**
-     * Places a circular disc of leaves at the given position.
-     * Uses a squared Euclidean distance test so the disc is round, not square.
-     */
-    private void placeTierDisc(
+    private void placeDisc(
             LevelSimulatedReader level,
             FoliageSetter setter,
             RandomSource random,
             TreeConfiguration config,
             BlockPos centre,
-            int r) {
+            double r,
+            boolean dropout) {
 
-        int rSq = r * r + r; // slightly generous cutoff for natural rounding
-        for (int dx = -r; dx <= r; dx++) {
-            for (int dz = -r; dz <= r; dz++) {
-                if (dx * dx + dz * dz > rSq) continue;
+        int ri = (int) Math.ceil(r);
+        for (int dx = -ri; dx <= ri; dx++) {
+            for (int dz = -ri; dz <= ri; dz++) {
+                double dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist > r + 0.5) continue;
+
+                if (dropout) {
+                    // How close to the edge are we? 0=centre, 1=edge
+                    double edgeFactor = dist / r;
+                    // Only apply dropout in the outer 40% of the radius
+                    if (edgeFactor > 0.6) {
+                        // Dropout probability ramps from 0% at edgeFactor=0.6 to 60% at edge
+                        double dropChance = ((edgeFactor - 0.6) / 0.4) * 0.6;
+                        if (random.nextDouble() < dropChance) continue;
+                    }
+                }
+
                 tryPlaceLeaf(level, setter, random, config, centre.offset(dx, 0, dz));
             }
         }
@@ -130,8 +99,7 @@ public class GotAspenFoliagePlacer extends FoliagePlacer {
 
     @Override
     public int foliageHeight(RandomSource random, int height, TreeConfiguration config) {
-        // tiers * 3 (2 leaf + 1 gap each) + 3 for the tip spike
-        return tiers * 3 + 3;
+        return tiers;
     }
 
     @Override

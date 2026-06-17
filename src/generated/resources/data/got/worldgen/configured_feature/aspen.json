@@ -4,34 +4,26 @@
     "decorators": [],
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:dirt"
-      }
+      "state": { "Name": "minecraft:dirt" }
     },
     "foliage_placer": {
       "type": "got:got_aspen_foliage_placer",
-      "offset": 2,
-      "radius": 2,
-      "trunk_height": 2
+      "radius": { "type": "minecraft:constant", "value": 2 },
+      "offset": { "type": "minecraft:constant", "value": 0 },
+      "tiers": 13
     },
     "foliage_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
         "Name": "got:aspen_leaves",
-        "Properties": {
-          "distance": "7",
-          "persistent": "true",
-          "waterlogged": "false"
-        }
+        "Properties": { "distance": "7", "persistent": "true", "waterlogged": "false" }
       }
     },
     "force_dirt": false,
-    "ignore_vines": false,
+    "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
-      "limit": 1,
-      "lower_size": 1,
-      "upper_size": 1
+      "limit": 1, "lower_size": 0, "upper_size": 1
     },
     "trunk_placer": {
       "type": "minecraft:straight_trunk_placer",
@@ -41,12 +33,7 @@
     },
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "got:aspen_log",
-        "Properties": {
-          "axis": "y"
-        }
-      }
+      "state": { "Name": "got:aspen_log", "Properties": { "axis": "y" } }
     }
   }
 }
