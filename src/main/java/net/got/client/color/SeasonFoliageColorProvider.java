@@ -43,7 +43,7 @@ public final class SeasonFoliageColorProvider {
     private static final int[] ALDER        = { 0x6CB830, 0x358712, 0xC07014, 0x6A5E48 };
     private static final int[] APPLE        = { 0x7AB828, 0x606E2A, 0xB06010, 0x706050 };
     private static final int[] ASH          = { 0x60A028, 0x315023, 0xA09010, 0x6A6050 };
-    private static final int[] ASPEN        = { 0x78B028, 0x4D5C12, 0xD0BC10, 0x787060 };
+    private static final int[] ASPEN        = { 0x94D931, 0x63BF3B, 0xD0BC10, 0x787060 };
     private static final int[] BEECH        = { 0x90C030, 0x4D991C, 0xC88810, 0x807060 };
     private static final int[] BLACK_COTTON = { 0x60A030, 0x385635, 0xB88810, 0x6A6858 };
     private static final int[] BLACKBARK    = { 0x486020, 0x1E2C0F, 0x844010, 0x5A5248 };
