@@ -97,7 +97,8 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics gfx, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.player.isSpectator()) return;
+        if (mc.player == null || mc.player.isSpectator() || mc.player.isCreative()) return;
+        if (mc.options.hideGui) return;
         if (mc.getDebugOverlay().showDebugScreen()) return;
 
         float bodyTemp = clientBodyTemp;

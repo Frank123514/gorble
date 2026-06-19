@@ -1,19 +1,11 @@
 package net.got;
 
 import net.got.client.GotClient;
+import net.got.init.*;
 import net.got.worldgen.biome.placers.GotTreePlacers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.HashSet;
-import net.got.init.GotModBlocks;
-import net.got.init.GotModBlockEntities;
-import net.got.init.GotModBoatEntities;
-import net.got.init.GotWoodTypes;
-import net.got.init.GotModEntities;
-import net.got.init.GotModItems;
-import net.got.init.GotModMenus;
-import net.got.init.GotModRecipeSerializers;
-import net.got.init.GotModRecipeTypes;
-import net.got.init.GotModTabs;
+
 import net.got.network.GotNetwork;
 import net.got.registry.WorldgenRegistries;
 import net.got.sounds.ModSounds;
@@ -76,6 +68,7 @@ public final class GotMod {
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
         GotTreePlacers.register(modBus);
+        GotModParticles.register(modBus);
 
         GotModEntities.REGISTRY.register(modBus);
 

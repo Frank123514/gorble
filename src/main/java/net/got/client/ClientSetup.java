@@ -1,6 +1,7 @@
 package net.got.client;
 
 import net.got.client.input.GotKeybinds;
+import net.got.client.particle.WeirwoodLeafParticle;
 import net.got.client.renderer.GotBoatRenderer;
 import net.got.client.renderer.GotPlayerRenderer;
 import net.got.entity.client.brownbear.GotBrownBearModel;
@@ -39,10 +40,7 @@ import net.got.entity.npc.fighter.north.NorthSoldierEntity;
 import net.got.entity.npc.fighter.vale.ValeKnightEntity;
 // ── Horse / Stag renderers ────────────────────────────────────────────────────
 import net.got.entity.client.stag.GotStagRenderer;
-import net.got.init.GotModBlockEntities;
-import net.got.init.GotModBlocks;
-import net.got.init.GotModBoatEntities;
-import net.got.init.GotModEntities;
+import net.got.init.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.world.entity.EntityType;
@@ -50,14 +48,10 @@ import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.got.init.GotModMenus;
 import net.got.client.gui.OvenScreen;
 import net.got.client.gui.SmithyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.minecraft.world.level.block.Blocks;
 
 // The bus parameter was deprecated for removal in NeoForge 21.3.x.
@@ -82,6 +76,10 @@ public final class ClientSetup {
         event.register(GotKeybinds.BLOCK);
     }
 
+    @SubscribeEvent
+    public static void registerParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(GotModParticles.WEIRWOOD_LEAF.get(), WeirwoodLeafParticle.Provider::new);
+    }
     /**
      * Registers the {@link net.minecraft.client.model.geom.LayerDefinition} for every
      * custom GOT entity model so NeoForge's model baking infrastructure can

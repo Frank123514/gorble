@@ -35,7 +35,7 @@
     },
     "trunk_placer": {
       "type": "got:got_broadleaf_trunk_placer",
-      "base_height": 8,
+      "base_height": 10,
       "height_rand_a": 2,
       "height_rand_b": 3
     },
