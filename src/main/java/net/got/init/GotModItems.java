@@ -2222,7 +2222,7 @@ public class GotModItems {
 
     // ── Utility block items ───────────────────────────────────────────────────
     public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);
-    public static final DeferredItem<Item> SMITHY = block(GotModBlocks.SMITHY);
+    public static final DeferredItem<Item> FORGE = block(GotModBlocks.FORGE);
 
     // ── Helpers ───────────────────────────────────────────────────────────
 

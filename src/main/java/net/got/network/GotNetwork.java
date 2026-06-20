@@ -187,8 +187,38 @@ public final class GotNetwork {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
                     if (player.containerMenu instanceof net.got.menu.SmithyMenu menu &&
-                            menu.getContainer() instanceof net.got.block.SmithyBlockEntity be) {
+                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
+                    }
+                }));
+
+        // ── Select alloy recipe (C→S) ────────────────────────────────────────────
+        r.playToServer(SelectAlloyRecipePayload.TYPE, SelectAlloyRecipePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    if (player.containerMenu instanceof net.got.menu.AlloyMenu menu &&
+                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity be) {
+                        be.setSelectedRecipeIndex(payload.recipeIndex());
+                    }
+                }));
+
+        // ── Select forge mode (C→S) — switches Smithing <-> Alloying ────────────
+        r.playToServer(SelectForgeModePayload.TYPE, SelectForgeModePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    net.got.block.ForgeBlockEntity be = null;
+                    if (player.containerMenu instanceof net.got.menu.SmithyMenu menu &&
+                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity fbe) {
+                        be = fbe;
+                    } else if (player.containerMenu instanceof net.got.menu.AlloyMenu menu &&
+                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity fbe) {
+                        be = fbe;
+                    }
+                    if (be != null) {
+                        be.setMode(payload.mode());
+                        player.openMenu(be);
                     }
                 }));
 

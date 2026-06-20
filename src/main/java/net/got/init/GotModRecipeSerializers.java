@@ -3,6 +3,7 @@ package net.got.init;
 import net.got.GotMod;
 import net.got.recipe.OvenRecipe;
 import net.got.recipe.SmithyRecipe;
+import net.got.recipe.AlloyRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -18,4 +19,7 @@ public class GotModRecipeSerializers {
 
     public static final DeferredHolder<RecipeSerializer<?>, SmithyRecipe.Serializer> SMITHY_RECIPE =
             REGISTRY.register("smithy", SmithyRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeSerializer<?>, AlloyRecipe.Serializer> ALLOY_RECIPE =
+            REGISTRY.register("alloy", AlloyRecipe.Serializer::new);
 }

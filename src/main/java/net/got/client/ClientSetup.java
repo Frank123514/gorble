@@ -50,6 +50,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.got.client.gui.OvenScreen;
 import net.got.client.gui.SmithyScreen;
+import net.got.client.gui.AlloyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.minecraft.world.level.block.Blocks;
@@ -68,6 +69,7 @@ public final class ClientSetup {
         // via OpenTradeScreenPayload — no ScreenConstructor registration needed.
         event.register(GotModMenus.OVEN.get(), OvenScreen::new);
         event.register(GotModMenus.SMITHY.get(), SmithyScreen::new);
+        event.register(GotModMenus.ALLOY.get(), AlloyScreen::new);
     }
 
     @SubscribeEvent

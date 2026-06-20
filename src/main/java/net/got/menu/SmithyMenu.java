@@ -1,6 +1,6 @@
 package net.got.menu;
 
-import net.got.block.SmithyBlockEntity;
+import net.got.block.ForgeBlockEntity;
 import net.got.init.GotModMenus;
 import net.got.init.GotModRecipeTypes;
 import net.got.recipe.SmithyRecipe;
@@ -64,11 +64,11 @@ public class SmithyMenu extends AbstractContainerMenu {
     /** Client-side constructor (called by MenuType factory). */
     public SmithyMenu(int windowId, Inventory playerInv) {
         this(windowId, playerInv,
-                new SimpleContainer(SmithyBlockEntity.NUM_SLOTS),
-                new SimpleContainerData(SmithyBlockEntity.NUM_DATA));
+                new SimpleContainer(ForgeBlockEntity.NUM_SLOTS),
+                new SimpleContainerData(ForgeBlockEntity.NUM_DATA));
     }
 
-    /** Server-side constructor (called by SmithyBlockEntity). */
+    /** Server-side constructor (called by ForgeBlockEntity). */
     public SmithyMenu(int windowId, Inventory playerInv,
                       Container container, ContainerData data) {
         super(GotModMenus.SMITHY.get(), windowId);
@@ -76,8 +76,8 @@ public class SmithyMenu extends AbstractContainerMenu {
         this.data      = data;
         this.level     = playerInv.player.level();
 
-        checkContainerSize(container, SmithyBlockEntity.NUM_SLOTS);
-        checkContainerDataCount(data, SmithyBlockEntity.NUM_DATA);
+        checkContainerSize(container, ForgeBlockEntity.NUM_SLOTS);
+        checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
         // ── Player main inventory (rows 0–2) ──────────────────────────────────
@@ -92,15 +92,15 @@ public class SmithyMenu extends AbstractContainerMenu {
 
         // ── Smithy slots ──────────────────────────────────────────────────────
         // Input (slot 0)
-        this.addSlot(new Slot(container, SmithyBlockEntity.SLOT_INPUT, INPUT_X, INPUT_Y));
+        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_INPUT, INPUT_X, INPUT_Y));
 
         // Fuel (slot 1)
-        this.addSlot(new FuelSlot(container, SmithyBlockEntity.SLOT_FUEL,
+        this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL,
                 FUEL_X, FUEL_Y, level));
 
         // Output (slot 2) — take-only
         this.addSlot(new ResultSlot(playerInv.player, container,
-                SmithyBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
+                ForgeBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
 
         this.addDataSlots(data);
     }
@@ -108,34 +108,34 @@ public class SmithyMenu extends AbstractContainerMenu {
     // ── Progress helpers (used by SmithyScreen) ───────────────────────────────
 
     public boolean isCrafting() {
-        return data.get(SmithyBlockEntity.DATA_COOKING_PROGRESS) > 0;
+        return data.get(ForgeBlockEntity.DATA_COOKING_PROGRESS) > 0;
     }
 
     public boolean isFlaming() {
-        return data.get(SmithyBlockEntity.DATA_LIT_TIME) > 0;
+        return data.get(ForgeBlockEntity.DATA_LIT_TIME) > 0;
     }
 
     /** Arrow progress scaled to [0, 24]. */
     public int getArrowProgress() {
-        int progress = data.get(SmithyBlockEntity.DATA_COOKING_PROGRESS);
-        int total    = data.get(SmithyBlockEntity.DATA_COOKING_TOTAL);
+        int progress = data.get(ForgeBlockEntity.DATA_COOKING_PROGRESS);
+        int total    = data.get(ForgeBlockEntity.DATA_COOKING_TOTAL);
         return (total != 0 && progress != 0) ? progress * 24 / total : 0;
     }
 
     /** Flame height scaled to [0, 13]. */
     public int getFlameProgress() {
-        int duration = data.get(SmithyBlockEntity.DATA_LIT_DURATION);
+        int duration = data.get(ForgeBlockEntity.DATA_LIT_DURATION);
         if (duration == 0) duration = 200;
-        return data.get(SmithyBlockEntity.DATA_LIT_TIME) * 13 / duration;
+        return data.get(ForgeBlockEntity.DATA_LIT_TIME) * 13 / duration;
     }
 
     /** Index of the selected recipe (-1 = none). */
     public int getSelectedRecipeIndex() {
-        return data.get(SmithyBlockEntity.DATA_SELECTED_RECIPE);
+        return data.get(ForgeBlockEntity.DATA_SELECTED_RECIPE);
     }
 
     public ItemStack getInputItem() {
-        return container.getItem(SmithyBlockEntity.SLOT_INPUT);
+        return container.getItem(ForgeBlockEntity.SLOT_INPUT);
     }
 
     /** Exposes the backing container so the network handler can reach the block entity. */

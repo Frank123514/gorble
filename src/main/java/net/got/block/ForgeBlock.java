@@ -29,27 +29,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 
 /**
- * SmithyBlock — a furnace-like block with a recipe-selection interface.
+ * ForgeBlock — a furnace-like block with a recipe-selection interface.
  * <p>
  * Fuel slot (bottom-left) heats the ingot placed in the input slot (top-left).
  * The GUI's right panel lists all SmithyRecipes that match the current ingot;
- * the player clicks one to commit, and the smithy processes it.
+ * the player clicks one to commit, and the forge processes it. The forge also supports an alloying mode (see ForgeBlockEntity) for combining metals.
  */
-public class SmithyBlock extends BaseEntityBlock {
+public class ForgeBlock extends BaseEntityBlock {
 
-    public static final MapCodec<SmithyBlock> CODEC = simpleCodec(SmithyBlock::new);
+    public static final MapCodec<ForgeBlock> CODEC = simpleCodec(ForgeBlock::new);
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty         LIT    = BlockStateProperties.LIT;
 
-    public SmithyBlock(BlockBehaviour.Properties props) {
+    public ForgeBlock(Properties props) {
         super(props);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(LIT, false));
     }
 
-    @Override public MapCodec<SmithyBlock> codec() { return CODEC; }
+    @Override public MapCodec<ForgeBlock> codec() { return CODEC; }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -80,8 +80,8 @@ public class SmithyBlock extends BaseEntityBlock {
                          BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof SmithyBlockEntity smithy) {
-                Containers.dropContents(level, pos, smithy);
+            if (be instanceof ForgeBlockEntity forge) {
+                Containers.dropContents(level, pos, forge);
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
@@ -93,8 +93,8 @@ public class SmithyBlock extends BaseEntityBlock {
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof SmithyBlockEntity smithy) {
-            player.openMenu(smithy);
+        if (be instanceof ForgeBlockEntity forge) {
+            player.openMenu(forge);
             player.awardStat(Stats.INTERACT_WITH_FURNACE);
         }
         return InteractionResult.CONSUME;
@@ -102,15 +102,15 @@ public class SmithyBlock extends BaseEntityBlock {
 
     @Nullable @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new SmithyBlockEntity(pos, state);
+        return new ForgeBlockEntity(pos, state);
     }
 
     @Nullable @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
         if (level.isClientSide) return null;
-        return createTickerHelper(type, GotModBlockEntities.SMITHY.get(),
-                SmithyBlockEntity::serverTick);
+        return createTickerHelper(type, GotModBlockEntities.FORGE.get(),
+                ForgeBlockEntity::serverTick);
     }
 
     @Override
