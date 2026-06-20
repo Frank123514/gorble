@@ -51,6 +51,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ACACIA_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ACACIA_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.ACACIA_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.ACACIA_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ACACIA_BRANCH.get());
 
                         // ── Alder ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ALDER_LOG.get());
@@ -67,6 +69,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ALDER_DOOR.get());
                         safeAccept(output, GotModBlocks.ALDER_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.ALDER_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALDER_BRANCH.get());
                         safeAccept(output, GotModBlocks.ALDER_ROOFING.get());
                         safeAccept(output, GotModBlocks.ALDER_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ALDER_ROOFING_STAIRS.get());
@@ -91,6 +94,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.APPLE_DOOR.get());
                         safeAccept(output, GotModBlocks.APPLE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.APPLE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APPLE_BRANCH.get());
                         safeAccept(output, GotModBlocks.APPLE_ROOFING.get());
                         safeAccept(output, GotModBlocks.APPLE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.APPLE_ROOFING_STAIRS.get());
@@ -115,6 +119,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASH_DOOR.get());
                         safeAccept(output, GotModBlocks.ASH_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.ASH_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASH_BRANCH.get());
                         safeAccept(output, GotModBlocks.ASH_ROOFING.get());
                         safeAccept(output, GotModBlocks.ASH_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ASH_ROOFING_STAIRS.get());
@@ -139,6 +144,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASPEN_DOOR.get());
                         safeAccept(output, GotModBlocks.ASPEN_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.ASPEN_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASPEN_BRANCH.get());
                         safeAccept(output, GotModBlocks.ASPEN_ROOFING.get());
                         safeAccept(output, GotModBlocks.ASPEN_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ASPEN_ROOFING_STAIRS.get());
@@ -179,6 +185,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BEECH_DOOR.get());
                         safeAccept(output, GotModBlocks.BEECH_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BEECH_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BEECH_BRANCH.get());
                         safeAccept(output, GotModBlocks.BEECH_ROOFING.get());
                         safeAccept(output, GotModBlocks.BEECH_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BEECH_ROOFING_STAIRS.get());
@@ -193,6 +200,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BIRCH_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BIRCH_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.BIRCH_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.BIRCH_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BIRCH_BRANCH.get());
 
                         // ── Blackbark ─────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACKBARK_LOG.get());
@@ -209,6 +218,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACKBARK_DOOR.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKBARK_BRANCH.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_ROOFING.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_ROOFING_STAIRS.get());
@@ -233,6 +243,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_COTTONWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_ROOFING_STAIRS.get());
@@ -257,6 +268,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLOODWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_ROOFING_STAIRS.get());
@@ -281,6 +293,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_DOOR.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_BRANCH.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_ROOFING.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_ROOFING_STAIRS.get());
@@ -305,6 +318,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CEDAR_DOOR.get());
                         safeAccept(output, GotModBlocks.CEDAR_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.CEDAR_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CEDAR_BRANCH.get());
                         safeAccept(output, GotModBlocks.CEDAR_ROOFING.get());
                         safeAccept(output, GotModBlocks.CEDAR_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CEDAR_ROOFING_STAIRS.get());
@@ -319,6 +333,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.CHERRY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHERRY_BRANCH.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_STAIRS.get());
@@ -347,6 +363,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHESTNUT_DOOR.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_BRANCH.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_ROOFING.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_ROOFING_STAIRS.get());
@@ -371,6 +388,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CINNAMON_DOOR.get());
                         safeAccept(output, GotModBlocks.CINNAMON_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.CINNAMON_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CINNAMON_BRANCH.get());
                         safeAccept(output, GotModBlocks.CINNAMON_ROOFING.get());
                         safeAccept(output, GotModBlocks.CINNAMON_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CINNAMON_ROOFING_STAIRS.get());
@@ -395,6 +413,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CLOVE_DOOR.get());
                         safeAccept(output, GotModBlocks.CLOVE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.CLOVE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CLOVE_BRANCH.get());
                         safeAccept(output, GotModBlocks.CLOVE_ROOFING.get());
                         safeAccept(output, GotModBlocks.CLOVE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CLOVE_ROOFING_STAIRS.get());
@@ -419,6 +438,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.COTTONWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_COTTONWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_ROOFING_STAIRS.get());
@@ -439,6 +459,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.DARK_OAK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_DARK_OAK_BRANCH.get());
 
                         // ── Ebony ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.EBONY_LOG.get());
@@ -455,6 +477,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.EBONY_DOOR.get());
                         safeAccept(output, GotModBlocks.EBONY_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.EBONY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_EBONY_BRANCH.get());
                         safeAccept(output, GotModBlocks.EBONY_ROOFING.get());
                         safeAccept(output, GotModBlocks.EBONY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.EBONY_ROOFING_STAIRS.get());
@@ -479,6 +502,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ELM_DOOR.get());
                         safeAccept(output, GotModBlocks.ELM_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.ELM_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ELM_BRANCH.get());
                         safeAccept(output, GotModBlocks.ELM_ROOFING.get());
                         safeAccept(output, GotModBlocks.ELM_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ELM_ROOFING_STAIRS.get());
@@ -503,6 +527,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.FIR_DOOR.get());
                         safeAccept(output, GotModBlocks.FIR_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.FIR_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIR_BRANCH.get());
                         safeAccept(output, GotModBlocks.FIR_ROOFING.get());
                         safeAccept(output, GotModBlocks.FIR_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.FIR_ROOFING_STAIRS.get());
@@ -527,6 +552,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.GOLDENHEART_DOOR.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_GOLDENHEART_BRANCH.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_ROOFING.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_ROOFING_STAIRS.get());
@@ -551,6 +577,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HAWTHORN_DOOR.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HAWTHORN_BRANCH.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_ROOFING.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_ROOFING_STAIRS.get());
@@ -575,6 +602,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.IRONWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_IRONWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_ROOFING_STAIRS.get());
@@ -589,6 +617,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.JUNGLE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.JUNGLE_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.JUNGLE_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.JUNGLE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_JUNGLE_BRANCH.get());
 
                         // ── Linden ────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.LINDEN_LOG.get());
@@ -605,6 +635,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LINDEN_DOOR.get());
                         safeAccept(output, GotModBlocks.LINDEN_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.LINDEN_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LINDEN_BRANCH.get());
                         safeAccept(output, GotModBlocks.LINDEN_ROOFING.get());
                         safeAccept(output, GotModBlocks.LINDEN_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.LINDEN_ROOFING_STAIRS.get());
@@ -629,6 +660,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MAHOGANY_DOOR.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAHOGANY_BRANCH.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_ROOFING.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_ROOFING_STAIRS.get());
@@ -643,6 +675,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MANGROVE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.MANGROVE_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.MANGROVE_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.MANGROVE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MANGROVE_BRANCH.get());
 
                         // ── Maple ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.MAPLE_LOG.get());
@@ -659,6 +693,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MAPLE_DOOR.get());
                         safeAccept(output, GotModBlocks.MAPLE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.MAPLE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAPLE_BRANCH.get());
                         safeAccept(output, GotModBlocks.MAPLE_ROOFING.get());
                         safeAccept(output, GotModBlocks.MAPLE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.MAPLE_ROOFING_STAIRS.get());
@@ -683,6 +718,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MYRRH_DOOR.get());
                         safeAccept(output, GotModBlocks.MYRRH_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.MYRRH_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MYRRH_BRANCH.get());
                         safeAccept(output, GotModBlocks.MYRRH_ROOFING.get());
                         safeAccept(output, GotModBlocks.MYRRH_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.MYRRH_ROOFING_STAIRS.get());
@@ -697,6 +733,12 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OAK_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.OAK_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.OAK_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.OAK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_OAK_BRANCH.get());
+
+                        // ── Pale Oak (vanilla) ────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.PALE_OAK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PALE_OAK_BRANCH.get());
 
                         // ── Pine ──────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PINE_LOG.get());
@@ -713,6 +755,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PINE_DOOR.get());
                         safeAccept(output, GotModBlocks.PINE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PINE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINE_BRANCH.get());
                         safeAccept(output, GotModBlocks.PINE_ROOFING.get());
                         safeAccept(output, GotModBlocks.PINE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PINE_ROOFING_STAIRS.get());
@@ -737,6 +780,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.REDWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.REDWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.REDWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_REDWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.REDWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.REDWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.REDWOOD_ROOFING_STAIRS.get());
@@ -761,6 +805,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SENTINAL_DOOR.get());
                         safeAccept(output, GotModBlocks.SENTINAL_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.SENTINAL_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SENTINAL_BRANCH.get());
                         safeAccept(output, GotModBlocks.SENTINAL_ROOFING.get());
                         safeAccept(output, GotModBlocks.SENTINAL_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.SENTINAL_ROOFING_STAIRS.get());
@@ -785,6 +830,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_DOOR.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SOLDIER_PINE_BRANCH.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_ROOFING.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_ROOFING_STAIRS.get());
@@ -799,6 +845,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SPRUCE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.SPRUCE_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.SPRUCE_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.SPRUCE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SPRUCE_BRANCH.get());
 
                         // ── Warped (vanilla) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WARPED_ROOFING.get());
@@ -821,6 +869,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WEIRWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WEIRWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_ROOFING_STAIRS.get());
@@ -845,6 +894,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WILLOW_DOOR.get());
                         safeAccept(output, GotModBlocks.WILLOW_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.WILLOW_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WILLOW_BRANCH.get());
                         safeAccept(output, GotModBlocks.WILLOW_ROOFING.get());
                         safeAccept(output, GotModBlocks.WILLOW_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.WILLOW_ROOFING_STAIRS.get());
@@ -869,6 +919,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WORMTREE_DOOR.get());
                         safeAccept(output, GotModBlocks.WORMTREE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.WORMTREE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WORMTREE_BRANCH.get());
                         safeAccept(output, GotModBlocks.WORMTREE_ROOFING.get());
                         safeAccept(output, GotModBlocks.WORMTREE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.WORMTREE_ROOFING_STAIRS.get());
@@ -893,6 +944,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NIGHTWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_NIGHTWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_ROOFING_STAIRS.get());
@@ -917,6 +969,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PURPLEHEART_DOOR.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PURPLEHEART_BRANCH.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_ROOFING.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_ROOFING_STAIRS.get());
@@ -941,6 +994,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.TIGERWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_TIGERWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_ROOFING_STAIRS.get());
@@ -965,6 +1019,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BURL_DOOR.get());
                         safeAccept(output, GotModBlocks.BURL_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BURL_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BURL_BRANCH.get());
                         safeAccept(output, GotModBlocks.BURL_ROOFING.get());
                         safeAccept(output, GotModBlocks.BURL_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BURL_ROOFING_STAIRS.get());
@@ -989,6 +1044,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SANDALWOOD_DOOR.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SANDALWOOD_BRANCH.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_ROOFING.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_ROOFING_STAIRS.get());
@@ -1013,6 +1069,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SANDBEGGAR_DOOR.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SANDBEGGAR_BRANCH.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_ROOFING.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_ROOFING_STAIRS.get());
@@ -1037,6 +1094,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.APRICOT_DOOR.get());
                         safeAccept(output, GotModBlocks.APRICOT_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.APRICOT_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APRICOT_BRANCH.get());
                         safeAccept(output, GotModBlocks.APRICOT_ROOFING.get());
                         safeAccept(output, GotModBlocks.APRICOT_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.APRICOT_ROOFING_STAIRS.get());
@@ -1061,6 +1119,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACKTHORN_DOOR.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKTHORN_BRANCH.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_ROOFING.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_ROOFING_STAIRS.get());
@@ -1085,6 +1144,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.RED_CHERRY_DOOR.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_RED_CHERRY_BRANCH.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_LOG.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACK_CHERRY_LOG.get());
@@ -1099,6 +1159,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_DOOR.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_CHERRY_BRANCH.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_LOG.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WHITE_CHERRY_LOG.get());
@@ -1113,10 +1174,13 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_DOOR.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WHITE_CHERRY_BRANCH.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_STAIRS.get());
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_WALL.get());
+                        safeAccept(output, GotModBlocks.CHERRY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHERRY_BRANCH.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_STAIRS.get());
@@ -1157,6 +1221,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CRABAPPLE_DOOR.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CRABAPPLE_BRANCH.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_ROOFING.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_ROOFING_STAIRS.get());
@@ -1181,6 +1246,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.DATE_PALM_DOOR.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_DATE_PALM_BRANCH.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_ROOFING.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_ROOFING_STAIRS.get());
@@ -1205,6 +1271,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.FIG_DOOR.get());
                         safeAccept(output, GotModBlocks.FIG_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.FIG_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIG_BRANCH.get());
                         safeAccept(output, GotModBlocks.FIG_ROOFING.get());
                         safeAccept(output, GotModBlocks.FIG_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.FIG_ROOFING_STAIRS.get());
@@ -1229,6 +1296,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LEMON_DOOR.get());
                         safeAccept(output, GotModBlocks.LEMON_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.LEMON_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LEMON_BRANCH.get());
                         safeAccept(output, GotModBlocks.LEMON_ROOFING.get());
                         safeAccept(output, GotModBlocks.LEMON_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.LEMON_ROOFING_STAIRS.get());
@@ -1253,6 +1321,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LIME_DOOR.get());
                         safeAccept(output, GotModBlocks.LIME_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.LIME_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LIME_BRANCH.get());
                         safeAccept(output, GotModBlocks.LIME_ROOFING.get());
                         safeAccept(output, GotModBlocks.LIME_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.LIME_ROOFING_STAIRS.get());
@@ -1277,6 +1346,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OLIVE_DOOR.get());
                         safeAccept(output, GotModBlocks.OLIVE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.OLIVE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_OLIVE_BRANCH.get());
                         safeAccept(output, GotModBlocks.OLIVE_ROOFING.get());
                         safeAccept(output, GotModBlocks.OLIVE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.OLIVE_ROOFING_STAIRS.get());
@@ -1301,6 +1371,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ORANGE_DOOR.get());
                         safeAccept(output, GotModBlocks.ORANGE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.ORANGE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ORANGE_BRANCH.get());
                         safeAccept(output, GotModBlocks.ORANGE_ROOFING.get());
                         safeAccept(output, GotModBlocks.ORANGE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ORANGE_ROOFING_STAIRS.get());
@@ -1325,6 +1396,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PEACH_DOOR.get());
                         safeAccept(output, GotModBlocks.PEACH_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PEACH_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PEACH_BRANCH.get());
                         safeAccept(output, GotModBlocks.PEACH_ROOFING.get());
                         safeAccept(output, GotModBlocks.PEACH_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PEACH_ROOFING_STAIRS.get());
@@ -1349,6 +1421,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PEAR_DOOR.get());
                         safeAccept(output, GotModBlocks.PEAR_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PEAR_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PEAR_BRANCH.get());
                         safeAccept(output, GotModBlocks.PEAR_ROOFING.get());
                         safeAccept(output, GotModBlocks.PEAR_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PEAR_ROOFING_STAIRS.get());
@@ -1373,6 +1446,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PERSIMMON_DOOR.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PERSIMMON_BRANCH.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_ROOFING.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_ROOFING_STAIRS.get());
@@ -1397,6 +1471,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PINK_IVORY_DOOR.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINK_IVORY_BRANCH.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_ROOFING.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_ROOFING_STAIRS.get());
@@ -1421,6 +1496,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PLUM_DOOR.get());
                         safeAccept(output, GotModBlocks.PLUM_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PLUM_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PLUM_BRANCH.get());
                         safeAccept(output, GotModBlocks.PLUM_ROOFING.get());
                         safeAccept(output, GotModBlocks.PLUM_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PLUM_ROOFING_STAIRS.get());
@@ -1445,6 +1521,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.POMEGRANATE_DOOR.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_POMEGRANATE_BRANCH.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_ROOFING.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_ROOFING_STAIRS.get());
@@ -1469,6 +1546,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PRUNE_DOOR.get());
                         safeAccept(output, GotModBlocks.PRUNE_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.PRUNE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PRUNE_BRANCH.get());
                         safeAccept(output, GotModBlocks.PRUNE_ROOFING.get());
                         safeAccept(output, GotModBlocks.PRUNE_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.PRUNE_ROOFING_STAIRS.get());
@@ -1493,6 +1571,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ALMOND_DOOR.get());
                         safeAccept(output, GotModBlocks.ALMOND_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.ALMOND_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALMOND_BRANCH.get());
                         safeAccept(output, GotModBlocks.ALMOND_ROOFING.get());
                         safeAccept(output, GotModBlocks.ALMOND_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.ALMOND_ROOFING_STAIRS.get());
@@ -1517,6 +1596,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NUTMEG_DOOR.get());
                         safeAccept(output, GotModBlocks.NUTMEG_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.NUTMEG_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_NUTMEG_BRANCH.get());
                         safeAccept(output, GotModBlocks.NUTMEG_ROOFING.get());
                         safeAccept(output, GotModBlocks.NUTMEG_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.NUTMEG_ROOFING_STAIRS.get());
@@ -1541,6 +1621,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HEMLOCK_DOOR.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_TRAPDOOR.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HEMLOCK_BRANCH.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_ROOFING.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_ROOFING_STAIRS.get());

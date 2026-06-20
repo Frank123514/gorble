@@ -1,6 +1,6 @@
 {
-  "parent": "got:block/alder_branch_side",
+  "parent": "minecraft:block/template_wall_side",
   "textures": {
-    "texture": "got:block/peach_log_side"
+    "wall": "got:block/peach_log_side"
   }
 }

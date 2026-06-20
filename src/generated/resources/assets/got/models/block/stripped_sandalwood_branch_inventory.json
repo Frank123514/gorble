@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "got:block/stripped_sandalwood_log_side"
+  }
+}

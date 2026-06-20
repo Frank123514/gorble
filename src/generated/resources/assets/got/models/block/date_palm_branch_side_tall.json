@@ -1,6 +1,6 @@
 {
-  "parent": "got:block/alder_branch_side_tall",
+  "parent": "minecraft:block/template_wall_side_tall",
   "textures": {
-    "texture": "got:block/date_palm_log_side"
+    "wall": "got:block/date_palm_log_side"
   }
 }

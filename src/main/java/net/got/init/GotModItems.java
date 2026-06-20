@@ -1229,36 +1229,87 @@ public class GotModItems {
 
     // ── Branches (log-textured wall blocks) ──────────────────────────────
     public static final DeferredItem<Item> WEIRWOOD_BRANCH         = block(GotModBlocks.WEIRWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_WEIRWOOD_BRANCH = block(GotModBlocks.STRIPPED_WEIRWOOD_BRANCH);
     public static final DeferredItem<Item> ASPEN_BRANCH            = block(GotModBlocks.ASPEN_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ASPEN_BRANCH = block(GotModBlocks.STRIPPED_ASPEN_BRANCH);
     public static final DeferredItem<Item> ALDER_BRANCH            = block(GotModBlocks.ALDER_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ALDER_BRANCH = block(GotModBlocks.STRIPPED_ALDER_BRANCH);
     public static final DeferredItem<Item> PINE_BRANCH             = block(GotModBlocks.PINE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PINE_BRANCH = block(GotModBlocks.STRIPPED_PINE_BRANCH);
     public static final DeferredItem<Item> FIR_BRANCH              = block(GotModBlocks.FIR_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_FIR_BRANCH = block(GotModBlocks.STRIPPED_FIR_BRANCH);
     public static final DeferredItem<Item> SENTINAL_BRANCH         = block(GotModBlocks.SENTINAL_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_SENTINAL_BRANCH = block(GotModBlocks.STRIPPED_SENTINAL_BRANCH);
     public static final DeferredItem<Item> IRONWOOD_BRANCH         = block(GotModBlocks.IRONWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_IRONWOOD_BRANCH = block(GotModBlocks.STRIPPED_IRONWOOD_BRANCH);
     public static final DeferredItem<Item> BEECH_BRANCH            = block(GotModBlocks.BEECH_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BEECH_BRANCH = block(GotModBlocks.STRIPPED_BEECH_BRANCH);
     public static final DeferredItem<Item> SOLDIER_PINE_BRANCH     = block(GotModBlocks.SOLDIER_PINE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_SOLDIER_PINE_BRANCH = block(GotModBlocks.STRIPPED_SOLDIER_PINE_BRANCH);
     public static final DeferredItem<Item> ASH_BRANCH              = block(GotModBlocks.ASH_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ASH_BRANCH = block(GotModBlocks.STRIPPED_ASH_BRANCH);
     public static final DeferredItem<Item> HAWTHORN_BRANCH         = block(GotModBlocks.HAWTHORN_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_HAWTHORN_BRANCH = block(GotModBlocks.STRIPPED_HAWTHORN_BRANCH);
     public static final DeferredItem<Item> BLACKBARK_BRANCH        = block(GotModBlocks.BLACKBARK_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BLACKBARK_BRANCH = block(GotModBlocks.STRIPPED_BLACKBARK_BRANCH);
     public static final DeferredItem<Item> BLOODWOOD_BRANCH        = block(GotModBlocks.BLOODWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BLOODWOOD_BRANCH = block(GotModBlocks.STRIPPED_BLOODWOOD_BRANCH);
     public static final DeferredItem<Item> BLUE_MAHOE_BRANCH       = block(GotModBlocks.BLUE_MAHOE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BLUE_MAHOE_BRANCH = block(GotModBlocks.STRIPPED_BLUE_MAHOE_BRANCH);
     public static final DeferredItem<Item> COTTONWOOD_BRANCH       = block(GotModBlocks.COTTONWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_COTTONWOOD_BRANCH = block(GotModBlocks.STRIPPED_COTTONWOOD_BRANCH);
     public static final DeferredItem<Item> BLACK_COTTONWOOD_BRANCH = block(GotModBlocks.BLACK_COTTONWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BLACK_COTTONWOOD_BRANCH = block(GotModBlocks.STRIPPED_BLACK_COTTONWOOD_BRANCH);
     public static final DeferredItem<Item> CINNAMON_BRANCH         = block(GotModBlocks.CINNAMON_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_CINNAMON_BRANCH = block(GotModBlocks.STRIPPED_CINNAMON_BRANCH);
     public static final DeferredItem<Item> CLOVE_BRANCH            = block(GotModBlocks.CLOVE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_CLOVE_BRANCH = block(GotModBlocks.STRIPPED_CLOVE_BRANCH);
     public static final DeferredItem<Item> EBONY_BRANCH            = block(GotModBlocks.EBONY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_EBONY_BRANCH = block(GotModBlocks.STRIPPED_EBONY_BRANCH);
     public static final DeferredItem<Item> ELM_BRANCH              = block(GotModBlocks.ELM_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ELM_BRANCH = block(GotModBlocks.STRIPPED_ELM_BRANCH);
     public static final DeferredItem<Item> CEDAR_BRANCH            = block(GotModBlocks.CEDAR_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_CEDAR_BRANCH = block(GotModBlocks.STRIPPED_CEDAR_BRANCH);
     public static final DeferredItem<Item> APPLE_BRANCH            = block(GotModBlocks.APPLE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_APPLE_BRANCH = block(GotModBlocks.STRIPPED_APPLE_BRANCH);
     public static final DeferredItem<Item> GOLDENHEART_BRANCH      = block(GotModBlocks.GOLDENHEART_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_GOLDENHEART_BRANCH = block(GotModBlocks.STRIPPED_GOLDENHEART_BRANCH);
     public static final DeferredItem<Item> LINDEN_BRANCH           = block(GotModBlocks.LINDEN_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_LINDEN_BRANCH = block(GotModBlocks.STRIPPED_LINDEN_BRANCH);
     public static final DeferredItem<Item> MAHOGANY_BRANCH         = block(GotModBlocks.MAHOGANY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_MAHOGANY_BRANCH = block(GotModBlocks.STRIPPED_MAHOGANY_BRANCH);
     public static final DeferredItem<Item> MAPLE_BRANCH            = block(GotModBlocks.MAPLE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_MAPLE_BRANCH = block(GotModBlocks.STRIPPED_MAPLE_BRANCH);
     public static final DeferredItem<Item> MYRRH_BRANCH            = block(GotModBlocks.MYRRH_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_MYRRH_BRANCH = block(GotModBlocks.STRIPPED_MYRRH_BRANCH);
     public static final DeferredItem<Item> REDWOOD_BRANCH          = block(GotModBlocks.REDWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_REDWOOD_BRANCH = block(GotModBlocks.STRIPPED_REDWOOD_BRANCH);
     public static final DeferredItem<Item> CHESTNUT_BRANCH         = block(GotModBlocks.CHESTNUT_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_CHESTNUT_BRANCH = block(GotModBlocks.STRIPPED_CHESTNUT_BRANCH);
     public static final DeferredItem<Item> WILLOW_BRANCH           = block(GotModBlocks.WILLOW_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_WILLOW_BRANCH = block(GotModBlocks.STRIPPED_WILLOW_BRANCH);
     public static final DeferredItem<Item> WORMTREE_BRANCH         = block(GotModBlocks.WORMTREE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_WORMTREE_BRANCH = block(GotModBlocks.STRIPPED_WORMTREE_BRANCH);
+
+    // ── Branches — vanilla overworld woods ──────────────────────────────────
+    public static final DeferredItem<Item> OAK_BRANCH              = block(GotModBlocks.OAK_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_OAK_BRANCH      = block(GotModBlocks.STRIPPED_OAK_BRANCH);
+    public static final DeferredItem<Item> SPRUCE_BRANCH           = block(GotModBlocks.SPRUCE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_SPRUCE_BRANCH   = block(GotModBlocks.STRIPPED_SPRUCE_BRANCH);
+    public static final DeferredItem<Item> BIRCH_BRANCH            = block(GotModBlocks.BIRCH_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BIRCH_BRANCH    = block(GotModBlocks.STRIPPED_BIRCH_BRANCH);
+    public static final DeferredItem<Item> JUNGLE_BRANCH           = block(GotModBlocks.JUNGLE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_JUNGLE_BRANCH   = block(GotModBlocks.STRIPPED_JUNGLE_BRANCH);
+    public static final DeferredItem<Item> ACACIA_BRANCH           = block(GotModBlocks.ACACIA_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ACACIA_BRANCH   = block(GotModBlocks.STRIPPED_ACACIA_BRANCH);
+    public static final DeferredItem<Item> DARK_OAK_BRANCH         = block(GotModBlocks.DARK_OAK_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_DARK_OAK_BRANCH = block(GotModBlocks.STRIPPED_DARK_OAK_BRANCH);
+    public static final DeferredItem<Item> MANGROVE_BRANCH         = block(GotModBlocks.MANGROVE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_MANGROVE_BRANCH = block(GotModBlocks.STRIPPED_MANGROVE_BRANCH);
+    public static final DeferredItem<Item> CHERRY_BRANCH           = block(GotModBlocks.CHERRY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_CHERRY_BRANCH   = block(GotModBlocks.STRIPPED_CHERRY_BRANCH);
+    public static final DeferredItem<Item> PALE_OAK_BRANCH         = block(GotModBlocks.PALE_OAK_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PALE_OAK_BRANCH = block(GotModBlocks.STRIPPED_PALE_OAK_BRANCH);
 
     // ── Signs ─────────────────────────────────────────────────────────────
     public static final DeferredItem<Item> WEIRWOOD_SIGN         = REGISTRY.registerItem("weirwood_sign",         p -> new SignItem(GotModBlocks.WEIRWOOD_SIGN.get(), GotModBlocks.WEIRWOOD_WALL_SIGN.get(), p));
@@ -1916,6 +1967,7 @@ public class GotModItems {
     public static final DeferredItem<Item> NIGHTWOOD_DOOR           = door(GotModBlocks.NIGHTWOOD_DOOR);
     public static final DeferredItem<Item> NIGHTWOOD_TRAPDOOR       = block(GotModBlocks.NIGHTWOOD_TRAPDOOR);
     public static final DeferredItem<Item> NIGHTWOOD_BRANCH         = block(GotModBlocks.NIGHTWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_NIGHTWOOD_BRANCH = block(GotModBlocks.STRIPPED_NIGHTWOOD_BRANCH);
     public static final DeferredItem<Item> NIGHTWOOD_SIGN           = REGISTRY.registerItem("nightwood_sign",         p -> new SignItem(GotModBlocks.NIGHTWOOD_SIGN.get(), GotModBlocks.NIGHTWOOD_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> NIGHTWOOD_HANGING_SIGN   = REGISTRY.registerItem("nightwood_hanging_sign", p -> new HangingSignItem(GotModBlocks.NIGHTWOOD_HANGING_SIGN.get(), GotModBlocks.NIGHTWOOD_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> NIGHTWOOD_BOAT           = REGISTRY.registerItem("nightwood_boat",       p -> new GotBoatItem(GotModBoatEntities.NIGHTWOOD_BOAT.get(), p));
@@ -1942,6 +1994,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PURPLEHEART_DOOR           = door(GotModBlocks.PURPLEHEART_DOOR);
     public static final DeferredItem<Item> PURPLEHEART_TRAPDOOR       = block(GotModBlocks.PURPLEHEART_TRAPDOOR);
     public static final DeferredItem<Item> PURPLEHEART_BRANCH         = block(GotModBlocks.PURPLEHEART_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PURPLEHEART_BRANCH = block(GotModBlocks.STRIPPED_PURPLEHEART_BRANCH);
     public static final DeferredItem<Item> PURPLEHEART_SIGN           = REGISTRY.registerItem("purpleheart_sign",         p -> new SignItem(GotModBlocks.PURPLEHEART_SIGN.get(), GotModBlocks.PURPLEHEART_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PURPLEHEART_HANGING_SIGN   = REGISTRY.registerItem("purpleheart_hanging_sign", p -> new HangingSignItem(GotModBlocks.PURPLEHEART_HANGING_SIGN.get(), GotModBlocks.PURPLEHEART_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PURPLEHEART_BOAT           = REGISTRY.registerItem("purpleheart_boat",       p -> new GotBoatItem(GotModBoatEntities.PURPLEHEART_BOAT.get(), p));
@@ -1968,6 +2021,7 @@ public class GotModItems {
     public static final DeferredItem<Item> TIGERWOOD_DOOR           = door(GotModBlocks.TIGERWOOD_DOOR);
     public static final DeferredItem<Item> TIGERWOOD_TRAPDOOR       = block(GotModBlocks.TIGERWOOD_TRAPDOOR);
     public static final DeferredItem<Item> TIGERWOOD_BRANCH         = block(GotModBlocks.TIGERWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_TIGERWOOD_BRANCH = block(GotModBlocks.STRIPPED_TIGERWOOD_BRANCH);
     public static final DeferredItem<Item> TIGERWOOD_SIGN           = REGISTRY.registerItem("tigerwood_sign",         p -> new SignItem(GotModBlocks.TIGERWOOD_SIGN.get(), GotModBlocks.TIGERWOOD_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> TIGERWOOD_HANGING_SIGN   = REGISTRY.registerItem("tigerwood_hanging_sign", p -> new HangingSignItem(GotModBlocks.TIGERWOOD_HANGING_SIGN.get(), GotModBlocks.TIGERWOOD_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> TIGERWOOD_BOAT           = REGISTRY.registerItem("tigerwood_boat",       p -> new GotBoatItem(GotModBoatEntities.TIGERWOOD_BOAT.get(), p));
@@ -1994,6 +2048,7 @@ public class GotModItems {
     public static final DeferredItem<Item> BURL_DOOR           = door(GotModBlocks.BURL_DOOR);
     public static final DeferredItem<Item> BURL_TRAPDOOR       = block(GotModBlocks.BURL_TRAPDOOR);
     public static final DeferredItem<Item> BURL_BRANCH         = block(GotModBlocks.BURL_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BURL_BRANCH = block(GotModBlocks.STRIPPED_BURL_BRANCH);
     public static final DeferredItem<Item> BURL_SIGN           = REGISTRY.registerItem("burl_sign",         p -> new SignItem(GotModBlocks.BURL_SIGN.get(), GotModBlocks.BURL_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> BURL_HANGING_SIGN   = REGISTRY.registerItem("burl_hanging_sign", p -> new HangingSignItem(GotModBlocks.BURL_HANGING_SIGN.get(), GotModBlocks.BURL_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> BURL_BOAT           = REGISTRY.registerItem("burl_boat",       p -> new GotBoatItem(GotModBoatEntities.BURL_BOAT.get(), p));
@@ -2020,6 +2075,7 @@ public class GotModItems {
     public static final DeferredItem<Item> SANDALWOOD_DOOR           = door(GotModBlocks.SANDALWOOD_DOOR);
     public static final DeferredItem<Item> SANDALWOOD_TRAPDOOR       = block(GotModBlocks.SANDALWOOD_TRAPDOOR);
     public static final DeferredItem<Item> SANDALWOOD_BRANCH         = block(GotModBlocks.SANDALWOOD_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_SANDALWOOD_BRANCH = block(GotModBlocks.STRIPPED_SANDALWOOD_BRANCH);
     public static final DeferredItem<Item> SANDALWOOD_SIGN           = REGISTRY.registerItem("sandalwood_sign",         p -> new SignItem(GotModBlocks.SANDALWOOD_SIGN.get(), GotModBlocks.SANDALWOOD_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> SANDALWOOD_HANGING_SIGN   = REGISTRY.registerItem("sandalwood_hanging_sign", p -> new HangingSignItem(GotModBlocks.SANDALWOOD_HANGING_SIGN.get(), GotModBlocks.SANDALWOOD_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> SANDALWOOD_BOAT           = REGISTRY.registerItem("sandalwood_boat",       p -> new GotBoatItem(GotModBoatEntities.SANDALWOOD_BOAT.get(), p));
@@ -2046,6 +2102,7 @@ public class GotModItems {
     public static final DeferredItem<Item> SANDBEGGAR_DOOR           = door(GotModBlocks.SANDBEGGAR_DOOR);
     public static final DeferredItem<Item> SANDBEGGAR_TRAPDOOR       = block(GotModBlocks.SANDBEGGAR_TRAPDOOR);
     public static final DeferredItem<Item> SANDBEGGAR_BRANCH         = block(GotModBlocks.SANDBEGGAR_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_SANDBEGGAR_BRANCH = block(GotModBlocks.STRIPPED_SANDBEGGAR_BRANCH);
     public static final DeferredItem<Item> SANDBEGGAR_SIGN           = REGISTRY.registerItem("sandbeggar_sign",         p -> new SignItem(GotModBlocks.SANDBEGGAR_SIGN.get(), GotModBlocks.SANDBEGGAR_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> SANDBEGGAR_HANGING_SIGN   = REGISTRY.registerItem("sandbeggar_hanging_sign", p -> new HangingSignItem(GotModBlocks.SANDBEGGAR_HANGING_SIGN.get(), GotModBlocks.SANDBEGGAR_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> SANDBEGGAR_BOAT           = REGISTRY.registerItem("sandbeggar_boat",       p -> new GotBoatItem(GotModBoatEntities.SANDBEGGAR_BOAT.get(), p));
@@ -2072,6 +2129,7 @@ public class GotModItems {
     public static final DeferredItem<Item> APRICOT_DOOR           = door(GotModBlocks.APRICOT_DOOR);
     public static final DeferredItem<Item> APRICOT_TRAPDOOR       = block(GotModBlocks.APRICOT_TRAPDOOR);
     public static final DeferredItem<Item> APRICOT_BRANCH         = block(GotModBlocks.APRICOT_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_APRICOT_BRANCH = block(GotModBlocks.STRIPPED_APRICOT_BRANCH);
     public static final DeferredItem<Item> APRICOT_SIGN           = REGISTRY.registerItem("apricot_sign",         p -> new SignItem(GotModBlocks.APRICOT_SIGN.get(), GotModBlocks.APRICOT_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> APRICOT_HANGING_SIGN   = REGISTRY.registerItem("apricot_hanging_sign", p -> new HangingSignItem(GotModBlocks.APRICOT_HANGING_SIGN.get(), GotModBlocks.APRICOT_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> APRICOT_BOAT           = REGISTRY.registerItem("apricot_boat",       p -> new GotBoatItem(GotModBoatEntities.APRICOT_BOAT.get(), p));
@@ -2099,6 +2157,7 @@ public class GotModItems {
     public static final DeferredItem<Item> BLACKTHORN_DOOR           = door(GotModBlocks.BLACKTHORN_DOOR);
     public static final DeferredItem<Item> BLACKTHORN_TRAPDOOR       = block(GotModBlocks.BLACKTHORN_TRAPDOOR);
     public static final DeferredItem<Item> BLACKTHORN_BRANCH         = block(GotModBlocks.BLACKTHORN_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BLACKTHORN_BRANCH = block(GotModBlocks.STRIPPED_BLACKTHORN_BRANCH);
     public static final DeferredItem<Item> BLACKTHORN_SIGN           = REGISTRY.registerItem("blackthorn_sign",         p -> new SignItem(GotModBlocks.BLACKTHORN_SIGN.get(), GotModBlocks.BLACKTHORN_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> BLACKTHORN_HANGING_SIGN   = REGISTRY.registerItem("blackthorn_hanging_sign", p -> new HangingSignItem(GotModBlocks.BLACKTHORN_HANGING_SIGN.get(), GotModBlocks.BLACKTHORN_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> BLACKTHORN_BOAT           = REGISTRY.registerItem("blackthorn_boat",       p -> new GotBoatItem(GotModBoatEntities.BLACKTHORN_BOAT.get(), p));
@@ -2126,6 +2185,7 @@ public class GotModItems {
     public static final DeferredItem<Item> RED_CHERRY_DOOR           = door(GotModBlocks.RED_CHERRY_DOOR);
     public static final DeferredItem<Item> RED_CHERRY_TRAPDOOR       = block(GotModBlocks.RED_CHERRY_TRAPDOOR);
     public static final DeferredItem<Item> RED_CHERRY_BRANCH         = block(GotModBlocks.RED_CHERRY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_RED_CHERRY_BRANCH = block(GotModBlocks.STRIPPED_RED_CHERRY_BRANCH);
     public static final DeferredItem<Item> RED_CHERRY_SIGN           = REGISTRY.registerItem("red_cherry_sign",         p -> new SignItem(GotModBlocks.RED_CHERRY_SIGN.get(), GotModBlocks.RED_CHERRY_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> RED_CHERRY_HANGING_SIGN   = REGISTRY.registerItem("red_cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.RED_CHERRY_HANGING_SIGN.get(), GotModBlocks.RED_CHERRY_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> RED_CHERRY_BOAT           = REGISTRY.registerItem("red_cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.RED_CHERRY_BOAT.get(), p));
@@ -2147,6 +2207,7 @@ public class GotModItems {
     public static final DeferredItem<Item> BLACK_CHERRY_DOOR           = door(GotModBlocks.BLACK_CHERRY_DOOR);
     public static final DeferredItem<Item> BLACK_CHERRY_TRAPDOOR       = block(GotModBlocks.BLACK_CHERRY_TRAPDOOR);
     public static final DeferredItem<Item> BLACK_CHERRY_BRANCH         = block(GotModBlocks.BLACK_CHERRY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_BLACK_CHERRY_BRANCH = block(GotModBlocks.STRIPPED_BLACK_CHERRY_BRANCH);
     public static final DeferredItem<Item> BLACK_CHERRY_SIGN           = REGISTRY.registerItem("black_cherry_sign",         p -> new SignItem(GotModBlocks.BLACK_CHERRY_SIGN.get(), GotModBlocks.BLACK_CHERRY_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> BLACK_CHERRY_HANGING_SIGN   = REGISTRY.registerItem("black_cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.BLACK_CHERRY_HANGING_SIGN.get(), GotModBlocks.BLACK_CHERRY_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> BLACK_CHERRY_BOAT           = REGISTRY.registerItem("black_cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.BLACK_CHERRY_BOAT.get(), p));
@@ -2170,6 +2231,7 @@ public class GotModItems {
     public static final DeferredItem<Item> WHITE_CHERRY_DOOR           = door(GotModBlocks.WHITE_CHERRY_DOOR);
     public static final DeferredItem<Item> WHITE_CHERRY_TRAPDOOR       = block(GotModBlocks.WHITE_CHERRY_TRAPDOOR);
     public static final DeferredItem<Item> WHITE_CHERRY_BRANCH         = block(GotModBlocks.WHITE_CHERRY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_WHITE_CHERRY_BRANCH = block(GotModBlocks.STRIPPED_WHITE_CHERRY_BRANCH);
     public static final DeferredItem<Item> WHITE_CHERRY_SIGN           = REGISTRY.registerItem("white_cherry_sign",         p -> new SignItem(GotModBlocks.WHITE_CHERRY_SIGN.get(), GotModBlocks.WHITE_CHERRY_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> WHITE_CHERRY_HANGING_SIGN   = REGISTRY.registerItem("white_cherry_hanging_sign", p -> new HangingSignItem(GotModBlocks.WHITE_CHERRY_HANGING_SIGN.get(), GotModBlocks.WHITE_CHERRY_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> WHITE_CHERRY_BOAT           = REGISTRY.registerItem("white_cherry_boat",       p -> new GotBoatItem(GotModBoatEntities.WHITE_CHERRY_BOAT.get(), p));
@@ -2194,6 +2256,7 @@ public class GotModItems {
     public static final DeferredItem<Item> CRABAPPLE_DOOR           = door(GotModBlocks.CRABAPPLE_DOOR);
     public static final DeferredItem<Item> CRABAPPLE_TRAPDOOR       = block(GotModBlocks.CRABAPPLE_TRAPDOOR);
     public static final DeferredItem<Item> CRABAPPLE_BRANCH         = block(GotModBlocks.CRABAPPLE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_CRABAPPLE_BRANCH = block(GotModBlocks.STRIPPED_CRABAPPLE_BRANCH);
     public static final DeferredItem<Item> CRABAPPLE_SIGN           = REGISTRY.registerItem("crabapple_sign",         p -> new SignItem(GotModBlocks.CRABAPPLE_SIGN.get(), GotModBlocks.CRABAPPLE_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> CRABAPPLE_HANGING_SIGN   = REGISTRY.registerItem("crabapple_hanging_sign", p -> new HangingSignItem(GotModBlocks.CRABAPPLE_HANGING_SIGN.get(), GotModBlocks.CRABAPPLE_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> CRABAPPLE_BOAT           = REGISTRY.registerItem("crabapple_boat",       p -> new GotBoatItem(GotModBoatEntities.CRABAPPLE_BOAT.get(), p));
@@ -2221,6 +2284,7 @@ public class GotModItems {
     public static final DeferredItem<Item> DATE_PALM_DOOR           = door(GotModBlocks.DATE_PALM_DOOR);
     public static final DeferredItem<Item> DATE_PALM_TRAPDOOR       = block(GotModBlocks.DATE_PALM_TRAPDOOR);
     public static final DeferredItem<Item> DATE_PALM_BRANCH         = block(GotModBlocks.DATE_PALM_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_DATE_PALM_BRANCH = block(GotModBlocks.STRIPPED_DATE_PALM_BRANCH);
     public static final DeferredItem<Item> DATE_PALM_SIGN           = REGISTRY.registerItem("date_palm_sign",         p -> new SignItem(GotModBlocks.DATE_PALM_SIGN.get(), GotModBlocks.DATE_PALM_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> DATE_PALM_HANGING_SIGN   = REGISTRY.registerItem("date_palm_hanging_sign", p -> new HangingSignItem(GotModBlocks.DATE_PALM_HANGING_SIGN.get(), GotModBlocks.DATE_PALM_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> DATE_PALM_BOAT           = REGISTRY.registerItem("date_palm_boat",       p -> new GotBoatItem(GotModBoatEntities.DATE_PALM_BOAT.get(), p));
@@ -2248,6 +2312,7 @@ public class GotModItems {
     public static final DeferredItem<Item> FIG_DOOR           = door(GotModBlocks.FIG_DOOR);
     public static final DeferredItem<Item> FIG_TRAPDOOR       = block(GotModBlocks.FIG_TRAPDOOR);
     public static final DeferredItem<Item> FIG_BRANCH         = block(GotModBlocks.FIG_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_FIG_BRANCH = block(GotModBlocks.STRIPPED_FIG_BRANCH);
     public static final DeferredItem<Item> FIG_SIGN           = REGISTRY.registerItem("fig_sign",         p -> new SignItem(GotModBlocks.FIG_SIGN.get(), GotModBlocks.FIG_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> FIG_HANGING_SIGN   = REGISTRY.registerItem("fig_hanging_sign", p -> new HangingSignItem(GotModBlocks.FIG_HANGING_SIGN.get(), GotModBlocks.FIG_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> FIG_BOAT           = REGISTRY.registerItem("fig_boat",       p -> new GotBoatItem(GotModBoatEntities.FIG_BOAT.get(), p));
@@ -2275,6 +2340,7 @@ public class GotModItems {
     public static final DeferredItem<Item> LEMON_DOOR           = door(GotModBlocks.LEMON_DOOR);
     public static final DeferredItem<Item> LEMON_TRAPDOOR       = block(GotModBlocks.LEMON_TRAPDOOR);
     public static final DeferredItem<Item> LEMON_BRANCH         = block(GotModBlocks.LEMON_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_LEMON_BRANCH = block(GotModBlocks.STRIPPED_LEMON_BRANCH);
     public static final DeferredItem<Item> LEMON_SIGN           = REGISTRY.registerItem("lemon_sign",         p -> new SignItem(GotModBlocks.LEMON_SIGN.get(), GotModBlocks.LEMON_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> LEMON_HANGING_SIGN   = REGISTRY.registerItem("lemon_hanging_sign", p -> new HangingSignItem(GotModBlocks.LEMON_HANGING_SIGN.get(), GotModBlocks.LEMON_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> LEMON_BOAT           = REGISTRY.registerItem("lemon_boat",       p -> new GotBoatItem(GotModBoatEntities.LEMON_BOAT.get(), p));
@@ -2302,6 +2368,7 @@ public class GotModItems {
     public static final DeferredItem<Item> LIME_DOOR           = door(GotModBlocks.LIME_DOOR);
     public static final DeferredItem<Item> LIME_TRAPDOOR       = block(GotModBlocks.LIME_TRAPDOOR);
     public static final DeferredItem<Item> LIME_BRANCH         = block(GotModBlocks.LIME_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_LIME_BRANCH = block(GotModBlocks.STRIPPED_LIME_BRANCH);
     public static final DeferredItem<Item> LIME_SIGN           = REGISTRY.registerItem("lime_sign",         p -> new SignItem(GotModBlocks.LIME_SIGN.get(), GotModBlocks.LIME_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> LIME_HANGING_SIGN   = REGISTRY.registerItem("lime_hanging_sign", p -> new HangingSignItem(GotModBlocks.LIME_HANGING_SIGN.get(), GotModBlocks.LIME_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> LIME_BOAT           = REGISTRY.registerItem("lime_boat",       p -> new GotBoatItem(GotModBoatEntities.LIME_BOAT.get(), p));
@@ -2329,6 +2396,7 @@ public class GotModItems {
     public static final DeferredItem<Item> OLIVE_DOOR           = door(GotModBlocks.OLIVE_DOOR);
     public static final DeferredItem<Item> OLIVE_TRAPDOOR       = block(GotModBlocks.OLIVE_TRAPDOOR);
     public static final DeferredItem<Item> OLIVE_BRANCH         = block(GotModBlocks.OLIVE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_OLIVE_BRANCH = block(GotModBlocks.STRIPPED_OLIVE_BRANCH);
     public static final DeferredItem<Item> OLIVE_SIGN           = REGISTRY.registerItem("olive_sign",         p -> new SignItem(GotModBlocks.OLIVE_SIGN.get(), GotModBlocks.OLIVE_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> OLIVE_HANGING_SIGN   = REGISTRY.registerItem("olive_hanging_sign", p -> new HangingSignItem(GotModBlocks.OLIVE_HANGING_SIGN.get(), GotModBlocks.OLIVE_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> OLIVE_BOAT           = REGISTRY.registerItem("olive_boat",       p -> new GotBoatItem(GotModBoatEntities.OLIVE_BOAT.get(), p));
@@ -2356,6 +2424,7 @@ public class GotModItems {
     public static final DeferredItem<Item> ORANGE_DOOR           = door(GotModBlocks.ORANGE_DOOR);
     public static final DeferredItem<Item> ORANGE_TRAPDOOR       = block(GotModBlocks.ORANGE_TRAPDOOR);
     public static final DeferredItem<Item> ORANGE_BRANCH         = block(GotModBlocks.ORANGE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ORANGE_BRANCH = block(GotModBlocks.STRIPPED_ORANGE_BRANCH);
     public static final DeferredItem<Item> ORANGE_SIGN           = REGISTRY.registerItem("orange_sign",         p -> new SignItem(GotModBlocks.ORANGE_SIGN.get(), GotModBlocks.ORANGE_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> ORANGE_HANGING_SIGN   = REGISTRY.registerItem("orange_hanging_sign", p -> new HangingSignItem(GotModBlocks.ORANGE_HANGING_SIGN.get(), GotModBlocks.ORANGE_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> ORANGE_BOAT           = REGISTRY.registerItem("orange_boat",       p -> new GotBoatItem(GotModBoatEntities.ORANGE_BOAT.get(), p));
@@ -2383,6 +2452,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PEACH_DOOR           = door(GotModBlocks.PEACH_DOOR);
     public static final DeferredItem<Item> PEACH_TRAPDOOR       = block(GotModBlocks.PEACH_TRAPDOOR);
     public static final DeferredItem<Item> PEACH_BRANCH         = block(GotModBlocks.PEACH_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PEACH_BRANCH = block(GotModBlocks.STRIPPED_PEACH_BRANCH);
     public static final DeferredItem<Item> PEACH_SIGN           = REGISTRY.registerItem("peach_sign",         p -> new SignItem(GotModBlocks.PEACH_SIGN.get(), GotModBlocks.PEACH_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PEACH_HANGING_SIGN   = REGISTRY.registerItem("peach_hanging_sign", p -> new HangingSignItem(GotModBlocks.PEACH_HANGING_SIGN.get(), GotModBlocks.PEACH_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PEACH_BOAT           = REGISTRY.registerItem("peach_boat",       p -> new GotBoatItem(GotModBoatEntities.PEACH_BOAT.get(), p));
@@ -2410,6 +2480,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PEAR_DOOR           = door(GotModBlocks.PEAR_DOOR);
     public static final DeferredItem<Item> PEAR_TRAPDOOR       = block(GotModBlocks.PEAR_TRAPDOOR);
     public static final DeferredItem<Item> PEAR_BRANCH         = block(GotModBlocks.PEAR_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PEAR_BRANCH = block(GotModBlocks.STRIPPED_PEAR_BRANCH);
     public static final DeferredItem<Item> PEAR_SIGN           = REGISTRY.registerItem("pear_sign",         p -> new SignItem(GotModBlocks.PEAR_SIGN.get(), GotModBlocks.PEAR_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PEAR_HANGING_SIGN   = REGISTRY.registerItem("pear_hanging_sign", p -> new HangingSignItem(GotModBlocks.PEAR_HANGING_SIGN.get(), GotModBlocks.PEAR_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PEAR_BOAT           = REGISTRY.registerItem("pear_boat",       p -> new GotBoatItem(GotModBoatEntities.PEAR_BOAT.get(), p));
@@ -2437,6 +2508,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PERSIMMON_DOOR           = door(GotModBlocks.PERSIMMON_DOOR);
     public static final DeferredItem<Item> PERSIMMON_TRAPDOOR       = block(GotModBlocks.PERSIMMON_TRAPDOOR);
     public static final DeferredItem<Item> PERSIMMON_BRANCH         = block(GotModBlocks.PERSIMMON_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PERSIMMON_BRANCH = block(GotModBlocks.STRIPPED_PERSIMMON_BRANCH);
     public static final DeferredItem<Item> PERSIMMON_SIGN           = REGISTRY.registerItem("persimmon_sign",         p -> new SignItem(GotModBlocks.PERSIMMON_SIGN.get(), GotModBlocks.PERSIMMON_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PERSIMMON_HANGING_SIGN   = REGISTRY.registerItem("persimmon_hanging_sign", p -> new HangingSignItem(GotModBlocks.PERSIMMON_HANGING_SIGN.get(), GotModBlocks.PERSIMMON_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PERSIMMON_BOAT           = REGISTRY.registerItem("persimmon_boat",       p -> new GotBoatItem(GotModBoatEntities.PERSIMMON_BOAT.get(), p));
@@ -2464,6 +2536,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PINK_IVORY_DOOR           = door(GotModBlocks.PINK_IVORY_DOOR);
     public static final DeferredItem<Item> PINK_IVORY_TRAPDOOR       = block(GotModBlocks.PINK_IVORY_TRAPDOOR);
     public static final DeferredItem<Item> PINK_IVORY_BRANCH         = block(GotModBlocks.PINK_IVORY_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PINK_IVORY_BRANCH = block(GotModBlocks.STRIPPED_PINK_IVORY_BRANCH);
     public static final DeferredItem<Item> PINK_IVORY_SIGN           = REGISTRY.registerItem("pink_ivory_sign",         p -> new SignItem(GotModBlocks.PINK_IVORY_SIGN.get(), GotModBlocks.PINK_IVORY_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PINK_IVORY_HANGING_SIGN   = REGISTRY.registerItem("pink_ivory_hanging_sign", p -> new HangingSignItem(GotModBlocks.PINK_IVORY_HANGING_SIGN.get(), GotModBlocks.PINK_IVORY_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PINK_IVORY_BOAT           = REGISTRY.registerItem("pink_ivory_boat",       p -> new GotBoatItem(GotModBoatEntities.PINK_IVORY_BOAT.get(), p));
@@ -2491,6 +2564,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PLUM_DOOR           = door(GotModBlocks.PLUM_DOOR);
     public static final DeferredItem<Item> PLUM_TRAPDOOR       = block(GotModBlocks.PLUM_TRAPDOOR);
     public static final DeferredItem<Item> PLUM_BRANCH         = block(GotModBlocks.PLUM_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PLUM_BRANCH = block(GotModBlocks.STRIPPED_PLUM_BRANCH);
     public static final DeferredItem<Item> PLUM_SIGN           = REGISTRY.registerItem("plum_sign",         p -> new SignItem(GotModBlocks.PLUM_SIGN.get(), GotModBlocks.PLUM_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PLUM_HANGING_SIGN   = REGISTRY.registerItem("plum_hanging_sign", p -> new HangingSignItem(GotModBlocks.PLUM_HANGING_SIGN.get(), GotModBlocks.PLUM_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PLUM_BOAT           = REGISTRY.registerItem("plum_boat",       p -> new GotBoatItem(GotModBoatEntities.PLUM_BOAT.get(), p));
@@ -2518,6 +2592,7 @@ public class GotModItems {
     public static final DeferredItem<Item> POMEGRANATE_DOOR           = door(GotModBlocks.POMEGRANATE_DOOR);
     public static final DeferredItem<Item> POMEGRANATE_TRAPDOOR       = block(GotModBlocks.POMEGRANATE_TRAPDOOR);
     public static final DeferredItem<Item> POMEGRANATE_BRANCH         = block(GotModBlocks.POMEGRANATE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_POMEGRANATE_BRANCH = block(GotModBlocks.STRIPPED_POMEGRANATE_BRANCH);
     public static final DeferredItem<Item> POMEGRANATE_SIGN           = REGISTRY.registerItem("pomegranate_sign",         p -> new SignItem(GotModBlocks.POMEGRANATE_SIGN.get(), GotModBlocks.POMEGRANATE_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> POMEGRANATE_HANGING_SIGN   = REGISTRY.registerItem("pomegranate_hanging_sign", p -> new HangingSignItem(GotModBlocks.POMEGRANATE_HANGING_SIGN.get(), GotModBlocks.POMEGRANATE_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> POMEGRANATE_BOAT           = REGISTRY.registerItem("pomegranate_boat",       p -> new GotBoatItem(GotModBoatEntities.POMEGRANATE_BOAT.get(), p));
@@ -2545,6 +2620,7 @@ public class GotModItems {
     public static final DeferredItem<Item> PRUNE_DOOR           = door(GotModBlocks.PRUNE_DOOR);
     public static final DeferredItem<Item> PRUNE_TRAPDOOR       = block(GotModBlocks.PRUNE_TRAPDOOR);
     public static final DeferredItem<Item> PRUNE_BRANCH         = block(GotModBlocks.PRUNE_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_PRUNE_BRANCH = block(GotModBlocks.STRIPPED_PRUNE_BRANCH);
     public static final DeferredItem<Item> PRUNE_SIGN           = REGISTRY.registerItem("prune_sign",         p -> new SignItem(GotModBlocks.PRUNE_SIGN.get(), GotModBlocks.PRUNE_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> PRUNE_HANGING_SIGN   = REGISTRY.registerItem("prune_hanging_sign", p -> new HangingSignItem(GotModBlocks.PRUNE_HANGING_SIGN.get(), GotModBlocks.PRUNE_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> PRUNE_BOAT           = REGISTRY.registerItem("prune_boat",       p -> new GotBoatItem(GotModBoatEntities.PRUNE_BOAT.get(), p));
@@ -2572,6 +2648,7 @@ public class GotModItems {
     public static final DeferredItem<Item> ALMOND_DOOR           = door(GotModBlocks.ALMOND_DOOR);
     public static final DeferredItem<Item> ALMOND_TRAPDOOR       = block(GotModBlocks.ALMOND_TRAPDOOR);
     public static final DeferredItem<Item> ALMOND_BRANCH         = block(GotModBlocks.ALMOND_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_ALMOND_BRANCH = block(GotModBlocks.STRIPPED_ALMOND_BRANCH);
     public static final DeferredItem<Item> ALMOND_SIGN           = REGISTRY.registerItem("almond_sign",         p -> new SignItem(GotModBlocks.ALMOND_SIGN.get(), GotModBlocks.ALMOND_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> ALMOND_HANGING_SIGN   = REGISTRY.registerItem("almond_hanging_sign", p -> new HangingSignItem(GotModBlocks.ALMOND_HANGING_SIGN.get(), GotModBlocks.ALMOND_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> ALMOND_BOAT           = REGISTRY.registerItem("almond_boat",       p -> new GotBoatItem(GotModBoatEntities.ALMOND_BOAT.get(), p));
@@ -2599,6 +2676,7 @@ public class GotModItems {
     public static final DeferredItem<Item> NUTMEG_DOOR           = door(GotModBlocks.NUTMEG_DOOR);
     public static final DeferredItem<Item> NUTMEG_TRAPDOOR       = block(GotModBlocks.NUTMEG_TRAPDOOR);
     public static final DeferredItem<Item> NUTMEG_BRANCH         = block(GotModBlocks.NUTMEG_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_NUTMEG_BRANCH = block(GotModBlocks.STRIPPED_NUTMEG_BRANCH);
     public static final DeferredItem<Item> NUTMEG_SIGN           = REGISTRY.registerItem("nutmeg_sign",         p -> new SignItem(GotModBlocks.NUTMEG_SIGN.get(), GotModBlocks.NUTMEG_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> NUTMEG_HANGING_SIGN   = REGISTRY.registerItem("nutmeg_hanging_sign", p -> new HangingSignItem(GotModBlocks.NUTMEG_HANGING_SIGN.get(), GotModBlocks.NUTMEG_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> NUTMEG_BOAT           = REGISTRY.registerItem("nutmeg_boat",       p -> new GotBoatItem(GotModBoatEntities.NUTMEG_BOAT.get(), p));
@@ -2626,6 +2704,7 @@ public class GotModItems {
     public static final DeferredItem<Item> HEMLOCK_DOOR           = door(GotModBlocks.HEMLOCK_DOOR);
     public static final DeferredItem<Item> HEMLOCK_TRAPDOOR       = block(GotModBlocks.HEMLOCK_TRAPDOOR);
     public static final DeferredItem<Item> HEMLOCK_BRANCH         = block(GotModBlocks.HEMLOCK_BRANCH);
+    public static final DeferredItem<Item> STRIPPED_HEMLOCK_BRANCH = block(GotModBlocks.STRIPPED_HEMLOCK_BRANCH);
     public static final DeferredItem<Item> HEMLOCK_SIGN           = REGISTRY.registerItem("hemlock_sign",         p -> new SignItem(GotModBlocks.HEMLOCK_SIGN.get(), GotModBlocks.HEMLOCK_WALL_SIGN.get(), p));
     public static final DeferredItem<Item> HEMLOCK_HANGING_SIGN   = REGISTRY.registerItem("hemlock_hanging_sign", p -> new HangingSignItem(GotModBlocks.HEMLOCK_HANGING_SIGN.get(), GotModBlocks.HEMLOCK_WALL_HANGING_SIGN.get(), p));
     public static final DeferredItem<Item> HEMLOCK_BOAT           = REGISTRY.registerItem("hemlock_boat",       p -> new GotBoatItem(GotModBoatEntities.HEMLOCK_BOAT.get(), p));

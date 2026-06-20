@@ -1,6 +1,6 @@
 {
-  "parent": "got:block/alder_branch_inventory",
+  "parent": "minecraft:block/wall_inventory",
   "textures": {
-    "texture": "got:block/hemlock_log_side"
+    "wall": "got:block/hemlock_log_side"
   }
 }
