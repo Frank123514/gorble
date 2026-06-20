@@ -1,0 +1,10 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "particle": "got:block/linden_log_side",
+    "bottom": "got:block/linden_log_side",
+    "top": "got:block/linden_log_side",
+    "side": "got:block/linden_log_side"
+  },
+  "render_type": "solid"
+}

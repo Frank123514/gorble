@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/stripped_chestnut_log_side",
+    "bottom": "got:block/stripped_chestnut_log_side",
+    "top": "got:block/stripped_chestnut_log_side",
+    "side": "got:block/stripped_chestnut_log_side"
+  },
+  "render_type": "solid"
+}

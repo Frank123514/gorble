@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "W": "got:ironwood_wood"
+  },
+  "pattern": [
+    "W  ",
+    "WW ",
+    "WWW"
+  ],
+  "result": {
+    "count": 4,
+    "id": "got:ironwood_wood_stairs"
+  }
+}

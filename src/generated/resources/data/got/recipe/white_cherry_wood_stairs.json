@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "W": "got:white_cherry_wood"
+  },
+  "pattern": [
+    "W  ",
+    "WW ",
+    "WWW"
+  ],
+  "result": {
+    "count": 4,
+    "id": "got:white_cherry_wood_stairs"
+  }
+}

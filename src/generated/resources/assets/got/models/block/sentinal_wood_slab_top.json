@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "particle": "got:block/sentinal_log_side",
+    "bottom": "got:block/sentinal_log_side",
+    "top": "got:block/sentinal_log_side",
+    "side": "got:block/sentinal_log_side"
+  },
+  "render_type": "solid"
+}

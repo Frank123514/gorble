@@ -53,12 +53,20 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ACACIA_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.ACACIA_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ACACIA_BRANCH.get());
+                        safeAccept(output, GotModBlocks.ACACIA_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ACACIA_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ACACIA_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ACACIA_WOOD_STAIRS.get());
 
                         // ── Alder ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ALDER_LOG.get());
                         safeAccept(output, GotModBlocks.ALDER_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ALDER_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ALDER_WOOD.get());
+                        safeAccept(output, GotModBlocks.ALDER_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ALDER_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALDER_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALDER_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.ALDER_PLANKS.get());
                         safeAccept(output, GotModBlocks.ALDER_STAIRS.get());
                         safeAccept(output, GotModBlocks.ALDER_SLAB.get());
@@ -84,6 +92,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.APPLE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_APPLE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_APPLE_WOOD.get());
+                        safeAccept(output, GotModBlocks.APPLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.APPLE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APPLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APPLE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.APPLE_PLANKS.get());
                         safeAccept(output, GotModBlocks.APPLE_STAIRS.get());
                         safeAccept(output, GotModBlocks.APPLE_SLAB.get());
@@ -109,6 +121,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASH_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ASH_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ASH_WOOD.get());
+                        safeAccept(output, GotModBlocks.ASH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ASH_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASH_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.ASH_PLANKS.get());
                         safeAccept(output, GotModBlocks.ASH_STAIRS.get());
                         safeAccept(output, GotModBlocks.ASH_SLAB.get());
@@ -134,6 +150,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASPEN_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ASPEN_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ASPEN_WOOD.get());
+                        safeAccept(output, GotModBlocks.ASPEN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ASPEN_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASPEN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ASPEN_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.ASPEN_PLANKS.get());
                         safeAccept(output, GotModBlocks.ASPEN_STAIRS.get());
                         safeAccept(output, GotModBlocks.ASPEN_SLAB.get());
@@ -175,6 +195,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BEECH_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BEECH_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BEECH_WOOD.get());
+                        safeAccept(output, GotModBlocks.BEECH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BEECH_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BEECH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BEECH_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BEECH_PLANKS.get());
                         safeAccept(output, GotModBlocks.BEECH_STAIRS.get());
                         safeAccept(output, GotModBlocks.BEECH_SLAB.get());
@@ -202,12 +226,20 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BIRCH_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.BIRCH_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BIRCH_BRANCH.get());
+                        safeAccept(output, GotModBlocks.BIRCH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BIRCH_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BIRCH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BIRCH_WOOD_STAIRS.get());
 
                         // ── Blackbark ─────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACKBARK_LOG.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACKBARK_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACKBARK_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACKBARK_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKBARK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKBARK_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_PLANKS.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACKBARK_SLAB.get());
@@ -233,6 +265,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACK_COTTONWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACK_COTTONWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_COTTONWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_COTTONWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_SLAB.get());
@@ -258,6 +294,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLOODWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLOODWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLOODWOOD_SLAB.get());
@@ -283,6 +323,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLUE_MAHOE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_PLANKS.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_SLAB.get());
@@ -308,6 +352,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CEDAR_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CEDAR_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CEDAR_WOOD.get());
+                        safeAccept(output, GotModBlocks.CEDAR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.CEDAR_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CEDAR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CEDAR_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.CEDAR_PLANKS.get());
                         safeAccept(output, GotModBlocks.CEDAR_STAIRS.get());
                         safeAccept(output, GotModBlocks.CEDAR_SLAB.get());
@@ -335,6 +383,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.CHERRY_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CHERRY_BRANCH.get());
+                        safeAccept(output, GotModBlocks.CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.CHERRY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHERRY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_SLAB.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_ROOFING_STAIRS.get());
@@ -353,6 +405,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHESTNUT_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_WOOD.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.CHESTNUT_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_PLANKS.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_STAIRS.get());
                         safeAccept(output, GotModBlocks.CHESTNUT_SLAB.get());
@@ -378,6 +434,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CINNAMON_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CINNAMON_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CINNAMON_WOOD.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.CINNAMON_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CINNAMON_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CINNAMON_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.CINNAMON_PLANKS.get());
                         safeAccept(output, GotModBlocks.CINNAMON_STAIRS.get());
                         safeAccept(output, GotModBlocks.CINNAMON_SLAB.get());
@@ -403,6 +463,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CLOVE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CLOVE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CLOVE_WOOD.get());
+                        safeAccept(output, GotModBlocks.CLOVE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.CLOVE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CLOVE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CLOVE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.CLOVE_PLANKS.get());
                         safeAccept(output, GotModBlocks.CLOVE_STAIRS.get());
                         safeAccept(output, GotModBlocks.CLOVE_SLAB.get());
@@ -428,6 +492,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.COTTONWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_COTTONWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_COTTONWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.COTTONWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_COTTONWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_COTTONWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.COTTONWOOD_SLAB.get());
@@ -461,12 +529,20 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.DARK_OAK_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_DARK_OAK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.DARK_OAK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.DARK_OAK_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_DARK_OAK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_DARK_OAK_WOOD_STAIRS.get());
 
                         // ── Ebony ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.EBONY_LOG.get());
                         safeAccept(output, GotModBlocks.EBONY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_EBONY_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_EBONY_WOOD.get());
+                        safeAccept(output, GotModBlocks.EBONY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.EBONY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_EBONY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_EBONY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.EBONY_PLANKS.get());
                         safeAccept(output, GotModBlocks.EBONY_STAIRS.get());
                         safeAccept(output, GotModBlocks.EBONY_SLAB.get());
@@ -492,6 +568,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ELM_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ELM_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ELM_WOOD.get());
+                        safeAccept(output, GotModBlocks.ELM_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ELM_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ELM_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ELM_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.ELM_PLANKS.get());
                         safeAccept(output, GotModBlocks.ELM_STAIRS.get());
                         safeAccept(output, GotModBlocks.ELM_SLAB.get());
@@ -517,6 +597,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.FIR_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_FIR_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_FIR_WOOD.get());
+                        safeAccept(output, GotModBlocks.FIR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.FIR_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIR_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.FIR_PLANKS.get());
                         safeAccept(output, GotModBlocks.FIR_STAIRS.get());
                         safeAccept(output, GotModBlocks.FIR_SLAB.get());
@@ -542,6 +626,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.GOLDENHEART_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_GOLDENHEART_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_GOLDENHEART_WOOD.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.GOLDENHEART_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_GOLDENHEART_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_GOLDENHEART_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_PLANKS.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_STAIRS.get());
                         safeAccept(output, GotModBlocks.GOLDENHEART_SLAB.get());
@@ -567,6 +655,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HAWTHORN_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_HAWTHORN_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_HAWTHORN_WOOD.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.HAWTHORN_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HAWTHORN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HAWTHORN_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_PLANKS.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_STAIRS.get());
                         safeAccept(output, GotModBlocks.HAWTHORN_SLAB.get());
@@ -592,6 +684,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.IRONWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_IRONWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_IRONWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.IRONWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.IRONWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_IRONWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_IRONWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.IRONWOOD_SLAB.get());
@@ -619,12 +715,20 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.JUNGLE_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.JUNGLE_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_JUNGLE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.JUNGLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.JUNGLE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_JUNGLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_JUNGLE_WOOD_STAIRS.get());
 
                         // ── Linden ────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.LINDEN_LOG.get());
                         safeAccept(output, GotModBlocks.LINDEN_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_LINDEN_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_LINDEN_WOOD.get());
+                        safeAccept(output, GotModBlocks.LINDEN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.LINDEN_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LINDEN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LINDEN_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.LINDEN_PLANKS.get());
                         safeAccept(output, GotModBlocks.LINDEN_STAIRS.get());
                         safeAccept(output, GotModBlocks.LINDEN_SLAB.get());
@@ -650,6 +754,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MAHOGANY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MAHOGANY_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MAHOGANY_WOOD.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.MAHOGANY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAHOGANY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAHOGANY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_PLANKS.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_STAIRS.get());
                         safeAccept(output, GotModBlocks.MAHOGANY_SLAB.get());
@@ -677,12 +785,20 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MANGROVE_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.MANGROVE_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MANGROVE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.MANGROVE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.MANGROVE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MANGROVE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MANGROVE_WOOD_STAIRS.get());
 
                         // ── Maple ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.MAPLE_LOG.get());
                         safeAccept(output, GotModBlocks.MAPLE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MAPLE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MAPLE_WOOD.get());
+                        safeAccept(output, GotModBlocks.MAPLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.MAPLE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAPLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MAPLE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.MAPLE_PLANKS.get());
                         safeAccept(output, GotModBlocks.MAPLE_STAIRS.get());
                         safeAccept(output, GotModBlocks.MAPLE_SLAB.get());
@@ -708,6 +824,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MYRRH_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MYRRH_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_MYRRH_WOOD.get());
+                        safeAccept(output, GotModBlocks.MYRRH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.MYRRH_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MYRRH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_MYRRH_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.MYRRH_PLANKS.get());
                         safeAccept(output, GotModBlocks.MYRRH_STAIRS.get());
                         safeAccept(output, GotModBlocks.MYRRH_SLAB.get());
@@ -735,16 +855,28 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OAK_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.OAK_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_OAK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.OAK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.OAK_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_OAK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_OAK_WOOD_STAIRS.get());
 
                         // ── Pale Oak (vanilla) ────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PALE_OAK_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PALE_OAK_BRANCH.get());
+                        safeAccept(output, GotModBlocks.PALE_OAK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PALE_OAK_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PALE_OAK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PALE_OAK_WOOD_STAIRS.get());
 
                         // ── Pine ──────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PINE_LOG.get());
                         safeAccept(output, GotModBlocks.PINE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PINE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PINE_WOOD.get());
+                        safeAccept(output, GotModBlocks.PINE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PINE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PINE_PLANKS.get());
                         safeAccept(output, GotModBlocks.PINE_STAIRS.get());
                         safeAccept(output, GotModBlocks.PINE_SLAB.get());
@@ -770,6 +902,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.REDWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_REDWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_REDWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.REDWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_REDWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_REDWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.REDWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.REDWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.REDWOOD_SLAB.get());
@@ -795,6 +931,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SENTINAL_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SENTINAL_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SENTINAL_WOOD.get());
+                        safeAccept(output, GotModBlocks.SENTINAL_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.SENTINAL_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SENTINAL_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SENTINAL_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.SENTINAL_PLANKS.get());
                         safeAccept(output, GotModBlocks.SENTINAL_STAIRS.get());
                         safeAccept(output, GotModBlocks.SENTINAL_SLAB.get());
@@ -820,6 +960,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SOLDIER_PINE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SOLDIER_PINE_WOOD.get());
+                        safeAccept(output, GotModBlocks.SOLDIER_PINE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.SOLDIER_PINE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SOLDIER_PINE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SOLDIER_PINE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_PLANKS.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_STAIRS.get());
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_SLAB.get());
@@ -847,6 +991,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SPRUCE_ROOFING_WALL.get());
                         safeAccept(output, GotModBlocks.SPRUCE_BRANCH.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SPRUCE_BRANCH.get());
+                        safeAccept(output, GotModBlocks.SPRUCE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.SPRUCE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SPRUCE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SPRUCE_WOOD_STAIRS.get());
 
                         // ── Warped (vanilla) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WARPED_ROOFING.get());
@@ -859,6 +1007,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WEIRWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WEIRWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WEIRWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.WEIRWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.WEIRWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WEIRWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WEIRWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.WEIRWOOD_SLAB.get());
@@ -884,6 +1036,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WILLOW_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WILLOW_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WILLOW_WOOD.get());
+                        safeAccept(output, GotModBlocks.WILLOW_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.WILLOW_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WILLOW_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WILLOW_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.WILLOW_PLANKS.get());
                         safeAccept(output, GotModBlocks.WILLOW_STAIRS.get());
                         safeAccept(output, GotModBlocks.WILLOW_SLAB.get());
@@ -909,6 +1065,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WORMTREE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WORMTREE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WORMTREE_WOOD.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.WORMTREE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WORMTREE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WORMTREE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.WORMTREE_PLANKS.get());
                         safeAccept(output, GotModBlocks.WORMTREE_STAIRS.get());
                         safeAccept(output, GotModBlocks.WORMTREE_SLAB.get());
@@ -934,6 +1094,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NIGHTWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_NIGHTWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_NIGHTWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.NIGHTWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.NIGHTWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_NIGHTWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_NIGHTWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.NIGHTWOOD_SLAB.get());
@@ -959,6 +1123,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PURPLEHEART_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PURPLEHEART_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PURPLEHEART_WOOD.get());
+                        safeAccept(output, GotModBlocks.PURPLEHEART_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PURPLEHEART_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PURPLEHEART_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PURPLEHEART_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_PLANKS.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_STAIRS.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_SLAB.get());
@@ -984,6 +1152,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.TIGERWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_TIGERWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_TIGERWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.TIGERWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.TIGERWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_TIGERWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_TIGERWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_SLAB.get());
@@ -1009,6 +1181,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BURL_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BURL_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD.get());
+                        safeAccept(output, GotModBlocks.BURL_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BURL_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BURL_PLANKS.get());
                         safeAccept(output, GotModBlocks.BURL_STAIRS.get());
                         safeAccept(output, GotModBlocks.BURL_SLAB.get());
@@ -1034,6 +1210,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SANDALWOOD_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SANDALWOOD_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SANDALWOOD_WOOD.get());
+                        safeAccept(output, GotModBlocks.SANDALWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.SANDALWOOD_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SANDALWOOD_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SANDALWOOD_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_PLANKS.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_SLAB.get());
@@ -1059,6 +1239,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SANDBEGGAR_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SANDBEGGAR_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SANDBEGGAR_WOOD.get());
+                        safeAccept(output, GotModBlocks.SANDBEGGAR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.SANDBEGGAR_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SANDBEGGAR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_SANDBEGGAR_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_PLANKS.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_STAIRS.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_SLAB.get());
@@ -1084,6 +1268,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.APRICOT_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_APRICOT_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_APRICOT_WOOD.get());
+                        safeAccept(output, GotModBlocks.APRICOT_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.APRICOT_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APRICOT_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_APRICOT_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.APRICOT_PLANKS.get());
                         safeAccept(output, GotModBlocks.APRICOT_STAIRS.get());
                         safeAccept(output, GotModBlocks.APRICOT_SLAB.get());
@@ -1109,6 +1297,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACKTHORN_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACKTHORN_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACKTHORN_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLACKTHORN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACKTHORN_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKTHORN_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACKTHORN_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_PLANKS.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACKTHORN_SLAB.get());
@@ -1134,6 +1326,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.RED_CHERRY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_RED_CHERRY_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_RED_CHERRY_WOOD.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.RED_CHERRY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_RED_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_RED_CHERRY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_PLANKS.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_STAIRS.get());
                         safeAccept(output, GotModBlocks.RED_CHERRY_SLAB.get());
@@ -1149,6 +1345,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACK_CHERRY_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLACK_CHERRY_WOOD.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.BLACK_CHERRY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_BLACK_CHERRY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_PLANKS.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_STAIRS.get());
                         safeAccept(output, GotModBlocks.BLACK_CHERRY_SLAB.get());
@@ -1164,6 +1364,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WHITE_CHERRY_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_WHITE_CHERRY_WOOD.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.WHITE_CHERRY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WHITE_CHERRY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_WHITE_CHERRY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_PLANKS.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_STAIRS.get());
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_SLAB.get());
@@ -1211,6 +1415,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CRABAPPLE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CRABAPPLE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CRABAPPLE_WOOD.get());
+                        safeAccept(output, GotModBlocks.CRABAPPLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.CRABAPPLE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CRABAPPLE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_CRABAPPLE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_PLANKS.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_STAIRS.get());
                         safeAccept(output, GotModBlocks.CRABAPPLE_SLAB.get());
@@ -1236,6 +1444,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.DATE_PALM_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_DATE_PALM_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_DATE_PALM_WOOD.get());
+                        safeAccept(output, GotModBlocks.DATE_PALM_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.DATE_PALM_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_DATE_PALM_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_DATE_PALM_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_PLANKS.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_STAIRS.get());
                         safeAccept(output, GotModBlocks.DATE_PALM_SLAB.get());
@@ -1261,6 +1473,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.FIG_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_FIG_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_FIG_WOOD.get());
+                        safeAccept(output, GotModBlocks.FIG_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.FIG_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIG_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_FIG_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.FIG_PLANKS.get());
                         safeAccept(output, GotModBlocks.FIG_STAIRS.get());
                         safeAccept(output, GotModBlocks.FIG_SLAB.get());
@@ -1286,6 +1502,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LEMON_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_LEMON_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_LEMON_WOOD.get());
+                        safeAccept(output, GotModBlocks.LEMON_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.LEMON_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LEMON_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LEMON_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.LEMON_PLANKS.get());
                         safeAccept(output, GotModBlocks.LEMON_STAIRS.get());
                         safeAccept(output, GotModBlocks.LEMON_SLAB.get());
@@ -1311,6 +1531,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LIME_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_LIME_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_LIME_WOOD.get());
+                        safeAccept(output, GotModBlocks.LIME_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.LIME_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LIME_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_LIME_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.LIME_PLANKS.get());
                         safeAccept(output, GotModBlocks.LIME_STAIRS.get());
                         safeAccept(output, GotModBlocks.LIME_SLAB.get());
@@ -1336,6 +1560,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OLIVE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_OLIVE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_OLIVE_WOOD.get());
+                        safeAccept(output, GotModBlocks.OLIVE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.OLIVE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_OLIVE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_OLIVE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.OLIVE_PLANKS.get());
                         safeAccept(output, GotModBlocks.OLIVE_STAIRS.get());
                         safeAccept(output, GotModBlocks.OLIVE_SLAB.get());
@@ -1361,6 +1589,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ORANGE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ORANGE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ORANGE_WOOD.get());
+                        safeAccept(output, GotModBlocks.ORANGE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ORANGE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ORANGE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ORANGE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.ORANGE_PLANKS.get());
                         safeAccept(output, GotModBlocks.ORANGE_STAIRS.get());
                         safeAccept(output, GotModBlocks.ORANGE_SLAB.get());
@@ -1386,6 +1618,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PEACH_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PEACH_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PEACH_WOOD.get());
+                        safeAccept(output, GotModBlocks.PEACH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PEACH_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PEACH_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PEACH_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PEACH_PLANKS.get());
                         safeAccept(output, GotModBlocks.PEACH_STAIRS.get());
                         safeAccept(output, GotModBlocks.PEACH_SLAB.get());
@@ -1411,6 +1647,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PEAR_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PEAR_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PEAR_WOOD.get());
+                        safeAccept(output, GotModBlocks.PEAR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PEAR_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PEAR_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PEAR_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PEAR_PLANKS.get());
                         safeAccept(output, GotModBlocks.PEAR_STAIRS.get());
                         safeAccept(output, GotModBlocks.PEAR_SLAB.get());
@@ -1436,6 +1676,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PERSIMMON_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PERSIMMON_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PERSIMMON_WOOD.get());
+                        safeAccept(output, GotModBlocks.PERSIMMON_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PERSIMMON_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PERSIMMON_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PERSIMMON_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_PLANKS.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_STAIRS.get());
                         safeAccept(output, GotModBlocks.PERSIMMON_SLAB.get());
@@ -1461,6 +1705,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PINK_IVORY_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PINK_IVORY_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PINK_IVORY_WOOD.get());
+                        safeAccept(output, GotModBlocks.PINK_IVORY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PINK_IVORY_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINK_IVORY_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PINK_IVORY_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_PLANKS.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_STAIRS.get());
                         safeAccept(output, GotModBlocks.PINK_IVORY_SLAB.get());
@@ -1486,6 +1734,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PLUM_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PLUM_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PLUM_WOOD.get());
+                        safeAccept(output, GotModBlocks.PLUM_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PLUM_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PLUM_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PLUM_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PLUM_PLANKS.get());
                         safeAccept(output, GotModBlocks.PLUM_STAIRS.get());
                         safeAccept(output, GotModBlocks.PLUM_SLAB.get());
@@ -1511,6 +1763,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.POMEGRANATE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_POMEGRANATE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_POMEGRANATE_WOOD.get());
+                        safeAccept(output, GotModBlocks.POMEGRANATE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.POMEGRANATE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_POMEGRANATE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_POMEGRANATE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_PLANKS.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_STAIRS.get());
                         safeAccept(output, GotModBlocks.POMEGRANATE_SLAB.get());
@@ -1536,6 +1792,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PRUNE_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PRUNE_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_PRUNE_WOOD.get());
+                        safeAccept(output, GotModBlocks.PRUNE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.PRUNE_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PRUNE_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_PRUNE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.PRUNE_PLANKS.get());
                         safeAccept(output, GotModBlocks.PRUNE_STAIRS.get());
                         safeAccept(output, GotModBlocks.PRUNE_SLAB.get());
@@ -1561,6 +1821,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ALMOND_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ALMOND_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_ALMOND_WOOD.get());
+                        safeAccept(output, GotModBlocks.ALMOND_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.ALMOND_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALMOND_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_ALMOND_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.ALMOND_PLANKS.get());
                         safeAccept(output, GotModBlocks.ALMOND_STAIRS.get());
                         safeAccept(output, GotModBlocks.ALMOND_SLAB.get());
@@ -1586,6 +1850,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NUTMEG_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_NUTMEG_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_NUTMEG_WOOD.get());
+                        safeAccept(output, GotModBlocks.NUTMEG_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.NUTMEG_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_NUTMEG_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_NUTMEG_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.NUTMEG_PLANKS.get());
                         safeAccept(output, GotModBlocks.NUTMEG_STAIRS.get());
                         safeAccept(output, GotModBlocks.NUTMEG_SLAB.get());
@@ -1611,6 +1879,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HEMLOCK_WOOD.get());
                         safeAccept(output, GotModBlocks.STRIPPED_HEMLOCK_LOG.get());
                         safeAccept(output, GotModBlocks.STRIPPED_HEMLOCK_WOOD.get());
+                        safeAccept(output, GotModBlocks.HEMLOCK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.HEMLOCK_WOOD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HEMLOCK_WOOD_SLAB.get());
+                        safeAccept(output, GotModBlocks.STRIPPED_HEMLOCK_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_PLANKS.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_STAIRS.get());
                         safeAccept(output, GotModBlocks.HEMLOCK_SLAB.get());
