@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,side=left": {
+      "model": "got:block/bellows_left"
+    },
+    "facing=north,side=right": {
+      "model": "got:block/bellows_right"
+    },
+    "facing=south,side=left": {
+      "model": "got:block/bellows_left",
+      "y": 180
+    },
+    "facing=south,side=right": {
+      "model": "got:block/bellows_right",
+      "y": 180
+    },
+    "facing=east,side=left": {
+      "model": "got:block/bellows_left",
+      "y": 90
+    },
+    "facing=east,side=right": {
+      "model": "got:block/bellows_right",
+      "y": 90
+    },
+    "facing=west,side=left": {
+      "model": "got:block/bellows_left",
+      "y": 270
+    },
+    "facing=west,side=right": {
+      "model": "got:block/bellows_right",
+      "y": 270
+    }
+  }
+}

@@ -1849,6 +1849,13 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> FORGE = REGISTRY.registerBlock("forge",
             ForgeBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
 
+    public static final DeferredBlock<Block> BELLOWS = REGISTRY.registerBlock("bellows",
+            BellowsBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(1.5F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion());
+
     // ── Basalt ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BASALT_ROCK = registerBasalt("basalt_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> BASALT_BRICK = registerBasalt("basalt_brick", RegionalRockBlock::new);
