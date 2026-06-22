@@ -4,6 +4,7 @@ import net.got.GotMod;
 import net.got.block.OvenBlockEntity;
 import net.got.block.BellowsBlockEntity;
 import net.got.block.ForgeBlockEntity;
+import net.got.block.SmithingAnvilBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -50,6 +51,12 @@ public class GotModBlockEntities {
             REGISTRY.register("forge", () ->
                     new BlockEntityType<>(ForgeBlockEntity::new,
                             Set.of(GotModBlocks.FORGE.get())));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SmithingAnvilBlockEntity>> SMITHING_ANVIL =
+            REGISTRY.register("smithing_anvil", () ->
+                    new BlockEntityType<>(SmithingAnvilBlockEntity::new,
+                            Set.of(GotModBlocks.SMITHING_ANVIL.get())));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BellowsBlockEntity>> BELLOWS =
             REGISTRY.register("bellows", () ->
                     new BlockEntityType<>(BellowsBlockEntity::new,

@@ -1,26 +1,44 @@
 package net.got.client.model;
 
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
+import org.joml.Vector3f;
 
+/**
+ * Bellows block-entity model.
+ * Extends {@link Model} directly (same as the original) so we avoid the
+ * 1.21.4 {@code EntityModel<T extends EntityRenderState>} type constraint.
+ * Animations are driven by {@link KeyframeAnimations#animate}, which only
+ * requires a {@link Model} — the same approach used by {@code GotPlayerModel}.
+ */
 public class BellowsModel extends Model {
 
-    public final ModelPart root;
-    public final ModelPart body;
-    public final ModelPart topBoard;
-    public final ModelPart bottomBoard;
-    public final ModelPart nozzle;
+    private static final Vector3f ANIM_VEC = new Vector3f();
+
+    private final ModelPart root;
+    private final ModelPart topBoard;
 
     public BellowsModel(ModelPart root) {
         super(root, RenderType::entityCutout);
-        this.root        = root.getChild("root");
-        this.body        = this.root.getChild("body");
-        this.topBoard    = this.root.getChild("top_board");
-        this.bottomBoard = this.root.getChild("bottom_board");
-        this.nozzle      = this.root.getChild("nozzle");
+        this.root     = root.getChild("root");
+        this.topBoard = this.root.getChild("top_board");
+    }
+
+    /**
+     * Apply a Blockbench-exported {@link AnimationDefinition} to this model.
+     *
+     * @param definition  the animation to play
+     * @param ageInTicks  animation time in ticks ({@code animationProgress + partialTick})
+     * @param weight      blend weight, normally {@code 1.0F}
+     */
+    public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
+        topBoard.resetPose();
+        KeyframeAnimations.animate(this, definition, (long) (ageInTicks * 50F), weight, ANIM_VEC);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -30,11 +48,10 @@ public class BellowsModel extends Model {
         PartDefinition root = partdefinition.addOrReplaceChild("root",
                 CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        PartDefinition body = root.addOrReplaceChild("body",
+        root.addOrReplaceChild("body",
                 CubeListBuilder.create()
                         .texOffs(40, 30).addBox(-4.1F, 1.4F, -3.5F, 4.0F, 2.0F, 7.0F, new CubeDeformation(0.0F)),
                 PartPose.offset(0.0F, -6.0F, 0.0F));
-
 
         PartDefinition top_board = root.addOrReplaceChild("top_board",
                 CubeListBuilder.create(), PartPose.offset(0.0F, -11.0F, 0.0F));

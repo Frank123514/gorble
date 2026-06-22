@@ -181,13 +181,24 @@ public final class GotNetwork {
                     }
                 }));
 
-        // ── Select smithy recipe (C→S) ───────────────────────────────────────────
+        // ── Select smithy recipe (C→S) — legacy SmithyMenu on ForgeBlockEntity ──
         r.playToServer(SelectSmithyRecipePayload.TYPE, SelectSmithyRecipePayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
                     if (player.containerMenu instanceof net.got.menu.SmithyMenu menu &&
                             menu.getContainer() instanceof net.got.block.ForgeBlockEntity be) {
+                        be.setSelectedRecipeIndex(payload.recipeIndex());
+                    }
+                }));
+
+        // ── Select smithing anvil recipe (C→S) ───────────────────────────────────
+        r.playToServer(SelectSmithingAnvilRecipePayload.TYPE, SelectSmithingAnvilRecipePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    if (player.containerMenu instanceof net.got.menu.SmithingAnvilMenu menu &&
+                            menu.getContainer() instanceof net.got.block.SmithingAnvilBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
                     }
                 }));
@@ -203,13 +214,13 @@ public final class GotNetwork {
                     }
                 }));
 
-        // ── Select forge mode (C→S) — switches Smithing <-> Alloying ────────────
+        // ── Select forge mode (C→S) — switches Heat Treating <-> Alloying ───────
         r.playToServer(SelectForgeModePayload.TYPE, SelectForgeModePayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
                     net.got.block.ForgeBlockEntity be = null;
-                    if (player.containerMenu instanceof net.got.menu.SmithyMenu menu &&
+                    if (player.containerMenu instanceof net.got.menu.HeatTreatingMenu menu &&
                             menu.getContainer() instanceof net.got.block.ForgeBlockEntity fbe) {
                         be = fbe;
                     } else if (player.containerMenu instanceof net.got.menu.AlloyMenu menu &&

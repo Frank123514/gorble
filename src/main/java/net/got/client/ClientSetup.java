@@ -54,6 +54,8 @@ import net.got.client.gui.AlloyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.got.client.renderer.BellowsBlockEntityRenderer;
+import net.got.client.gui.SmithingAnvilScreen;
+import net.got.client.gui.HeatTreatingScreen;
 import net.minecraft.world.level.block.Blocks;
 
 // The bus parameter was deprecated for removal in NeoForge 21.3.x.
@@ -72,6 +74,8 @@ public final class ClientSetup {
         event.register(GotModMenus.OVEN.get(), OvenScreen::new);
         event.register(GotModMenus.SMITHY.get(), SmithyScreen::new);
         event.register(GotModMenus.ALLOY.get(), AlloyScreen::new);
+        event.register(GotModMenus.SMITHING_ANVIL.get(), SmithingAnvilScreen::new);
+        event.register(GotModMenus.HEAT_TREATING.get(), HeatTreatingScreen::new);
     }
 
     @SubscribeEvent

@@ -2460,6 +2460,7 @@ public class GotModTabs {
                         // ── Cooking Equipment ─────────────────────────────────────────
                         safeAccept(output, GotModBlocks.OVEN.get());
                         safeAccept(output, GotModBlocks.FORGE.get());
+                        safeAccept(output, GotModBlocks.SMITHING_ANVIL.get());
                         safeAccept(output, GotModBlocks.BELLOWS.get());
 
                         // ── Bread ─────────────────────────────────────────────────────

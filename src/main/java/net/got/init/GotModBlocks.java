@@ -1849,6 +1849,9 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> FORGE = REGISTRY.registerBlock("forge",
             ForgeBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE));
 
+    public static final DeferredBlock<Block> SMITHING_ANVIL = REGISTRY.registerBlock("smithing_anvil",
+            SmithingAnvilBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL));
+
     public static final DeferredBlock<Block> BELLOWS = REGISTRY.registerBlock("bellows",
             BellowsBlock::new,
             BlockBehaviour.Properties.of()

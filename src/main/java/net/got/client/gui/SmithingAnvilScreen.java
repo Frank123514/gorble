@@ -1,9 +1,8 @@
 package net.got.client.gui;
 
-import net.got.menu.AlloyMenu;
-import net.got.network.SelectAlloyRecipePayload;
-import net.got.network.SelectForgeModePayload;
-import net.got.recipe.AlloyRecipe;
+import net.got.menu.SmithingAnvilMenu;
+import net.got.network.SelectSmithingAnvilRecipePayload;
+import net.got.recipe.SmithyRecipe;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
@@ -17,14 +16,13 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.List;
 
 /**
- * AlloyScreen — GUI for the Forge block's alloying mode.
- *
- * Visually mirrors {@code SmithyScreen} (same stonecutter-derived layout
- * and recipe grid), but has two stacked input slots (A above B) instead of
- * one, since alloying melts two metals together. A small mode tab in the
- * top-right corner lets the player flip back to Smithing mode.
+ * SmithingAnvilScreen — the GUI for the Smithing Anvil block.
+ * <p>
+ * Displays the stonecutter-style recipe selection panel (moved here from the
+ * old Forge SmithyScreen), letting the player choose which item to craft from
+ * a heated metal ingot.
  */
-public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
+public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMenu> {
 
     private static final ResourceLocation STONECUTTER_TEXTURE =
             ResourceLocation.withDefaultNamespace("textures/gui/container/stonecutter.png");
@@ -61,7 +59,6 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
     private static final int SCROLLER_H = 15;
     private static final int SCROLL_X   = 119;
 
-    // Flame sits between input A/B and the rest of the panel.
     private static final int FLAME_X = 20;
     private static final int FLAME_Y = 36;
 
@@ -73,19 +70,13 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
     private static final int C_DK      = 0xFF_555555;
     private static final int C_TEXT    = 0xFF_404040;
 
-    // Mode tab (switches back to Smithing) drawn at the top-right of the panel.
-    private static final int TAB_W = 20;
-    private static final int TAB_H = 14;
-    private static final int TAB_X = 176 - TAB_W - 2;
-    private static final int TAB_Y = 2;
-
+    // ── State ─────────────────────────────────────────────────────────────────
     private int     scrollOffset       = 0;
     private boolean isDraggingScroller = false;
-    private List<RecipeHolder<AlloyRecipe>> recipes = List.of();
-    private ItemStack lastA = ItemStack.EMPTY;
-    private ItemStack lastB = ItemStack.EMPTY;
+    private List<RecipeHolder<SmithyRecipe>> recipes = List.of();
+    private ItemStack lastInput = ItemStack.EMPTY;
 
-    public AlloyScreen(AlloyMenu menu, Inventory playerInv, Component title) {
+    public SmithingAnvilScreen(SmithingAnvilMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
         this.imageWidth      = 176;
         this.imageHeight     = 166;
@@ -104,7 +95,6 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         renderBackground(g, mouseX, mouseY, partialTick);
         super.render(g, mouseX, mouseY, partialTick);
         renderRecipeGrid(g, mouseX, mouseY);
-        renderModeTab(g, mouseX, mouseY);
         renderTooltip(g, mouseX, mouseY);
         renderRecipeTooltip(g, mouseX, mouseY);
     }
@@ -117,14 +107,14 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         g.blit(RenderType::guiTextured, STONECUTTER_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // Clear the stonecutter's built-in input slot so we can draw our own
-        // two stacked slots in that area instead.
-        g.fill(x + 19, y + 8, x + 37, y + 50, 0xFFC6C6C6);
+        // Clear the stonecutter's built-in input slot position so the flame area is clean
+        g.fill(x + 19, y + 32, x + 37, y + 50, 0xFFC6C6C6);
 
-        vanillaSlot(g, x + AlloyMenu.INPUT_A_X - 1, y + AlloyMenu.INPUT_A_Y - 1);
-        vanillaSlot(g, x + AlloyMenu.INPUT_B_X - 1, y + AlloyMenu.INPUT_B_Y - 1);
-        vanillaSlot(g, x + AlloyMenu.FUEL_X    - 1, y + AlloyMenu.FUEL_Y    - 1);
+        // Draw our two slots (input at y=14, fuel at y=53)
+        vanillaSlot(g, x + SmithingAnvilMenu.INPUT_X - 1, y + SmithingAnvilMenu.INPUT_Y - 1);
+        vanillaSlot(g, x + SmithingAnvilMenu.FUEL_X  - 1, y + SmithingAnvilMenu.FUEL_Y  - 1);
 
+        // Flame indicator
         if (menu.isFlaming()) {
             int flameHeight = menu.getFlameProgress();
             if (flameHeight > 0) {
@@ -136,6 +126,7 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
             }
         }
 
+        // Progress arrow
         if (menu.isCrafting()) {
             int arrowWidth = menu.getArrowProgress();
             if (arrowWidth > 0) {
@@ -147,6 +138,8 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
             }
         }
     }
+
+    // ── Recipe grid ───────────────────────────────────────────────────────────
 
     private void renderRecipeGrid(GuiGraphics g, int mouseX, int mouseY) {
         int gx = leftPos + GRID_X;
@@ -183,6 +176,7 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
             }
         }
 
+        // Scroller thumb
         boolean canScroll = maxScroll > 0;
         int trackH = GRID_H - SCROLLER_H;
         int thumbY  = canScroll
@@ -192,16 +186,6 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         g.blitSprite(RenderType::guiTextured,
                 canScroll ? SCROLLER : SCROLLER_DISABLED,
                 leftPos + SCROLL_X, thumbY, SCROLLER_W, SCROLLER_H);
-    }
-
-    /** Small text tab in the top-right corner that flips the Forge back to Smithing mode. */
-    private void renderModeTab(GuiGraphics g, int mouseX, int mouseY) {
-        int bx = leftPos + TAB_X, by = topPos + TAB_Y;
-        boolean hovered = mouseX >= bx && mouseX < bx + TAB_W && mouseY >= by && mouseY < by + TAB_H;
-        g.fill(bx, by, bx + TAB_W, by + TAB_H, hovered ? 0xFFB0B0B0 : 0xFF8B8B8B);
-        g.renderOutline(bx, by, TAB_W, TAB_H, 0xFF373737);
-        g.drawCenteredString(font, Component.translatable("got.forge.tab.smith"),
-                bx + TAB_W / 2, by + 3, C_TEXT);
     }
 
     private void renderRecipeTooltip(GuiGraphics g, int mouseX, int mouseY) {
@@ -219,6 +203,8 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         }
     }
 
+    // ── Mouse input ───────────────────────────────────────────────────────────
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         isDraggingScroller = false;
@@ -226,13 +212,7 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         if (button == 0) {
             int mx = (int) mouseX, my = (int) mouseY;
 
-            int tbx = leftPos + TAB_X, tby = topPos + TAB_Y;
-            if (mx >= tbx && mx < tbx + TAB_W && my >= tby && my < tby + TAB_H) {
-                PacketDistributor.sendToServer(
-                        new SelectForgeModePayload(net.got.block.ForgeBlockEntity.MODE_HEAT_TREATING));
-                return true;
-            }
-
+            // Recipe grid click
             int gx = leftPos + GRID_X, gy = topPos + GRID_Y;
             if (mx >= gx && mx < gx + GRID_W && my >= gy && my < gy + GRID_H) {
                 int col = (mx - gx) / CELL_W;
@@ -240,11 +220,12 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
                 int ri  = (row + scrollOffset) * GRID_COLS + col;
                 if (ri >= 0 && ri < recipes.size()) {
                     int toSend = (ri == menu.getSelectedRecipeIndex()) ? -1 : ri;
-                    PacketDistributor.sendToServer(new SelectAlloyRecipePayload(toSend));
+                    PacketDistributor.sendToServer(new SelectSmithingAnvilRecipePayload(toSend));
                     return true;
                 }
             }
 
+            // Scroller drag start
             int sx = leftPos + SCROLL_X, sy = topPos + GRID_Y;
             if (mx >= sx && mx < sx + SCROLLER_W && my >= sy && my < sy + GRID_H) {
                 isDraggingScroller = true;
@@ -282,6 +263,8 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         return super.mouseScrolled(mx, my, sx, sy);
     }
 
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
     private void updateScrollFromMouse(int mouseY) {
         int maxRows   = (int) Math.ceil((double) recipes.size() / GRID_COLS);
         int maxScroll = Math.max(0, maxRows - GRID_ROWS);
@@ -293,11 +276,9 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
     }
 
     private void refreshRecipeList() {
-        ItemStack a = menu.getInputA();
-        ItemStack b = menu.getInputB();
-        if (!ItemStack.isSameItemSameComponents(a, lastA) || !ItemStack.isSameItemSameComponents(b, lastB)) {
-            lastA        = a.copy();
-            lastB        = b.copy();
+        ItemStack input = menu.getInputItem();
+        if (!ItemStack.isSameItemSameComponents(input, lastInput)) {
+            lastInput    = input.copy();
             recipes      = menu.getMatchingRecipes();
             scrollOffset = 0;
         }

@@ -4,6 +4,8 @@ import net.got.GotMod;
 import net.got.menu.OvenMenu;
 import net.got.menu.SmithyMenu;
 import net.got.menu.AlloyMenu;
+import net.got.menu.SmithingAnvilMenu;
+import net.got.menu.HeatTreatingMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -32,4 +34,12 @@ public class GotModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<AlloyMenu>> ALLOY =
             REGISTRY.register("alloy", () ->
                     new MenuType<>(AlloyMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<SmithingAnvilMenu>> SMITHING_ANVIL =
+            REGISTRY.register("smithing_anvil", () ->
+                    new MenuType<>(SmithingAnvilMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<HeatTreatingMenu>> HEAT_TREATING =
+            REGISTRY.register("heat_treating", () ->
+                    new MenuType<>(HeatTreatingMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }
