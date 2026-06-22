@@ -60,6 +60,7 @@ import net.minecraft.world.level.block.Blocks;
 // Omitting it defaults to the MOD bus, which is the correct behaviour here.
 @EventBusSubscriber(
         modid = "got",
+        bus = EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public final class ClientSetup {

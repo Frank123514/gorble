@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "got:block/bellows_particle" },
-    "facing=south": { "model": "got:block/bellows_particle" },
-    "facing=east":  { "model": "got:block/bellows_particle" },
-    "facing=west":  { "model": "got:block/bellows_particle" }
-  }
-}
