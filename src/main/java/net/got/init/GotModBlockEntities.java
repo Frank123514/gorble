@@ -2,6 +2,7 @@ package net.got.init;
 
 import net.got.GotMod;
 import net.got.block.OvenBlockEntity;
+import net.got.block.BellowsBlockEntity;
 import net.got.block.ForgeBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -49,6 +50,12 @@ public class GotModBlockEntities {
             REGISTRY.register("forge", () ->
                     new BlockEntityType<>(ForgeBlockEntity::new,
                             Set.of(GotModBlocks.FORGE.get())));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BellowsBlockEntity>> BELLOWS =
+            REGISTRY.register("bellows", () ->
+                    new BlockEntityType<>(BellowsBlockEntity::new,
+                            Set.of(GotModBlocks.BELLOWS.get())));
+
+
 
     // ── Signs ─────────────────────────────────────────────────────────────────
 
@@ -133,9 +140,9 @@ public class GotModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             RED_CHERRY_SIGN = sign("red_cherry", GotModBlocks.RED_CHERRY_SIGN, GotModBlocks.RED_CHERRY_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
-        WHITE_CHERRY_SIGN = sign("white_cherry", GotModBlocks.WHITE_CHERRY_SIGN, GotModBlocks.WHITE_CHERRY_WALL_SIGN);
+            WHITE_CHERRY_SIGN = sign("white_cherry", GotModBlocks.WHITE_CHERRY_SIGN, GotModBlocks.WHITE_CHERRY_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
-        BLACK_CHERRY_SIGN = sign("black_cherry", GotModBlocks.BLACK_CHERRY_SIGN, GotModBlocks.BLACK_CHERRY_WALL_SIGN);
+            BLACK_CHERRY_SIGN = sign("black_cherry", GotModBlocks.BLACK_CHERRY_SIGN, GotModBlocks.BLACK_CHERRY_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             CRABAPPLE_SIGN = sign("crabapple", GotModBlocks.CRABAPPLE_SIGN, GotModBlocks.CRABAPPLE_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>

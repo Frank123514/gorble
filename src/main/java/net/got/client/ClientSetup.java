@@ -53,6 +53,7 @@ import net.got.client.gui.SmithyScreen;
 import net.got.client.gui.AlloyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.got.client.renderer.BellowsBlockEntityRenderer;
 import net.minecraft.world.level.block.Blocks;
 
 // The bus parameter was deprecated for removal in NeoForge 21.3.x.
@@ -101,6 +102,7 @@ public final class ClientSetup {
         event.registerLayerDefinition(GotModelLayers.GOT_MAMMOTH,       GotMammothModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_BROWN_BEAR, GotBrownBearModel::createBodyLayer);
         event.registerLayerDefinition(GotModelLayers.GOT_GIANT,      GotGiantModel::createBodyLayer);
+        event.registerLayerDefinition(GotModelLayers.BELLOWS,          BellowsBlockEntityRenderer::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -402,6 +404,9 @@ public final class ClientSetup {
 
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // ── Bellows ──────────────────────────────────────────────────────
+        event.registerBlockEntityRenderer(GotModBlockEntities.BELLOWS.get(), BellowsBlockEntityRenderer::new);
+
         // ── Sign block entity renderers ──────────────────────────────────
         event.registerBlockEntityRenderer(GotModBlockEntities.WEIRWOOD_SIGN.get(),           SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.ASPEN_SIGN.get(),              SignRenderer::new);

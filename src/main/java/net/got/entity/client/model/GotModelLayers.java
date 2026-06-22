@@ -74,6 +74,12 @@ public final class GotModelLayers {
     public static final ModelLayerLocation GOT_GIANT =
             location("got_giant");
 
+    // ── Blocks ────────────────────────────────────────────────────────────────
+
+    /** Layer location for the bellows block entity renderer. */
+    public static final ModelLayerLocation BELLOWS =
+            location("bellows");
+
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static ModelLayerLocation location(String name) {

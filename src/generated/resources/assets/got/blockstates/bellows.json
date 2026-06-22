@@ -1,19 +1,8 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "got:block/bellows_left"
-    },
-    "facing=south": {
-      "model": "got:block/bellows_left",
-      "y": 180
-    },
-    "facing=east": {
-      "model": "got:block/bellows_left",
-      "y": 90
-    },
-    "facing=west": {
-      "model": "got:block/bellows_left",
-      "y": 270
-    }
+    "facing=north": { "model": "got:block/bellows_particle" },
+    "facing=south": { "model": "got:block/bellows_particle" },
+    "facing=east":  { "model": "got:block/bellows_particle" },
+    "facing=west":  { "model": "got:block/bellows_particle" }
   }
 }
