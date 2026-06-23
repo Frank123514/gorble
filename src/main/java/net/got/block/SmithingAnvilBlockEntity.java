@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -118,6 +119,29 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         super(GotModBlockEntities.SMITHING_ANVIL.get(), pos, state);
     }
 
+    // ── Sync ─────────────────────────────────────────────────────────────────
+    // Without these overrides the client's copy of this block entity never
+    // receives the contained ItemStacks, so the world-space renderer (which
+    // reads getInputItem() straight off the client BE) always sees it as
+    // empty even though the menu/screen shows it fine via slot syncing.
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    /** Pushes the current state to nearby clients; call after the input slot changes. */
+    private void syncToClient() {
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
     // ── Tick ──────────────────────────────────────────────────────────────────
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SmithingAnvilBlockEntity be) {
@@ -216,6 +240,13 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         ItemStack input = items.get(SLOT_INPUT);
         input.shrink(1);
         if (input.isEmpty()) items.set(SLOT_INPUT, ItemStack.EMPTY);
+
+        // Reset recipe selection so the player must choose again for the next piece
+        selectedRecipeIdx = -1;
+        markerPos         = 0;
+        markerDir         = 1;
+
+        syncToClient();
         return true;
     }
 
@@ -267,7 +298,12 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
 
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        return ContainerHelper.removeItem(items, slot, amount);
+        ItemStack result = ContainerHelper.removeItem(items, slot, amount);
+        if (slot == SLOT_INPUT) {
+            setChanged();
+            syncToClient();
+        }
+        return result;
     }
 
     @Override
@@ -286,6 +322,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
             markerDir         = 1;
             lastHitQuality    = HIT_QUALITY_NONE;
             setChanged();
+            syncToClient();
         }
     }
 

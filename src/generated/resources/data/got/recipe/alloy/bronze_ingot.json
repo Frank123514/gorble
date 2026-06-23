@@ -4,7 +4,7 @@
   "ingredient_b": "got:tin_ingot",
   "result": {
     "id": "got:bronze_ingot",
-    "count": 2
+    "count": 4
   },
   "cookingtime": 240
 }

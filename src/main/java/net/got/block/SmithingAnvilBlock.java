@@ -33,6 +33,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * SmithingAnvilBlock — the dedicated smithing workstation.
@@ -49,15 +51,64 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty         LIT    = BlockStateProperties.LIT;
 
-    // Matches the model's base plate (2,0,2 -> 14,4,14) plus the raised body above it.
-    // Without this the block falls back to a full 16x16x16 cube shape, which makes the
-    // engine think it fully covers the block below — but the model doesn't actually
-    // draw a full bottom face, so the block underneath's top face is left rendering
-    // without its biome tint (showing up as a pale/untinted patch under the anvil).
-    private static final VoxelShape SHAPE = Shapes.or(
-            Block.box(2, 0, 2, 14, 4, 14),
-            Block.box(3, 4, 3, 13, 10, 13)
+    // Shape built to match the model geometry exactly, in the model's native
+    // (FACING = NORTH) orientation:
+    //   Base plate:  [2,0,2]  → [14,4,14]
+    //   Waist step:  [4,4,3]  → [12,5,13]
+    //   Neck:        [6,5,4]  → [10,10,12]
+    //   Anvil head:  [3,10,0] → [13,16,16]
+    // The horns that stick out beyond z=0 and z=16 are decorative geometry
+    // outside the block bounds and don't need collision coverage.
+    // This must be rotated to match FACING — see SHAPES_BY_FACING below.
+    private static final VoxelShape SHAPE_NORTH = Shapes.or(
+            Block.box(2, 0, 2,  14,  4, 14),   // base plate
+            Block.box(4, 4, 3,  12,  5, 13),   // waist step
+            Block.box(6, 5, 4,  10, 10, 12),   // neck
+            Block.box(3,10, 0,  13, 16, 16)    // anvil head (top working surface)
     );
+
+    /** SHAPE_NORTH pre-rotated for every horizontal facing, keyed by FACING. */
+    private static final Map<Direction, VoxelShape> SHAPES_BY_FACING =
+            buildRotatedShapes();
+
+    private static Map<Direction, VoxelShape> buildRotatedShapes() {
+        Map<Direction, VoxelShape> map = new EnumMap<>(Direction.class);
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            map.put(dir, rotateShape(SHAPE_NORTH, dir));
+        }
+        return map;
+    }
+
+    /**
+     * Rotates a VoxelShape (built assuming FACING = NORTH) around the block's
+     * vertical (Y) axis so it matches the given facing. Rotation follows the
+     * same convention as block model "y" rotation in blockstates: looking
+     * down the Y axis, NORTH -> EAST -> SOUTH -> WEST is a clockwise turn.
+     */
+    private static VoxelShape rotateShape(VoxelShape shape, Direction facing) {
+        int steps = switch (facing) {
+            case NORTH -> 0;
+            case EAST  -> 1;
+            case SOUTH -> 2;
+            case WEST  -> 3;
+            default    -> 0;
+        };
+        VoxelShape result = shape;
+        for (int i = 0; i < steps; i++) {
+            VoxelShape current = result;
+            // Rotate 90 deg clockwise (viewed from above) around the block center (0.5, y, 0.5):
+            // (x, z) -> (1 - z, x)
+            VoxelShape[] holder = new VoxelShape[]{Shapes.empty()};
+            current.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
+                holder[0] = Shapes.or(holder[0], Shapes.box(
+                        1 - maxZ, minY, minX,
+                        1 - minZ, maxY, maxX
+                ));
+            });
+            result = holder[0];
+        }
+        return result;
+    }
 
     public SmithingAnvilBlock(Properties props) {
         super(props);
@@ -95,7 +146,7 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level,
                                   BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return SHAPES_BY_FACING.get(state.getValue(FACING));
     }
 
     @Override

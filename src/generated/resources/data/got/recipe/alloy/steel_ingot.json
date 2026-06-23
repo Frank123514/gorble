@@ -4,7 +4,7 @@
   "ingredient_b": "minecraft:coal",
   "result": {
     "id": "got:steel_ingot",
-    "count": 1
+    "count": 4
   },
   "cookingtime": 300
 }

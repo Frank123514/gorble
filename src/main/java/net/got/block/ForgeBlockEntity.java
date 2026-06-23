@@ -75,7 +75,9 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public static final int SLOT_OUTPUT     = 2;
     public static final int SLOT_ALLOY_A    = 3;
     public static final int SLOT_ALLOY_B    = 4;
-    public static final int NUM_SLOTS       = 5;
+    public static final int SLOT_ALLOY_C    = 5;
+    public static final int SLOT_ALLOY_D    = 6;
+    public static final int NUM_SLOTS       = 7;
 
     // ── ContainerData indices ─────────────────────────────────────────────────
     public static final int DATA_COOKING_PROGRESS = 0;
@@ -234,7 +236,8 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     private boolean tickAlloying(ServerLevel level) {
         boolean dirty = false;
 
-        if (items.get(SLOT_ALLOY_A).isEmpty() || items.get(SLOT_ALLOY_B).isEmpty()) {
+        if (items.get(SLOT_ALLOY_A).isEmpty() || items.get(SLOT_ALLOY_B).isEmpty()
+                || items.get(SLOT_ALLOY_C).isEmpty() || items.get(SLOT_ALLOY_D).isEmpty()) {
             if (selectedRecipeIdx != -1) {
                 selectedRecipeIdx = -1;
                 cookingProgress = 0;
@@ -318,12 +321,13 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     private boolean burnAlloy(RecipeHolder<AlloyRecipe> recipe) {
         if (!canBurnAlloy(recipe)) return false;
         depositOutput(recipe.value().getResult());
-        ItemStack a = items.get(SLOT_ALLOY_A);
-        ItemStack b = items.get(SLOT_ALLOY_B);
-        a.shrink(1);
-        b.shrink(1);
-        if (a.isEmpty()) items.set(SLOT_ALLOY_A, ItemStack.EMPTY);
-        if (b.isEmpty()) items.set(SLOT_ALLOY_B, ItemStack.EMPTY);
+        // Consume one item from each of the four input slots (3:1 fills all four slots)
+        int[] alloySlots = { SLOT_ALLOY_A, SLOT_ALLOY_B, SLOT_ALLOY_C, SLOT_ALLOY_D };
+        for (int slot : alloySlots) {
+            ItemStack s = items.get(slot);
+            s.shrink(1);
+            if (s.isEmpty()) items.set(slot, ItemStack.EMPTY);
+        }
         return true;
     }
 
@@ -351,11 +355,13 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public List<RecipeHolder<AlloyRecipe>> getMatchingAlloyRecipes(Level level) {
         ItemStack a = items.get(SLOT_ALLOY_A);
         ItemStack b = items.get(SLOT_ALLOY_B);
-        if (a.isEmpty() || b.isEmpty()) return List.of();
+        ItemStack c = items.get(SLOT_ALLOY_C);
+        ItemStack d = items.get(SLOT_ALLOY_D);
+        if (a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty()) return List.of();
         if (!(level instanceof ServerLevel serverLevel)) return List.of();
         if (!(serverLevel.recipeAccess() instanceof RecipeManager rm)) return List.of();
 
-        AlloyRecipeInput recipeInput = new AlloyRecipeInput(a, b);
+        AlloyRecipeInput recipeInput = new AlloyRecipeInput(a, b, c, d);
         return rm.recipeMap().byType(GotModRecipeTypes.ALLOY.get()).stream()
                 .filter(h -> h.value().matches(recipeInput, serverLevel))
                 .sorted(Comparator.comparing(h -> h.id().toString()))
@@ -395,7 +401,8 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public void setItem(int slot, ItemStack stack) {
         items.set(slot, stack);
         if (stack.getCount() > getMaxStackSize()) stack.setCount(getMaxStackSize());
-        if (slot == SLOT_HEAT_INPUT || slot == SLOT_ALLOY_A || slot == SLOT_ALLOY_B) {
+        if (slot == SLOT_HEAT_INPUT || slot == SLOT_ALLOY_A || slot == SLOT_ALLOY_B
+                || slot == SLOT_ALLOY_C || slot == SLOT_ALLOY_D) {
             selectedRecipeIdx = -1;
             cookingProgress   = 0;
             setChanged();
@@ -411,7 +418,7 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
 
     // ── WorldlyContainer ──────────────────────────────────────────────────────
 
-    private static final int[] SLOTS_TOP    = { SLOT_HEAT_INPUT, SLOT_ALLOY_A, SLOT_ALLOY_B };
+    private static final int[] SLOTS_TOP    = { SLOT_HEAT_INPUT, SLOT_ALLOY_A, SLOT_ALLOY_B, SLOT_ALLOY_C, SLOT_ALLOY_D };
     private static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT, SLOT_FUEL };
     private static final int[] SLOTS_SIDE   = { SLOT_FUEL };
 
