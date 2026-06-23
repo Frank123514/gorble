@@ -29,6 +29,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import javax.annotation.Nullable;
 
 /**
@@ -128,6 +131,14 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
         return new SmithingAnvilBlockEntity(pos, state);
     }
 
+    @Nullable @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide) return null;
+        return createTickerHelper(type,
+                net.got.init.GotModBlockEntities.SMITHING_ANVIL.get(),
+                SmithingAnvilBlockEntity::serverTick);
+    }
+
     @Override
     protected void attack(BlockState state, Level level, BlockPos pos, Player player) {
         if (level.isClientSide) return;
@@ -150,6 +161,10 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
                 playFinishSound(level, pos);
                 spawnHitParticles(level, pos, state.getValue(FACING));
                 damageHammer(heldStack, player);
+            }
+            case MISS -> {
+                // Play a dull clank — progress reset
+                level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.5F, 0.8F);
             }
             case NOTHING_TO_WORK -> { /* no ingot, no recipe selected, or output full — silently ignore */ }
         }

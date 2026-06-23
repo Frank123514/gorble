@@ -1,5 +1,6 @@
 package net.got.client.gui;
 
+import net.got.block.SmithingAnvilBlockEntity;
 import net.got.menu.SmithingAnvilMenu;
 import net.got.network.SelectSmithingAnvilRecipePayload;
 import net.got.recipe.SmithyRecipe;
@@ -17,10 +18,10 @@ import java.util.List;
 
 /**
  * SmithingAnvilScreen — the GUI for the Smithing Anvil block.
- * <p>
- * Displays the stonecutter-style recipe selection panel (moved here from the
- * old Forge SmithyScreen), letting the player choose which item to craft from
- * a heated metal ingot.
+ *
+ * Displays the stonecutter-style recipe selection panel, and a timing
+ * bar below the output slot that the player must hit at the right moment
+ * with the smithing hammer.
  */
 public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMenu> {
 
@@ -49,24 +50,46 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
     private static final int SCROLLER_H = 15;
     private static final int SCROLL_X   = 119;
 
-    // Hit-count pips, drawn in a vertical row below the output slot
-    private static final int PIP_SIZE = 6;
-    private static final int PIP_GAP  = 4;
-    private static final int PIPS_Y   = 54;
-    private static final int PIP_X    = 149;
+    // Timing bar layout — positioned below the output slot
+    // Output slot is at OUTPUT_X=143, OUTPUT_Y=33 (18x18)
+    // Bar sits below the output area, centered on it
+    private static final int BAR_W  = 52;   // total bar width
+    private static final int BAR_H  = 6;    // bar height
+    private static final int BAR_X  = 131;  // leftPos-relative
+    private static final int BAR_Y  = 58;   // leftPos-relative (below output slot)
 
-    private static final int C_SLOT_BG = 0xFF_8B8B8B;
-    private static final int C_LT      = 0xFF_FFFFFF;
-    private static final int C_DK      = 0xFF_555555;
-    private static final int C_TEXT    = 0xFF_404040;
-    private static final int C_PIP_FULL  = 0xFF_DEDE40;
-    private static final int C_PIP_EMPTY = 0xFF_5A5A5A;
+    private static final int MARKER_W = 3;
+    private static final int MARKER_H = 10;
+
+    // Hit counter text position (above bar)
+    private static final int HITS_TEXT_X = 131;
+    private static final int HITS_TEXT_Y = 49;
+
+    // Colors
+    private static final int C_SLOT_BG     = 0xFF_8B8B8B;
+    private static final int C_LT          = 0xFF_FFFFFF;
+    private static final int C_DK          = 0xFF_555555;
+    private static final int C_TEXT        = 0xFF_404040;
+    private static final int C_BAR_BG      = 0xFF_3A3A3A;
+    private static final int C_ZONE_GOOD   = 0xFF_1FA01F;   // green zone
+    private static final int C_ZONE_PERFECT = 0xFF_59D459;  // brighter inner zone
+    private static final int C_MARKER      = 0xFF_FFFFFF;
+    private static final int C_MISS        = 0xFF_DD2222;
+    private static final int C_GOOD        = 0xFF_22BB22;
+    private static final int C_PERFECT     = 0xFF_FFFF44;
+
+    // Feedback flash duration in ticks
+    private static final int FLASH_TICKS = 12;
 
     // ── State ─────────────────────────────────────────────────────────────────
     private int     scrollOffset       = 0;
     private boolean isDraggingScroller = false;
     private List<RecipeHolder<SmithyRecipe>> recipes = List.of();
     private ItemStack lastInput = ItemStack.EMPTY;
+
+    // Client-side flash feedback
+    private int lastQualitySeen   = SmithingAnvilBlockEntity.HIT_QUALITY_NONE;
+    private int flashTimer        = 0;
 
     public SmithingAnvilScreen(SmithingAnvilMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
@@ -84,11 +107,21 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         refreshRecipeList();
+        tickFlash();
         renderBackground(g, mouseX, mouseY, partialTick);
         super.render(g, mouseX, mouseY, partialTick);
         renderRecipeGrid(g, mouseX, mouseY);
         renderTooltip(g, mouseX, mouseY);
         renderRecipeTooltip(g, mouseX, mouseY);
+    }
+
+    private void tickFlash() {
+        int quality = menu.getLastHitQuality();
+        if (quality != SmithingAnvilBlockEntity.HIT_QUALITY_NONE && quality != lastQualitySeen) {
+            lastQualitySeen = quality;
+            flashTimer = FLASH_TICKS;
+        }
+        if (flashTimer > 0) flashTimer--;
     }
 
     @Override
@@ -99,27 +132,70 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
         g.blit(RenderType::guiTextured, STONECUTTER_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // Clear the stonecutter's built-in input/fuel slot area so we can draw our own
+        // Clear the stonecutter's built-in input/fuel slot area
         g.fill(x + 19, y + 32, x + 37, y + 51, 0xFFC6C6C6);
 
         // Draw our single input slot
         vanillaSlot(g, x + SmithingAnvilMenu.INPUT_X - 1, y + SmithingAnvilMenu.INPUT_Y - 1);
 
-        // Hit-count pips: one per hammer strike needed, filled in as they land
+        // Timing bar
         if (menu.getSelectedRecipeIndex() >= 0) {
-            renderHitPips(g, x, y);
+            renderTimingBar(g, x, y);
         }
     }
 
-    private void renderHitPips(GuiGraphics g, int x, int y) {
-        int required = menu.getHitsRequired();
-        int hit      = menu.getHitCount();
+    private void renderTimingBar(GuiGraphics g, int x, int y) {
+        int bx = x + BAR_X;
+        int by = y + BAR_Y;
 
-        for (int i = 0; i < required; i++) {
-            int px = x + PIP_X;
-            int py = y + PIPS_Y + i * (PIP_SIZE + PIP_GAP);
-            g.fill(px, py, px + PIP_SIZE, py + PIP_SIZE, i < hit ? C_PIP_FULL : C_PIP_EMPTY);
+        // ── Hits Left label ───────────────────────────────────────────────
+        int hitsLeft = menu.getHitsRequired() - menu.getHitCount();
+        String hitsText = "Hits: " + hitsLeft;
+        g.drawString(font, hitsText, x + HITS_TEXT_X, y + HITS_TEXT_Y, C_TEXT, false);
+
+        // ── Bar background ────────────────────────────────────────────────
+        g.fill(bx, by, bx + BAR_W, by + BAR_H, C_BAR_BG);
+
+        // ── Zone highlight ────────────────────────────────────────────────
+        int zoneCenter = menu.getZoneCenter(); // 50
+        int zoneHalf   = menu.getZoneHalf();   // 12
+
+        int goodLeft  = bx + (zoneCenter - zoneHalf) * BAR_W / 100;
+        int goodRight = bx + (zoneCenter + zoneHalf) * BAR_W / 100;
+        g.fill(goodLeft, by, goodRight, by + BAR_H, C_ZONE_GOOD);
+
+        // Perfect inner zone (half of zone_half)
+        int perfLeft  = bx + (zoneCenter - zoneHalf / 2) * BAR_W / 100;
+        int perfRight = bx + (zoneCenter + zoneHalf / 2) * BAR_W / 100;
+        g.fill(perfLeft, by, perfRight, by + BAR_H, C_ZONE_PERFECT);
+
+        // ── Marker ────────────────────────────────────────────────────────
+        int markerPos = menu.getMarkerPos(); // 0–100
+        int markerX   = bx + markerPos * BAR_W / 100 - MARKER_W / 2;
+        int markerTop = by - (MARKER_H - BAR_H) / 2;
+        g.fill(markerX, markerTop, markerX + MARKER_W, markerTop + MARKER_H, C_MARKER);
+
+        // ── Flash feedback ────────────────────────────────────────────────
+        if (flashTimer > 0) {
+            int flashColor = switch (lastQualitySeen) {
+                case SmithingAnvilBlockEntity.HIT_QUALITY_MISS    -> C_MISS;
+                case SmithingAnvilBlockEntity.HIT_QUALITY_GOOD    -> C_GOOD;
+                case SmithingAnvilBlockEntity.HIT_QUALITY_PERFECT -> C_PERFECT;
+                default -> 0;
+            };
+            if (flashColor != 0) {
+                // Small flash square above the bar
+                int alpha = (flashTimer * 0xFF / FLASH_TICKS) << 24;
+                int col   = (flashColor & 0x00FFFFFF) | alpha;
+                g.fill(bx + BAR_W / 2 - 4, by - 10, bx + BAR_W / 2 + 4, by - 2, col);
+            }
         }
+
+        // ── Border ────────────────────────────────────────────────────────
+        g.fill(bx - 1, by - 1, bx + BAR_W + 1, by,          C_DK);
+        g.fill(bx - 1, by + BAR_H, bx + BAR_W + 1, by + BAR_H + 1, C_LT);
+        g.fill(bx - 1, by - 1, bx,          by + BAR_H + 1, C_DK);
+        g.fill(bx + BAR_W, by - 1, bx + BAR_W + 1, by + BAR_H + 1, C_LT);
     }
 
     // ── Recipe grid ───────────────────────────────────────────────────────────
@@ -195,7 +271,6 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
         if (button == 0) {
             int mx = (int) mouseX, my = (int) mouseY;
 
-            // Recipe grid click
             int gx = leftPos + GRID_X, gy = topPos + GRID_Y;
             if (mx >= gx && mx < gx + GRID_W && my >= gy && my < gy + GRID_H) {
                 int col = (mx - gx) / CELL_W;
@@ -208,7 +283,6 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
                 }
             }
 
-            // Scroller drag start
             int sx = leftPos + SCROLL_X, sy = topPos + GRID_Y;
             if (mx >= sx && mx < sx + SCROLLER_W && my >= sy && my < sy + GRID_H) {
                 isDraggingScroller = true;

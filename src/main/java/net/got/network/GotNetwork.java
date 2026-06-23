@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.got.network.SmithingAnvilStatePayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.List;
@@ -200,6 +201,11 @@ public final class GotNetwork {
                     if (player.containerMenu instanceof net.got.menu.SmithingAnvilMenu menu &&
                             menu.getContainer() instanceof net.got.block.SmithingAnvilBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
+                        // If a valid recipe was selected (not -1), close the GUI so
+                        // the player returns to the world view to hit the anvil
+                        if (payload.recipeIndex() >= 0) {
+                            player.closeContainer();
+                        }
                     }
                 }));
 
@@ -256,6 +262,14 @@ public final class GotNetwork {
                     if (FMLEnvironment.dist == Dist.CLIENT) {
                         net.got.client.gui.overlay.TemperatureHudOverlay
                                 .setClientVitals(payload.bodyTemp(), payload.thirst());
+                    }
+                }));
+
+        // ── Smithing anvil HUD state (S→C) ──────────────────────────────────────
+        r.playToClient(SmithingAnvilStatePayload.TYPE, SmithingAnvilStatePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.client.gui.overlay.SmithingAnvilHudOverlay.onStatePacket(payload);
                     }
                 }));
 

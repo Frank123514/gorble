@@ -54,6 +54,7 @@ import net.got.client.gui.AlloyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.got.client.renderer.BellowsBlockEntityRenderer;
+import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
 import net.minecraft.world.level.block.Blocks;
@@ -411,6 +412,7 @@ public final class ClientSetup {
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // ── Bellows ──────────────────────────────────────────────────────
         event.registerBlockEntityRenderer(GotModBlockEntities.BELLOWS.get(), BellowsBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(GotModBlockEntities.SMITHING_ANVIL.get(), SmithingAnvilBlockEntityRenderer::new);
 
         // ── Sign block entity renderers ──────────────────────────────────
         event.registerBlockEntityRenderer(GotModBlockEntities.WEIRWOOD_SIGN.get(),           SignRenderer::new);

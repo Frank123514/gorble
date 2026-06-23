@@ -93,6 +93,17 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
         return data.get(SmithingAnvilBlockEntity.DATA_SELECTED_RECIPE);
     }
 
+    public int getMarkerPos() {
+        return data.get(SmithingAnvilBlockEntity.DATA_MARKER_POS);
+    }
+
+    public int getLastHitQuality() {
+        return data.get(SmithingAnvilBlockEntity.DATA_LAST_HIT_QUALITY);
+    }
+
+    public int getZoneCenter() { return SmithingAnvilBlockEntity.ZONE_CENTER; }
+    public int getZoneHalf()   { return SmithingAnvilBlockEntity.ZONE_HALF; }
+
     public ItemStack getInputItem() {
         return container.getItem(SmithingAnvilBlockEntity.SLOT_INPUT);
     }
