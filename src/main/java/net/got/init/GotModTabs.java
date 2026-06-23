@@ -2461,6 +2461,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OVEN.get());
                         safeAccept(output, GotModBlocks.FORGE.get());
                         safeAccept(output, GotModBlocks.SMITHING_ANVIL.get());
+                        output.accept(GotModItems.SMITHING_HAMMER.get());
                         safeAccept(output, GotModBlocks.BELLOWS.get());
 
                         // ── Bread ─────────────────────────────────────────────────────

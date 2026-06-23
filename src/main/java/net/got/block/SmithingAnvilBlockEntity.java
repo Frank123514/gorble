@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -35,55 +34,46 @@ import java.util.stream.Collectors;
 /**
  * SmithingAnvilBlockEntity — powers the Smithing Anvil block.
  * <p>
- * Accepts a heated (malleable) metal ingot from the Forge's heat-treating mode
- * and a fuel source. The player selects a SmithyRecipe from the recipe panel
- * and the anvil processes the ingot into a finished item.
+ * Accepts a heated (malleable) metal ingot from the Forge's heat-treating mode.
+ * The player selects a SmithyRecipe from the recipe panel, then must strike the
+ * anvil with a {@link net.got.item.SmithingHammerItem} three times to actually
+ * work the ingot into the finished item — no other tool will do, and there's
+ * no passive cooking timer involved.
  * <p>
  * Slot layout:
  *   0 — smithing input  (the heated ingot / source material)
- *   1 — fuel
- *   2 — output
+ *   1 — output
  *
  * ContainerData layout:
- *   0 — cookingProgress
- *   1 — cookingTotalTime
- *   2 — litTime
- *   3 — litDuration
- *   4 — selectedRecipeIndex  (-1 = none)
+ *   0 — hitCount            (0–HITS_REQUIRED)
+ *   1 — selectedRecipeIndex (-1 = none)
  */
 public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
+    /** Number of hammer strikes needed to finish a recipe. */
+    public static final int HITS_REQUIRED = 3;
+
     // ── Slot indices ──────────────────────────────────────────────────────────
     public static final int SLOT_INPUT  = 0;
-    public static final int SLOT_FUEL   = 1;
-    public static final int SLOT_OUTPUT = 2;
-    public static final int NUM_SLOTS   = 3;
+    public static final int SLOT_OUTPUT = 1;
+    public static final int NUM_SLOTS   = 2;
 
     // ── ContainerData indices ─────────────────────────────────────────────────
-    public static final int DATA_COOKING_PROGRESS = 0;
-    public static final int DATA_COOKING_TOTAL    = 1;
-    public static final int DATA_LIT_TIME         = 2;
-    public static final int DATA_LIT_DURATION     = 3;
-    public static final int DATA_SELECTED_RECIPE  = 4;
-    public static final int NUM_DATA              = 5;
+    public static final int DATA_HIT_COUNT        = 0;
+    public static final int DATA_SELECTED_RECIPE  = 1;
+    public static final int NUM_DATA              = 2;
 
     // ── State ─────────────────────────────────────────────────────────────────
     private NonNullList<ItemStack> items =
             NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
-    private int cookingProgress   = 0;
-    private int cookingTotalTime  = 200;
-    private int litTime           = 0;
-    private int litDuration       = 0;
+    private int hitCount          = 0;
     private int selectedRecipeIdx = -1;
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
         public int get(int i) {
             return switch (i) {
-                case DATA_COOKING_PROGRESS -> cookingProgress;
-                case DATA_COOKING_TOTAL    -> cookingTotalTime;
-                case DATA_LIT_TIME         -> litTime;
-                case DATA_LIT_DURATION     -> litDuration;
+                case DATA_HIT_COUNT        -> hitCount;
                 case DATA_SELECTED_RECIPE  -> selectedRecipeIdx;
                 default -> 0;
             };
@@ -91,11 +81,8 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         @Override
         public void set(int i, int v) {
             switch (i) {
-                case DATA_COOKING_PROGRESS -> cookingProgress   = v;
-                case DATA_COOKING_TOTAL    -> cookingTotalTime  = v;
-                case DATA_LIT_TIME         -> litTime           = v;
-                case DATA_LIT_DURATION     -> litDuration        = v;
-                case DATA_SELECTED_RECIPE  -> selectedRecipeIdx  = v;
+                case DATA_HIT_COUNT        -> hitCount          = v;
+                case DATA_SELECTED_RECIPE  -> selectedRecipeIdx = v;
             }
         }
         @Override
@@ -106,91 +93,39 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         super(GotModBlockEntities.SMITHING_ANVIL.get(), pos, state);
     }
 
-    // ── Server tick ───────────────────────────────────────────────────────────
+    // ── Hammer strikes ────────────────────────────────────────────────────────
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state,
-                                  SmithingAnvilBlockEntity be) {
-        if (!(level instanceof ServerLevel serverLevel)) return;
-
-        boolean wasLit = be.isLit();
-        boolean dirty  = false;
-
-        if (be.isLit()) be.litTime--;
-
-        dirty |= be.tickSmithing(serverLevel);
-
-        if (wasLit != be.isLit()) {
-            dirty = true;
-            level.setBlock(pos, state.setValue(SmithingAnvilBlock.LIT, be.isLit()), 3);
-        }
-
-        if (dirty) setChanged(level, pos, state);
-    }
-
-    // ── Smithing tick ─────────────────────────────────────────────────────────
-
-    private boolean tickSmithing(ServerLevel level) {
-        boolean dirty = false;
-
-        if (items.get(SLOT_INPUT).isEmpty()) {
-            if (selectedRecipeIdx != -1) {
-                selectedRecipeIdx = -1;
-                cookingProgress = 0;
-                dirty = true;
-            }
-        }
-
+    /**
+     * Called from {@link SmithingAnvilBlock#attack} when the player hits this
+     * anvil while holding a {@link net.got.item.SmithingHammerItem}.
+     * <p>
+     * Returns the outcome so the block can play the right sound/particles:
+     * a hit that doesn't complete the recipe yet, a hit that finishes it,
+     * or no-op because there's nothing to work on.
+     */
+    public HitResult hitWithHammer(ServerLevel level) {
         RecipeHolder<SmithyRecipe> recipe = getSelectedSmithingRecipe(level);
-
-        if (recipe != null) {
-            if (!isLit() && canBurn(recipe) && hasFuel(level)) {
-                dirty |= lightFuel(level);
-            }
-
-            if (isLit() && canBurn(recipe)) {
-                cookingProgress++;
-                if (cookingProgress >= cookingTotalTime) {
-                    cookingProgress = 0;
-                    cookingTotalTime = recipe.value().getCookingTime();
-                    if (burn(recipe)) dirty = true;
-                }
-            } else if (!isLit()) {
-                cookingProgress = Math.max(0, cookingProgress - 2);
-            }
-        } else if (cookingProgress > 0) {
-            cookingProgress = Math.max(0, cookingProgress - 2);
-            dirty = true;
+        if (items.get(SLOT_INPUT).isEmpty() || recipe == null || !canBurn(recipe)) {
+            return HitResult.NOTHING_TO_WORK;
         }
 
-        return dirty;
+        hitCount++;
+        if (hitCount >= HITS_REQUIRED) {
+            hitCount = 0;
+            boolean crafted = burn(recipe);
+            setChanged();
+            return crafted ? HitResult.COMPLETED : HitResult.NOTHING_TO_WORK;
+        }
+
+        setChanged();
+        return HitResult.PROGRESSED;
     }
 
-    private boolean lightFuel(Level level) {
-        litDuration = getBurnDuration(level, items.get(SLOT_FUEL));
-        litTime     = litDuration;
-        if (!isLit()) return false;
-        ItemStack fuel = items.get(SLOT_FUEL);
-        if (fuel.getItem() == Items.LAVA_BUCKET) {
-            items.set(SLOT_FUEL, new ItemStack(Items.BUCKET));
-        } else {
-            fuel.shrink(1);
-            if (fuel.isEmpty()) items.set(SLOT_FUEL, ItemStack.EMPTY);
-        }
-        return true;
-    }
+    public enum HitResult { NOTHING_TO_WORK, PROGRESSED, COMPLETED }
+
+    public int getHitCount() { return hitCount; }
 
     // ── Internal helpers ──────────────────────────────────────────────────────
-
-    public boolean isLit() { return litTime > 0; }
-
-    private boolean hasFuel(Level level) {
-        return getBurnDuration(level, items.get(SLOT_FUEL)) > 0;
-    }
-
-    private int getBurnDuration(Level level, ItemStack stack) {
-        if (stack.isEmpty()) return 0;
-        return stack.getBurnTime(GotModRecipeTypes.SMITHY.get(), level.fuelValues());
-    }
 
     private boolean canBurn(RecipeHolder<SmithyRecipe> recipe) {
         ItemStack result = recipe.value().getResult();
@@ -243,8 +178,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
 
     public void setSelectedRecipeIndex(int idx) {
         this.selectedRecipeIdx = idx;
-        this.cookingProgress   = 0;
-        this.cookingTotalTime  = 200;
+        this.hitCount          = 0;
         setChanged();
     }
 
@@ -276,7 +210,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         if (stack.getCount() > getMaxStackSize()) stack.setCount(getMaxStackSize());
         if (slot == SLOT_INPUT) {
             selectedRecipeIdx = -1;
-            cookingProgress   = 0;
+            hitCount          = 0;
             setChanged();
         }
     }
@@ -291,8 +225,8 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     // ── WorldlyContainer ──────────────────────────────────────────────────────
 
     private static final int[] SLOTS_TOP    = { SLOT_INPUT };
-    private static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT, SLOT_FUEL };
-    private static final int[] SLOTS_SIDE   = { SLOT_FUEL };
+    private static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT };
+    private static final int[] SLOTS_SIDE   = { SLOT_INPUT };
 
     @Override
     public int[] getSlotsForFace(Direction side) {
@@ -313,10 +247,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        if (slot == SLOT_OUTPUT) return false;
-        if (slot == SLOT_FUEL)
-            return level != null && getBurnDuration(level, stack) > 0;
-        return true;
+        return slot != SLOT_OUTPUT;
     }
 
     // ── Menu ─────────────────────────────────────────────────────────────────
@@ -338,10 +269,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         super.loadAdditional(tag, registries);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items, registries);
-        cookingProgress   = tag.getInt("CookTime");
-        cookingTotalTime  = tag.getInt("CookTimeTotal");
-        litTime           = tag.getInt("BurnTime");
-        litDuration       = tag.getInt("BurnDuration");
+        hitCount          = tag.getInt("HitCount");
         selectedRecipeIdx = tag.getInt("SelectedRecipe");
     }
 
@@ -349,10 +277,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, items, registries);
-        tag.putInt("CookTime",       cookingProgress);
-        tag.putInt("CookTimeTotal",  cookingTotalTime);
-        tag.putInt("BurnTime",       litTime);
-        tag.putInt("BurnDuration",   litDuration);
+        tag.putInt("HitCount",       hitCount);
         tag.putInt("SelectedRecipe", selectedRecipeIdx);
     }
 }

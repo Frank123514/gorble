@@ -27,16 +27,6 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
     private static final ResourceLocation STONECUTTER_TEXTURE =
             ResourceLocation.withDefaultNamespace("textures/gui/container/stonecutter.png");
 
-    private static final ResourceLocation LIT_SPRITE =
-            ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
-    private static final ResourceLocation ARROW_SPRITE =
-            ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
-
-    private static final int FLAME_SPRITE_W = 14;
-    private static final int FLAME_SPRITE_H = 14;
-    private static final int ARROW_SPRITE_W = 24;
-    private static final int ARROW_SPRITE_H = 16;
-
     private static final ResourceLocation RECIPE_SELECTED =
             ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected");
     private static final ResourceLocation RECIPE_HIGHLIGHTED =
@@ -59,16 +49,18 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
     private static final int SCROLLER_H = 15;
     private static final int SCROLL_X   = 119;
 
-    private static final int FLAME_X = 20;
-    private static final int FLAME_Y = 36;
-
-    private static final int ARROW_X = 140;
-    private static final int ARROW_Y = 55;
+    // Hit-count pips, drawn in a vertical row below the output slot
+    private static final int PIP_SIZE = 6;
+    private static final int PIP_GAP  = 4;
+    private static final int PIPS_Y   = 54;
+    private static final int PIP_X    = 149;
 
     private static final int C_SLOT_BG = 0xFF_8B8B8B;
     private static final int C_LT      = 0xFF_FFFFFF;
     private static final int C_DK      = 0xFF_555555;
     private static final int C_TEXT    = 0xFF_404040;
+    private static final int C_PIP_FULL  = 0xFF_DEDE40;
+    private static final int C_PIP_EMPTY = 0xFF_5A5A5A;
 
     // ── State ─────────────────────────────────────────────────────────────────
     private int     scrollOffset       = 0;
@@ -107,35 +99,26 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
         g.blit(RenderType::guiTextured, STONECUTTER_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // Clear the stonecutter's built-in input slot position so the flame area is clean
-        g.fill(x + 19, y + 32, x + 37, y + 50, 0xFFC6C6C6);
+        // Clear the stonecutter's built-in input/fuel slot area so we can draw our own
+        g.fill(x + 19, y + 32, x + 37, y + 51, 0xFFC6C6C6);
 
-        // Draw our two slots (input at y=14, fuel at y=53)
+        // Draw our single input slot
         vanillaSlot(g, x + SmithingAnvilMenu.INPUT_X - 1, y + SmithingAnvilMenu.INPUT_Y - 1);
-        vanillaSlot(g, x + SmithingAnvilMenu.FUEL_X  - 1, y + SmithingAnvilMenu.FUEL_Y  - 1);
 
-        // Flame indicator
-        if (menu.isFlaming()) {
-            int flameHeight = menu.getFlameProgress();
-            if (flameHeight > 0) {
-                g.blitSprite(RenderType::guiTextured, LIT_SPRITE,
-                        FLAME_SPRITE_W, FLAME_SPRITE_H,
-                        0, FLAME_SPRITE_H - flameHeight,
-                        x + FLAME_X, y + FLAME_Y + FLAME_SPRITE_H - flameHeight,
-                        FLAME_SPRITE_W, flameHeight);
-            }
+        // Hit-count pips: one per hammer strike needed, filled in as they land
+        if (menu.getSelectedRecipeIndex() >= 0) {
+            renderHitPips(g, x, y);
         }
+    }
 
-        // Progress arrow
-        if (menu.isCrafting()) {
-            int arrowWidth = menu.getArrowProgress();
-            if (arrowWidth > 0) {
-                g.blitSprite(RenderType::guiTextured, ARROW_SPRITE,
-                        ARROW_SPRITE_W, ARROW_SPRITE_H,
-                        0, 0,
-                        x + ARROW_X, y + ARROW_Y,
-                        arrowWidth, ARROW_SPRITE_H);
-            }
+    private void renderHitPips(GuiGraphics g, int x, int y) {
+        int required = menu.getHitsRequired();
+        int hit      = menu.getHitCount();
+
+        for (int i = 0; i < required; i++) {
+            int px = x + PIP_X;
+            int py = y + PIPS_Y + i * (PIP_SIZE + PIP_GAP);
+            g.fill(px, py, px + PIP_SIZE, py + PIP_SIZE, i < hit ? C_PIP_FULL : C_PIP_EMPTY);
         }
     }
 

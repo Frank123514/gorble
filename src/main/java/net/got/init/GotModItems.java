@@ -2224,6 +2224,8 @@ public class GotModItems {
     public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);
     public static final DeferredItem<Item> FORGE = block(GotModBlocks.FORGE);
     public static final DeferredItem<Item> SMITHING_ANVIL = block(GotModBlocks.SMITHING_ANVIL);
+    public static final DeferredItem<Item> SMITHING_HAMMER = REGISTRY.registerItem("smithing_hammer",
+            p -> new net.got.item.SmithingHammerItem(p.durability(250)));
     public static final DeferredItem<Item> BELLOWS = block(GotModBlocks.BELLOWS);
 
     // ── Helpers ───────────────────────────────────────────────────────────

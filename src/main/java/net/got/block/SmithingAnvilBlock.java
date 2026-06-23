@@ -1,23 +1,23 @@
 package net.got.block;
 
 import com.mojang.serialization.MapCodec;
-import net.got.init.GotModBlockEntities;
+import net.got.item.SmithingHammerItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -25,6 +25,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
@@ -42,6 +45,16 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty         LIT    = BlockStateProperties.LIT;
+
+    // Matches the model's base plate (2,0,2 -> 14,4,14) plus the raised body above it.
+    // Without this the block falls back to a full 16x16x16 cube shape, which makes the
+    // engine think it fully covers the block below — but the model doesn't actually
+    // draw a full bottom face, so the block underneath's top face is left rendering
+    // without its biome tint (showing up as a pale/untinted patch under the anvil).
+    private static final VoxelShape SHAPE = Shapes.or(
+            Block.box(2, 0, 2, 14, 4, 14),
+            Block.box(3, 4, 3, 13, 10, 13)
+    );
 
     public SmithingAnvilBlock(Properties props) {
         super(props);
@@ -77,7 +90,13 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
     protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState state) { return false; }
+    protected VoxelShape getShape(BlockState state, BlockGetter level,
+                                  BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public boolean useShapeForLightOcclusion(BlockState state) { return true; }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos,
@@ -109,35 +128,63 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
         return new SmithingAnvilBlockEntity(pos, state);
     }
 
-    @Nullable @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
-                                                                  BlockEntityType<T> type) {
-        if (level.isClientSide) return null;
-        return createTickerHelper(type, GotModBlockEntities.SMITHING_ANVIL.get(),
-                SmithingAnvilBlockEntity::serverTick);
+    @Override
+    protected void attack(BlockState state, Level level, BlockPos pos, Player player) {
+        if (level.isClientSide) return;
+
+        ItemStack heldStack = player.getMainHandItem();
+        if (!(heldStack.getItem() instanceof SmithingHammerItem)) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof SmithingAnvilBlockEntity anvil)) return;
+
+        SmithingAnvilBlockEntity.HitResult result = anvil.hitWithHammer(serverLevel);
+        switch (result) {
+            case PROGRESSED -> {
+                playHitSound(level, pos);
+                spawnHitParticles(level, pos, state.getValue(FACING));
+                damageHammer(heldStack, player);
+            }
+            case COMPLETED -> {
+                playFinishSound(level, pos);
+                spawnHitParticles(level, pos, state.getValue(FACING));
+                damageHammer(heldStack, player);
+            }
+            case NOTHING_TO_WORK -> { /* no ingot, no recipe selected, or output full — silently ignore */ }
+        }
     }
 
-    @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (!state.getValue(LIT)) return;
+    /** Wears the hammer down by one point of durability, breaking it if it runs out. */
+    private void damageHammer(ItemStack hammer, Player player) {
+        if (!hammer.isDamageableItem()) return;
+        hammer.setDamageValue(hammer.getDamageValue() + 1);
+        if (hammer.getDamageValue() >= hammer.getMaxDamage()) {
+            hammer.shrink(1);
+            player.level().playSound(null, player.blockPosition(),
+                    SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+        }
+    }
 
-        Direction facing = state.getValue(FACING);
+    private void playHitSound(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+    }
+
+    private void playFinishSound(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.4F);
+    }
+
+    private void spawnHitParticles(Level level, BlockPos pos, Direction facing) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
         double x = pos.getX() + 0.5;
-        double y = pos.getY();
+        double y = pos.getY() + 0.65;
         double z = pos.getZ() + 0.5;
 
-        if (random.nextDouble() < 0.1) {
-            level.playLocalSound(x, y, z, SoundEvents.ANVIL_USE,
-                    SoundSource.BLOCKS, 0.5F, 1.0F, false);
-        }
-
         Direction.Axis axis = facing.getAxis();
-        double d  = 0.52;
-        double d4 = random.nextDouble() * 0.6 - 0.3;
-        double dx = axis == Direction.Axis.X ? facing.getStepX() * d : d4;
-        double dy = random.nextDouble() * 6.0 / 16.0;
-        double dz = axis == Direction.Axis.Z ? facing.getStepZ() * d : d4;
+        double dx = axis == Direction.Axis.X ? facing.getStepX() * 0.3 : 0;
+        double dz = axis == Direction.Axis.Z ? facing.getStepZ() * 0.3 : 0;
 
-        level.addParticle(ParticleTypes.SMOKE, x + dx, y + dy, z + dz, 0, 0, 0);
+        serverLevel.sendParticles(ParticleTypes.CRIT, x + dx, y, z + dz, 6, 0.15, 0.1, 0.15, 0.0);
     }
 }
