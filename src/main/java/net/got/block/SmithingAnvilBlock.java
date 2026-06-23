@@ -77,6 +77,9 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
     protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
 
     @Override
+    public boolean useShapeForLightOcclusion(BlockState state) { return false; }
+
+    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos,
                          BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()) {
