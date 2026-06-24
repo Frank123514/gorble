@@ -3,12 +3,14 @@ package net.got.menu;
 import net.got.block.ForgeBlockEntity;
 import net.got.init.GotModMenus;
 import net.got.init.GotModRecipeTypes;
+import net.got.init.GotModItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 /**
@@ -152,6 +154,12 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public int getMaxStackSize() { return 1; }
         @Override public int getMaxStackSize(ItemStack stack) { return 1; }
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.is(Items.IRON_INGOT)
+                || stack.is(GotModItems.BRONZE_INGOT.get())
+                || stack.is(GotModItems.STEEL_INGOT.get());
+        }
     }
 
     private static class FuelSlot extends Slot {

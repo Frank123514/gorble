@@ -53,6 +53,7 @@ import net.got.client.gui.SmithyScreen;
 import net.got.client.gui.AlloyScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.got.client.model.HotIronIngotModel;
 import net.got.client.renderer.BellowsBlockEntityRenderer;
 import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
@@ -475,5 +476,10 @@ public final class ClientSetup {
         event.registerBlockEntityRenderer(GotModBlockEntities.CHESTNUT_SIGN.get(),           SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.WILLOW_SIGN.get(),             SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.WORMTREE_SIGN.get(),           SignRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+        HotIronIngotModel.inject(event.getBakingResult().itemStackModels());
     }
 }

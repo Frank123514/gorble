@@ -9,9 +9,9 @@
     "ServerLevelMixin"
   ],
   "client": [
-    "WeatherEffectRendererMixin",
     "BiomeColorsMixin",
-    "PlayerRendererMixin"
+    "PlayerRendererMixin",
+    "WeatherEffectRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
