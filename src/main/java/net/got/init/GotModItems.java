@@ -1094,7 +1094,6 @@ public class GotModItems {
     public static final DeferredItem<Item> VALYRIAN_STEEL_INGOT = simple("valyrian_steel_ingot");
 
 
-
     // ── Stripped Logs ────────────────────────────────────────────────────
     public static final DeferredItem<Item> STRIPPED_WEIRWOOD_LOG = block(GotModBlocks.STRIPPED_WEIRWOOD_LOG);
     public static final DeferredItem<Item> STRIPPED_ASPEN_LOG = block(GotModBlocks.STRIPPED_ASPEN_LOG);
@@ -1985,11 +1984,8 @@ public class GotModItems {
     public static final DeferredItem<Item> HILT      = simple("hilt");
     public static final DeferredItem<Item> LONG_HILT = simple("long_hilt");
     // ── Pommel & guard components (iron) ─────────────────────────────────────
-    public static final DeferredItem<Item> ROUND_POMMEL        = simple("round_pommel");
-    public static final DeferredItem<Item> DIAMOND_POMMEL      = simple("diamond_pommel");
-    public static final DeferredItem<Item> FACETED_POMMEL      = simple("faceted_pommel");
-    public static final DeferredItem<Item> STRAIGHT_CROSSGUARD = simple("straight_crossguard");
-    public static final DeferredItem<Item> CURVED_CROSSGUARD   = simple("curved_crossguard");
+    public static final DeferredItem<Item> POMMEL        = simple("pommel");
+    public static final DeferredItem<Item> CROSSGUARD = simple("crossguard");
     public static final DeferredItem<Item> SLOPED_CROSSGUARD   = simple("sloped_crossguard");
     public static final DeferredItem<Item> BRONZE_ARMOR_PLATE         = simple("bronze_armor_plate");
     // ── Smithy components — steel ─────────────────────────────────────────────
@@ -2008,115 +2004,34 @@ public class GotModItems {
     // ── Assembled swords (blade + hilt + crossguard + pommel) ────────────────
     // Iron swords
     // Iron greatsword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL   = REGISTRY.registerItem("iron_greatsword_straight_crossguard_round_pommel",   p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_greatsword_straight_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_greatsword_straight_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_CURVED_CROSSGUARD_ROUND_POMMEL     = REGISTRY.registerItem("iron_greatsword_curved_crossguard_round_pommel",     p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL   = REGISTRY.registerItem("iron_greatsword_curved_crossguard_diamond_pommel",   p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_CURVED_CROSSGUARD_FACETED_POMMEL   = REGISTRY.registerItem("iron_greatsword_curved_crossguard_faceted_pommel",   p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> IRON_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("iron_greatsword_crossguard_pommel",   p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
 
     // Iron sword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_shortsword_straight_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_shortsword_straight_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_shortsword_straight_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_shortsword_curved_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_shortsword_curved_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_shortsword_curved_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_longsword_straight_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_longsword_straight_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_longsword_straight_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_longsword_curved_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_longsword_curved_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_longsword_curved_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_bastard_sword_straight_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_bastard_sword_straight_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_bastard_sword_straight_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_bastard_sword_curved_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_bastard_sword_curved_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_bastard_sword_curved_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_falchion_straight_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_falchion_straight_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_falchion_straight_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_falchion_curved_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_falchion_curved_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_falchion_curved_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_CLAYMORE_SLOPED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_round_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_CLAYMORE_SLOPED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_diamond_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> IRON_CLAYMORE_SLOPED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_faceted_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_shortsword_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> IRON_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_longsword_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_bastard_sword_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
+    public static final DeferredItem<SwordItem> IRON_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_falchion_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
+    public static final DeferredItem<SwordItem> IRON_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
     // Bronze swords
     // Bronze greatsword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL   = REGISTRY.registerItem("bronze_greatsword_straight_crossguard_round_pommel",   p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_greatsword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_greatsword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_CURVED_CROSSGUARD_ROUND_POMMEL     = REGISTRY.registerItem("bronze_greatsword_curved_crossguard_round_pommel",     p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL   = REGISTRY.registerItem("bronze_greatsword_curved_crossguard_diamond_pommel",   p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_CURVED_CROSSGUARD_FACETED_POMMEL   = REGISTRY.registerItem("bronze_greatsword_curved_crossguard_faceted_pommel",   p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("bronze_greatsword_crossguard_pommel",   p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
 
     // Bronze sword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_shortsword_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_shortsword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_shortsword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_shortsword_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_shortsword_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_shortsword_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_longsword_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_longsword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_longsword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_longsword_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_longsword_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_longsword_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_falchion_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_falchion_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_falchion_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_falchion_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_falchion_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_falchion_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_round_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_shortsword_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_longsword_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
+    public static final DeferredItem<SwordItem> BRONZE_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_falchion_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
+    public static final DeferredItem<SwordItem> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
     // Steel swords
     // Steel greatsword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL   = REGISTRY.registerItem("steel_greatsword_straight_crossguard_round_pommel",   p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_greatsword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_greatsword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_CURVED_CROSSGUARD_ROUND_POMMEL     = REGISTRY.registerItem("steel_greatsword_curved_crossguard_round_pommel",     p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL   = REGISTRY.registerItem("steel_greatsword_curved_crossguard_diamond_pommel",   p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_CURVED_CROSSGUARD_FACETED_POMMEL   = REGISTRY.registerItem("steel_greatsword_curved_crossguard_faceted_pommel",   p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("steel_greatsword_crossguard_pommel",   p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
 
     // Steel sword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_shortsword_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_shortsword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_shortsword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_shortsword_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_shortsword_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_shortsword_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_longsword_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_longsword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_longsword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_longsword_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_longsword_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_longsword_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_bastard_sword_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_bastard_sword_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_bastard_sword_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_bastard_sword_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_bastard_sword_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_bastard_sword_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_STRAIGHT_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_falchion_straight_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_STRAIGHT_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_falchion_straight_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_STRAIGHT_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_falchion_straight_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_CURVED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_falchion_curved_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_CURVED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_falchion_curved_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_CURVED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_falchion_curved_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_CLAYMORE_SLOPED_CROSSGUARD_ROUND_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_round_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_CLAYMORE_SLOPED_CROSSGUARD_DIAMOND_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_diamond_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
-    public static final DeferredItem<SwordItem> STEEL_CLAYMORE_SLOPED_CROSSGUARD_FACETED_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_faceted_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
+    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_shortsword_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_longsword_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
+    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_bastard_sword_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
+    public static final DeferredItem<SwordItem> STEEL_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_falchion_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
+    public static final DeferredItem<SwordItem> STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
 
 
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
@@ -2996,8 +2911,6 @@ public class GotModItems {
     public static final DeferredItem<BlockItem> HEMLOCK_ROOFING_SLAB = REGISTRY.registerSimpleBlockItem("hemlock_roofing_slab", GotModBlocks.HEMLOCK_ROOFING_SLAB);
     public static final DeferredItem<BlockItem> HEMLOCK_ROOFING_STAIRS = REGISTRY.registerSimpleBlockItem("hemlock_roofing_stairs", GotModBlocks.HEMLOCK_ROOFING_STAIRS);
     public static final DeferredItem<BlockItem> HEMLOCK_ROOFING_WALL = REGISTRY.registerSimpleBlockItem("hemlock_roofing_wall", GotModBlocks.HEMLOCK_ROOFING_WALL);
-
-
 
 
     private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, ? extends I> supplier) {

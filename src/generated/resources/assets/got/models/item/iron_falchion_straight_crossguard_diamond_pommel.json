@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "got:item/iron_falchion_straight_crossguard_diamond_pommel"
-  }
-}
