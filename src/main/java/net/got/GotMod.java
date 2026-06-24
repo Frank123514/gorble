@@ -69,6 +69,7 @@ public final class GotMod {
         WorldgenRegistries.register(modBus);
         GotTreePlacers.register(modBus);
         GotModParticles.register(modBus);
+        GotModDataComponents.register(modBus);
 
         GotModEntities.REGISTRY.register(modBus);
 

@@ -264,13 +264,13 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
         return dirty;
     }
 
-    /** Replaces the raw ingot in {@code slot} with its heated result, in place. */
+    /** Replaces the raw ingot in {@code slot} with its heated result in place. */
     private void finishHeating(int slot) {
         ItemStack input = items.get(slot);
         if (input.isEmpty()) return;
-        // The heated result is currently the same item (pass-through). Once a
-        // dedicated HeatTreatRecipe exists, look up the real result here.
+        // Mark the ingot as hot using the HOT data component — same item, just heated.
         ItemStack result = input.copyWithCount(input.getCount());
+        result.set(net.got.init.GotModDataComponents.HOT.get(), net.minecraft.util.Unit.INSTANCE);
         items.set(slot, result);
     }
 

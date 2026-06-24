@@ -3573,5 +3573,7 @@
   "block.got.wormtree_wood_slab": "Wormtree Wood Slab",
   "block.got.wormtree_wood_stairs": "Wormtree Wood Stairs",
   "block.got.stripped_wormtree_wood_slab": "Stripped Wormtree Wood Slab",
-  "block.got.stripped_wormtree_wood_stairs": "Stripped Wormtree Wood Stairs"
+  "block.got.stripped_wormtree_wood_stairs": "Stripped Wormtree Wood Stairs",
+
+  "item.got.hot_ingot.tooltip": "Hot"
 }

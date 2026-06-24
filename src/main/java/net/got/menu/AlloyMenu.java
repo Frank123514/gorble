@@ -80,12 +80,12 @@ public class AlloyMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
         // Block entity slots
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_A, INPUT_A_X, INPUT_A_Y));
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_B, INPUT_B_X, INPUT_B_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_A, INPUT_A_X, INPUT_A_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_B, INPUT_B_X, INPUT_B_Y));
         this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL, FUEL_X, FUEL_Y, level));
         this.addSlot(new ResultSlot(container, ForgeBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_C, INPUT_C_X, INPUT_C_Y));
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_D, INPUT_D_X, INPUT_D_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_C, INPUT_C_X, INPUT_C_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_D, INPUT_D_X, INPUT_D_Y));
 
         this.addDataSlots(data);
     }
@@ -162,6 +162,13 @@ public class AlloyMenu extends AbstractContainerMenu {
     }
 
     // ── Inner slot types ──────────────────────────────────────────────────────
+
+    /** An input slot that accepts at most 1 item at a time. */
+    private static class SingleItemSlot extends Slot {
+        SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
+        @Override public int getMaxStackSize() { return 1; }
+        @Override public int getMaxStackSize(ItemStack stack) { return 1; }
+    }
 
     private static class FuelSlot extends Slot {
         private final Level level;

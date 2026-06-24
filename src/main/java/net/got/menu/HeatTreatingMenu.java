@@ -85,10 +85,10 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
 
         // Four ingot slots — each one is its own result slot, so a plain Slot
         // is all that's needed (no ResultSlot restriction on placement).
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_A, INGOT_A_X, INGOT_A_Y));
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_B, INGOT_B_X, INGOT_B_Y));
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_C, INGOT_C_X, INGOT_C_Y));
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_D, INGOT_D_X, INGOT_D_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_A, INGOT_A_X, INGOT_A_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_B, INGOT_B_X, INGOT_B_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_C, INGOT_C_X, INGOT_C_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_D, INGOT_D_X, INGOT_D_Y));
         this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL, FUEL_X, FUEL_Y, level));
 
         this.addDataSlots(data);
@@ -166,6 +166,13 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
     }
 
     // ── Inner slot types ──────────────────────────────────────────────────────
+
+    /** An ingot slot that accepts at most 1 item at a time. */
+    private static class SingleItemSlot extends Slot {
+        SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
+        @Override public int getMaxStackSize() { return 1; }
+        @Override public int getMaxStackSize(ItemStack stack) { return 1; }
+    }
 
     private static class FuelSlot extends Slot {
         private final Level level;
