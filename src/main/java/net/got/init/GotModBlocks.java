@@ -1723,6 +1723,52 @@ public class GotModBlocks {
     // Diamond-tier ore (hardness 3, resistance 3, like vanilla diamond ore)
     public static final DeferredBlock<Block> VALYRIAN_STEEL_ORE = oreDiamond("valyrian_ore");
 
+    // ── New base metal ores ───────────────────────────────────────────────
+    public static final DeferredBlock<Block> COBALT_ORE              = oreIron("cobalt_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_COBALT_ORE    = oreIronDeep("deepslate_cobalt_ore");
+    public static final DeferredBlock<Block> LEAD_ORE                = oreStone("lead_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_LEAD_ORE      = oreStoneDeep("deepslate_lead_ore");
+    public static final DeferredBlock<Block> PLATINUM_ORE            = oreDiamond("platinum_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_PLATINUM_ORE  = oreDiamondDeep("deepslate_platinum_ore");
+    public static final DeferredBlock<Block> ZINC_ORE                = oreStone("zinc_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_ZINC_ORE      = oreStoneDeep("deepslate_zinc_ore");
+
+    // ── Deepslate variants of existing metals ─────────────────────────────
+    public static final DeferredBlock<Block> DEEPSLATE_SILVER_ORE    = oreIronDeep("deepslate_silver_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE       = oreStoneDeep("deepslate_tin_ore");
+
+    // ── Raw metal storage blocks ──────────────────────────────────────────
+    public static final DeferredBlock<Block> RAW_COBALT_BLOCK        = rawBlock("raw_cobalt_block");
+    public static final DeferredBlock<Block> RAW_LEAD_BLOCK          = rawBlock("raw_lead_block");
+    public static final DeferredBlock<Block> RAW_PLATINUM_BLOCK      = rawBlock("raw_platinum_block");
+    public static final DeferredBlock<Block> RAW_ZINC_BLOCK          = rawBlock("raw_zinc_block");
+    public static final DeferredBlock<Block> RAW_SILVER_BLOCK        = rawBlock("raw_silver_block");
+    public static final DeferredBlock<Block> RAW_TIN_BLOCK           = rawBlock("raw_tin_block");
+
+    /** Iron-tier deepslate ore. */
+    private static DeferredBlock<Block> oreIronDeep(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE));
+    }
+
+    /** Stone-tier deepslate ore. */
+    private static DeferredBlock<Block> oreStoneDeep(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_COPPER_ORE));
+    }
+
+    /** Diamond-tier deepslate ore. */
+    private static DeferredBlock<Block> oreDiamondDeep(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_DIAMOND_ORE));
+    }
+
+    /** Raw metal storage block (hardness 5, resistance 6, like vanilla raw iron block). */
+    private static DeferredBlock<Block> rawBlock(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK));
+    }
+
     // ── Apple Tree
     public static final DeferredBlock<Block> APPLE_LOG            = logBlock("apple_log",            AppleLogBlock::new);
     public static final DeferredBlock<Block> APPLE_WOOD           = logBlock("apple_wood",           AppleWoodBlock::new);
