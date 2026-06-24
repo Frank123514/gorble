@@ -171,6 +171,11 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof SmithingAnvilBlockEntity anvil) {
+            if (anvil.isAwaitingPickup()) {
+                // Right-click collects the finished item and unlocks the anvil
+                anvil.collectCraftedItem(player);
+                return InteractionResult.CONSUME;
+            }
             player.openMenu(anvil);
             player.awardStat(Stats.INTERACT_WITH_FURNACE);
         }
@@ -200,6 +205,7 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
 
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof SmithingAnvilBlockEntity anvil)) return;
+        if (anvil.isAwaitingPickup()) return; // must collect first
 
         SmithingAnvilBlockEntity.HitResult result = anvil.hitWithHammer(serverLevel);
         switch (result) {

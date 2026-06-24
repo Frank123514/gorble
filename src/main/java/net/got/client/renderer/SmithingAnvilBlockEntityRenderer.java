@@ -33,7 +33,8 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
                        int packedLight, int packedOverlay) {
 
         ItemStack input = be.getInputItem();
-        if (input.isEmpty()) return;
+        ItemStack toRender = input.isEmpty() ? be.getLastCraftedItem() : input;
+        if (toRender.isEmpty()) return;
 
         // Sample light from the air above the anvil top face, not the block itself
         int light = getLightAbove(be.getLevel(), be.getBlockPos());
@@ -41,7 +42,7 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
         // Resolve item model into reusable render state
         itemModelResolver.updateForTopItem(
                 renderState,
-                input,
+                toRender,
                 ItemDisplayContext.FIXED,
                 false,
                 be.getLevel(),

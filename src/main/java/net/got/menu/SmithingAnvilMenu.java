@@ -1,6 +1,7 @@
 package net.got.menu;
 
 import net.got.block.SmithingAnvilBlockEntity;
+import net.got.init.GotModDataComponents;
 import net.got.init.GotModMenus;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.world.Container;
@@ -72,7 +73,7 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
         // Anvil slots
-        this.addSlot(new Slot(container, SmithingAnvilBlockEntity.SLOT_INPUT, INPUT_X, INPUT_Y));
+        this.addSlot(new HotIngotSlot(container, SmithingAnvilBlockEntity.SLOT_INPUT, INPUT_X, INPUT_Y));
         this.addSlot(new ResultSlot(playerInv.player, container,
                 SmithingAnvilBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
 
@@ -158,6 +159,16 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
     }
 
     // ── Inner slot types ──────────────────────────────────────────────────────
+
+    /** Input slot — only accepts hot ingots, one at a time. */
+    private static class HotIngotSlot extends Slot {
+        HotIngotSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
+        @Override public boolean mayPlace(ItemStack stack) {
+            return stack.has(GotModDataComponents.HOT.get());
+        }
+        @Override public int getMaxStackSize() { return 1; }
+        @Override public int getMaxStackSize(ItemStack stack) { return 1; }
+    }
 
     private static class ResultSlot extends Slot {
         ResultSlot(Player player, Container c, int slot, int x, int y) {

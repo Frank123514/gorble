@@ -1,8 +1,10 @@
 package net.got.block;
 
 import net.got.init.GotModBlockEntities;
+import net.got.init.GotModDataComponents;
 import net.got.init.GotModRecipeTypes;
 import net.got.menu.SmithingAnvilMenu;
+import net.minecraft.util.Unit;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -88,6 +90,10 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     private int markerPos         = 0;
     private int markerDir         = 1;
     private int lastHitQuality    = HIT_QUALITY_NONE;
+    /** The last item successfully crafted here; shown on the anvil model until a new input is placed. */
+    private ItemStack lastCraftedItem = ItemStack.EMPTY;
+    /** True after a craft completes — blocks the menu from opening until the player right-clicks to collect. */
+    private boolean awaitingPickup = false;
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -231,6 +237,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     private boolean burn(RecipeHolder<SmithyRecipe> recipe) {
         if (!canBurn(recipe)) return false;
         ItemStack result = recipe.value().getResult().copy();
+        lastCraftedItem = result.copy();
         ItemStack output = items.get(SLOT_OUTPUT);
         if (output.isEmpty()) {
             items.set(SLOT_OUTPUT, result);
@@ -245,6 +252,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         selectedRecipeIdx = -1;
         markerPos         = 0;
         markerDir         = 1;
+        awaitingPickup    = true;
 
         syncToClient();
         return true;
@@ -286,6 +294,27 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     }
 
     public ItemStack getInputItem() { return items.get(SLOT_INPUT); }
+    public ItemStack getLastCraftedItem() { return lastCraftedItem; }
+    public boolean isAwaitingPickup() { return awaitingPickup; }
+
+    /**
+     * Called when the player right-clicks the anvil while awaitingPickup is true.
+     * Gives the output stack to the player (or drops it) and resets the anvil.
+     */
+    public void collectCraftedItem(Player player) {
+        ItemStack output = items.get(SLOT_OUTPUT);
+        if (!output.isEmpty()) {
+            if (!player.addItem(output.copy())) {
+                player.drop(output.copy(), false);
+            }
+            items.set(SLOT_OUTPUT, ItemStack.EMPTY);
+        }
+        awaitingPickup = false;
+        lastCraftedItem = ItemStack.EMPTY;
+        setChanged();
+        syncToClient();
+    }
+
     public ContainerData getDataAccess() { return dataAccess; }
 
     // ── Container ─────────────────────────────────────────────────────────────
@@ -321,6 +350,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
             markerPos         = 0;
             markerDir         = 1;
             lastHitQuality    = HIT_QUALITY_NONE;
+            if (!stack.isEmpty()) lastCraftedItem = ItemStack.EMPTY; // new input clears display
             setChanged();
             syncToClient();
         }
@@ -358,8 +388,16 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot != SLOT_OUTPUT;
+        if (slot == SLOT_OUTPUT) return false;
+        if (slot == SLOT_INPUT) {
+            // Only accept hot ingots (must have the got:hot component)
+            return stack.has(GotModDataComponents.HOT.get());
+        }
+        return true;
     }
+
+    @Override
+    public int getMaxStackSize() { return 1; }
 
     // ── Menu ─────────────────────────────────────────────────────────────────
 
@@ -385,6 +423,10 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         markerPos         = tag.getInt("MarkerPos");
         markerDir         = tag.getInt("MarkerDir");
         if (markerDir == 0) markerDir = 1;
+        if (tag.contains("LastCrafted")) {
+            lastCraftedItem = ItemStack.parse(registries, tag.getCompound("LastCrafted")).orElse(ItemStack.EMPTY);
+        }
+        awaitingPickup = tag.getBoolean("AwaitingPickup");
     }
 
     @Override
@@ -395,5 +437,9 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         tag.putInt("SelectedRecipe", selectedRecipeIdx);
         tag.putInt("MarkerPos",      markerPos);
         tag.putInt("MarkerDir",      markerDir);
+        if (!lastCraftedItem.isEmpty()) {
+            tag.put("LastCrafted", lastCraftedItem.save(registries));
+        }
+        tag.putBoolean("AwaitingPickup", awaitingPickup);
     }
 }

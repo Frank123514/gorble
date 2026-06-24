@@ -1,6 +1,7 @@
 {
   "model": {
     "type": "minecraft:condition",
+    "property": "minecraft:has_component",
     "component": "got:hot",
     "on_true": {
       "type": "minecraft:model",
