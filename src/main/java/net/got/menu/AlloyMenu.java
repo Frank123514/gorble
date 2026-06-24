@@ -21,34 +21,26 @@ import java.util.stream.Collectors;
 /**
  * AlloyMenu — container menu for the Forge block's alloying mode.
  *
- * Looks like a furnace but with four input slots arranged in a 2×2 grid above
- * the fuel slot. The 3:1 ratio fills all four slots:
- *   Slot A (top-left),  Slot B (top-right)  — the ×3 ingredient fills these
- *   Slot C (mid-left),  Slot D (mid-right)   — one of these holds the ×1 ingredient
- *
- * GUI positions (relative to panel top-left, 176×166 window):
- *   Input A: (56, 17)   top-left  of 2×2 grid
- *   Input B: (74, 17)   top-right of 2×2 grid
- *   Input C: (56, 35)   mid-left  of 2×2 grid
- *   Input D: (74, 35)   mid-right of 2×2 grid
- *   Fuel   : (56, 53)   below the grid (same column as A/C)
- *   Output : (116, 35)  to the right, arrow points here
+ * Slot positions are derived pixel-accurately from the forge.png texture:
+ *   Input A–D : 1×4 row at y=17, x=20/38/56/74  (18×18 each)
+ *   Fuel      : x=48, y=53  (18×18)
+ *   Output    : x=130, y=13 (26×26 big slot)
+ *   Player inv: y=84/102/120, hotbar y=142, all starting x=8, stride 18
  */
 public class AlloyMenu extends AbstractContainerMenu {
 
-    // Slot pixel positions — 4 inputs side by side in a 1x4 row, fuel below centre, arrow + output to the right
-    public static final int INPUT_A_X = 17;  public static final int INPUT_A_Y = 17;
-    public static final int INPUT_B_X = 35;  public static final int INPUT_B_Y = 17;
-    public static final int INPUT_C_X = 53;  public static final int INPUT_C_Y = 17;
-    public static final int INPUT_D_X = 71;  public static final int INPUT_D_Y = 17;
-    public static final int FUEL_X    = 35;  public static final int FUEL_Y    = 53;
-    public static final int OUTPUT_X  = 127; public static final int OUTPUT_Y  = 35;
+    // ── Slot pixel positions (must match forge.png exactly) ───────────────────
+    public static final int INPUT_A_X = 20;  public static final int INPUT_A_Y = 17;
+    public static final int INPUT_B_X = 38;  public static final int INPUT_B_Y = 17;
+    public static final int INPUT_C_X = 56;  public static final int INPUT_C_Y = 17;
+    public static final int INPUT_D_X = 74;  public static final int INPUT_D_Y = 17;
+    public static final int FUEL_X    = 48;  public static final int FUEL_Y    = 53;
+    public static final int OUTPUT_X  = 134; public static final int OUTPUT_Y  = 18;
 
     private final Container     container;
     private final ContainerData data;
     private final Level         level;
 
-    // Slot indices inside this menu's slot list
     private static final int PLAYER_INV_START = 0;
     private static final int PLAYER_INV_END   = 36;
     private static final int TE_INPUT_A_IDX   = 36;
@@ -77,7 +69,7 @@ public class AlloyMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // Player inventory (3 rows)
+        // Player inventory (3 rows × 9 cols)
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
@@ -87,7 +79,7 @@ public class AlloyMenu extends AbstractContainerMenu {
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // Block entity slots (order must match TE_*_IDX constants above)
+        // Block entity slots
         this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_A, INPUT_A_X, INPUT_A_Y));
         this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_ALLOY_B, INPUT_B_X, INPUT_B_Y));
         this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL, FUEL_X, FUEL_Y, level));
@@ -98,7 +90,7 @@ public class AlloyMenu extends AbstractContainerMenu {
         this.addDataSlots(data);
     }
 
-    // ── Progress helpers (used by AlloyScreen) ────────────────────────────────
+    // ── Progress helpers ──────────────────────────────────────────────────────
 
     public boolean isCrafting() {
         return data.get(ForgeBlockEntity.DATA_COOKING_PROGRESS) > 0;
@@ -138,7 +130,6 @@ public class AlloyMenu extends AbstractContainerMenu {
         ItemStack copy  = stack.copy();
 
         if (index >= PLAYER_INV_START && index < PLAYER_INV_END) {
-            // Try fuel first, then the four input slots in order
             if (!this.moveItemStackTo(stack, TE_FUEL_IDX, TE_FUEL_IDX + 1, false)) {
                 if (!this.moveItemStackTo(stack, TE_INPUT_A_IDX, TE_INPUT_A_IDX + 1, false)) {
                     if (!this.moveItemStackTo(stack, TE_INPUT_B_IDX, TE_INPUT_B_IDX + 1, false)) {
@@ -186,9 +177,7 @@ public class AlloyMenu extends AbstractContainerMenu {
     }
 
     private static class ResultSlot extends Slot {
-        ResultSlot(Container c, int slot, int x, int y) {
-            super(c, slot, x, y);
-        }
+        ResultSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public boolean mayPlace(ItemStack stack) { return false; }
     }
 }

@@ -38,30 +38,42 @@ import java.util.stream.Collectors;
  * <p>
  * The Forge now has two modes:
  * <ul>
- *   <li><b>Heat Treating</b> — heats a raw metal ingot until it becomes
- *       malleable ("heated ingot"). The heated ingot must then be taken to
- *       a {@link SmithingAnvilBlock} to be worked into a finished item.</li>
+ *   <li><b>Heat Treating</b> — heats raw metal ingots in place until they
+ *       becomes malleable ("heated ingot"). Up to four ingots can be heated
+ *       at once, one per slot; each slot tracks its own temperature/progress
+ *       independently, and the finished item simply reappears in the same
+ *       slot it was heated in (there is no separate output slot in this
+ *       mode). The heated ingot must then be taken to a
+ *       {@link SmithingAnvilBlock} to be worked into a finished item.</li>
  *   <li><b>Alloying</b> — melts and combines two metals into a new alloy
  *       (e.g. copper + tin → bronze). See {@link AlloyMenu} / AlloyScreen /
  *       {@link AlloyRecipe}.</li>
  * </ul>
- * Both modes share the same fuel and output slot; each mode has its own
- * input slot(s) so switching never discards items already loaded.
+ * Both modes share the same fuel slot and the same four physical "ingot"
+ * slots — only what those four slots mean changes with the mode. Alloying
+ * additionally uses a fifth, separate output slot. Switching modes never
+ * discards items already loaded into the four shared slots.
  *
  * Slot layout:
- *   0 — heat-treating input  (the raw ingot to be heated)
+ *   0 — unused (legacy single heat-treating input slot, kept for save compat)
  *   1 — fuel                 (shared by both modes)
- *   2 — output               (shared by both modes)
- *   3 — alloy input A
- *   4 — alloy input B
+ *   2 — output               (alloying only)
+ *   3 — ingot slot A          (alloy input A  /  heat-treating slot A)
+ *   4 — ingot slot B          (alloy input B  /  heat-treating slot B)
+ *   5 — ingot slot C          (alloy input C  /  heat-treating slot C)
+ *   6 — ingot slot D          (alloy input D  /  heat-treating slot D)
  *
  * ContainerData layout:
- *   0 — cookingProgress
- *   1 — cookingTotalTime
+ *   0 — cookingProgress       (alloying progress)
+ *   1 — cookingTotalTime      (alloying total time, and heat-treating total time)
  *   2 — litTime
  *   3 — litDuration
  *   4 — selectedRecipeIndex  (-1 = none; only used in alloying mode)
  *   5 — mode (0 = HEAT_TREATING, 1 = ALLOYING)
+ *   6 — heatProgressA  (heat-treating progress for slot A, 0..cookingTotalTime)
+ *   7 — heatProgressB
+ *   8 — heatProgressC
+ *   9 — heatProgressD
  */
 public class ForgeBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
@@ -70,7 +82,7 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public static final int MODE_ALLOYING      = 1;
 
     // ── Slot indices ──────────────────────────────────────────────────────────
-    public static final int SLOT_HEAT_INPUT = 0; // heat-treating input
+    public static final int SLOT_HEAT_INPUT = 0; // legacy/unused, kept for save compat
     public static final int SLOT_FUEL       = 1;
     public static final int SLOT_OUTPUT     = 2;
     public static final int SLOT_ALLOY_A    = 3;
@@ -79,6 +91,11 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public static final int SLOT_ALLOY_D    = 6;
     public static final int NUM_SLOTS       = 7;
 
+    // The four shared "ingot" slots, in display order. In heat-treating mode
+    // these are the four self-contained heat slots; in alloying mode these
+    // are the four alloy ingredient inputs.
+    public static final int[] INGOT_SLOTS = { SLOT_ALLOY_A, SLOT_ALLOY_B, SLOT_ALLOY_C, SLOT_ALLOY_D };
+
     // ── ContainerData indices ─────────────────────────────────────────────────
     public static final int DATA_COOKING_PROGRESS = 0;
     public static final int DATA_COOKING_TOTAL    = 1;
@@ -86,7 +103,14 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public static final int DATA_LIT_DURATION     = 3;
     public static final int DATA_SELECTED_RECIPE  = 4;
     public static final int DATA_MODE             = 5;
-    public static final int NUM_DATA              = 6;
+    public static final int DATA_HEAT_PROGRESS_A  = 6;
+    public static final int DATA_HEAT_PROGRESS_B  = 7;
+    public static final int DATA_HEAT_PROGRESS_C  = 8;
+    public static final int DATA_HEAT_PROGRESS_D  = 9;
+    public static final int NUM_DATA              = 10;
+
+    /** Standard time (in ticks) it takes to heat-treat one ingot. */
+    private static final int HEAT_TIME = 200;
 
     // ── State ─────────────────────────────────────────────────────────────────
     private NonNullList<ItemStack> items =
@@ -97,6 +121,8 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     private int litDuration      = 0;
     private int selectedRecipeIdx = -1;
     private int mode             = MODE_HEAT_TREATING;
+    // Per-slot heat-treating progress for INGOT_SLOTS[0..3].
+    private final int[] heatProgress = new int[4];
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -108,6 +134,10 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
                 case DATA_LIT_DURATION     -> litDuration;
                 case DATA_SELECTED_RECIPE  -> selectedRecipeIdx;
                 case DATA_MODE             -> mode;
+                case DATA_HEAT_PROGRESS_A  -> heatProgress[0];
+                case DATA_HEAT_PROGRESS_B  -> heatProgress[1];
+                case DATA_HEAT_PROGRESS_C  -> heatProgress[2];
+                case DATA_HEAT_PROGRESS_D  -> heatProgress[3];
                 default -> 0;
             };
         }
@@ -120,6 +150,10 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
                 case DATA_LIT_DURATION     -> litDuration      = v;
                 case DATA_SELECTED_RECIPE  -> selectedRecipeIdx = v;
                 case DATA_MODE             -> mode             = v;
+                case DATA_HEAT_PROGRESS_A  -> heatProgress[0]  = v;
+                case DATA_HEAT_PROGRESS_B  -> heatProgress[1]  = v;
+                case DATA_HEAT_PROGRESS_C  -> heatProgress[2]  = v;
+                case DATA_HEAT_PROGRESS_D  -> heatProgress[3]  = v;
             }
         }
         @Override
@@ -158,77 +192,86 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     // ── Heat-treating mode tick ───────────────────────────────────────────────
 
     /**
-     * Heat treating simply heats any item placed in the input slot.
-     * The recipe system is bypassed — any item is accepted and the output is
-     * determined by a HeatTreatRecipe (or if none exists, the item just stays
-     * heated). For now, we look for a matching SmithyRecipe input so we only
-     * heat items that are actually useful to heat.
-     *
-     * The actual recipe lookup for "what does heating produce" should be driven
-     * by a dedicated HeatTreatRecipe type. For now this is a simple furnace-style
-     * pass-through that uses the existing SmithyRecipe ingredient list to validate
-     * the input, and produces the same item with a "heated" tag concept.
+     * Heat treating heats up to four ingots at once, one per slot in
+     * {@link #INGOT_SLOTS}. Each slot tracks its own progress independently —
+     * an ingot dropped into a slot mid-burn doesn't have to wait for the
+     * others. Fuel is shared: the forge only burns fuel while at least one
+     * slot has something left to heat, and every lit slot advances at the
+     * same rate per tick.
+     * <p>
+     * There's no separate output slot in this mode — once a slot finishes,
+     * the finished ("heated") item simply replaces the raw item in that same
+     * slot. Progress for a finished slot holds at the cap (rather than
+     * looping back to zero and re-heating) until the player removes the item;
+     * pulling an item out and back in resets that slot's progress via
+     * {@link #setItem}.
+     * <p>
+     * The recipe system is bypassed for now — the result is the same item as
+     * the input. The actual "what does heating turn this into" lookup should
+     * eventually be driven by a dedicated HeatTreatRecipe type.
      */
     private boolean tickHeatTreating(ServerLevel level) {
         boolean dirty = false;
 
-        ItemStack input = items.get(SLOT_HEAT_INPUT);
-        if (input.isEmpty()) {
-            if (cookingProgress != 0) {
-                cookingProgress = 0;
-                dirty = true;
+        boolean anyHeatable = false;
+        for (int i = 0; i < INGOT_SLOTS.length; i++) {
+            ItemStack stack = items.get(INGOT_SLOTS[i]);
+            if (!stack.isEmpty() && heatProgress[i] < cookingTotalTime) {
+                anyHeatable = true;
+                break;
             }
-            return dirty;
         }
 
-        // Check if output can accept the result
-        boolean canProduce = canProduceHeat(input);
-
-        if (canProduce) {
+        if (anyHeatable) {
             if (!isLit() && hasFuel(level)) {
                 dirty |= lightFuel(level);
             }
+        }
+
+        for (int i = 0; i < INGOT_SLOTS.length; i++) {
+            int slot = INGOT_SLOTS[i];
+            ItemStack stack = items.get(slot);
+
+            if (stack.isEmpty()) {
+                if (heatProgress[i] != 0) {
+                    heatProgress[i] = 0;
+                    dirty = true;
+                }
+                continue;
+            }
+
+            boolean alreadyDone = heatProgress[i] >= cookingTotalTime && cookingTotalTime > 0;
+            if (alreadyDone) continue; // sits finished until removed/replaced
 
             if (isLit()) {
-                cookingProgress++;
-                if (cookingProgress >= cookingTotalTime) {
-                    cookingProgress = 0;
-                    cookingTotalTime = 200; // standard heat time
-                    if (burnHeat(input)) dirty = true;
+                heatProgress[i]++;
+                dirty = true;
+                if (heatProgress[i] >= cookingTotalTime) {
+                    heatProgress[i] = cookingTotalTime;
+                    finishHeating(slot);
                 }
-            } else {
-                cookingProgress = Math.max(0, cookingProgress - 2);
+            } else if (heatProgress[i] > 0) {
+                heatProgress[i] = Math.max(0, heatProgress[i] - 2);
+                dirty = true;
             }
-        } else if (cookingProgress > 0) {
-            cookingProgress = Math.max(0, cookingProgress - 2);
+        }
+
+        if (cookingTotalTime != HEAT_TIME) {
+            cookingTotalTime = HEAT_TIME;
             dirty = true;
         }
 
         return dirty;
     }
 
-    /** Returns true if the output slot can accept one more of the given input item. */
-    private boolean canProduceHeat(ItemStack input) {
-        // The heated output is the same item — we just move it from input to output.
-        // If the output has a different item, we can't produce.
-        ItemStack output = items.get(SLOT_OUTPUT);
-        if (output.isEmpty()) return true;
-        if (!ItemStack.isSameItemSameComponents(output, input)) return false;
-        return output.getCount() + 1 <= output.getMaxStackSize();
-    }
-
-    private boolean burnHeat(ItemStack input) {
-        if (!canProduceHeat(input)) return false;
-        ItemStack result = input.copyWithCount(1);
-        ItemStack output = items.get(SLOT_OUTPUT);
-        if (output.isEmpty()) {
-            items.set(SLOT_OUTPUT, result);
-        } else {
-            output.grow(1);
-        }
-        input.shrink(1);
-        if (input.isEmpty()) items.set(SLOT_HEAT_INPUT, ItemStack.EMPTY);
-        return true;
+    /** Replaces the raw ingot in {@code slot} with its heated result, in place. */
+    private void finishHeating(int slot) {
+        ItemStack input = items.get(slot);
+        if (input.isEmpty()) return;
+        // The heated result is currently the same item (pass-through). Once a
+        // dedicated HeatTreatRecipe exists, look up the real result here.
+        ItemStack result = input.copyWithCount(input.getCount());
+        items.set(slot, result);
     }
 
     // ── Alloying mode tick ────────────────────────────────────────────────────
@@ -242,6 +285,16 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
                 selectedRecipeIdx = -1;
                 cookingProgress = 0;
                 dirty = true;
+            }
+        }
+
+        // Auto-select: the inputs uniquely determine the recipe, so always pick
+        // the first match rather than waiting for an explicit player selection.
+        if (selectedRecipeIdx < 0) {
+            List<RecipeHolder<AlloyRecipe>> matching = getMatchingAlloyRecipes(level);
+            if (!matching.isEmpty()) {
+                selectedRecipeIdx = 0;
+                cookingTotalTime  = matching.get(0).value().getCookingTime();
             }
         }
 
@@ -295,6 +348,7 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
         this.mode = mode;
         this.cookingProgress = 0;
         this.selectedRecipeIdx = -1;
+        java.util.Arrays.fill(this.heatProgress, 0);
         setChanged();
     }
 
@@ -401,11 +455,20 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     public void setItem(int slot, ItemStack stack) {
         items.set(slot, stack);
         if (stack.getCount() > getMaxStackSize()) stack.setCount(getMaxStackSize());
-        if (slot == SLOT_HEAT_INPUT || slot == SLOT_ALLOY_A || slot == SLOT_ALLOY_B
-                || slot == SLOT_ALLOY_C || slot == SLOT_ALLOY_D) {
-            selectedRecipeIdx = -1;
-            cookingProgress   = 0;
+        if (slot == SLOT_HEAT_INPUT) {
             setChanged();
+            return;
+        }
+        for (int i = 0; i < INGOT_SLOTS.length; i++) {
+            if (slot == INGOT_SLOTS[i]) {
+                // Alloying uses the shared cooking progress/recipe selection.
+                selectedRecipeIdx = -1;
+                cookingProgress   = 0;
+                // Heat-treating uses this slot's own independent progress.
+                heatProgress[i]   = 0;
+                setChanged();
+                break;
+            }
         }
     }
 
@@ -474,6 +537,10 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
         litDuration       = tag.getInt("BurnDuration");
         selectedRecipeIdx = tag.getInt("SelectedRecipe");
         mode              = tag.getInt("Mode");
+        int[] savedHeat = tag.getIntArray("HeatProgress");
+        for (int i = 0; i < heatProgress.length; i++) {
+            heatProgress[i] = i < savedHeat.length ? savedHeat[i] : 0;
+        }
     }
 
     @Override
@@ -486,5 +553,6 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
         tag.putInt("BurnDuration",   litDuration);
         tag.putInt("SelectedRecipe", selectedRecipeIdx);
         tag.putInt("Mode",           mode);
+        tag.putIntArray("HeatProgress", heatProgress);
     }
 }

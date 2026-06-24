@@ -2103,6 +2103,7 @@
   "item.got.smithing_hammer": "Smithing Hammer",
   "got.forge.tab.smith": "Smith",
   "got.forge.tab.alloy": "Alloy",
+  "got.forge.heat_percent": "%s%% heated",
   "item.got.northman_spawn_egg": "Northman Spawn Egg",
   "item.got.wheatgrass": "Wheatgrass",
   "item.got.reeds": "Reeds",
