@@ -13,27 +13,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
-/**
- * HeatTreatingScreen — GUI for the Forge block's heat-treating ("Smith") mode.
- * <p>
- * Blits assets/got/textures/gui/heating.png as the full background (256×256
- * sheet, 176×166 used region). The texture bakes in four ingot slots in a
- * row, the fuel slot, and the static steam-wisp icon above it — there is no
- * separate output slot, since each ingot slot doubles as its own result
- * slot. We overlay the vanilla animated lit_progress flame sprite on top of
- * the baked steam-wisp icon, and draw a fully custom vertical temperature
- * gauge in the open panel space to the left of the ingot slots, replacing
- * the standard horizontal progress arrow.
- * <p>
- * Pixel positions are measured directly from heating.png:
- *   Ingots A-D : (53,17) (71,17) (89,17) (107,17)  — 18×18 each
- *   Fuel       : (81,53)                            — 18×18
- *   Steam icon : baked at (83,37), ~13×13 px
- * <p>
- * The temperature gauge sits at (12,20), 10px wide × 58px tall, and fills
- * from the bottom up in a blue → orange → red gradient that tracks whichever
- * ingot slot is closest to finishing.
- */
 public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu> {
 
     private static final ResourceLocation HEATING_TEXTURE =
@@ -44,27 +23,77 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
 
     private static final int FLAME_W = 14;
     private static final int FLAME_H = 14;
-
-    // Flame: covers the baked steam-wisp pixels above the fuel slot.
-    private static final int FLAME_X = 82;
+    private static final int FLAME_X = 81;
     private static final int FLAME_Y = 36;
 
-    // ── Temperature gauge geometry (panel-relative) ───────────────────────────
+    // Exact pixel spans of the grey flame silhouette in heating.png, row by row.
+    // Index 0 = y=14 (tip), last = y=68 (base). Each int[] is {left_x, right_x} inclusive.
+    // Multiple spans per row where the shape has gaps.
+    private static final int[][][] SILHOUETTE = {
+        {{18,19}},  // y=14
+        {{18,20}},  // y=15
+        {{18,21}},  // y=16
+        {{19,22}},  // y=17
+        {{19,23}},  // y=18
+        {{19,24}},  // y=19
+        {{19,24}},  // y=20
+        {{20,25}},  // y=21
+        {{20,25}},  // y=22
+        {{20,25}},  // y=23
+        {{20,26}},  // y=24
+        {{20,26}},  // y=25
+        {{19,26}},  // y=26
+        {{19,26}},  // y=27
+        {{19,26}},  // y=28
+        {{18,26}},  // y=29
+        {{18,26}},  // y=30
+        {{17,26}},  // y=31
+        {{16,25}},  // y=32
+        {{16,25}},  // y=33
+        {{15,24}},  // y=34
+        {{10,10}, {15,24}},  // y=35
+        {{ 9,10}, {14,23}},  // y=36
+        {{ 8, 9}, {14,23}, {32,33}},  // y=37
+        {{ 8, 9}, {13,23}, {30,32}},  // y=38
+        {{ 7,10}, {13,22}, {28,31}},  // y=39
+        {{ 7,10}, {13,22}, {27,30}},  // y=40
+        {{ 7, 9}, {13,22}, {26,29}},  // y=41
+        {{ 6, 9}, {14,23}, {25,29}},  // y=42
+        {{ 6,10}, {14,28}},  // y=43
+        {{ 6,11}, {15,27}},  // y=44
+        {{ 7,13}, {15,27}},  // y=45
+        {{ 7,27}},  // y=46
+        {{ 8,26}},  // y=47
+        {{ 8,26}, {30,30}},  // y=48
+        {{ 9,26}, {30,31}},  // y=49
+        {{10,26}, {30,32}},  // y=50
+        {{11,26}, {30,32}},  // y=51
+        {{12,27}, {29,33}},  // y=52
+        {{13,27}, {29,33}},  // y=53
+        {{13,33}},  // y=54
+        {{14,33}},  // y=55
+        {{11,11}, {14,33}},  // y=56
+        {{11,12}, {15,33}},  // y=57
+        {{10,12}, {15,33}},  // y=58
+        {{10,13}, {16,32}},  // y=59
+        {{10,32}},  // y=60
+        {{11,32}},  // y=61
+        {{11,31}},  // y=62
+        {{12,31}},  // y=63
+        {{13,30}},  // y=64
+        {{14,30}},  // y=65
+        {{16,29}},  // y=66
+        {{17,27}},  // y=67
+        {{20,25}},  // y=68
+    };
 
-    private static final int GAUGE_X      = 12;
-    private static final int GAUGE_Y      = 20;
-    private static final int GAUGE_W      = 10;
-    private static final int GAUGE_H      = 58;
-    private static final int GAUGE_BORDER = 0xFF_2B2B2B;
-    private static final int GAUGE_BG     = 0xFF_1A1A1A;
-
-    // ── Mode tab ───────────────────────────────────────────────────────────────
+    private static final int SILHOUETTE_TOP_Y = 14;
+    private static final int SILHOUETTE_H     = 55;
 
     private static final int TAB_W = 20;
     private static final int TAB_H = 14;
     private static final int TAB_X = 176 - TAB_W - 2;
     private static final int TAB_Y = 2;
-
     private static final int C_TEXT = 0xFF_404040;
 
     public HeatTreatingScreen(HeatTreatingMenu menu, Inventory playerInv, Component title) {
@@ -85,7 +114,7 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
         renderBackground(g, mouseX, mouseY, partialTick);
         super.render(g, mouseX, mouseY, partialTick);
         renderModeTab(g, mouseX, mouseY);
-        renderTemperatureGaugeTooltip(g, mouseX, mouseY);
+        renderFlameTooltip(g, mouseX, mouseY);
         renderTooltip(g, mouseX, mouseY);
     }
 
@@ -94,15 +123,13 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 1. Blit the custom heating texture — panel, all slots, and the
-        //    baked steam-wisp icon are all baked in.
         g.blit(RenderType::guiTextured, HEATING_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // 2. Animated flame — overlaid on the baked steam-wisp pixels.
-        //    Only shown while fuel is actually burning.
+        renderFlameFill(g, x, y, menu.getMaxHeatFraction());
+
         if (menu.isFlaming()) {
-            int h = menu.getFlameProgress(); // 0–13
+            int h = menu.getFlameProgress();
             if (h > 0) {
                 g.blitSprite(RenderType::guiTextured, LIT_SPRITE,
                         FLAME_W, FLAME_H,
@@ -111,70 +138,64 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
                         FLAME_W, h);
             }
         }
-
-        // 3. Custom vertical temperature gauge — replaces the standard
-        //    horizontal progress arrow. Tracks whichever ingot slot is
-        //    closest to finishing.
-        renderTemperatureGauge(g, x, y, menu.getMaxHeatFraction());
     }
 
-    /** Draws a bottom-up filling vertical gauge with a blue → orange → red gradient. */
-    private void renderTemperatureGauge(GuiGraphics g, int panelX, int panelY, float fraction) {
-        int gx = panelX + GAUGE_X;
-        int gy = panelY + GAUGE_Y;
+    /**
+     * Fills the baked grey flame silhouette bottom-up by painting exactly the
+     * grey pixels row by row. Only the actual silhouette spans are coloured —
+     * gaps in the shape stay as background.
+     */
+    private void renderFlameFill(GuiGraphics g, int panelX, int panelY, float fraction) {
+        if (fraction <= 0f) return;
+        int filled = Math.round(SILHOUETTE_H * Math.max(0f, Math.min(1f, fraction)));
+        if (filled == 0) return;
 
-        // Border + empty background.
-        g.fill(gx - 1, gy - 1, gx + GAUGE_W + 1, gy + GAUGE_H + 1, GAUGE_BORDER);
-        g.fill(gx, gy, gx + GAUGE_W, gy + GAUGE_H, GAUGE_BG);
+        // filled rows from the bottom; SILHOUETTE[0]=tip, SILHOUETTE[last]=base
+        int startRow = SILHOUETTE_H - filled;
 
-        int filled = Math.round(GAUGE_H * Math.max(0f, Math.min(1f, fraction)));
-        if (filled <= 0) return;
+        for (int i = startRow; i < SILHOUETTE_H; i++) {
+            int screenY = panelY + SILHOUETTE_TOP_Y + i;
+            // heightFrac: 0.0 at base, 1.0 at tip
+            float heightFrac = (float)(SILHOUETTE_H - 1 - i) / (float)(filled - 1 + 1);
+            int color = flameColor(heightFrac);
 
-        int top = gy + (GAUGE_H - filled);
-        // Draw the fill one row at a time so it can shade from cool blue at
-        // the bottom to white-hot at the top, regardless of how full it is.
-        for (int row = 0; row < filled; row++) {
-            int py = gy + GAUGE_H - 1 - row;
-            float heightFrac = (row + 1) / (float) GAUGE_H; // 0 at bottom, 1 at top of full bar
-            g.fill(gx, py, gx + GAUGE_W, py + 1, temperatureColor(heightFrac));
+            for (int[] span : SILHOUETTE[i]) {
+                g.fill(panelX + span[0], screenY, panelX + span[1] + 1, screenY + 1, color);
+            }
         }
-        // A brighter cap row right at the surface of the fill for a "glow" edge.
-        g.fill(gx, top, gx + GAUGE_W, top + 1, 0xFF_FFE9B0);
     }
 
-    /** Blue (cool) → orange → red → white-hot (max), based on position within the gauge. */
-    private int temperatureColor(float t) {
+    /** dark red (base) → orange → yellow → near-white (tip) */
+    private int flameColor(float t) {
         t = Math.max(0f, Math.min(1f, t));
-        int r, gg, b;
+        int r, gr, b;
         if (t < 0.35f) {
             float f = t / 0.35f;
-            r  = lerp(0x2A, 0xC8, f);
-            gg = lerp(0x5C, 0x5A, f);
-            b  = lerp(0xC8, 0x2A, f);
+            r  = lerp(0x8B, 0xFF, f);
+            gr = lerp(0x00, 0x60, f);
+            b  = 0;
         } else if (t < 0.7f) {
             float f = (t - 0.35f) / 0.35f;
-            r  = lerp(0xC8, 0xFF, f);
-            gg = lerp(0x5A, 0x8A, f);
-            b  = lerp(0x2A, 0x10, f);
+            r  = 0xFF;
+            gr = lerp(0x60, 0xE0, f);
+            b  = 0;
         } else {
             float f = (t - 0.7f) / 0.3f;
-            r  = lerp(0xFF, 0xFF, f);
-            gg = lerp(0x8A, 0xF2, f);
-            b  = lerp(0x10, 0xC0, f);
+            r  = 0xFF;
+            gr = lerp(0xE0, 0xFF, f);
+            b  = lerp(0x00, 0xC0, f);
         }
-        return 0xFF_000000 | (r << 16) | (gg << 8) | b;
+        return 0xFF_000000 | (r << 16) | (gr << 8) | b;
     }
 
     private static int lerp(int a, int b, float f) {
         return a + Math.round((b - a) * f);
     }
 
-    /** Shows a small tooltip with the exact heat percentage when hovering the gauge. */
-    private void renderTemperatureGaugeTooltip(GuiGraphics g, int mouseX, int mouseY) {
-        int gx = leftPos + GAUGE_X;
-        int gy = topPos + GAUGE_Y;
-        if (mouseX >= gx - 1 && mouseX < gx + GAUGE_W + 1
-                && mouseY >= gy - 1 && mouseY < gy + GAUGE_H + 1) {
+    private void renderFlameTooltip(GuiGraphics g, int mouseX, int mouseY) {
+        int bx = leftPos + 6;
+        int by = topPos + SILHOUETTE_TOP_Y;
+        if (mouseX >= bx && mouseX < bx + 34 && mouseY >= by && mouseY < by + SILHOUETTE_H) {
             int pct = Math.round(menu.getMaxHeatFraction() * 100f);
             g.renderTooltip(font,
                     List.of(Component.translatable("got.forge.heat_percent", pct).getVisualOrderText()),
@@ -182,7 +203,6 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
         }
     }
 
-    /** Tab in the top-right corner that switches the Forge into Alloying mode. */
     private void renderModeTab(GuiGraphics g, int mouseX, int mouseY) {
         int bx = leftPos + TAB_X, by = topPos + TAB_Y;
         boolean hovered = mouseX >= bx && mouseX < bx + TAB_W && mouseY >= by && mouseY < by + TAB_H;

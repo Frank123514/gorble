@@ -92,7 +92,7 @@ public class SmithyMenu extends AbstractContainerMenu {
 
         // ── Smithy slots ──────────────────────────────────────────────────────
         // Input (slot 0)
-        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_HEAT_INPUT, INPUT_X, INPUT_Y));
+        this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_HEAT_A, INPUT_X, INPUT_Y));
 
         // Fuel (slot 1)
         this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL,
@@ -135,7 +135,7 @@ public class SmithyMenu extends AbstractContainerMenu {
     }
 
     public ItemStack getInputItem() {
-        return container.getItem(ForgeBlockEntity.SLOT_HEAT_INPUT);
+        return container.getItem(ForgeBlockEntity.SLOT_HEAT_A);
     }
 
     /** Exposes the backing container so the network handler can reach the block entity. */

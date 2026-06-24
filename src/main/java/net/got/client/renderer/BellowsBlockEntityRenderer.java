@@ -44,16 +44,21 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
         // Drive animation from the block entity's existing tick counter.
         // animationProgress ticks map to seconds: ticks * (1/20) * animLength normalises time.
         // KeyframeAnimations.animate expects milliseconds: ticks * 50ms.
+        // Always call applyAnimation — even when not pumping — so the shared model
+        // instance is reset to rest pose before each bellows is rendered.
+        // (A single BellowsModel is reused for every bellows in the world.)
         if (be.pumping) {
             float ageInTicks = be.animationProgress + partialTick;
             model.applyAnimation(BellowsAnimations.PUMPING, ageInTicks, 1.0F);
+        } else {
+            model.applyAnimation(BellowsAnimations.PUMPING, 0f, 0.0F);
         }
 
         poseStack.pushPose();
 
         poseStack.translate(0.5, 1.5, 0.5);
         float yRot = state.getValue(BellowsBlock.FACING).toYRot();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-yRot));
+        poseStack.mulPose(Axis.YP.rotationDegrees(270f - yRot));
         poseStack.mulPose(Axis.XP.rotationDegrees(180f));
 
         var consumer = bufferSource.getBuffer(RenderType.entityCutout(TEXTURE));

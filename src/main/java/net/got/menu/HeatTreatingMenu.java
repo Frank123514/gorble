@@ -13,55 +13,40 @@ import net.minecraft.world.level.Level;
 
 /**
  * HeatTreatingMenu — container menu for the Forge's heat-treating mode.
- * <p>
- * Four ingot slots in a row, a shared fuel slot below them, and no separate
- * output slot — each ingot slot doubles as its own result slot. Drop a raw
- * ingot into any of the four slots and, once heated, the malleable ("heated")
- * result simply reappears in that same slot. The heated result can then be
- * taken to a Smithing Anvil and worked into a finished item.
- * <p>
- * Slot pixel positions are measured directly from heating.png:
- *   Ingot A-D : (53,17) (71,17) (89,17) (107,17)  — 18×18 each, matching the
- *               alloying mode's input row exactly so the textures line up.
- *   Fuel      : (81,53)                            — 18×18
- * <p>
- * Slot layout in the menu (indices used by AbstractContainerMenu.slots):
- *   0–26  — player main inventory
- *   27–35 — player hotbar
- *   36    — ingot slot A (container slot = SLOT_ALLOY_A)
- *   37    — ingot slot B (container slot = SLOT_ALLOY_B)
- *   38    — ingot slot C (container slot = SLOT_ALLOY_C)
- *   39    — ingot slot D (container slot = SLOT_ALLOY_D)
- *   40    — forge fuel   (container slot = SLOT_FUEL)
+ *
+ * Uses SLOT_HEAT_A/B/C/D (slots 6-9) — completely separate from alloying's
+ * SLOT_ALLOY_A/B/C/D (slots 2-5). Only SLOT_FUEL (slot 0) is shared.
+ *
+ * Slot pixel positions from heating.png:
+ *   Heat A-D : (53,17) (71,17) (89,17) (107,17)
+ *   Fuel     : (80,53)
  */
 public class HeatTreatingMenu extends AbstractContainerMenu {
 
-    public static final int INGOT_A_X = 53; public static final int INGOT_A_Y = 17;
-    public static final int INGOT_B_X = 71; public static final int INGOT_B_Y = 17;
-    public static final int INGOT_C_X = 89; public static final int INGOT_C_Y = 17;
-    public static final int INGOT_D_X = 107; public static final int INGOT_D_Y = 17;
-    public static final int FUEL_X    = 81; public static final int FUEL_Y    = 53;
+    public static final int HEAT_A_X = 53; public static final int HEAT_A_Y = 17;
+    public static final int HEAT_B_X = 71; public static final int HEAT_B_Y = 17;
+    public static final int HEAT_C_X = 89; public static final int HEAT_C_Y = 17;
+    public static final int HEAT_D_X = 107; public static final int HEAT_D_Y = 17;
+    public static final int FUEL_X   = 80;  public static final int FUEL_Y   = 53;
 
     private final Container   container;
     private final ContainerData data;
     private final Level         level;
 
-    private static final int PLAYER_INV_START = 0;
-    private static final int PLAYER_INV_END   = 36;
-    private static final int TE_INGOT_A_IDX   = 36;
-    private static final int TE_INGOT_B_IDX   = 37;
-    private static final int TE_INGOT_C_IDX   = 38;
-    private static final int TE_INGOT_D_IDX   = 39;
-    private static final int TE_FUEL_IDX      = 40;
+    private static final int PLAYER_INV_START  = 0;
+    private static final int PLAYER_INV_END    = 36;
+    private static final int TE_HEAT_A_IDX     = 36;
+    private static final int TE_HEAT_B_IDX     = 37;
+    private static final int TE_HEAT_C_IDX     = 38;
+    private static final int TE_HEAT_D_IDX     = 39;
+    private static final int TE_FUEL_IDX       = 40;
 
-    /** Client-side constructor (called by MenuType factory). */
     public HeatTreatingMenu(int windowId, Inventory playerInv) {
         this(windowId, playerInv,
                 new SimpleContainer(ForgeBlockEntity.NUM_SLOTS),
                 new SimpleContainerData(ForgeBlockEntity.NUM_DATA));
     }
 
-    /** Server-side constructor (called by ForgeBlockEntity in heat-treating mode). */
     public HeatTreatingMenu(int windowId, Inventory playerInv,
                             Container container, ContainerData data) {
         super(GotModMenus.HEAT_TREATING.get(), windowId);
@@ -73,7 +58,7 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // Player main inventory (rows 0–2)
+        // Player main inventory
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
@@ -83,18 +68,17 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // Four ingot slots — each one is its own result slot, so a plain Slot
-        // is all that's needed (no ResultSlot restriction on placement).
-        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_A, INGOT_A_X, INGOT_A_Y));
-        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_B, INGOT_B_X, INGOT_B_Y));
-        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_C, INGOT_C_X, INGOT_C_Y));
-        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_D, INGOT_D_X, INGOT_D_Y));
+        // Four independent heat slots
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_A, HEAT_A_X, HEAT_A_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_B, HEAT_B_X, HEAT_B_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_C, HEAT_C_X, HEAT_C_Y));
+        this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_D, HEAT_D_X, HEAT_D_Y));
         this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL, FUEL_X, FUEL_Y, level));
 
         this.addDataSlots(data);
     }
 
-    // ── Progress helpers (used by HeatTreatingScreen) ─────────────────────────
+    // ── Progress helpers ──────────────────────────────────────────────────────
 
     public boolean isFlaming() {
         return data.get(ForgeBlockEntity.DATA_LIT_TIME) > 0;
@@ -106,7 +90,6 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         return data.get(ForgeBlockEntity.DATA_LIT_TIME) * 13 / duration;
     }
 
-    /** Returns 0–1 heat fraction for ingot slot {@code index} (0=A .. 3=D). */
     public float getHeatFraction(int index) {
         int total = data.get(ForgeBlockEntity.DATA_COOKING_TOTAL);
         if (total <= 0) return 0f;
@@ -120,7 +103,6 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         return Math.max(0f, Math.min(1f, progress / (float) total));
     }
 
-    /** Highest heat fraction across all four slots — drives the temperature gauge. */
     public float getMaxHeatFraction() {
         float max = 0f;
         for (int i = 0; i < 4; i++) max = Math.max(max, getHeatFraction(i));
@@ -141,7 +123,7 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
 
         if (index >= PLAYER_INV_START && index < PLAYER_INV_END) {
             if (!this.moveItemStackTo(stack, TE_FUEL_IDX, TE_FUEL_IDX + 1, false)) {
-                if (!this.moveItemStackTo(stack, TE_INGOT_A_IDX, TE_INGOT_D_IDX + 1, false))
+                if (!this.moveItemStackTo(stack, TE_HEAT_A_IDX, TE_HEAT_D_IDX + 1, false))
                     return ItemStack.EMPTY;
             }
         } else {
@@ -156,8 +138,7 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         return copy;
     }
 
-    @Override
-    public boolean stillValid(Player player) { return container.stillValid(player); }
+    @Override public boolean stillValid(Player player) { return container.stillValid(player); }
 
     @Override
     public void removed(Player player) {
@@ -167,7 +148,6 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
 
     // ── Inner slot types ──────────────────────────────────────────────────────
 
-    /** An ingot slot that accepts at most 1 item at a time. */
     private static class SingleItemSlot extends Slot {
         SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public int getMaxStackSize() { return 1; }

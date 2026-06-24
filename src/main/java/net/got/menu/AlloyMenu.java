@@ -19,17 +19,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * AlloyMenu — container menu for the Forge block's alloying mode.
+ * AlloyMenu — container menu for the Forge's alloying mode.
  *
- * Slot positions are derived pixel-accurately from the forge.png texture:
- *   Input A–D : 1×4 row at y=17, x=20/38/56/74  (18×18 each)
- *   Fuel      : x=48, y=53  (18×18)
- *   Output    : x=130, y=13 (26×26 big slot)
- *   Player inv: y=84/102/120, hotbar y=142, all starting x=8, stride 18
+ * Uses SLOT_ALLOY_A/B/C/D (slots 2-5) and SLOT_OUTPUT (slot 1) — completely
+ * separate from heat treating's SLOT_HEAT_A/B/C/D (slots 6-9).
+ * Only SLOT_FUEL (slot 0) is shared.
+ *
+ * Slot pixel positions from forge.png:
+ *   Input A-D : (20,17) (38,17) (56,17) (74,17)
+ *   Fuel      : (48,53)
+ *   Output    : (134,18)
  */
 public class AlloyMenu extends AbstractContainerMenu {
 
-    // ── Slot pixel positions (must match forge.png exactly) ───────────────────
     public static final int INPUT_A_X = 20;  public static final int INPUT_A_Y = 17;
     public static final int INPUT_B_X = 38;  public static final int INPUT_B_Y = 17;
     public static final int INPUT_C_X = 56;  public static final int INPUT_C_Y = 17;
@@ -45,19 +47,17 @@ public class AlloyMenu extends AbstractContainerMenu {
     private static final int PLAYER_INV_END   = 36;
     private static final int TE_INPUT_A_IDX   = 36;
     private static final int TE_INPUT_B_IDX   = 37;
-    private static final int TE_FUEL_IDX      = 38;
-    private static final int TE_OUTPUT_IDX    = 39;
-    private static final int TE_INPUT_C_IDX   = 40;
-    private static final int TE_INPUT_D_IDX   = 41;
+    private static final int TE_INPUT_C_IDX   = 38;
+    private static final int TE_INPUT_D_IDX   = 39;
+    private static final int TE_FUEL_IDX      = 40;
+    private static final int TE_OUTPUT_IDX    = 41;
 
-    /** Client-side constructor (called by MenuType factory). */
     public AlloyMenu(int windowId, Inventory playerInv) {
         this(windowId, playerInv,
                 new SimpleContainer(ForgeBlockEntity.NUM_SLOTS),
                 new SimpleContainerData(ForgeBlockEntity.NUM_DATA));
     }
 
-    /** Server-side constructor (called by ForgeBlockEntity). */
     public AlloyMenu(int windowId, Inventory playerInv,
                       Container container, ContainerData data) {
         super(GotModMenus.ALLOY.get(), windowId);
@@ -69,23 +69,23 @@ public class AlloyMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // Player inventory (3 rows × 9 cols)
+        // Player inventory
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
                         8 + col * 18, 84 + row * 18));
 
-        // Player hotbar
+        // Hotbar
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // Block entity slots
+        // Block entity slots — alloy inputs, fuel, output
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_A, INPUT_A_X, INPUT_A_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_B, INPUT_B_X, INPUT_B_Y));
-        this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL, FUEL_X, FUEL_Y, level));
-        this.addSlot(new ResultSlot(container, ForgeBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_C, INPUT_C_X, INPUT_C_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_D, INPUT_D_X, INPUT_D_Y));
+        this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL, FUEL_X, FUEL_Y, level));
+        this.addSlot(new ResultSlot(container, ForgeBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
 
         this.addDataSlots(data);
     }
@@ -131,15 +131,12 @@ public class AlloyMenu extends AbstractContainerMenu {
 
         if (index >= PLAYER_INV_START && index < PLAYER_INV_END) {
             if (!this.moveItemStackTo(stack, TE_FUEL_IDX, TE_FUEL_IDX + 1, false)) {
-                if (!this.moveItemStackTo(stack, TE_INPUT_A_IDX, TE_INPUT_A_IDX + 1, false)) {
-                    if (!this.moveItemStackTo(stack, TE_INPUT_B_IDX, TE_INPUT_B_IDX + 1, false)) {
-                        if (!this.moveItemStackTo(stack, TE_INPUT_C_IDX, TE_INPUT_C_IDX + 1, false)) {
-                            if (!this.moveItemStackTo(stack, TE_INPUT_D_IDX, TE_INPUT_D_IDX + 1, false))
-                                return ItemStack.EMPTY;
-                        }
-                    }
-                }
+                if (!this.moveItemStackTo(stack, TE_INPUT_A_IDX, TE_INPUT_D_IDX + 1, false))
+                    return ItemStack.EMPTY;
             }
+        } else if (index == TE_OUTPUT_IDX) {
+            if (!this.moveItemStackTo(stack, PLAYER_INV_START, PLAYER_INV_END, true))
+                return ItemStack.EMPTY;
         } else {
             if (!this.moveItemStackTo(stack, PLAYER_INV_START, PLAYER_INV_END, false))
                 return ItemStack.EMPTY;
@@ -152,8 +149,7 @@ public class AlloyMenu extends AbstractContainerMenu {
         return copy;
     }
 
-    @Override
-    public boolean stillValid(Player player) { return container.stillValid(player); }
+    @Override public boolean stillValid(Player player) { return container.stillValid(player); }
 
     @Override
     public void removed(Player player) {
@@ -163,7 +159,6 @@ public class AlloyMenu extends AbstractContainerMenu {
 
     // ── Inner slot types ──────────────────────────────────────────────────────
 
-    /** An input slot that accepts at most 1 item at a time. */
     private static class SingleItemSlot extends Slot {
         SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public int getMaxStackSize() { return 1; }
