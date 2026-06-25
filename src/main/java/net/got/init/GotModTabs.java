@@ -2703,10 +2703,46 @@ public class GotModTabs {
                         output.accept(GotModItems.SAPPHIRE.get());
                         output.accept(GotModItems.TOPAZ.get());
 
+                        // ── Ore Blocks ────────────────────────────────────────────────
+                        output.accept(GotModItems.AMBER_ORE.get());
+                        output.accept(GotModItems.AMETHYST_ORE.get());
+                        output.accept(GotModItems.DRAGONGLASS_ORE.get());
+                        output.accept(GotModItems.OPAL_ORE.get());
+                        output.accept(GotModItems.RUBY_ORE.get());
+                        output.accept(GotModItems.SAPPHIRE_ORE.get());
+                        output.accept(GotModItems.SILVER_ORE.get());
+                        output.accept(GotModItems.TIN_ORE.get());
+                        output.accept(GotModItems.TOPAZ_ORE.get());
+                        output.accept(GotModItems.VALYRIAN_STEEL_ORE.get());
+                        output.accept(GotModItems.COBALT_ORE.get());
+                        output.accept(GotModItems.LEAD_ORE.get());
+                        output.accept(GotModItems.PLATINUM_ORE.get());
+                        output.accept(GotModItems.ZINC_ORE.get());
+
+                        // ── Deepslate Ore Blocks ──────────────────────────────────────
+                        output.accept(GotModItems.DEEPSLATE_SILVER_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_TIN_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_COBALT_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_LEAD_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_PLATINUM_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_ZINC_ORE.get());
+
                         // ── Raw Ores ──────────────────────────────────────────────────
                         output.accept(GotModItems.RAW_SILVER.get());
                         output.accept(GotModItems.RAW_TIN.get());
                         output.accept(GotModItems.RAW_VALYRIAN_STEEL.get());
+                        output.accept(GotModItems.RAW_COBALT.get());
+                        output.accept(GotModItems.RAW_LEAD.get());
+                        output.accept(GotModItems.RAW_PLATINUM.get());
+                        output.accept(GotModItems.RAW_ZINC.get());
+
+                        // ── Raw Metal Blocks ──────────────────────────────────────────
+                        output.accept(GotModItems.RAW_SILVER_BLOCK.get());
+                        output.accept(GotModItems.RAW_TIN_BLOCK.get());
+                        output.accept(GotModItems.RAW_COBALT_BLOCK.get());
+                        output.accept(GotModItems.RAW_LEAD_BLOCK.get());
+                        output.accept(GotModItems.RAW_PLATINUM_BLOCK.get());
+                        output.accept(GotModItems.RAW_ZINC_BLOCK.get());
 
                         // ── Ingots ────────────────────────────────────────────────────
                         output.accept(GotModItems.SILVER_INGOT.get());
@@ -2714,6 +2750,10 @@ public class GotModTabs {
                         output.accept(GotModItems.BRONZE_INGOT.get());
                         output.accept(GotModItems.STEEL_INGOT.get());
                         output.accept(GotModItems.VALYRIAN_STEEL_INGOT.get());
+                        output.accept(GotModItems.COBALT_INGOT.get());
+                        output.accept(GotModItems.LEAD_INGOT.get());
+                        output.accept(GotModItems.PLATINUM_INGOT.get());
+                        output.accept(GotModItems.ZINC_INGOT.get());
 
                         // ── Seeds ─────────────────────────────────────────────────────
                         output.accept(GotModItems.OAT_SEEDS.get());

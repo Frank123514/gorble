@@ -1071,6 +1071,26 @@ public class GotModItems {
     public static final DeferredItem<Item> TIN_ORE            = block(GotModBlocks.TIN_ORE);
     public static final DeferredItem<Item> TOPAZ_ORE          = block(GotModBlocks.TOPAZ_ORE);
     public static final DeferredItem<Item> VALYRIAN_STEEL_ORE = block(GotModBlocks.VALYRIAN_STEEL_ORE) /* valyrian_ore */;
+    public static final DeferredItem<Item> COBALT_ORE         = block(GotModBlocks.COBALT_ORE);
+    public static final DeferredItem<Item> LEAD_ORE           = block(GotModBlocks.LEAD_ORE);
+    public static final DeferredItem<Item> PLATINUM_ORE       = block(GotModBlocks.PLATINUM_ORE);
+    public static final DeferredItem<Item> ZINC_ORE           = block(GotModBlocks.ZINC_ORE);
+
+    // ── Deepslate ore block items ────────────────────────────────────────
+    public static final DeferredItem<Item> DEEPSLATE_SILVER_ORE   = block(GotModBlocks.DEEPSLATE_SILVER_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_TIN_ORE      = block(GotModBlocks.DEEPSLATE_TIN_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_COBALT_ORE   = block(GotModBlocks.DEEPSLATE_COBALT_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_LEAD_ORE     = block(GotModBlocks.DEEPSLATE_LEAD_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_PLATINUM_ORE = block(GotModBlocks.DEEPSLATE_PLATINUM_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_ZINC_ORE     = block(GotModBlocks.DEEPSLATE_ZINC_ORE);
+
+    // ── Raw metal storage block items ────────────────────────────────────
+    public static final DeferredItem<Item> RAW_SILVER_BLOCK   = block(GotModBlocks.RAW_SILVER_BLOCK);
+    public static final DeferredItem<Item> RAW_TIN_BLOCK      = block(GotModBlocks.RAW_TIN_BLOCK);
+    public static final DeferredItem<Item> RAW_COBALT_BLOCK   = block(GotModBlocks.RAW_COBALT_BLOCK);
+    public static final DeferredItem<Item> RAW_LEAD_BLOCK     = block(GotModBlocks.RAW_LEAD_BLOCK);
+    public static final DeferredItem<Item> RAW_PLATINUM_BLOCK = block(GotModBlocks.RAW_PLATINUM_BLOCK);
+    public static final DeferredItem<Item> RAW_ZINC_BLOCK     = block(GotModBlocks.RAW_ZINC_BLOCK);
 
     // ── Gemstones ─────────────────────────────────────────────────────────
     public static final DeferredItem<Item> AMBER           = simple("amber");
@@ -1085,6 +1105,10 @@ public class GotModItems {
     public static final DeferredItem<Item> RAW_SILVER          = simple("raw_silver");
     public static final DeferredItem<Item> RAW_TIN             = simple("raw_tin");
     public static final DeferredItem<Item> RAW_VALYRIAN_STEEL  = simple("raw_valyrian_steel");
+    public static final DeferredItem<Item> RAW_COBALT          = simple("raw_cobalt");
+    public static final DeferredItem<Item> RAW_LEAD            = simple("raw_lead");
+    public static final DeferredItem<Item> RAW_PLATINUM        = simple("raw_platinum");
+    public static final DeferredItem<Item> RAW_ZINC            = simple("raw_zinc");
 
     // ── Ingots ────────────────────────────────────────────────────────────
     public static final DeferredItem<Item> SILVER_INGOT         = simple("silver_ingot");
@@ -1092,6 +1116,10 @@ public class GotModItems {
     public static final DeferredItem<Item> BRONZE_INGOT         = simple("bronze_ingot");
     public static final DeferredItem<Item> STEEL_INGOT          = simple("steel_ingot");
     public static final DeferredItem<Item> VALYRIAN_STEEL_INGOT = simple("valyrian_steel_ingot");
+    public static final DeferredItem<Item> COBALT_INGOT         = simple("cobalt_ingot");
+    public static final DeferredItem<Item> LEAD_INGOT           = simple("lead_ingot");
+    public static final DeferredItem<Item> PLATINUM_INGOT       = simple("platinum_ingot");
+    public static final DeferredItem<Item> ZINC_INGOT           = simple("zinc_ingot");
 
 
     // ── Stripped Logs ────────────────────────────────────────────────────
