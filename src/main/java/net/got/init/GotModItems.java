@@ -1061,13 +1061,12 @@ public class GotModItems {
     public static final DeferredItem<Item> DARK_THATCH_WALL    = block(GotModBlocks.DARK_THATCH_WALL);
 
     // ── Ore block items ───────────────────────────────────────────────────
-    public static final DeferredItem<Item> AMBER_ORE          = block(GotModBlocks.AMBER_ORE);
-    public static final DeferredItem<Item> AMETHYST_ORE       = block(GotModBlocks.AMETHYST_ORE);
     public static final DeferredItem<Item> DRAGONGLASS_ORE    = block(GotModBlocks.DRAGONGLASS_ORE);
     public static final DeferredItem<Item> OPAL_ORE           = block(GotModBlocks.OPAL_ORE);
     public static final DeferredItem<Item> RUBY_ORE           = block(GotModBlocks.RUBY_ORE);
     public static final DeferredItem<Item> SAPPHIRE_ORE       = block(GotModBlocks.SAPPHIRE_ORE);
     public static final DeferredItem<Item> SILVER_ORE         = block(GotModBlocks.SILVER_ORE);
+    public static final DeferredItem<Item> AMETHYST_ORE       = block(GotModBlocks.AMETHYST_ORE);
     public static final DeferredItem<Item> TIN_ORE            = block(GotModBlocks.TIN_ORE);
     public static final DeferredItem<Item> TOPAZ_ORE          = block(GotModBlocks.TOPAZ_ORE);
     public static final DeferredItem<Item> VALYRIAN_STEEL_ORE = block(GotModBlocks.VALYRIAN_STEEL_ORE) /* valyrian_ore */;
@@ -1078,11 +1077,30 @@ public class GotModItems {
 
     // ── Deepslate ore block items ────────────────────────────────────────
     public static final DeferredItem<Item> DEEPSLATE_SILVER_ORE   = block(GotModBlocks.DEEPSLATE_SILVER_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_AMETHYST_ORE = block(GotModBlocks.DEEPSLATE_AMETHYST_ORE);
     public static final DeferredItem<Item> DEEPSLATE_TIN_ORE      = block(GotModBlocks.DEEPSLATE_TIN_ORE);
     public static final DeferredItem<Item> DEEPSLATE_COBALT_ORE   = block(GotModBlocks.DEEPSLATE_COBALT_ORE);
     public static final DeferredItem<Item> DEEPSLATE_LEAD_ORE     = block(GotModBlocks.DEEPSLATE_LEAD_ORE);
     public static final DeferredItem<Item> DEEPSLATE_PLATINUM_ORE = block(GotModBlocks.DEEPSLATE_PLATINUM_ORE);
     public static final DeferredItem<Item> DEEPSLATE_ZINC_ORE     = block(GotModBlocks.DEEPSLATE_ZINC_ORE);
+
+    // ── Deepslate gem ore block items ────────────────────────────────────
+    public static final DeferredItem<Item> DEEPSLATE_OPAL_ORE       = block(GotModBlocks.DEEPSLATE_OPAL_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_RUBY_ORE       = block(GotModBlocks.DEEPSLATE_RUBY_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_SAPPHIRE_ORE   = block(GotModBlocks.DEEPSLATE_SAPPHIRE_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_TOPAZ_ORE      = block(GotModBlocks.DEEPSLATE_TOPAZ_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_BERYL_ORE      = block(GotModBlocks.DEEPSLATE_BERYL_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_BLOODSTONE_ORE = block(GotModBlocks.DEEPSLATE_BLOODSTONE_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_CARNELIAN_ORE  = block(GotModBlocks.DEEPSLATE_CARNELIAN_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_CHALCEDONY_ORE = block(GotModBlocks.DEEPSLATE_CHALCEDONY_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_GARNET_ORE     = block(GotModBlocks.DEEPSLATE_GARNET_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_JADE_ORE       = block(GotModBlocks.DEEPSLATE_JADE_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_JASPER_ORE     = block(GotModBlocks.DEEPSLATE_JASPER_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_MALACHITE_ORE  = block(GotModBlocks.DEEPSLATE_MALACHITE_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_MOONSTONE_ORE  = block(GotModBlocks.DEEPSLATE_MOONSTONE_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_ONYX_ORE       = block(GotModBlocks.DEEPSLATE_ONYX_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_TIGERS_EYE_ORE = block(GotModBlocks.DEEPSLATE_TIGERS_EYE_ORE);
+    public static final DeferredItem<Item> DEEPSLATE_TOURMALINE_ORE = block(GotModBlocks.DEEPSLATE_TOURMALINE_ORE);
 
     // ── Raw metal storage block items ────────────────────────────────────
     public static final DeferredItem<Item> RAW_SILVER_BLOCK   = block(GotModBlocks.RAW_SILVER_BLOCK);
@@ -1100,6 +1118,55 @@ public class GotModItems {
     public static final DeferredItem<Item> RUBY            = simple("ruby");
     public static final DeferredItem<Item> SAPPHIRE        = simple("sapphire");
     public static final DeferredItem<Item> TOPAZ           = simple("topaz");
+
+    // ── Gem storage blocks (existing) ─────────────────────────────────────
+    public static final DeferredItem<Item> OPAL_BLOCK      = block(GotModBlocks.OPAL_BLOCK);
+    public static final DeferredItem<Item> RUBY_BLOCK      = block(GotModBlocks.RUBY_BLOCK);
+    public static final DeferredItem<Item> SAPPHIRE_BLOCK  = block(GotModBlocks.SAPPHIRE_BLOCK);
+    public static final DeferredItem<Item> TOPAZ_BLOCK     = block(GotModBlocks.TOPAZ_BLOCK);
+
+    // ── New mineral gemstones ──────────────────────────────────────────────
+    public static final DeferredItem<Item> BERYL            = simple("beryl");
+    public static final DeferredItem<Item> BERYL_ORE        = block(GotModBlocks.BERYL_ORE);
+    public static final DeferredItem<Item> BERYL_BLOCK      = block(GotModBlocks.BERYL_BLOCK);
+    public static final DeferredItem<Item> BLOODSTONE       = simple("bloodstone");
+    public static final DeferredItem<Item> BLOODSTONE_ORE   = block(GotModBlocks.BLOODSTONE_ORE);
+    public static final DeferredItem<Item> BLOODSTONE_BLOCK = block(GotModBlocks.BLOODSTONE_BLOCK);
+    public static final DeferredItem<Item> CARNELIAN        = simple("carnelian");
+    public static final DeferredItem<Item> CARNELIAN_ORE    = block(GotModBlocks.CARNELIAN_ORE);
+    public static final DeferredItem<Item> CARNELIAN_BLOCK  = block(GotModBlocks.CARNELIAN_BLOCK);
+    public static final DeferredItem<Item> CHALCEDONY       = simple("chalcedony");
+    public static final DeferredItem<Item> CHALCEDONY_ORE   = block(GotModBlocks.CHALCEDONY_ORE);
+    public static final DeferredItem<Item> CHALCEDONY_BLOCK = block(GotModBlocks.CHALCEDONY_BLOCK);
+    public static final DeferredItem<Item> GARNET           = simple("garnet");
+    public static final DeferredItem<Item> GARNET_ORE       = block(GotModBlocks.GARNET_ORE);
+    public static final DeferredItem<Item> GARNET_BLOCK     = block(GotModBlocks.GARNET_BLOCK);
+    public static final DeferredItem<Item> JADE             = simple("jade");
+    public static final DeferredItem<Item> JADE_ORE         = block(GotModBlocks.JADE_ORE);
+    public static final DeferredItem<Item> JADE_BLOCK       = block(GotModBlocks.JADE_BLOCK);
+    public static final DeferredItem<Item> JASPER           = simple("jasper");
+    public static final DeferredItem<Item> JASPER_ORE       = block(GotModBlocks.JASPER_ORE);
+    public static final DeferredItem<Item> JASPER_BLOCK     = block(GotModBlocks.JASPER_BLOCK);
+    public static final DeferredItem<Item> MALACHITE        = simple("malachite");
+    public static final DeferredItem<Item> MALACHITE_ORE    = block(GotModBlocks.MALACHITE_ORE);
+    public static final DeferredItem<Item> MALACHITE_BLOCK  = block(GotModBlocks.MALACHITE_BLOCK);
+    public static final DeferredItem<Item> MOONSTONE        = simple("moonstone");
+    public static final DeferredItem<Item> MOONSTONE_ORE    = block(GotModBlocks.MOONSTONE_ORE);
+    public static final DeferredItem<Item> MOONSTONE_BLOCK  = block(GotModBlocks.MOONSTONE_BLOCK);
+    public static final DeferredItem<Item> ONYX             = simple("onyx");
+    public static final DeferredItem<Item> ONYX_ORE         = block(GotModBlocks.ONYX_ORE);
+    public static final DeferredItem<Item> ONYX_BLOCK       = block(GotModBlocks.ONYX_BLOCK);
+    public static final DeferredItem<Item> TIGERS_EYE       = simple("tigers_eye");
+    public static final DeferredItem<Item> TIGERS_EYE_ORE   = block(GotModBlocks.TIGERS_EYE_ORE);
+    public static final DeferredItem<Item> TIGERS_EYE_BLOCK = block(GotModBlocks.TIGERS_EYE_BLOCK);
+    public static final DeferredItem<Item> TOURMALINE       = simple("tourmaline");
+    public static final DeferredItem<Item> TOURMALINE_ORE   = block(GotModBlocks.TOURMALINE_ORE);
+    public static final DeferredItem<Item> TOURMALINE_BLOCK = block(GotModBlocks.TOURMALINE_BLOCK);
+
+    // ── Organic materials (no ore) ────────────────────────────────────────
+    public static final DeferredItem<Item> IVORY            = simple("ivory");
+    public static final DeferredItem<Item> JET              = simple("jet");
+    public static final DeferredItem<Item> PEARL            = simple("pearl");
 
     // ── Raw ores ──────────────────────────────────────────────────────────
     public static final DeferredItem<Item> RAW_SILVER          = simple("raw_silver");

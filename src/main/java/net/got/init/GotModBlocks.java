@@ -1711,11 +1711,10 @@ public class GotModBlocks {
     // ── Ores
     // Stone-tier ores (hardness 3, resistance 3) — copper, tin, amber, topaz
     public static final DeferredBlock<Block> TIN_ORE       = oreStone("tin_ore");
-    public static final DeferredBlock<Block> AMBER_ORE     = oreStone("amber_ore");
     public static final DeferredBlock<Block> TOPAZ_ORE     = oreStone("topaz_ore");
     // Iron-tier ores (hardness 3, resistance 3, like vanilla iron ore) — silver, amethyst, opal, ruby, sapphire, dragonglass
     public static final DeferredBlock<Block> SILVER_ORE      = oreIron("silver_ore");
-    public static final DeferredBlock<Block> AMETHYST_ORE    = oreIron("amethyst_ore");
+    public static final DeferredBlock<Block> AMETHYST_ORE      = oreIron("amethyst_ore");
     public static final DeferredBlock<Block> OPAL_ORE        = oreIron("opal_ore");
     public static final DeferredBlock<Block> RUBY_ORE        = oreIron("ruby_ore");
     public static final DeferredBlock<Block> SAPPHIRE_ORE    = oreIron("sapphire_ore");
@@ -1735,7 +1734,69 @@ public class GotModBlocks {
 
     // ── Deepslate variants of existing metals ─────────────────────────────
     public static final DeferredBlock<Block> DEEPSLATE_SILVER_ORE    = oreIronDeep("deepslate_silver_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_AMETHYST_ORE  = oreIronDeep("deepslate_amethyst_ore");
     public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE       = oreStoneDeep("deepslate_tin_ore");
+
+    // ── Deepslate variants of existing gem ores ───────────────────────────
+    public static final DeferredBlock<Block> DEEPSLATE_OPAL_ORE      = oreIronDeep("deepslate_opal_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_RUBY_ORE      = oreIronDeep("deepslate_ruby_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_SAPPHIRE_ORE  = oreIronDeep("deepslate_sapphire_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_TOPAZ_ORE     = oreIronDeep("deepslate_topaz_ore");
+
+    // ── Gem storage blocks for existing gems ─────────────────────────────
+    public static final DeferredBlock<Block> OPAL_BLOCK      = gemBlock("opal_block");
+    public static final DeferredBlock<Block> RUBY_BLOCK      = gemBlock("ruby_block");
+    public static final DeferredBlock<Block> SAPPHIRE_BLOCK  = gemBlock("sapphire_block");
+    public static final DeferredBlock<Block> TOPAZ_BLOCK     = gemBlock("topaz_block");
+
+    // ── New mineral gem ores + blocks ────────────────────────────────────
+    public static final DeferredBlock<Block> BERYL_ORE               = oreIron("beryl_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_BERYL_ORE     = oreIronDeep("deepslate_beryl_ore");
+    public static final DeferredBlock<Block> BERYL_BLOCK             = gemBlock("beryl_block");
+
+    public static final DeferredBlock<Block> BLOODSTONE_ORE          = oreIron("bloodstone_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_BLOODSTONE_ORE= oreIronDeep("deepslate_bloodstone_ore");
+    public static final DeferredBlock<Block> BLOODSTONE_BLOCK        = gemBlock("bloodstone_block");
+
+    public static final DeferredBlock<Block> CARNELIAN_ORE           = oreIron("carnelian_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_CARNELIAN_ORE = oreIronDeep("deepslate_carnelian_ore");
+    public static final DeferredBlock<Block> CARNELIAN_BLOCK         = gemBlock("carnelian_block");
+
+    public static final DeferredBlock<Block> CHALCEDONY_ORE          = oreIron("chalcedony_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_CHALCEDONY_ORE= oreIronDeep("deepslate_chalcedony_ore");
+    public static final DeferredBlock<Block> CHALCEDONY_BLOCK        = gemBlock("chalcedony_block");
+
+    public static final DeferredBlock<Block> GARNET_ORE              = oreIron("garnet_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_GARNET_ORE    = oreIronDeep("deepslate_garnet_ore");
+    public static final DeferredBlock<Block> GARNET_BLOCK            = gemBlock("garnet_block");
+
+    public static final DeferredBlock<Block> JADE_ORE                = oreIron("jade_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_JADE_ORE      = oreIronDeep("deepslate_jade_ore");
+    public static final DeferredBlock<Block> JADE_BLOCK              = gemBlock("jade_block");
+
+    public static final DeferredBlock<Block> JASPER_ORE              = oreIron("jasper_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_JASPER_ORE    = oreIronDeep("deepslate_jasper_ore");
+    public static final DeferredBlock<Block> JASPER_BLOCK            = gemBlock("jasper_block");
+
+    public static final DeferredBlock<Block> MALACHITE_ORE           = oreIron("malachite_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_MALACHITE_ORE = oreIronDeep("deepslate_malachite_ore");
+    public static final DeferredBlock<Block> MALACHITE_BLOCK         = gemBlock("malachite_block");
+
+    public static final DeferredBlock<Block> MOONSTONE_ORE           = oreIron("moonstone_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_MOONSTONE_ORE = oreIronDeep("deepslate_moonstone_ore");
+    public static final DeferredBlock<Block> MOONSTONE_BLOCK         = gemBlock("moonstone_block");
+
+    public static final DeferredBlock<Block> ONYX_ORE                = oreIron("onyx_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_ONYX_ORE      = oreIronDeep("deepslate_onyx_ore");
+    public static final DeferredBlock<Block> ONYX_BLOCK              = gemBlock("onyx_block");
+
+    public static final DeferredBlock<Block> TIGERS_EYE_ORE          = oreIron("tigers_eye_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_TIGERS_EYE_ORE= oreIronDeep("deepslate_tigers_eye_ore");
+    public static final DeferredBlock<Block> TIGERS_EYE_BLOCK        = gemBlock("tigers_eye_block");
+
+    public static final DeferredBlock<Block> TOURMALINE_ORE          = oreIron("tourmaline_ore");
+    public static final DeferredBlock<Block> DEEPSLATE_TOURMALINE_ORE= oreIronDeep("deepslate_tourmaline_ore");
+    public static final DeferredBlock<Block> TOURMALINE_BLOCK        = gemBlock("tourmaline_block");
 
     // ── Raw metal storage blocks ──────────────────────────────────────────
     public static final DeferredBlock<Block> RAW_COBALT_BLOCK        = rawBlock("raw_cobalt_block");
@@ -2412,6 +2473,12 @@ public class GotModBlocks {
     private static DeferredBlock<Block> oreIron(String name) {
         return REGISTRY.registerSimpleBlock(name,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
+    }
+
+    /** Gem storage block: hardness 5.0, resistance 6.0, iron-tier — mirrors vanilla amethyst block. */
+    private static DeferredBlock<Block> gemBlock(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK));
     }
 
     /** Diamond-tier ore: hardness 3.0, resistance 3.0, requires diamond pickaxe. */

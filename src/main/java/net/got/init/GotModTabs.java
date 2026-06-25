@@ -2697,22 +2697,66 @@ public class GotModTabs {
                         // ── Gemstones ─────────────────────────────────────────────────
                         output.accept(GotModItems.AMBER.get());
                         output.accept(GotModItems.AMETHYST.get());
+                        output.accept(GotModItems.BERYL.get());
+                        output.accept(GotModItems.BLOODSTONE.get());
+                        output.accept(GotModItems.CARNELIAN.get());
+                        output.accept(GotModItems.CHALCEDONY.get());
                         output.accept(GotModItems.DRAGONGLASS_SHARD.get());
+                        output.accept(GotModItems.GARNET.get());
+                        output.accept(GotModItems.IVORY.get());
+                        output.accept(GotModItems.JADE.get());
+                        output.accept(GotModItems.JASPER.get());
+                        output.accept(GotModItems.JET.get());
+                        output.accept(GotModItems.MALACHITE.get());
+                        output.accept(GotModItems.MOONSTONE.get());
+                        output.accept(GotModItems.ONYX.get());
                         output.accept(GotModItems.OPAL.get());
+                        output.accept(GotModItems.PEARL.get());
                         output.accept(GotModItems.RUBY.get());
                         output.accept(GotModItems.SAPPHIRE.get());
+                        output.accept(GotModItems.TIGERS_EYE.get());
                         output.accept(GotModItems.TOPAZ.get());
+                        output.accept(GotModItems.TOURMALINE.get());
+
+                        // ── Gem Blocks ────────────────────────────────────────────────
+                        output.accept(GotModItems.BERYL_BLOCK.get());
+                        output.accept(GotModItems.BLOODSTONE_BLOCK.get());
+                        output.accept(GotModItems.CARNELIAN_BLOCK.get());
+                        output.accept(GotModItems.CHALCEDONY_BLOCK.get());
+                        output.accept(GotModItems.GARNET_BLOCK.get());
+                        output.accept(GotModItems.JADE_BLOCK.get());
+                        output.accept(GotModItems.JASPER_BLOCK.get());
+                        output.accept(GotModItems.MALACHITE_BLOCK.get());
+                        output.accept(GotModItems.MOONSTONE_BLOCK.get());
+                        output.accept(GotModItems.ONYX_BLOCK.get());
+                        output.accept(GotModItems.OPAL_BLOCK.get());
+                        output.accept(GotModItems.RUBY_BLOCK.get());
+                        output.accept(GotModItems.SAPPHIRE_BLOCK.get());
+                        output.accept(GotModItems.TIGERS_EYE_BLOCK.get());
+                        output.accept(GotModItems.TOPAZ_BLOCK.get());
+                        output.accept(GotModItems.TOURMALINE_BLOCK.get());
 
                         // ── Ore Blocks ────────────────────────────────────────────────
-                        output.accept(GotModItems.AMBER_ORE.get());
-                        output.accept(GotModItems.AMETHYST_ORE.get());
+                        output.accept(GotModItems.BERYL_ORE.get());
+                        output.accept(GotModItems.BLOODSTONE_ORE.get());
+                        output.accept(GotModItems.CARNELIAN_ORE.get());
+                        output.accept(GotModItems.CHALCEDONY_ORE.get());
                         output.accept(GotModItems.DRAGONGLASS_ORE.get());
+                        output.accept(GotModItems.GARNET_ORE.get());
+                        output.accept(GotModItems.JADE_ORE.get());
+                        output.accept(GotModItems.JASPER_ORE.get());
+                        output.accept(GotModItems.MALACHITE_ORE.get());
+                        output.accept(GotModItems.MOONSTONE_ORE.get());
+                        output.accept(GotModItems.ONYX_ORE.get());
                         output.accept(GotModItems.OPAL_ORE.get());
                         output.accept(GotModItems.RUBY_ORE.get());
                         output.accept(GotModItems.SAPPHIRE_ORE.get());
                         output.accept(GotModItems.SILVER_ORE.get());
+                        output.accept(GotModItems.AMETHYST_ORE.get());
+                        output.accept(GotModItems.TIGERS_EYE_ORE.get());
                         output.accept(GotModItems.TIN_ORE.get());
                         output.accept(GotModItems.TOPAZ_ORE.get());
+                        output.accept(GotModItems.TOURMALINE_ORE.get());
                         output.accept(GotModItems.VALYRIAN_STEEL_ORE.get());
                         output.accept(GotModItems.COBALT_ORE.get());
                         output.accept(GotModItems.LEAD_ORE.get());
@@ -2720,8 +2764,25 @@ public class GotModTabs {
                         output.accept(GotModItems.ZINC_ORE.get());
 
                         // ── Deepslate Ore Blocks ──────────────────────────────────────
+                        output.accept(GotModItems.DEEPSLATE_BERYL_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_BLOODSTONE_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_CARNELIAN_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_CHALCEDONY_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_GARNET_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_JADE_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_JASPER_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_MALACHITE_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_MOONSTONE_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_ONYX_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_OPAL_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_RUBY_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_SAPPHIRE_ORE.get());
                         output.accept(GotModItems.DEEPSLATE_SILVER_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_AMETHYST_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_TIGERS_EYE_ORE.get());
                         output.accept(GotModItems.DEEPSLATE_TIN_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_TOPAZ_ORE.get());
+                        output.accept(GotModItems.DEEPSLATE_TOURMALINE_ORE.get());
                         output.accept(GotModItems.DEEPSLATE_COBALT_ORE.get());
                         output.accept(GotModItems.DEEPSLATE_LEAD_ORE.get());
                         output.accept(GotModItems.DEEPSLATE_PLATINUM_ORE.get());
