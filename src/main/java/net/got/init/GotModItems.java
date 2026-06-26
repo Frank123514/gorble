@@ -1974,6 +1974,40 @@ public class GotModItems {
     public static final DeferredItem<Item> HORSERADISH = REGISTRY.registerItem("horseradish", p -> new BlockItem(GotModBlocks.HORSERADISH_CROP.get(), p), new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.3f).build()));
     public static final DeferredItem<Item> LEEK        = REGISTRY.registerItem("leek",        p -> new BlockItem(GotModBlocks.LEEK_CROP.get(),        p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.5f).build()));
 
+    // ── Miscellaneous ASOIAF Plants ──────────────────────────────────────
+    public static final DeferredItem<Item> BEAN              = block(GotModBlocks.BEAN);
+    public static final DeferredItem<Item> BLACKBERRY        = block(GotModBlocks.BLACKBERRY);
+    public static final DeferredItem<Item> BLUEBERRY         = block(GotModBlocks.BLUEBERRY);
+    public static final DeferredItem<Item> BRACKEN           = block(GotModBlocks.BRACKEN);
+    public static final DeferredItem<Item> BRIAR             = block(GotModBlocks.BRIAR);
+    public static final DeferredItem<Item> BROOM             = block(GotModBlocks.BROOM);
+    public static final DeferredItem<Item> CABBAGE_PLANT     = block(GotModBlocks.CABBAGE_PLANT);
+    public static final DeferredItem<Item> CARDAMOM          = block(GotModBlocks.CARDAMOM);
+    public static final DeferredItem<Item> CHICKPEA          = block(GotModBlocks.CHICKPEA);
+    public static final DeferredItem<Item> CORN              = block(GotModBlocks.CORN);
+    public static final DeferredItem<Item> CUCUMBER          = block(GotModBlocks.CUCUMBER);
+    public static final DeferredItem<Item> DAGGERLEAF        = block(GotModBlocks.DAGGERLEAF);
+    public static final DeferredItem<Item> FIREPOD           = block(GotModBlocks.FIREPOD);
+    public static final DeferredItem<Item> GHOSTSKIN         = block(GotModBlocks.GHOSTSKIN);
+    public static final DeferredItem<Item> GRAPE_VINE        = block(GotModBlocks.GRAPE_VINE);
+    public static final DeferredItem<Item> HARPYS_GOLD       = block(GotModBlocks.HARPYS_GOLD);
+    public static final DeferredItem<Item> HEMP              = block(GotModBlocks.HEMP);
+    public static final DeferredItem<Item> HORNWORT          = block(GotModBlocks.HORNWORT);
+    public static final DeferredItem<Item> IVY               = block(GotModBlocks.IVY);
+    public static final DeferredItem<Item> KINGSCOPPER       = block(GotModBlocks.KINGSCOPPER);
+    public static final DeferredItem<Item> LICORICE          = block(GotModBlocks.LICORICE);
+    public static final DeferredItem<Item> MISTLETOE         = block(GotModBlocks.MISTLETOE);
+    public static final DeferredItem<Item> MUSTARD_PLANT     = block(GotModBlocks.MUSTARD_PLANT);
+    public static final DeferredItem<Item> NETTLE            = block(GotModBlocks.NETTLE);
+    public static final DeferredItem<Item> PEPPER_PLANT      = block(GotModBlocks.PEPPER_PLANT);
+    public static final DeferredItem<Item> PINCHFIRE         = block(GotModBlocks.PINCHFIRE);
+    public static final DeferredItem<Item> PRICKLY_BEN       = block(GotModBlocks.PRICKLY_BEN);
+    public static final DeferredItem<Item> SANDWILLOW        = block(GotModBlocks.SANDWILLOW);
+    public static final DeferredItem<Item> SMOKEBERRY        = block(GotModBlocks.SMOKEBERRY);
+    public static final DeferredItem<Item> SOURLEAF          = block(GotModBlocks.SOURLEAF);
+    public static final DeferredItem<Item> STING_ME_NOT      = block(GotModBlocks.STING_ME_NOT);
+    public static final DeferredItem<Item> WASPWILLOW        = block(GotModBlocks.WASPWILLOW);
+
     // ── Berry produce ─────────────────────────────────────────────────────
     public static final DeferredItem<Item> BLACKBERRIES = REGISTRY.registerItem("blackberries", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
     public static final DeferredItem<Item> BLUEBERRIES  = REGISTRY.registerItem("blueberries", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4f).build()));

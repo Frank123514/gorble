@@ -2420,6 +2420,41 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.THORNBUSH.get());
                         safeAccept(output, GotModBlocks.WILD_RADISH.get());
 
+                        // ── Plants & Herbs ────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.BEAN.get());
+                        safeAccept(output, GotModBlocks.BLACKBERRY.get());
+                        safeAccept(output, GotModBlocks.BLUEBERRY.get());
+                        safeAccept(output, GotModBlocks.BRACKEN.get());
+                        safeAccept(output, GotModBlocks.BRIAR.get());
+                        safeAccept(output, GotModBlocks.BROOM.get());
+                        safeAccept(output, GotModBlocks.CABBAGE_PLANT.get());
+                        safeAccept(output, GotModBlocks.CARDAMOM.get());
+                        safeAccept(output, GotModBlocks.CHICKPEA.get());
+                        safeAccept(output, GotModBlocks.CORN.get());
+                        safeAccept(output, GotModBlocks.CUCUMBER.get());
+                        safeAccept(output, GotModBlocks.DAGGERLEAF.get());
+                        safeAccept(output, GotModBlocks.FIREPOD.get());
+                        safeAccept(output, GotModBlocks.GHOSTSKIN.get());
+                        safeAccept(output, GotModBlocks.GRAPE_VINE.get());
+                        safeAccept(output, GotModBlocks.HARPYS_GOLD.get());
+                        safeAccept(output, GotModBlocks.HEMP.get());
+                        safeAccept(output, GotModBlocks.HORNWORT.get());
+                        safeAccept(output, GotModBlocks.IVY.get());
+                        safeAccept(output, GotModBlocks.KINGSCOPPER.get());
+                        safeAccept(output, GotModBlocks.LICORICE.get());
+                        safeAccept(output, GotModBlocks.MISTLETOE.get());
+                        safeAccept(output, GotModBlocks.MUSTARD_PLANT.get());
+                        safeAccept(output, GotModBlocks.NETTLE.get());
+                        safeAccept(output, GotModBlocks.PEPPER_PLANT.get());
+                        safeAccept(output, GotModBlocks.PINCHFIRE.get());
+                        safeAccept(output, GotModBlocks.PRICKLY_BEN.get());
+                        safeAccept(output, GotModBlocks.SANDWILLOW.get());
+                        safeAccept(output, GotModBlocks.SMOKEBERRY.get());
+                        safeAccept(output, GotModBlocks.SOURLEAF.get());
+                        safeAccept(output, GotModBlocks.STING_ME_NOT.get());
+                        safeAccept(output, GotModBlocks.WASPWILLOW.get());
+
+
                         // ── Grasses & Wetland Plants ──────────────────────────────────
                         safeAccept(output, GotModBlocks.DEVILGRASS.get());
                         safeAccept(output, GotModBlocks.GHOST_GRASS.get());
