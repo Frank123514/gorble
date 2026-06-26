@@ -1942,6 +1942,20 @@ public class GotModItems {
     public static final DeferredItem<Item> BARLEY_SEEDS  = REGISTRY.registerItem("barley_seeds",  p -> new BlockItem(GotModBlocks.BARLEY_CROP.get(),   p));
     public static final DeferredItem<Item> COTTON_SEEDS      = REGISTRY.registerItem("cotton_seeds",      p -> new BlockItem(GotModBlocks.COTTON_CROP.get(),     p));
     public static final DeferredItem<Item> PEPPERCORN_SEEDS  = REGISTRY.registerItem("peppercorn_seeds",  p -> new BlockItem(GotModBlocks.PEPPERCORN_CROP.get(), p));
+    public static final DeferredItem<Item> BEAN_SEEDS          = REGISTRY.registerItem("bean_seeds",          p -> new BlockItem(GotModBlocks.BEAN_CROP.get(),          p));
+    public static final DeferredItem<Item> CABBAGE_PLANT_SEEDS = REGISTRY.registerItem("cabbage_plant_seeds", p -> new BlockItem(GotModBlocks.CABBAGE_PLANT_CROP.get(), p));
+    public static final DeferredItem<Item> CARDAMOM_SEEDS      = REGISTRY.registerItem("cardamom_seeds",      p -> new BlockItem(GotModBlocks.CARDAMOM_CROP.get(),      p));
+    public static final DeferredItem<Item> CHICKPEA_SEEDS      = REGISTRY.registerItem("chickpea_seeds",      p -> new BlockItem(GotModBlocks.CHICKPEA_CROP.get(),      p));
+    public static final DeferredItem<Item> CORN_SEEDS          = REGISTRY.registerItem("corn_seeds",          p -> new BlockItem(GotModBlocks.CORN_CROP.get(),          p));
+    public static final DeferredItem<Item> CUCUMBER_SEEDS      = REGISTRY.registerItem("cucumber_seeds",      p -> new BlockItem(GotModBlocks.CUCUMBER_CROP.get(),      p));
+    public static final DeferredItem<Item> HEMP_SEEDS          = REGISTRY.registerItem("hemp_seeds",          p -> new BlockItem(GotModBlocks.HEMP_CROP.get(),          p));
+    public static final DeferredItem<Item> KINGSCOPPER_SEEDS   = REGISTRY.registerItem("kingscopper_seeds",   p -> new BlockItem(GotModBlocks.KINGSCOPPER_CROP.get(),   p));
+    public static final DeferredItem<Item> LICORICE_SEEDS      = REGISTRY.registerItem("licorice_seeds",      p -> new BlockItem(GotModBlocks.LICORICE_CROP.get(),      p));
+    public static final DeferredItem<Item> MUSTARD_PLANT_SEEDS = REGISTRY.registerItem("mustard_plant_seeds", p -> new BlockItem(GotModBlocks.MUSTARD_PLANT_CROP.get(), p));
+    public static final DeferredItem<Item> NETTLE_SEEDS        = REGISTRY.registerItem("nettle_seeds",        p -> new BlockItem(GotModBlocks.NETTLE_CROP.get(),        p));
+    public static final DeferredItem<Item> PEPPER_PLANT_SEEDS  = REGISTRY.registerItem("pepper_plant_seeds",  p -> new BlockItem(GotModBlocks.PEPPER_PLANT_CROP.get(),  p));
+    public static final DeferredItem<Item> SANDWILLOW_SEEDS    = REGISTRY.registerItem("sandwillow_seeds",    p -> new BlockItem(GotModBlocks.SANDWILLOW_CROP.get(),    p));
+    public static final DeferredItem<Item> SOURLEAF_SEEDS      = REGISTRY.registerItem("sourleaf_seeds",      p -> new BlockItem(GotModBlocks.SOURLEAF_CROP.get(),      p));
 
     // ── Crop produce (seed-type crops) ────────────────────────────────────
     public static final DeferredItem<Item> OAT        = simple("oat");

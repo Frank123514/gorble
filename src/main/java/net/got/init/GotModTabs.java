@@ -2579,6 +2579,20 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HORSERADISH_CROP.get());
                         safeAccept(output, GotModBlocks.LEEK_CROP.get());
                         safeAccept(output, GotModBlocks.PEPPERCORN_CROP.get());
+                        safeAccept(output, GotModBlocks.BEAN_CROP.get());
+                        safeAccept(output, GotModBlocks.CABBAGE_PLANT_CROP.get());
+                        safeAccept(output, GotModBlocks.CARDAMOM_CROP.get());
+                        safeAccept(output, GotModBlocks.CHICKPEA_CROP.get());
+                        safeAccept(output, GotModBlocks.CORN_CROP.get());
+                        safeAccept(output, GotModBlocks.CUCUMBER_CROP.get());
+                        safeAccept(output, GotModBlocks.HEMP_CROP.get());
+                        safeAccept(output, GotModBlocks.KINGSCOPPER_CROP.get());
+                        safeAccept(output, GotModBlocks.LICORICE_CROP.get());
+                        safeAccept(output, GotModBlocks.MUSTARD_PLANT_CROP.get());
+                        safeAccept(output, GotModBlocks.NETTLE_CROP.get());
+                        safeAccept(output, GotModBlocks.PEPPER_PLANT_CROP.get());
+                        safeAccept(output, GotModBlocks.SANDWILLOW_CROP.get());
+                        safeAccept(output, GotModBlocks.SOURLEAF_CROP.get());
 
                         // ── Berry Bushes ──────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACKBERRY_BUSH.get());
@@ -2857,6 +2871,20 @@ public class GotModTabs {
                         output.accept(GotModItems.BARLEY_SEEDS.get());
                         output.accept(GotModItems.COTTON_SEEDS.get());
                         output.accept(GotModItems.PEPPERCORN_SEEDS.get());
+                        output.accept(GotModItems.BEAN_SEEDS.get());
+                        output.accept(GotModItems.CABBAGE_PLANT_SEEDS.get());
+                        output.accept(GotModItems.CARDAMOM_SEEDS.get());
+                        output.accept(GotModItems.CHICKPEA_SEEDS.get());
+                        output.accept(GotModItems.CORN_SEEDS.get());
+                        output.accept(GotModItems.CUCUMBER_SEEDS.get());
+                        output.accept(GotModItems.HEMP_SEEDS.get());
+                        output.accept(GotModItems.KINGSCOPPER_SEEDS.get());
+                        output.accept(GotModItems.LICORICE_SEEDS.get());
+                        output.accept(GotModItems.MUSTARD_PLANT_SEEDS.get());
+                        output.accept(GotModItems.NETTLE_SEEDS.get());
+                        output.accept(GotModItems.PEPPER_PLANT_SEEDS.get());
+                        output.accept(GotModItems.SANDWILLOW_SEEDS.get());
+                        output.accept(GotModItems.SOURLEAF_SEEDS.get());
 
                         // ── Non-Edible Produce (grains, cotton, processing items) ─────
                         output.accept(GotModItems.OAT.get());

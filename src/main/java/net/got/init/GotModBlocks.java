@@ -15,6 +15,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.effect.MobEffects;
 import net.got.block.GotSeedCropBlock;
+import net.got.block.GotShortSeedCropBlock;
 import net.got.block.GotProduceCropBlock;
 import net.got.block.GotBerryBushBlock;
 import net.minecraft.world.item.Item;
@@ -1758,6 +1759,20 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BARLEY_CROP   = seedCropBlock("barley_crop",   () -> GotModItems.BARLEY_SEEDS.get());
     public static final DeferredBlock<Block> COTTON_CROP      = seedCropBlock("cotton_crop",      () -> GotModItems.COTTON_SEEDS.get());
     public static final DeferredBlock<Block> PEPPERCORN_CROP  = seedCropBlock("peppercorn_crop",  () -> GotModItems.PEPPERCORN_SEEDS.get());
+    public static final DeferredBlock<Block> BEAN_CROP          = seedCropBlock("bean_crop",          () -> GotModItems.BEAN_SEEDS.get());
+    public static final DeferredBlock<Block> CABBAGE_PLANT_CROP = seedCropBlock("cabbage_plant_crop", () -> GotModItems.CABBAGE_PLANT_SEEDS.get());
+    public static final DeferredBlock<Block> CARDAMOM_CROP      = seedCropBlock("cardamom_crop",      () -> GotModItems.CARDAMOM_SEEDS.get());
+    public static final DeferredBlock<Block> CHICKPEA_CROP      = seedCropBlock("chickpea_crop",      () -> GotModItems.CHICKPEA_SEEDS.get());
+    public static final DeferredBlock<Block> CORN_CROP          = shortSeedCropBlock("corn_crop",     () -> GotModItems.CORN_SEEDS.get());
+    public static final DeferredBlock<Block> CUCUMBER_CROP      = seedCropBlock("cucumber_crop",      () -> GotModItems.CUCUMBER_SEEDS.get());
+    public static final DeferredBlock<Block> HEMP_CROP          = seedCropBlock("hemp_crop",          () -> GotModItems.HEMP_SEEDS.get());
+    public static final DeferredBlock<Block> KINGSCOPPER_CROP   = seedCropBlock("kingscopper_crop",   () -> GotModItems.KINGSCOPPER_SEEDS.get());
+    public static final DeferredBlock<Block> LICORICE_CROP      = seedCropBlock("licorice_crop",      () -> GotModItems.LICORICE_SEEDS.get());
+    public static final DeferredBlock<Block> MUSTARD_PLANT_CROP = seedCropBlock("mustard_plant_crop", () -> GotModItems.MUSTARD_PLANT_SEEDS.get());
+    public static final DeferredBlock<Block> NETTLE_CROP        = seedCropBlock("nettle_crop",        () -> GotModItems.NETTLE_SEEDS.get());
+    public static final DeferredBlock<Block> PEPPER_PLANT_CROP  = seedCropBlock("pepper_plant_crop",  () -> GotModItems.PEPPER_PLANT_SEEDS.get());
+    public static final DeferredBlock<Block> SANDWILLOW_CROP    = seedCropBlock("sandwillow_crop",    () -> GotModItems.SANDWILLOW_SEEDS.get());
+    public static final DeferredBlock<Block> SOURLEAF_CROP      = seedCropBlock("sourleaf_crop",      () -> GotModItems.SOURLEAF_SEEDS.get());
 
     // ── Crops — Produce-type (planted with produce, harvests more produce) ─
     public static final DeferredBlock<Block> PARSNIP_CROP = produceCropBlock("parsnip_crop", () -> GotModItems.PARSNIP.get());
@@ -2438,6 +2453,25 @@ public class GotModBlocks {
         return REGISTRY.registerBlock(name,
                 p -> new GotSeedCropBlock(seed, p),
                 BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
+    }
+
+    /**
+     * Short seed-type crop (4 growth stages, age 0–3). Same farmland/no-collision
+     * properties as seedCropBlock, but uses GotShortSeedCropBlock.
+     */
+    private static DeferredBlock<Block> shortSeedCropBlock(String name, java.util.function.Supplier<Item> seed) {
+        // Cannot use ofFullCopy(Blocks.WHEAT) here — that copies WHEAT's 0-7 age
+        // BlockState properties onto our block, which only declares age 0-3, causing
+        // an IllegalArgumentException during StateDefinition construction.
+        // Instead we manually copy the behaviour properties we need from WHEAT.
+        return REGISTRY.registerBlock(name,
+                p -> new GotShortSeedCropBlock(seed, p),
+                BlockBehaviour.Properties.of()
+                        .noCollission()
+                        .randomTicks()
+                        .instabreak()
+                        .sound(SoundType.CROP)
+                        .pushReaction(PushReaction.DESTROY));
     }
 
     /**
