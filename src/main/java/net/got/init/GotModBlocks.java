@@ -1783,7 +1783,15 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLACKBERRY_BUSH  = berryBushBlock("blackberry_bush",  () -> GotModItems.BLACKBERRIES.get());
     public static final DeferredBlock<Block> BLUEBERRY_BUSH   = berryBushBlock("blueberry_bush",   () -> GotModItems.BLUEBERRIES.get());
     public static final DeferredBlock<Block> RASPBERRY_BUSH   = berryBushBlock("raspberry_bush",   () -> GotModItems.RASPBERRIES.get());
-    public static final DeferredBlock<Block> STRAWBERRY_BUSH  = berryBushBlock("strawberry_bush",  () -> GotModItems.STRAWBERRIES.get());
+    public static final DeferredBlock<Block> STRAWBERRY_CROP   = REGISTRY.registerBlock("strawberry_crop",
+                p -> new GotStrawberryCropBlock(p),
+                BlockBehaviour.Properties.of()
+                        .noCollission()
+                        .randomTicks()
+                        .instabreak()
+                        .sound(SoundType.CROP)
+                        .pushReaction(PushReaction.DESTROY));
+    public static final DeferredBlock<Block> WILD_STRAWBERRY   = flowerBlock("wild_strawberry");
 
     // ── Ores
     // Stone-tier ores (hardness 3, resistance 3) — copper, tin, amber, topaz

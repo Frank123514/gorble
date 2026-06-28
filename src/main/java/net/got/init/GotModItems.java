@@ -2031,12 +2031,12 @@ public class GotModItems {
     public static final DeferredItem<Item> BLACKBERRIES = REGISTRY.registerItem("blackberries", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
     public static final DeferredItem<Item> BLUEBERRIES  = REGISTRY.registerItem("blueberries", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4f).build()));
     public static final DeferredItem<Item> RASPBERRIES  = REGISTRY.registerItem("raspberries", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.4f).build()));
-    public static final DeferredItem<Item> STRAWBERRIES = REGISTRY.registerItem("strawberries", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.5f).build()));
+    public static final DeferredItem<Item> STRAWBERRIES = REGISTRY.registerItem("strawberries", p -> new BlockItem(GotModBlocks.STRAWBERRY_CROP.get(), p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.5f).build()));
     // ── Berry Bush block items ────────────────────────────────────────────────
     public static final DeferredItem<Item> BLACKBERRY_BUSH  = block(GotModBlocks.BLACKBERRY_BUSH);
     public static final DeferredItem<Item> BLUEBERRY_BUSH   = block(GotModBlocks.BLUEBERRY_BUSH);
     public static final DeferredItem<Item> RASPBERRY_BUSH   = block(GotModBlocks.RASPBERRY_BUSH);
-    public static final DeferredItem<Item> STRAWBERRY_BUSH  = block(GotModBlocks.STRAWBERRY_BUSH);
+    public static final DeferredItem<Item> WILD_STRAWBERRY  = block(GotModBlocks.WILD_STRAWBERRY);
 
 
     // ── Copper tools ──────────────────────────────────────────────────────

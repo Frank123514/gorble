@@ -767,7 +767,6 @@ public final class GotConfiguredFeatures {
         register(ctx, BLACKBERRY_BUSH, Feature.RANDOM_PATCH, berryPatch(GotModBlocks.BLACKBERRY_BUSH, 10, 4, 3));
         register(ctx, BLUEBERRY_BUSH,  Feature.RANDOM_PATCH, berryPatch(GotModBlocks.BLUEBERRY_BUSH,  10, 4, 3));
         register(ctx, RASPBERRY_BUSH,  Feature.RANDOM_PATCH, berryPatch(GotModBlocks.RASPBERRY_BUSH,  10, 4, 3));
-        register(ctx, STRAWBERRY_BUSH, Feature.RANDOM_PATCH, berryPatch(GotModBlocks.STRAWBERRY_BUSH, 12, 5, 3));
 
         // ══════════════════════════════════════════════════════════════════════
         // WILD CROPS  (random_patch, simple block, no age)

@@ -2606,13 +2606,14 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LICORICE_CROP.get());
                         safeAccept(output, GotModBlocks.MUSTARD_PLANT_CROP.get());
                         safeAccept(output, GotModBlocks.PEPPER_PLANT_CROP.get());
+                        safeAccept(output, GotModBlocks.STRAWBERRY_CROP.get());
 
                         // ── Berry Bushes ──────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACKBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.BLUEBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.SMOKEBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.RASPBERRY_BUSH.get());
-                        safeAccept(output, GotModBlocks.STRAWBERRY_BUSH.get());
+                        safeAccept(output, GotModBlocks.WILD_STRAWBERRY.get());
 
                     })
                     .build());
