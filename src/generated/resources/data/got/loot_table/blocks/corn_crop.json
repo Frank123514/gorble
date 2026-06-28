@@ -48,7 +48,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "got:corn",
+          "name": "got:corn_on_the_cob",
           "functions": [
             {
               "function": "minecraft:explosion_decay"

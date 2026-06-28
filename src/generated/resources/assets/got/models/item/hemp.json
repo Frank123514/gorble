@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "got:block/hemp"
+    "layer0": "got:item/hemp"
   }
 }

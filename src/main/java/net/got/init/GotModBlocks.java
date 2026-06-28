@@ -1601,69 +1601,67 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILD_LEEK = flowerBlock("wild_leek");
 
     // ── Miscellaneous ASOIAF Plants (not yet in mod) ─────────────────────
-    public static final DeferredBlock<Block> BEAN              = flowerBlock("bean");
-    public static final DeferredBlock<Block> BLACKBERRY        = flowerBlock("blackberry");
-    public static final DeferredBlock<Block> BLUEBERRY         = flowerBlock("blueberry");
+    public static final DeferredBlock<Block> WILD_BEAN         = flowerBlock("wild_bean");
+
     public static final DeferredBlock<Block> BRACKEN           = flowerBlock("bracken");
     public static final DeferredBlock<Block> BRIAR             = flowerBlock("briar");
     public static final DeferredBlock<Block> BROOM             = flowerBlock("broom");
-    public static final DeferredBlock<Block> CABBAGE_PLANT     = flowerBlock("cabbage_plant");
-    public static final DeferredBlock<Block> CARDAMOM          = flowerBlock("cardamom");
-    public static final DeferredBlock<Block> CHICKPEA          = flowerBlock("chickpea");
-    public static final DeferredBlock<Block> CORN              = flowerBlock("corn");
-    public static final DeferredBlock<Block> CUCUMBER          = flowerBlock("cucumber");
+
+    public static final DeferredBlock<Block> WILD_CARDAMOM     = flowerBlock("wild_cardamom");
+    public static final DeferredBlock<Block> WILD_CHICKPEA     = flowerBlock("wild_chickpea");
+
+    public static final DeferredBlock<Block> WILD_CUCUMBER     = flowerBlock("wild_cucumber");
     public static final DeferredBlock<Block> DAGGERLEAF        = flowerBlock("daggerleaf");
     public static final DeferredBlock<Block> FIREPOD           = flowerBlock("firepod");
     public static final DeferredBlock<Block> GHOSTSKIN         = flowerBlock("ghostskin");
     public static final DeferredBlock<Block> GRAPE_VINE        = flowerBlock("grape_vine");
     public static final DeferredBlock<Block> HARPYS_GOLD       = flowerBlock("harpys_gold");
-    public static final DeferredBlock<Block> HEMP              = flowerBlock("hemp");
+    public static final DeferredBlock<Block> WILD_HEMP         = flowerBlock("wild_hemp");
     public static final DeferredBlock<Block> HORNWORT          = flowerBlock("hornwort");
     public static final DeferredBlock<Block> IVY               = flowerBlock("ivy");
     public static final DeferredBlock<Block> KINGSCOPPER       = flowerBlock("kingscopper");
-    public static final DeferredBlock<Block> LICORICE          = flowerBlock("licorice");
+    public static final DeferredBlock<Block> WILD_LICORICE     = flowerBlock("wild_licorice");
     public static final DeferredBlock<Block> MISTLETOE         = flowerBlock("mistletoe");
-    public static final DeferredBlock<Block> MUSTARD_PLANT     = flowerBlock("mustard_plant");
+    public static final DeferredBlock<Block> WILD_MUSTARD_PLANT = flowerBlock("wild_mustard_plant");
     public static final DeferredBlock<Block> NETTLE            = flowerBlock("nettle");
-    public static final DeferredBlock<Block> PEPPER_PLANT      = flowerBlock("pepper_plant");
+    public static final DeferredBlock<Block> WILD_PEPPER_PLANT  = flowerBlock("wild_pepper_plant");
     public static final DeferredBlock<Block> PINCHFIRE         = flowerBlock("pinchfire");
     public static final DeferredBlock<Block> PRICKLY_BEN       = flowerBlock("prickly_ben");
     public static final DeferredBlock<Block> SANDWILLOW        = flowerBlock("sandwillow");
-    public static final DeferredBlock<Block> SMOKEBERRY        = flowerBlock("smokeberry");
+    public static final DeferredBlock<Block> SMOKEBERRY_BUSH   = berryBushBlock("smokeberry_bush",   () -> GotModItems.SMOKEBERRIES.get());
     public static final DeferredBlock<Block> SOURLEAF          = flowerBlock("sourleaf");
     public static final DeferredBlock<Block> STING_ME_NOT      = flowerBlock("sting_me_not");
     public static final DeferredBlock<Block> WASPWILLOW        = flowerBlock("waspwillow");
 
     // ── Potted variants ──────────────────────────────────────────────────
-    public static final DeferredBlock<Block> POTTED_BEAN           = pottedBlock("potted_bean",           () -> BEAN);
-    public static final DeferredBlock<Block> POTTED_BLACKBERRY     = pottedBlock("potted_blackberry",     () -> BLACKBERRY);
-    public static final DeferredBlock<Block> POTTED_BLUEBERRY      = pottedBlock("potted_blueberry",      () -> BLUEBERRY);
+    public static final DeferredBlock<Block> POTTED_WILD_BEAN           = pottedBlock("potted_wild_bean",       () -> WILD_BEAN);
+
     public static final DeferredBlock<Block> POTTED_BRACKEN        = pottedBlock("potted_bracken",        () -> BRACKEN);
     public static final DeferredBlock<Block> POTTED_BRIAR          = pottedBlock("potted_briar",          () -> BRIAR);
     public static final DeferredBlock<Block> POTTED_BROOM          = pottedBlock("potted_broom",          () -> BROOM);
-    public static final DeferredBlock<Block> POTTED_CABBAGE_PLANT  = pottedBlock("potted_cabbage_plant",  () -> CABBAGE_PLANT);
-    public static final DeferredBlock<Block> POTTED_CARDAMOM       = pottedBlock("potted_cardamom",       () -> CARDAMOM);
-    public static final DeferredBlock<Block> POTTED_CHICKPEA       = pottedBlock("potted_chickpea",       () -> CHICKPEA);
-    public static final DeferredBlock<Block> POTTED_CORN           = pottedBlock("potted_corn",           () -> CORN);
-    public static final DeferredBlock<Block> POTTED_CUCUMBER       = pottedBlock("potted_cucumber",       () -> CUCUMBER);
+
+    public static final DeferredBlock<Block> POTTED_WILD_CARDAMOM       = pottedBlock("potted_wild_cardamom",  () -> WILD_CARDAMOM);
+    public static final DeferredBlock<Block> POTTED_WILD_CHICKPEA       = pottedBlock("potted_wild_chickpea",  () -> WILD_CHICKPEA);
+
+    public static final DeferredBlock<Block> POTTED_WILD_CUCUMBER       = pottedBlock("potted_wild_cucumber",  () -> WILD_CUCUMBER);
     public static final DeferredBlock<Block> POTTED_DAGGERLEAF     = pottedBlock("potted_daggerleaf",     () -> DAGGERLEAF);
     public static final DeferredBlock<Block> POTTED_FIREPOD        = pottedBlock("potted_firepod",        () -> FIREPOD);
     public static final DeferredBlock<Block> POTTED_GHOSTSKIN      = pottedBlock("potted_ghostskin",      () -> GHOSTSKIN);
     public static final DeferredBlock<Block> POTTED_GRAPE_VINE     = pottedBlock("potted_grape_vine",     () -> GRAPE_VINE);
     public static final DeferredBlock<Block> POTTED_HARPYS_GOLD    = pottedBlock("potted_harpys_gold",    () -> HARPYS_GOLD);
-    public static final DeferredBlock<Block> POTTED_HEMP           = pottedBlock("potted_hemp",           () -> HEMP);
+    public static final DeferredBlock<Block> POTTED_WILD_HEMP           = pottedBlock("potted_wild_hemp",       () -> WILD_HEMP);
     public static final DeferredBlock<Block> POTTED_HORNWORT       = pottedBlock("potted_hornwort",       () -> HORNWORT);
     public static final DeferredBlock<Block> POTTED_IVY            = pottedBlock("potted_ivy",            () -> IVY);
     public static final DeferredBlock<Block> POTTED_KINGSCOPPER    = pottedBlock("potted_kingscopper",    () -> KINGSCOPPER);
-    public static final DeferredBlock<Block> POTTED_LICORICE       = pottedBlock("potted_licorice",       () -> LICORICE);
+    public static final DeferredBlock<Block> POTTED_WILD_LICORICE       = pottedBlock("potted_wild_licorice",  () -> WILD_LICORICE);
     public static final DeferredBlock<Block> POTTED_MISTLETOE      = pottedBlock("potted_mistletoe",      () -> MISTLETOE);
-    public static final DeferredBlock<Block> POTTED_MUSTARD_PLANT  = pottedBlock("potted_mustard_plant",  () -> MUSTARD_PLANT);
+    public static final DeferredBlock<Block> POTTED_WILD_MUSTARD_PLANT  = pottedBlock("potted_wild_mustard_plant",  () -> WILD_MUSTARD_PLANT);
     public static final DeferredBlock<Block> POTTED_NETTLE         = pottedBlock("potted_nettle",         () -> NETTLE);
-    public static final DeferredBlock<Block> POTTED_PEPPER_PLANT   = pottedBlock("potted_pepper_plant",   () -> PEPPER_PLANT);
+    public static final DeferredBlock<Block> POTTED_WILD_PEPPER_PLANT   = pottedBlock("potted_wild_pepper_plant",   () -> WILD_PEPPER_PLANT);
     public static final DeferredBlock<Block> POTTED_PINCHFIRE      = pottedBlock("potted_pinchfire",      () -> PINCHFIRE);
     public static final DeferredBlock<Block> POTTED_PRICKLY_BEN    = pottedBlock("potted_prickly_ben",    () -> PRICKLY_BEN);
     public static final DeferredBlock<Block> POTTED_SANDWILLOW     = pottedBlock("potted_sandwillow",     () -> SANDWILLOW);
-    public static final DeferredBlock<Block> POTTED_SMOKEBERRY     = pottedBlock("potted_smokeberry",     () -> SMOKEBERRY);
+
     public static final DeferredBlock<Block> POTTED_SOURLEAF       = pottedBlock("potted_sourleaf",       () -> SOURLEAF);
     public static final DeferredBlock<Block> POTTED_STING_ME_NOT   = pottedBlock("potted_sting_me_not",   () -> STING_ME_NOT);
     public static final DeferredBlock<Block> POTTED_WASPWILLOW     = pottedBlock("potted_waspwillow",     () -> WASPWILLOW);
@@ -1760,26 +1758,22 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> COTTON_CROP      = seedCropBlock("cotton_crop",      () -> GotModItems.COTTON_SEEDS.get());
     public static final DeferredBlock<Block> PEPPERCORN_CROP  = seedCropBlock("peppercorn_crop",  () -> GotModItems.PEPPERCORN_SEEDS.get());
     public static final DeferredBlock<Block> BEAN_CROP          = seedCropBlock("bean_crop",          () -> GotModItems.BEAN_SEEDS.get());
-    public static final DeferredBlock<Block> CABBAGE_PLANT_CROP = seedCropBlock("cabbage_plant_crop", () -> GotModItems.CABBAGE_PLANT_SEEDS.get());
+
     public static final DeferredBlock<Block> CARDAMOM_CROP      = seedCropBlock("cardamom_crop",      () -> GotModItems.CARDAMOM_SEEDS.get());
     public static final DeferredBlock<Block> CHICKPEA_CROP      = seedCropBlock("chickpea_crop",      () -> GotModItems.CHICKPEA_SEEDS.get());
     public static final DeferredBlock<Block> CORN_CROP          = shortSeedCropBlock("corn_crop",     () -> GotModItems.CORN_SEEDS.get());
     public static final DeferredBlock<Block> CUCUMBER_CROP      = seedCropBlock("cucumber_crop",      () -> GotModItems.CUCUMBER_SEEDS.get());
     public static final DeferredBlock<Block> HEMP_CROP          = seedCropBlock("hemp_crop",          () -> GotModItems.HEMP_SEEDS.get());
-    public static final DeferredBlock<Block> KINGSCOPPER_CROP   = seedCropBlock("kingscopper_crop",   () -> GotModItems.KINGSCOPPER_SEEDS.get());
     public static final DeferredBlock<Block> LICORICE_CROP      = seedCropBlock("licorice_crop",      () -> GotModItems.LICORICE_SEEDS.get());
     public static final DeferredBlock<Block> MUSTARD_PLANT_CROP = seedCropBlock("mustard_plant_crop", () -> GotModItems.MUSTARD_PLANT_SEEDS.get());
-    public static final DeferredBlock<Block> NETTLE_CROP        = seedCropBlock("nettle_crop",        () -> GotModItems.NETTLE_SEEDS.get());
     public static final DeferredBlock<Block> PEPPER_PLANT_CROP  = seedCropBlock("pepper_plant_crop",  () -> GotModItems.PEPPER_PLANT_SEEDS.get());
-    public static final DeferredBlock<Block> SANDWILLOW_CROP    = seedCropBlock("sandwillow_crop",    () -> GotModItems.SANDWILLOW_SEEDS.get());
-    public static final DeferredBlock<Block> SOURLEAF_CROP      = seedCropBlock("sourleaf_crop",      () -> GotModItems.SOURLEAF_SEEDS.get());
 
     // ── Crops — Produce-type (planted with produce, harvests more produce) ─
     public static final DeferredBlock<Block> PARSNIP_CROP = produceCropBlock("parsnip_crop", () -> GotModItems.PARSNIP.get());
     public static final DeferredBlock<Block> ONION_CROP   = produceCropBlock("onion_crop",   () -> GotModItems.ONION.get());
     public static final DeferredBlock<Block> TURNIP_CROP  = produceCropBlock("turnip_crop",  () -> GotModItems.TURNIP.get());
     public static final DeferredBlock<Block> PEAS_CROP    = produceCropBlock("peas_crop",    () -> GotModItems.PEAS.get());
-    public static final DeferredBlock<Block> CABBAGE_CROP = produceCropBlock("cabbage_crop", () -> GotModItems.CABBAGE.get());
+    public static final DeferredBlock<Block> CABBAGE_CROP = seedCropBlock("cabbage_crop", () -> GotModItems.CABBAGE_PLANT_SEEDS.get());
     public static final DeferredBlock<Block> GARLIC_CROP      = produceCropBlock("garlic_crop",      () -> GotModItems.GARLIC.get());
     public static final DeferredBlock<Block> NEEP_CROP        = produceCropBlock("neep_crop",        () -> GotModItems.NEEP.get());
     public static final DeferredBlock<Block> HORSERADISH_CROP = produceCropBlock("horseradish_crop", () -> GotModItems.HORSERADISH.get());

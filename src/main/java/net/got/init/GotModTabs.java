@@ -2421,35 +2421,33 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WILD_RADISH.get());
 
                         // ── Plants & Herbs ────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.BEAN.get());
-                        safeAccept(output, GotModBlocks.BLACKBERRY.get());
-                        safeAccept(output, GotModBlocks.BLUEBERRY.get());
+                        safeAccept(output, GotModBlocks.WILD_BEAN.get());
+
                         safeAccept(output, GotModBlocks.BRACKEN.get());
                         safeAccept(output, GotModBlocks.BRIAR.get());
                         safeAccept(output, GotModBlocks.BROOM.get());
-                        safeAccept(output, GotModBlocks.CABBAGE_PLANT.get());
-                        safeAccept(output, GotModBlocks.CARDAMOM.get());
-                        safeAccept(output, GotModBlocks.CHICKPEA.get());
-                        safeAccept(output, GotModBlocks.CORN.get());
-                        safeAccept(output, GotModBlocks.CUCUMBER.get());
+                        safeAccept(output, GotModBlocks.WILD_CARDAMOM.get());
+                        safeAccept(output, GotModBlocks.WILD_CHICKPEA.get());
+
+                        safeAccept(output, GotModBlocks.WILD_CUCUMBER.get());
                         safeAccept(output, GotModBlocks.DAGGERLEAF.get());
                         safeAccept(output, GotModBlocks.FIREPOD.get());
                         safeAccept(output, GotModBlocks.GHOSTSKIN.get());
                         safeAccept(output, GotModBlocks.GRAPE_VINE.get());
                         safeAccept(output, GotModBlocks.HARPYS_GOLD.get());
-                        safeAccept(output, GotModBlocks.HEMP.get());
+                        safeAccept(output, GotModBlocks.WILD_HEMP.get());
                         safeAccept(output, GotModBlocks.HORNWORT.get());
                         safeAccept(output, GotModBlocks.IVY.get());
                         safeAccept(output, GotModBlocks.KINGSCOPPER.get());
-                        safeAccept(output, GotModBlocks.LICORICE.get());
+                        safeAccept(output, GotModBlocks.WILD_LICORICE.get());
                         safeAccept(output, GotModBlocks.MISTLETOE.get());
-                        safeAccept(output, GotModBlocks.MUSTARD_PLANT.get());
+                        safeAccept(output, GotModBlocks.WILD_MUSTARD_PLANT.get());
                         safeAccept(output, GotModBlocks.NETTLE.get());
-                        safeAccept(output, GotModBlocks.PEPPER_PLANT.get());
+                        safeAccept(output, GotModBlocks.WILD_PEPPER_PLANT.get());
                         safeAccept(output, GotModBlocks.PINCHFIRE.get());
                         safeAccept(output, GotModBlocks.PRICKLY_BEN.get());
                         safeAccept(output, GotModBlocks.SANDWILLOW.get());
-                        safeAccept(output, GotModBlocks.SMOKEBERRY.get());
+                        safeAccept(output, GotModBlocks.SMOKEBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.SOURLEAF.get());
                         safeAccept(output, GotModBlocks.STING_ME_NOT.get());
                         safeAccept(output, GotModBlocks.WASPWILLOW.get());
@@ -2514,16 +2512,29 @@ public class GotModTabs {
                         output.accept(GotModItems.NEEP.get());
                         output.accept(GotModItems.HORSERADISH.get());
                         output.accept(GotModItems.LEEK.get());
+                        output.accept(GotModItems.CORN_ON_THE_COB.get());
+                        output.accept(GotModItems.BEAN.get());
+                        output.accept(GotModItems.CHICKPEA.get());
+                        output.accept(GotModItems.CUCUMBER.get());
+
+                        // ── Herbs & Spices ────────────────────────────────────────────
+                        output.accept(GotModItems.CARDAMOM.get());
+                        output.accept(GotModItems.LICORICE.get());
+                        output.accept(GotModItems.MUSTARD_PLANT.get());
+                        output.accept(GotModItems.PEPPER_PLANT.get());
+
+                        // ── Crafting Ingredients ──────────────────────────────────────
+                        output.accept(GotModItems.HEMP.get());
 
                         // ── Berries ───────────────────────────────────────────────────
                         output.accept(GotModItems.BLACKBERRIES.get());
                         output.accept(GotModItems.BLUEBERRIES.get());
+                        output.accept(GotModItems.SMOKEBERRIES.get());
                         output.accept(GotModItems.RASPBERRIES.get());
                         output.accept(GotModItems.STRAWBERRIES.get());
 
                         // ── Fruits & Nuts ─────────────────────────────────────────────
                         output.accept(GotModItems.APRICOT.get());
-                        output.accept(GotModItems.SLOE.get());
                         output.accept(GotModItems.RED_CHERRY.get());
                         output.accept(GotModItems.BLACK_CHERRY.get());
                         output.accept(GotModItems.WHITE_CHERRY.get());
@@ -2537,7 +2548,6 @@ public class GotModTabs {
                         output.accept(GotModItems.PEACH.get());
                         output.accept(GotModItems.PEAR.get());
                         output.accept(GotModItems.PERSIMMON.get());
-                        output.accept(GotModItems.PINK_IVORY_FRUIT.get());
                         output.accept(GotModItems.PLUM.get());
                         output.accept(GotModItems.POMEGRANATE.get());
                         output.accept(GotModItems.PRUNE.get());
@@ -2563,6 +2573,14 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WILD_GARLIC.get());
                         safeAccept(output, GotModBlocks.WILD_HORSERADISH.get());
                         safeAccept(output, GotModBlocks.WILD_LEEK.get());
+                        safeAccept(output, GotModBlocks.WILD_BEAN.get());
+                        safeAccept(output, GotModBlocks.WILD_CARDAMOM.get());
+                        safeAccept(output, GotModBlocks.WILD_CHICKPEA.get());
+                        safeAccept(output, GotModBlocks.WILD_CUCUMBER.get());
+                        safeAccept(output, GotModBlocks.WILD_HEMP.get());
+                        safeAccept(output, GotModBlocks.WILD_LICORICE.get());
+                        safeAccept(output, GotModBlocks.WILD_MUSTARD_PLANT.get());
+                        safeAccept(output, GotModBlocks.WILD_PEPPER_PLANT.get());
 
                         // ── Crop Blocks ───────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.OAT_CROP.get());
@@ -2580,23 +2598,19 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LEEK_CROP.get());
                         safeAccept(output, GotModBlocks.PEPPERCORN_CROP.get());
                         safeAccept(output, GotModBlocks.BEAN_CROP.get());
-                        safeAccept(output, GotModBlocks.CABBAGE_PLANT_CROP.get());
                         safeAccept(output, GotModBlocks.CARDAMOM_CROP.get());
                         safeAccept(output, GotModBlocks.CHICKPEA_CROP.get());
                         safeAccept(output, GotModBlocks.CORN_CROP.get());
                         safeAccept(output, GotModBlocks.CUCUMBER_CROP.get());
                         safeAccept(output, GotModBlocks.HEMP_CROP.get());
-                        safeAccept(output, GotModBlocks.KINGSCOPPER_CROP.get());
                         safeAccept(output, GotModBlocks.LICORICE_CROP.get());
                         safeAccept(output, GotModBlocks.MUSTARD_PLANT_CROP.get());
-                        safeAccept(output, GotModBlocks.NETTLE_CROP.get());
                         safeAccept(output, GotModBlocks.PEPPER_PLANT_CROP.get());
-                        safeAccept(output, GotModBlocks.SANDWILLOW_CROP.get());
-                        safeAccept(output, GotModBlocks.SOURLEAF_CROP.get());
 
                         // ── Berry Bushes ──────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACKBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.BLUEBERRY_BUSH.get());
+                        safeAccept(output, GotModBlocks.SMOKEBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.RASPBERRY_BUSH.get());
                         safeAccept(output, GotModBlocks.STRAWBERRY_BUSH.get());
 
@@ -2878,13 +2892,9 @@ public class GotModTabs {
                         output.accept(GotModItems.CORN_SEEDS.get());
                         output.accept(GotModItems.CUCUMBER_SEEDS.get());
                         output.accept(GotModItems.HEMP_SEEDS.get());
-                        output.accept(GotModItems.KINGSCOPPER_SEEDS.get());
                         output.accept(GotModItems.LICORICE_SEEDS.get());
                         output.accept(GotModItems.MUSTARD_PLANT_SEEDS.get());
-                        output.accept(GotModItems.NETTLE_SEEDS.get());
                         output.accept(GotModItems.PEPPER_PLANT_SEEDS.get());
-                        output.accept(GotModItems.SANDWILLOW_SEEDS.get());
-                        output.accept(GotModItems.SOURLEAF_SEEDS.get());
 
                         // ── Non-Edible Produce (grains, cotton, processing items) ─────
                         output.accept(GotModItems.OAT.get());
