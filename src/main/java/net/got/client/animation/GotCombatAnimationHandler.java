@@ -26,7 +26,7 @@ public final class GotCombatAnimationHandler {
         GotArmPose[] poses = GotArmPose.values();
         int id = payload.poseId();
         if (id < 0 || id >= poses.length) return;
-        GotPlayerAnimator.INSTANCE.triggerAttack(poses[id]);
+        GotPlayerAnimator.INSTANCE.triggerAttack(poses[id], 0);
     }
 
     /**
@@ -44,7 +44,7 @@ public final class GotCombatAnimationHandler {
         if (pose == GotArmPose.NONE || pose == GotArmPose.BLOCK) return;
 
         LOGGER.debug("[GOT-ANIM] Attack input, pose={}", pose);
-        GotPlayerAnimator.INSTANCE.triggerAttack(pose);
+        GotPlayerAnimator.INSTANCE.triggerAttack(pose, player.tickCount);
     }
 
     @SubscribeEvent
@@ -70,7 +70,7 @@ public final class GotCombatAnimationHandler {
                 || currentWeaponPose == GotArmPose.GREATSWORD;
 
         boolean blocking = canBlock && (blockKeyHeld || usingItem);
-        animator.setBlocking(blocking);
+        animator.setBlocking(blocking, player.tickCount);
 
         // ── Base locomotion animation ─────────────────────────────────────────
         // Select the right base anim from GotPlayerBaseAnimations based on
@@ -80,29 +80,29 @@ public final class GotCombatAnimationHandler {
             net.minecraft.world.entity.Entity horse = player.getVehicle();
             double horseSpdSq = horse.getDeltaMovement().horizontalDistanceSqr();
             if (horseSpdSq > 0.001) {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.HORSE_RUNNING);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.HORSE_RUNNING, player.tickCount);
             } else {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.HORSE_IDLE);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.HORSE_IDLE, player.tickCount);
             }
         } else if (!player.onGround() && !player.isPassenger()) {
             // Only show FALLING/JUMP when truly airborne (not riding something)
             double verticalVel = player.getDeltaMovement().y;
             if (verticalVel > 0.1) {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.JUMP);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.JUMP, player.tickCount);
             } else {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.FALLING);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.FALLING, player.tickCount);
             }
         } else if (player.isCrouching()) {
-            animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_SNEAK);
+            animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_SNEAK, player.tickCount);
         } else {
             // Check movement speed to pick walk vs run vs idle
             double speedSq = player.getDeltaMovement().horizontalDistanceSqr();
             if (speedSq > 0.08) {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.RUNNING);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.RUNNING, player.tickCount);
             } else if (speedSq > 0.001) {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.WALKING);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.WALKING, player.tickCount);
             } else {
-                animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_STANDING);
+                animator.setBaseAnimation(GotPlayerBaseAnimations.IDLE_STANDING, player.tickCount);
             }
         }
     }

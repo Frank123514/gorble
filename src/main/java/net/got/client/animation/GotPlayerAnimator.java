@@ -37,6 +37,14 @@ public final class GotPlayerAnimator {
     /** Player tickCount when baseAnimation started — used for smooth per-frame timing. */
     private int baseStartTick = 0;
 
+    // ── Render-time float start ages (set by mixin each frame) ───────────────
+    // ageInTicks is partial-tick interpolated (e.g. 14.73), so subtracting the
+    // start age gives smooth sub-tick local time for KeyframeAnimations.animate().
+    private float renderCombatStartAge = 0F;
+    private float renderBaseStartAge   = 0F;
+    private AnimationDefinition lastSeenCombatAnim = null;
+    private AnimationDefinition lastSeenBaseAnim   = null;
+
     // ── Combo thresholds (in ticks, at 20 tps) ───────────────────────────────
     /** Earliest tick in SWORD_ATTACK where a combo input is accepted (~t=0.40 s). */
     private static final float COMBO_WINDOW_OPEN  = 0.40F * 20F;
@@ -157,6 +165,37 @@ public final class GotPlayerAnimator {
 
     public boolean shouldHoldLastFrame() {
         return isBlocking;
+    }
+
+    /**
+     * Called by the mixin at the start of every setupAnim() call with the
+     * current renderState.ageInTicks (partial-tick interpolated).
+     * Detects animation transitions and records the render-time start age so
+     * the mixin can compute smooth local time without integer-tick stepping.
+     */
+    public void notifyRenderFrame(float ageInTicks) {
+        if (currentAnimation != lastSeenCombatAnim) {
+            lastSeenCombatAnim  = currentAnimation;
+            renderCombatStartAge = ageInTicks;
+        }
+        if (baseAnimation != lastSeenBaseAnim) {
+            lastSeenBaseAnim  = baseAnimation;
+            renderBaseStartAge = ageInTicks;
+        }
+    }
+
+    /** Smooth local time for the current combat animation in ticks (partial-tick interpolated). */
+    public float getSmoothCombatTicks(float ageInTicks) {
+        if (currentAnimation == null) return 0F;
+        float local = ageInTicks - renderCombatStartAge;
+        float maxTicks = currentAnimation.lengthInSeconds() * 20F;
+        return shouldHoldLastFrame() ? Math.min(local, maxTicks) : local;
+    }
+
+    /** Smooth local time for the current base animation in ticks (partial-tick interpolated). */
+    public float getSmoothBaseTicks(float ageInTicks) {
+        if (baseAnimation == null) return 0F;
+        return ageInTicks - renderBaseStartAge;
     }
 
     public void onAnimationFinished() {

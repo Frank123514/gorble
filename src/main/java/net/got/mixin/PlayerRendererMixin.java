@@ -12,34 +12,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Injects GOT's animations into vanilla PlayerModel.setupAnim(), making them
- * REPLACE vanilla's pose rather than play on top of it.
+ * Injects GOT's animations into vanilla PlayerModel.setupAnim().
  *
- * <p>This is the only mechanism that actually reaches the live PlayerModel
- * instance NeoForge renders every player with. There is no supported NeoForge
- * API to swap out the player's EntityRenderer/EntityModel wholesale —
- * EntityRenderersEvent.AddLayers only allows adding extra render layers on top
- * of the existing player renderer, it can't replace the base model. So this
- * mixin is load-bearing, not redundant.
+ * <p>This is the sole animation application point. GotPlayerRenderer /
+ * GotPlayerModel must NOT also call KeyframeAnimations.animate() — doing so
+ * causes every bone to be transformed twice per frame, producing garbage poses.
  *
- * <p>Two layers, both applied after vanilla's own setupAnim has run:
- * <ol>
- *   <li>Base locomotion (idle/walk/run/fall from GotPlayerBaseAnimations).</li>
- *   <li>Combat animation (attack combo, block) — overrides base on affected bones.</li>
- * </ol>
+ * <p>Time source: renderState.ageInTicks is partial-tick interpolated by the
+ * render engine (e.g. 14.73 at 60 fps between ticks 14 and 15). We pass this
+ * into GotPlayerAnimator.notifyRenderFrame() which records the ageInTicks at
+ * the moment each animation starts, then getSmoothCombatTicks() /
+ * getSmoothBaseTicks() return (currentAge - startAge) — a float local time
+ * that advances smoothly every frame. Multiplying by 50 converts ticks→ms for
+ * KeyframeAnimations.animate(). This is why the animations look smooth in
+ * Blockbench and must look equally smooth in-game.
  *
- * <p>Every bone except the head is reset to rest pose before either GOT layer
- * runs, because KeyframeAnimations.animate() is additive onto whatever pose
- * the bone already has — without the reset, GOT's animation stacks on top of
- * vanilla's arm-swing/crouch pose instead of replacing it. The head is left
- * un-reset on purpose: vanilla sets head rotation from the player's actual
- * look direction (mouse look) in this same setupAnim call, and that has to
- * survive. GOT's head keyframes (small idle sway/tilt) add on top of look
- * direction instead of overriding it.
- *
- * <p>The combat layer is applied after base WITHOUT a second reset, so combat
- * overrides base only on the bones it actually keys (arms/torso during a
- * swing) while base's leg motion from walking/running keeps playing underneath.
+ * <p>Reset strategy: every bone except the head is reset to rest pose before
+ * either GOT layer runs, because KeyframeAnimations.animate() is additive.
+ * Without this, GOT's offsets stack on top of vanilla's arm-swing/crouch pose.
+ * The head is excluded so vanilla's look-direction (mouse look) survives;
+ * GOT head keyframes add on top of it intentionally.
  */
 @Mixin(PlayerModel.class)
 public abstract class PlayerRendererMixin {
@@ -50,16 +42,19 @@ public abstract class PlayerRendererMixin {
     private void got_applyAnimation(PlayerRenderState state, CallbackInfo ci) {
         GotPlayerAnimator animator = GotPlayerAnimator.INSTANCE;
 
-        @SuppressWarnings("unchecked")
-        PlayerModel model = (PlayerModel)(Object) this;
+        // Tell the animator what render-time ageInTicks we're at this frame.
+        // It uses this to detect animation transitions and record smooth start times.
+        animator.notifyRenderFrame(state.ageInTicks);
 
         AnimationDefinition baseAnim   = animator.getBaseAnimation();
         AnimationDefinition combatAnim = animator.getCurrentAnimation();
 
-        // Nothing for GOT to do this frame — leave vanilla's pose as-is.
         if (baseAnim == null && combatAnim == null) {
             return;
         }
+
+        @SuppressWarnings("unchecked")
+        PlayerModel model = (PlayerModel)(Object) this;
 
         // ── Reset bones GOT fully owns back to rest pose ───────────────────────
         // (head intentionally excluded — see class javadoc)
@@ -71,10 +66,11 @@ public abstract class PlayerRendererMixin {
 
         // ── Layer 1: base locomotion ──────────────────────────────────────────
         if (baseAnim != null) {
+            float localTicks = animator.getSmoothBaseTicks(state.ageInTicks);
             KeyframeAnimations.animate(
                     model,
                     baseAnim,
-                    (long)(animator.getBaseAnimationTicks() * 50F),
+                    (long)(localTicks * 50F),
                     1.0F,
                     GOT_ANIM_VEC
             );
@@ -82,11 +78,11 @@ public abstract class PlayerRendererMixin {
 
         // ── Layer 2: combat (overrides base for affected bones) ───────────────
         if (combatAnim != null) {
-            float ticks = animator.getCurrentAnimationTicks();
+            float localTicks = animator.getSmoothCombatTicks(state.ageInTicks);
             KeyframeAnimations.animate(
                     model,
                     combatAnim,
-                    (long)(ticks * 50F),
+                    (long)(localTicks * 50F),
                     1.0F,
                     GOT_ANIM_VEC
             );
