@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "got:bean_seeds",
+          "name": "got:bean",
           "functions": [
             {
               "function": "minecraft:apply_bonus",
@@ -15,29 +15,6 @@
               "parameters": {
                 "extra": 2,
                 "probability": 0.5714286
-              }
-            },
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ]
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "got:bean",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 0.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
               }
             },
             {

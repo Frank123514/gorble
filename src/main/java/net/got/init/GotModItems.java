@@ -1942,7 +1942,6 @@ public class GotModItems {
     public static final DeferredItem<Item> BARLEY_SEEDS  = REGISTRY.registerItem("barley_seeds",  p -> new BlockItem(GotModBlocks.BARLEY_CROP.get(),   p));
     public static final DeferredItem<Item> COTTON_SEEDS      = REGISTRY.registerItem("cotton_seeds",      p -> new BlockItem(GotModBlocks.COTTON_CROP.get(),     p));
     public static final DeferredItem<Item> PEPPERCORN_SEEDS  = REGISTRY.registerItem("peppercorn_seeds",  p -> new BlockItem(GotModBlocks.PEPPERCORN_CROP.get(), p));
-    public static final DeferredItem<Item> BEAN_SEEDS          = REGISTRY.registerItem("bean_seeds",          p -> new BlockItem(GotModBlocks.BEAN_CROP.get(),          p));
 
     public static final DeferredItem<Item> CARDAMOM_SEEDS      = REGISTRY.registerItem("cardamom_seeds",      p -> new BlockItem(GotModBlocks.CARDAMOM_CROP.get(),      p));
     public static final DeferredItem<Item> CHICKPEA_SEEDS      = REGISTRY.registerItem("chickpea_seeds",      p -> new BlockItem(GotModBlocks.CHICKPEA_CROP.get(),      p));
@@ -1987,7 +1986,7 @@ public class GotModItems {
 
     // ── Miscellaneous ASOIAF Plants ──────────────────────────────────────
     public static final DeferredItem<Item> WILD_BEAN          = block(GotModBlocks.WILD_BEAN);
-    public static final DeferredItem<Item> BEAN               = REGISTRY.registerItem("bean",          p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.5f).build()));
+    public static final DeferredItem<Item> BEAN               = REGISTRY.registerItem("bean",          p -> new BlockItem(GotModBlocks.BEAN_CROP.get(), p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.5f).build()));
 
     public static final DeferredItem<Item> BRACKEN            = block(GotModBlocks.BRACKEN);
     public static final DeferredItem<Item> BRIAR              = block(GotModBlocks.BRIAR);
@@ -2014,7 +2013,6 @@ public class GotModItems {
     public static final DeferredItem<Item> LICORICE           = REGISTRY.registerItem("licorice",      p -> new Item(p));
     public static final DeferredItem<Item> MISTLETOE          = block(GotModBlocks.MISTLETOE);
     public static final DeferredItem<Item> WILD_MUSTARD_PLANT = block(GotModBlocks.WILD_MUSTARD_PLANT);
-    public static final DeferredItem<Item> MUSTARD_PLANT      = REGISTRY.registerItem("mustard_plant", p -> new Item(p));
     public static final DeferredItem<Item> NETTLE             = block(GotModBlocks.NETTLE);
     public static final DeferredItem<Item> WILD_PEPPER_PLANT  = block(GotModBlocks.WILD_PEPPER_PLANT);
     public static final DeferredItem<Item> PEPPER_PLANT       = REGISTRY.registerItem("pepper_plant",  p -> new Item(p));

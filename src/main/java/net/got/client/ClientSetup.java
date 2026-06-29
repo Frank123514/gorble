@@ -3,7 +3,6 @@ package net.got.client;
 import net.got.client.input.GotKeybinds;
 import net.got.client.particle.WeirwoodLeafParticle;
 import net.got.client.renderer.GotBoatRenderer;
-import net.got.client.renderer.GotPlayerRenderer;
 import net.got.entity.client.brownbear.GotBrownBearModel;
 import net.got.entity.client.brownbear.GotBrownBearRenderer;
 import net.got.entity.client.giant.GotGiantModel;

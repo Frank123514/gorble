@@ -2520,7 +2520,6 @@ public class GotModTabs {
                         // ── Herbs & Spices ────────────────────────────────────────────
                         output.accept(GotModItems.CARDAMOM.get());
                         output.accept(GotModItems.LICORICE.get());
-                        output.accept(GotModItems.MUSTARD_PLANT.get());
                         output.accept(GotModItems.PEPPER_PLANT.get());
 
                         // ── Crafting Ingredients ──────────────────────────────────────
@@ -2886,7 +2885,6 @@ public class GotModTabs {
                         output.accept(GotModItems.BARLEY_SEEDS.get());
                         output.accept(GotModItems.COTTON_SEEDS.get());
                         output.accept(GotModItems.PEPPERCORN_SEEDS.get());
-                        output.accept(GotModItems.BEAN_SEEDS.get());
                         output.accept(GotModItems.CABBAGE_PLANT_SEEDS.get());
                         output.accept(GotModItems.CARDAMOM_SEEDS.get());
                         output.accept(GotModItems.CHICKPEA_SEEDS.get());

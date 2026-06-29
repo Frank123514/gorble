@@ -25,6 +25,8 @@ public final class GotPlayerAnimator {
     private GotArmPose currentPose = GotArmPose.NONE;
     private boolean isBlocking = false;
     private float animTicks = 0F;
+    /** Player tickCount when currentAnimation started — used for smooth per-frame timing. */
+    private int animStartTick = 0;
 
     /** True when the player queued a follow-up attack during the recovery window. */
     private boolean comboQueued = false;
@@ -32,6 +34,8 @@ public final class GotPlayerAnimator {
     // ── Base locomotion state (set externally by GotCombatAnimationHandler) ──
     private AnimationDefinition baseAnimation = null;
     private float baseTicks = 0F;
+    /** Player tickCount when baseAnimation started — used for smooth per-frame timing. */
+    private int baseStartTick = 0;
 
     // ── Combo thresholds (in ticks, at 20 tps) ───────────────────────────────
     /** Earliest tick in SWORD_ATTACK where a combo input is accepted (~t=0.40 s). */
@@ -55,7 +59,7 @@ public final class GotPlayerAnimator {
 
     // ── Called by GotCombatAnimationHandler ───────────────────────────────────
 
-    public void triggerAttack(GotArmPose pose) {
+    public void triggerAttack(GotArmPose pose, int playerTickCount) {
         if (pose == GotArmPose.NONE || pose == GotArmPose.BLOCK) return;
 
         // ── Combo check: sword → sword_combo_2 ────────────────────────────────
@@ -74,15 +78,17 @@ public final class GotPlayerAnimator {
         currentPose      = pose;
         currentAnimation = animationFor(pose);
         animTicks        = 0F;
+        animStartTick    = playerTickCount;
     }
 
-    public void setBlocking(boolean blocking) {
+    public void setBlocking(boolean blocking, int playerTickCount) {
         this.isBlocking = blocking;
         if (blocking && currentPose != GotArmPose.BLOCK) {
             comboQueued      = false;
             currentPose      = GotArmPose.BLOCK;
             currentAnimation = GotPlayerCombatAnimations.SWORD_BLOCK;
             animTicks        = 0F;
+            animStartTick    = playerTickCount;
         } else if (!blocking && currentPose == GotArmPose.BLOCK) {
             currentPose      = GotArmPose.NONE;
             currentAnimation = null;
@@ -91,10 +97,11 @@ public final class GotPlayerAnimator {
     }
 
     /** Sets the base locomotion animation (idle, walk, etc.). Pass null to clear. */
-    public void setBaseAnimation(AnimationDefinition anim) {
+    public void setBaseAnimation(AnimationDefinition anim, int playerTickCount) {
         if (anim != baseAnimation) {
-            baseAnimation = anim;
-            baseTicks     = 0F;
+            baseAnimation  = anim;
+            baseTicks      = 0F;
+            baseStartTick  = playerTickCount;
         }
     }
 

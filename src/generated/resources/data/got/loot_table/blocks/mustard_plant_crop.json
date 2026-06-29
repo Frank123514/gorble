@@ -33,30 +33,6 @@
         }
       ],
       "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "got:mustard_plant_crop",
-          "properties": {
-            "age": "7"
-          }
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "got:mustard_plant",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ]
-        }
-      ],
-      "rolls": 1.0
     }
   ],
   "random_sequence": "got:blocks/mustard_plant_crop"

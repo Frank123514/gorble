@@ -1757,12 +1757,12 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BARLEY_CROP   = seedCropBlock("barley_crop",   () -> GotModItems.BARLEY_SEEDS.get());
     public static final DeferredBlock<Block> COTTON_CROP      = seedCropBlock("cotton_crop",      () -> GotModItems.COTTON_SEEDS.get());
     public static final DeferredBlock<Block> PEPPERCORN_CROP  = seedCropBlock("peppercorn_crop",  () -> GotModItems.PEPPERCORN_SEEDS.get());
-    public static final DeferredBlock<Block> BEAN_CROP          = seedCropBlock("bean_crop",          () -> GotModItems.BEAN_SEEDS.get());
+    public static final DeferredBlock<Block> BEAN_CROP          = shortProduceCropBlock("bean_crop",     () -> GotModItems.BEAN.get());
 
     public static final DeferredBlock<Block> CARDAMOM_CROP      = seedCropBlock("cardamom_crop",      () -> GotModItems.CARDAMOM_SEEDS.get());
     public static final DeferredBlock<Block> CHICKPEA_CROP      = seedCropBlock("chickpea_crop",      () -> GotModItems.CHICKPEA_SEEDS.get());
     public static final DeferredBlock<Block> CORN_CROP          = shortSeedCropBlock("corn_crop",     () -> GotModItems.CORN_SEEDS.get());
-    public static final DeferredBlock<Block> CUCUMBER_CROP      = seedCropBlock("cucumber_crop",      () -> GotModItems.CUCUMBER_SEEDS.get());
+    public static final DeferredBlock<Block> CUCUMBER_CROP      = shortSeedCropBlock("cucumber_crop",     () -> GotModItems.CUCUMBER_SEEDS.get());
     public static final DeferredBlock<Block> HEMP_CROP          = seedCropBlock("hemp_crop",          () -> GotModItems.HEMP_SEEDS.get());
     public static final DeferredBlock<Block> LICORICE_CROP      = seedCropBlock("licorice_crop",      () -> GotModItems.LICORICE_SEEDS.get());
     public static final DeferredBlock<Block> MUSTARD_PLANT_CROP = seedCropBlock("mustard_plant_crop", () -> GotModItems.MUSTARD_PLANT_SEEDS.get());
@@ -2485,6 +2485,26 @@ public class GotModBlocks {
         return REGISTRY.registerBlock(name,
                 p -> new GotProduceCropBlock(produce, p),
                 BlockBehaviour.Properties.ofFullCopy(Blocks.CARROTS));
+    }
+
+    /**
+     * Short produce-type crop (4 growth stages, age 0–3). Planted with the
+     * produce item itself (no separate seed), like produceCropBlock, but uses
+     * GotShortProduceCropBlock for the 0-3 age range.
+     */
+    private static DeferredBlock<Block> shortProduceCropBlock(String name, java.util.function.Supplier<Item> produce) {
+        // Cannot use ofFullCopy(Blocks.CARROTS) here — that copies CARROTS' 0-7 age
+        // BlockState properties onto our block, which only declares age 0-3, causing
+        // an IllegalArgumentException during StateDefinition construction.
+        // Instead we manually copy the behaviour properties we need from CARROTS.
+        return REGISTRY.registerBlock(name,
+                p -> new GotShortProduceCropBlock(produce, p),
+                BlockBehaviour.Properties.of()
+                        .noCollission()
+                        .randomTicks()
+                        .instabreak()
+                        .sound(SoundType.CROP)
+                        .pushReaction(PushReaction.DESTROY));
     }
 
     /**
