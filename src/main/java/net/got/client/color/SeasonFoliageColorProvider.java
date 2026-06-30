@@ -205,7 +205,8 @@ public final class SeasonFoliageColorProvider {
                                 level, pos, tintIndex),
                 GotModBlocks.DEVILGRASS.get(),
                 GotModBlocks.PIPERS_GRASS.get(),
-                GotModBlocks.WHEATGRASS.get()
+                GotModBlocks.WHEATGRASS.get(),
+                GotModBlocks.IVY.get()
         );
     }
 

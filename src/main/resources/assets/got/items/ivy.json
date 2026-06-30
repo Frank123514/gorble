@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/ivy"
+    "model": "got:item/ivy",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6141237
+      }
+    ]
   }
 }

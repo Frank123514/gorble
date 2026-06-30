@@ -1618,7 +1618,8 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> HARPYS_GOLD       = flowerBlock("harpys_gold");
     public static final DeferredBlock<Block> WILD_HEMP         = flowerBlock("wild_hemp");
     public static final DeferredBlock<Block> HORNWORT          = flowerBlock("hornwort");
-    public static final DeferredBlock<Block> IVY               = flowerBlock("ivy");
+    public static final DeferredBlock<Block> IVY               =
+            REGISTRY.registerBlock("ivy", VineBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.VINE));
     public static final DeferredBlock<Block> KINGSCOPPER       = flowerBlock("kingscopper");
     public static final DeferredBlock<Block> WILD_LICORICE     = flowerBlock("wild_licorice");
     public static final DeferredBlock<Block> MISTLETOE         = flowerBlock("mistletoe");
