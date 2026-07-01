@@ -1613,7 +1613,9 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> WILD_CUCUMBER     = flowerBlock("wild_cucumber");
     public static final DeferredBlock<Block> DAGGERLEAF        = flowerBlock("daggerleaf");
     public static final DeferredBlock<Block> FIREPOD           = flowerBlock("firepod");
-    public static final DeferredBlock<Block> GHOSTSKIN         = flowerBlock("ghostskin");
+    public static final DeferredBlock<Block> GHOSTSKIN         = REGISTRY.registerBlock("ghostskin",
+            HangingMossBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_HANGING_MOSS));
     public static final DeferredBlock<Block> GRAPE_VINE        = flowerBlock("grape_vine");
     public static final DeferredBlock<Block> HARPYS_GOLD       = flowerBlock("harpys_gold");
     public static final DeferredBlock<Block> WILD_HEMP         = flowerBlock("wild_hemp");

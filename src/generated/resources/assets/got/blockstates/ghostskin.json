@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "tip=false": {
       "model": "got:block/ghostskin"
+    },
+    "tip=true": {
+      "model": "got:block/ghostskin_tip"
     }
   }
 }
