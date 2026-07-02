@@ -63,6 +63,21 @@ public final class GotBiomeSource extends BiomeSource {
             "got:oasis"
     );
 
+    /**
+     * "Real" water bodies — as opposed to the small creek/oasis/frozen_lake
+     * pockets the shore-radius swap itself produces. Used to tell an isolated
+     * puddle sitting deep inside a land biome apart from a creek/oasis patch
+     * that's actually just the muddy fringe of a river/lake/ocean.
+     */
+    private static final Set<String> BIG_WATER_BIOME_IDS = Set.of(
+            "got:ocean",
+            "got:deep_ocean",
+            "got:river",
+            "got:neck_river",
+            "got:frozen_river",
+            "got:lake"
+    );
+
     public static final MapCodec<GotBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     RegistryCodecs.homogeneousList(Registries.BIOME)
@@ -167,15 +182,23 @@ public final class GotBiomeSource extends BiomeSource {
 
         // CREEK SWAP — a dry land column becomes a creek/oasis/frozen-lake
         // pocket if its own terrain dips below sea level, OR if real submerged
-        // ground is within CREEK_SHORE_RADIUS blocks of it. The radius check
-        // pushes the biome out into the banks physically surrounding the water
-        // (mud/reeds spreading past the waterline) without grabbing unrelated
-        // land elsewhere that just happens to sit near sea-level elevation.
+        // ground is within CREEK_SHORE_RADIUS blocks of it AND that submerged
+        // ground is an isolated pocket fully surrounded by land. The radius
+        // check pushes the biome out into the banks physically surrounding an
+        // isolated low spot (mud/reeds spreading past the waterline) without
+        // grabbing unrelated land elsewhere that just happens to sit near
+        // sea-level elevation. It deliberately does NOT fire when the nearby
+        // submerged ground is actually part of a real river/lake/ocean — that
+        // shoreline is already handled by the water biome's own shape, so
+        // stacking a creek/oasis fringe around it as well just looks wrong.
         // Same trick Middle Earth uses for its ponds: no separate noise system,
         // the low spot IS the water. Hot biomes get oasis, cold biomes get a
         // frozen lake pocket instead of muddy creek, everything else gets creek.
-        boolean nearWater = surfaceY < GotChunkGenerator.SEA_LEVEL
-                || isNearSubmergedGround(worldX, worldZ);
+        boolean ownTerrainSubmerged = surfaceY < GotChunkGenerator.SEA_LEVEL;
+        boolean isolatedShorePocket = !ownTerrainSubmerged
+                && isNearSubmergedGround(worldX, worldZ)
+                && !isNearBigWaterBiome(worldX, worldZ);
+        boolean nearWater = ownTerrainSubmerged || isolatedShorePocket;
         if (!WATER_BIOME_IDS.contains(winner) && nearWater) {
             if (HOT_BIOME_IDS.contains(winner)) {
                 winner = "got:oasis";
@@ -212,6 +235,41 @@ public final class GotBiomeSource extends BiomeSource {
             int pz = worldZ + Math.round((float) (Math.sin(angle) * CREEK_SHORE_RADIUS));
             if (GotChunkGenerator.computeRawSurfaceY(px, pz) < GotChunkGenerator.SEA_LEVEL) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks the biomemap around (worldX, worldZ) for any real water biome
+     * ({@link #BIG_WATER_BIOME_IDS}) — ocean, river, lake, etc. — as opposed
+     * to a creek/oasis/frozen_lake pocket. Used to tell apart an isolated
+     * low spot fully surrounded by land (should get the creek/oasis shore
+     * swap) from one that's actually just the muddy edge of a real water
+     * body (shouldn't get an extra fringe stacked on top of the water
+     * biome's own shoreline).
+     *
+     * <p>{@code CREEK_SHORE_RADIUS} (8 blocks) is well under one biomemap
+     * pixel ({@code MAP_SCALE} = 46 blocks), so a 3x3-pixel neighbourhood
+     * around the column's own biomemap pixel comfortably covers the same
+     * physical area the shore-radius probe reaches into.
+     */
+    private static boolean isNearBigWaterBiome(int worldX, int worldZ) {
+        if (!BiomemapLoader.isLoaded()) return false;
+
+        float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
+        float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
+        int centerPx = Math.round(cx);
+        int centerPz = Math.round(cz);
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                int px = centerPx + dx;
+                int pz = centerPz + dz;
+                if (px < 0 || pz < 0 || px >= BiomemapLoader.getWidth() || pz >= BiomemapLoader.getHeight())
+                    continue;
+                var params = GotBiomeTerrainParams.forColor(BiomemapLoader.getRawPixel(px, pz));
+                if (BIG_WATER_BIOME_IDS.contains(params.biomeId())) return true;
             }
         }
         return false;

@@ -257,27 +257,28 @@ public final class GotChunkGenerator extends ChunkGenerator {
             slopemapBonus = bicubicBspline(sb, fx, fz);
         }
 
-        // ── River valley depth bonus ───────────────────────────────────────
-        // Analogous to the mountain slopemap, but applies a negative height
-        // delta that carves rivers deeper into the terrain.  This prevents
-        // narrow river pixels from being blended upward out of existence when
-        // surrounded by high land, and also naturally widens the visible valley
-        // because the bicubic interpolation spreads the depression into the
-        // land pixels adjacent to each river pixel.
-        float riverDepthBonus = 0f;
+        // ── River valley elevation bonus ───────────────────────────────────
+        // Analogous to the mountain slopemap, but applies a signed height
+        // delta on both sides of the river/land boundary: a modest negative
+        // bonus to carve the river channel a bit deeper, and a positive bonus
+        // to restore nearby land pixels' height so the bank hugs the true
+        // biome boundary instead of sagging outward into a wide, soft
+        // floodplain. Both halves use a short ramp so the wall rises/falls
+        // steeply right at the boundary rather than grading gradually.
+        float riverElevationBonus = 0f;
         if (RiverSlopemapResolver.isLoaded()) {
             float[] rb = new float[16];
             for (int row = 0; row < 4; row++) {
                 for (int col = 0; col < 4; col++) {
                     int px = ipx + col - 1;
                     int pz = ipz + row - 1;
-                    rb[row * 4 + col] = RiverSlopemapResolver.depthBonus(px, pz);
+                    rb[row * 4 + col] = RiverSlopemapResolver.elevationBonus(px, pz);
                 }
             }
-            riverDepthBonus = bicubicBspline(rb, fx, fz);
+            riverElevationBonus = bicubicBspline(rb, fx, fz);
         }
 
-        return rawHeight + slopemapBonus + riverDepthBonus + (float) noiseVal * heightVariation;
+        return rawHeight + slopemapBonus + riverElevationBonus + (float) noiseVal * heightVariation;
     }
 
     // ── Bicubic B-spline ───────────────────────────────────────────────────
