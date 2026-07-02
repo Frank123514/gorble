@@ -25,14 +25,28 @@ public final class GotBiomeSource extends BiomeSource {
             "got:lower_reach"
     );
 
-    /** Cold biomes where a muddy creek pocket would look wrong — skip the swap. */
+    /**
+     * How far (in blocks) the creek/oasis/frozen_lake swap reaches into the
+     * surrounding land past the actual waterline. This is a physical radius —
+     * a column only gets pulled in if real submerged ground is within this
+     * distance, not just because it happens to sit near sea-level elevation
+     * somewhere far from any water.
+     */
+    private static final int CREEK_SHORE_RADIUS = 8;
+
+    /** Number of ring samples used to probe for nearby submerged ground. */
+    private static final int SHORE_PROBE_COUNT = 4;
+
+    /**
+     * Cold biomes where a muddy creek pocket would look wrong — these get
+     * frozen_lake instead. North, North Hills, and Barrowlands are chilly but
+     * not frozen-tundra cold, so they're left off this list and fall through
+     * to the regular creek swap.
+     */
     private static final Set<String> COLD_BIOME_IDS = Set.of(
             "got:always_winter",
             "got:frostfangs",
-            "got:north",
-            "got:north_hills",
             "got:north_mountains",
-            "got:barrowlands",
             "got:haunted_forest",
             "got:the_wall"
     );
@@ -151,14 +165,25 @@ public final class GotBiomeSource extends BiomeSource {
             if (landCandidate != null) winner = landCandidate;
         }
 
-        // CREEK SWAP — any dry land column whose actual computed terrain height
-        // dips at/below sea level becomes a creek/oasis pocket right there.
+        // CREEK SWAP — a dry land column becomes a creek/oasis/frozen-lake
+        // pocket if its own terrain dips below sea level, OR if real submerged
+        // ground is within CREEK_SHORE_RADIUS blocks of it. The radius check
+        // pushes the biome out into the banks physically surrounding the water
+        // (mud/reeds spreading past the waterline) without grabbing unrelated
+        // land elsewhere that just happens to sit near sea-level elevation.
         // Same trick Middle Earth uses for its ponds: no separate noise system,
-        // the low spot IS the creek. Cold biomes keep their snowy banks instead.
-        if (!WATER_BIOME_IDS.contains(winner)
-                && surfaceY < GotChunkGenerator.SEA_LEVEL
-                && !COLD_BIOME_IDS.contains(winner)) {
-            winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
+        // the low spot IS the water. Hot biomes get oasis, cold biomes get a
+        // frozen lake pocket instead of muddy creek, everything else gets creek.
+        boolean nearWater = surfaceY < GotChunkGenerator.SEA_LEVEL
+                || isNearSubmergedGround(worldX, worldZ);
+        if (!WATER_BIOME_IDS.contains(winner) && nearWater) {
+            if (HOT_BIOME_IDS.contains(winner)) {
+                winner = "got:oasis";
+            } else if (COLD_BIOME_IDS.contains(winner)) {
+                winner = "got:frozen_lake";
+            } else {
+                winner = "got:creek";
+            }
         }
 
         // SUB-BIOME CHECK
@@ -171,6 +196,25 @@ public final class GotBiomeSource extends BiomeSource {
         if (loc == null) return fallback;
         Holder<Biome> h = locationToHolder.get(loc);
         return h != null ? h : fallback;
+    }
+
+    /**
+     * Samples a ring of points {@link #CREEK_SHORE_RADIUS} blocks out from
+     * (worldX, worldZ) and returns true if any of them are actually
+     * below sea level. Used to pull dry land into the creek/oasis swap only
+     * when it's physically close to real water, not just near sea-level
+     * elevation somewhere unrelated.
+     */
+    private static boolean isNearSubmergedGround(int worldX, int worldZ) {
+        for (int i = 0; i < SHORE_PROBE_COUNT; i++) {
+            double angle = (2 * Math.PI * i) / SHORE_PROBE_COUNT;
+            int px = worldX + Math.round((float) (Math.cos(angle) * CREEK_SHORE_RADIUS));
+            int pz = worldZ + Math.round((float) (Math.sin(angle) * CREEK_SHORE_RADIUS));
+            if (GotChunkGenerator.computeRawSurfaceY(px, pz) < GotChunkGenerator.SEA_LEVEL) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static float cubicBsplineWeight(int i, float t) {

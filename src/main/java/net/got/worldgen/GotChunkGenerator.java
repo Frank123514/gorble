@@ -152,7 +152,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         RoadWorldGen.buildRoadsInChunk(chunk);
         RoadWorldGen.clearVegetationFromRoads(chunk);
         WallWorldGen.buildWallInChunk(chunk);
-        SlopeSurfaceResolver.applyMudPatches(chunk, region);
         SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
     }
 
@@ -378,11 +377,12 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
         GotBiomeTerrainParams.Params p =
                 GotBiomeTerrainParams.forColor(BiomemapLoader.getRawPixel(px, pz));
-        int surfY = computeSurfaceY(pos.getX(), pos.getZ());
+        float rawY  = computeRawSurfaceY(pos.getX(), pos.getZ());
+        int   surfY = Mth.floor(rawY);
 
         info.add(String.format(
-                "[GoT] Y=%d  raw=%.0f  shaped  px=(%d,%d)",
-                surfY, p.baseHeight(), px, pz));
+                "[GoT] Y=%d  raw=%.1f  nearestPixelBase=%.0f  px=(%d,%d)",
+                surfY, rawY, p.baseHeight(), px, pz));
         info.add("[GoT] " + SlopeSurfaceResolver.debugInfo(p.biomeId(), pos.getX(), pos.getZ()));
     }
 

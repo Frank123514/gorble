@@ -328,9 +328,8 @@ public class GotBiomes {
                 context.lookup(Registries.CONFIGURED_CARVER));
         globalOverworldGeneration(biomeBuilder);
 
-        // Mud and quagmire floor patches
-        biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_MUD);
-        biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_QUAGMIRE);
+        // Clay pockets — quagmire/mud floor coverage now comes from the
+        // surface rule's noise-threshold patches instead of disk scatter.
         biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_CLAY);
 
         // Shoreline reeds in and around the creek
@@ -368,7 +367,7 @@ public class GotBiomes {
                 context.lookup(Registries.CONFIGURED_CARVER));
         globalOverworldGeneration(biomeBuilder);
 
-        biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_SAND);
+        // Sand patches now come from the surface rule's noise-threshold coverage.
         biomeBuilder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, GotPlacedFeatures.DISK_CLAY);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_RIVER);
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_WATERLILY);
