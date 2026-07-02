@@ -103,7 +103,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
         SlopeSurfaceResolver.initSeed(worldSeed);
-        CreekResolver.initSeed(worldSeed);
     }
 
     @Override

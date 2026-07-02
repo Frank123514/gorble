@@ -214,7 +214,6 @@ public final class GotMod {
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "ghostskin"),      GotModBlocks.POTTED_GHOSTSKIN);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "grape_vine"),     GotModBlocks.POTTED_GRAPE_VINE);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "harpys_gold"),    GotModBlocks.POTTED_HARPYS_GOLD);
-            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "wild_hemp"),           GotModBlocks.POTTED_WILD_HEMP);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "hornwort"),       GotModBlocks.POTTED_HORNWORT);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "ivy"),            GotModBlocks.POTTED_IVY);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "kingscopper"),    GotModBlocks.POTTED_KINGSCOPPER);

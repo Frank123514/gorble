@@ -1614,11 +1614,11 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> DAGGERLEAF        = flowerBlock("daggerleaf");
     public static final DeferredBlock<Block> FIREPOD           = flowerBlock("firepod");
     public static final DeferredBlock<Block> GHOSTSKIN         = REGISTRY.registerBlock("ghostskin",
-            HangingMossBlock::new,
+            GhostskinBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_HANGING_MOSS));
     public static final DeferredBlock<Block> GRAPE_VINE        = flowerBlock("grape_vine");
     public static final DeferredBlock<Block> HARPYS_GOLD       = flowerBlock("harpys_gold");
-    public static final DeferredBlock<Block> WILD_HEMP         = flowerBlock("wild_hemp");
+    public static final DeferredBlock<Block> WILD_HEMP         = tallFlowerBlock("wild_hemp");
     public static final DeferredBlock<Block> HORNWORT          = flowerBlock("hornwort");
     public static final DeferredBlock<Block> IVY               =
             REGISTRY.registerBlock("ivy", VineBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.VINE));
@@ -1652,7 +1652,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> POTTED_GHOSTSKIN      = pottedBlock("potted_ghostskin",      () -> GHOSTSKIN);
     public static final DeferredBlock<Block> POTTED_GRAPE_VINE     = pottedBlock("potted_grape_vine",     () -> GRAPE_VINE);
     public static final DeferredBlock<Block> POTTED_HARPYS_GOLD    = pottedBlock("potted_harpys_gold",    () -> HARPYS_GOLD);
-    public static final DeferredBlock<Block> POTTED_WILD_HEMP           = pottedBlock("potted_wild_hemp",       () -> WILD_HEMP);
     public static final DeferredBlock<Block> POTTED_HORNWORT       = pottedBlock("potted_hornwort",       () -> HORNWORT);
     public static final DeferredBlock<Block> POTTED_IVY            = pottedBlock("potted_ivy",            () -> IVY);
     public static final DeferredBlock<Block> POTTED_KINGSCOPPER    = pottedBlock("potted_kingscopper",    () -> KINGSCOPPER);
@@ -1787,13 +1786,13 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLUEBERRY_BUSH   = berryBushBlock("blueberry_bush",   () -> GotModItems.BLUEBERRIES.get());
     public static final DeferredBlock<Block> RASPBERRY_BUSH   = berryBushBlock("raspberry_bush",   () -> GotModItems.RASPBERRIES.get());
     public static final DeferredBlock<Block> STRAWBERRY_CROP   = REGISTRY.registerBlock("strawberry_crop",
-                p -> new GotStrawberryCropBlock(p),
-                BlockBehaviour.Properties.of()
-                        .noCollission()
-                        .randomTicks()
-                        .instabreak()
-                        .sound(SoundType.CROP)
-                        .pushReaction(PushReaction.DESTROY));
+            p -> new GotStrawberryCropBlock(p),
+            BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .pushReaction(PushReaction.DESTROY));
     public static final DeferredBlock<Block> WILD_STRAWBERRY   = flowerBlock("wild_strawberry");
 
     // ── Ores
@@ -2421,6 +2420,19 @@ public class GotModBlocks {
         return REGISTRY.registerBlock(name,
                 GotShortGrassBlock::new,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
+    }
+
+    /**
+     * 2-tall flower block: vanilla DoublePlantBlock (same base class as tall grass,
+     * sunflower, lilac, rose bush, peony). Placing one automatically fills the block
+     * above with the matching upper half; breaking either half breaks both. Like
+     * vanilla's tall flowers, these are not pottable (a flower pot can't hold a
+     * two-block plant), so there is no potted variant.
+     */
+    private static DeferredBlock<Block> tallFlowerBlock(String name) {
+        return REGISTRY.registerBlock(name,
+                DoublePlantBlock::new,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS));
     }
 
     /**

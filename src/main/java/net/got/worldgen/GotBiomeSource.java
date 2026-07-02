@@ -12,7 +12,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import org.jetbrains.annotations.NotNull;
-import org.joml.SimplexNoise;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +23,18 @@ public final class GotBiomeSource extends BiomeSource {
             "got:dorne",
             "got:dorne_desert",
             "got:lower_reach"
+    );
+
+    /** Cold biomes where a muddy creek pocket would look wrong — skip the swap. */
+    private static final Set<String> COLD_BIOME_IDS = Set.of(
+            "got:always_winter",
+            "got:frostfangs",
+            "got:north",
+            "got:north_hills",
+            "got:north_mountains",
+            "got:barrowlands",
+            "got:haunted_forest",
+            "got:the_wall"
     );
 
     private static final Set<String> WATER_BIOME_IDS = Set.of(
@@ -77,11 +88,6 @@ public final class GotBiomeSource extends BiomeSource {
         float cx = worldX / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getWidth()  * 0.5f;
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + BiomemapLoader.getHeight() * 0.5f;
 
-        float warpX = (float) SimplexNoise.noise((float) (worldX / 320.0), (float) (worldZ / 320.0));
-        float warpZ = (float) SimplexNoise.noise((float) (worldX / 320.0 + 3.7), (float) (worldZ / 320.0 + 8.1));
-        cx += warpX * 0.9f;
-        cz += warpZ * 0.9f;
-
         int   ipx = (int) Math.floor(cx);
         int   ipz = (int) Math.floor(cz);
         float fx  = cx - ipx;
@@ -106,8 +112,6 @@ public final class GotBiomeSource extends BiomeSource {
         }
 
         Map<String, Float> biomeVotes = new HashMap<>();
-        // Also accumulate total water influence for CreekResolver
-        float waterInfluence = 0f;
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -118,7 +122,6 @@ public final class GotBiomeSource extends BiomeSource {
                 float weight = wx * wz;
                 if (isWater[i][j]) {
                     weight *= 1.15f;
-                    waterInfluence += weight;
                 }
                 biomeVotes.merge(id, weight, Float::sum);
             }
@@ -148,19 +151,14 @@ public final class GotBiomeSource extends BiomeSource {
             if (landCandidate != null) winner = landCandidate;
         }
 
-        // CREEK SWAP — fully submerged land cells always become creek/oasis.
-        // The fringe band (sea level to sea level+1) is routed through CreekResolver
-        // which uses domain-warped ridged noise to produce organic branching fingers
-        // rather than a uniform collar.
-        if (!WATER_BIOME_IDS.contains(winner)) {
-            if (surfaceY < GotChunkGenerator.SEA_LEVEL) {
-                // Genuinely underwater — always swap.
-                winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
-            } else if (surfaceY < GotChunkGenerator.SEA_LEVEL + 1
-                    && CreekResolver.isCreek(winner, waterInfluence, worldX, worldZ)) {
-                // Fringe band — only swap where CreekResolver's ridged noise says so.
-                winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
-            }
+        // CREEK SWAP — any dry land column whose actual computed terrain height
+        // dips at/below sea level becomes a creek/oasis pocket right there.
+        // Same trick Middle Earth uses for its ponds: no separate noise system,
+        // the low spot IS the creek. Cold biomes keep their snowy banks instead.
+        if (!WATER_BIOME_IDS.contains(winner)
+                && surfaceY < GotChunkGenerator.SEA_LEVEL
+                && !COLD_BIOME_IDS.contains(winner)) {
+            winner = HOT_BIOME_IDS.contains(winner) ? "got:oasis" : "got:creek";
         }
 
         // SUB-BIOME CHECK

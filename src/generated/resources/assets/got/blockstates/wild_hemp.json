@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "got:block/wild_hemp"
+    "half=lower": {
+      "model": "got:block/wild_hemp_bottom"
+    },
+    "half=upper": {
+      "model": "got:block/wild_hemp_top"
     }
   }
 }
