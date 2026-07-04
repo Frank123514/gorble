@@ -27,7 +27,7 @@ public final class BiomemapLoader {
             ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/biomemap.png");
 
     /** Number of world blocks represented by one biomemap pixel. */
-    public static final int MAP_SCALE = 46;
+    public static final int MAP_SCALE = 50;
 
     // Volatile so that writes from apply() are visible to reader threads
     private static volatile int[][] pixels   = null;

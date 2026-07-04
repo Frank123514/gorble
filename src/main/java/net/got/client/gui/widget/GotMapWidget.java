@@ -52,9 +52,9 @@ public class GotMapWidget extends AbstractWidget {
     private static final float COMPASS_MARGIN_FRACTION = 0.020f;
 
     private static final double[] ZOOM_MULTIPLIERS    = { 1.0, 2.0, 4.0, 7.0, 12.0, 20.0 };
-    private static final float    BLOCKS_PER_PIXEL    = 46.0f;
-    private static final float    WORLD_WIDTH_BLOCKS  = 193522f;
-    private static final float    WORLD_HEIGHT_BLOCKS = 150742f;
+    private static final float    BLOCKS_PER_PIXEL    = 50.0f;
+    private static final float    WORLD_WIDTH_BLOCKS  = 210350f;
+    private static final float    WORLD_HEIGHT_BLOCKS = 163850f;
 
     /* ============================================================= */
     /* ========================== STATE ============================ */
