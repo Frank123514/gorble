@@ -1,5 +1,6 @@
 package net.got.worldgen;
 
+import com.mojang.logging.LogUtils;
 import net.got.faction.RoadData;
 import net.got.faction.RoadRegistry;
 import net.minecraft.core.BlockPos;
@@ -7,6 +8,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +34,14 @@ import java.util.Random;
  */
 public final class RoadWorldGen {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Random RANDOM = new Random();
 
     // ── Coordinate constants (must match GotMapWidget) ────────────────────
 
-    static final float BLOCKS_PER_PIXEL    = 46.0f;
-    static final float WORLD_WIDTH_BLOCKS  = 193522f;
-    static final float WORLD_HEIGHT_BLOCKS = 150742f;
+    static final float BLOCKS_PER_PIXEL    = 50.0f;
+    static final float WORLD_WIDTH_BLOCKS  = 210350f;
+    static final float WORLD_HEIGHT_BLOCKS = 163850f;
 
     // ── Road widths (half-width of paved surface, in blocks) ─────────────
 
@@ -131,6 +134,14 @@ public final class RoadWorldGen {
                         }
                     }
                     cachedSegments = list;
+                    LOGGER.info("[GoT][DEBUG] RoadWorldGen: built {} segment(s) from {} road(s) in RoadRegistry.ALL",
+                            list.size(), RoadRegistry.ALL.size());
+                    if (!list.isEmpty()) {
+                        Segment first = list.get(0);
+                        Segment last  = list.get(list.size() - 1);
+                        LOGGER.info("[GoT][DEBUG] RoadWorldGen: first segment ({}, {}) -> ({}, {}), type={}",
+                                first.ax, first.az, first.bx, first.bz, first.type);
+                    }
                 }
             }
         }
@@ -159,6 +170,10 @@ public final class RoadWorldGen {
         }
         if (relevant.isEmpty()) return;
 
+        LOGGER.info("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] has {} relevant road segment(s)",
+                cp.x, cp.z, chunkMinX, chunkMinX + 15, chunkMinZ, chunkMinZ + 15, relevant.size());
+
+        int placed = 0;
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
                 int wx = chunkMinX + lx;
@@ -188,8 +203,10 @@ public final class RoadWorldGen {
                         surfaceBlock(nearest), false);
                 // Clear the block directly above (removes grass, flowers, saplings, etc.)
                 chunk.setBlockState(new BlockPos(lx, surfaceY + 1, lz), AIR, false);
+                placed++;
             }
         }
+        LOGGER.info("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) placed {} road block(s)", cp.x, cp.z, placed);
     }
 
     // ── Block selection ───────────────────────────────────────────────────
@@ -280,15 +297,15 @@ public final class RoadWorldGen {
 
         double x = 0.5 * (
                 (2.0 * p1.pixelX())
-                + (-p0.pixelX() + p2.pixelX()) * t
-                + (2.0 * p0.pixelX() - 5.0 * p1.pixelX() + 4.0 * p2.pixelX() - p3.pixelX()) * t2
-                + (-p0.pixelX() + 3.0 * p1.pixelX() - 3.0 * p2.pixelX() + p3.pixelX()) * t3
+                        + (-p0.pixelX() + p2.pixelX()) * t
+                        + (2.0 * p0.pixelX() - 5.0 * p1.pixelX() + 4.0 * p2.pixelX() - p3.pixelX()) * t2
+                        + (-p0.pixelX() + 3.0 * p1.pixelX() - 3.0 * p2.pixelX() + p3.pixelX()) * t3
         );
         double y = 0.5 * (
                 (2.0 * p1.pixelY())
-                + (-p0.pixelY() + p2.pixelY()) * t
-                + (2.0 * p0.pixelY() - 5.0 * p1.pixelY() + 4.0 * p2.pixelY() - p3.pixelY()) * t2
-                + (-p0.pixelY() + 3.0 * p1.pixelY() - 3.0 * p2.pixelY() + p3.pixelY()) * t3
+                        + (-p0.pixelY() + p2.pixelY()) * t
+                        + (2.0 * p0.pixelY() - 5.0 * p1.pixelY() + 4.0 * p2.pixelY() - p3.pixelY()) * t2
+                        + (-p0.pixelY() + 3.0 * p1.pixelY() - 3.0 * p2.pixelY() + p3.pixelY()) * t3
         );
         return new RoadData.Point((int) Math.round(x), (int) Math.round(y));
     }

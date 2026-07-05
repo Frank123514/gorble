@@ -527,7 +527,7 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "got:neck"
+                      "minecraft:plains"
                     ]
                   },
                   "then_run": {
@@ -1876,7 +1876,7 @@
                         "if_true": {
                           "type": "minecraft:biome",
                           "biome_is": [
-                            "got:neck"
+                            "minecraft:plains"
                           ]
                         },
                         "then_run": {

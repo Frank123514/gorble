@@ -22,21 +22,17 @@ import org.slf4j.Logger;
  *       the shape that was actually drawn.</li>
  * </ul>
  *
- * <p>This resolver addresses both, with the land-side fix doing most of the
- * work:
+ * <p>This resolver addresses both, entirely from the river side — land
+ * pixels are never raised above their natural height:
  * <ul>
- *   <li><b>Land side</b> — a positive "bank" bonus radiates outward from the
- *       river edge, restoring nearby land pixels to their natural height.
- *       This cancels out the blend-down effect described above, so the bank
- *       rises sharply right at the true boundary instead of sagging into a
- *       wide floodplain. This is what makes the valley hug the actual
- *       river/lake shape painted on the biomemap.</li>
- *   <li><b>River side</b> — a small negative depth bonus radiates inward from
- *       the river edge, so a narrow river still reads as a definite channel
- *       even when blended with much higher neighbouring terrain. This is kept
- *       modest — the steep, tight bank transition above already does most of
- *       the work of keeping rivers from fizzling out, so this only needs to
- *       nudge the channel down a bit further, not carve a canyon.</li>
+ *   <li><b>River side only</b> — a negative depth bonus radiates inward from
+ *       the river edge over a very short, tight ramp ({@link #RAMP_PIXELS}).
+ *       Compressing the full drop into just a pixel or two makes the bank
+ *       face steep, which is what keeps a narrow river reading as a definite
+ *       channel instead of fizzling out when blended with higher neighbouring
+ *       terrain — and because the drop starts exactly at the river/land
+ *       boundary painted on the biomemap, the channel still hugs the true
+ *       boundary shape without needing to touch the land side at all.</li>
  * </ul>
  *
  * <h3>How it works</h3>
@@ -50,14 +46,13 @@ import org.slf4j.Logger;
  *       away). 0 for river pixels.</li>
  * </ul>
  *
- * <p>In {@link #elevationBonus}, these are converted into a signed height
- * adjustment:
+ * <p>In {@link #elevationBonus}, {@code riverDist} is converted into a signed
+ * height adjustment; land pixels always return 0:
  * <pre>
  *   river pixel: t = clamp(riverDist / RAMP_PIXELS, 0, 1)
  *                bonus = -MAX_DEPTH_BONUS * smoothstep(t)     (≤ 0, digs down)
  *
- *   land pixel:  t = clamp((landDist - 1) / LAND_RAMP_PIXELS, 0, 1)
- *                bonus = MAX_BANK_BOOST * (1 - smoothstep(t)) (≥ 0, pushes up)
+ *   land pixel:  bonus = 0                                    (untouched)
  * </pre>
  *
  * <p>Both fields are sampled across the same 4x4 bicubic neighbourhood used
@@ -85,38 +80,32 @@ public final class RiverSlopemapResolver {
      * Maximum extra depth (blocks) carved at the core of a river pixel —
      * i.e. the pixel furthest from any non-river edge.
      *
-     * Kept modest on purpose: the steep bank transition (below) already
-     * prevents rivers from fizzling out when blended with high terrain, so
-     * this only needs to give the channel a bit of extra definition, not do
-     * the heavy lifting like it used to.
+     * Now doing all the work of keeping rivers from fizzling out (the land
+     * boost that used to help with this has been removed), so this stays
+     * meaningfully deep — it's the entire mechanism for channel definition.
      */
-    public static final float MAX_DEPTH_BONUS = 10f;
+    public static final float MAX_DEPTH_BONUS = 14f;
 
     /**
      * Distance in biomemap pixels over which the river-side valley ramps
-     * from 0 to full depth. Kept short and tight so the drop happens right
-     * at the river core instead of grading gradually.
+     * from 0 to full depth. This is what actually controls bank steepness:
+     * the smaller this is, the fewer pixels the drop from land height down
+     * to full river depth is spread across, so the bank face is steeper.
+     * Kept very short and tight so the drop happens right at the river edge
+     * instead of grading gradually into a shallow slope.
      */
-    public static final int RAMP_PIXELS = 2;
+    public static final int RAMP_PIXELS = 1;
 
     /**
-     * Maximum height (blocks) restored to a land pixel immediately adjacent
-     * to a river/lake edge. This exists purely to counteract the bicubic
-     * blend pulling nearby land down toward the river's low base height —
-     * without it, the visible shoreline creeps outward past the actual
-     * biome boundary painted on the map. Setting this too high can cause a
-     * visible lip right at the shoreline, so keep it modest relative to
-     * {@link #MAX_DEPTH_BONUS}.
+     * Land pixels no longer get an elevation boost — natural terrain height
+     * is left untouched right up to the river's edge. Steepness/definition
+     * of the bank now comes entirely from the river-side depth ramp below
+     * (a tight {@link #RAMP_PIXELS} carving the channel down sharply),
+     * rather than from artificially raising the surrounding land.
      */
-    public static final float MAX_BANK_BOOST = 10f;
+    public static final float MAX_BANK_BOOST = 0f;
 
-    /**
-     * Distance in biomemap pixels (measured from the first land pixel next
-     * to a river, which is distance 1) over which the bank boost fades back
-     * to 0. Kept short so only the immediate shoreline is affected — this is
-     * what "squeezes" the terrain in to hug the true biome boundary instead
-     * of reshaping the whole floodplain.
-     */
+    /** Unused now that the land-side boost is disabled; kept for reference. */
     public static final int LAND_RAMP_PIXELS = 2;
 
     // ── Live state ─────────────────────────────────────────────────────────
@@ -240,10 +229,10 @@ public final class RiverSlopemapResolver {
 
     /**
      * Returns the signed elevation bonus for biomemap pixel (px, pz).
-     * Negative digs a river pixel deeper; positive restores a nearby land
-     * pixel's height so the bank hugs the true biome boundary. Returns 0 if
-     * this pixel is unaffected (deep land, far from any river) or the field
-     * is unloaded.
+     * Negative digs a river pixel deeper, over a very short ramp so the bank
+     * face is steep rather than gradual. Land pixels are never boosted —
+     * this returns 0 for any land pixel, no matter how close to a river.
+     * Also returns 0 if the field is unloaded.
      */
     public static float elevationBonus(int px, int pz) {
         Field f = field;

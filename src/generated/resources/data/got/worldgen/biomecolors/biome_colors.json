@@ -36,8 +36,8 @@
   },
   "#2F4A33": {
     "biome": "got:neck",
-    "base_height": 65,
-    "height_variation": 2
+    "base_height": 70,
+    "height_variation": 12
   },
   "#02450D": {
     "biome": "got:ironwood",

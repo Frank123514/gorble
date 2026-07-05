@@ -8,7 +8,6 @@ import net.got.faction.GotFactionData;
 import net.got.faction.WaypointRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -47,8 +46,8 @@ public final class GotMainMenuScreen extends Screen {
 
     private static final ResourceLocation MAP_BG_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/map_background.png");
-    private static final int MAP_BG_W = 660;
-    private static final int MAP_BG_H = 390;
+    private static final int MAP_BG_W = 400;
+    private static final int MAP_BG_H = 236;
 
     private static final int MAP_PIXEL_WIDTH  = 4207;
     private static final int MAP_PIXEL_HEIGHT = 3277;
@@ -59,6 +58,17 @@ public final class GotMainMenuScreen extends Screen {
     /** Extra inset (on top of the torn-edge border) so the canvas content doesn't
      *  crowd right up to the parchment's inner frame - purely cosmetic breathing room. */
     private static final int CANVAS_INSET = 14;
+
+    // ── Window size (fixed pixel size, same convention as FactionSelectionScreen) ──
+    // No per-GUI-scale preset table and no runtime aspect-fit rescaling math.
+    // Just hand-picked constant sizes in GUI-scaled pixels. Minecraft's GUI
+    // scale option already scales the coordinate space uniformly (this
+    // screen's `width`/`height` fields are the *scaled* window dimensions),
+    // so a fixed-size window centered against width/height renders correctly
+    // at every GUI scale on its own - same approach used by
+    // FactionSelectionScreen.
+    private static final int WIN_W = 400;
+    private static final int WIN_H = 236;
 
     private static final int TAB_W   = 108;
     private static final int TAB_H   = 20;
@@ -95,6 +105,23 @@ public final class GotMainMenuScreen extends Screen {
     // Close button bounds
     private int closeBtnX, closeBtnY;
 
+    // Reset Affiliation button bounds (Culture tab only) - handled manually,
+    // same pattern as the tab row / close button below, rather than through
+    // addRenderableWidget/Button. See onResetAffiliation() javadoc for why.
+    private static final int RESET_BTN_W = 160;
+    private static final int RESET_BTN_H = 20;
+    private int resetBtnX, resetBtnY;
+    private boolean resetBtnVisible = false;
+
+    // Width/height the cached layout (tabX[], closeBtnX/Y, resetBtnX/Y, canvas*)
+    // was last computed for. Checked every frame in render() so that a GUI
+    // scale change or window resize - which updates width/height but doesn't
+    // by itself guarantee our manually-cached bounds get recomputed - always
+    // triggers a relayout instead of leaving tabs/buttons drifted out of
+    // place relative to the (freshly recalculated) parchment window.
+    private int lastLayoutWidth = -1;
+    private int lastLayoutHeight = -1;
+
     public GotMainMenuScreen() {
         super(Component.literal("Game of Thrones"));
     }
@@ -106,26 +133,24 @@ public final class GotMainMenuScreen extends Screen {
     @Override
     protected void init() {
         rebuildLayout();
+        lastLayoutWidth = width;
+        lastLayoutHeight = height;
     }
 
     private void rebuildLayout() {
         clearWidgets();
 
-        float targetW = width  * 0.82f;
-        float targetH = height * 0.82f;
-        float scaleX  = targetW / MAP_BG_W;
-        float scaleY  = targetH / MAP_BG_H;
-        float scale   = Math.min(scaleX, scaleY);
-        float maxScale = (float) (height - TAB_H - 16) / MAP_BG_H;
-        scale = Math.min(scale, maxScale);
-
-        winW = Math.round(MAP_BG_W * scale);
-        winH = Math.round(MAP_BG_H * scale);
+        // Fixed pixel size, centered against width/height - same convention as
+        // FactionSelectionScreen. No aspect-fit scale math: the window is
+        // always exactly WIN_W x WIN_H in GUI-scaled pixels, and only the
+        // background texture gets stretched to fill it.
+        winW = WIN_W;
+        winH = WIN_H;
         winX = (width  - winW) / 2;
         winY = (height - winH) / 2 + (TAB_H / 2);
 
-        scaledBorder = Math.round(PARCHMENT_BORDER * ((float) winW / MAP_BG_W));
-        int scaledInset = Math.round(CANVAS_INSET * ((float) winW / MAP_BG_W));
+        scaledBorder = PARCHMENT_BORDER;
+        int scaledInset = CANVAS_INSET;
         canvasX = winX + scaledBorder + scaledInset;
         canvasY = winY + scaledBorder + scaledInset;
         canvasW = winW - (scaledBorder + scaledInset) * 2;
@@ -141,6 +166,8 @@ public final class GotMainMenuScreen extends Screen {
 
         closeBtnX = winX + winW - CLOSE_W;
         closeBtnY = tabRowY;
+
+        resetBtnVisible = false;
 
         // Every tab's canvas content is a real widget, added the same way.
         if (selectedTab == Tab.MAP) {
@@ -178,15 +205,9 @@ public final class GotMainMenuScreen extends Screen {
             addRenderableWidget(new GotPlaceholderWidget(canvasX, canvasY, canvasW, canvasH, title, body));
 
             if (selectedTab == Tab.CULTURE) {
-                int btnW = 160, btnH = 20;
-                int btnX = canvasX + (canvasW - btnW) / 2;
-                int btnY = canvasY + canvasH - btnH - 16;
-                addRenderableWidget(Button.builder(
-                        // TEMP marker "[v2]" - if this text isn't visible in-game after your
-                        // rebuild, the running game isn't using this file. Remove once confirmed.
-                        Component.literal("Reset Affiliation [v2]"),
-                        b -> onResetAffiliation()
-                ).bounds(btnX, btnY, btnW, btnH).build());
+                resetBtnVisible = true;
+                resetBtnX = canvasX + (canvasW - RESET_BTN_W) / 2;
+                resetBtnY = canvasY + canvasH - RESET_BTN_H - 16;
             }
         }
     }
@@ -207,13 +228,7 @@ public final class GotMainMenuScreen extends Screen {
 
     /** Closes the main menu and opens the faction selection screen so the player can reset their affiliation. */
     private void onResetAffiliation() {
-        net.got.GotMod.LOGGER.info("[GoT] onResetAffiliation() fired");
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null) {
-            mc.player.displayClientMessage(
-                    Component.literal("§e[GoT] Reset Affiliation clicked"), false);
-        }
-        mc.setScreen(new FactionSelectionScreen());
+        Minecraft.getInstance().setScreen(new FactionSelectionScreen());
     }
 
     /* ------------------------------------------------------------------ */
@@ -223,20 +238,24 @@ public final class GotMainMenuScreen extends Screen {
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 
+        if (width != lastLayoutWidth || height != lastLayoutHeight) {
+            rebuildLayout();
+            lastLayoutWidth = width;
+            lastLayoutHeight = height;
+        }
+
         // No full-screen fill here - matches GotMapScreen, which draws the
         // parchment directly over the world with nothing behind it.
 
-        // Parchment window background
-        float bgScaleX = (float) winW / MAP_BG_W;
-        float bgScaleY = (float) winH / MAP_BG_H;
-        gfx.pose().pushPose();
-        gfx.pose().translate(winX, winY, 0);
-        gfx.pose().scale(bgScaleX, bgScaleY, 1f);
+        // Parchment window background - drawn at its native size (no stretch),
+        // centered in the window so the torn edges read correctly instead of
+        // getting smeared out by non-uniform scaling.
+        int bgX = winX + (winW - MAP_BG_W) / 2;
+        int bgY = winY + (winH - MAP_BG_H) / 2;
         gfx.blit(RenderType::guiTextured, MAP_BG_TEXTURE,
-                0, 0, 0f, 0f,
+                bgX, bgY, 0f, 0f,
                 MAP_BG_W, MAP_BG_H,
                 MAP_BG_W, MAP_BG_H);
-        gfx.pose().popPose();
 
         // Widgets (map / placeholder / idle preview - always exactly one, added in rebuildLayout)
         super.render(gfx, mouseX, mouseY, partialTick);
@@ -279,6 +298,26 @@ public final class GotMainMenuScreen extends Screen {
                 closeBtnX + (CLOSE_W - font.width(x)) / 2,
                 closeBtnY + (CLOSE_H - font.lineHeight) / 2,
                 closeHov ? 0xFFFFFFFF : 0xFFE8D8A0, closeHov);
+
+        // Reset Affiliation button (Culture tab only) - drawn and hit-tested
+        // manually, same as the tab row and close button above, rather than
+        // through addRenderableWidget/Button.
+        if (resetBtnVisible) {
+            boolean resetHov = isOver(mouseX, mouseY, resetBtnX, resetBtnY, RESET_BTN_W, RESET_BTN_H);
+            int bg = resetHov ? 0xFF5A3A2A : 0xFF3A2818;
+            int border = resetHov ? 0xFFE8C060 : 0xFF887733;
+            gfx.fill(resetBtnX, resetBtnY, resetBtnX + RESET_BTN_W, resetBtnY + RESET_BTN_H, bg);
+            gfx.hLine(resetBtnX, resetBtnX + RESET_BTN_W - 1, resetBtnY, border);
+            gfx.hLine(resetBtnX, resetBtnX + RESET_BTN_W - 1, resetBtnY + RESET_BTN_H - 1, border);
+            gfx.vLine(resetBtnX, resetBtnY, resetBtnY + RESET_BTN_H - 1, border);
+            gfx.vLine(resetBtnX + RESET_BTN_W - 1, resetBtnY, resetBtnY + RESET_BTN_H - 1, border);
+
+            String label = "Reset Affiliation";
+            gfx.drawString(font, label,
+                    resetBtnX + (RESET_BTN_W - font.width(label)) / 2,
+                    resetBtnY + (RESET_BTN_H - font.lineHeight) / 2,
+                    resetHov ? 0xFFFFFFFF : 0xFFE8D8A0, false);
+        }
     }
 
     private void drawPlaque(GuiGraphics gfx, int bx, int by, int w, int h,
@@ -301,9 +340,6 @@ public final class GotMainMenuScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        net.got.GotMod.LOGGER.info("[GoT] mouseClicked at ({}, {}) button={} selectedTab={}",
-                mouseX, mouseY, button, selectedTab);
-
         if (button == 0) {
             for (int i = 0; i < Tab.values().length; i++) {
                 if (isOver(mouseX, mouseY, tabX[i], tabRowY, TAB_W, TAB_H)) {
@@ -317,11 +353,13 @@ public final class GotMainMenuScreen extends Screen {
                 Minecraft.getInstance().setScreen(null);
                 return true;
             }
+            if (resetBtnVisible && isOver(mouseX, mouseY, resetBtnX, resetBtnY, RESET_BTN_W, RESET_BTN_H)) {
+                onResetAffiliation();
+                return true;
+            }
         }
 
-        boolean handledByWidget = super.mouseClicked(mouseX, mouseY, button);
-        net.got.GotMod.LOGGER.info("[GoT] super.mouseClicked (widget dispatch) returned {}", handledByWidget);
-        return handledByWidget;
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

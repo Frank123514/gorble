@@ -6,7 +6,6 @@ import net.got.faction.GotFactions;
 import net.got.faction.WaypointData;
 import net.got.faction.WaypointRegistry;
 import net.got.network.SelectFactionPayload;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -49,36 +48,49 @@ public final class FactionSelectionScreen extends Screen {
     private static final int MAP_PIXEL_W = 4207;
     private static final int MAP_PIXEL_H = 3277;
 
-    // ── Panel ─────────────────────────────────────────────────────────────────
-    private static final int PANEL_W = 420;
-    private static final int PANEL_H = 310;
+    // ── Layout (fixed pixel sizes, Middle-earth style) ──────────────────────────
+    // No per-GUI-scale preset table and no runtime clamping/rescaling math.
+    // Just hand-picked constant sizes in GUI-scaled pixels. Minecraft's GUI
+    // scale option already scales the coordinate space uniformly (this
+    // screen's `width`/`height` fields are the *scaled* window dimensions),
+    // so a fixed-size panel centered against width/height renders correctly
+    // at every GUI scale on its own - same approach used by the Middle-earth
+    // mod's FactionSelectionScreen.
+    private static final int PANEL_W = 314;
+    private static final int PANEL_H = 246;
 
-    // ── Nav rows ──────────────────────────────────────────────────────────────
-    private static final int NAV_ARROW_W  = 18;
-    private static final int NAV_ARROW_H  = 16;
-    private static final int NAV_LABEL_W  = 140;
-    private static final int NAV_CONT_Y   = 24;
-    private static final int NAV_REGION_Y = NAV_CONT_Y + NAV_ARROW_H + 4;
+    // ── Nav rows (stacked above the map, aligned to the map's column) ──────────
+    private static final int NAV_ARROW_W  = 14;
+    private static final int NAV_ARROW_H  = 12;
+    private static final int NAV_LABEL_W  = 94;
+    private static final int NAV_CONT_Y   = 22;
+    private static final int NAV_REGION_Y = NAV_CONT_Y + NAV_ARROW_H + 5;
+    // Space reserved below the region label for the "x / y" page indicator line.
+    private static final int PAGE_ROW_H   = 9;
 
-    // ── Map canvas (left column, square-ish) ──────────────────────────────────
+    // ── Map canvas (left column, square-ish) ───────────────────────────────────
+    // Sits below the continent/region nav instead of overlapping it, so the
+    // map's own overlay text (e.g. "Zoom: 8.0x") never collides with the labels.
     private static final int MAP_X_OFF = 8;
-    private static final int MAP_Y_OFF = NAV_REGION_Y + NAV_ARROW_H + 8;
-    private static final int MAP_W     = 150;
-    private static final int MAP_H     = 150;
+    private static final int MAP_Y_OFF = NAV_REGION_Y + NAV_ARROW_H + PAGE_ROW_H + 6;
+    private static final int MAP_W     = 122;
+    private static final int MAP_H     = 88;
 
     // ── Location nav (below map canvas) ───────────────────────────────────────
-    private static final int LOC_NAV_H     = 14;
+    private static final int LOC_NAV_H     = 12;
     private static final int LOC_NAV_Y_OFF = MAP_Y_OFF + MAP_H + 6;
 
-    // ── Info panel (right column) ─────────────────────────────────────────────
+    // ── Info panel (right column) ───────────────────────────────────────────────
+    // Starts right under the title (not pinned to the map's Y offset), so it
+    // stays tall even though the nav+map column above it is taller now.
     private static final int INFO_X_OFF = MAP_X_OFF + MAP_W + 8;
-    private static final int INFO_Y_OFF = MAP_Y_OFF;
+    private static final int INFO_Y_OFF = NAV_CONT_Y;
     private static final int INFO_W     = PANEL_W - INFO_X_OFF - 8;
-    private static final int INFO_H     = PANEL_H - INFO_Y_OFF - 36;
+    private static final int INFO_H     = PANEL_H - INFO_Y_OFF - 38;
 
     // ── Confirm button ────────────────────────────────────────────────────────
-    private static final int CONFIRM_W = 160;
-    private static final int CONFIRM_H = 20;
+    private static final int CONFIRM_W = 130;
+    private static final int CONFIRM_H = 18;
     private static final int CONFIRM_B = 8;
 
     // ── Default colours (overridden per-faction with primaryColour) ───────────
@@ -88,10 +100,6 @@ public final class FactionSelectionScreen extends Screen {
     private static final int COL_LORE    = 0xFFAAAAAA;
     private static final int COL_BORDER  = 0xFF887733;
 
-    // ── GUI scale override ────────────────────────────────────────────────────
-    private static final int MIN_SCALE = 3;
-    private int savedGuiScale = -1;
-
     // ── State ─────────────────────────────────────────────────────────────────
     private final List<String> continentKeys;
     private int continentIndex = 0;
@@ -100,6 +108,18 @@ public final class FactionSelectionScreen extends Screen {
 
     /** The live scrollable/zoomable map widget. Persisted across rebuildWidgets. */
     private GotMapWidget mapWidget;
+
+    /** Current scroll offset (in lines) for the lore text in the info panel.
+     *  Reset to 0 whenever the selected faction changes. */
+    private int loreScrollOffset = 0;
+    /** Cached max scroll for the currently-rendered lore, updated each frame
+     *  so mouseScrolled can clamp against it without recomputing wrapping. */
+    private int loreMaxScroll = 0;
+
+    // Width/height the cached layout was last computed for, so a window resize
+    // (which can change the effective GUI scale) triggers a relayout.
+    private int lastLayoutWidth = -1;
+    private int lastLayoutHeight = -1;
 
     public FactionSelectionScreen() {
         super(Component.literal("Choose Your Allegiance"));
@@ -178,14 +198,15 @@ public final class FactionSelectionScreen extends Screen {
     }
 
     private void buildContinentNav(int px, int py) {
-        int mid    = px + PANEL_W / 2;
-        int leftX  = mid - NAV_LABEL_W / 2 - 4 - NAV_ARROW_W;
-        int rightX = mid + NAV_LABEL_W / 2 + 4;
+        int mapMid = px + MAP_X_OFF + MAP_W / 2;
+        int leftX  = mapMid - NAV_LABEL_W / 2 - 4 - NAV_ARROW_W;
+        int rightX = mapMid + NAV_LABEL_W / 2 + 4;
         int ry     = py + NAV_CONT_Y;
         addRenderableWidget(Button.builder(Component.literal("<"), b -> {
             continentIndex = (continentIndex - 1 + continentKeys.size()) % continentKeys.size();
             regionIndex = 0;
             locationIndex = 0;
+            loreScrollOffset = 0;
             mapWidget = null;
             rebuildWidgets();
         }).bounds(leftX, ry, NAV_ARROW_W, NAV_ARROW_H).build());
@@ -193,25 +214,28 @@ public final class FactionSelectionScreen extends Screen {
             continentIndex = (continentIndex + 1) % continentKeys.size();
             regionIndex = 0;
             locationIndex = 0;
+            loreScrollOffset = 0;
             mapWidget = null;
             rebuildWidgets();
         }).bounds(rightX, ry, NAV_ARROW_W, NAV_ARROW_H).build());
     }
 
     private void buildRegionNav(int px, int py) {
-        int mid    = px + PANEL_W / 2;
-        int leftX  = mid - NAV_LABEL_W / 2 - 4 - NAV_ARROW_W;
-        int rightX = mid + NAV_LABEL_W / 2 + 4;
+        int mapMid = px + MAP_X_OFF + MAP_W / 2;
+        int leftX  = mapMid - NAV_LABEL_W / 2 - 4 - NAV_ARROW_W;
+        int rightX = mapMid + NAV_LABEL_W / 2 + 4;
         int ry     = py + NAV_REGION_Y;
         addRenderableWidget(Button.builder(Component.literal("<"), b -> {
             int sz = currentFactions().size();
             regionIndex = (regionIndex - 1 + sz) % sz;
             locationIndex = 0;
+            loreScrollOffset = 0;
             rebuildWidgets();
         }).bounds(leftX, ry, NAV_ARROW_W, NAV_ARROW_H).build());
         addRenderableWidget(Button.builder(Component.literal(">"), b -> {
             regionIndex = (regionIndex + 1) % currentFactions().size();
             locationIndex = 0;
+            loreScrollOffset = 0;
             rebuildWidgets();
         }).bounds(rightX, ry, NAV_ARROW_W, NAV_ARROW_H).build());
     }
@@ -267,6 +291,13 @@ public final class FactionSelectionScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        if (width != lastLayoutWidth || height != lastLayoutHeight) {
+            mapWidget = null;
+            rebuildWidgets();
+            lastLayoutWidth = width;
+            lastLayoutHeight = height;
+        }
+
         int px = (width  - PANEL_W) / 2;
         int py = (height - PANEL_H) / 2;
 
@@ -282,22 +313,22 @@ public final class FactionSelectionScreen extends Screen {
         gfx.drawString(font, title,
                 (width - font.width(title)) / 2, py + 8, COL_TITLE, false);
 
-        // Continent label
+        // Continent label (stacked above the map, in its column)
         String cont = GotFactions.CONTINENTS.getOrDefault(currentContinent(), "");
-        int mid = px + PANEL_W / 2;
+        int mapMid = px + MAP_X_OFF + MAP_W / 2;
         gfx.drawString(font, cont,
-                mid - font.width(cont) / 2, py + NAV_CONT_Y + 3, COL_TITLE, false);
+                mapMid - font.width(cont) / 2, py + NAV_CONT_Y + 3, COL_TITLE, false);
 
-        // Region label + page indicator
+        // Region label + page indicator (also stacked above the map)
         GotFactionData f = currentFaction();
         String region = f != null ? f.displayName() : "";
         gfx.drawString(font, region,
-                mid - font.width(region) / 2, py + NAV_REGION_Y + 3, 0xFFEEEEEE, false);
+                mapMid - font.width(region) / 2, py + NAV_REGION_Y + 3, 0xFFEEEEEE, false);
         List<GotFactionData> facs = currentFactions();
         if (!facs.isEmpty()) {
             String page = (regionIndex + 1) + " / " + facs.size();
             gfx.drawString(font, page,
-                    mid - font.width(page) / 2,
+                    mapMid - font.width(page) / 2,
                     py + NAV_REGION_Y + 3 + font.lineHeight + 1, 0xFF777766, false);
         }
 
@@ -355,6 +386,8 @@ public final class FactionSelectionScreen extends Screen {
         int lh = font.lineHeight + 2;
         int cy = infoY + 5;
 
+        gfx.enableScissor(infoX, infoY, infoX + INFO_W, infoY + INFO_H);
+
         // House name (tinted with faction's primary colour)
         gfx.drawString(font, f.greatHouse(), tx, cy, f.primaryColour(), false); cy += lh + 1;
 
@@ -364,55 +397,98 @@ public final class FactionSelectionScreen extends Screen {
         // Separator
         gfx.hLine(tx, infoX + INFO_W - 6, cy, 0xFF554422); cy += 4;
 
-        // Key facts
-        gfx.drawString(font, "Seat:     " + f.seat(),                tx, cy, COL_LABEL, false); cy += lh + 1;
-        gfx.drawString(font, "Fealty:   " + f.fealtyTo(),            tx, cy, COL_LABEL, false); cy += lh + 1;
-        gfx.drawString(font, "Faith:    " + f.religion().displayName, tx, cy, COL_LABEL, false); cy += lh + 1;
+        // Key facts (word-wrapped so long values, e.g. faith/fealty names, are
+        // never sliced off by the info panel's edge - they wrap onto a second
+        // line instead, same spirit as the Middle-earth screen's lore block).
+        cy = drawWrappedFact(gfx, "Seat:     " + f.seat(), tx, cy, INFO_W - 10, lh);
+        cy = drawWrappedFact(gfx, "Fealty:   " + f.fealtyTo(), tx, cy, INFO_W - 10, lh);
+        cy = drawWrappedFact(gfx, "Faith:    " + f.religion().displayName, tx, cy, INFO_W - 10, lh);
+        cy += 4;
 
-        // Short one-word economy / military summary (truncate long descriptions)
-        String econ = f.economy().description;
-        String mil  = f.militaryStyle().description;
-        // Show only the first word/phrase before the dash for compactness
-        String econShort = econ.contains("—") ? econ.substring(0, econ.indexOf("—")).trim() : econ;
-        String milShort  = mil.contains("—")  ? mil.substring(0,  mil.indexOf("—")).trim()  : mil;
-        gfx.drawString(font, "Economy:  " + econShort, tx, cy, COL_LABEL, false); cy += lh + 1;
-        gfx.drawString(font, "Military: " + milShort,  tx, cy, COL_LABEL, false); cy += lh + 5;
+        // Lore text (word-wrapped, scrollable). Wrap the full lore first so we
+        // know the total line count, then only draw the slice that fits in the
+        // remaining vertical space, offset by loreScrollOffset lines.
+        List<net.minecraft.util.FormattedCharSequence> loreLines =
+                font.split(Component.literal(f.lore()), INFO_W - 10);
 
-        // Lore text (word-wrapped)
-        for (net.minecraft.util.FormattedCharSequence line :
-                font.split(Component.literal(f.lore()), INFO_W - 10)) {
-            if (cy + lh > infoY + INFO_H - 4) break;
-            gfx.drawString(font, line, tx, cy, COL_LORE, false);
+        int loreTop = cy;
+        int loreBottom = infoY + INFO_H - 4;
+        int visibleLines = Math.max(1, (loreBottom - loreTop) / lh);
+        loreMaxScroll = Math.max(0, loreLines.size() - visibleLines);
+        loreScrollOffset = Math.min(loreScrollOffset, loreMaxScroll);
+
+        for (int i = loreScrollOffset; i < loreLines.size() && cy + lh <= loreBottom + 1; i++) {
+            gfx.drawString(font, loreLines.get(i), tx, cy, COL_LORE, false);
             cy += lh;
         }
+
+        // Scrollbar: a thin track + thumb along the panel's right inner edge,
+        // only drawn when there's actually more lore than fits.
+        if (loreMaxScroll > 0) {
+            int barX = infoX + INFO_W - 4;
+            int barTop = loreTop;
+            int barBottom = loreBottom;
+            int barH = barBottom - barTop;
+            gfx.fill(barX, barTop, barX + 2, barBottom, 0x55FFFFFF);
+
+            int thumbH = Math.max(6, barH * visibleLines / loreLines.size());
+            int thumbY = barTop + (barH - thumbH) * loreScrollOffset / loreMaxScroll;
+            gfx.fill(barX, thumbY, barX + 2, thumbY + thumbH, 0xFFCCAA44);
+
+            // Small hint arrows so it's obvious the text scrolls, even before
+            // the player has touched the scroll wheel.
+            if (loreScrollOffset < loreMaxScroll) {
+                gfx.drawString(font, "v", infoX + INFO_W - 10, loreBottom - 6, 0xFFCCAA44, false);
+            }
+        }
+
+        gfx.disableScissor();
+    }
+
+    /** Handles mouse-wheel scrolling of the lore text when the cursor is over
+     *  the info panel. One notch scrolls a single line, so even short lore
+     *  blocks with only a couple of overflow lines get smooth, granular
+     *  scrolling instead of jumping straight to the bottom. */
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        int px = (width  - PANEL_W) / 2;
+        int py = (height - PANEL_H) / 2;
+        int infoX = px + INFO_X_OFF;
+        int infoY = py + INFO_Y_OFF;
+
+        if (mouseX >= infoX && mouseX < infoX + INFO_W
+                && mouseY >= infoY && mouseY < infoY + INFO_H) {
+            int delta = (int) Math.signum(scrollY);
+            loreScrollOffset = Math.max(0, Math.min(loreMaxScroll, loreScrollOffset - delta));
+            return true;
+        }
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+    }
+
+    /** Draws a "Label: value" fact line, wrapping onto extra lines if it's too
+     *  wide for the info panel instead of letting the scissor box slice it off.
+     *  Returns the cursor Y position to continue drawing from. */
+    private int drawWrappedFact(GuiGraphics gfx, String text, int tx, int cy, int maxWidth, int lh) {
+        if (font.width(text) <= maxWidth) {
+            gfx.drawString(font, text, tx, cy, COL_LABEL, false);
+            return cy + lh + 1;
+        }
+        for (net.minecraft.util.FormattedCharSequence line :
+                font.split(Component.literal(text), maxWidth)) {
+            gfx.drawString(font, line, tx, cy, COL_LABEL, false);
+            cy += lh;
+        }
+        return cy + 1;
     }
 
     // ── Screen lifecycle ──────────────────────────────────────────────────────
 
     @Override
     protected void init() {
-        Minecraft mc = Minecraft.getInstance();
-        if (savedGuiScale < 0) {
-            savedGuiScale = mc.options.guiScale().get();
-            if (savedGuiScale < MIN_SCALE) {
-                mc.options.guiScale().set(MIN_SCALE);
-                mc.resizeDisplay();
-                return;
-            }
-        }
         super.init();
         buildWidgets();
-    }
-
-    @Override
-    public void removed() {
-        super.removed();
-        if (savedGuiScale >= 0) {
-            Minecraft mc = Minecraft.getInstance();
-            mc.options.guiScale().set(savedGuiScale);
-            mc.resizeDisplay();
-            savedGuiScale = -1;
-        }
+        lastLayoutWidth = width;
+        lastLayoutHeight = height;
     }
 
     @Override public boolean shouldCloseOnEsc() { return false; }
