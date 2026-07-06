@@ -70,7 +70,9 @@
       "got:wild_carrot",
       "got:wild_cabbage",
       "got:blackberry_bush",
-      "got:patch_leaves"
+      "got:patch_leaves",
+      "got:noisy_patch_snow",
+      "got:noisy_patch_snow_block"
     ],
     [
       "minecraft:freeze_top_layer"

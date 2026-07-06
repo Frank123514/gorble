@@ -53,7 +53,9 @@
       "got:frostfires",
       "got:thistle",
       "got:thornbush",
-      "got:winter_rose_bush"
+      "got:winter_rose_bush",
+      "got:noisy_patch_snow",
+      "got:noisy_patch_snow_block"
     ],
     [
       "minecraft:freeze_top_layer"
