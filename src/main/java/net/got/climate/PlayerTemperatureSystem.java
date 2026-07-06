@@ -135,9 +135,14 @@ public final class PlayerTemperatureSystem {
         var   pos   = player.blockPosition();
         Biome biome = level.getBiome(pos).value();
         float base  = biome.getTemperature(pos, level.getSeaLevel());
+        float latitudeAdj = LatitudeClimate.temperatureAdjustment(pos.getX(), pos.getZ());
 
-        // Hot biomes unaffected by season (same rule as BiomeMixin)
-        if (biome.getBaseTemperature() > 0.8f) return base;
+        // Hot biomes unaffected by season (same rule as BiomeMixin), but the
+        // far north's latitude override still applies — no biome stays warm
+        // forever once you're deep enough beyond the freeze line.
+        if (biome.getBaseTemperature() > 0.8f) {
+            return Mth.clamp(base + latitudeAdj, BIOME_TEMP_MIN, BIOME_TEMP_MAX);
+        }
 
         float adj = switch (SeasonCache.get()) {
             case SUMMER -> ADJ_SUMMER;
@@ -145,7 +150,7 @@ public final class PlayerTemperatureSystem {
             case AUTUMN -> ADJ_AUTUMN;
             case WINTER -> ADJ_WINTER;
         };
-        return Mth.clamp(base + adj, BIOME_TEMP_MIN, BIOME_TEMP_MAX);
+        return Mth.clamp(base + adj + latitudeAdj, BIOME_TEMP_MIN, BIOME_TEMP_MAX);
     }
 
     private static float biomeToBodyTarget(float effectiveBiomeTemp) {

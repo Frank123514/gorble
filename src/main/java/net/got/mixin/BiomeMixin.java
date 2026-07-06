@@ -19,12 +19,19 @@ public class BiomeMixin {
 
     private static final float WINTER_TEMP_ADJUSTMENT = -0.8f;
 
+    // NOTE: the frozen-latitude line intentionally does NOT affect snowfall.
+    // North of the line, water still freezes (see gotSeason_shouldFreeze_warmEnoughToRain
+    // below), but whether it snows is left entirely to each biome's normal
+    // temperature/season behaviour.
     @Inject(method = "shouldSnow", at = @At("HEAD"), cancellable = true, remap = false)
     public void gotSeason_shouldSnow(LevelReader level, BlockPos pos,
                                      CallbackInfoReturnable<Boolean> cir) {
         Biome self = (Biome)(Object)this;
         if (!self.hasPrecipitation()) return;
-        if (self.getBaseTemperature() > 0.8f) {
+
+        boolean hotBiome = self.getBaseTemperature() > 0.8f;
+        if (hotBiome) {
+            // Hot biomes are untouched — unchanged behaviour.
             cir.setReturnValue(false);
             return;
         }
@@ -32,8 +39,9 @@ public class BiomeMixin {
         float baseTemp = self.getTemperature(pos, level.getSeaLevel());
         float temp = baseTemp;
         if (level instanceof ServerLevel && SeasonCache.get().isWinter()) {
-            temp = Mth.clamp(baseTemp + WINTER_TEMP_ADJUSTMENT, -0.5f, 2.0f);
+            temp = baseTemp + WINTER_TEMP_ADJUSTMENT;
         }
+        temp = Mth.clamp(temp, -0.5f, 2.0f);
 
         if (temp >= 0.15f) {
             cir.setReturnValue(false);
@@ -47,6 +55,12 @@ public class BiomeMixin {
         );
     }
 
+    // NOTE: the frozen latitude line does NOT use this hook. Vanilla's
+    // shouldFreeze only turns water into ice when it's adjacent to already-
+    // cold/snowy land, so relying on it here would mean latitude ice can only
+    // ever spread in from an existing frozen shore — exactly the shore-
+    // dependent behaviour we don't want north of the line. See
+    // LatitudeIceHandler for the independent gradient-based instant freeze.
     @Redirect(
         method = "shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Z)Z",
         at = @At(value = "INVOKE",
@@ -55,13 +69,21 @@ public class BiomeMixin {
     )
     public boolean gotSeason_shouldFreeze_warmEnoughToRain(Biome biome, BlockPos pos, int seaLevel,
                                                            LevelReader level) {
-        if (level instanceof ServerLevel && SeasonCache.get().isWinter()
-                && biome.getBaseTemperature() <= 0.8f) {
-            float adjustedTemp = Mth.clamp(
-                    biome.getTemperature(pos, seaLevel) + WINTER_TEMP_ADJUSTMENT,
-                    -0.5f, 2.0f);
-            return adjustedTemp >= 0.15f;
+        if (!(level instanceof ServerLevel)) {
+            return biome.warmEnoughToRain(pos, seaLevel);
         }
-        return biome.warmEnoughToRain(pos, seaLevel);
+
+        boolean hotBiome = biome.getBaseTemperature() > 0.8f;
+        if (hotBiome) {
+            // Hot biomes are untouched — unchanged behaviour.
+            return biome.warmEnoughToRain(pos, seaLevel);
+        }
+
+        float temp = biome.getTemperature(pos, seaLevel);
+        if (SeasonCache.get().isWinter()) {
+            temp += WINTER_TEMP_ADJUSTMENT;
+        }
+        temp = Mth.clamp(temp, -0.5f, 2.0f);
+        return temp >= 0.15f;
     }
 }
