@@ -102,9 +102,16 @@ public final class SnowMeltHandler {
     /**
      * Returns the biome temperature adjusted for the current season only.
      * Used for snow melt, which the frozen latitude line does not affect.
+     *
+     * The seasonal warming adjustment (spring/summer) is scaled down the
+     * colder the biome's base temperature is, so already-cold biomes (snowy
+     * taiga, frozen peaks, etc.) stay snow-covered through spring/summer
+     * instead of melting out just because the season nudged the number up.
+     * Cooling adjustments (autumn/winter) are left at full strength — only
+     * the warming push is dampened.
      */
     private static float getSeasonalBiomeTemp(ServerLevel level, GotSeason season,
-                                               Biome biome, BlockPos pos) {
+                                              Biome biome, BlockPos pos) {
         float base = biome.getTemperature(pos, level.getSeaLevel());
 
         if (biome.getBaseTemperature() > 0.8f) {
@@ -118,6 +125,16 @@ public final class SnowMeltHandler {
             case AUTUMN -> -0.20f;
             case WINTER -> WINTER_TEMP_ADJUSTMENT;
         };
+
+        // Dampen warming-season adjustments in cold biomes. At base temp
+        // 0.0 (properly cold) warming is scaled to ~15% strength; it ramps
+        // back up to full strength by base temp 0.5 (mild/temperate).
+        if (adjustment > 0f) {
+            float coldness = 1f - Mth.clamp(base / 0.5f, 0f, 1f); // 1 = frigid, 0 = temperate+
+            float warmingScale = Mth.lerp(coldness, 1f, 0.15f);
+            adjustment *= warmingScale;
+        }
+
         return Mth.clamp(base + adjustment, -0.5f, 2.0f);
     }
 
@@ -127,7 +144,7 @@ public final class SnowMeltHandler {
      * frozen north of the line regardless of season.
      */
     private static float getSeasonalBiomeTempWithLatitude(ServerLevel level, GotSeason season,
-                                                            Biome biome, BlockPos pos) {
+                                                          Biome biome, BlockPos pos) {
         float base = biome.getTemperature(pos, level.getSeaLevel());
         float latitudeAdj = LatitudeClimate.temperatureAdjustment(pos.getX(), pos.getZ());
 
@@ -141,6 +158,13 @@ public final class SnowMeltHandler {
             case AUTUMN -> -0.20f;
             case WINTER -> WINTER_TEMP_ADJUSTMENT;
         };
+
+        if (adjustment > 0f) {
+            float coldness = 1f - Mth.clamp(base / 0.5f, 0f, 1f);
+            float warmingScale = Mth.lerp(coldness, 1f, 0.15f);
+            adjustment *= warmingScale;
+        }
+
         return Mth.clamp(base + adjustment + latitudeAdj, -0.5f, 2.0f);
     }
 

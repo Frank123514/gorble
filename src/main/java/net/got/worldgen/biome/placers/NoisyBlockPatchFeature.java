@@ -141,7 +141,10 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                     .forGetter(Config::scaleHigh),
             Codec.doubleRange(0.01, 2.0)
                     .optionalFieldOf("scale_warp", 0.25)
-                    .forGetter(Config::scaleWarp)
+                    .forGetter(Config::scaleWarp),
+            Codec.BOOL
+                    .optionalFieldOf("place_above", false)
+                    .forGetter(Config::placeAbove)
     ).apply(inst, Config::new));
 
     public NoisyBlockPatchFeature(Codec<Config> codec) {
@@ -178,8 +181,12 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
         for (int dx = -r; dx <= r; dx++) {
             for (int dz = -r; dz <= r; dz++) {
 
-                // Quick bounding-circle cull before the more expensive noise calls
-                if (dx * dx + dz * dz > (r + 1) * (r + 1)) continue;
+                // Quick bounding-circle cull (generous — just avoids wasting
+                // noise calls far outside the radius; the real edge shaping
+                // happens via the falloff below, not this cutoff).
+                double distSq = dx * dx + dz * dz;
+                double maxDistSq = (double) (r + 1) * (r + 1);
+                if (distSq > maxDistSq) continue;
 
                 double wx, wz;
                 if (speckle) {
@@ -224,6 +231,20 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                         // instead of scattered perfectly uniformly.
                         ? low * 0.5 + high * (1.0 - cfg.warpWeight() * 0.3)
                         : low + cfg.warpWeight() * high;
+
+                // ── Radial falloff ───────────────────────────────────────────
+                // Push value down as we approach the patch radius so the
+                // threshold crossing happens organically inside the circle,
+                // via noise, rather than at a hard circular boundary. Without
+                // this, low thresholds (e.g. 0.02 for dense speckle) rarely
+                // dip below cutoff before hitting the bounding-circle cull,
+                // so the circle itself becomes the visible edge.
+                double dist = Math.sqrt(distSq) / (r + 1);
+                // Only start fading in the outer half of the radius, so the
+                // core of the patch is unaffected and full-strength.
+                double falloff = dist <= 0.5 ? 0.0 : (dist - 0.5) * 2.0;
+                value -= falloff * falloff * 0.6;
+
                 if (value < cfg.threshold()) continue;
 
                 // ── Find the surface block at this XZ ────────────────────────
@@ -234,11 +255,19 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                 // ── Target check ─────────────────────────────────────────────
                 if (!isTarget(level.getBlockState(surface), cfg)) continue;
 
-                // ── Air-above check ───────────────────────────────────────────
-                if (!level.getBlockState(surface.above()).isAir()) continue;
-
                 // ── Place ─────────────────────────────────────────────────────
-                level.setBlock(surface, cfg.block().getState(rand, surface), Block.UPDATE_CLIENTS);
+                BlockPos placePos;
+                if (cfg.placeAbove()) {
+                    // Layer-on-top mode (e.g. snow): only valid if the space
+                    // above the surface is empty.
+                    if (!level.getBlockState(surface.above()).isAir()) continue;
+                    placePos = surface.above();
+                } else {
+                    // Replace-in-place mode (e.g. stone/dirt showing through
+                    // grass): swap the surface block itself.
+                    placePos = surface;
+                }
+                level.setBlock(placePos, cfg.block().getState(rand, placePos), Block.UPDATE_CLIENTS);
                 placed = true;
             }
         }
@@ -249,12 +278,17 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static BlockPos findSurface(WorldGenLevel level, BlockPos pos, int yRange) {
+        // Scan strictly top-down from above the expected surface and take the
+        // FIRST solid block found with air above it. Scanning top-down (rather
+        // than bottom-up) prevents latching onto a block placed earlier in this
+        // same feature pass (e.g. an adjacent overlapping patch), which would
+        // otherwise cause chunks to stack upward into floating stair-steps.
         for (int dy = yRange; dy >= -yRange; dy--) {
             BlockPos candidate = pos.above(dy);
-            if (!level.getBlockState(candidate).isAir() &&
-                    level.getBlockState(candidate.above()).isAir()) {
-                return candidate;
-            }
+            BlockState state = level.getBlockState(candidate);
+            if (state.isAir()) continue;
+            if (!level.getBlockState(candidate.above()).isAir()) continue;
+            return candidate;
         }
         return null;
     }
@@ -299,6 +333,7 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
             double             warpWeight,
             double             scaleLow,
             double             scaleHigh,
-            double             scaleWarp
+            double             scaleWarp,
+            boolean            placeAbove
     ) implements FeatureConfiguration {}
 }

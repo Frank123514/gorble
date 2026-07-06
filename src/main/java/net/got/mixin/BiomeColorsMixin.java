@@ -25,11 +25,18 @@ public abstract class BiomeColorsMixin {
     @Inject(method = "getAverageGrassColor", at = @At("RETURN"), cancellable = true, remap = false)
     private static void gotSeason_grassColor(BlockAndTintGetter level, BlockPos pos,
                                              CallbackInfoReturnable<Integer> cir) {
+        int biomeColor = cir.getReturnValue();
+
         float blend = SeasonFoliageColorProvider.getSeasonBlend();
-        if (blend == 0f) return; // Summer — use pure biome color, no modification
-        int biomeColor  = cir.getReturnValue();
-        int seasonColor = SeasonFoliageColorProvider.getGrassSeasonColor();
-        cir.setReturnValue(SeasonFoliageColorProvider.blendColors(biomeColor, seasonColor, blend));
+        int color = blend == 0f
+                ? biomeColor // Summer — use pure biome color as the base
+                : SeasonFoliageColorProvider.blendColors(
+                biomeColor, SeasonFoliageColorProvider.getGrassSeasonColor(), blend);
+
+        // Regional patch variation applies every season, including summer,
+        // so grass reads with natural light/dark patches everywhere.
+        float variation = SeasonFoliageColorProvider.getGrassPatchVariation(pos.getX(), pos.getZ());
+        cir.setReturnValue(SeasonFoliageColorProvider.applyBrightness(color, variation));
     }
 
     @Inject(method = "getAverageFoliageColor", at = @At("RETURN"), cancellable = true, remap = false)

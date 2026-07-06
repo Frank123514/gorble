@@ -675,9 +675,8 @@ public final class GotConfiguredFeatures {
                         0.55,   // warp_weight
                         0.18,   // scale_low
                         0.42,   // scale_high
-                        0.25)); // scale_warp
-
-        // noisy_patch_gravel: loose riverbank gravel, replaces dirt/grass/sand
+                        0.25,   // scale_warp
+                        false)); // place_above — replaces surface block
         register(ctx, NOISY_PATCH_GRAVEL,
                 net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
                 new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
@@ -693,9 +692,8 @@ public final class GotConfiguredFeatures {
                         0.70,   // warp_weight
                         0.22,   // scale_low
                         0.55,   // scale_high
-                        0.30)); // scale_warp
-
-        // noisy_patch_sand: sandy clearing, replaces dirt/grass/gravel
+                        0.30,   // scale_warp
+                        false)); // place_above — replaces surface block
         register(ctx, NOISY_PATCH_SAND,
                 net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
                 new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
@@ -711,9 +709,8 @@ public final class GotConfiguredFeatures {
                         0.40,   // warp_weight
                         0.14,   // scale_low
                         0.35,   // scale_high
-                        0.20)); // scale_warp
-
-        // noisy_patch_dirt: bare-earth grazed patches in grassland
+                        0.20,   // scale_warp
+                        false)); // place_above — replaces surface block
         register(ctx, NOISY_PATCH_DIRT,
                 net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
                 new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
@@ -728,9 +725,8 @@ public final class GotConfiguredFeatures {
                         0.60,   // warp_weight
                         0.20,   // scale_low
                         0.45,   // scale_high
-                        0.28)); // scale_warp
-
-        // noisy_patch_snow: fine speckled snow dusting — many small flecks
+                        0.28,   // scale_warp
+                        false)); // place_above — replaces surface block
         // scattered unevenly across a wide radius, matching a light dusting
         // that clumps into loose drifts rather than one big snow blob.
         register(ctx, NOISY_PATCH_SNOW,
@@ -750,9 +746,8 @@ public final class GotConfiguredFeatures {
                         0.15,   // warp_weight — light drift clumping, mostly clean flecks
                         0.05,   // scale_low — large loose drifts/clusters
                         1.10,   // scale_high — fine individual flecks
-                        0.60)); // scale_warp
-
-        // ══════════════════════════════════════════════════════════════════════
+                        0.60,   // scale_warp
+                        true)); // place_above — snow layers on top of surface
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)
         // ══════════════════════════════════════════════════════════════════════
 

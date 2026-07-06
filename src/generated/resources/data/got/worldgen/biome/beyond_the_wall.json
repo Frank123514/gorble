@@ -3,7 +3,7 @@
   "downfall": 0.5,
   "effects": {
     "fog_color": 12638463,
-    "grass_color": 9222291,
+    "grass_color": 12884013,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -60,10 +60,8 @@
       "got:liverwort",
       "got:lungwort",
       "got:pennyroyal",
-      "got:red_rose_bush",
       "got:thistle",
       "got:thornbush",
-      "got:winter_rose_bush",
       "got:wild_cotton",
       "got:wild_onion",
       "got:wild_garlic",

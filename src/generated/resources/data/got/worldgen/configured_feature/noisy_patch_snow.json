@@ -22,6 +22,7 @@
     "warp_weight": 0.15,
     "scale_low": 0.05,
     "scale_high": 1.10,
-    "scale_warp": 0.60
+    "scale_warp": 0.60,
+    "place_above": true
   }
 }

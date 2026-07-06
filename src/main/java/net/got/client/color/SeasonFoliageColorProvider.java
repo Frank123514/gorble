@@ -237,6 +237,35 @@ public final class SeasonFoliageColorProvider {
         };
     }
 
+    // ── Regional grass patch variation ────────────────────────────────────────
+    // Adds subtle brightness variation across large patches of terrain — some
+    // areas of the same biome read a touch darker/lighter than others, the
+    // way LOTR Mod's grass looks. Uses low-frequency noise so the variation
+    // is smooth and regional rather than a per-block speckle/static look.
+    // Kept intentionally mild (+/-6% brightness) so it reads as natural
+    // variation, not a visible pattern or a different biome.
+
+    private static final double GRASS_VARIATION_SCALE = 0.02; // large, slow-changing regions
+    private static final float  GRASS_VARIATION_STRENGTH = 0.10f; // max +/-10% brightness shift
+
+    /**
+     * Returns a brightness multiplier in [1 - strength, 1 + strength] for the
+     * given world position, smoothly varying across large regions.
+     */
+    public static float getGrassPatchVariation(int x, int z) {
+        double n = net.got.worldgen.SimplexNoise.noise(
+                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
+        return 1f + (float) n * GRASS_VARIATION_STRENGTH;
+    }
+
+    /** Multiplies each RGB channel of {@code color} by {@code factor}, clamped to [0, 255]. */
+    public static int applyBrightness(int color, float factor) {
+        int r = (int) net.minecraft.util.Mth.clamp(((color >> 16) & 0xFF) * factor, 0f, 255f);
+        int g = (int) net.minecraft.util.Mth.clamp(((color >>  8) & 0xFF) * factor, 0f, 255f);
+        int b = (int) net.minecraft.util.Mth.clamp(( color        & 0xFF) * factor, 0f, 255f);
+        return (r << 16) | (g << 8) | b;
+    }
+
     public static int blendColors(int base, int target, float t) {
         int br = (base   >> 16) & 0xFF, bg = (base   >>  8) & 0xFF, bb =  base          & 0xFF;
         int tr = (target >> 16) & 0xFF, tg = (target >>  8) & 0xFF, tb =  target        & 0xFF;
