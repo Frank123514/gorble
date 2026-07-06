@@ -8,14 +8,20 @@
       }
     },
     "targets": [
-      { "Name": "minecraft:grass_block", "Properties": { "snowy": "false" } },
-      { "Name": "minecraft:dirt_path" }
+      { "Name": "minecraft:grass_block" },
+      { "Name": "minecraft:dirt" },
+      { "Name": "minecraft:dirt_path" },
+      { "Name": "minecraft:coarse_dirt" },
+      { "Name": "minecraft:podzol" }
     ],
-    "radius": 7,
-    "threshold": 0.12,
-    "warp_weight": 0.60,
-    "scale_low": 0.20,
-    "scale_high": 0.45,
-    "scale_warp": 0.28
+    "radius": 14,
+    "mode": "speckle",
+    "stretch_x": 1.0,
+    "stretch_z": 1.0,
+    "threshold": 0.02,
+    "warp_weight": 0.15,
+    "scale_low": 0.05,
+    "scale_high": 1.10,
+    "scale_warp": 0.60
   }
 }

@@ -122,6 +122,8 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_SAND    = key("noisy_patch_sand");
     /** Bare-earth dirt patch worn into grassland — grazed meadows. */
     public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_DIRT    = key("noisy_patch_dirt");
+    /** Fine speckled snow dusting — many small flecks rather than one big drift. */
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_SNOW    = key("noisy_patch_snow");
 
     // Rock-pocket ores
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_BASALT_ROCK        = key("ore_basalt_rock");
@@ -666,6 +668,7 @@ public final class GotConfiguredFeatures {
                                 Blocks.GRASS_BLOCK.defaultBlockState(),
                                 Blocks.CLAY.defaultBlockState()),
                         8,      // radius
+                        net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Mode.BLOB,
                         1.8,    // stretch_x — oval aspect ratio
                         1.0,    // stretch_z
                         0.10,   // threshold
@@ -683,6 +686,7 @@ public final class GotConfiguredFeatures {
                                 Blocks.GRASS_BLOCK.defaultBlockState(),
                                 Blocks.SAND.defaultBlockState()),
                         7,      // radius
+                        net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Mode.BLOB,
                         2.0,    // stretch_x — longer, thinner scatters
                         1.0,    // stretch_z
                         0.20,   // threshold
@@ -700,6 +704,7 @@ public final class GotConfiguredFeatures {
                                 Blocks.GRASS_BLOCK.defaultBlockState(),
                                 Blocks.GRAVEL.defaultBlockState()),
                         9,      // radius
+                        net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Mode.BLOB,
                         1.6,    // stretch_x — wide but not as extreme
                         1.0,    // stretch_z
                         0.05,   // threshold
@@ -716,6 +721,7 @@ public final class GotConfiguredFeatures {
                         List.of(Blocks.GRASS_BLOCK.defaultBlockState(),
                                 Blocks.DIRT_PATH.defaultBlockState()),
                         7,      // radius
+                        net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Mode.BLOB,
                         1.7,    // stretch_x
                         1.0,    // stretch_z
                         0.12,   // threshold
@@ -723,6 +729,28 @@ public final class GotConfiguredFeatures {
                         0.20,   // scale_low
                         0.45,   // scale_high
                         0.28)); // scale_warp
+
+        // noisy_patch_snow: fine speckled snow dusting — many small flecks
+        // scattered unevenly across a wide radius, matching a light dusting
+        // that clumps into loose drifts rather than one big snow blob.
+        register(ctx, NOISY_PATCH_SNOW,
+                net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
+                new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
+                        BlockStateProvider.simple(Blocks.SNOW),
+                        List.of(Blocks.GRASS_BLOCK.defaultBlockState(),
+                                Blocks.DIRT.defaultBlockState(),
+                                Blocks.DIRT_PATH.defaultBlockState(),
+                                Blocks.COARSE_DIRT.defaultBlockState(),
+                                Blocks.PODZOL.defaultBlockState()),
+                        14,     // radius — wide coverage area per placement
+                        net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Mode.SPECKLE,
+                        1.0,    // stretch_x — unused in speckle mode
+                        1.0,    // stretch_z — unused in speckle mode
+                        0.02,   // threshold — low = dense speckle coverage
+                        0.15,   // warp_weight — light drift clumping, mostly clean flecks
+                        0.05,   // scale_low — large loose drifts/clusters
+                        1.10,   // scale_high — fine individual flecks
+                        0.60)); // scale_warp
 
         // ══════════════════════════════════════════════════════════════════════
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)

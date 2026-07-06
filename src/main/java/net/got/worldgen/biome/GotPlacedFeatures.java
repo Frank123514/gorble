@@ -157,6 +157,7 @@ public final class GotPlacedFeatures {
     public static final ResourceKey<PlacedFeature> NOISY_PATCH_GRAVEL = key("noisy_patch_gravel");
     public static final ResourceKey<PlacedFeature> NOISY_PATCH_SAND   = key("noisy_patch_sand");
     public static final ResourceKey<PlacedFeature> NOISY_PATCH_DIRT   = key("noisy_patch_dirt");
+    public static final ResourceKey<PlacedFeature> NOISY_PATCH_SNOW   = key("noisy_patch_snow");
 
     // Rock-pocket ores
     public static final ResourceKey<PlacedFeature> ORE_BASALT_ROCK        = key("ore_basalt_rock");
@@ -518,6 +519,15 @@ public final class GotPlacedFeatures {
         // noisy_patch_dirt: ~1 per 4 chunks — grazed grassland
         register(ctx, NOISY_PATCH_DIRT, cf.getOrThrow(GotConfiguredFeatures.NOISY_PATCH_DIRT),
                 List.of(RarityFilter.onAverageOnceEvery(4),
+                        InSquarePlacement.spread(),
+                        PlacementUtils.HEIGHTMAP,
+                        BiomeFilter.biome()));
+
+        // noisy_patch_snow: ~1 per 2 chunks — fine speckled dusting, placed more
+        // often than the blob patches since each placement is wide (radius 14)
+        // but sparse, so it needs denser sampling to give even ground coverage.
+        register(ctx, NOISY_PATCH_SNOW, cf.getOrThrow(GotConfiguredFeatures.NOISY_PATCH_SNOW),
+                List.of(RarityFilter.onAverageOnceEvery(2),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP,
                         BiomeFilter.biome()));
