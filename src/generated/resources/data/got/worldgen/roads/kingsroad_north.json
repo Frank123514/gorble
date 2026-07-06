@@ -1,25 +1,52 @@
 {
-  "id":   "kingsroad_north",
+  "id": "kingsroad_north",
   "name": "The Kingsroad (North)",
   "type": "kingsroad",
   "palette": {
     "surface": [
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:rooted_dirt"
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
     ],
     "walls": false
   },
   "points": [
-    { "pixelX": 753, "pixelY": 750  },
-    { "pixelX": 730, "pixelY": 800  },
-    { "pixelX": 705, "pixelY": 870  },
-    { "pixelX": 680, "pixelY": 940  },
-    { "pixelX": 648, "pixelY": 988  },
-    { "pixelX": 614, "pixelY": 1036 },
-    { "pixelX": 624, "pixelY": 1090 },
-    { "pixelX": 634, "pixelY": 1140 },
-    { "pixelX": 638, "pixelY": 1231 }
+    {
+      "pixelX": 753,
+      "pixelY": 750
+    },
+    {
+      "pixelX": 730,
+      "pixelY": 800
+    },
+    {
+      "pixelX": 705,
+      "pixelY": 870
+    },
+    {
+      "pixelX": 680,
+      "pixelY": 940
+    },
+    {
+      "pixelX": 648,
+      "pixelY": 988
+    },
+    {
+      "pixelX": 614,
+      "pixelY": 1036
+    },
+    {
+      "pixelX": 624,
+      "pixelY": 1090
+    },
+    {
+      "pixelX": 634,
+      "pixelY": 1140
+    },
+    {
+      "pixelX": 638,
+      "pixelY": 1231
+    }
   ]
 }

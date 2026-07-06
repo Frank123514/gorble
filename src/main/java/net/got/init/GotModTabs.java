@@ -2239,6 +2239,10 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_STAIRS.get());
                         safeAccept(output, GotModBlocks.MOSSY_SLATE_BRICK_WALL.get());
 
+                        // ── Path blocks ─────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.PATH_BLOCK.get());
+                        safeAccept(output, GotModBlocks.COBBLED_PATH_BLOCK.get());
+
                     })
                     .build());
 

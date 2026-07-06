@@ -1,23 +1,44 @@
 {
-  "id":   "ocean_road",
+  "id": "ocean_road",
   "name": "The Ocean Road",
   "type": "road",
   "palette": {
     "surface": [
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:rooted_dirt"
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
     ],
     "walls": false
   },
   "points": [
-    { "pixelX": 336, "pixelY": 1328 },
-    { "pixelX": 340, "pixelY": 1420 },
-    { "pixelX": 345, "pixelY": 1520 },
-    { "pixelX": 348, "pixelY": 1620 },
-    { "pixelX": 350, "pixelY": 1720 },
-    { "pixelX": 353, "pixelY": 1800 },
-    { "pixelX": 355, "pixelY": 1868 }
+    {
+      "pixelX": 336,
+      "pixelY": 1328
+    },
+    {
+      "pixelX": 340,
+      "pixelY": 1420
+    },
+    {
+      "pixelX": 345,
+      "pixelY": 1520
+    },
+    {
+      "pixelX": 348,
+      "pixelY": 1620
+    },
+    {
+      "pixelX": 350,
+      "pixelY": 1720
+    },
+    {
+      "pixelX": 353,
+      "pixelY": 1800
+    },
+    {
+      "pixelX": 355,
+      "pixelY": 1868
+    }
   ]
 }

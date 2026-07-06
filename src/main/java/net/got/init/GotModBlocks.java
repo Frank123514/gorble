@@ -1893,6 +1893,10 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> RAW_SILVER_BLOCK        = rawBlock("raw_silver_block");
     public static final DeferredBlock<Block> RAW_TIN_BLOCK           = rawBlock("raw_tin_block");
 
+    // ── Path blocks ───────────────────────────────────────────────────────
+    public static final DeferredBlock<Block> PATH_BLOCK              = registerPath("path_block");
+    public static final DeferredBlock<Block> COBBLED_PATH_BLOCK      = registerCobbledPath("cobbled_path_block");
+
     /** Iron-tier deepslate ore. */
     private static DeferredBlock<Block> oreIronDeep(String name) {
         return REGISTRY.registerSimpleBlock(name,
@@ -1915,6 +1919,18 @@ public class GotModBlocks {
     private static DeferredBlock<Block> rawBlock(String name) {
         return REGISTRY.registerSimpleBlock(name,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK));
+    }
+
+    /** Path block: hardness 0.6, resistance 0.6, GRAVEL sound — a light tan compacted path. */
+    private static DeferredBlock<Block> registerPath(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL));
+    }
+
+    /** Cobbled path block: hardness 2.0, resistance 6.0, STONE sound — path reinforced with cobblestones. */
+    private static DeferredBlock<Block> registerCobbledPath(String name) {
+        return REGISTRY.registerSimpleBlock(name,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE));
     }
 
     // ── Apple Tree

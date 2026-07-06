@@ -73,7 +73,7 @@ public record RoadData(String id, String name, String type, Palette palette, Lis
                         List.of(),
                         false);
                 default -> new Palette(  // "path" and anything unknown
-                        List.of("minecraft:dirt_path", "minecraft:dirt_path", "minecraft:coarse_dirt"),
+                        List.of("minecraft:dirt_path", "minecraft:dirt_path", "got:path_block"),
                         false);
             };
         }

@@ -1105,6 +1105,8 @@ public class GotModItems {
     // ── Raw metal storage block items ────────────────────────────────────
     public static final DeferredItem<Item> RAW_SILVER_BLOCK   = block(GotModBlocks.RAW_SILVER_BLOCK);
     public static final DeferredItem<Item> RAW_TIN_BLOCK      = block(GotModBlocks.RAW_TIN_BLOCK);
+    public static final DeferredItem<Item> PATH_BLOCK         = block(GotModBlocks.PATH_BLOCK);
+    public static final DeferredItem<Item> COBBLED_PATH_BLOCK = block(GotModBlocks.COBBLED_PATH_BLOCK);
     public static final DeferredItem<Item> RAW_COBALT_BLOCK   = block(GotModBlocks.RAW_COBALT_BLOCK);
     public static final DeferredItem<Item> RAW_LEAD_BLOCK     = block(GotModBlocks.RAW_LEAD_BLOCK);
     public static final DeferredItem<Item> RAW_PLATINUM_BLOCK = block(GotModBlocks.RAW_PLATINUM_BLOCK);

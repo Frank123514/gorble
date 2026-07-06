@@ -1,21 +1,36 @@
 {
-  "id":   "riverrun_road",
+  "id": "riverrun_road",
   "name": "Riverrun Road",
   "type": "road",
   "palette": {
     "surface": [
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:rooted_dirt"
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
     ],
     "walls": false
   },
   "points": [
-    { "pixelX": 390, "pixelY": 1195 },
-    { "pixelX": 420, "pixelY": 1210 },
-    { "pixelX": 450, "pixelY": 1225 },
-    { "pixelX": 480, "pixelY": 1232 },
-    { "pixelX": 525, "pixelY": 1240 }
+    {
+      "pixelX": 390,
+      "pixelY": 1195
+    },
+    {
+      "pixelX": 420,
+      "pixelY": 1210
+    },
+    {
+      "pixelX": 450,
+      "pixelY": 1225
+    },
+    {
+      "pixelX": 480,
+      "pixelY": 1232
+    },
+    {
+      "pixelX": 525,
+      "pixelY": 1240
+    }
   ]
 }

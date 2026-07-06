@@ -383,6 +383,7 @@
     "got:smooth_marble_rock_slab",
     "got:smooth_marble_rock_stairs",
     "got:smooth_marble_rock_wall",
-    "got:slate_shingles"
+    "got:slate_shingles",
+    "got:cobbled_path_block"
   ]
 }

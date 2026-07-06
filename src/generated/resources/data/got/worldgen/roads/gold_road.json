@@ -1,24 +1,48 @@
 {
-  "id":   "gold_road",
+  "id": "gold_road",
   "name": "The Gold Road",
   "type": "kingsroad",
   "palette": {
     "surface": [
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:rooted_dirt"
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
     ],
     "walls": false
   },
   "points": [
-    { "pixelX": 578, "pixelY": 1378 },
-    { "pixelX": 545, "pixelY": 1362 },
-    { "pixelX": 510, "pixelY": 1348 },
-    { "pixelX": 470, "pixelY": 1338 },
-    { "pixelX": 430, "pixelY": 1330 },
-    { "pixelX": 390, "pixelY": 1325 },
-    { "pixelX": 356, "pixelY": 1308 },
-    { "pixelX": 336, "pixelY": 1328 }
+    {
+      "pixelX": 578,
+      "pixelY": 1378
+    },
+    {
+      "pixelX": 545,
+      "pixelY": 1362
+    },
+    {
+      "pixelX": 510,
+      "pixelY": 1348
+    },
+    {
+      "pixelX": 470,
+      "pixelY": 1338
+    },
+    {
+      "pixelX": 430,
+      "pixelY": 1330
+    },
+    {
+      "pixelX": 390,
+      "pixelY": 1325
+    },
+    {
+      "pixelX": 356,
+      "pixelY": 1308
+    },
+    {
+      "pixelX": 336,
+      "pixelY": 1328
+    }
   ]
 }

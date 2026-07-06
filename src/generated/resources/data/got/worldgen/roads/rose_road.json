@@ -1,23 +1,44 @@
 {
-  "id":   "rose_road",
+  "id": "rose_road",
   "name": "The Rose Road",
   "type": "kingsroad",
   "palette": {
     "surface": [
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:coarse_dirt",
-      "minecraft:rooted_dirt"
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
     ],
     "walls": false
   },
   "points": [
-    { "pixelX": 578, "pixelY": 1378 },
-    { "pixelX": 555, "pixelY": 1420 },
-    { "pixelX": 530, "pixelY": 1468 },
-    { "pixelX": 510, "pixelY": 1520 },
-    { "pixelX": 490, "pixelY": 1570 },
-    { "pixelX": 460, "pixelY": 1605 },
-    { "pixelX": 428, "pixelY": 1638 }
+    {
+      "pixelX": 578,
+      "pixelY": 1378
+    },
+    {
+      "pixelX": 555,
+      "pixelY": 1420
+    },
+    {
+      "pixelX": 530,
+      "pixelY": 1468
+    },
+    {
+      "pixelX": 510,
+      "pixelY": 1520
+    },
+    {
+      "pixelX": 490,
+      "pixelY": 1570
+    },
+    {
+      "pixelX": 460,
+      "pixelY": 1605
+    },
+    {
+      "pixelX": 428,
+      "pixelY": 1638
+    }
   ]
 }
