@@ -237,6 +237,45 @@ public final class SeasonFoliageColorProvider {
         };
     }
 
+    // ── Cold-latitude dead grass ──────────────────────────────────────────────
+    // North of a line traced on the biomemap, grass gradually turns a dead
+    // yellow-brown regardless of season, matching the WesterosCraft look for
+    // the far north. The line is not flat — it slopes gently across the map —
+    // so it's defined as two endpoints in biomemap pixel space and interpolated
+    // by map column.
+
+    private static final int DEAD_GRASS_LINE_MAP_X0   = 0;     // biomemap column at west edge
+    private static final int DEAD_GRASS_LINE_ROW_X0    = 1313;  // biomemap row at that column
+    private static final int DEAD_GRASS_LINE_MAP_X1    = 4206;  // biomemap column at east edge
+    private static final int DEAD_GRASS_LINE_ROW_X1    = 1196;  // biomemap row at that column
+
+    /** How many biomemap rows the transition fades over, north of the line, for a soft edge instead of a hard cut. */
+    private static final float DEAD_GRASS_FADE_ROWS = 6f;
+
+    public static final int DEAD_GRASS_COLOR = 0xD0AC48;
+
+    /**
+     * Returns a blend factor in [0, 1] for how "dead" (cold, yellow-brown)
+     * grass at this world position should look, based on its position
+     * relative to the sloped latitude line on the biomemap. 0 = normal
+     * seasonal grass, 1 = fully dead grass color.
+     */
+    public static float getDeadGrassBlend(int worldX, int worldZ) {
+        float mapX = worldX / (float) net.got.worldgen.BiomemapLoader.MAP_SCALE
+                + net.got.worldgen.BiomemapLoader.getWidth() * 0.5f;
+        float mapY = worldZ / (float) net.got.worldgen.BiomemapLoader.MAP_SCALE
+                + net.got.worldgen.BiomemapLoader.getHeight() * 0.5f;
+
+        float t = net.minecraft.util.Mth.clamp(
+                (mapX - DEAD_GRASS_LINE_MAP_X0) / (float) (DEAD_GRASS_LINE_MAP_X1 - DEAD_GRASS_LINE_MAP_X0),
+                0f, 1f);
+        float thresholdRow = DEAD_GRASS_LINE_ROW_X0 + (DEAD_GRASS_LINE_ROW_X1 - DEAD_GRASS_LINE_ROW_X0) * t;
+
+        // North of the line means a smaller map row (row 0 is the top/north edge).
+        float rowsNorth = thresholdRow - mapY;
+        return net.minecraft.util.Mth.clamp(rowsNorth / DEAD_GRASS_FADE_ROWS, 0f, 1f);
+    }
+
     // ── Regional grass patch variation ────────────────────────────────────────
     // Adds subtle brightness variation across large patches of terrain — some
     // areas of the same biome read a touch darker/lighter than others, the

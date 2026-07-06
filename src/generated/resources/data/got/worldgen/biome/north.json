@@ -72,7 +72,8 @@
       "got:wild_cabbage",
       "got:blackberry_bush",
       "got:patch_leaves",
-      "got:wheatgrass"
+      "got:wheatgrass",
+      "got:noisy_patch_coarse_dirt"
     ],
     [
       "minecraft:freeze_top_layer"
