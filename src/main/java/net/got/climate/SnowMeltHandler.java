@@ -44,14 +44,23 @@ public final class SnowMeltHandler {
         };
     }
 
+    // Scanning every loaded chunk on every single tick (20x/sec) was pure
+    // overhead on top of everything else the server does per tick — the
+    // actual melt roll is rare per chunk anyway. Run the scan every 5 ticks
+    // instead (4x/sec, still plenty granular for a slow visual process like
+    // seasonal melt) and scale the per-chunk chance up to compensate, so the
+    // average melt rate over time is unchanged.
+    private static final int SCAN_INTERVAL = 5;
+
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel().isClientSide()) return;
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         if (!level.dimension().equals(Level.OVERWORLD)) return;
+        if (level.getServer().getTickCount() % SCAN_INTERVAL != 0) return;
 
         GotSeason season = SeasonCache.get();
-        float chance = meltChance(season);
+        float chance = Math.min(1f, meltChance(season) * SCAN_INTERVAL);
         if (chance <= 0f) return;
 
         // Iterate every ticking chunk and maybe melt one random surface column

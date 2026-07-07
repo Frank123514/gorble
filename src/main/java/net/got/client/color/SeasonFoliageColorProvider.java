@@ -266,12 +266,21 @@ public final class SeasonFoliageColorProvider {
      * noise pattern.
      */
     public static int getDeadGrassPatchColor(int x, int z) {
-        double n = net.got.worldgen.SimplexNoise.noise(
+        double regional = net.got.worldgen.SimplexNoise.noise(
                 x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
+        // Fine, fast-varying detail layer on top of the slow regional one.
+        // With only one low-frequency octave, adjacent blocks change by a
+        // fraction of an 8-bit color step for many blocks in a row, so the
+        // color rounds to the same flat value across a run of blocks before
+        // jumping — visible banding/blockiness rather than a smooth blend.
+        // This detail layer breaks each band up into fine grain instead.
+        double detail = net.got.worldgen.SimplexNoise.noise(
+                x * GRASS_DETAIL_SCALE + 500.0, z * GRASS_DETAIL_SCALE + 500.0);
+        double n = regional + detail * GRASS_DETAIL_WEIGHT;
         float t = (float) (n + 1.0) / 2f; // -> [0, 1]
         // Constrained to [0.2, 0.8] instead of the full [0, 1] range so patches
         // never hit the pure dark/light extremes — softer, less blotchy contrast.
-        t = 0.2f + t * 0.6f;
+        t = 0.2f + net.minecraft.util.Mth.clamp(t, 0f, 1f) * 0.6f;
         return blendColors(DEAD_GRASS_DARK, DEAD_GRASS_LIGHT, t);
     }
 
@@ -290,6 +299,8 @@ public final class SeasonFoliageColorProvider {
 
     // ── Regional grass patch variation ────────────────────────────────────────
     private static final double GRASS_VARIATION_SCALE = 0.006; // large, slow-changing regions (was 0.02 — too fast/blotchy)
+    private static final double GRASS_DETAIL_SCALE     = 0.09;  // fine dither layer — breaks up quantization banding, ~11-block period
+    private static final double GRASS_DETAIL_WEIGHT    = 0.35;  // detail layer's weight relative to the regional layer
     private static final float  GRASS_VARIATION_STRENGTH_NORMAL = 0.08f; // default: +/-8% brightness shift
     private static final float  GRASS_VARIATION_STRENGTH_DEAD   = 0.10f; // dead-grass zone: +/-10% brightness shift
 
@@ -302,8 +313,15 @@ public final class SeasonFoliageColorProvider {
      * gradual as the color transition itself rather than a hard jump at the line.
      */
     public static float getGrassPatchVariation(int x, int z, float deadGrassBlend) {
-        double n = net.got.worldgen.SimplexNoise.noise(
+        double regional = net.got.worldgen.SimplexNoise.noise(
                 x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
+        // See getDeadGrassPatchColor for why this detail layer is needed —
+        // without it, the slow regional noise alone rounds to identical
+        // 8-bit brightness values across runs of several blocks, reading as
+        // hard-edged patches instead of a smooth blend.
+        double detail = net.got.worldgen.SimplexNoise.noise(
+                x * GRASS_DETAIL_SCALE, z * GRASS_DETAIL_SCALE);
+        double n = net.minecraft.util.Mth.clamp(regional + detail * GRASS_DETAIL_WEIGHT, -1.0, 1.0);
         float strength = GRASS_VARIATION_STRENGTH_NORMAL
                 + (GRASS_VARIATION_STRENGTH_DEAD - GRASS_VARIATION_STRENGTH_NORMAL) * deadGrassBlend;
         return 1f + (float) n * strength;

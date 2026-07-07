@@ -95,13 +95,6 @@ public final class RoadRegistry {
         }
         BY_TYPE = Collections.unmodifiableMap(unmodifiable);
         ALL     = Collections.unmodifiableList(allList);
-
-        LOGGER.info("[GoT][DEBUG] RoadRegistry: manifest listed {} file(s), successfully loaded {} road(s) into ALL, {} type bucket(s)",
-                roadFiles.size(), ALL.size(), BY_TYPE.size());
-        for (RoadData r : ALL) {
-            LOGGER.info("[GoT][DEBUG] RoadRegistry: loaded road id='{}' type='{}' points={}",
-                    r.id(), r.type(), r.points().size());
-        }
     }
 
     // ── Private helpers ───────────────────────────────────────────────────────
@@ -113,7 +106,7 @@ public final class RoadRegistry {
     private static List<String> loadManifest() {
         try (InputStream in = RoadRegistry.class.getResourceAsStream(MANIFEST_FILE)) {
             if (in == null) {
-                LOGGER.error("[GoT][DEBUG] Road manifest not found on classpath: {}", MANIFEST_FILE);
+                LOGGER.error("Road manifest not found on classpath: {}", MANIFEST_FILE);
                 return List.of();
             }
             JsonObject root = GSON.fromJson(

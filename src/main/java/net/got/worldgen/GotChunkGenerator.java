@@ -1,6 +1,5 @@
 package net.got.worldgen;
 
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -147,22 +145,9 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     // ── buildSurface ────────────────────────────────────────────────────────
 
-    private static final Logger LOGGER = LogUtils.getLogger();
-    private static volatile boolean loggedBuildSurface = false;
-
     @Override
     public void buildSurface(WorldGenRegion region, StructureManager structures,
                              RandomState random, ChunkAccess chunk) {
-        if (!loggedBuildSurface) {
-            loggedBuildSurface = true;
-            ChunkPos cp0 = chunk.getPos();
-            LOGGER.info("[GoT][DEBUG] GotChunkGenerator.buildSurface: FIRST CALL — dimension={}, chunk=({},{})",
-                    region.getLevel().dimension().location(), cp0.x, cp0.z);
-        }
-        ChunkPos cpLog = chunk.getPos();
-        LOGGER.info("[GoT][DEBUG] GotChunkGenerator.buildSurface: chunk ({},{}) dimension={}",
-                cpLog.x, cpLog.z, region.getLevel().dimension().location());
-
         vanilla.buildSurface(region, structures, random, chunk);
         RoadWorldGen.buildRoadsInChunk(chunk);
         RoadWorldGen.clearVegetationFromRoads(chunk);
