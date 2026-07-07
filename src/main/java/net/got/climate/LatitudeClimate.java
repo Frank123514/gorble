@@ -1,8 +1,10 @@
 package net.got.climate;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.minecraft.util.Mth;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,13 +25,14 @@ import java.util.List;
  * that's a localized building, this is a world-spanning climate band.
  *
  * <h3>Line data</h3>
- * {@link #LATITUDE_SPINE} holds (worldX, freezeLineZ) points sampled
- * directly from the marker line with no smoothing (one point per image
- * pixel column), sorted ascending by X and covering the entire map width.  For any worldX, the line's Z is found with the same
- * uniform cubic B-spline interpolation used everywhere else in this mod
- * (see {@code WallWorldGen#wallCentreZ} and the bicubic B-spline sampling
- * in {@code GotChunkGenerator}), evaluated over the four nearest spine
- * control points. X outside the range clamps to the nearest end point.
+ * {@link #ICE_SPINE} and {@link #GRASS_SPINE} each hold a small set of
+ * (worldX, z) control points, loaded from a bundled JSON resource and kept
+ * independent of each other, sorted ascending by X and covering the entire
+ * map width. For any worldX, a line's Z is found with a uniform cubic
+ * B-spline interpolation (see {@code WallWorldGen#wallCentreZ} and the
+ * bicubic B-spline sampling in {@code GotChunkGenerator}), evaluated over
+ * the four nearest control points. X outside a spine's range clamps to the
+ * nearest end point.
  *
  * <h3>Gradient</h3>
  * Positions south of / on the line get no adjustment at all — every biome
@@ -42,63 +45,75 @@ import java.util.List;
 public final class LatitudeClimate {
 
     // Distance (in blocks) north of the line before the freeze effect fully saturates.
-    private static final float FADE_DISTANCE = 4000f;
+    private static final float FADE_DISTANCE = 12000f;
 
     // Adjustment applied at full saturation. Large enough to floor even the
     // hottest biome (base temperature up to 2.0) down to the absolute
     // minimum (-0.5) once far enough north of the line.
     private static final float MAX_ADJUSTMENT = -3.0f;
 
-    // ── Spine (worldX -> freezeLineZ) ──────────────────────────────────────
-    // Sampled directly (no smoothing) from the red-marker line on biomemap.png,
-    // one control point per image pixel column. (4207x3277 px, MAP_SCALE=50,
-    // origin at image centre). Sorted by X ascending.
+    // ── Spines (worldX -> z) ────────────────────────────────────────────────
+    // Two independent sets of hand-picked (x, z) control points, loaded from
+    // a bundled JSON resource, each interpolated with a uniform cubic
+    // B-spline (see bSplineZ). ICE_SPINE controls LatitudeIceHandler,
+    // LatitudeIcebergHandler, and temperatureAdjustment. GRASS_SPINE controls
+    // SeasonFoliageColorProvider's dead-grass fade. They are intentionally
+    // separate lines — freezing water and dying grass don't have to happen
+    // at the same place, so each can be tuned independently.
     //
-    // NOTE: this used to be a 4207-entry int[][] literal declared directly in
-    // source. A static array initializer that size compiles into a single
-    // <clinit> method whose bytecode exceeds the JVM's 64KB per-method limit
-    // ("code too large"). The data now lives in a bundled resource file
-    // (parsed once, lazily, at class-init) instead of being baked into
-    // bytecode.
-    private static final String SPINE_RESOURCE = "/net/got/climate/latitude_spine.csv";
+    // NOTE: this used to be a single ~4207-point CSV sampled one-per-pixel-
+    // column from the red-marker line on biomemap.png, shared by both ice
+    // and grass. That gave a very literal trace but was unwieldy to hand-
+    // tune and forced ice/grass to use identical geometry. It's now two much
+    // smaller sets of control points in JSON, interpolated the same way.
+    private static final String SPINE_RESOURCE = "/net/got/climate/latitude_line.json";
 
-    private static final int[][] LATITUDE_SPINE = loadSpine();
+    private static final int[][] ICE_SPINE;
+    private static final int[][] GRASS_SPINE;
 
-    private static int[][] loadSpine() {
-        List<int[]> points = new ArrayList<>(4207);
+    static {
+        JsonObject root;
         try (InputStream in = LatitudeClimate.class.getResourceAsStream(SPINE_RESOURCE)) {
             if (in == null) {
                 throw new IllegalStateException("Missing resource " + SPINE_RESOURCE);
             }
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    line = line.trim();
-                    if (line.isEmpty()) continue;
-                    int comma = line.indexOf(',');
-                    int x = Integer.parseInt(line.substring(0, comma));
-                    int z = Integer.parseInt(line.substring(comma + 1));
-                    points.add(new int[]{x, z});
-                }
+            try (InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+                root = new Gson().fromJson(reader, JsonObject.class);
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to load " + SPINE_RESOURCE, e);
         }
+        ICE_SPINE = parsePoints(root, "ice_points");
+        GRASS_SPINE = parsePoints(root, "grass_points");
+    }
+
+    private static int[][] parsePoints(JsonObject root, String key) {
+        JsonArray pointsArray = root.getAsJsonArray(key);
+        if (pointsArray == null) {
+            throw new IllegalStateException(SPINE_RESOURCE + " is missing \"" + key + "\"");
+        }
+        List<int[]> points = new ArrayList<>();
+        for (int i = 0; i < pointsArray.size(); i++) {
+            JsonObject point = pointsArray.get(i).getAsJsonObject();
+            int x = point.get("x").getAsInt();
+            int z = point.get("z").getAsInt();
+            points.add(new int[]{x, z});
+        }
+        points.sort((a, b) -> Integer.compare(a[0], b[0]));
+        if (points.size() < 2) {
+            throw new IllegalStateException(SPINE_RESOURCE + "." + key + " must have at least 2 control points, found " + points.size());
+        }
         return points.toArray(new int[0][]);
     }
 
-
-    private LatitudeClimate() {}
-
     /**
-     * Returns the freeze-line world Z at the given world X, using a uniform
-     * cubic B-spline evaluated over the four nearest spine control points —
-     * the same interpolation used for {@code WallWorldGen#wallCentreZ} and
-     * the biomemap/heightmap sampling in {@code GotChunkGenerator}.
-     * X values outside the spine's range clamp to the nearest end point.
+     * Uniform cubic B-spline over the 4 nearest control points in
+     * {@code spine}, evaluated at {@code worldX}. Shared interpolation logic
+     * for both the ice and grass spines. X outside the spine's range clamps
+     * to the nearest end point. Spines with only 2 points degrade to a
+     * straight line between them.
      */
-    public static int freezeLineZ(int worldX) {
-        int[][] spine = LATITUDE_SPINE;
+    private static int bSplineZ(int[][] spine, int worldX) {
         int n = spine.length;
 
         if (worldX <= spine[0][0])     return spine[0][1];
@@ -138,6 +153,31 @@ public final class LatitudeClimate {
 
         double z = (b0*z0 + b1*z1 + b2*z2 + b3*z3) / 6.0;
         return (int) Math.round(z);
+    }
+
+
+    private LatitudeClimate() {}
+
+    /**
+     * Returns the freeze-line world Z at the given world X, using a uniform
+     * cubic B-spline evaluated over the four nearest ice-spine control
+     * points — the same interpolation used for {@code WallWorldGen#wallCentreZ}
+     * and the biomemap/heightmap sampling in {@code GotChunkGenerator}.
+     * X values outside the spine's range clamp to the nearest end point.
+     */
+    public static int freezeLineZ(int worldX) {
+        return bSplineZ(ICE_SPINE, worldX);
+    }
+
+    /**
+     * Returns the dead-grass line's world Z at the given world X, using the
+     * same B-spline interpolation as {@link #freezeLineZ} but over the
+     * separate grass-spine control points, so the grass line can differ
+     * from the ice line entirely. Used by
+     * {@code SeasonFoliageColorProvider#getDeadGrassBlend}.
+     */
+    public static int grassLineZ(int worldX) {
+        return bSplineZ(GRASS_SPINE, worldX);
     }
 
     /**

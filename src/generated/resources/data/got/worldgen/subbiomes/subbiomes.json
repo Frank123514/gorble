@@ -1,18 +1,6 @@
 {
   "got:north": [
     {
-      "subbiome": "got:subbiome/maple_forest",
-      "noise_scale": 240.0,
-      "threshold": 0.85,
-      "priority": 0
-    },
-    {
-      "subbiome": "got:subbiome/beech_forest",
-      "noise_scale": 230.0,
-      "threshold": 0.80,
-      "priority": 0
-    },
-    {
       "subbiome": "got:subbiome/wheat_field",
       "noise_scale": 240.0,
       "threshold": 0.85,

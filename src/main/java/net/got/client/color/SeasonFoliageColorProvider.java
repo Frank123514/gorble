@@ -1,5 +1,6 @@
 package net.got.client.color;
 
+import net.got.climate.LatitudeClimate;
 import net.got.climate.SeasonManager;
 import net.got.init.GotModBlocks;
 import net.minecraft.client.color.block.BlockColor;
@@ -238,63 +239,74 @@ public final class SeasonFoliageColorProvider {
     }
 
     // ── Cold-latitude dead grass ──────────────────────────────────────────────
-    // North of a line traced on the biomemap, grass gradually turns a dead
-    // yellow-brown regardless of season, matching the WesterosCraft look for
-    // the far north. The line is not flat — it slopes gently across the map —
-    // so it's defined as two endpoints in biomemap pixel space and interpolated
-    // by map column.
+    // North of the same frozen-latitude line used by LatitudeClimate (and
+    // therefore LatitudeIceHandler/LatitudeIcebergHandler), grass gradually
+    // turns a dead yellow-brown regardless of season, matching the
+    // WesterosCraft look for the far north.
+    //
+    // This used to keep its own separate 2-endpoint line in biomemap pixel
+    // space, hand-tuned independently of the ice line. It's now the
+    // "grass_points" spine in LatitudeClimate's JSON resource, converted
+    // from those same original biomemap-pixel endpoints into world
+    // coordinates — so this line's position hasn't moved, it's just
+    // JSON-editable now, and stays fully independent from the ice line.
 
-    private static final int DEAD_GRASS_LINE_MAP_X0   = 0;     // biomemap column at west edge
-    private static final int DEAD_GRASS_LINE_ROW_X0    = 1313;  // biomemap row at that column
-    private static final int DEAD_GRASS_LINE_MAP_X1    = 4206;  // biomemap column at east edge
-    private static final int DEAD_GRASS_LINE_ROW_X1    = 1196;  // biomemap row at that column
+    /** How many world blocks the transition fades over, north of the line, for a soft edge instead of a hard cut. */
+    private static final float DEAD_GRASS_FADE_DISTANCE = 300f;
 
-    /** How many biomemap rows the transition fades over, north of the line, for a soft edge instead of a hard cut. */
-    private static final float DEAD_GRASS_FADE_ROWS = 6f;
+    public static final int DEAD_GRASS_DARK  = 0xAF8043;
+    public static final int DEAD_GRASS_LIGHT = 0xD4C948;
 
-    public static final int DEAD_GRASS_COLOR = 0xD0AC48;
+    /**
+     * Returns the dead-grass base color at this position — a blend between
+     * {@link #DEAD_GRASS_DARK} and {@link #DEAD_GRASS_LIGHT} driven by the
+     * same low-frequency noise field as {@link #getGrassPatchVariation}, so
+     * the dark/light dead-grass patches line up with the same regions as
+     * the general patch variation rather than being a separate, uncorrelated
+     * noise pattern.
+     */
+    public static int getDeadGrassPatchColor(int x, int z) {
+        double n = net.got.worldgen.SimplexNoise.noise(
+                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
+        float t = (float) (n + 1.0) / 2f; // -> [0, 1]
+        // Constrained to [0.2, 0.8] instead of the full [0, 1] range so patches
+        // never hit the pure dark/light extremes — softer, less blotchy contrast.
+        t = 0.2f + t * 0.6f;
+        return blendColors(DEAD_GRASS_DARK, DEAD_GRASS_LIGHT, t);
+    }
 
     /**
      * Returns a blend factor in [0, 1] for how "dead" (cold, yellow-brown)
      * grass at this world position should look, based on its position
-     * relative to the sloped latitude line on the biomemap. 0 = normal
-     * seasonal grass, 1 = fully dead grass color.
+     * relative to the frozen latitude line. 0 = normal seasonal grass,
+     * 1 = fully dead grass color.
      */
     public static float getDeadGrassBlend(int worldX, int worldZ) {
-        float mapX = worldX / (float) net.got.worldgen.BiomemapLoader.MAP_SCALE
-                + net.got.worldgen.BiomemapLoader.getWidth() * 0.5f;
-        float mapY = worldZ / (float) net.got.worldgen.BiomemapLoader.MAP_SCALE
-                + net.got.worldgen.BiomemapLoader.getHeight() * 0.5f;
-
-        float t = net.minecraft.util.Mth.clamp(
-                (mapX - DEAD_GRASS_LINE_MAP_X0) / (float) (DEAD_GRASS_LINE_MAP_X1 - DEAD_GRASS_LINE_MAP_X0),
-                0f, 1f);
-        float thresholdRow = DEAD_GRASS_LINE_ROW_X0 + (DEAD_GRASS_LINE_ROW_X1 - DEAD_GRASS_LINE_ROW_X0) * t;
-
-        // North of the line means a smaller map row (row 0 is the top/north edge).
-        float rowsNorth = thresholdRow - mapY;
-        return net.minecraft.util.Mth.clamp(rowsNorth / DEAD_GRASS_FADE_ROWS, 0f, 1f);
+        int lineZ = LatitudeClimate.grassLineZ(worldX);
+        int northOf = lineZ - worldZ; // positive = north of the line
+        if (northOf <= 0) return 0f;
+        return net.minecraft.util.Mth.clamp(northOf / DEAD_GRASS_FADE_DISTANCE, 0f, 1f);
     }
 
     // ── Regional grass patch variation ────────────────────────────────────────
-    // Adds subtle brightness variation across large patches of terrain — some
-    // areas of the same biome read a touch darker/lighter than others, the
-    // way LOTR Mod's grass looks. Uses low-frequency noise so the variation
-    // is smooth and regional rather than a per-block speckle/static look.
-    // Kept intentionally mild (+/-6% brightness) so it reads as natural
-    // variation, not a visible pattern or a different biome.
-
-    private static final double GRASS_VARIATION_SCALE = 0.02; // large, slow-changing regions
-    private static final float  GRASS_VARIATION_STRENGTH = 0.10f; // max +/-10% brightness shift
+    private static final double GRASS_VARIATION_SCALE = 0.006; // large, slow-changing regions (was 0.02 — too fast/blotchy)
+    private static final float  GRASS_VARIATION_STRENGTH_NORMAL = 0.08f; // default: +/-8% brightness shift
+    private static final float  GRASS_VARIATION_STRENGTH_DEAD   = 0.10f; // dead-grass zone: +/-10% brightness shift
 
     /**
      * Returns a brightness multiplier in [1 - strength, 1 + strength] for the
-     * given world position, smoothly varying across large regions.
+     * given world position, smoothly varying across large regions. Strength
+     * itself blends from {@link #GRASS_VARIATION_STRENGTH_NORMAL} to
+     * {@link #GRASS_VARIATION_STRENGTH_DEAD} as {@code deadGrassBlend} goes
+     * from 0 to 1, so the switch to the stronger dead-grass variation is as
+     * gradual as the color transition itself rather than a hard jump at the line.
      */
-    public static float getGrassPatchVariation(int x, int z) {
+    public static float getGrassPatchVariation(int x, int z, float deadGrassBlend) {
         double n = net.got.worldgen.SimplexNoise.noise(
                 x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
-        return 1f + (float) n * GRASS_VARIATION_STRENGTH;
+        float strength = GRASS_VARIATION_STRENGTH_NORMAL
+                + (GRASS_VARIATION_STRENGTH_DEAD - GRASS_VARIATION_STRENGTH_NORMAL) * deadGrassBlend;
+        return 1f + (float) n * strength;
     }
 
     /** Multiplies each RGB channel of {@code color} by {@code factor}, clamped to [0, 255]. */

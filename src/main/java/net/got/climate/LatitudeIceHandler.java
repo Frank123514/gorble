@@ -102,8 +102,8 @@ public final class LatitudeIceHandler {
     private static boolean isFrozenByLatitudeNoise(int worldX, int worldZ, float strength) {
         if (strength >= 1f) return true;
 
-        double noise1 = ICE_NOISE.getValue(worldX * 0.1, worldZ * 0.1, false);
-        double noise2 = ICE_NOISE.getValue(worldX * 0.03, worldZ * 0.03, false);
+        double noise1 = ICE_NOISE.getValue((worldX - 250000) * 0.1, (worldZ + 250000) * 0.1, false);
+        double noise2 = ICE_NOISE.getValue((worldX + 100000) * 0.03, (worldZ - 100000) * 0.03, false);
         double noiseAvg = (noise1 + noise2) / 2.0;
         double noiseNorm = (noiseAvg + 1.0) / 2.0; // -1..1 -> 0..1
 
