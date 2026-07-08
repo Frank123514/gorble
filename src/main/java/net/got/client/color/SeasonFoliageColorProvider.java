@@ -244,7 +244,7 @@ public final class SeasonFoliageColorProvider {
     // so it's defined as two endpoints in biomemap pixel space and interpolated
     // by map column.
     //
-    // These values (and the DEAD_GRASS_COLOR below) used to be hardcoded here.
+    // These values (and the dead-grass dark/light colors below) used to be hardcoded here.
     // They now live in the same /net/got/climate/latitude_climate.json that
     // backs LatitudeClimate's ice spine, so both latitude-driven systems —
     // water freezing into ice, and grass fading brown — are configured from
@@ -260,7 +260,12 @@ public final class SeasonFoliageColorProvider {
     /** How many biomemap rows the transition fades over, north of the line, for a soft edge instead of a hard cut. */
     private static final float DEAD_GRASS_FADE_ROWS = LATITUDE_CONFIG.deadGrassFadeRows();
 
-    public static final int DEAD_GRASS_COLOR = LATITUDE_CONFIG.deadGrassColor();
+    // Dead grass is no longer a single flat color: it blends between a dark
+    // and a light shade using the same regional patch noise as
+    // getGrassPatchVariation, so the dead-grass zone reads with natural
+    // light/dark patches instead of one uniform tint.
+    public static final int DEAD_GRASS_COLOR_DARK  = LATITUDE_CONFIG.deadGrassColorDark();
+    public static final int DEAD_GRASS_COLOR_LIGHT = LATITUDE_CONFIG.deadGrassColorLight();
 
     /**
      * Returns a blend factor in [0, 1] for how "dead" (cold, yellow-brown)
@@ -303,6 +308,40 @@ public final class SeasonFoliageColorProvider {
         double n = net.got.worldgen.SimplexNoise.noise(
                 x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
         return 1f + (float) n * GRASS_VARIATION_STRENGTH;
+    }
+
+    /**
+     * Same regional noise as {@link #getGrassPatchVariation}, but returned
+     * as a plain 0..1 fraction instead of a brightness multiplier, for
+     * blending between two discrete colors (dark patch vs. light patch)
+     * rather than scaling a single color's brightness.
+     */
+    private static float getGrassPatchNoise01(int x, int z) {
+        double n = net.got.worldgen.SimplexNoise.noise(
+                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
+        return (float) (n * 0.5 + 0.5); // -> [0, 1]
+    }
+
+    /**
+     * Dead-grass color for this world position: blends between
+     * {@link #DEAD_GRASS_COLOR_DARK} and {@link #DEAD_GRASS_COLOR_LIGHT}
+     * using the same regional patch noise as {@link #getGrassPatchVariation},
+     * so dark and light dead-grass patches read as natural regions instead
+     * of a single flat tint.
+     *
+     * <p>The raw noise swings all the way from 0 to 1, which put the full
+     * dark/light color difference on screen and looked far too harsh/blotchy.
+     * {@link #DEAD_GRASS_PATCH_CONTRAST} pulls the blend factor in toward the
+     * middle so most of the terrain sits closer to an in-between shade, and
+     * only the strongest noise peaks/troughs approach the pure dark or light
+     * color — a softer, more gradual look.
+     */
+    private static final float DEAD_GRASS_PATCH_CONTRAST = 0.35f; // 0 = flat single blend, 1 = full raw contrast
+
+    public static int getDeadGrassColor(int x, int z) {
+        float t = getGrassPatchNoise01(x, z);
+        float softened = 0.5f + (t - 0.5f) * DEAD_GRASS_PATCH_CONTRAST;
+        return blendColors(DEAD_GRASS_COLOR_DARK, DEAD_GRASS_COLOR_LIGHT, softened);
     }
 
     /** Multiplies each RGB channel of {@code color} by {@code factor}, clamped to [0, 255]. */

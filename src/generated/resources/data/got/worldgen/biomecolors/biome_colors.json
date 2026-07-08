@@ -1,18 +1,18 @@
 {
   "#5C935C": {
     "biome": "got:north",
-    "base_height": 70,
-    "height_variation": 10
+    "base_height": 68,
+    "height_variation": 7
   },
   "#699B6D": {
     "biome": "got:gift",
-    "base_height": 70,
-    "height_variation": 10
+    "base_height": 68,
+    "height_variation": 7
   },
   "#7BA181": {
     "biome": "got:beyond_the_wall",
-    "base_height": 70,
-    "height_variation": 10
+    "base_height": 68,
+    "height_variation": 7
   },
   "#639E63": {
     "biome": "got:barrowlands",
