@@ -5,6 +5,7 @@ import net.got.client.gui.widget.GotPlaceholderWidget;
 import net.got.faction.GotFactionData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -14,10 +15,11 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Screen shown for the Skills / Magic / Culture tabs of {@link GotMainMenuScreen}.
  * Built on the open-book GUI texture instead of the map's torn-parchment
- * panel — the book is drawn at its native size (scaled up to a comfortable
- * on-screen size, no stretch-distortion), and content is laid out across its
- * two facing pages. A "Menu" button above the book returns to
- * {@link GotMainMenuScreen}, same convention as {@link GotMapScreen}.
+ * panel — the book is drawn at its native 271x180 size, letting Minecraft's
+ * GUI Scale setting do all the magnification (same as every other texture
+ * in the game), and content is laid out across its two facing pages. A
+ * "Menu" button above the book returns to {@link GotMainMenuScreen}, same
+ * convention as {@link GotMapScreen}.
  */
 public final class GotPlaceholderScreen extends Screen {
 
@@ -26,22 +28,23 @@ public final class GotPlaceholderScreen extends Screen {
     private static final ResourceLocation WIDGETS_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
 
-    /** Native texture size. */
+    /** Native texture size. Drawn 1:1 — no extra scale factor. Minecraft's
+     *  own GUI Scale setting already scales this whole screen uniformly,
+     *  same as it does for every other texture in the game (buttons,
+     *  inventory, etc.). Stacking a second manual scale on top of that
+     *  was pointless complexity and the only thing different about this
+     *  texture's draw call vs. everything else on the screen. */
     private static final int BOOK_TEX_W = 271;
     private static final int BOOK_TEX_H = 180;
 
-    /** On-screen book size — texture scaled up 2x for a comfortable window. */
-    private static final int SCALE  = 2;
-    private static final int BOOK_W = BOOK_TEX_W * SCALE;
-    private static final int BOOK_H = BOOK_TEX_H * SCALE;
+    private static final int bookW = BOOK_TEX_W;
+    private static final int bookH = BOOK_TEX_H;
 
     /** Margin inside each page's curved/bound edges before content starts. */
-    private static final int PAGE_MARGIN_X = 22 * SCALE;
-    private static final int PAGE_MARGIN_TOP = 18 * SCALE;
-    private static final int PAGE_MARGIN_BOTTOM = 16 * SCALE;
+    private int pageMarginX, pageMarginTop, pageMarginBottom;
 
     /** Half of the book (one page), inset from the outer margins above. */
-    private static final int PAGE_W = BOOK_W / 2 - PAGE_MARGIN_X - (6 * SCALE);
+    private int pageW;
 
     private static final int BUTTON_W = 120;
     private static final int BUTTON_H = 20;
@@ -83,14 +86,19 @@ public final class GotPlaceholderScreen extends Screen {
     private void rebuildLayout() {
         clearWidgets();
 
-        bookX = (width  - BOOK_W) / 2;
-        bookY = (height - BOOK_H) / 2 + (BUTTON_H / 2);
+        pageMarginX = 22;
+        pageMarginTop = 18;
+        pageMarginBottom = 16;
+        pageW = bookW / 2 - pageMarginX - 6;
 
-        pageY = bookY + PAGE_MARGIN_TOP;
-        pageH = BOOK_H - PAGE_MARGIN_TOP - PAGE_MARGIN_BOTTOM;
+        bookX = (width  - bookW) / 2;
+        bookY = (height - bookH) / 2 + (BUTTON_H / 2);
 
-        leftPageX  = bookX + PAGE_MARGIN_X;
-        rightPageX = bookX + BOOK_W / 2 + (6 * SCALE);
+        pageY = bookY + pageMarginTop;
+        pageH = bookH - pageMarginTop - pageMarginBottom;
+
+        leftPageX  = bookX + pageMarginX;
+        rightPageX = bookX + bookW / 2 + 6;
 
         // "Menu" button sits above the book, like a bookmark tab
         btnX = bookX;
@@ -98,16 +106,16 @@ public final class GotPlaceholderScreen extends Screen {
 
         resetBtnVisible = tab == GotMenuTab.CULTURE;
         if (resetBtnVisible) {
-            resetBtnX = rightPageX + (PAGE_W - RESET_BTN_W) / 2;
-            resetBtnY = pageY + pageH - RESET_BTN_H - (4 * SCALE);
+            resetBtnX = rightPageX + (pageW - RESET_BTN_W) / 2;
+            resetBtnY = pageY + pageH - RESET_BTN_H - 4;
         }
 
         // Left page always shows the tab's title as a heading; right page
         // gets the "Coming Soon" body widget, keeping the same widget every
         // other tab already used for its written content.
         addRenderableWidget(new GotPlaceholderWidget(
-                rightPageX, pageY, PAGE_W,
-                resetBtnVisible ? pageH - RESET_BTN_H - (8 * SCALE) : pageH,
+                rightPageX, pageY, pageW,
+                resetBtnVisible ? pageH - RESET_BTN_H - 8 : pageH,
                 bodyTitle(), bodyText()));
     }
 
@@ -153,32 +161,52 @@ public final class GotPlaceholderScreen extends Screen {
     /* ------------------------------------------------------------------ */
 
     @Override
+    public void renderBackground(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        // Vanilla Screen#renderBackground blurs the 3D world behind the GUI
+        // via gameRenderer.processBlurEffect() ("Menu Background Blurriness").
+        // That's what was making the whole scene look "out of focus" —
+        // never the book texture. We skip that blur and use vanilla's own
+        // renderTransparentBackground() instead (same one BookEditScreen
+        // uses) — the real, unmodified vanilla dark overlay.
+        renderTransparentBackground(gfx);
+    }
+
+    @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
 
-        // Book background — drawn at its native 271x180 texel size, then
-        // scaled up 2x via a pose transform. (Blitting straight at
-        // BOOK_W x BOOK_H would have asked this blit overload to *sample*
-        // a 542x360 region from a 271x180 texture — since width/height here
-        // double as both the on-screen size AND the source-rect size, that
-        // just wraps the UVs around and tiles the texture instead of
-        // scaling it.)
-        gfx.pose().pushPose();
-        gfx.pose().translate(bookX, bookY, 0);
-        gfx.pose().scale(SCALE, SCALE, 1f);
+        // Draw the (non-blurred) background exactly once, before anything
+        // else. Screen#render() normally calls renderBackground() itself —
+        // but we draw the book texture before calling super.render() below,
+        // and super.render() would call renderBackground() again on its way
+        // in, painting the dark overlay a second time *on top of* the
+        // already-drawn book and heading. Calling it here ourselves, up
+        // front, and swapping the later super.render() call for a direct
+        // renderables loop (see below) means it only ever runs once, before
+        // the book is drawn — never over it.
+        renderBackground(gfx, mouseX, mouseY, partialTick);
+
+        // Book background — drawn at native 271x180 size, no scaling at all.
+        // Minecraft's GUI Scale setting handles all magnification uniformly
+        // for the whole screen, same as every other texture here.
         gfx.blit(RenderType::guiTextured, BOOK_TEXTURE,
-                0, 0, 0f, 0f,
+                bookX, bookY, 0f, 0f,
                 BOOK_TEX_W, BOOK_TEX_H,
                 BOOK_TEX_W, BOOK_TEX_H);
-        gfx.pose().popPose();
 
         // Left page: chapter heading for this tab, illuminated-manuscript style
         String heading = tab.label;
-        int headX = leftPageX + (PAGE_W - font.width(heading)) / 2;
-        gfx.drawString(font, heading, headX, pageY + (8 * SCALE), 0xFF3A2818, false);
-        gfx.hLine(leftPageX, leftPageX + PAGE_W - 1, pageY + (8 * SCALE) + font.lineHeight + 4, 0xFF8A7048);
+        int headX = leftPageX + (pageW - font.width(heading)) / 2;
+        gfx.drawString(font, heading, headX, pageY + 8, 0xFF3A2818, false);
+        gfx.hLine(leftPageX, leftPageX + pageW - 1, pageY + 8 + font.lineHeight + 4, 0xFF8A7048);
 
-        // Right page: the actual body widget (title/body/"Coming Soon")
-        super.render(gfx, mouseX, mouseY, partialTick);
+        // Right page: the actual body widget (title/body/"Coming Soon").
+        // NOT super.render(gfx, ...) — that would call renderBackground()
+        // again, redrawing the dark overlay on top of the book we just
+        // drew above. This is the rest of what Screen#render() does besides
+        // that call: just run the registered renderables.
+        for (Renderable renderable : this.renderables) {
+            renderable.render(gfx, mouseX, mouseY, partialTick);
+        }
 
         // "Menu" button
         boolean btnHov = isOver(mouseX, mouseY, btnX, btnY, BUTTON_W, BUTTON_H);

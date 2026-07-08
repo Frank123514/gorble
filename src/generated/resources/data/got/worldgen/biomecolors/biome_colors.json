@@ -124,6 +124,11 @@
     "base_height": 70,
     "height_variation": 10
   },
+  "#B5CACC": {
+    "biome": "got:mountains_of_the_moon",
+    "base_height": 72,
+    "height_variation": 30
+  },
   "#69994B": {
     "biome": "got:westerlands",
     "base_height": 70,

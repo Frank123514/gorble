@@ -27,6 +27,18 @@ public class GotMapWidget extends AbstractWidget {
     private static final ResourceLocation COMPASS_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/compass_rose.png");
 
+    /** Perlin-noise grain texture, drawn as a screen-fixed overlay on top of
+     *  the map so it reads as parchment aging/wear. Tiled at its native
+     *  256x256 size across the canvas, positioned from the widget's own
+     *  x/y — NOT from panX/panY/zoom — so it never moves when the map is
+     *  panned or zoomed. */
+    private static final ResourceLocation PARCHMENT_OVERLAY_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/parchment_overlay.png");
+    private static final int OVERLAY_TILE_SIZE = 256;
+    /** Warm sepia tint + low alpha, multiplied onto the greyscale noise so
+     *  it reads as subtle mottled staining rather than a flat grey haze. */
+    private static final int OVERLAY_COLOR = 0x30E8D8A0;
+
     private static final int CANVAS_BG_COLOR = 0xFF000000;
 
     /**
@@ -246,6 +258,12 @@ public class GotMapWidget extends AbstractWidget {
                 getY() + height - compassSize - compassMargin,
                 0, 0, compassSize, compassSize, compassSize, compassSize);
 
+        // Parchment aging overlay — drawn last, on top of the map/pins/
+        // compass, at fixed canvas coordinates (not panX/panY/zoom), so it
+        // reads as grain/wear on the "paper" itself rather than a feature
+        // printed on the map — it stays put while the map moves underneath.
+        drawParchmentOverlay(gfx);
+
         gfx.disableScissor();
 
         // Iron border (drawn outside scissor so it overlaps the canvas edge cleanly)
@@ -259,6 +277,34 @@ public class GotMapWidget extends AbstractWidget {
             List<Component> tooltip = new java.util.ArrayList<>();
             tooltip.add(Component.literal(wp.name()));
             gfx.renderComponentTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        }
+    }
+
+    /* ------------------------------------------------------------ */
+    /* Parchment overlay                                             */
+    /* ------------------------------------------------------------ */
+
+    /**
+     * Tiles {@link #PARCHMENT_OVERLAY_TEXTURE} across the canvas at its
+     * native 256x256 size, anchored to the widget's own screen position
+     * (getX()/getY()) — never to panX/panY or zoom. That's what keeps it
+     * static "on the glass" while the map scrolls and zooms underneath it.
+     * Edge tiles are cropped (not stretched) to fit the remaining space.
+     */
+    private void drawParchmentOverlay(GuiGraphics gfx) {
+        int originX = getX();
+        int originY = getY();
+
+        for (int ty = 0; ty < height; ty += OVERLAY_TILE_SIZE) {
+            int tileH = Math.min(OVERLAY_TILE_SIZE, height - ty);
+            for (int tx = 0; tx < width; tx += OVERLAY_TILE_SIZE) {
+                int tileW = Math.min(OVERLAY_TILE_SIZE, width - tx);
+                gfx.blit(RenderType::guiTextured, PARCHMENT_OVERLAY_TEXTURE,
+                        originX + tx, originY + ty, 0f, 0f,
+                        tileW, tileH,
+                        OVERLAY_TILE_SIZE, OVERLAY_TILE_SIZE,
+                        OVERLAY_COLOR);
+            }
         }
     }
 

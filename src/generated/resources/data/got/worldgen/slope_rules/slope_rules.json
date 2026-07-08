@@ -8,17 +8,10 @@
     { "min_slope": 16, "block": "minecraft:stone",        "depth": 2, "jitter": 4 }
   ],
 
-  "got:north_mountains_mid": [
+  "got:mountains_of_the_moon": [
     { "min_slope": 52, "block": "minecraft:stone",        "depth": 8, "jitter": 5 },
     { "min_slope": 38, "block": "minecraft:stone",        "depth": 6, "jitter": 5 },
-    { "min_slope": 26, "block": "minecraft:gravel",       "depth": 4, "jitter": 5 },
-    { "min_slope": 16, "block": "minecraft:stone",        "depth": 2, "jitter": 4 }
-  ],
-
-  "got:north_mountains_peak": [
-    { "min_slope": 52, "block": "minecraft:stone",        "depth": 8, "jitter": 5 },
-    { "min_slope": 38, "block": "minecraft:stone",        "depth": 6, "jitter": 5 },
-    { "min_slope": 26, "block": "minecraft:gravel",       "depth": 4, "jitter": 5 },
+    { "min_slope": 26, "block": "minecraft:calcite",       "depth": 4, "jitter": 5 },
     { "min_slope": 16, "block": "minecraft:stone",        "depth": 2, "jitter": 4 }
   ],
 
