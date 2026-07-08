@@ -19,29 +19,23 @@ import java.util.stream.Stream;
 
 public final class GotBiomeSource extends BiomeSource {
 
-    private static final Set<String> HOT_BIOME_IDS = Set.of(
-            "got:dorne",
-            "got:dorne_desert",
-            "got:lower_reach"
-    );
-
     /**
-     * How far (in blocks) the creek/oasis/frozen_lake swap reaches into the
+     * How far (in blocks) the frozen_lake swap reaches into the
      * surrounding land past the actual waterline. This is a physical radius —
      * a column only gets pulled in if real submerged ground is within this
      * distance, not just because it happens to sit near sea-level elevation
      * somewhere far from any water.
      */
-    private static final int CREEK_SHORE_RADIUS = 8;
+    private static final int SHORE_RADIUS = 8;
 
     /** Number of ring samples used to probe for nearby submerged ground. */
     private static final int SHORE_PROBE_COUNT = 4;
 
     /**
-     * Cold biomes where a muddy creek pocket would look wrong — these get
-     * frozen_lake instead. North, North Hills, and Barrowlands are chilly but
-     * not frozen-tundra cold, so they're left off this list and fall through
-     * to the regular creek swap.
+     * Cold biomes where an open water pocket gets frozen_lake instead of
+     * staying as plain land. North, North Hills, and Barrowlands are chilly
+     * but not frozen-tundra cold, so they're left off this list and get no
+     * swap at all.
      */
     private static final Set<String> COLD_BIOME_IDS = Set.of(
             "got:always_winter",
@@ -58,16 +52,14 @@ public final class GotBiomeSource extends BiomeSource {
             "got:neck_river",
             "got:frozen_river",
             "got:lake",
-            "got:frozen_lake",
-            "got:creek",
-            "got:oasis"
+            "got:frozen_lake"
     );
 
     /**
-     * "Real" water bodies — as opposed to the small creek/oasis/frozen_lake
+     * "Real" water bodies — as opposed to the small frozen_lake
      * pockets the shore-radius swap itself produces. Used to tell an isolated
-     * puddle sitting deep inside a land biome apart from a creek/oasis patch
-     * that's actually just the muddy fringe of a river/lake/ocean.
+     * puddle sitting deep inside a land biome apart from a frozen_lake
+     * patch that's actually just the fringe of a river/lake/ocean.
      */
     private static final Set<String> BIG_WATER_BIOME_IDS = Set.of(
             "got:ocean",
@@ -180,33 +172,27 @@ public final class GotBiomeSource extends BiomeSource {
             if (landCandidate != null) winner = landCandidate;
         }
 
-        // CREEK SWAP — a dry land column becomes a creek/oasis/frozen-lake
-        // pocket if its own terrain dips below sea level, OR if real submerged
-        // ground is within CREEK_SHORE_RADIUS blocks of it AND that submerged
-        // ground is an isolated pocket fully surrounded by land. The radius
-        // check pushes the biome out into the banks physically surrounding an
-        // isolated low spot (mud/reeds spreading past the waterline) without
-        // grabbing unrelated land elsewhere that just happens to sit near
-        // sea-level elevation. It deliberately does NOT fire when the nearby
-        // submerged ground is actually part of a real river/lake/ocean — that
-        // shoreline is already handled by the water biome's own shape, so
-        // stacking a creek/oasis fringe around it as well just looks wrong.
-        // Same trick Middle Earth uses for its ponds: no separate noise system,
-        // the low spot IS the water. Hot biomes get oasis, cold biomes get a
-        // frozen lake pocket instead of muddy creek, everything else gets creek.
+        // FROZEN_LAKE SWAP — a dry land column becomes a frozen-lake
+        // pocket if its own terrain dips below sea level, OR if
+        // real submerged ground is within SHORE_RADIUS blocks of it AND that
+        // submerged ground is an isolated pocket fully surrounded by land.
+        // The radius check pushes the biome out into the banks physically
+        // surrounding an isolated low spot without grabbing unrelated land
+        // elsewhere that just happens to sit near sea-level elevation. It
+        // deliberately does NOT fire when the nearby submerged ground is
+        // actually part of a real river/lake/ocean — that shoreline is
+        // already handled by the water biome's own shape, so stacking a
+        // frozen_lake fringe around it as well just looks wrong.
+        // Same trick Middle Earth uses for its ponds: no separate noise
+        // system, the low spot IS the water. Cold biomes get a frozen lake
+        // pocket; everything else keeps its own land biome — no swap.
         boolean ownTerrainSubmerged = surfaceY < GotChunkGenerator.SEA_LEVEL;
         boolean isolatedShorePocket = !ownTerrainSubmerged
                 && isNearSubmergedGround(worldX, worldZ)
                 && !isNearBigWaterBiome(worldX, worldZ);
         boolean nearWater = ownTerrainSubmerged || isolatedShorePocket;
-        if (!WATER_BIOME_IDS.contains(winner) && nearWater) {
-            if (HOT_BIOME_IDS.contains(winner)) {
-                winner = "got:oasis";
-            } else if (COLD_BIOME_IDS.contains(winner)) {
-                winner = "got:frozen_lake";
-            } else {
-                winner = "got:creek";
-            }
+        if (!WATER_BIOME_IDS.contains(winner) && nearWater && COLD_BIOME_IDS.contains(winner)) {
+            winner = "got:frozen_lake";
         }
 
         // SUB-BIOME CHECK
@@ -222,17 +208,17 @@ public final class GotBiomeSource extends BiomeSource {
     }
 
     /**
-     * Samples a ring of points {@link #CREEK_SHORE_RADIUS} blocks out from
+     * Samples a ring of points {@link #SHORE_RADIUS} blocks out from
      * (worldX, worldZ) and returns true if any of them are actually
-     * below sea level. Used to pull dry land into the creek/oasis swap only
-     * when it's physically close to real water, not just near sea-level
+     * below sea level. Used to pull dry land into the frozen_lake swap
+     * only when it's physically close to real water, not just near sea-level
      * elevation somewhere unrelated.
      */
     private static boolean isNearSubmergedGround(int worldX, int worldZ) {
         for (int i = 0; i < SHORE_PROBE_COUNT; i++) {
             double angle = (2 * Math.PI * i) / SHORE_PROBE_COUNT;
-            int px = worldX + Math.round((float) (Math.cos(angle) * CREEK_SHORE_RADIUS));
-            int pz = worldZ + Math.round((float) (Math.sin(angle) * CREEK_SHORE_RADIUS));
+            int px = worldX + Math.round((float) (Math.cos(angle) * SHORE_RADIUS));
+            int pz = worldZ + Math.round((float) (Math.sin(angle) * SHORE_RADIUS));
             if (GotChunkGenerator.computeRawSurfaceY(px, pz) < GotChunkGenerator.SEA_LEVEL) {
                 return true;
             }
@@ -243,13 +229,13 @@ public final class GotBiomeSource extends BiomeSource {
     /**
      * Checks the biomemap around (worldX, worldZ) for any real water biome
      * ({@link #BIG_WATER_BIOME_IDS}) — ocean, river, lake, etc. — as opposed
-     * to a creek/oasis/frozen_lake pocket. Used to tell apart an isolated
-     * low spot fully surrounded by land (should get the creek/oasis shore
-     * swap) from one that's actually just the muddy edge of a real water
-     * body (shouldn't get an extra fringe stacked on top of the water
+     * to a frozen_lake pocket. Used to tell apart an isolated
+     * low spot fully surrounded by land (should get the frozen_lake
+     * shore swap) from one that's actually just the muddy edge of a real
+     * water body (shouldn't get an extra fringe stacked on top of the water
      * biome's own shoreline).
      *
-     * <p>{@code CREEK_SHORE_RADIUS} (8 blocks) is well under one biomemap
+     * <p>{@code SHORE_RADIUS} (8 blocks) is well under one biomemap
      * pixel ({@code MAP_SCALE} = 46 blocks), so a 3x3-pixel neighbourhood
      * around the column's own biomemap pixel comfortably covers the same
      * physical area the shore-radius probe reaches into.

@@ -107,10 +107,9 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_CLAY        = key("disk_clay");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_SAND        = key("disk_sand");
 
-    // Creek features
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_MUD         = key("disk_mud");
+    // Mud/quagmire/reed features (currently unused — quagmire coverage now
+    // comes from surface-rule noise-threshold patches instead)
     public static final ResourceKey<ConfiguredFeature<?, ?>> DISK_QUAGMIRE    = key("disk_quagmire");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SHORT_REEDS_PATCH = key("short_reeds_patch");
     public static final ResourceKey<ConfiguredFeature<?, ?>> REEDS_PATCH       = key("reeds_patch");
 
     // ── Noisy organic-blob patches ──────────────────────────────────────────
@@ -633,22 +632,12 @@ public final class GotConfiguredFeatures {
                 UniformInt.of(2, 3),
                 1));
 
-        // disk_mud: mud, radius 1-3, half_height 1 — creek floor patches
-        register(ctx, DISK_MUD, Feature.DISK, new DiskConfiguration(
-                RuleBasedBlockStateProvider.simple(Blocks.MUD),
-                BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.CLAY, Blocks.SAND, Blocks.GRAVEL),
-                UniformInt.of(1, 3),
-                1));
-
         // disk_quagmire: quagmire, radius 1-3, half_height 1 — boggy shore patches
         register(ctx, DISK_QUAGMIRE, Feature.DISK, new DiskConfiguration(
                 RuleBasedBlockStateProvider.simple(GotModBlocks.QUAGMIRE.get().defaultBlockState().getBlock()),
                 BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.MUD, Blocks.CLAY),
                 UniformInt.of(1, 3),
                 1));
-
-        // short_reeds_patch: shoreline reeds, tries=12, xzSpread=5, ySpread=3
-        register(ctx, SHORT_REEDS_PATCH, Feature.RANDOM_PATCH, cropPatch(GotModBlocks.SHORT_REEDS, 12, 5, 3));
 
         // reeds_patch: 3-tall reeds in shallow water, placed by custom feature
         register(ctx, REEDS_PATCH,

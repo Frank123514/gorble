@@ -34,6 +34,11 @@ public final class LatitudeClimateConfig {
     private final float iceFadeDistance;
     private final float iceMaxAdjustment;
 
+    // ── Snow line (ground-dusting gradient, separate from ice) ──────────────
+    private final int snowFreezeLineZ;
+    private final float snowFadeDistance;
+    private final float snowMaxAdjustment;
+
     // ── Dead-grass line ──────────────────────────────────────────────────────
     private final int deadGrassMapX0;
     private final int deadGrassRowX0;
@@ -50,12 +55,16 @@ public final class LatitudeClimateConfig {
     }
 
     private LatitudeClimateConfig(int iceFreezeLineZ, float iceFadeDistance, float iceMaxAdjustment,
+                                   int snowFreezeLineZ, float snowFadeDistance, float snowMaxAdjustment,
                                    int deadGrassMapX0, int deadGrassRowX0,
                                    int deadGrassMapX1, int deadGrassRowX1,
                                    float deadGrassFadeRows, int deadGrassColorDark, int deadGrassColorLight) {
         this.iceFreezeLineZ = iceFreezeLineZ;
         this.iceFadeDistance = iceFadeDistance;
         this.iceMaxAdjustment = iceMaxAdjustment;
+        this.snowFreezeLineZ = snowFreezeLineZ;
+        this.snowFadeDistance = snowFadeDistance;
+        this.snowMaxAdjustment = snowMaxAdjustment;
         this.deadGrassMapX0 = deadGrassMapX0;
         this.deadGrassRowX0 = deadGrassRowX0;
         this.deadGrassMapX1 = deadGrassMapX1;
@@ -80,6 +89,11 @@ public final class LatitudeClimateConfig {
             float iceFadeDistance = ice.get("fade_distance").getAsFloat();
             float iceMaxAdjustment = ice.get("max_adjustment").getAsFloat();
 
+            JsonObject snow = root.getAsJsonObject("snow");
+            int snowFreezeLineZ = snow.get("freeze_line_z").getAsInt();
+            float snowFadeDistance = snow.get("fade_distance").getAsFloat();
+            float snowMaxAdjustment = snow.get("max_adjustment").getAsFloat();
+
             JsonObject deadGrass = root.getAsJsonObject("dead_grass");
             int deadGrassMapX0 = deadGrass.get("map_x0").getAsInt();
             int deadGrassRowX0 = deadGrass.get("row_x0").getAsInt();
@@ -91,6 +105,7 @@ public final class LatitudeClimateConfig {
 
             return new LatitudeClimateConfig(
                     iceFreezeLineZ, iceFadeDistance, iceMaxAdjustment,
+                    snowFreezeLineZ, snowFadeDistance, snowMaxAdjustment,
                     deadGrassMapX0, deadGrassRowX0, deadGrassMapX1, deadGrassRowX1,
                     deadGrassFadeRows, deadGrassColorDark, deadGrassColorLight);
         } catch (IOException e) {
@@ -124,6 +139,18 @@ public final class LatitudeClimateConfig {
 
     public float iceMaxAdjustment() {
         return iceMaxAdjustment;
+    }
+
+    public int snowFreezeLineZ() {
+        return snowFreezeLineZ;
+    }
+
+    public float snowFadeDistance() {
+        return snowFadeDistance;
+    }
+
+    public float snowMaxAdjustment() {
+        return snowMaxAdjustment;
     }
 
     public int deadGrassMapX0() {

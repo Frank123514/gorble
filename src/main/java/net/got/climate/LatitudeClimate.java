@@ -45,6 +45,20 @@ public final class LatitudeClimate {
     // minimum (-0.5) once far enough north of the line.
     private static final float MAX_ADJUSTMENT = CONFIG.iceMaxAdjustment();
 
+    // Separate flat world Z of the snow-dusting line — independent of the
+    // ice/temperature freeze line above. Ground snow (LatitudeSnowHandler)
+    // gates off this line instead, so it can start further south than water
+    // actually starts icing over.
+    private static final int SNOW_LINE_Z = CONFIG.snowFreezeLineZ();
+
+    // Fade distance for the snow line's own gradient (separate from the ice fade).
+    private static final float SNOW_FADE_DISTANCE = CONFIG.snowFadeDistance();
+
+    // Adjustment applied at full saturation of the snow-line gradient. Used
+    // only to keep ground snow from melting out north of the line — floors
+    // the seasonal temperature the same way MAX_ADJUSTMENT does for ice.
+    private static final float SNOW_MAX_ADJUSTMENT = CONFIG.snowMaxAdjustment();
+
     private LatitudeClimate() {}
 
     /**
@@ -88,5 +102,43 @@ public final class LatitudeClimate {
      */
     public static float temperatureAdjustment(int worldX, int worldZ) {
         return latitudeStrength(worldX, worldZ) * MAX_ADJUSTMENT;
+    }
+
+    /**
+     * Returns the snow line's world Z. Flat, same as {@link #freezeLineZ},
+     * but a distinct value used only for ground-snow-dusting
+     * ({@link LatitudeSnowHandler}) — kept separate from the
+     * ice/temperature line so the two can sit at different latitudes.
+     */
+    public static int snowLineZ(int worldX) {
+        return SNOW_LINE_Z;
+    }
+
+    /** Returns {@code true} if (worldX, worldZ) lies north of (or on) the snow line. */
+    public static boolean isBeyondSnowLine(int worldX, int worldZ) {
+        return worldZ <= snowLineZ(worldX);
+    }
+
+    /**
+     * Same shape as {@link #latitudeStrength}, but gated off the separate
+     * {@link #SNOW_LINE_Z} line and its own {@link #SNOW_FADE_DISTANCE}
+     * instead of the ice line's.
+     */
+    public static float snowLatitudeStrength(int worldX, int worldZ) {
+        int lineZ = snowLineZ(worldX);
+        int northOf = lineZ - worldZ;
+        if (northOf <= 0) return 0f;
+        return Mth.clamp(northOf / SNOW_FADE_DISTANCE, 0f, 1f);
+    }
+
+    /**
+     * Temperature offset for ground-snow melt checks only ({@link
+     * SnowMeltHandler}) — {@code 0} south of the snow line,
+     * fading linearly to {@link #SNOW_MAX_ADJUSTMENT} over {@link
+     * #SNOW_FADE_DISTANCE} blocks north of it, so snow stops melting out in
+     * warm seasons the further north of the line it sits.
+     */
+    public static float snowTemperatureAdjustment(int worldX, int worldZ) {
+        return snowLatitudeStrength(worldX, worldZ) * SNOW_MAX_ADJUSTMENT;
     }
 }

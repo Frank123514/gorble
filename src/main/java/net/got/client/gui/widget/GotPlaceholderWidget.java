@@ -1,6 +1,6 @@
 package net.got.client.gui.widget;
 
-import net.got.client.gui.GotMainMenuScreen;
+import net.got.client.gui.GotPlaceholderScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -8,8 +8,8 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Simple "Coming Soon" panel used for the Skills / Magic / Culture tabs of
- * {@link GotMainMenuScreen}.
+ * Simple "Coming Soon" panel used for the Skills / Magic / Culture tabs -
+ * see {@link GotPlaceholderScreen}.
  *
  * <p>Deliberately structured as a real {@link AbstractWidget} (same base
  * class as {@link GotMapWidget}) rather than being painted directly in the

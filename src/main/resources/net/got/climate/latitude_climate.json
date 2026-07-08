@@ -6,6 +6,12 @@
     "fade_distance": 4000.0,
     "max_adjustment": -3.0
   },
+  "snow": {
+    "__comment": "Separate flat world Z line just for the ground-snow-dusting gradient (LatitudeSnowHandler) and the no-melt override in SnowMeltHandler, independent of the ice/temperature line above. South of it is untouched; north of it the snow-chance gradient (and the melt-blocking temperature floor) ramps from 0 to 1 over fade_distance blocks (see LatitudeClimate#snowLatitudeStrength / #snowTemperatureAdjustment).",
+    "freeze_line_z": -32000,
+    "fade_distance": 4000.0,
+    "max_adjustment": -3.0
+  },
   "dead_grass": {
     "__comment": "North of a sloped line traced on the biomemap, grass gradually turns a dead yellow-brown regardless of season. The line is defined as two endpoints in biomemap pixel space (map column, row) and interpolated by map column; row 0 is the north/top edge.",
     "map_x0": 0,

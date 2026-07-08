@@ -146,10 +146,8 @@ public final class GotPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DISK_CLAY  = key("disk_clay");
     public static final ResourceKey<PlacedFeature> DISK_SAND  = key("disk_sand");
 
-    // Creek features
-    public static final ResourceKey<PlacedFeature> DISK_MUD          = key("disk_mud");
+    // Mud/quagmire/reed features (currently unused)
     public static final ResourceKey<PlacedFeature> DISK_QUAGMIRE     = key("disk_quagmire");
-    public static final ResourceKey<PlacedFeature> SHORT_REEDS_PATCH = key("short_reeds_patch");
     public static final ResourceKey<PlacedFeature> REEDS_PATCH       = key("reeds_patch");
 
     // Noisy organic-blob patches
@@ -460,26 +458,9 @@ public final class GotPlacedFeatures {
                                         net.minecraft.world.level.material.Fluids.WATER)),
                         BiomeFilter.biome()));
 
-        // disk_mud: count=4, ocean-floor heightmap, under water, biome — creek bed mud
-        register(ctx, DISK_MUD, cf.getOrThrow(GotConfiguredFeatures.DISK_MUD),
-                List.of(CountPlacement.of(4),
-                        InSquarePlacement.spread(),
-                        PlacementUtils.HEIGHTMAP_TOP_SOLID,
-                        BlockPredicateFilter.forPredicate(
-                                BlockPredicate.matchesFluids(net.minecraft.core.BlockPos.ZERO,
-                                        net.minecraft.world.level.material.Fluids.WATER)),
-                        BiomeFilter.biome()));
-
         // disk_quagmire: count=4, surface heightmap, biome — boggy shore patches
         register(ctx, DISK_QUAGMIRE, cf.getOrThrow(GotConfiguredFeatures.DISK_QUAGMIRE),
                 List.of(CountPlacement.of(4),
-                        InSquarePlacement.spread(),
-                        PlacementUtils.HEIGHTMAP,
-                        BiomeFilter.biome()));
-
-        // short_reeds_patch: count=5, surface heightmap, biome — shoreline reeds
-        register(ctx, SHORT_REEDS_PATCH, cf.getOrThrow(GotConfiguredFeatures.SHORT_REEDS_PATCH),
-                List.of(CountPlacement.of(5),
                         InSquarePlacement.spread(),
                         PlacementUtils.HEIGHTMAP,
                         BiomeFilter.biome()));
