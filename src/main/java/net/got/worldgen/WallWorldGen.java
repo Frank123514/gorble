@@ -1,11 +1,13 @@
 package net.got.worldgen;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.ChunkPos;
 import org.joml.SimplexNoise;
+import org.slf4j.Logger;
 
 /**
  * Generates The Wall — the 700-foot-tall barrier of ice that stretches
@@ -44,6 +46,9 @@ import org.joml.SimplexNoise;
  * A 3-wide × 5-tall passage is carved at {@link #CASTLE_BLACK_X}.
  */
 public final class WallWorldGen {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
+    private static volatile boolean loggedRange = false;
 
     // ── Spine (worldX → wallCentreZ) ──────────────────────────────────────
     // Derived from the red-marker line on the biomemap (4207×3277 px,
@@ -436,6 +441,12 @@ public final class WallWorldGen {
      * touches the wall footprint at any point.
      */
     public static void buildWallInChunk(ChunkAccess chunk) {
+        if (!loggedRange) {
+            loggedRange = true;
+            LOGGER.info("[GoT][DEBUG] WallWorldGen: spine covers worldX {} .. {} ({} points), CASTLE_BLACK_X={}",
+                    WALL_X_WEST, WALL_X_EAST, WALL_SPINE.length, CASTLE_BLACK_X);
+        }
+
         ChunkPos cp       = chunk.getPos();
         int chunkMinX     = cp.getMinBlockX();
         int chunkMaxX     = chunkMinX + 15;
@@ -444,6 +455,8 @@ public final class WallWorldGen {
 
         // Quick X reject
         if (chunkMaxX < WALL_X_WEST || chunkMinX > WALL_X_EAST) {
+            LOGGER.debug("[GoT][DEBUG] WallWorldGen: chunk ({},{}) [worldX {}..{}] rejected — outside spine X range {}..{}",
+                    cp.x, cp.z, chunkMinX, chunkMaxX, WALL_X_WEST, WALL_X_EAST);
             return;
         }
 
@@ -462,8 +475,13 @@ public final class WallWorldGen {
         int maxSouthReach = HALF + WALL_BATTER + (int) Math.ceil(FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
         int maxNorthReach = HALF + NORTH_BATTER + (int) Math.ceil(NORTH_FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
         if (chunkMaxZ < minCentreZ - maxNorthReach || chunkMinZ > maxCentreZ + maxSouthReach + BATTLEMENT_HEIGHT) {
+            LOGGER.info("[GoT][DEBUG] WallWorldGen: chunk ({},{}) in X range but Z reject — chunkZ {}..{}, wall centreZ {}..{} (+reach N{} S{})",
+                    cp.x, cp.z, chunkMinZ, chunkMaxZ, minCentreZ, maxCentreZ, maxNorthReach, maxSouthReach);
             return;
         }
+
+        LOGGER.info("[GoT][DEBUG] WallWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] PASSED both rejects — building wall, centreZ range {}..{}",
+                cp.x, cp.z, chunkMinX, chunkMaxX, chunkMinZ, chunkMaxZ, minCentreZ, maxCentreZ);
 
         for (int lx = 0; lx < 16; lx++) {
             int wx = chunkMinX + lx;

@@ -31,26 +31,11 @@ public final class GotNetwork {
                     if (player == null || !player.hasPermissions(2)) return;
                     ServerLevel level = player.serverLevel();
                     int x = payload.x(), z = payload.z();
-                    int chunkX = x >> 4, chunkZ = z >> 4;
-
-                    // NOTE: level.getChunk(chunkX, chunkZ) used to be called here.
-                    // That forces a *synchronous* full-generation chunk load (biomes,
-                    // carvers, features, structures) directly on the server thread,
-                    // freezing the entire server (all players, not just this one)
-                    // for however long that chunk takes to generate. On a large,
-                    // mostly-unexplored map, that's most teleports. Request the
-                    // chunk asynchronously instead, and only jump back onto the
-                    // main thread (cheaply) once it's actually ready.
-                    level.getChunkSource().getChunkFuture(chunkX, chunkZ,
-                                    net.minecraft.world.level.chunk.status.ChunkStatus.FULL, true)
-                            .thenAcceptAsync(chunkResult -> {
-                                if (chunkResult.orElse(null) == null) return; // failed to load/generate
-                                if (player.isRemoved() || player.serverLevel() != level) return;
-                                int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
-                                if (y < level.getMinY()) y = level.getMinY();
-                                player.teleportTo(level, x + 0.5, y + 1, z + 0.5,
-                                        Set.of(), player.getYRot(), player.getXRot(), false);
-                            }, level.getServer());
+                    level.getChunk(x >> 4, z >> 4);
+                    int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+                    if (y < level.getMinY()) y = level.getMinY();
+                    player.teleportTo(level, x + 0.5, y + 1, z + 0.5,
+                            Set.of(), player.getYRot(), player.getXRot(), false);
                 }));
 
         // ── Open interact screen (S→C) ────────────────────────────────────────

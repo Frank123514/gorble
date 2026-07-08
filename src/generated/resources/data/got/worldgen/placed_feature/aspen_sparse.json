@@ -36,7 +36,7 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "got:aspen_sapling",
+          "Name": "minecraft:acacia_sapling",
           "Properties": {
             "stage": "0"
           }

@@ -34,19 +34,16 @@ public abstract class BiomeColorsMixin {
                 biomeColor, SeasonFoliageColorProvider.getGrassSeasonColor(), blend);
 
         // Far north of the cold-latitude line, grass gradually turns a dead
-        // yellow-brown regardless of season — patches of two exact Northlands
-        // colors (dark/light) blended by noise, not one flat color.
+        // yellow-brown regardless of season.
         float deadGrassBlend = SeasonFoliageColorProvider.getDeadGrassBlend(pos.getX(), pos.getZ());
         if (deadGrassBlend > 0f) {
-            int deadGrassColor = SeasonFoliageColorProvider.getDeadGrassPatchColor(pos.getX(), pos.getZ());
-            color = SeasonFoliageColorProvider.blendColors(color, deadGrassColor, deadGrassBlend);
+            color = SeasonFoliageColorProvider.blendColors(
+                    color, SeasonFoliageColorProvider.DEAD_GRASS_COLOR, deadGrassBlend);
         }
 
         // Regional patch variation applies every season, including summer,
-        // so grass reads with natural light/dark patches everywhere. Strength
-        // itself ramps up from 8% to 10% across the same fade as the
-        // dead-grass color transition.
-        float variation = SeasonFoliageColorProvider.getGrassPatchVariation(pos.getX(), pos.getZ(), deadGrassBlend);
+        // so grass reads with natural light/dark patches everywhere.
+        float variation = SeasonFoliageColorProvider.getGrassPatchVariation(pos.getX(), pos.getZ());
         cir.setReturnValue(SeasonFoliageColorProvider.applyBrightness(color, variation));
     }
 

@@ -1,5 +1,6 @@
 package net.got.worldgen;
 
+import com.mojang.logging.LogUtils;
 import net.got.faction.RoadData;
 import net.got.faction.RoadRegistry;
 import net.minecraft.core.BlockPos;
@@ -7,6 +8,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.Random;
  */
 public final class RoadWorldGen {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Random RANDOM = new Random();
 
     // ── Coordinate constants (must match GotMapWidget) ────────────────────
@@ -131,6 +134,14 @@ public final class RoadWorldGen {
                         }
                     }
                     cachedSegments = list;
+                    LOGGER.info("[GoT][DEBUG] RoadWorldGen: built {} segment(s) from {} road(s) in RoadRegistry.ALL",
+                            list.size(), RoadRegistry.ALL.size());
+                    if (!list.isEmpty()) {
+                        Segment first = list.get(0);
+                        Segment last  = list.get(list.size() - 1);
+                        LOGGER.info("[GoT][DEBUG] RoadWorldGen: first segment ({}, {}) -> ({}, {}), type={}",
+                                first.ax, first.az, first.bx, first.bz, first.type);
+                    }
                 }
             }
         }
@@ -158,6 +169,9 @@ public final class RoadWorldGen {
             }
         }
         if (relevant.isEmpty()) return;
+
+        LOGGER.info("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] has {} relevant road segment(s)",
+                cp.x, cp.z, chunkMinX, chunkMinX + 15, chunkMinZ, chunkMinZ + 15, relevant.size());
 
         int placed = 0;
         for (int lx = 0; lx < 16; lx++) {
@@ -192,6 +206,7 @@ public final class RoadWorldGen {
                 placed++;
             }
         }
+        LOGGER.info("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) placed {} road block(s)", cp.x, cp.z, placed);
     }
 
     // ── Block selection ───────────────────────────────────────────────────

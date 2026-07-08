@@ -44,23 +44,14 @@ public final class SnowMeltHandler {
         };
     }
 
-    // Scanning every loaded chunk on every single tick (20x/sec) was pure
-    // overhead on top of everything else the server does per tick — the
-    // actual melt roll is rare per chunk anyway. Run the scan every 5 ticks
-    // instead (4x/sec, still plenty granular for a slow visual process like
-    // seasonal melt) and scale the per-chunk chance up to compensate, so the
-    // average melt rate over time is unchanged.
-    private static final int SCAN_INTERVAL = 5;
-
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel().isClientSide()) return;
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         if (!level.dimension().equals(Level.OVERWORLD)) return;
-        if (level.getServer().getTickCount() % SCAN_INTERVAL != 0) return;
 
         GotSeason season = SeasonCache.get();
-        float chance = Math.min(1f, meltChance(season) * SCAN_INTERVAL);
+        float chance = meltChance(season);
         if (chance <= 0f) return;
 
         // Iterate every ticking chunk and maybe melt one random surface column
@@ -85,12 +76,10 @@ public final class SnowMeltHandler {
             BlockState groundState = level.getBlockState(surfaceGround);
 
             // Melt snow if the biome is warm enough at this position.
-            // Now includes the frozen-latitude adjustment — snow placed by
-            // LatitudeSnowPatchHandler is a latitude effect, so it needs to
-            // stay put under the same rule ice already follows, rather than
-            // melting on plain biome/season temperature alone.
+            // Snow melt is NOT affected by the frozen latitude line — only
+            // normal season/biome temperature decides this.
             if (airState.getBlock() == Blocks.SNOW) {
-                float temp = getSeasonalBiomeTempWithLatitude(level, season,
+                float temp = getSeasonalBiomeTemp(level, season,
                         level.getBiome(surfaceAir).value(), surfaceGround);
                 if (temp >= 0.15f) {
                     level.setBlockAndUpdate(surfaceAir, Blocks.AIR.defaultBlockState());
@@ -111,11 +100,8 @@ public final class SnowMeltHandler {
     }
 
     /**
-     * Returns the biome temperature adjusted for the current season and the
-     * frozen-latitude line, used for both snow and ice melt so both follow
-     * the same rule: snow/ice placed by latitude stays put regardless of
-     * season/biome temperature, the same way the line already keeps water
-     * frozen further south than the biome alone would suggest.
+     * Returns the biome temperature adjusted for the current season only.
+     * Used for snow melt, which the frozen latitude line does not affect.
      *
      * The seasonal warming adjustment (spring/summer) is scaled down the
      * colder the biome's base temperature is, so already-cold biomes (snowy
@@ -123,6 +109,39 @@ public final class SnowMeltHandler {
      * instead of melting out just because the season nudged the number up.
      * Cooling adjustments (autumn/winter) are left at full strength — only
      * the warming push is dampened.
+     */
+    private static float getSeasonalBiomeTemp(ServerLevel level, GotSeason season,
+                                              Biome biome, BlockPos pos) {
+        float base = biome.getTemperature(pos, level.getSeaLevel());
+
+        if (biome.getBaseTemperature() > 0.8f) {
+            // Hot biomes are unaffected by season.
+            return Mth.clamp(base, -0.5f, 2.0f);
+        }
+
+        float adjustment = switch (season) {
+            case SUMMER -> +0.15f;
+            case SPRING -> +0.05f;
+            case AUTUMN -> -0.20f;
+            case WINTER -> WINTER_TEMP_ADJUSTMENT;
+        };
+
+        // Dampen warming-season adjustments in cold biomes. At base temp
+        // 0.0 (properly cold) warming is scaled to ~15% strength; it ramps
+        // back up to full strength by base temp 0.5 (mild/temperate).
+        if (adjustment > 0f) {
+            float coldness = 1f - Mth.clamp(base / 0.5f, 0f, 1f); // 1 = frigid, 0 = temperate+
+            float warmingScale = Mth.lerp(coldness, 1f, 0.15f);
+            adjustment *= warmingScale;
+        }
+
+        return Mth.clamp(base + adjustment, -0.5f, 2.0f);
+    }
+
+    /**
+     * Same as {@link #getSeasonalBiomeTemp}, but also layers on the frozen
+     * latitude adjustment. Used for ice melt only, so that water stays
+     * frozen north of the line regardless of season.
      */
     private static float getSeasonalBiomeTempWithLatitude(ServerLevel level, GotSeason season,
                                                           Biome biome, BlockPos pos) {

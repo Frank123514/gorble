@@ -20,10 +20,28 @@
         </processorPath>
         <module name="gorble2.main" />
       </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <option name="defaultObfuscationEnv" value="named" />
+        <option name="outRefMapFile" value="C:\Users\okuba\IdeaProjects\gorble3\build\resources\main\got.refmap.json" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/3d051c66329d162a52fc062f7da912c37904a6a0/mixin-0.8.7-processor.jar" />
+        </processorPath>
+        <module name="gorble3.main" />
+      </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="21" />
+    <bytecodeTargetLevel target="21">
+      <module name="gorble-2f80baa5c8aeba9f22031ac7b0196d07ec998a7e" target="21" />
+      <module name="gorble-2f80baa5c8aeba9f22031ac7b0196d07ec998a7e.main" target="21" />
+      <module name="gorble-2f80baa5c8aeba9f22031ac7b0196d07ec998a7e.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-AoutRefMapFile=C:\Users\okuba\IdeaProjects\gorble2\build\resources\main\got.refmap.json -AdefaultObfuscationEnv=named" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="gorble3" options="-AoutRefMapFile=C:\Users\okuba\IdeaProjects\gorble3\build\resources\main\got.refmap.json -AdefaultObfuscationEnv=named" />
+      <module name="gorble3.main" options="-AoutRefMapFile=C:\Users\okuba\IdeaProjects\gorble3\build\resources\main\got.refmap.json -AdefaultObfuscationEnv=named" />
+      <module name="gorble3.test" options="-AoutRefMapFile=C:\Users\okuba\IdeaProjects\gorble3\build\resources\main\got.refmap.json -AdefaultObfuscationEnv=named" />
+    </option>
   </component>
 </project>
