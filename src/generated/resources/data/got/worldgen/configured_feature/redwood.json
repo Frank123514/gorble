@@ -25,8 +25,8 @@
       "type": "minecraft:mega_pine_foliage_placer",
       "crown_height": {
         "type": "minecraft:uniform",
-        "max_inclusive": 7,
-        "min_inclusive": 3
+        "max_inclusive": 17,
+        "min_inclusive": 13
       },
       "offset": 0,
       "radius": 0
@@ -51,7 +51,7 @@
       "upper_size": 2
     },
     "trunk_placer": {
-      "type": "minecraft:giant_trunk_placer",
+      "type": "got:got_redwood_trunk_placer",
       "base_height": 13,
       "height_rand_a": 2,
       "height_rand_b": 14

@@ -39,9 +39,9 @@ public final class RoadWorldGen {
 
     // ── Coordinate constants (must match GotMapWidget) ────────────────────
 
-    static final float BLOCKS_PER_PIXEL    = 50.0f;
-    static final float WORLD_WIDTH_BLOCKS  = 210350f;
-    static final float WORLD_HEIGHT_BLOCKS = 163850f;
+    static final float BLOCKS_PER_PIXEL    = 45.0f;
+    static final float WORLD_WIDTH_BLOCKS  = 189315f;
+    static final float WORLD_HEIGHT_BLOCKS = 147465f;
 
     // ── Road widths (half-width of paved surface, in blocks) ─────────────
 

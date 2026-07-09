@@ -113,35 +113,43 @@ public class GotBroadleafTrunkPlacer extends TrunkPlacer {
         return attachments;
     }
 
+    // Chance that any given diagonal corner gets a root buttress at all —
+    // keeps the flare irregular instead of a perfect symmetric ring.
+    private static final float BUTTRESS_CHANCE = 0.75F;
+    // Chance that a placed buttress root climbs a second block for variation.
+    private static final float TALL_BUTTRESS_CHANCE = 0.35F;
+
+    // The four diagonal offsets around the trunk core (no cardinals — those
+    // stay open so the flare reads as root-like rather than a solid ring).
+    private static final int[][] BUTTRESS_CORNERS = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+
     /**
      * Flares the base of the trunk out a little, like the root crown of a
      * real hardwood, instead of letting it rise as a plain 1×1 column.
-     * The ground layer gets a full ring (cardinals + diagonals) and the
-     * layer above gets just the four cardinal neighbours, tapering back
-     * into the normal single-wide trunk from there on up.
+     * Only the diagonal corners around the core get stumpy buttress-root
+     * logs (cardinals stay open), each corner appears only some of the
+     * time, and some buttresses climb a second block, so the flare reads
+     * as irregular roots rather than a perfectly symmetric collar.
      */
     private void thickenBase(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> placer,
-                              RandomSource random, BlockPos startPos, TreeConfiguration config) {
-        // Ground layer: full 3x3 ring around the core column.
-        for (int dx = -1; dx <= 1; ++dx) {
-            for (int dz = -1; dz <= 1; ++dz) {
-                if (dx == 0 && dz == 0) {
-                    continue;
-                }
-                BlockPos ringPos = startPos.offset(dx, 0, dz);
-                setDirtAt(level, placer, random, ringPos.below(), config);
-                placeLog(level, placer, random, ringPos, config);
+                             RandomSource random, BlockPos startPos, TreeConfiguration config) {
+        for (int[] corner : BUTTRESS_CORNERS) {
+            if (random.nextFloat() >= BUTTRESS_CHANCE) {
+                continue;
             }
-        }
 
-        // One layer up: just the four cardinal neighbours, so the flare tapers.
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            placeLog(level, placer, random, startPos.above().relative(direction), config);
+            BlockPos rootPos = startPos.offset(corner[0], 0, corner[1]);
+            setDirtAt(level, placer, random, rootPos.below(), config);
+            placeLog(level, placer, random, rootPos, config);
+
+            if (random.nextFloat() < TALL_BUTTRESS_CHANCE) {
+                placeLog(level, placer, random, rootPos.above(), config);
+            }
         }
     }
 
     private boolean makeLimb(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> placer, RandomSource random,
-                              BlockPos basePos, BlockPos offsetPos, boolean modifyWorld, TreeConfiguration config) {
+                             BlockPos basePos, BlockPos offsetPos, boolean modifyWorld, TreeConfiguration config) {
         if (!modifyWorld && basePos.equals(offsetPos)) {
             return true;
         }
@@ -197,7 +205,7 @@ public class GotBroadleafTrunkPlacer extends TrunkPlacer {
     }
 
     private void makeBranches(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> placer, RandomSource random,
-                               int maxHeight, BlockPos pos, List<FoliageCoords> foliageCoords, TreeConfiguration config) {
+                              int maxHeight, BlockPos pos, List<FoliageCoords> foliageCoords, TreeConfiguration config) {
         for (FoliageCoords coords : foliageCoords) {
             int branchY = coords.branchBase();
             BlockPos branchPos = new BlockPos(pos.getX(), branchY, pos.getZ());

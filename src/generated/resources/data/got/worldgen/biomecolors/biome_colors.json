@@ -49,6 +49,11 @@
     "base_height": 71,
     "height_variation": 6
   },
+  "#306D34": {
+    "biome": "got:north_forest",
+    "base_height": 71,
+    "height_variation": 6
+  },
   "#036AA6": {
     "biome": "got:ocean",
     "base_height": 35,

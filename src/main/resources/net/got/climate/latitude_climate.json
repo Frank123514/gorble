@@ -2,13 +2,13 @@
   "__comment": "Latitude-based climate config for the frozen-north system. Everything north of a flat freeze line (smaller world Z) is treated as frozen latitude, fading in gradually the further north you go. This single file replaces the old latitude_spine.csv (ice/temperature spine) and the hardcoded dead-grass line constants previously baked into SeasonFoliageColorProvider, the same way LOTR Mod keeps its water_latitude.json as one settings file.",
   "ice": {
     "__comment": "freeze_line_z is a single flat world Z coordinate used for every worldX (no per-column spine anymore). South of it (larger Z, i.e. less negative) is untouched; north of it (smaller Z) the freeze effect fades in linearly from 0 to max_adjustment over fade_distance blocks (see LatitudeClimate).",
-    "freeze_line_z": -37000,
+    "freeze_line_z": -34000,
     "fade_distance": 4000.0,
     "max_adjustment": -3.0
   },
   "snow": {
     "__comment": "Separate flat world Z line just for the ground-snow-dusting gradient (LatitudeSnowHandler) and the no-melt override in SnowMeltHandler, independent of the ice/temperature line above. South of it is untouched; north of it the snow-chance gradient (and the melt-blocking temperature floor) ramps from 0 to 1 over fade_distance blocks (see LatitudeClimate#snowLatitudeStrength / #snowTemperatureAdjustment).",
-    "freeze_line_z": -32000,
+    "freeze_line_z": -28000,
     "fade_distance": 4000.0,
     "max_adjustment": -3.0
   },

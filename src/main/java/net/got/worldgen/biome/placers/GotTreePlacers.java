@@ -41,6 +41,17 @@ public final class GotTreePlacers {
             TRUNK_PLACER_TYPES.register("got_broadleaf_trunk_placer",
                     () -> new TrunkPlacerType<>(GotBroadleafTrunkPlacer.CODEC));
 
+    /**
+     * Redwood trunk: a very tall, dead-straight single-wide shaft with a
+     * light root-flared base, kept completely bare of branches until high
+     * up the trunk where a few sparse dead-branch stubs poke out just below
+     * the canopy — mimicking a self-pruned old-growth redwood bole.
+     */
+    public static final DeferredHolder<TrunkPlacerType<?>, TrunkPlacerType<GotRedwoodTrunkPlacer>>
+            GOT_REDWOOD_TRUNK_PLACER =
+            TRUNK_PLACER_TYPES.register("got_redwood_trunk_placer",
+                    () -> new TrunkPlacerType<>(GotRedwoodTrunkPlacer.CODEC));
+
     // ── Foliage placer registry ───────────────────────────────────────────────
 
     public static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES =
