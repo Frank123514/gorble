@@ -3031,6 +3031,18 @@ public class GotModItems {
     public static final DeferredItem<BlockItem> NUTMEG_ROOFING_WALL = REGISTRY.registerSimpleBlockItem("nutmeg_roofing_wall", GotModBlocks.NUTMEG_ROOFING_WALL);
     public static final DeferredItem<Item> NUTMEG = REGISTRY.registerItem("nutmeg", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
 
+    // ── Meats (raw & cooked) ─────────────────────────────────────────────
+    public static final DeferredItem<Item> RAW_BEAR_MEAT       = REGISTRY.registerItem("raw_bear_meat",       p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build()));
+    public static final DeferredItem<Item> COOKED_BEAR_MEAT    = REGISTRY.registerItem("cooked_bear_meat",    p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build()));
+    public static final DeferredItem<Item> RAW_MAMMOTH_MEAT    = REGISTRY.registerItem("raw_mammoth_meat",    p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()));
+    public static final DeferredItem<Item> COOKED_MAMMOTH_MEAT = REGISTRY.registerItem("cooked_mammoth_meat", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationModifier(0.8f).build()));
+    public static final DeferredItem<Item> RAW_HORSE_MEAT      = REGISTRY.registerItem("raw_horse_meat",      p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build()));
+    public static final DeferredItem<Item> COOKED_HORSE_MEAT   = REGISTRY.registerItem("cooked_horse_meat",   p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.6f).build()));
+    public static final DeferredItem<Item> RAW_HERON      = REGISTRY.registerItem("raw_heron",      p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build()));
+    public static final DeferredItem<Item> COOKED_HERON   = REGISTRY.registerItem("cooked_heron",   p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6f).build()));
+    public static final DeferredItem<Item> RAW_VENISON         = REGISTRY.registerItem("raw_venison",         p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build()));
+    public static final DeferredItem<Item> COOKED_VENISON      = REGISTRY.registerItem("cooked_venison",      p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.7f).build()));
+
     // ── hemlock items ──
     public static final DeferredItem<Item> HEMLOCK_LOG            = block(GotModBlocks.HEMLOCK_LOG);
     public static final DeferredItem<Item> HEMLOCK_WOOD           = block(GotModBlocks.HEMLOCK_WOOD);

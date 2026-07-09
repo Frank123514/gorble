@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "ingredient": "got:raw_horse_meat",
+  "result": {
+    "id": "got:cooked_horse_meat"
+  }
+}

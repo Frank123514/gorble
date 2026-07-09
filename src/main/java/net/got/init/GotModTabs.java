@@ -2557,6 +2557,18 @@ public class GotModTabs {
                         output.accept(GotModItems.ALMOND.get());
                         output.accept(GotModItems.NUTMEG.get());
 
+                        // ── Meats ─────────────────────────────────────────────────────
+                        output.accept(GotModItems.RAW_BEAR_MEAT.get());
+                        output.accept(GotModItems.COOKED_BEAR_MEAT.get());
+                        output.accept(GotModItems.RAW_MAMMOTH_MEAT.get());
+                        output.accept(GotModItems.COOKED_MAMMOTH_MEAT.get());
+                        output.accept(GotModItems.RAW_HORSE_MEAT.get());
+                        output.accept(GotModItems.COOKED_HORSE_MEAT.get());
+                        output.accept(GotModItems.RAW_HERON.get());
+                        output.accept(GotModItems.COOKED_HERON.get());
+                        output.accept(GotModItems.RAW_VENISON.get());
+                        output.accept(GotModItems.COOKED_VENISON.get());
+
 
                         // ── Wild Crops (placeable blocks) ─────────────────────────────
                         safeAccept(output, GotModBlocks.WILD_WHEAT.get());
