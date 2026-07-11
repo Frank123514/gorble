@@ -3,6 +3,7 @@ package net.got;
 import net.got.client.GotClient;
 import net.got.init.*;
 import net.got.worldgen.biome.placers.GotTreePlacers;
+import net.got.worldgen.placement.GotPlacementModifiers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.HashSet;
 
@@ -68,6 +69,7 @@ public final class GotMod {
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
         GotTreePlacers.register(modBus);
+        GotPlacementModifiers.register(modBus);
         GotModParticles.register(modBus);
         GotModDataComponents.register(modBus);
 

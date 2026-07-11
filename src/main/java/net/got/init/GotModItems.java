@@ -472,6 +472,8 @@ public class GotModItems {
             REGISTRY.registerSimpleBlockItem("clove_roofing_stairs", GotModBlocks.CLOVE_ROOFING_STAIRS);
     public static final DeferredItem<BlockItem> CLOVE_ROOFING_WALL =
             REGISTRY.registerSimpleBlockItem("clove_roofing_wall", GotModBlocks.CLOVE_ROOFING_WALL);
+    public static final DeferredItem<Item> CINNAMON = REGISTRY.registerItem("cinnamon", p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
+    public static final DeferredItem<Item> CLOVE    = REGISTRY.registerItem("clove",    p -> new Item(p), new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build()));
     public static final DeferredItem<BlockItem> COTTONWOOD_ROOFING =
             REGISTRY.registerSimpleBlockItem("cottonwood_roofing", GotModBlocks.COTTONWOOD_ROOFING);
     public static final DeferredItem<BlockItem> COTTONWOOD_ROOFING_SLAB =

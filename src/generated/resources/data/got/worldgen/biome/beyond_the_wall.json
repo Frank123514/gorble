@@ -45,13 +45,11 @@
     [],
     [
       "minecraft:glow_lichen",
-      "got:patch_tall_grass",
       "got:patch_grass",
       "got:ash_sparse",
       "got:beech_sparse",
       "got:fir_sparse",
       "got:hawthorn_sparse",
-      "got:shrub",
       "got:boulder",
       "got:limestone_boulder",
       "got:grey_granite_boulder",
@@ -60,8 +58,10 @@
       "got:liverwort",
       "got:lungwort",
       "got:pennyroyal",
+      "got:lavender",
       "got:patch_leaves",
-      "got:noisy_patch_snow"
+      "got:noisy_patch_snow",
+      "got:patch_pipers_grass"
     ],
     [
       "minecraft:freeze_top_layer"

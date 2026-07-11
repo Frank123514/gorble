@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -252,8 +253,34 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                 surface = findSurface(level, surface, 4);
                 if (surface == null) continue;
 
+                BlockState surfaceState = level.getBlockState(surface);
+                BlockState prospective = cfg.block().getState(rand, surface);
+
+                // ── Stacking ──────────────────────────────────────────────────
+                // If this exact spot was already dusted by an earlier
+                // (possibly overlapping) pass of this same feature — findSurface
+                // would have latched onto that placed block itself, since it's
+                // now the non-air block with air above it — build up its layer
+                // count instead of requiring it to still look like one of the
+                // original ground targets. Without this, every pass after the
+                // first silently no-ops on ground a previous pass already
+                // covered, which is exactly why calling this feature multiple
+                // times over the same chunk never used to visibly deepen the
+                // snow.
+                if (surfaceState.getBlock() == prospective.getBlock()
+                        && surfaceState.hasProperty(BlockStateProperties.LAYERS)) {
+                    int current = surfaceState.getValue(BlockStateProperties.LAYERS);
+                    if (current < 8) {
+                        level.setBlock(surface,
+                                surfaceState.setValue(BlockStateProperties.LAYERS, current + 1),
+                                Block.UPDATE_CLIENTS);
+                        placed = true;
+                    }
+                    continue;
+                }
+
                 // ── Target check ─────────────────────────────────────────────
-                if (!isTarget(level.getBlockState(surface), cfg)) continue;
+                if (!isTarget(surfaceState, cfg)) continue;
 
                 // ── Place ─────────────────────────────────────────────────────
                 BlockPos placePos;
@@ -267,7 +294,7 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                     // grass): swap the surface block itself.
                     placePos = surface;
                 }
-                level.setBlock(placePos, cfg.block().getState(rand, placePos), Block.UPDATE_CLIENTS);
+                level.setBlock(placePos, prospective, Block.UPDATE_CLIENTS);
                 placed = true;
             }
         }

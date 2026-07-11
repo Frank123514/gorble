@@ -2523,6 +2523,8 @@ public class GotModTabs {
 
                         // ── Herbs & Spices ────────────────────────────────────────────
                         output.accept(GotModItems.CARDAMOM.get());
+                        output.accept(GotModItems.CINNAMON.get());
+                        output.accept(GotModItems.CLOVE.get());
                         output.accept(GotModItems.LICORICE.get());
                         output.accept(GotModItems.PEPPER_PLANT.get());
 
