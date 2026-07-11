@@ -29,8 +29,7 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             Map<Integer, GotBiomeTerrainParams.Params> params,
             Map<String, List<SubbiomeDef>> subbiomes,
             Map<String, List<SlopeRuleDef>> slopeRules,
-            short[][] mountainDistanceField,
-            RiverSlopemapResolver.Field riverField
+            short[][] mountainDistanceField
     ) {}
 
     @Override
@@ -62,11 +61,7 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             short[][] mountainDistanceField =
                     MountainSlopemapResolver.compute(pixels, w, h);
 
-            // ── River valley distance fields ────────────────────────────────
-            RiverSlopemapResolver.Field riverField =
-                    RiverSlopemapResolver.compute(pixels, w, h);
-
-            return new Prepared(pixels, w, h, params, subbiomes, slopeRules, mountainDistanceField, riverField);
+            return new Prepared(pixels, w, h, params, subbiomes, slopeRules, mountainDistanceField);
         } finally {
             profiler.pop();
         }
@@ -87,9 +82,6 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             if (prepared.mountainDistanceField() != null)
                 MountainSlopemapResolver.apply(
                         prepared.mountainDistanceField(), prepared.width(), prepared.height());
-            if (prepared.riverField() != null)
-                RiverSlopemapResolver.apply(
-                        prepared.riverField(), prepared.width(), prepared.height());
 
             LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents, {} slope biomes)",
                     prepared.width(), prepared.height(),

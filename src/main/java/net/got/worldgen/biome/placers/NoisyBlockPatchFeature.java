@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -296,6 +297,21 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                 }
                 level.setBlock(placePos, prospective, Block.UPDATE_CLIENTS);
                 placed = true;
+
+                // Vanilla grass blocks track a SNOWY flag that swaps their
+                // side texture whenever snow sits on top of them, but placing
+                // a block straight into the world like this doesn't flip it
+                // automatically. Do it manually here — needed now that
+                // LatitudeSnowHandler calls this feature directly at
+                // chunk-load time — so a grass block newly buried by this
+                // feature reads as snowy immediately instead of only after
+                // some other trigger updates its state.
+                if (cfg.placeAbove()
+                        && surfaceState.getBlock() == Blocks.GRASS_BLOCK
+                        && !surfaceState.getValue(BlockStateProperties.SNOWY)) {
+                    level.setBlock(surface, surfaceState.setValue(BlockStateProperties.SNOWY, true),
+                            Block.UPDATE_CLIENTS);
+                }
             }
         }
 

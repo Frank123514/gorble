@@ -21,8 +21,8 @@
     "threshold": 0.02,
     "warp_weight": 0.15,
     "scale_low": 0.05,
-    "scale_high": 1.10,
-    "scale_warp": 0.60,
+    "scale_high": 0.30,
+    "scale_warp": 0.15,
     "place_above": true
   }
 }

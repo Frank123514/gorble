@@ -35,18 +35,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * enqueues it. The actual placement happens later, on the main server tick,
  * and only once every chunk the feature's radius could reach is already
  * loaded — see {@link #onLevelTick} for why that split matters.
- *
- * <p><b>Layering:</b> the further north a chunk sits, the more times
- * {@link #onLevelTick} places the feature on top of itself for that same
- * chunk (see {@code passesFor}), each with a different random seed so the
- * overlapping patches don't land in identical shapes. {@code
- * got:noisy_block_patch} (the feature type backing {@code noisy_patch_snow})
- * now stacks its own layer count when a later pass lands on ground its own
- * earlier pass already snowed, instead of skipping it — so repeated
- * overlapping passes build up visibly deeper snow instead of just re-tracing
- * the same single-layer dusting. Right at the line a chunk still only gets
- * one pass (today's shallow, patchy dusting); deep in the fade zone it gets
- * several, so coverage and depth both grow the further north you go.
  */
 @EventBusSubscriber(modid = GotMod.MODID)
 public final class LatitudeSnowHandler {
@@ -62,11 +50,6 @@ public final class LatitudeSnowHandler {
     // into a single-tick lag spike — it just drains over the next several
     // ticks instead, same as a chunk loading screen trickling in.
     private static final int MAX_PLACEMENTS_PER_TICK = 12;
-
-    // Extra layering passes on top of the guaranteed first one, at full
-    // (strength == 1) saturation. A chunk right at the line gets 1 pass
-    // total; a chunk deep in the fade zone gets 1 + MAX_EXTRA_PASSES.
-    private static final int MAX_EXTRA_PASSES = 4;
 
     // Chunks whose neighborhood never fully loads (world border, player
     // teleporting again before they finish, etc.) shouldn't sit in the
@@ -182,17 +165,10 @@ public final class LatitudeSnowHandler {
             int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, centerX, centerZ);
             BlockPos origin = new BlockPos(centerX, surfaceY, centerZ);
 
-            // More passes the further north this chunk sits, so overlapping
-            // patches actually build up depth via the stacking behaviour in
-            // NoisyBlockPatchFeature, instead of one single-layer dusting.
-            float strength = LatitudeClimate.snowLatitudeStrength(centerX, centerZ);
-            int passes = 1 + Math.round(strength * MAX_EXTRA_PASSES);
+            RandomSource featureRandom = RandomSource.create(
+                    chunkPos.toLong() ^ 5231241491057810726L);
 
-            for (int i = 0; i < passes; i++) {
-                RandomSource featureRandom = RandomSource.create(
-                        chunkPos.toLong() ^ 5231241491057810726L ^ ((long) i * 0x9E3779B97F4A7C15L));
-                feature.value().place(level, level.getChunkSource().getGenerator(), featureRandom, origin);
-            }
+            feature.value().place(level, level.getChunkSource().getGenerator(), featureRandom, origin);
             placedThisTick++;
         }
     }

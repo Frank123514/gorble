@@ -734,8 +734,8 @@ public final class GotConfiguredFeatures {
                         0.02,   // threshold — low = dense speckle coverage
                         0.15,   // warp_weight — light drift clumping, mostly clean flecks
                         0.05,   // scale_low — large loose drifts/clusters
-                        1.10,   // scale_high — fine individual flecks
-                        0.60,   // scale_warp
+                        0.30,   // scale_high — flecks a few blocks wide, not near-per-block noise
+                        0.15,   // scale_warp
                         true)); // place_above — snow layers on top of surface
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)
         // ══════════════════════════════════════════════════════════════════════
