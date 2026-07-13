@@ -159,9 +159,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
             LOGGER.info("[GoT][DEBUG] GotChunkGenerator.buildSurface: FIRST CALL — dimension={}, chunk=({},{})",
                     region.getLevel().dimension().location(), cp0.x, cp0.z);
         }
-        ChunkPos cpLog = chunk.getPos();
-        LOGGER.info("[GoT][DEBUG] GotChunkGenerator.buildSurface: chunk ({},{}) dimension={}",
-                cpLog.x, cpLog.z, region.getLevel().dimension().location());
 
         vanilla.buildSurface(region, structures, random, chunk);
         RoadWorldGen.buildRoadsInChunk(chunk);

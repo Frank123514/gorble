@@ -15,6 +15,7 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
@@ -29,6 +30,7 @@ import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSi
 import net.minecraft.world.level.levelgen.feature.foliageplacers.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.AlterGroundDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.LeaveVineDecorator;
@@ -613,29 +615,29 @@ public final class GotConfiguredFeatures {
 
         register(ctx, BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
                 new net.got.worldgen.biome.placers.BoulderFeature.Config(
-                        BlockStateProvider.simple(Blocks.STONE.defaultBlockState()),
+                        mossyBlend(Blocks.STONE.defaultBlockState()),
                         boulderTargets,
-                        2,      // radius
-                        0.75,   // height_scale
-                        0.3));  // jitter
+                        3,      // radius
+                        0.8,    // height_scale
+                        0.35)); // jitter
 
         register(ctx, GREY_GRANITE_BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
                 new net.got.worldgen.biome.placers.BoulderFeature.Config(
-                        BlockStateProvider.simple(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState()),
+                        mossyBlend(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState()),
                         boulderTargets,
-                        2, 0.75, 0.3));
+                        3, 0.8, 0.35));
 
         register(ctx, LIMESTONE_BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
                 new net.got.worldgen.biome.placers.BoulderFeature.Config(
-                        BlockStateProvider.simple(GotModBlocks.LIMESTONE_ROCK.get().defaultBlockState()),
+                        mossyBlend(GotModBlocks.LIMESTONE_ROCK.get().defaultBlockState()),
                         boulderTargets,
-                        2, 0.75, 0.3));
+                        3, 0.8, 0.35));
 
         register(ctx, SLATE_BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
                 new net.got.worldgen.biome.placers.BoulderFeature.Config(
-                        BlockStateProvider.simple(GotModBlocks.SLATE_ROCK.get().defaultBlockState()),
+                        mossyBlend(GotModBlocks.SLATE_ROCK.get().defaultBlockState()),
                         boulderTargets,
-                        2, 0.75, 0.3));
+                        3, 0.8, 0.35));
 
         // ══════════════════════════════════════════════════════════════════════
         // DISKS  (surface sediment patches near water)
@@ -834,6 +836,21 @@ public final class GotConfiguredFeatures {
                 PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
                         new SimpleBlockConfiguration(
                                 BlockStateProvider.simple(block.get().defaultBlockState()))));
+    }
+
+    /**
+     * Weathered stone blend for boulders — mostly the base rock, with mossy
+     * cobblestone, cobblestone, and full moss blocks mixed in for the
+     * lush, patchy, lichen-covered look of a natural rock pile instead of
+     * one flat color.
+     */
+    private static BlockStateProvider mossyBlend(BlockState base) {
+        return new WeightedStateProvider(
+                SimpleWeightedRandomList.<BlockState>builder()
+                        .add(base, 5)
+                        .add(Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3)
+                        .add(Blocks.COBBLESTONE.defaultBlockState(), 2)
+                        .add(Blocks.MOSS_BLOCK.defaultBlockState(), 1));
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> key(String name) {

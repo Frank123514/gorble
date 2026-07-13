@@ -43,8 +43,7 @@
             "got:lower_reach",
             "got:dorne",
             "got:dorne_desert",
-            "got:subbiome/maple_forest",
-            "got:subbiome/beech_forest",
+            "got:subbiome/beech_maple_forest",
             "got:subbiome/wheat_field"
           ]
         },

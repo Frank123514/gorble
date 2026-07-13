@@ -2,23 +2,62 @@
   "type": "got:boulder",
   "config": {
     "block": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:stone"
-      }
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:stone"
+          },
+          "weight": 5
+        },
+        {
+          "data": {
+            "Name": "minecraft:mossy_cobblestone"
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "minecraft:cobblestone"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "minecraft:moss_block"
+          },
+          "weight": 1
+        }
+      ]
     },
     "targets": [
-      { "Name": "minecraft:grass_block" },
-      { "Name": "minecraft:dirt" },
-      { "Name": "minecraft:dirt_path" },
-      { "Name": "minecraft:coarse_dirt" },
-      { "Name": "minecraft:podzol" },
-      { "Name": "minecraft:stone" },
-      { "Name": "minecraft:sand" },
-      { "Name": "minecraft:gravel" }
+      {
+        "Name": "minecraft:grass_block"
+      },
+      {
+        "Name": "minecraft:dirt"
+      },
+      {
+        "Name": "minecraft:dirt_path"
+      },
+      {
+        "Name": "minecraft:coarse_dirt"
+      },
+      {
+        "Name": "minecraft:podzol"
+      },
+      {
+        "Name": "minecraft:stone"
+      },
+      {
+        "Name": "minecraft:sand"
+      },
+      {
+        "Name": "minecraft:gravel"
+      }
     ],
-    "radius": 2,
-    "height_scale": 0.75,
-    "jitter": 0.3
+    "radius": 3,
+    "height_scale": 0.8,
+    "jitter": 0.35
   }
 }

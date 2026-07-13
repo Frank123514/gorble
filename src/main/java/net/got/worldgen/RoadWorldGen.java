@@ -170,7 +170,7 @@ public final class RoadWorldGen {
         }
         if (relevant.isEmpty()) return;
 
-        LOGGER.info("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] has {} relevant road segment(s)",
+        LOGGER.debug("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] has {} relevant road segment(s)",
                 cp.x, cp.z, chunkMinX, chunkMinX + 15, chunkMinZ, chunkMinZ + 15, relevant.size());
 
         int placed = 0;
@@ -206,7 +206,7 @@ public final class RoadWorldGen {
                 placed++;
             }
         }
-        LOGGER.info("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) placed {} road block(s)", cp.x, cp.z, placed);
+        LOGGER.debug("[GoT][DEBUG] RoadWorldGen: chunk ({},{}) placed {} road block(s)", cp.x, cp.z, placed);
     }
 
     // ── Block selection ───────────────────────────────────────────────────

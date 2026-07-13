@@ -475,12 +475,12 @@ public final class WallWorldGen {
         int maxSouthReach = HALF + WALL_BATTER + (int) Math.ceil(FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
         int maxNorthReach = HALF + NORTH_BATTER + (int) Math.ceil(NORTH_FACE_NOISE_AMPLITUDE) + SNOW_DRIFT_RADIUS;
         if (chunkMaxZ < minCentreZ - maxNorthReach || chunkMinZ > maxCentreZ + maxSouthReach + BATTLEMENT_HEIGHT) {
-            LOGGER.info("[GoT][DEBUG] WallWorldGen: chunk ({},{}) in X range but Z reject — chunkZ {}..{}, wall centreZ {}..{} (+reach N{} S{})",
+            LOGGER.debug("[GoT][DEBUG] WallWorldGen: chunk ({},{}) in X range but Z reject — chunkZ {}..{}, wall centreZ {}..{} (+reach N{} S{})",
                     cp.x, cp.z, chunkMinZ, chunkMaxZ, minCentreZ, maxCentreZ, maxNorthReach, maxSouthReach);
             return;
         }
 
-        LOGGER.info("[GoT][DEBUG] WallWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] PASSED both rejects — building wall, centreZ range {}..{}",
+        LOGGER.debug("[GoT][DEBUG] WallWorldGen: chunk ({},{}) [worldX {}..{}, worldZ {}..{}] PASSED both rejects — building wall, centreZ range {}..{}",
                 cp.x, cp.z, chunkMinX, chunkMaxX, chunkMinZ, chunkMaxZ, minCentreZ, maxCentreZ);
 
         for (int lx = 0; lx < 16; lx++) {

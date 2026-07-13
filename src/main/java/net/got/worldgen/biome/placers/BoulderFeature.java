@@ -13,19 +13,23 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Places a single rounded, partially-embedded boulder — an irregular lumpy
- * dome instead of vanilla's {@code minecraft:forest_rock}, which just drops
- * one block on the surface.
+ * Places a single rounded, partially-embedded boulder cluster — an irregular
+ * lumpy rock pile instead of vanilla's {@code minecraft:forest_rock}, which
+ * just drops one block on the surface.
  *
  * <h2>Shape</h2>
- * A vertically-squashed sphere ({@code height_scale} controls the squash)
- * centered a bit below the found surface, so it pokes up as a mound with a
- * naturally grounded, buried base instead of floating. Per-column simplex
- * noise jitters the effective radius so the outline is lumpy/rocky rather
- * than a perfect dome.
+ * A main vertically-squashed sphere ({@code height_scale} controls the
+ * squash) centered a bit below the found surface, so it pokes up as a mound
+ * with a naturally grounded, buried base instead of floating. One or two
+ * smaller "shoulder" lobes are fused onto the side, offset lower than the
+ * main mass, so the boulder reads as an asymmetric rock pile with a stepped
+ * silhouette rather than a single perfect dome. Per-column simplex noise
+ * jitters each lobe's effective radius (with its own noise offset) so the
+ * outline is lumpy/rocky rather than smooth.
  *
  * <h2>JSON example</h2>
  * <pre>{@code
@@ -83,28 +87,45 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
         // A couple of lumps across the whole boulder, not fine grain.
         double noiseScale = 1.2 / Math.max(1, radius);
 
-        // Center sits partway into the ground so the dome pokes up above the
-        // surface with a naturally grounded, partially-buried base instead
-        // of floating on top of it.
+        // Main center sits partway into the ground so the mass pokes up
+        // above the surface with a naturally grounded, partially-buried
+        // base instead of floating on top of it.
         int embed = Math.max(1, radius / 2);
-        BlockPos center = surface.below(embed);
+        BlockPos mainCenter = surface.below(embed);
 
+        List<Lobe> lobes = new ArrayList<>();
+        lobes.add(new Lobe(mainCenter, radius, heightScale, 0.0, 0.0));
+
+        // Fuse one or two smaller "shoulder" lobes onto the main mass,
+        // offset to a side and sitting lower, so the boulder reads as an
+        // asymmetric rock pile with a stepped silhouette instead of a
+        // single perfect dome.
+        int extraLobes = radius >= 2 ? 1 + rand.nextInt(2) : rand.nextInt(2);
+        for (int i = 0; i < extraLobes; i++) {
+            double angle = rand.nextDouble() * Math.PI * 2;
+            double dist  = radius * (0.45 + rand.nextDouble() * 0.35);
+            int lobeDx = (int) Math.round(Math.cos(angle) * dist);
+            int lobeDz = (int) Math.round(Math.sin(angle) * dist);
+            int lobeDy = -(1 + rand.nextInt(Math.max(1, radius / 2 + 1)));
+            double lobeRadius = radius * (0.5 + rand.nextDouble() * 0.3);
+            double lobeHeightScale = heightScale * (0.7 + rand.nextDouble() * 0.4);
+            lobes.add(new Lobe(
+                    mainCenter.offset(lobeDx, lobeDy, lobeDz),
+                    lobeRadius, lobeHeightScale,
+                    (i + 1) * 37.0, (i + 1) * 71.0));
+        }
+
+        // Generous margin: shoulder lobes can sit up to ~radius*0.8 away from
+        // the main center and extend up to ~radius*1.05 further with jitter,
+        // so a small fixed radius+2 pad isn't always enough headroom.
+        int reach = radius + 4;
         boolean placed = false;
-        for (int dx = -radius; dx <= radius; dx++) {
-            for (int dz = -radius; dz <= radius; dz++) {
-                // Per-column radius jitter for a lumpy, rocky outline instead
-                // of a perfect dome.
-                double jitterAmt = noise.eval(
-                        (center.getX() + dx) * noiseScale,
-                        (center.getZ() + dz) * noiseScale);
-                double effRadius = radius * (1.0 + jitterAmt * jitter);
+        for (int dx = -reach; dx <= reach; dx++) {
+            for (int dz = -reach; dz <= reach; dz++) {
+                for (int dy = -reach; dy <= reach; dy++) {
+                    BlockPos pos = mainCenter.offset(dx, dy, dz);
+                    if (!insideAnyLobe(pos, lobes, noise, noiseScale, jitter)) continue;
 
-                for (int dy = -radius; dy <= radius; dy++) {
-                    double scaledDy = dy / heightScale;
-                    double distSq = dx * dx + dz * dz + scaledDy * scaledDy;
-                    if (distSq > effRadius * effRadius) continue;
-
-                    BlockPos pos = center.offset(dx, dy, dz);
                     BlockState existing = level.getBlockState(pos);
 
                     if (dy >= 0) {
@@ -128,6 +149,28 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private record Lobe(BlockPos center, double radius, double heightScale,
+                        double noiseOffsetX, double noiseOffsetZ) {}
+
+    private static boolean insideAnyLobe(BlockPos pos, List<Lobe> lobes, SimplexNoise noise,
+                                         double noiseScale, double jitter) {
+        for (Lobe lobe : lobes) {
+            int lx = pos.getX() - lobe.center().getX();
+            int ly = pos.getY() - lobe.center().getY();
+            int lz = pos.getZ() - lobe.center().getZ();
+
+            double jitterAmt = noise.eval(
+                    (pos.getX() + lobe.noiseOffsetX()) * noiseScale,
+                    (pos.getZ() + lobe.noiseOffsetZ()) * noiseScale);
+            double effRadius = lobe.radius() * (1.0 + jitterAmt * jitter);
+
+            double scaledDy = ly / lobe.heightScale();
+            double distSq = lx * lx + lz * lz + scaledDy * scaledDy;
+            if (distSq <= effRadius * effRadius) return true;
+        }
+        return false;
+    }
 
     private static BlockPos findSurface(WorldGenLevel level, BlockPos pos, int yRange) {
         for (int dy = yRange; dy >= -yRange; dy--) {

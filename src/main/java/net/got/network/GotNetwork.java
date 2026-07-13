@@ -31,8 +31,24 @@ public final class GotNetwork {
                     if (player == null || !player.hasPermissions(2)) return;
                     ServerLevel level = player.serverLevel();
                     int x = payload.x(), z = payload.z();
-                    level.getChunk(x >> 4, z >> 4);
-                    int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+
+                    // Ground height comes straight from the terrain-noise/biomemap
+                    // function on got worlds — no need to force the target chunk
+                    // to fully generate synchronously just to answer a height
+                    // query. Forcing a distant, never-visited chunk through the
+                    // whole generation pipeline on the server thread (via
+                    // level.getChunk(...)) is what was causing multi-second
+                    // "Can't keep up" stalls on teleport. Falling back to the
+                    // old forced-load path for any level not using our
+                    // generator keeps this safe for other dimensions.
+                    int y;
+                    if (level.getChunkSource().getGenerator()
+                            instanceof net.got.worldgen.GotChunkGenerator) {
+                        y = net.got.worldgen.GotChunkGenerator.computeSurfaceY(x, z);
+                    } else {
+                        level.getChunk(x >> 4, z >> 4);
+                        y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+                    }
                     if (y < level.getMinY()) y = level.getMinY();
                     player.teleportTo(level, x + 0.5, y + 1, z + 0.5,
                             Set.of(), player.getYRot(), player.getXRot(), false);
