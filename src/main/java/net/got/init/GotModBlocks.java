@@ -2074,6 +2074,16 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_STAIRS = registerBasalt("smooth_basalt_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK_WALL = registerBasalt("smooth_basalt_rock_wall", RegionalRockWallBlock::new);
 
+    // ── Fieldstone ──────────────────────────────────────────────────────
+    // Standalone building stone (no brick/cobblestone/pillar family — just the
+    // base block plus its slab, stairs, and wall).
+    public static final DeferredBlock<Block> FIELDSTONE = registerFieldstone("fieldstone", RegionalRockBlock::new);
+    public static final DeferredBlock<Block> FIELDSTONE_SLAB = registerFieldstone("fieldstone_slab", RegionalRockSlabBlock::new);
+    public static final DeferredBlock<Block> FIELDSTONE_STAIRS = registerFieldstone("fieldstone_stairs", RegionalRockStairsBlock::new);
+    public static final DeferredBlock<Block> FIELDSTONE_WALL = registerFieldstone("fieldstone_wall", RegionalRockWallBlock::new);
+    public static final DeferredBlock<Block> FIELDSTONE_BUTTON = registerFieldstone("fieldstone_button", RegionalRockButtonBlock::new);
+    public static final DeferredBlock<Block> FIELDSTONE_PRESSURE_PLATE = registerFieldstone("fieldstone_pressure_plate", RegionalRockPressurePlateBlock::new);
+
     // ── Grey Granite ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> GREY_GRANITE_ROCK = registerGranite("grey_granite_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> GREY_GRANITE_BRICK = registerGranite("grey_granite_brick", RegionalRockBlock::new);
@@ -2543,6 +2553,11 @@ public class GotModBlocks {
     /** Basalt: hardness 1.25, resistance 4.2, BASALT sound, dark grey map colour. */
     private static <B extends Block> DeferredBlock<B> registerBasalt(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
         return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT));
+    }
+
+    /** Fieldstone: hardness 2.0, resistance 6.0, STONE sound – rugged, cobblestone-like building stone. */
+    private static <B extends Block> DeferredBlock<B> registerFieldstone(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE));
     }
 
     /** Grey Granite: hardness 1.5, resistance 6.0, STONE sound, pink-grey map colour. */

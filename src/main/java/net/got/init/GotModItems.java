@@ -748,6 +748,14 @@ public class GotModItems {
     public static final DeferredItem<Item> SMOOTH_BASALT_ROCK_STAIRS = block(GotModBlocks.SMOOTH_BASALT_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_BASALT_ROCK_WALL = block(GotModBlocks.SMOOTH_BASALT_ROCK_WALL);
 
+    // ── Fieldstone items ─────────────────────────────────────────────────
+    public static final DeferredItem<Item> FIELDSTONE = block(GotModBlocks.FIELDSTONE);
+    public static final DeferredItem<Item> FIELDSTONE_SLAB = block(GotModBlocks.FIELDSTONE_SLAB);
+    public static final DeferredItem<Item> FIELDSTONE_STAIRS = block(GotModBlocks.FIELDSTONE_STAIRS);
+    public static final DeferredItem<Item> FIELDSTONE_WALL = block(GotModBlocks.FIELDSTONE_WALL);
+    public static final DeferredItem<Item> FIELDSTONE_BUTTON = block(GotModBlocks.FIELDSTONE_BUTTON);
+    public static final DeferredItem<Item> FIELDSTONE_PRESSURE_PLATE = block(GotModBlocks.FIELDSTONE_PRESSURE_PLATE);
+
     // ── Granite items ──────────────────────────────────────────────────────
     public static final DeferredItem<Item> GRANITE_ROCK = block(GotModBlocks.GREY_GRANITE_ROCK);
     public static final DeferredItem<Item> GRANITE_BRICK = block(GotModBlocks.GREY_GRANITE_BRICK);

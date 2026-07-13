@@ -2231,6 +2231,14 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PATH_BLOCK.get());
                         safeAccept(output, GotModBlocks.COBBLED_PATH_BLOCK.get());
 
+                        // ── Fieldstone ─────────────────────────────────────────────────
+                        safeAccept(output, GotModBlocks.FIELDSTONE.get());
+                        safeAccept(output, GotModBlocks.FIELDSTONE_SLAB.get());
+                        safeAccept(output, GotModBlocks.FIELDSTONE_STAIRS.get());
+                        safeAccept(output, GotModBlocks.FIELDSTONE_WALL.get());
+                        safeAccept(output, GotModBlocks.FIELDSTONE_BUTTON.get());
+                        safeAccept(output, GotModBlocks.FIELDSTONE_PRESSURE_PLATE.get());
+
                     })
                     .build());
 
