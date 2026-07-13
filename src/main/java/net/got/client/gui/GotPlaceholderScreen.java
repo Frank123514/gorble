@@ -7,9 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -69,6 +72,15 @@ public final class GotPlaceholderScreen extends Screen {
     private int resetBtnX, resetBtnY;
     private boolean resetBtnVisible = false;
 
+    // Book page-turning, vanilla-style (same PageButton widget BookViewScreen
+    // uses, same forward/back arrow sprites). The right page's body text is
+    // split into "pages" per tab; flipping just swaps which page's text the
+    // GotPlaceholderWidget shows.
+    private String[] pages;
+    private int pageIndex;
+    private PageButton forwardButton;
+    private PageButton backButton;
+
     public GotPlaceholderScreen(GotMenuTab tab) {
         super(Component.literal(tab.label));
         this.tab = tab;
@@ -110,13 +122,27 @@ public final class GotPlaceholderScreen extends Screen {
             resetBtnY = pageY + pageH - RESET_BTN_H - 4;
         }
 
+        pages = bodyPages();
+        if (pageIndex >= pages.length) pageIndex = 0;
+
         // Left page always shows the tab's title as a heading; right page
         // gets the "Coming Soon" body widget, keeping the same widget every
         // other tab already used for its written content.
         addRenderableWidget(new GotPlaceholderWidget(
                 rightPageX, pageY, pageW,
                 resetBtnVisible ? pageH - RESET_BTN_H - 8 : pageH,
-                bodyTitle(), bodyText()));
+                bodyTitle(), pages[pageIndex]));
+
+        // Vanilla's own book page-turn arrows (same PageButton widget and
+        // sprites as BookViewScreen), sitting in the margin band below the
+        // page text, straddling the spine like every vanilla book/lectern.
+        int centerX = bookX + bookW / 2;
+        int arrowY = bookY + bookH - pageMarginBottom + 3;
+        backButton = new PageButton(centerX - 27, arrowY, false, b -> pageBack(), true);
+        forwardButton = new PageButton(centerX + 4, arrowY, true, b -> pageForward(), true);
+        addRenderableWidget(backButton);
+        addRenderableWidget(forwardButton);
+        updateArrowVisibility();
     }
 
     private String bodyTitle() {
@@ -128,13 +154,45 @@ public final class GotPlaceholderScreen extends Screen {
         };
     }
 
-    private String bodyText() {
+    /** The text shown on the right page, split across however many pages this tab currently has. */
+    private String[] bodyPages() {
         return switch (tab) {
-            case SKILLS -> "Your skills and abilities will appear here.";
-            case MAGIC -> "The magics of this world will appear here.";
-            case CULTURE -> cultureBodyText();
-            default -> "";
+            case SKILLS -> new String[] { "Your skills and abilities will appear here." };
+            case MAGIC -> new String[] {
+                    "The magics of this world will appear here.",
+                    "Warging, greensight, and the old religions of Westeros are still being written."
+            };
+            case CULTURE -> new String[] {
+                    cultureBodyText(),
+                    "House allegiances, titles, and cultural bonuses are still being written."
+            };
+            default -> new String[] { "" };
         };
+    }
+
+    private void pageBack() {
+        if (pageIndex > 0) {
+            pageIndex--;
+            onPageTurned();
+        }
+    }
+
+    private void pageForward() {
+        if (pageIndex < pages.length - 1) {
+            pageIndex++;
+            onPageTurned();
+        }
+    }
+
+    private void onPageTurned() {
+        Minecraft.getInstance().getSoundManager()
+                .play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
+        rebuildLayout();
+    }
+
+    private void updateArrowVisibility() {
+        backButton.visible = pageIndex > 0;
+        forwardButton.visible = pageIndex < pages.length - 1;
     }
 
     /** Builds the summary text shown on the Culture tab above the reset button. */

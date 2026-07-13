@@ -516,12 +516,6 @@ public class GotModTabs {
                         safeAccept(output, Block.byItem(GotModItems.COTTONWOOD_BOAT.get()));
                         safeAccept(output, Block.byItem(GotModItems.COTTONWOOD_CHEST_BOAT.get()));
 
-                        // ── Crimson (vanilla) ─────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.CRIMSON_ROOFING.get());
-                        safeAccept(output, GotModBlocks.CRIMSON_ROOFING_SLAB.get());
-                        safeAccept(output, GotModBlocks.CRIMSON_ROOFING_STAIRS.get());
-                        safeAccept(output, GotModBlocks.CRIMSON_ROOFING_WALL.get());
-
                         // ── Dark Oak (vanilla) ────────────────────────────────────────
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING.get());
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING_SLAB.get());
@@ -995,12 +989,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SPRUCE_WOOD_STAIRS.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SPRUCE_WOOD_SLAB.get());
                         safeAccept(output, GotModBlocks.STRIPPED_SPRUCE_WOOD_STAIRS.get());
-
-                        // ── Warped (vanilla) ──────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.WARPED_ROOFING.get());
-                        safeAccept(output, GotModBlocks.WARPED_ROOFING_SLAB.get());
-                        safeAccept(output, GotModBlocks.WARPED_ROOFING_STAIRS.get());
-                        safeAccept(output, GotModBlocks.WARPED_ROOFING_WALL.get());
 
                         // ── Weirwood ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WEIRWOOD_LOG.get());

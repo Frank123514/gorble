@@ -1478,34 +1478,6 @@ public class GotModBlocks {
             REGISTRY.registerBlock("bamboo_roofing_wall", p -> new WallBlock(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
 
-    public static final DeferredBlock<Block> CRIMSON_ROOFING =
-            REGISTRY.registerBlock("crimson_roofing", p -> new Block(p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> CRIMSON_ROOFING_SLAB =
-            REGISTRY.registerBlock("crimson_roofing_slab", p -> new SlabBlock(p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
-    public static final DeferredBlock<Block> CRIMSON_ROOFING_STAIRS =
-            REGISTRY.registerBlock("crimson_roofing_stairs",
-                    p -> new StairBlock(CRIMSON_ROOFING.get().defaultBlockState(), p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
-    public static final DeferredBlock<Block> CRIMSON_ROOFING_WALL =
-            REGISTRY.registerBlock("crimson_roofing_wall", p -> new WallBlock(p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
-
-    public static final DeferredBlock<Block> WARPED_ROOFING =
-            REGISTRY.registerBlock("warped_roofing", p -> new Block(p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> WARPED_ROOFING_SLAB =
-            REGISTRY.registerBlock("warped_roofing_slab", p -> new SlabBlock(p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
-    public static final DeferredBlock<Block> WARPED_ROOFING_STAIRS =
-            REGISTRY.registerBlock("warped_roofing_stairs",
-                    p -> new StairBlock(WARPED_ROOFING.get().defaultBlockState(), p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS));
-    public static final DeferredBlock<Block> WARPED_ROOFING_WALL =
-            REGISTRY.registerBlock("warped_roofing_wall", p -> new WallBlock(p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
-
     // ── Flowers ──────────────────────────────────────────────────────────
     public static final DeferredBlock<Block> BELLFLOWER         = flowerBlock("bellflower");
     public static final DeferredBlock<Block> BLACK_LOTUS        = flowerBlock("black_lotus");

@@ -1,8 +1,24 @@
 {
-  "type": "minecraft:forest_rock",
+  "type": "got:boulder",
   "config": {
-    "state": {
-      "Name": "minecraft:stone"
-    }
+    "block": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:stone"
+      }
+    },
+    "targets": [
+      { "Name": "minecraft:grass_block" },
+      { "Name": "minecraft:dirt" },
+      { "Name": "minecraft:dirt_path" },
+      { "Name": "minecraft:coarse_dirt" },
+      { "Name": "minecraft:podzol" },
+      { "Name": "minecraft:stone" },
+      { "Name": "minecraft:sand" },
+      { "Name": "minecraft:gravel" }
+    ],
+    "radius": 2,
+    "height_scale": 0.75,
+    "jitter": 0.3
   }
 }

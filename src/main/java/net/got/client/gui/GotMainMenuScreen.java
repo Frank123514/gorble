@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
  * The tab launcher screen - opens first when the player presses M. Just the
  * row of four tabs (Map, Skills, Magic, Culture) plus a close button, drawn
  * directly over the world with nothing else on screen. Clicking a tab opens
- * that tab's own screen - {@link GotMapScreen} for Map,
- * {@link GotPlaceholderScreen} for the rest.
+ * that tab's own screen - {@link GotMapScreen} for Map, {@link GotSkillsScreen}
+ * for Skills, {@link GotPlaceholderScreen} for the still-unbuilt Magic/Culture.
  *
  * <p>Widget sheet layout (all buttons 120x20 px), reused for every tab plaque
  * and the small close button (cropped to 20x20):
@@ -86,10 +86,10 @@ public final class GotMainMenuScreen extends Screen {
     /** Opens the screen for the given tab. */
     private void openTab(GotMenuTab tab) {
         Minecraft mc = Minecraft.getInstance();
-        if (tab == GotMenuTab.MAP) {
-            mc.setScreen(new GotMapScreen());
-        } else {
-            mc.setScreen(new GotPlaceholderScreen(tab));
+        switch (tab) {
+            case MAP -> mc.setScreen(new GotMapScreen());
+            case SKILLS -> mc.setScreen(new GotSkillsScreen());
+            default -> mc.setScreen(new GotPlaceholderScreen(tab));
         }
     }
 

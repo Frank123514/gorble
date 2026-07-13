@@ -272,6 +272,31 @@ public final class GotNetwork {
                         net.got.client.gui.overlay.SmithingAnvilHudOverlay.onStatePacket(payload);
                     }
                 }));
+
+        // ── Skill sync (S→C) ──────────────────────────────────────────────────
+        r.playToClient(SkillSyncPayload.TYPE, SkillSyncPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                        net.got.client.ClientSkillCache.onSyncReceived(payload);
+                    }
+                }));
+
+        // ── Unlock perk (C→S) ────────────────────────────────────────────────
+        r.playToServer(UnlockPerkPayload.TYPE, UnlockPerkPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+
+                    net.got.skill.SkillPerk perk = net.got.skill.GotSkillPerks.byId(payload.perkId());
+                    if (perk == null) return; // unknown/stale perk id - ignore
+
+                    // Server independently re-validates level/chain/points - never
+                    // trusts the client's request. See PlayerSkillState#unlockPerk.
+                    if (net.got.skill.PlayerSkillState.unlockPerk(player, perk)) {
+                        net.got.skill.SkillPerkEffects.applyAttributeModifiers(player);
+                        net.got.skill.SkillXpService.syncToClient(player);
+                    }
+                }));
     }
 
     public static void init() {}

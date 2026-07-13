@@ -14,9 +14,6 @@
     },
     {
       "type": "minecraft:biome"
-    },
-    {
-      "type": "got:latitude_vegetation_falloff"
     }
   ]
 }

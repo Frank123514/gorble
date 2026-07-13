@@ -83,6 +83,19 @@ public final class PlayerSkillState {
         return getUnlockedPerkIds(player).contains(perkId);
     }
 
+    /**
+     * Copies the whole {@code got.skills} compound from a pre-respawn player's
+     * persistent data onto the new player instance. Persistent data is
+     * per-entity-instance and is <b>not</b> carried over automatically across
+     * death/respawn, so callers must do this explicitly - see
+     * {@code GotPlayerEvents#onPlayerClone}, which does the same for faction data.
+     */
+    public static void copyAcrossRespawn(CompoundTag oldPersistentData, ServerPlayer newPlayer) {
+        if (oldPersistentData.contains(ROOT)) {
+            newPlayer.getPersistentData().put(ROOT, oldPersistentData.getCompound(ROOT).copy());
+        }
+    }
+
     // ── Write helpers ────────────────────────────────────────────────────────
 
     /**

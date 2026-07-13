@@ -714,22 +714,6 @@ public class GotModItems {
             REGISTRY.registerSimpleBlockItem("bamboo_roofing_stairs", GotModBlocks.BAMBOO_ROOFING_STAIRS);
     public static final DeferredItem<BlockItem> BAMBOO_ROOFING_WALL =
             REGISTRY.registerSimpleBlockItem("bamboo_roofing_wall", GotModBlocks.BAMBOO_ROOFING_WALL);
-    public static final DeferredItem<BlockItem> CRIMSON_ROOFING =
-            REGISTRY.registerSimpleBlockItem("crimson_roofing", GotModBlocks.CRIMSON_ROOFING);
-    public static final DeferredItem<BlockItem> CRIMSON_ROOFING_SLAB =
-            REGISTRY.registerSimpleBlockItem("crimson_roofing_slab", GotModBlocks.CRIMSON_ROOFING_SLAB);
-    public static final DeferredItem<BlockItem> CRIMSON_ROOFING_STAIRS =
-            REGISTRY.registerSimpleBlockItem("crimson_roofing_stairs", GotModBlocks.CRIMSON_ROOFING_STAIRS);
-    public static final DeferredItem<BlockItem> CRIMSON_ROOFING_WALL =
-            REGISTRY.registerSimpleBlockItem("crimson_roofing_wall", GotModBlocks.CRIMSON_ROOFING_WALL);
-    public static final DeferredItem<BlockItem> WARPED_ROOFING =
-            REGISTRY.registerSimpleBlockItem("warped_roofing", GotModBlocks.WARPED_ROOFING);
-    public static final DeferredItem<BlockItem> WARPED_ROOFING_SLAB =
-            REGISTRY.registerSimpleBlockItem("warped_roofing_slab", GotModBlocks.WARPED_ROOFING_SLAB);
-    public static final DeferredItem<BlockItem> WARPED_ROOFING_STAIRS =
-            REGISTRY.registerSimpleBlockItem("warped_roofing_stairs", GotModBlocks.WARPED_ROOFING_STAIRS);
-    public static final DeferredItem<BlockItem> WARPED_ROOFING_WALL =
-            REGISTRY.registerSimpleBlockItem("warped_roofing_wall", GotModBlocks.WARPED_ROOFING_WALL);
 
     // ── Basalt items ──────────────────────────────────────────────────────
     public static final DeferredItem<Item> BASALT_ROCK = block(GotModBlocks.BASALT_ROCK);

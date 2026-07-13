@@ -39,6 +39,12 @@ public final class GotPlayerEvents {
             // Sync current state to the (re-)logging-in client.
             syncFactionToClient(player);
         }
+
+        // Transient attribute modifiers (Combat/Defense perks) aren't persisted,
+        // so they must be re-applied on every login; then push the full skill
+        // state so the Skills screen has something to show immediately.
+        net.got.skill.SkillPerkEffects.applyAttributeModifiers(player);
+        net.got.skill.SkillXpService.syncToClient(player);
     }
 
     // ── Logout ────────────────────────────────────────────────────────────────
@@ -80,6 +86,13 @@ public final class GotPlayerEvents {
         } else {
             syncFactionToClient(player);
         }
+
+        // Skill XP/perks live in persistent data too, and are just as
+        // instance-bound as the faction keys copied above - carry them
+        // across the respawn boundary the same way.
+        net.got.skill.PlayerSkillState.copyAcrossRespawn(oldData, player);
+        net.got.skill.SkillPerkEffects.applyAttributeModifiers(player);
+        net.got.skill.SkillXpService.syncToClient(player);
     }
 
     // ── Tick ──────────────────────────────────────────────────────────────────
@@ -95,6 +108,10 @@ public final class GotPlayerEvents {
                 PlayerTemperatureSystem.getBodyTemp(uuid),
                 PlayerThirstSystem.getThirst(uuid)
         ));
+
+        // Keep the client's skill cache fresh (XP bars, perk-point counts)
+        // while the Skills screen may be open, same cadence as vitals.
+        net.got.skill.SkillXpService.syncToClient(player);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

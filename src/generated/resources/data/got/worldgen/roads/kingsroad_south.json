@@ -4,10 +4,7 @@
   "type": "kingsroad",
   "palette": {
     "surface": [
-      "got:path_block",
-      "got:path_block",
-      "got:path_block",
-      "got:cobbled_path_block"
+      "got:path_block"
     ],
     "walls": false
   },

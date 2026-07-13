@@ -136,7 +136,7 @@ public class GotBiomes {
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
-     * Adds the three universal overworld feature layers shared by every GOT biome:
+     * Adds the universal overworld feature layers shared by every GOT biome:
      * amethyst geodes (LOCAL_MODIFICATIONS), vanilla underground variety ores
      * (UNDERGROUND_ORES), and surface freezing (TOP_LAYER_MODIFICATION).
      */

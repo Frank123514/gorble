@@ -3,7 +3,6 @@ package net.got;
 import net.got.client.GotClient;
 import net.got.init.*;
 import net.got.worldgen.biome.placers.GotTreePlacers;
-import net.got.worldgen.placement.GotPlacementModifiers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.HashSet;
 
@@ -24,8 +23,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.got.climate.SeasonManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -69,7 +66,6 @@ public final class GotMod {
         ModSounds.register(modBus);
         WorldgenRegistries.register(modBus);
         GotTreePlacers.register(modBus);
-        GotPlacementModifiers.register(modBus);
         GotModParticles.register(modBus);
         GotModDataComponents.register(modBus);
 

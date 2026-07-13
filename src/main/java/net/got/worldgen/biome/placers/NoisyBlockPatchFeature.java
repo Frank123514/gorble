@@ -257,29 +257,6 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                 BlockState surfaceState = level.getBlockState(surface);
                 BlockState prospective = cfg.block().getState(rand, surface);
 
-                // ── Stacking ──────────────────────────────────────────────────
-                // If this exact spot was already dusted by an earlier
-                // (possibly overlapping) pass of this same feature — findSurface
-                // would have latched onto that placed block itself, since it's
-                // now the non-air block with air above it — build up its layer
-                // count instead of requiring it to still look like one of the
-                // original ground targets. Without this, every pass after the
-                // first silently no-ops on ground a previous pass already
-                // covered, which is exactly why calling this feature multiple
-                // times over the same chunk never used to visibly deepen the
-                // snow.
-                if (surfaceState.getBlock() == prospective.getBlock()
-                        && surfaceState.hasProperty(BlockStateProperties.LAYERS)) {
-                    int current = surfaceState.getValue(BlockStateProperties.LAYERS);
-                    if (current < 8) {
-                        level.setBlock(surface,
-                                surfaceState.setValue(BlockStateProperties.LAYERS, current + 1),
-                                Block.UPDATE_CLIENTS);
-                        placed = true;
-                    }
-                    continue;
-                }
-
                 // ── Target check ─────────────────────────────────────────────
                 if (!isTarget(surfaceState, cfg)) continue;
 
@@ -301,11 +278,9 @@ public class NoisyBlockPatchFeature extends Feature<NoisyBlockPatchFeature.Confi
                 // Vanilla grass blocks track a SNOWY flag that swaps their
                 // side texture whenever snow sits on top of them, but placing
                 // a block straight into the world like this doesn't flip it
-                // automatically. Do it manually here — needed now that
-                // LatitudeSnowHandler calls this feature directly at
-                // chunk-load time — so a grass block newly buried by this
-                // feature reads as snowy immediately instead of only after
-                // some other trigger updates its state.
+                // automatically. Do it manually here so a grass block newly
+                // buried by this feature reads as snowy immediately instead
+                // of only after some other trigger updates its state.
                 if (cfg.placeAbove()
                         && surfaceState.getBlock() == Blocks.GRASS_BLOCK
                         && !surfaceState.getValue(BlockStateProperties.SNOWY)) {

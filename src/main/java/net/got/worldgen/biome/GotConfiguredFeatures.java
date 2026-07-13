@@ -19,6 +19,7 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -121,8 +122,6 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_SAND    = key("noisy_patch_sand");
     /** Bare-earth dirt patch worn into grassland — grazed meadows. */
     public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_DIRT    = key("noisy_patch_dirt");
-    /** Fine speckled snow dusting — many small flecks rather than one big drift. */
-    public static final ResourceKey<ConfiguredFeature<?, ?>> NOISY_PATCH_SNOW    = key("noisy_patch_snow");
 
     // Rock-pocket ores
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_BASALT_ROCK        = key("ore_basalt_rock");
@@ -599,20 +598,44 @@ public final class GotConfiguredFeatures {
                 .build());
 
         // ══════════════════════════════════════════════════════════════════════
-        // BOULDERS  (forest_rock = one block placed on the surface)
+        // BOULDERS  (rounded, partially-embedded lumpy dome — see BoulderFeature)
         // ══════════════════════════════════════════════════════════════════════
 
-        register(ctx, BOULDER, Feature.FOREST_ROCK,
-                new BlockStateConfiguration(Blocks.STONE.defaultBlockState()));
+        List<BlockState> boulderTargets = List.of(
+                Blocks.GRASS_BLOCK.defaultBlockState(),
+                Blocks.DIRT.defaultBlockState(),
+                Blocks.DIRT_PATH.defaultBlockState(),
+                Blocks.COARSE_DIRT.defaultBlockState(),
+                Blocks.PODZOL.defaultBlockState(),
+                Blocks.STONE.defaultBlockState(),
+                Blocks.SAND.defaultBlockState(),
+                Blocks.GRAVEL.defaultBlockState());
 
-        register(ctx, GREY_GRANITE_BOULDER, Feature.FOREST_ROCK,
-                new BlockStateConfiguration(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState()));
+        register(ctx, BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
+                new net.got.worldgen.biome.placers.BoulderFeature.Config(
+                        BlockStateProvider.simple(Blocks.STONE.defaultBlockState()),
+                        boulderTargets,
+                        2,      // radius
+                        0.75,   // height_scale
+                        0.3));  // jitter
 
-        register(ctx, LIMESTONE_BOULDER, Feature.FOREST_ROCK,
-                new BlockStateConfiguration(GotModBlocks.LIMESTONE_ROCK.get().defaultBlockState()));
+        register(ctx, GREY_GRANITE_BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
+                new net.got.worldgen.biome.placers.BoulderFeature.Config(
+                        BlockStateProvider.simple(GotModBlocks.GREY_GRANITE_ROCK.get().defaultBlockState()),
+                        boulderTargets,
+                        2, 0.75, 0.3));
 
-        register(ctx, SLATE_BOULDER, Feature.FOREST_ROCK,
-                new BlockStateConfiguration(GotModBlocks.SLATE_ROCK.get().defaultBlockState()));
+        register(ctx, LIMESTONE_BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
+                new net.got.worldgen.biome.placers.BoulderFeature.Config(
+                        BlockStateProvider.simple(GotModBlocks.LIMESTONE_ROCK.get().defaultBlockState()),
+                        boulderTargets,
+                        2, 0.75, 0.3));
+
+        register(ctx, SLATE_BOULDER, net.got.registry.WorldgenRegistries.BOULDER.get(),
+                new net.got.worldgen.biome.placers.BoulderFeature.Config(
+                        BlockStateProvider.simple(GotModBlocks.SLATE_ROCK.get().defaultBlockState()),
+                        boulderTargets,
+                        2, 0.75, 0.3));
 
         // ══════════════════════════════════════════════════════════════════════
         // DISKS  (surface sediment patches near water)
@@ -716,27 +739,6 @@ public final class GotConfiguredFeatures {
                         0.45,   // scale_high
                         0.28,   // scale_warp
                         false)); // place_above — replaces surface block
-        // scattered unevenly across a wide radius, matching a light dusting
-        // that clumps into loose drifts rather than one big snow blob.
-        register(ctx, NOISY_PATCH_SNOW,
-                net.got.registry.WorldgenRegistries.NOISY_BLOCK_PATCH.get(),
-                new net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Config(
-                        BlockStateProvider.simple(Blocks.SNOW),
-                        List.of(Blocks.GRASS_BLOCK.defaultBlockState(),
-                                Blocks.DIRT.defaultBlockState(),
-                                Blocks.DIRT_PATH.defaultBlockState(),
-                                Blocks.COARSE_DIRT.defaultBlockState(),
-                                Blocks.PODZOL.defaultBlockState()),
-                        14,     // radius — wide coverage area per placement
-                        net.got.worldgen.biome.placers.NoisyBlockPatchFeature.Mode.SPECKLE,
-                        1.0,    // stretch_x — unused in speckle mode
-                        1.0,    // stretch_z — unused in speckle mode
-                        0.02,   // threshold — low = dense speckle coverage
-                        0.15,   // warp_weight — light drift clumping, mostly clean flecks
-                        0.05,   // scale_low — large loose drifts/clusters
-                        0.30,   // scale_high — flecks a few blocks wide, not near-per-block noise
-                        0.15,   // scale_warp
-                        true)); // place_above — snow layers on top of surface
         // ROCK-POCKET ORES  (vein size 64, replaces base_stone_overworld)
         // ══════════════════════════════════════════════════════════════════════
 
