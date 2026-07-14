@@ -766,11 +766,11 @@ public final class GotConfiguredFeatures {
 
         register(ctx, ORE_RED_SANDSTONE_ROCK, Feature.ORE, new OreConfiguration(
                 List.of(OreConfiguration.target(baseStone,
-                        GotModBlocks.RED_SANDSTONE_ROCK.get().defaultBlockState())), 64));
+                        Blocks.RED_SANDSTONE.defaultBlockState())), 64));
 
         register(ctx, ORE_SANDSTONE_ROCK, Feature.ORE, new OreConfiguration(
                 List.of(OreConfiguration.target(baseStone,
-                        GotModBlocks.SANDSTONE_ROCK.get().defaultBlockState())), 64));
+                        Blocks.SANDSTONE.defaultBlockState())), 64));
 
         register(ctx, ORE_SLATE_ROCK, Feature.ORE, new OreConfiguration(
                 List.of(OreConfiguration.target(baseStone,

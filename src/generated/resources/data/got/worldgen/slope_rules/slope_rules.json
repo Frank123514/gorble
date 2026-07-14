@@ -37,7 +37,7 @@
   ],
 
   "got:western_hills": [
-    { "min_slope": 22, "block": "got:sandstone_rock",  "depth": 2, "jitter": 4 }
+    { "min_slope": 22, "block": "got:sandstone",  "depth": 2, "jitter": 4 }
   ],
 
   "got:north_hills": [

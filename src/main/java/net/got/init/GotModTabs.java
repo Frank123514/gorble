@@ -2125,21 +2125,14 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MOSSY_OILY_BLACK_BRICK_WALL.get());
 
                         // ── Red Sandstone ──────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE.get());
                         safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_BRICK.get());
                         safeAccept(output, GotModBlocks.CRACKED_RED_SANDSTONE_BRICK.get());
                         safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_WALL.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_BUTTON.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_STAIRS.get());
                         safeAccept(output, GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_WALL.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_SLAB.get());
                         safeAccept(output, GotModBlocks.RED_SANDSTONE_COBBLESTONE_STAIRS.get());
@@ -2158,21 +2151,14 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MOSSY_RED_SANDSTONE_BRICK_WALL.get());
 
                         // ── Sandstone ──────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE.get());
                         safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_BRICK.get());
                         safeAccept(output, GotModBlocks.CRACKED_SANDSTONE_BRICK.get());
                         safeAccept(output, GotModBlocks.MOSSY_SANDSTONE_BRICK.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_PILLAR.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_STAIRS.get());
-                        safeAccept(output, GotModBlocks.SANDSTONE_ROCK_WALL.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_ROCK_BUTTON.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_SLAB.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_STAIRS.get());
                         safeAccept(output, GotModBlocks.SMOOTH_SANDSTONE_ROCK_WALL.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_SLAB.get());
                         safeAccept(output, GotModBlocks.SANDSTONE_COBBLESTONE_STAIRS.get());

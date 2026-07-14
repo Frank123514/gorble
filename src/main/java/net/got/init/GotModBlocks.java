@@ -2171,17 +2171,12 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> SMOOTH_LIMESTONE_ROCK_WALL = registerLimestone("smooth_limestone_rock_wall", RegionalRockWallBlock::new);
 
     // ── Sandstone ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> SANDSTONE_ROCK = registerSandstone("sandstone_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> SANDSTONE_BRICK = registerSandstone("sandstone_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> CRACKED_SANDSTONE_BRICK = registerSandstone("cracked_sandstone_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_SANDSTONE_BRICK = registerSandstone("mossy_sandstone_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> SANDSTONE_COBBLESTONE = registerSandstone("sandstone_cobblestone", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE = registerSandstone("mossy_sandstone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK = registerSandstone("smooth_sandstone_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> SANDSTONE_PILLAR = registerSandstone("sandstone_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_SLAB = registerSandstone("sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_STAIRS = registerSandstone("sandstone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> SANDSTONE_ROCK_WALL = registerSandstone("sandstone_rock_wall", RegionalRockWallBlock::new);
     public static final DeferredBlock<Block> SANDSTONE_ROCK_BUTTON = registerSandstone("sandstone_rock_button", RegionalRockButtonBlock::new);
     public static final DeferredBlock<Block> SANDSTONE_ROCK_PRESSURE_PLATE = registerSandstone("sandstone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
     public static final DeferredBlock<Block> SANDSTONE_BRICK_SLAB = registerSandstone("sandstone_brick_slab", RegionalRockSlabBlock::new);
@@ -2199,22 +2194,15 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_SLAB = registerSandstone("mossy_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_STAIRS = registerSandstone("mossy_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> MOSSY_SANDSTONE_COBBLESTONE_WALL = registerSandstone("mossy_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_SLAB = registerSandstone("smooth_sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_STAIRS = registerSandstone("smooth_sandstone_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> SMOOTH_SANDSTONE_ROCK_WALL = registerSandstone("smooth_sandstone_rock_wall", RegionalRockWallBlock::new);
 
     // ── Red Sandstone ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK = registerRedSandstone("red_sandstone_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> RED_SANDSTONE_BRICK = registerRedSandstone("red_sandstone_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> CRACKED_RED_SANDSTONE_BRICK = registerRedSandstone("cracked_red_sandstone_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_BRICK = registerRedSandstone("mossy_red_sandstone_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> RED_SANDSTONE_COBBLESTONE = registerRedSandstone("red_sandstone_cobblestone", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE = registerRedSandstone("mossy_red_sandstone_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK = registerRedSandstone("smooth_red_sandstone_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> RED_SANDSTONE_PILLAR = registerRedSandstone("red_sandstone_pillar", RegionalRockPillarBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_SLAB = registerRedSandstone("red_sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_STAIRS = registerRedSandstone("red_sandstone_rock_stairs", RegionalRockStairsBlock::new);
-    public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_WALL = registerRedSandstone("red_sandstone_rock_wall", RegionalRockWallBlock::new);
     public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_BUTTON = registerRedSandstone("red_sandstone_rock_button", RegionalRockButtonBlock::new);
     public static final DeferredBlock<Block> RED_SANDSTONE_ROCK_PRESSURE_PLATE = registerRedSandstone("red_sandstone_rock_pressure_plate", RegionalRockPressurePlateBlock::new);
     public static final DeferredBlock<Block> RED_SANDSTONE_BRICK_SLAB = registerRedSandstone("red_sandstone_brick_slab", RegionalRockSlabBlock::new);
@@ -2232,8 +2220,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB = registerRedSandstone("mossy_red_sandstone_cobblestone_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS = registerRedSandstone("mossy_red_sandstone_cobblestone_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> MOSSY_RED_SANDSTONE_COBBLESTONE_WALL = registerRedSandstone("mossy_red_sandstone_cobblestone_wall", RegionalRockWallBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_SLAB = registerRedSandstone("smooth_red_sandstone_rock_slab", RegionalRockSlabBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_STAIRS = registerRedSandstone("smooth_red_sandstone_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> SMOOTH_RED_SANDSTONE_ROCK_WALL = registerRedSandstone("smooth_red_sandstone_rock_wall", RegionalRockWallBlock::new);
 
     // ── Slate ──────────────────────────────────────────────────────────

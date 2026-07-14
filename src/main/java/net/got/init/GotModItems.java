@@ -843,17 +843,12 @@ public class GotModItems {
     public static final DeferredItem<Item> SMOOTH_LIMESTONE_ROCK_WALL = block(GotModBlocks.SMOOTH_LIMESTONE_ROCK_WALL);
 
     // ── Sandstone items ──────────────────────────────────────────────────────
-    public static final DeferredItem<Item> SANDSTONE_ROCK = block(GotModBlocks.SANDSTONE_ROCK);
     public static final DeferredItem<Item> SANDSTONE_BRICK = block(GotModBlocks.SANDSTONE_BRICK);
     public static final DeferredItem<Item> CRACKED_SANDSTONE_BRICK = block(GotModBlocks.CRACKED_SANDSTONE_BRICK);
     public static final DeferredItem<Item> MOSSY_SANDSTONE_BRICK = block(GotModBlocks.MOSSY_SANDSTONE_BRICK);
     public static final DeferredItem<Item> SANDSTONE_COBBLESTONE = block(GotModBlocks.SANDSTONE_COBBLESTONE);
     public static final DeferredItem<Item> MOSSY_SANDSTONE_COBBLESTONE = block(GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE);
-    public static final DeferredItem<Item> SMOOTH_SANDSTONE_ROCK = block(GotModBlocks.SMOOTH_SANDSTONE_ROCK);
     public static final DeferredItem<Item> SANDSTONE_PILLAR = block(GotModBlocks.SANDSTONE_PILLAR);
-    public static final DeferredItem<Item> SANDSTONE_ROCK_SLAB = block(GotModBlocks.SANDSTONE_ROCK_SLAB);
-    public static final DeferredItem<Item> SANDSTONE_ROCK_STAIRS = block(GotModBlocks.SANDSTONE_ROCK_STAIRS);
-    public static final DeferredItem<Item> SANDSTONE_ROCK_WALL = block(GotModBlocks.SANDSTONE_ROCK_WALL);
     public static final DeferredItem<Item> SANDSTONE_ROCK_BUTTON = block(GotModBlocks.SANDSTONE_ROCK_BUTTON);
     public static final DeferredItem<Item> SANDSTONE_ROCK_PRESSURE_PLATE = block(GotModBlocks.SANDSTONE_ROCK_PRESSURE_PLATE);
     public static final DeferredItem<Item> SANDSTONE_BRICK_SLAB = block(GotModBlocks.SANDSTONE_BRICK_SLAB);
@@ -871,22 +866,15 @@ public class GotModItems {
     public static final DeferredItem<Item> MOSSY_SANDSTONE_COBBLESTONE_SLAB = block(GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_SLAB);
     public static final DeferredItem<Item> MOSSY_SANDSTONE_COBBLESTONE_STAIRS = block(GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_STAIRS);
     public static final DeferredItem<Item> MOSSY_SANDSTONE_COBBLESTONE_WALL = block(GotModBlocks.MOSSY_SANDSTONE_COBBLESTONE_WALL);
-    public static final DeferredItem<Item> SMOOTH_SANDSTONE_ROCK_SLAB = block(GotModBlocks.SMOOTH_SANDSTONE_ROCK_SLAB);
-    public static final DeferredItem<Item> SMOOTH_SANDSTONE_ROCK_STAIRS = block(GotModBlocks.SMOOTH_SANDSTONE_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_SANDSTONE_ROCK_WALL = block(GotModBlocks.SMOOTH_SANDSTONE_ROCK_WALL);
 
     // ── Red Sandstone items ──────────────────────────────────────────────────────
-    public static final DeferredItem<Item> RED_SANDSTONE_ROCK = block(GotModBlocks.RED_SANDSTONE_ROCK);
     public static final DeferredItem<Item> RED_SANDSTONE_BRICK = block(GotModBlocks.RED_SANDSTONE_BRICK);
     public static final DeferredItem<Item> CRACKED_RED_SANDSTONE_BRICK = block(GotModBlocks.CRACKED_RED_SANDSTONE_BRICK);
     public static final DeferredItem<Item> MOSSY_RED_SANDSTONE_BRICK = block(GotModBlocks.MOSSY_RED_SANDSTONE_BRICK);
     public static final DeferredItem<Item> RED_SANDSTONE_COBBLESTONE = block(GotModBlocks.RED_SANDSTONE_COBBLESTONE);
     public static final DeferredItem<Item> MOSSY_RED_SANDSTONE_COBBLESTONE = block(GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE);
-    public static final DeferredItem<Item> SMOOTH_RED_SANDSTONE_ROCK = block(GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK);
     public static final DeferredItem<Item> RED_SANDSTONE_PILLAR = block(GotModBlocks.RED_SANDSTONE_PILLAR);
-    public static final DeferredItem<Item> RED_SANDSTONE_ROCK_SLAB = block(GotModBlocks.RED_SANDSTONE_ROCK_SLAB);
-    public static final DeferredItem<Item> RED_SANDSTONE_ROCK_STAIRS = block(GotModBlocks.RED_SANDSTONE_ROCK_STAIRS);
-    public static final DeferredItem<Item> RED_SANDSTONE_ROCK_WALL = block(GotModBlocks.RED_SANDSTONE_ROCK_WALL);
     public static final DeferredItem<Item> RED_SANDSTONE_ROCK_BUTTON = block(GotModBlocks.RED_SANDSTONE_ROCK_BUTTON);
     public static final DeferredItem<Item> RED_SANDSTONE_ROCK_PRESSURE_PLATE = block(GotModBlocks.RED_SANDSTONE_ROCK_PRESSURE_PLATE);
     public static final DeferredItem<Item> RED_SANDSTONE_BRICK_SLAB = block(GotModBlocks.RED_SANDSTONE_BRICK_SLAB);
@@ -904,8 +892,6 @@ public class GotModItems {
     public static final DeferredItem<Item> MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB = block(GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB);
     public static final DeferredItem<Item> MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS = block(GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS);
     public static final DeferredItem<Item> MOSSY_RED_SANDSTONE_COBBLESTONE_WALL = block(GotModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_WALL);
-    public static final DeferredItem<Item> SMOOTH_RED_SANDSTONE_ROCK_SLAB = block(GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_SLAB);
-    public static final DeferredItem<Item> SMOOTH_RED_SANDSTONE_ROCK_STAIRS = block(GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_RED_SANDSTONE_ROCK_WALL = block(GotModBlocks.SMOOTH_RED_SANDSTONE_ROCK_WALL);
 
     // ── Slate items ──────────────────────────────────────────────────────
