@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "got:block/basalt_rock"
+    "all": "minecraft:block/basalt_side"
   }
 }

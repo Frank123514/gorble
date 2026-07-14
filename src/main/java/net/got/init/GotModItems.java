@@ -716,13 +716,11 @@ public class GotModItems {
             REGISTRY.registerSimpleBlockItem("bamboo_roofing_wall", GotModBlocks.BAMBOO_ROOFING_WALL);
 
     // ── Basalt items ──────────────────────────────────────────────────────
-    public static final DeferredItem<Item> BASALT_ROCK = block(GotModBlocks.BASALT_ROCK);
     public static final DeferredItem<Item> BASALT_BRICK = block(GotModBlocks.BASALT_BRICK);
     public static final DeferredItem<Item> CRACKED_BASALT_BRICK = block(GotModBlocks.CRACKED_BASALT_BRICK);
     public static final DeferredItem<Item> MOSSY_BASALT_BRICK = block(GotModBlocks.MOSSY_BASALT_BRICK);
     public static final DeferredItem<Item> BASALT_COBBLESTONE = block(GotModBlocks.BASALT_COBBLESTONE);
     public static final DeferredItem<Item> MOSSY_BASALT_COBBLESTONE = block(GotModBlocks.MOSSY_BASALT_COBBLESTONE);
-    public static final DeferredItem<Item> SMOOTH_BASALT_ROCK = block(GotModBlocks.SMOOTH_BASALT_ROCK);
     public static final DeferredItem<Item> BASALT_PILLAR = block(GotModBlocks.BASALT_PILLAR);
     public static final DeferredItem<Item> BASALT_ROCK_SLAB = block(GotModBlocks.BASALT_ROCK_SLAB);
     public static final DeferredItem<Item> BASALT_ROCK_STAIRS = block(GotModBlocks.BASALT_ROCK_STAIRS);

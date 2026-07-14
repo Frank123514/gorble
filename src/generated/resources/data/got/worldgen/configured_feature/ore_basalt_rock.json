@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "got:basalt_rock"
+          "Name": "minecraft:basalt"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

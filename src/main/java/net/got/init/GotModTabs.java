@@ -1907,8 +1907,6 @@ public class GotModTabs {
                     .displayItems((params, output) -> {
 
                         // ── Basalt ──────────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.BASALT_ROCK.get());
-                        safeAccept(output, GotModBlocks.SMOOTH_BASALT_ROCK.get());
                         safeAccept(output, GotModBlocks.BASALT_COBBLESTONE.get());
                         safeAccept(output, GotModBlocks.MOSSY_BASALT_COBBLESTONE.get());
                         safeAccept(output, GotModBlocks.BASALT_BRICK.get());

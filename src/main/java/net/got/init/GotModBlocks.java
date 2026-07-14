@@ -2042,13 +2042,11 @@ public class GotModBlocks {
                     .noOcclusion());
 
     // ── Basalt ──────────────────────────────────────────────────────────
-    public static final DeferredBlock<Block> BASALT_ROCK = registerBasalt("basalt_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> BASALT_BRICK = registerBasalt("basalt_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> CRACKED_BASALT_BRICK = registerBasalt("cracked_basalt_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_BASALT_BRICK = registerBasalt("mossy_basalt_brick", RegionalRockBlock::new);
     public static final DeferredBlock<Block> BASALT_COBBLESTONE = registerBasalt("basalt_cobblestone", RegionalRockBlock::new);
     public static final DeferredBlock<Block> MOSSY_BASALT_COBBLESTONE = registerBasalt("mossy_basalt_cobblestone", RegionalRockBlock::new);
-    public static final DeferredBlock<Block> SMOOTH_BASALT_ROCK = registerBasalt("smooth_basalt_rock", RegionalRockBlock::new);
     public static final DeferredBlock<Block> BASALT_PILLAR = registerBasalt("basalt_pillar", RegionalRockPillarBlock::new);
     public static final DeferredBlock<Block> BASALT_ROCK_SLAB = registerBasalt("basalt_rock_slab", RegionalRockSlabBlock::new);
     public static final DeferredBlock<Block> BASALT_ROCK_STAIRS = registerBasalt("basalt_rock_stairs", RegionalRockStairsBlock::new);

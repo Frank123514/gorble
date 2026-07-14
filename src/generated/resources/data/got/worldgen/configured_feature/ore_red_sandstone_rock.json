@@ -6,7 +6,7 @@
     "targets": [
       {
         "state": {
-          "Name": "got:red_sandstone"
+          "Name": "minecraft:red_sandstone"
         },
         "target": {
           "predicate_type": "minecraft:tag_match",

@@ -746,7 +746,7 @@ public final class GotConfiguredFeatures {
 
         register(ctx, ORE_BASALT_ROCK, Feature.ORE, new OreConfiguration(
                 List.of(OreConfiguration.target(baseStone,
-                        GotModBlocks.BASALT_ROCK.get().defaultBlockState())), 64));
+                        Blocks.BASALT.defaultBlockState())), 64));
 
         register(ctx, ORE_FLINT_ROCK, Feature.ORE, new OreConfiguration(
                 List.of(OreConfiguration.target(baseStone,
