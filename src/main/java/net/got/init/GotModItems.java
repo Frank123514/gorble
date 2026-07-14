@@ -1085,6 +1085,21 @@ public class GotModItems {
     public static final DeferredItem<Item> RAW_TIN_BLOCK      = block(GotModBlocks.RAW_TIN_BLOCK);
     public static final DeferredItem<Item> PATH_BLOCK         = block(GotModBlocks.PATH_BLOCK);
     public static final DeferredItem<Item> COBBLED_PATH_BLOCK = block(GotModBlocks.COBBLED_PATH_BLOCK);
+
+    public static final DeferredItem<Item> DIRT_SLAB          = block(GotModBlocks.DIRT_SLAB);
+    public static final DeferredItem<Item> DIRT_STAIRS        = block(GotModBlocks.DIRT_STAIRS);
+    public static final DeferredItem<Item> MUD_SLAB           = block(GotModBlocks.MUD_SLAB);
+    public static final DeferredItem<Item> MUD_STAIRS         = block(GotModBlocks.MUD_STAIRS);
+    public static final DeferredItem<Item> DIRT_PATH_SLAB     = block(GotModBlocks.DIRT_PATH_SLAB);
+    public static final DeferredItem<Item> DIRT_PATH_STAIRS   = block(GotModBlocks.DIRT_PATH_STAIRS);
+    public static final DeferredItem<Item> COARSE_DIRT_SLAB   = block(GotModBlocks.COARSE_DIRT_SLAB);
+    public static final DeferredItem<Item> COARSE_DIRT_STAIRS = block(GotModBlocks.COARSE_DIRT_STAIRS);
+    public static final DeferredItem<Item> ROOTED_DIRT_SLAB   = block(GotModBlocks.ROOTED_DIRT_SLAB);
+    public static final DeferredItem<Item> ROOTED_DIRT_STAIRS = block(GotModBlocks.ROOTED_DIRT_STAIRS);
+    public static final DeferredItem<Item> PODZOL_SLAB        = block(GotModBlocks.PODZOL_SLAB);
+    public static final DeferredItem<Item> PODZOL_STAIRS      = block(GotModBlocks.PODZOL_STAIRS);
+    public static final DeferredItem<Item> GRASS_BLOCK_SLAB   = block(GotModBlocks.GRASS_BLOCK_SLAB);
+    public static final DeferredItem<Item> GRASS_BLOCK_STAIRS = block(GotModBlocks.GRASS_BLOCK_STAIRS);
     public static final DeferredItem<Item> RAW_COBALT_BLOCK   = block(GotModBlocks.RAW_COBALT_BLOCK);
     public static final DeferredItem<Item> RAW_LEAD_BLOCK     = block(GotModBlocks.RAW_LEAD_BLOCK);
     public static final DeferredItem<Item> RAW_PLATINUM_BLOCK = block(GotModBlocks.RAW_PLATINUM_BLOCK);

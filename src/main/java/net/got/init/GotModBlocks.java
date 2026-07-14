@@ -1869,6 +1869,22 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> PATH_BLOCK              = registerPath("path_block");
     public static final DeferredBlock<Block> COBBLED_PATH_BLOCK      = registerCobbledPath("cobbled_path_block");
 
+    // ── Vanilla dirt-family slabs/stairs ──────────────────────────────────────
+    public static final DeferredBlock<Block> DIRT_SLAB          = registerDirt("dirt_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> DIRT_STAIRS        = registerDirt("dirt_stairs", p -> new StairBlock(Blocks.DIRT.defaultBlockState(), p));
+    public static final DeferredBlock<Block> MUD_SLAB           = registerMud("mud_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> MUD_STAIRS         = registerMud("mud_stairs", p -> new StairBlock(Blocks.MUD.defaultBlockState(), p));
+    public static final DeferredBlock<Block> DIRT_PATH_SLAB     = registerDirtPath("dirt_path_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> DIRT_PATH_STAIRS   = registerDirtPath("dirt_path_stairs", p -> new StairBlock(Blocks.DIRT_PATH.defaultBlockState(), p));
+    public static final DeferredBlock<Block> COARSE_DIRT_SLAB   = registerCoarseDirt("coarse_dirt_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> COARSE_DIRT_STAIRS = registerCoarseDirt("coarse_dirt_stairs", p -> new StairBlock(Blocks.COARSE_DIRT.defaultBlockState(), p));
+    public static final DeferredBlock<Block> ROOTED_DIRT_SLAB   = registerRootedDirt("rooted_dirt_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> ROOTED_DIRT_STAIRS = registerRootedDirt("rooted_dirt_stairs", p -> new StairBlock(Blocks.ROOTED_DIRT.defaultBlockState(), p));
+    public static final DeferredBlock<Block> PODZOL_SLAB        = registerPodzol("podzol_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> PODZOL_STAIRS      = registerPodzol("podzol_stairs", p -> new StairBlock(Blocks.PODZOL.defaultBlockState(), p));
+    public static final DeferredBlock<Block> GRASS_BLOCK_SLAB   = registerGrassBlock("grass_block_slab", SlabBlock::new);
+    public static final DeferredBlock<Block> GRASS_BLOCK_STAIRS = registerGrassBlock("grass_block_stairs", p -> new StairBlock(Blocks.GRASS_BLOCK.defaultBlockState(), p));
+
     /** Iron-tier deepslate ore. */
     private static DeferredBlock<Block> oreIronDeep(String name) {
         return REGISTRY.registerSimpleBlock(name,
@@ -1903,6 +1919,37 @@ public class GotModBlocks {
     private static DeferredBlock<Block> registerCobbledPath(String name) {
         return REGISTRY.registerSimpleBlock(name,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE));
+    }
+
+    // ── Vanilla dirt-family slab/stairs helpers ───────────────────────────────
+    // Each helper copies the matching vanilla block's properties so hardness,
+    // sound, and behaviour line up with the full block these are cut from.
+    private static <B extends Block> DeferredBlock<B> registerDirt(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerMud(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerDirtPath(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT_PATH));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerCoarseDirt(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.COARSE_DIRT));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerRootedDirt(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.ROOTED_DIRT));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerPodzol(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.PODZOL));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerGrassBlock(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
+        return REGISTRY.registerBlock(name, supplier, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK));
     }
 
     // ── Apple Tree

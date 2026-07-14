@@ -2215,6 +2215,22 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PATH_BLOCK.get());
                         safeAccept(output, GotModBlocks.COBBLED_PATH_BLOCK.get());
 
+                        // ── Vanilla dirt-family slabs/stairs ──────────────────────────────
+                        safeAccept(output, GotModBlocks.DIRT_SLAB.get());
+                        safeAccept(output, GotModBlocks.DIRT_STAIRS.get());
+                        safeAccept(output, GotModBlocks.MUD_SLAB.get());
+                        safeAccept(output, GotModBlocks.MUD_STAIRS.get());
+                        safeAccept(output, GotModBlocks.DIRT_PATH_SLAB.get());
+                        safeAccept(output, GotModBlocks.DIRT_PATH_STAIRS.get());
+                        safeAccept(output, GotModBlocks.COARSE_DIRT_SLAB.get());
+                        safeAccept(output, GotModBlocks.COARSE_DIRT_STAIRS.get());
+                        safeAccept(output, GotModBlocks.ROOTED_DIRT_SLAB.get());
+                        safeAccept(output, GotModBlocks.ROOTED_DIRT_STAIRS.get());
+                        safeAccept(output, GotModBlocks.PODZOL_SLAB.get());
+                        safeAccept(output, GotModBlocks.PODZOL_STAIRS.get());
+                        safeAccept(output, GotModBlocks.GRASS_BLOCK_SLAB.get());
+                        safeAccept(output, GotModBlocks.GRASS_BLOCK_STAIRS.get());
+
                         // ── Fieldstone ─────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.FIELDSTONE.get());
                         safeAccept(output, GotModBlocks.FIELDSTONE_SLAB.get());
