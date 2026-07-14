@@ -481,4 +481,30 @@ public final class ClientSetup {
     public static void onModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         HotIronIngotModel.inject(event.getBakingResult().itemStackModels());
     }
+
+    /**
+     * Vanilla only wires up biome-grass tinting for {@link Blocks#GRASS_BLOCK} itself —
+     * it has no idea our grass_block_slab / grass_block_stairs exist, even though their
+     * models now carry the same tintindex-0 faces as the real grass_block model.
+     * Without this, the top face renders as the raw grayscale grass_block_top texture
+     * (flat pale/olive) instead of being colored by the surrounding biome.
+     */
+    @SubscribeEvent
+    public static void registerBlockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
+        event.register(
+                (state, level, pos, tintIndex) -> level != null && pos != null
+                        ? net.minecraft.client.renderer.BiomeColors.getAverageGrassColor(level, pos)
+                        : 0x91BD59, // fallback plains-grass green when no level/pos context is available
+                GotModBlocks.GRASS_BLOCK_SLAB.get(),
+                GotModBlocks.GRASS_BLOCK_STAIRS.get()
+        );
+    }
+
+    // Note: as of this NeoForge/MC version, item-form (inventory/hand) tinting is no
+    // longer wired through a Java RegisterColorHandlersEvent.Item — that nested class
+    // doesn't exist here. Item tint is now data-driven via a "tints" array on the item
+    // model JSON (assets/got/models/item/grass_block_slab.json /
+    // grass_block_stairs.json), e.g. adding a "minecraft:grass" or "constant" tint
+    // source entry. World rendering (the part in your screenshots) is unaffected by
+    // this and is fully fixed by registerBlockColors above.
 }

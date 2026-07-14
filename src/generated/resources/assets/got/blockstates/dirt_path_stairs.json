@@ -9,7 +9,7 @@
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right": {
-      "model": "got:block/dirt_path_stairs_inner",
+      "model": "got:block/dirt_path_stairs_inner"
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left": {
