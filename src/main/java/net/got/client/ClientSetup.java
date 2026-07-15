@@ -114,6 +114,15 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            // ── Grass path blocks ────────────────────────────────────────
+            // These models carry a second "overlay" element (grass_block_side_overlay)
+            // copied from vanilla's grass_block model. That texture has transparent
+            // pixels and needs a cutout render layer, same as vanilla grass_block;
+            // without it, the transparent areas render as solid black.
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.GRASS_BLOCK_SLAB.get(),   RenderType.cutoutMipped());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.GRASS_BLOCK_STAIRS.get(), RenderType.cutoutMipped());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.DIRT_PATH_SLAB.get(),     RenderType.cutout());
+
             // ── Doors ────────────────────────────────────────────────────
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.WEIRWOOD_DOOR.get(),           RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.ASPEN_DOOR.get(),              RenderType.cutout());
@@ -490,7 +499,7 @@ public final class ClientSetup {
      * (flat pale/olive) instead of being colored by the surrounding biome.
      */
     @SubscribeEvent
-    public static void registerBlockColors(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register(
                 (state, level, pos, tintIndex) -> level != null && pos != null
                         ? net.minecraft.client.renderer.BiomeColors.getAverageGrassColor(level, pos)

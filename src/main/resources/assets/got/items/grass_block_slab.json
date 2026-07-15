@@ -1,6 +1,9 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/grass_block_slab"
+    "model": "got:item/grass_block_slab",
+    "tints": [
+      { "type": "minecraft:grass" }
+    ]
   }
 }

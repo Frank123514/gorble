@@ -1874,16 +1874,16 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> DIRT_STAIRS        = registerDirt("dirt_stairs", p -> new StairBlock(Blocks.DIRT.defaultBlockState(), p));
     public static final DeferredBlock<Block> MUD_SLAB           = registerMud("mud_slab", SlabBlock::new);
     public static final DeferredBlock<Block> MUD_STAIRS         = registerMud("mud_stairs", p -> new StairBlock(Blocks.MUD.defaultBlockState(), p));
-    public static final DeferredBlock<Block> DIRT_PATH_SLAB     = registerDirtPath("dirt_path_slab", SlabBlock::new);
-    public static final DeferredBlock<Block> DIRT_PATH_STAIRS   = registerDirtPath("dirt_path_stairs", p -> new StairBlock(Blocks.DIRT_PATH.defaultBlockState(), p));
+    public static final DeferredBlock<Block> DIRT_PATH_SLAB     = registerDirtPath("dirt_path_slab", DirtPathSlabBlock::new);
+    public static final DeferredBlock<Block> DIRT_PATH_STAIRS   = registerDirtPath("dirt_path_stairs", p -> new DirtPathStairsBlock(Blocks.DIRT_PATH.defaultBlockState(), p));
     public static final DeferredBlock<Block> COARSE_DIRT_SLAB   = registerCoarseDirt("coarse_dirt_slab", SlabBlock::new);
     public static final DeferredBlock<Block> COARSE_DIRT_STAIRS = registerCoarseDirt("coarse_dirt_stairs", p -> new StairBlock(Blocks.COARSE_DIRT.defaultBlockState(), p));
     public static final DeferredBlock<Block> ROOTED_DIRT_SLAB   = registerRootedDirt("rooted_dirt_slab", SlabBlock::new);
     public static final DeferredBlock<Block> ROOTED_DIRT_STAIRS = registerRootedDirt("rooted_dirt_stairs", p -> new StairBlock(Blocks.ROOTED_DIRT.defaultBlockState(), p));
     public static final DeferredBlock<Block> PODZOL_SLAB        = registerPodzol("podzol_slab", SlabBlock::new);
     public static final DeferredBlock<Block> PODZOL_STAIRS      = registerPodzol("podzol_stairs", p -> new StairBlock(Blocks.PODZOL.defaultBlockState(), p));
-    public static final DeferredBlock<Block> GRASS_BLOCK_SLAB   = registerGrassBlock("grass_block_slab", SlabBlock::new);
-    public static final DeferredBlock<Block> GRASS_BLOCK_STAIRS = registerGrassBlock("grass_block_stairs", p -> new StairBlock(Blocks.GRASS_BLOCK.defaultBlockState(), p));
+    public static final DeferredBlock<Block> GRASS_BLOCK_SLAB   = registerGrassBlock("grass_block_slab", p -> new GrassBlockSlabBlock(p, GotModBlocks.DIRT_PATH_SLAB));
+    public static final DeferredBlock<Block> GRASS_BLOCK_STAIRS = registerGrassBlock("grass_block_stairs", p -> new GrassBlockStairsBlock(p, GotModBlocks.DIRT_PATH_STAIRS));
 
     /** Iron-tier deepslate ore. */
     private static DeferredBlock<Block> oreIronDeep(String name) {
