@@ -1,0 +1,9 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/willow_planks",
+    "bottom": "got:block/willow_planks",
+    "top": "got:block/willow_planks",
+    "side": "got:block/willow_planks"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/beech_roofing",
+    "top": "got:block/beech_roofing",
+    "bottom": "got:block/beech_roofing",
+    "side": "got:block/beech_roofing"
+  }
+}

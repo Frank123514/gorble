@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:fused_black_rock",
+  "result": {
+    "count": 1,
+    "id": "got:fused_black_rock_wall"
+  }
+}

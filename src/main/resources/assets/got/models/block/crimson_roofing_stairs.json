@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/crimson_roofing",
+    "top": "got:block/crimson_roofing",
+    "side": "got:block/crimson_roofing",
+    "wall": "got:block/crimson_roofing",
+    "particle": "got:block/crimson_roofing"
+  }
+}

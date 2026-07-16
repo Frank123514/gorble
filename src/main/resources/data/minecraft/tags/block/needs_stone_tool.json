@@ -1,0 +1,16 @@
+{
+  "values": [
+    "got:copper_ore",
+    "got:tin_ore",
+    "got:amber_ore",
+    "got:topaz_ore",
+    "got:deepslate_lead_ore",
+    "got:deepslate_tin_ore",
+    "got:deepslate_zinc_ore",
+    "got:lead_ore",
+    "got:raw_lead_block",
+    "got:raw_tin_block",
+    "got:raw_zinc_block",
+    "got:zinc_ore"
+  ]
+}

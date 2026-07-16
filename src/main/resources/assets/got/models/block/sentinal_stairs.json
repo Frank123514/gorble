@@ -1,0 +1,10 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "particle": "got:block/sentinal_planks",
+    "bottom": "got:block/sentinal_planks",
+    "top": "got:block/sentinal_planks",
+    "side": "got:block/sentinal_planks"
+  },
+  "render_type": "solid"
+}

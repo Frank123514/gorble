@@ -1,0 +1,8 @@
+{
+  "parent": "block/button_inventory",
+  "textures": {
+    "particle": "got:block/pomegranate_planks",
+    "texture": "got:block/pomegranate_planks"
+  },
+  "render_type": "solid"
+}

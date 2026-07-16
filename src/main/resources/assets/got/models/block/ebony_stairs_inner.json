@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/ebony_planks",
+    "bottom": "got:block/ebony_planks",
+    "top": "got:block/ebony_planks",
+    "side": "got:block/ebony_planks"
+  },
+  "render_type": "solid"
+}

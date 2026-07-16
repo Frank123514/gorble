@@ -1,0 +1,9 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/pink_ivory_roofing",
+    "bottom": "got:block/pink_ivory_roofing",
+    "top": "got:block/pink_ivory_roofing",
+    "side": "got:block/pink_ivory_roofing"
+  }
+}

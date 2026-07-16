@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/apple_log_top",
+    "up": "got:block/apple_log_top",
+    "north": "got:block/apple_log_side",
+    "east": "got:block/apple_log_side",
+    "south": "got:block/apple_log_side",
+    "west": "got:block/apple_log_side",
+    "particle": "got:block/apple_log_top"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "got:smithy",
+  "ingredient": "got:steel_ingot",
+  "result": {
+    "id": "got:steel_bastard_sword_blade",
+    "count": 1
+  },
+  "cookingtime": 300
+}

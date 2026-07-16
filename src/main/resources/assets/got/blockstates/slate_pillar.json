@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "got:block/slate_pillar",
+      "x": 90,
+      "z": 90
+    },
+    "axis=y": {
+      "model": "got:block/slate_pillar"
+    },
+    "axis=z": {
+      "model": "got:block/slate_pillar",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "particle": "got:block/red_sandstone_rock",
+    "bottom": "got:block/red_sandstone_rock",
+    "top": "got:block/red_sandstone_rock_top",
+    "side": "got:block/red_sandstone_rock"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/crabapple_log_side",
+    "bottom": "got:block/crabapple_log_side",
+    "top": "got:block/crabapple_log_side",
+    "side": "got:block/crabapple_log_side"
+  },
+  "render_type": "solid"
+}

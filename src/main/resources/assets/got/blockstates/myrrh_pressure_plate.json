@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "got:block/myrrh_pressure_plate"
+    },
+    "powered=true": {
+      "model": "got:block/myrrh_pressure_plate_down"
+    }
+  }
+}

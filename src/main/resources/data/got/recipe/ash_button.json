@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    "got:ash_planks"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:ash_button"
+  }
+}

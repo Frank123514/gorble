@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/olive_roofing",
+    "top": "got:block/olive_roofing",
+    "side": "got:block/olive_roofing",
+    "wall": "got:block/olive_roofing",
+    "particle": "got:block/olive_roofing"
+  }
+}

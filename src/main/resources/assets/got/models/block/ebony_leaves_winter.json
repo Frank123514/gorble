@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "got:block/ebony_leaves_winter"
+  }
+}

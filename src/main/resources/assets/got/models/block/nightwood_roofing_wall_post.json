@@ -1,0 +1,7 @@
+{
+  "parent": "block/wall_post",
+  "textures": {
+    "wall": "got:block/nightwood_roofing",
+    "particle": "got:block/nightwood_roofing"
+  }
+}

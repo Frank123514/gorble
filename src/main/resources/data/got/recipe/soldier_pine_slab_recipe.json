@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_slab",
+  "category": "building",
+  "pattern": [
+    "aaa"
+  ],
+  "key": {
+    "a": "got:soldier_pine_planks"
+  },
+  "result": {
+    "id": "got:soldier_pine_slab",
+    "count": 6
+  }
+}

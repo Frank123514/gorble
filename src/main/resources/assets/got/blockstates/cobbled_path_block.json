@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "got:block/cobbled_path_block"
+    }
+  }
+}

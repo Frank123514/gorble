@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/almond_roofing",
+    "top": "got:block/almond_roofing",
+    "side": "got:block/almond_roofing",
+    "wall": "got:block/almond_roofing",
+    "particle": "got:block/almond_roofing"
+  }
+}

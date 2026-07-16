@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/basalt_side",
+    "top": "minecraft:block/basalt_side",
+    "bottom": "minecraft:block/basalt_side",
+    "side": "minecraft:block/basalt_side"
+  }
+}

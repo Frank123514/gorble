@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "got:block/lemon_door_bottom",
+    "top": "got:block/lemon_door_top"
+  }
+}

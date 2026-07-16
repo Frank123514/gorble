@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=east,lit=false":  { "model": "got:block/smithy",    "y": 90 },
+    "facing=east,lit=true":   { "model": "got:block/smithy_on", "y": 90 },
+    "facing=north,lit=false": { "model": "got:block/smithy" },
+    "facing=north,lit=true":  { "model": "got:block/smithy_on" },
+    "facing=south,lit=false": { "model": "got:block/smithy",    "y": 180 },
+    "facing=south,lit=true":  { "model": "got:block/smithy_on", "y": 180 },
+    "facing=west,lit=false":  { "model": "got:block/smithy",    "y": 270 },
+    "facing=west,lit=true":   { "model": "got:block/smithy_on", "y": 270 }
+  }
+}

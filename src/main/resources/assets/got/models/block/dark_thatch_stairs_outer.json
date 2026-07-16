@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "got:block/dark_thatch",
+    "top": "got:block/dark_thatch",
+    "side": "got:block/dark_thatch",
+    "wall": "got:block/dark_thatch",
+    "particle": "got:block/dark_thatch"
+  }
+}

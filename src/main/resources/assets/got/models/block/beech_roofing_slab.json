@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/beech_roofing",
+    "top": "got:block/beech_roofing",
+    "side": "got:block/beech_roofing",
+    "wall": "got:block/beech_roofing",
+    "particle": "got:block/beech_roofing"
+  }
+}

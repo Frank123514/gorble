@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "building",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": "got:slate_rock",
+  "result": {
+    "id": "got:smooth_slate_rock"
+  }
+}

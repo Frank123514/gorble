@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_slab",
+  "category": "building",
+  "pattern": [
+    "aaa"
+  ],
+  "key": {
+    "a": "got:blackbark_planks"
+  },
+  "result": {
+    "id": "got:blackbark_slab",
+    "count": 6
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/fence_side",
+  "textures": {
+    "texture": "got:block/clove_planks",
+    "particle": "got:block/clove_planks"
+  }
+}

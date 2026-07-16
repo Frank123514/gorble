@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "got:block/flint_rock",
+    "top": "got:block/flint_rock",
+    "side": "got:block/flint_rock"
+  }
+}

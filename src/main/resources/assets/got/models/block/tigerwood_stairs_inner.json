@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/tigerwood_planks",
+    "bottom": "got:block/tigerwood_planks",
+    "top": "got:block/tigerwood_planks",
+    "side": "got:block/tigerwood_planks"
+  },
+  "render_type": "solid"
+}

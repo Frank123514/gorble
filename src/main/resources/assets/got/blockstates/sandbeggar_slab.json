@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/sandbeggar_slab"
+    },
+    "type=top": {
+      "model": "got:block/sandbeggar_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/sandbeggar_slab_full"
+    }
+  }
+}

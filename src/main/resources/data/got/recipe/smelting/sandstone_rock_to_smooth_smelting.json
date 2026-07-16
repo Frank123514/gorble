@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "building",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "got:sandstone_rock",
+  "result": {
+    "id": "got:smooth_sandstone_rock"
+  }
+}

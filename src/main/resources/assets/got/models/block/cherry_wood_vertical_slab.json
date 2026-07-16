@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/cherry_log",
+    "top": "minecraft:block/cherry_log",
+    "bottom": "minecraft:block/cherry_log",
+    "side": "minecraft:block/cherry_log"
+  }
+}

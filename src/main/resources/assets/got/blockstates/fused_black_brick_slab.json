@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/fused_black_brick_slab"
+    },
+    "type=double": {
+      "model": "got:block/fused_black_brick"
+    },
+    "type=top": {
+      "model": "got:block/fused_black_brick_slab_top"
+    }
+  }
+}

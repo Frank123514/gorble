@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/wormtree_log_top",
+    "up": "got:block/wormtree_log_top",
+    "north": "got:block/wormtree_log_side",
+    "east": "got:block/wormtree_log_side",
+    "south": "got:block/wormtree_log_side",
+    "west": "got:block/wormtree_log_side",
+    "particle": "got:block/wormtree_log_top"
+  },
+  "render_type": "solid"
+}

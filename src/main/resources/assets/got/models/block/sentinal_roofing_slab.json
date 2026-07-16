@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/sentinal_roofing",
+    "top": "got:block/sentinal_roofing",
+    "side": "got:block/sentinal_roofing",
+    "wall": "got:block/sentinal_roofing",
+    "particle": "got:block/sentinal_roofing"
+  }
+}

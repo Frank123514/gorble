@@ -1,0 +1,10 @@
+{
+  "type": "got:alloy",
+  "ingredient_a": "minecraft:iron_ingot",
+  "ingredient_b": "minecraft:coal",
+  "result": {
+    "id": "got:steel_ingot",
+    "count": 4
+  },
+  "cookingtime": 300
+}

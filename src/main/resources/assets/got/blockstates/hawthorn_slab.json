@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/hawthorn_slab"
+    },
+    "type=top": {
+      "model": "got:block/hawthorn_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/hawthorn_slab_full"
+    }
+  }
+}

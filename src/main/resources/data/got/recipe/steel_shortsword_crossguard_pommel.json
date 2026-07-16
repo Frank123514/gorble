@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  B",
+    "CH ",
+    "P  "
+  ],
+  "key": {
+    "B": "got:steel_shortsword_blade",
+    "C": "got:crossguard",
+    "H": "got:hilt",
+    "P": "got:pommel"
+  },
+  "result": {
+    "count": 1,
+    "id": "got:steel_shortsword_crossguard_pommel"
+  }
+}

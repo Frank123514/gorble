@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/warped_planks",
+    "top": "minecraft:block/warped_planks",
+    "bottom": "minecraft:block/warped_planks",
+    "side": "minecraft:block/warped_planks"
+  }
+}
