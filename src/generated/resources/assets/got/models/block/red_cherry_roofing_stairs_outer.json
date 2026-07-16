@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "particle": "got:block/red_cherry_roofing",
-    "bottom": "got:block/red_cherry_roofing",
-    "top": "got:block/red_cherry_roofing",
-    "side": "got:block/red_cherry_roofing"
-  }
-}

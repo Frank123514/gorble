@@ -1,9 +1,0 @@
-{
-  "type": "got:smithy",
-  "ingredient": "got:steel_ingot",
-  "result": {
-    "id": "got:steel_spear_head",
-    "count": 1
-  },
-  "cookingtime": 300
-}

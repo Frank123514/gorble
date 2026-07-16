@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "minecraft:block/polished_tuff",
-    "top": "minecraft:block/polished_tuff",
-    "bottom": "minecraft:block/polished_tuff",
-    "side": "minecraft:block/polished_tuff"
-  }
-}

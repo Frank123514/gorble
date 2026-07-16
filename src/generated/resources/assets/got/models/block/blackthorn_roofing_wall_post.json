@@ -1,7 +1,0 @@
-{
-  "parent": "block/wall_post",
-  "textures": {
-    "wall": "got:block/blackthorn_roofing",
-    "particle": "got:block/blackthorn_roofing"
-  }
-}

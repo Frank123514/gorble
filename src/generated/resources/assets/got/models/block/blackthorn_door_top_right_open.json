@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_right_open",
-  "textures": {
-    "bottom": "got:block/blackthorn_door_bottom",
-    "top": "got:block/blackthorn_door_top"
-  }
-}

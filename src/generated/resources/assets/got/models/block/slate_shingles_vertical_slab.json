@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/slate_shingles",
-    "top": "got:block/slate_shingles",
-    "bottom": "got:block/slate_shingles",
-    "side": "got:block/slate_shingles"
-  }
-}

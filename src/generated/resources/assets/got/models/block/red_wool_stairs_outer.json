@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "particle": "minecraft:block/red_wool",
-    "bottom": "minecraft:block/red_wool",
-    "top": "minecraft:block/red_wool",
-    "side": "minecraft:block/red_wool"
-  }
-}

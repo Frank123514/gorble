@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/elm_planks",
-    "particle": "got:block/elm_planks"
-  },
-  "render_type": "solid"
-}

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    "minecraft:iron_ingot",
-    "minecraft:coal"
-  ],
-  "result": { "count": 1, "id": "got:steel_ingot" }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "block/wall_post",
-  "textures": {
-    "wall": "got:block/pear_roofing",
-    "particle": "got:block/pear_roofing"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/date_palm_roofing",
-    "top": "got:block/date_palm_roofing",
-    "bottom": "got:block/date_palm_roofing",
-    "side": "got:block/date_palm_roofing"
-  }
-}

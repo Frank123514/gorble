@@ -1,9 +1,0 @@
-{
-  "parent": "block/stairs",
-  "textures": {
-    "particle": "got:block/tigerwood_roofing",
-    "bottom": "got:block/tigerwood_roofing",
-    "top": "got:block/tigerwood_roofing",
-    "side": "got:block/tigerwood_roofing"
-  }
-}

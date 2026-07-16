@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/linden_roofing",
-    "top": "got:block/linden_roofing",
-    "bottom": "got:block/linden_roofing",
-    "side": "got:block/linden_roofing"
-  }
-}

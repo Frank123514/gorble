@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "minecraft:block/acacia_log",
-    "top": "minecraft:block/acacia_log",
-    "bottom": "minecraft:block/acacia_log",
-    "side": "minecraft:block/acacia_log"
-  }
-}

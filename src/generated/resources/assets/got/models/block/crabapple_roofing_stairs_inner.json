@@ -1,9 +1,0 @@
-{
-  "parent": "block/inner_stairs",
-  "textures": {
-    "particle": "got:block/crabapple_roofing",
-    "bottom": "got:block/crabapple_roofing",
-    "top": "got:block/crabapple_roofing",
-    "side": "got:block/crabapple_roofing"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/black_cottonwood_planks",
-    "top": "got:block/black_cottonwood_planks",
-    "bottom": "got:block/black_cottonwood_planks",
-    "side": "got:block/black_cottonwood_planks"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/apricot_roofing",
-    "top": "got:block/apricot_roofing",
-    "bottom": "got:block/apricot_roofing",
-    "side": "got:block/apricot_roofing"
-  }
-}

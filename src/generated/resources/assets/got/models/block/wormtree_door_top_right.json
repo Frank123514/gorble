@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_right",
-  "textures": {
-    "bottom": "got:block/wormtree_door_bottom",
-    "top": "got:block/wormtree_door_top"
-  }
-}

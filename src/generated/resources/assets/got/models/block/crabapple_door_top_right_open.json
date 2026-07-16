@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_right_open",
-  "textures": {
-    "bottom": "got:block/crabapple_door_bottom",
-    "top": "got:block/crabapple_door_top"
-  }
-}

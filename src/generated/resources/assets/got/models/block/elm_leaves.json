@@ -1,8 +1,0 @@
-{
-  "parent": "block/leaves",
-  "textures": {
-    "all": "got:block/elm_leaves",
-    "particle": "got:block/elm_leaves"
-  },
-  "render_type": "cutout_mipped"
-}

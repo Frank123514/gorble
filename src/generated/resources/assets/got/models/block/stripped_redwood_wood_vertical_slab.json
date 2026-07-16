@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/stripped_redwood_log_side",
-    "top": "got:block/stripped_redwood_log_side",
-    "bottom": "got:block/stripped_redwood_log_side",
-    "side": "got:block/stripped_redwood_log_side"
-  }
-}

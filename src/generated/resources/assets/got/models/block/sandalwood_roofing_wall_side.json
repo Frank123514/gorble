@@ -1,7 +1,0 @@
-{
-  "parent": "block/wall_side",
-  "textures": {
-    "wall": "got:block/sandalwood_roofing",
-    "particle": "got:block/sandalwood_roofing"
-  }
-}

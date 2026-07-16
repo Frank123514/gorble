@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/pomegranate_planks",
-    "top": "got:block/pomegranate_planks",
-    "bottom": "got:block/pomegranate_planks",
-    "side": "got:block/pomegranate_planks"
-  }
-}

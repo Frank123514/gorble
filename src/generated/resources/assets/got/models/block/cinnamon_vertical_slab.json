@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/cinnamon_planks",
-    "top": "got:block/cinnamon_planks",
-    "bottom": "got:block/cinnamon_planks",
-    "side": "got:block/cinnamon_planks"
-  }
-}

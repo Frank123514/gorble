@@ -1,9 +1,0 @@
-{
-  "type": "got:smithy",
-  "ingredient": "got:steel_ingot",
-  "result": {
-    "id": "got:steel_armor_plate",
-    "count": 1
-  },
-  "cookingtime": 300
-}

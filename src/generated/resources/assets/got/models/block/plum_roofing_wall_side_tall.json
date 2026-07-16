@@ -1,7 +1,0 @@
-{
-  "parent": "block/wall_side_tall",
-  "textures": {
-    "wall": "got:block/plum_roofing",
-    "particle": "got:block/plum_roofing"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "block/leaves",
-  "textures": {
-    "all": "got:block/burl_leaves_spring",
-    "particle": "got:block/burl_leaves_spring"
-  }
-}

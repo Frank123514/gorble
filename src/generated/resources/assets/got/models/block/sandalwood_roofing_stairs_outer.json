@@ -1,9 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "particle": "got:block/sandalwood_roofing",
-    "bottom": "got:block/sandalwood_roofing",
-    "top": "got:block/sandalwood_roofing",
-    "side": "got:block/sandalwood_roofing"
-  }
-}

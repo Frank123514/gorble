@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/ebony_planks",
-    "top": "got:block/ebony_planks",
-    "bottom": "got:block/ebony_planks",
-    "side": "got:block/ebony_planks"
-  }
-}

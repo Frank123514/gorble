@@ -1,7 +1,0 @@
-{
-  "parent": "block/leaves",
-  "textures": {
-    "all": "got:block/purpleheart_leaves_autumn",
-    "particle": "got:block/purpleheart_leaves_autumn"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/weirwood_roofing",
-    "top": "got:block/weirwood_roofing",
-    "bottom": "got:block/weirwood_roofing",
-    "side": "got:block/weirwood_roofing"
-  }
-}

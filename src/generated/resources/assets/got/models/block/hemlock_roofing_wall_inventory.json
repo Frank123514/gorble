@@ -1,7 +1,0 @@
-{
-  "parent": "block/wall_inventory",
-  "textures": {
-    "wall": "got:block/hemlock_roofing",
-    "particle": "got:block/hemlock_roofing"
-  }
-}

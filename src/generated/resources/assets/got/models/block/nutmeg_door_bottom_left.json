@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom_left",
-  "textures": {
-    "bottom": "got:block/nutmeg_door_bottom",
-    "top": "got:block/nutmeg_door_top"
-  }
-}

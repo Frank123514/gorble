@@ -1,8 +1,0 @@
-{
-  "parent": "block/fence_post",
-  "textures": {
-    "texture": "got:block/nutmeg_planks",
-    "particle": "got:block/nutmeg_planks"
-  },
-  "render_type": "solid"
-}

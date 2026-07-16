@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "minecraft:block/blue_wool",
-    "top": "minecraft:block/blue_wool",
-    "bottom": "minecraft:block/blue_wool",
-    "side": "minecraft:block/blue_wool"
-  }
-}

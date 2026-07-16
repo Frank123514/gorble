@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/blackthorn_roofing",
-    "top": "got:block/blackthorn_roofing",
-    "bottom": "got:block/blackthorn_roofing",
-    "side": "got:block/blackthorn_roofing"
-  }
-}

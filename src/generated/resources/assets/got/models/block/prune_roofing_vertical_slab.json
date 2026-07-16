@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "got:block/prune_roofing",
-    "top": "got:block/prune_roofing",
-    "bottom": "got:block/prune_roofing",
-    "side": "got:block/prune_roofing"
-  }
-}

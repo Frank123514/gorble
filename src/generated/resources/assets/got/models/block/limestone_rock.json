@@ -1,9 +1,0 @@
-{
-  "parent": "block/cube_bottom_top",
-  "textures": {
-    "particle": "got:block/limestone_rock",
-    "bottom": "got:block/limestone_rock",
-    "top": "got:block/limestone_rock_top",
-    "side": "got:block/limestone_rock"
-  }
-}

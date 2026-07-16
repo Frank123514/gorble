@@ -1,8 +1,0 @@
-{
-  "parent": "block/pressure_plate_down",
-  "textures": {
-    "particle": "got:block/sandbeggar_planks",
-    "texture": "got:block/sandbeggar_planks"
-  },
-  "render_type": "solid"
-}

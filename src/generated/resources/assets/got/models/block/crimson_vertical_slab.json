@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "minecraft:block/crimson_planks",
-    "top": "minecraft:block/crimson_planks",
-    "bottom": "minecraft:block/crimson_planks",
-    "side": "minecraft:block/crimson_planks"
-  }
-}

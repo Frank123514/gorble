@@ -1,7 +1,0 @@
-{
-  "parent": "block/wall_side_tall",
-  "textures": {
-    "wall": "got:block/white_cherry_roofing",
-    "particle": "got:block/white_cherry_roofing"
-  }
-}

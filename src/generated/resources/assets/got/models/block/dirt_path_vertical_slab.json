@@ -1,9 +1,0 @@
-{
-  "parent": "got:block/template_vertical_slab",
-  "textures": {
-    "particle": "minecraft:block/dirt_path_top",
-    "top": "minecraft:block/dirt_path_top",
-    "bottom": "minecraft:block/dirt",
-    "side": "minecraft:block/dirt_path_side"
-  }
-}

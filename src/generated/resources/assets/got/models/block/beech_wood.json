@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "got:block/beech_log_side",
-    "particle": "got:block/beech_log_side"
-  },
-  "render_type": "solid"
-}
