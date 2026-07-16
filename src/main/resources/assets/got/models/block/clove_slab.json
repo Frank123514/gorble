@@ -1,0 +1,10 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "particle": "got:block/clove_planks",
+    "bottom": "got:block/clove_planks",
+    "top": "got:block/clove_planks",
+    "side": "got:block/clove_planks"
+  },
+  "render_type": "solid"
+}

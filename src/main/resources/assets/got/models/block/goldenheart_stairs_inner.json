@@ -1,0 +1,10 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/goldenheart_planks",
+    "bottom": "got:block/goldenheart_planks",
+    "top": "got:block/goldenheart_planks",
+    "side": "got:block/goldenheart_planks"
+  },
+  "render_type": "solid"
+}

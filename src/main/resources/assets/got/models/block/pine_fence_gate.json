@@ -1,0 +1,8 @@
+{
+  "parent": "block/template_fence_gate",
+  "textures": {
+    "particle": "got:block/pine_planks",
+    "texture": "got:block/pine_planks"
+  },
+  "render_type": "solid"
+}

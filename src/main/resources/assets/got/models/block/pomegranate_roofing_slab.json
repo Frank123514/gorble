@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/pomegranate_roofing",
+    "top": "got:block/pomegranate_roofing",
+    "side": "got:block/pomegranate_roofing",
+    "wall": "got:block/pomegranate_roofing",
+    "particle": "got:block/pomegranate_roofing"
+  }
+}

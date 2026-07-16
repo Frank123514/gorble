@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/cinnamon_log_top",
+    "up": "got:block/cinnamon_log_top",
+    "north": "got:block/cinnamon_log_side",
+    "east": "got:block/cinnamon_log_side",
+    "south": "got:block/cinnamon_log_side",
+    "west": "got:block/cinnamon_log_side",
+    "particle": "got:block/cinnamon_log_top"
+  },
+  "render_type": "solid"
+}

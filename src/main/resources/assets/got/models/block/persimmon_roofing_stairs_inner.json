@@ -1,0 +1,9 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/persimmon_roofing",
+    "bottom": "got:block/persimmon_roofing",
+    "top": "got:block/persimmon_roofing",
+    "side": "got:block/persimmon_roofing"
+  }
+}

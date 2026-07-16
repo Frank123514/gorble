@@ -1,0 +1,8 @@
+{
+  "parent": "block/template_fence_gate_wall_open",
+  "textures": {
+    "particle": "got:block/ash_planks",
+    "texture": "got:block/ash_planks"
+  },
+  "render_type": "solid"
+}

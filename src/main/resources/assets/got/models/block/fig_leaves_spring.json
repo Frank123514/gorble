@@ -1,0 +1,7 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "got:block/fig_leaves_spring",
+    "particle": "got:block/fig_leaves_spring"
+  }
+}

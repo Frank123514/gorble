@@ -1,0 +1,8 @@
+{
+  "parent": "block/template_fence_gate_open",
+  "textures": {
+    "particle": "got:block/nightwood_planks",
+    "texture": "got:block/nightwood_planks"
+  },
+  "render_type": "solid"
+}

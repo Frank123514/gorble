@@ -1,0 +1,10 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "particle": "minecraft:block/pale_oak_log",
+    "bottom": "minecraft:block/pale_oak_log",
+    "top": "minecraft:block/pale_oak_log",
+    "side": "minecraft:block/pale_oak_log"
+  },
+  "render_type": "solid"
+}

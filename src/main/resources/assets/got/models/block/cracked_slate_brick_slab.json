@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/cracked_slate_brick",
+    "top": "got:block/cracked_slate_brick",
+    "side": "got:block/cracked_slate_brick"
+  }
+}

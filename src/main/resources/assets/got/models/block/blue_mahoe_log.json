@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/blue_mahoe_log_top",
+    "up": "got:block/blue_mahoe_log_top",
+    "north": "got:block/blue_mahoe_log_side",
+    "east": "got:block/blue_mahoe_log_side",
+    "south": "got:block/blue_mahoe_log_side",
+    "west": "got:block/blue_mahoe_log_side",
+    "particle": "got:block/blue_mahoe_log_top"
+  },
+  "render_type": "solid"
+}

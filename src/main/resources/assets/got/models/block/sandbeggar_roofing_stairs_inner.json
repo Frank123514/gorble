@@ -1,0 +1,9 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "particle": "got:block/sandbeggar_roofing",
+    "bottom": "got:block/sandbeggar_roofing",
+    "top": "got:block/sandbeggar_roofing",
+    "side": "got:block/sandbeggar_roofing"
+  }
+}

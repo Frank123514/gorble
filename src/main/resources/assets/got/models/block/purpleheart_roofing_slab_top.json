@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "got:block/purpleheart_roofing",
+    "top": "got:block/purpleheart_roofing",
+    "side": "got:block/purpleheart_roofing",
+    "wall": "got:block/purpleheart_roofing",
+    "particle": "got:block/purpleheart_roofing"
+  }
+}

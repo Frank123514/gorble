@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/polished_diorite",
+    "top": "minecraft:block/polished_diorite",
+    "bottom": "minecraft:block/polished_diorite",
+    "side": "minecraft:block/polished_diorite"
+  }
+}

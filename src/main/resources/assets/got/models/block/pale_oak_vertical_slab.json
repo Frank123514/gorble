@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/pale_oak_planks",
+    "top": "minecraft:block/pale_oak_planks",
+    "bottom": "minecraft:block/pale_oak_planks",
+    "side": "minecraft:block/pale_oak_planks"
+  }
+}

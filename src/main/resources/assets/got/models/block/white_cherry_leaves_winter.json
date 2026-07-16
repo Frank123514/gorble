@@ -1,0 +1,7 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "got:block/white_cherry_leaves_winter",
+    "particle": "got:block/white_cherry_leaves_winter"
+  }
+}

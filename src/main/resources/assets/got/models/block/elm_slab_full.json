@@ -1,0 +1,10 @@
+{
+  "parent": "got:block/elm_planks",
+  "textures": {
+    "particle": "got:block/elm_planks",
+    "bottom": "got:block/elm_planks",
+    "top": "got:block/elm_planks",
+    "side": "got:block/elm_planks"
+  },
+  "render_type": "solid"
+}

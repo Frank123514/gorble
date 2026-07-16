@@ -1,0 +1,10 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "particle": "got:block/redwood_log_side",
+    "bottom": "got:block/redwood_log_side",
+    "top": "got:block/redwood_log_side",
+    "side": "got:block/redwood_log_side"
+  },
+  "render_type": "solid"
+}

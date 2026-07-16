@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "particle": "minecraft:block/light_blue_wool",
+    "bottom": "minecraft:block/light_blue_wool",
+    "top": "minecraft:block/light_blue_wool",
+    "side": "minecraft:block/light_blue_wool"
+  }
+}

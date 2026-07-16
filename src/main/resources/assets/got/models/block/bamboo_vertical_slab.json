@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/bamboo_planks",
+    "top": "minecraft:block/bamboo_planks",
+    "bottom": "minecraft:block/bamboo_planks",
+    "side": "minecraft:block/bamboo_planks"
+  }
+}

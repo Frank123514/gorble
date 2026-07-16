@@ -1,0 +1,9 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "particle": "got:block/chestnut_planks",
+    "bottom": "got:block/chestnut_planks",
+    "top": "got:block/chestnut_planks",
+    "side": "got:block/chestnut_planks"
+  }
+}

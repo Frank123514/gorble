@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/slate_shingles",
+    "top": "got:block/slate_shingles",
+    "side": "got:block/slate_shingles",
+    "wall": "got:block/slate_shingles",
+    "particle": "got:block/slate_shingles"
+  }
+}

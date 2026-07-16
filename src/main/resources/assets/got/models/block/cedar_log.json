@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "got:block/cedar_log_top",
+    "up": "got:block/cedar_log_top",
+    "north": "got:block/cedar_log_side",
+    "east": "got:block/cedar_log_side",
+    "south": "got:block/cedar_log_side",
+    "west": "got:block/cedar_log_side",
+    "particle": "got:block/cedar_log_top"
+  },
+  "render_type": "solid"
+}

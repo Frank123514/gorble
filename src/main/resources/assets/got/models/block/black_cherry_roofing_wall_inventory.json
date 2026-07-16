@@ -1,0 +1,7 @@
+{
+  "parent": "block/wall_inventory",
+  "textures": {
+    "wall": "got:block/black_cherry_roofing",
+    "particle": "got:block/black_cherry_roofing"
+  }
+}

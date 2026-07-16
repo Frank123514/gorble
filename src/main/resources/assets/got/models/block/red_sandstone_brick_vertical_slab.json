@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/red_sandstone_brick",
+    "top": "got:block/red_sandstone_brick",
+    "bottom": "got:block/red_sandstone_brick",
+    "side": "got:block/red_sandstone_brick"
+  }
+}

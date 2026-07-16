@@ -1,0 +1,9 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "particle": "got:block/hemlock_roofing",
+    "bottom": "got:block/hemlock_roofing",
+    "top": "got:block/hemlock_roofing",
+    "side": "got:block/hemlock_roofing"
+  }
+}

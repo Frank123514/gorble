@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/andesite",
+    "top": "minecraft:block/andesite",
+    "bottom": "minecraft:block/andesite",
+    "side": "minecraft:block/andesite"
+  }
+}

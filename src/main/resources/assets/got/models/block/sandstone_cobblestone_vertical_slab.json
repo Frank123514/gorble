@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/sandstone_cobblestone",
+    "top": "got:block/sandstone_cobblestone",
+    "bottom": "got:block/sandstone_cobblestone",
+    "side": "got:block/sandstone_cobblestone"
+  }
+}

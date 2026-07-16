@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/flint_brick",
+    "top": "got:block/flint_brick",
+    "bottom": "got:block/flint_brick",
+    "side": "got:block/flint_brick"
+  }
+}

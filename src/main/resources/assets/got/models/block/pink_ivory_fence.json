@@ -1,0 +1,8 @@
+{
+  "parent": "block/fence_side",
+  "textures": {
+    "texture": "got:block/pink_ivory_planks",
+    "particle": "got:block/pink_ivory_planks"
+  },
+  "render_type": "solid"
+}

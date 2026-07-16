@@ -1,0 +1,10 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "particle": "got:block/mahogany_planks",
+    "bottom": "got:block/mahogany_planks",
+    "top": "got:block/mahogany_planks",
+    "side": "got:block/mahogany_planks"
+  },
+  "render_type": "solid"
+}

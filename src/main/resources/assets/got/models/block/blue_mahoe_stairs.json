@@ -1,0 +1,10 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "particle": "got:block/blue_mahoe_planks",
+    "bottom": "got:block/blue_mahoe_planks",
+    "top": "got:block/blue_mahoe_planks",
+    "side": "got:block/blue_mahoe_planks"
+  },
+  "render_type": "solid"
+}

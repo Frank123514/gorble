@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "got:block/hawthorn_roofing",
+    "top": "got:block/hawthorn_roofing",
+    "side": "got:block/hawthorn_roofing",
+    "wall": "got:block/hawthorn_roofing",
+    "particle": "got:block/hawthorn_roofing"
+  }
+}

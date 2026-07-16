@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/fieldstone",
+    "top": "got:block/fieldstone",
+    "bottom": "got:block/fieldstone",
+    "side": "got:block/fieldstone"
+  }
+}

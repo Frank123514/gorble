@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "got:block/stripped_pomegranate_log_side"
+  }
+}

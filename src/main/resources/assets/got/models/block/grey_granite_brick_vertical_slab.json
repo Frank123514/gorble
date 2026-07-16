@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/grey_granite_brick",
+    "top": "got:block/grey_granite_brick",
+    "bottom": "got:block/grey_granite_brick",
+    "side": "got:block/grey_granite_brick"
+  }
+}

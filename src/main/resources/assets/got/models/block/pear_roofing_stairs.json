@@ -1,0 +1,9 @@
+{
+  "parent": "block/stairs",
+  "textures": {
+    "particle": "got:block/pear_roofing",
+    "bottom": "got:block/pear_roofing",
+    "top": "got:block/pear_roofing",
+    "side": "got:block/pear_roofing"
+  }
+}

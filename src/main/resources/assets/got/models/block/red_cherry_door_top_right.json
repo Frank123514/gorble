@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_right",
+  "textures": {
+    "bottom": "got:block/red_cherry_door_bottom",
+    "top": "got:block/red_cherry_door_top"
+  }
+}
