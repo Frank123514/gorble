@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "got:item/blackthorn_chest_boat"
+  }
+}

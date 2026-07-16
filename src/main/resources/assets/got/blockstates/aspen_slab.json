@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/aspen_slab"
+    },
+    "type=top": {
+      "model": "got:block/aspen_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/aspen_slab_full"
+    }
+  }
+}

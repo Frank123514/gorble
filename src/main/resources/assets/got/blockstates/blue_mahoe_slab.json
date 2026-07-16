@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/blue_mahoe_slab"
+    },
+    "type=top": {
+      "model": "got:block/blue_mahoe_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/blue_mahoe_slab_full"
+    }
+  }
+}

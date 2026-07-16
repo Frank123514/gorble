@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "got:block/oily_black_pillar",
+      "x": 90,
+      "z": 90
+    },
+    "axis=y": {
+      "model": "got:block/oily_black_pillar"
+    },
+    "axis=z": {
+      "model": "got:block/oily_black_pillar",
+      "x": 90
+    }
+  }
+}

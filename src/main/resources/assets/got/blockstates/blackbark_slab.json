@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/blackbark_slab"
+    },
+    "type=top": {
+      "model": "got:block/blackbark_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/blackbark_slab_full"
+    }
+  }
+}

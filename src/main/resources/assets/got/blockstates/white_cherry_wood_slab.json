@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/white_cherry_wood_slab"
+    },
+    "type=top": {
+      "model": "got:block/white_cherry_wood_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/white_cherry_wood_slab_full"
+    }
+  }
+}

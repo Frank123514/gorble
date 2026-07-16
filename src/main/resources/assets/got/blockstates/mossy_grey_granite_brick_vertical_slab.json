@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=north,type=single": {
+      "model": "got:block/mossy_grey_granite_brick_vertical_slab"
+    },
+    "facing=east,type=single": {
+      "model": "got:block/mossy_grey_granite_brick_vertical_slab",
+      "y": 90
+    },
+    "facing=south,type=single": {
+      "model": "got:block/mossy_grey_granite_brick_vertical_slab",
+      "y": 180
+    },
+    "facing=west,type=single": {
+      "model": "got:block/mossy_grey_granite_brick_vertical_slab",
+      "y": 270
+    },
+    "facing=north,type=double": {
+      "model": "got:block/mossy_grey_granite_brick"
+    },
+    "facing=east,type=double": {
+      "model": "got:block/mossy_grey_granite_brick"
+    },
+    "facing=south,type=double": {
+      "model": "got:block/mossy_grey_granite_brick"
+    },
+    "facing=west,type=double": {
+      "model": "got:block/mossy_grey_granite_brick"
+    }
+  }
+}

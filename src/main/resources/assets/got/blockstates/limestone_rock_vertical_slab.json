@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=north,type=single": {
+      "model": "got:block/limestone_rock_vertical_slab"
+    },
+    "facing=east,type=single": {
+      "model": "got:block/limestone_rock_vertical_slab",
+      "y": 90
+    },
+    "facing=south,type=single": {
+      "model": "got:block/limestone_rock_vertical_slab",
+      "y": 180
+    },
+    "facing=west,type=single": {
+      "model": "got:block/limestone_rock_vertical_slab",
+      "y": 270
+    },
+    "facing=north,type=double": {
+      "model": "got:block/limestone_rock"
+    },
+    "facing=east,type=double": {
+      "model": "got:block/limestone_rock"
+    },
+    "facing=south,type=double": {
+      "model": "got:block/limestone_rock"
+    },
+    "facing=west,type=double": {
+      "model": "got:block/limestone_rock"
+    }
+  }
+}

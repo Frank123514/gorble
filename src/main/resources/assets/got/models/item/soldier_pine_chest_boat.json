@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "got:item/soldier_pine_chest_boat"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/mossy_oily_black_cobblestone_slab"
+    },
+    "type=double": {
+      "model": "got:block/mossy_oily_black_cobblestone"
+    },
+    "type=top": {
+      "model": "got:block/mossy_oily_black_cobblestone_slab_top"
+    }
+  }
+}

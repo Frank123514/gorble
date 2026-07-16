@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "section=0": {
+      "model": "got:block/reeds_bottom"
+    },
+    "section=1": {
+      "model": "got:block/reeds_middle"
+    },
+    "section=2": {
+      "model": "got:block/reeds_top"
+    }
+  }
+}

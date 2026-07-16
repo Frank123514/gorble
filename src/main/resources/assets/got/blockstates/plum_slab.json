@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "got:block/plum_slab"
+    },
+    "type=top": {
+      "model": "got:block/plum_slab_top"
+    },
+    "type=double": {
+      "model": "got:block/plum_slab_full"
+    }
+  }
+}
