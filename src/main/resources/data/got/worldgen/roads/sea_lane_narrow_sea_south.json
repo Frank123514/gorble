@@ -1,0 +1,18 @@
+{
+  "id":   "sea_lane_narrow_sea_south",
+  "name": "Narrow Sea (Southern Lane)",
+  "type": "sea_lane",
+  "palette": {
+    "surface": [],
+    "walls": false
+  },
+  "points": [
+    { "pixelX": 636, "pixelY": 1336 },
+    { "pixelX": 700, "pixelY": 1450 },
+    { "pixelX": 740, "pixelY": 1580 },
+    { "pixelX": 760, "pixelY": 1700 },
+    { "pixelX": 740, "pixelY": 1850 },
+    { "pixelX": 700, "pixelY": 1990 },
+    { "pixelX": 648, "pixelY": 2098 }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:limestone_rock",
+  "result": {
+    "count": 1,
+    "id": "got:smooth_limestone_rock"
+  }
+}

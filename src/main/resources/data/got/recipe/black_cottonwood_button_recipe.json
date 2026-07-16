@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
+  "category": "redstone",
+  "ingredients": [
+    "got:black_cottonwood_planks"
+  ],
+  "result": {
+    "id": "got:black_cottonwood_button",
+    "count": 1
+  }
+}

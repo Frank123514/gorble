@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wooden_button",
+  "category": "redstone",
+  "ingredients": [
+    "got:beech_planks"
+  ],
+  "result": {
+    "id": "got:beech_button",
+    "count": 1
+  }
+}

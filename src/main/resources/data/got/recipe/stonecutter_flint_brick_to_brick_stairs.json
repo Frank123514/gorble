@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "got:flint_brick",
+  "result": {
+    "count": 1,
+    "id": "got:flint_brick_stairs"
+  }
+}

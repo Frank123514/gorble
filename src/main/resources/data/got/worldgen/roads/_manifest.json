@@ -1,0 +1,23 @@
+{
+  "_comment": "Index of every road JSON file in this directory. Add an entry here whenever you create a new road file.",
+  "files": [
+    "kingsroad_north.json",
+    "kingsroad_south.json",
+    "gold_road.json",
+    "rose_road.json",
+    "river_road.json",
+    "ocean_road.json",
+    "roseroad_spur_horn_hill.json",
+    "roseroad_spur_cider_hall.json",
+    "coastal_road_stormlands.json",
+    "dornish_road.json",
+    "princes_pass_road.json",
+    "high_road_vale.json",
+    "vale_eastern_road.json",
+    "white_harbor_road.json",
+    "riverrun_road.json",
+    "sea_lane_narrow_sea_north.json",
+    "sea_lane_narrow_sea_south.json",
+    "sea_lane_sunset_sea.json"
+  ]
+}

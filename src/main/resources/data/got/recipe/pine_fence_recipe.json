@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_fence",
+  "category": "misc",
+  "pattern": [
+    "aba",
+    "aba"
+  ],
+  "key": {
+    "a": "got:pine_planks",
+    "b": "minecraft:stick"
+  },
+  "result": {
+    "id": "got:pine_fence",
+    "count": 3
+  }
+}

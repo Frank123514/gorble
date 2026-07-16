@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "got:blocks/ash_roofing",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "got:ash_roofing"
+        }
+      ]
+    }
+  ]
+}

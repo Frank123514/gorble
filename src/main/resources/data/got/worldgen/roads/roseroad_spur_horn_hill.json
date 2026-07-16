@@ -1,0 +1,32 @@
+{
+  "id": "roseroad_spur_horn_hill",
+  "name": "Horn Hill Spur",
+  "type": "road",
+  "palette": {
+    "surface": [
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
+    ],
+    "walls": false
+  },
+  "points": [
+    {
+      "pixelX": 428,
+      "pixelY": 1638
+    },
+    {
+      "pixelX": 434,
+      "pixelY": 1676
+    },
+    {
+      "pixelX": 440,
+      "pixelY": 1715
+    },
+    {
+      "pixelX": 443,
+      "pixelY": 1728
+    }
+  ]
+}

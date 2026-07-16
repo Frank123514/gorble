@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "category": "building",
+  "ingredients": [
+    "#got:goldenheart_logs"
+  ],
+  "result": {
+    "id": "got:goldenheart_planks",
+    "count": 4
+  }
+}

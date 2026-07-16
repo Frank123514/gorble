@@ -1,0 +1,48 @@
+{
+  "id": "dornish_road",
+  "name": "The Dornish Road",
+  "type": "road",
+  "palette": {
+    "surface": [
+      "got:path_block",
+      "got:path_block",
+      "got:path_block",
+      "got:cobbled_path_block"
+    ],
+    "walls": false
+  },
+  "points": [
+    {
+      "pixelX": 580,
+      "pixelY": 1678
+    },
+    {
+      "pixelX": 585,
+      "pixelY": 1740
+    },
+    {
+      "pixelX": 590,
+      "pixelY": 1800
+    },
+    {
+      "pixelX": 600,
+      "pixelY": 1870
+    },
+    {
+      "pixelX": 615,
+      "pixelY": 1940
+    },
+    {
+      "pixelX": 628,
+      "pixelY": 2000
+    },
+    {
+      "pixelX": 638,
+      "pixelY": 2050
+    },
+    {
+      "pixelX": 648,
+      "pixelY": 2098
+    }
+  ]
+}

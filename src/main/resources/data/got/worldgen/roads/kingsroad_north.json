@@ -1,0 +1,49 @@
+{
+  "id": "kingsroad_north",
+  "name": "The Kingsroad (North)",
+  "type": "kingsroad",
+  "palette": {
+    "surface": [
+      "got:path_block"
+    ],
+    "walls": false
+  },
+  "points": [
+    {
+      "pixelX": 753,
+      "pixelY": 750
+    },
+    {
+      "pixelX": 730,
+      "pixelY": 800
+    },
+    {
+      "pixelX": 705,
+      "pixelY": 870
+    },
+    {
+      "pixelX": 680,
+      "pixelY": 940
+    },
+    {
+      "pixelX": 648,
+      "pixelY": 988
+    },
+    {
+      "pixelX": 614,
+      "pixelY": 1036
+    },
+    {
+      "pixelX": 624,
+      "pixelY": 1090
+    },
+    {
+      "pixelX": 634,
+      "pixelY": 1140
+    },
+    {
+      "pixelX": 638,
+      "pixelY": 1231
+    }
+  ]
+}

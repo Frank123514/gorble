@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "category": "building",
+  "ingredients": [
+    "#got:cottonwood_logs"
+  ],
+  "result": {
+    "id": "got:cottonwood_planks",
+    "count": 4
+  }
+}

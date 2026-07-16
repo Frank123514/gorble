@@ -1,0 +1,48 @@
+{
+  "factions": {
+    "north": [
+      { "name": "Winterfell",    "pixelX": 614,  "pixelY": 1036,  "zoom": 8.0 },
+      { "name": "Castle Black",  "pixelX": 752,  "pixelY": 754,  "zoom": 8.0 },
+      { "name": "Moat Cailin",   "pixelX": 638,  "pixelY": 1231, "zoom": 8.0 },
+      { "name": "White Harbor",  "pixelX": 724,  "pixelY": 1192,  "zoom": 8.0 }
+    ],
+    "vale": [
+      { "name": "The Eyrie",    "pixelX": 831,  "pixelY": 1485,  "zoom": 9.0 },
+      { "name": "Gulltown",     "pixelX": 981,  "pixelY": 1518,  "zoom": 9.0 },
+      { "name": "Bloody Gate",  "pixelX": 789,  "pixelY": 1513,  "zoom": 9.0 }
+    ],
+    "riverlands": [
+      { "name": "Riverrun",   "pixelX": 590,  "pixelY": 1550, "zoom": 9.0 },
+      { "name": "Harrenhal",  "pixelX": 723,  "pixelY": 1608, "zoom": 9.0 },
+      { "name": "The Twins",  "pixelX": 597,  "pixelY": 1403, "zoom": 9.0 }
+    ],
+    "westerlands": [
+      { "name": "Casterly Rock",   "pixelX": 374,  "pixelY": 1688, "zoom": 9.0 },
+      { "name": "Lannisport",      "pixelX": 377,  "pixelY": 1690, "zoom": 9.0 },
+      { "name": "Clegane's Keep",  "pixelX": 430,  "pixelY": 1740, "zoom": 9.0 }
+    ],
+    "reach": [
+      { "name": "Highgarden",  "pixelX": 494,  "pixelY": 1935, "zoom": 9.0 },
+      { "name": "Oldtown",     "pixelX": 389,  "pixelY": 2063, "zoom": 9.0 },
+      { "name": "Horn Hill",   "pixelX": 519,  "pixelY": 1970, "zoom": 9.0 },
+      { "name": "Cider Hall",  "pixelX": 561,  "pixelY": 1920, "zoom": 9.0 }
+    ],
+    "stormlands": [
+      { "name": "Storm's End",     "pixelX": 910,  "pixelY": 1896, "zoom": 9.0 },
+      { "name": "King's Landing",  "pixelX": 771,  "pixelY": 1751, "zoom": 9.0 },
+      { "name": "Dragonstone",     "pixelX": 954,  "pixelY": 1663, "zoom": 9.0 }
+    ],
+    "iron_islands": [
+      { "name": "Pyke",       "pixelX": 354,  "pixelY": 1501, "zoom": 10.0 },
+      { "name": "Lordsport",  "pixelX": 349,  "pixelY": 1488, "zoom": 10.0 },
+      { "name": "Pebbleton",  "pixelX": 330,  "pixelY": 1460, "zoom": 10.0 },
+      { "name": "Drumm",    "pixelX": 310,  "pixelY": 1432, "zoom": 10.0 }
+    ],
+    "dorne": [
+      { "name": "Sunspear",       "pixelX": 977,  "pixelY": 2167, "zoom": 9.0 },
+      { "name": "Water Gardens",  "pixelX": 970,  "pixelY": 2157, "zoom": 9.0 },
+      { "name": "Starfall",       "pixelX": 483,  "pixelY": 2147, "zoom": 9.0 },
+      { "name": "Yronwood",       "pixelX": 671,  "pixelY": 2065, "zoom": 9.0 }
+    ]
+  }
+}

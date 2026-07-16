@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "building",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "got:red_sandstone_brick",
+  "result": {
+    "id": "got:cracked_red_sandstone_brick"
+  }
+}
