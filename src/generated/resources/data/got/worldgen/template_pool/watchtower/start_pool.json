@@ -1,5 +1,5 @@
 {
-  "name": "got:watchtower/start_pool",
+  "name": "got:watchtower",
   "fallback": "minecraft:empty",
   "elements": [
     {
@@ -7,8 +7,8 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "got:watchtower",
-        "processors": "minecraft:empty",
-        "projection": "rigid"
+        "projection": "rigid",
+        "processors": "minecraft:empty"
       }
     }
   ]
