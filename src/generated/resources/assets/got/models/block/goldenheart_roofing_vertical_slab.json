@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/goldenheart_roofing",
+    "top": "got:block/goldenheart_roofing",
+    "bottom": "got:block/goldenheart_roofing",
+    "side": "got:block/goldenheart_roofing"
+  }
+}

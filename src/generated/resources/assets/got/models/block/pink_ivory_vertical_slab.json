@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/pink_ivory_planks",
+    "top": "got:block/pink_ivory_planks",
+    "bottom": "got:block/pink_ivory_planks",
+    "side": "got:block/pink_ivory_planks"
+  }
+}

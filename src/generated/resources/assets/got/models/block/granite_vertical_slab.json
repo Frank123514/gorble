@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/granite",
+    "top": "minecraft:block/granite",
+    "bottom": "minecraft:block/granite",
+    "side": "minecraft:block/granite"
+  }
+}

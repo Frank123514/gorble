@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/elm_roofing",
+    "top": "got:block/elm_roofing",
+    "bottom": "got:block/elm_roofing",
+    "side": "got:block/elm_roofing"
+  }
+}

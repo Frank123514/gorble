@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/cinnamon_roofing",
+    "top": "got:block/cinnamon_roofing",
+    "bottom": "got:block/cinnamon_roofing",
+    "side": "got:block/cinnamon_roofing"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=north,type=single": {
+      "model": "got:block/smooth_sandstone_vertical_slab"
+    },
+    "facing=east,type=single": {
+      "model": "got:block/smooth_sandstone_vertical_slab",
+      "y": 90
+    },
+    "facing=south,type=single": {
+      "model": "got:block/smooth_sandstone_vertical_slab",
+      "y": 180
+    },
+    "facing=west,type=single": {
+      "model": "got:block/smooth_sandstone_vertical_slab",
+      "y": 270
+    },
+    "facing=north,type=double": {
+      "model": "minecraft:block/smooth_sandstone"
+    },
+    "facing=east,type=double": {
+      "model": "minecraft:block/smooth_sandstone"
+    },
+    "facing=south,type=double": {
+      "model": "minecraft:block/smooth_sandstone"
+    },
+    "facing=west,type=double": {
+      "model": "minecraft:block/smooth_sandstone"
+    }
+  }
+}

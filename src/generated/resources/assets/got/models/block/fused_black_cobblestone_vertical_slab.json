@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/fused_black_cobblestone",
+    "top": "got:block/fused_black_cobblestone",
+    "bottom": "got:block/fused_black_cobblestone",
+    "side": "got:block/fused_black_cobblestone"
+  }
+}

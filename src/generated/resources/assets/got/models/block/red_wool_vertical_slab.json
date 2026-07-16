@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/red_wool",
+    "top": "minecraft:block/red_wool",
+    "bottom": "minecraft:block/red_wool",
+    "side": "minecraft:block/red_wool"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/mossy_slate_cobblestone",
+    "top": "got:block/mossy_slate_cobblestone",
+    "bottom": "got:block/mossy_slate_cobblestone",
+    "side": "got:block/mossy_slate_cobblestone"
+  }
+}

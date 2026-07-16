@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "minecraft:block/cobbled_deepslate",
+    "top": "minecraft:block/cobbled_deepslate",
+    "bottom": "minecraft:block/cobbled_deepslate",
+    "side": "minecraft:block/cobbled_deepslate"
+  }
+}

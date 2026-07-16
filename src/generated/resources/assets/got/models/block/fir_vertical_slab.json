@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/fir_planks",
+    "top": "got:block/fir_planks",
+    "bottom": "got:block/fir_planks",
+    "side": "got:block/fir_planks"
+  }
+}

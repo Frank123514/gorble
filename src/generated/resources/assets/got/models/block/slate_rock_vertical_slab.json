@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/slate_rock",
+    "top": "got:block/slate_rock",
+    "bottom": "got:block/slate_rock",
+    "side": "got:block/slate_rock"
+  }
+}
