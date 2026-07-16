@@ -98,9 +98,20 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
 
         FluidState fluid = ctx.getLevel().getFluidState(pos);
         Direction clickedFace = ctx.getClickedFace();
-        Direction facing = clickedFace.getAxis().isHorizontal()
-                ? clickedFace
-                : ctx.getHorizontalDirection().getOpposite();
+        Direction facing;
+
+        if (clickedFace.getAxis().isHorizontal()) {
+            // If we're placing against the side of an existing single vertical slab
+            // (rather than its open/matching face, which merges above), continue its
+            // facing so a row of slabs forms a flat wall instead of turning to face us.
+            BlockPos neighborPos = pos.relative(clickedFace.getOpposite());
+            BlockState neighbor = ctx.getLevel().getBlockState(neighborPos);
+            facing = (neighbor.is(this) && neighbor.getValue(TYPE) == Type.SINGLE)
+                    ? neighbor.getValue(FACING)
+                    : clickedFace;
+        } else {
+            facing = ctx.getHorizontalDirection();
+        }
 
         return this.defaultBlockState()
                 .setValue(FACING, facing)
@@ -118,8 +129,15 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
             return true;
         }
         Direction clickedFace = ctx.getClickedFace();
+        if (!clickedFace.getAxis().isHorizontal()) {
+            // Clicking the top/bottom of a single vertical slab should stack a new
+            // slab in the space above/below, not merge this one into a full block.
+            return false;
+        }
         Direction existingFacing = state.getValue(FACING);
-        return clickedFace.getAxis() != existingFacing.getAxis() || clickedFace == existingFacing.getOpposite();
+        // Only the exact open/matching face merges into a double (full) block —
+        // clicking a perpendicular side face should place a new slab next to it instead.
+        return clickedFace == existingFacing.getOpposite();
     }
 
     // ── Fluids / neighbour updates ──────────────────────────────────────────

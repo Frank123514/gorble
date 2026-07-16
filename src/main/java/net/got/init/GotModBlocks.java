@@ -11,6 +11,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.registries.Registries;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.effect.MobEffects;
@@ -2448,7 +2450,14 @@ public class GotModBlocks {
 
     /** Vertical slab copying properties from an already-registered GOT slab (same hardness/sound/etc as the horizontal version). */
     private static DeferredBlock<Block> verticalSlab(String name, DeferredBlock<Block> copyFrom) {
-        return REGISTRY.registerBlock(name, VerticalSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(copyFrom.get()));
+        // NOTE: copyFrom.get() must NOT be called eagerly here — copyFrom is not bound yet
+        // during static init. Defer it inside the factory lambda so it only resolves once
+        // NeoForge actually registers this block (by which point copyFrom is bound).
+        // We also have to call .setId(...) ourselves here since we're bypassing registerBlock()
+        // (which normally does this for us) in order to get the lazy copyFrom.get().
+        return REGISTRY.register(name, id -> new VerticalSlabBlock(
+                BlockBehaviour.Properties.ofFullCopy(copyFrom.get())
+                        .setId(ResourceKey.create(Registries.BLOCK, id))));
     }
 
     /** Vertical slab copying properties from a vanilla slab block. */
