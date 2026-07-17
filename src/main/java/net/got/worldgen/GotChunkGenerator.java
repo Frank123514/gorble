@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -20,9 +21,13 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public final class GotChunkGenerator extends ChunkGenerator {
@@ -123,11 +128,14 @@ public final class GotChunkGenerator extends ChunkGenerator {
         int sea   = getSeaLevel();
         ChunkPos cp = chunk.getPos();
 
+        List<StructureStart> nearbyStructures = structures.startsForStructure(
+                SectionPos.bottomOf(chunk).chunk(), structure -> true);
+
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
                 int wx = cp.getBlockX(lx);
                 int wz = cp.getBlockZ(lz);
-                int surfaceY = computeSurfaceY(wx, wz);
+                int surfaceY = Mth.floor(computeBlendedSurfaceY(wx, wz, nearbyStructures));
 
                 for (int y = minY; y < maxY; y++) {
                     BlockState state;
@@ -270,6 +278,41 @@ public final class GotChunkGenerator extends ChunkGenerator {
         }
 
         return rawHeight + slopemapBonus + (float) noiseVal * heightVariation;
+    }
+
+    // ── Structure terrain blend ───────────────────────────────────────────
+    // Same smoothstep weighting used above for subbiome/biome-border blending
+    // (see computeRawSurfaceY), just applied radially from structure pieces
+    // instead of radially from a biomemap pixel. No per-structure config —
+    // every jigsaw structure gets this for free based on its own piece boxes.
+
+    private static final float STRUCTURE_PAD_RADIUS = 6f;
+
+    private static float computeBlendedSurfaceY(int wx, int wz, List<StructureStart> starts) {
+        float naturalY = computeRawSurfaceY(wx, wz);
+        if (starts.isEmpty()) return naturalY;
+
+        float blended = naturalY;
+        for (StructureStart start : starts) {
+            for (StructurePiece piece : start.getPieces()) {
+                BoundingBox box = piece.getBoundingBox();
+                float dist = distanceToBox(wx, wz, box);
+                if (dist >= STRUCTURE_PAD_RADIUS) continue;
+
+                float t      = Mth.clamp(dist / STRUCTURE_PAD_RADIUS, 0f, 1f);
+                float weight = t * t * (3f - 2f * t); // smoothstep, same as line ~222
+                float floorY = box.minY() - 1;
+
+                blended = Mth.lerp(weight, floorY, blended);
+            }
+        }
+        return blended;
+    }
+
+    private static float distanceToBox(int x, int z, BoundingBox box) {
+        float dx = Math.max(Math.max(box.minX() - x, 0), x - box.maxX());
+        float dz = Math.max(Math.max(box.minZ() - z, 0), z - box.maxZ());
+        return Mth.sqrt(dx * dx + dz * dz);
     }
 
     // ── Bicubic B-spline ───────────────────────────────────────────────────

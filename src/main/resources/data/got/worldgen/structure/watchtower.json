@@ -3,7 +3,7 @@
   "biomes": "#got:has_structure/watchtower",
   "step": "surface_structures",
   "spawn_overrides": {},
-  "terrain_adaptation": "none",
+  "terrain_adaptation": "beard_thin",
   "start_pool": "got:watchtower/start_pool",
   "size": 1,
   "start_height": {

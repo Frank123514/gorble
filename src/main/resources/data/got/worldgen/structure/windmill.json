@@ -3,7 +3,7 @@
   "biomes": "#got:has_structure/windmill",
   "step": "surface_structures",
   "spawn_overrides": {},
-  "terrain_adaptation": "none",
+  "terrain_adaptation": "beard_box",
   "start_pool": "got:windmill/start_pool",
   "size": 1,
   "start_height": {
