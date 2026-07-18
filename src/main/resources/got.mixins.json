@@ -10,8 +10,7 @@
   ],
   "client": [
     "BiomeColorsMixin",
-    "WeatherEffectRendererMixin",
-    "OptionsCloudMixin"
+    "WeatherEffectRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
