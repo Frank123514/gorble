@@ -119,7 +119,6 @@ public final class GotMod {
                     GotModBlocks.NIGHTWOOD_HANGING_SIGN.get(), GotModBlocks.NIGHTWOOD_WALL_HANGING_SIGN.get(),
                     GotModBlocks.PURPLEHEART_HANGING_SIGN.get(), GotModBlocks.PURPLEHEART_WALL_HANGING_SIGN.get(),
                     GotModBlocks.TIGERWOOD_HANGING_SIGN.get(), GotModBlocks.TIGERWOOD_WALL_HANGING_SIGN.get(),
-                    GotModBlocks.BURL_HANGING_SIGN.get(), GotModBlocks.BURL_WALL_HANGING_SIGN.get(),
                     GotModBlocks.SANDALWOOD_HANGING_SIGN.get(), GotModBlocks.SANDALWOOD_WALL_HANGING_SIGN.get(),
                     GotModBlocks.SANDBEGGAR_HANGING_SIGN.get(), GotModBlocks.SANDBEGGAR_WALL_HANGING_SIGN.get(),
                     GotModBlocks.APRICOT_HANGING_SIGN.get(), GotModBlocks.APRICOT_WALL_HANGING_SIGN.get(),
@@ -260,7 +259,6 @@ public final class GotMod {
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "nightwood_sapling"), GotModBlocks.POTTED_NIGHTWOOD_SAPLING);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "purpleheart_sapling"), GotModBlocks.POTTED_PURPLEHEART_SAPLING);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "tigerwood_sapling"), GotModBlocks.POTTED_TIGERWOOD_SAPLING);
-            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "burl_sapling"), GotModBlocks.POTTED_BURL_SAPLING);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "sandalwood_sapling"), GotModBlocks.POTTED_SANDALWOOD_SAPLING);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "sandbeggar_sapling"), GotModBlocks.POTTED_SANDBEGGAR_SAPLING);
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.fromNamespaceAndPath("got", "apricot_sapling"), GotModBlocks.POTTED_APRICOT_SAPLING);

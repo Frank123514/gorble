@@ -686,7 +686,6 @@ public final class GotPlacedFeatures {
 
     // tigerwood
 
-    // burl
 
     // sandalwood
 

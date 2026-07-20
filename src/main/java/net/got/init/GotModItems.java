@@ -1387,10 +1387,6 @@ public class GotModItems {
     public static final DeferredItem<Item> TIGERWOOD_WOOD_STAIRS          = block(GotModBlocks.TIGERWOOD_WOOD_STAIRS);
     public static final DeferredItem<Item> STRIPPED_TIGERWOOD_WOOD_SLAB   = block(GotModBlocks.STRIPPED_TIGERWOOD_WOOD_SLAB);
     public static final DeferredItem<Item> STRIPPED_TIGERWOOD_WOOD_STAIRS = block(GotModBlocks.STRIPPED_TIGERWOOD_WOOD_STAIRS);
-    public static final DeferredItem<Item> BURL_WOOD_SLAB            = block(GotModBlocks.BURL_WOOD_SLAB);
-    public static final DeferredItem<Item> BURL_WOOD_STAIRS          = block(GotModBlocks.BURL_WOOD_STAIRS);
-    public static final DeferredItem<Item> STRIPPED_BURL_WOOD_SLAB   = block(GotModBlocks.STRIPPED_BURL_WOOD_SLAB);
-    public static final DeferredItem<Item> STRIPPED_BURL_WOOD_STAIRS = block(GotModBlocks.STRIPPED_BURL_WOOD_STAIRS);
     public static final DeferredItem<Item> SANDALWOOD_WOOD_SLAB            = block(GotModBlocks.SANDALWOOD_WOOD_SLAB);
     public static final DeferredItem<Item> SANDALWOOD_WOOD_STAIRS          = block(GotModBlocks.SANDALWOOD_WOOD_STAIRS);
     public static final DeferredItem<Item> STRIPPED_SANDALWOOD_WOOD_SLAB   = block(GotModBlocks.STRIPPED_SANDALWOOD_WOOD_SLAB);
@@ -2370,32 +2366,6 @@ public class GotModItems {
     public static final DeferredItem<BlockItem> TIGERWOOD_ROOFING_STAIRS = REGISTRY.registerSimpleBlockItem("tigerwood_roofing_stairs", GotModBlocks.TIGERWOOD_ROOFING_STAIRS);
     public static final DeferredItem<BlockItem> TIGERWOOD_ROOFING_WALL = REGISTRY.registerSimpleBlockItem("tigerwood_roofing_wall", GotModBlocks.TIGERWOOD_ROOFING_WALL);
 
-    // ── burl items ──
-    public static final DeferredItem<Item> BURL_LOG            = block(GotModBlocks.BURL_LOG);
-    public static final DeferredItem<Item> BURL_WOOD           = block(GotModBlocks.BURL_WOOD);
-    public static final DeferredItem<Item> BURL_PLANKS         = block(GotModBlocks.BURL_PLANKS);
-    public static final DeferredItem<Item> BURL_LEAVES         = block(GotModBlocks.BURL_LEAVES);
-    public static final DeferredItem<Item> BURL_STAIRS         = block(GotModBlocks.BURL_STAIRS);
-    public static final DeferredItem<Item> BURL_SLAB           = block(GotModBlocks.BURL_SLAB);
-    public static final DeferredItem<Item> BURL_FENCE          = block(GotModBlocks.BURL_FENCE);
-    public static final DeferredItem<Item> BURL_FENCE_GATE     = block(GotModBlocks.BURL_FENCE_GATE);
-    public static final DeferredItem<Item> BURL_PRESSURE_PLATE = block(GotModBlocks.BURL_PRESSURE_PLATE);
-    public static final DeferredItem<Item> BURL_BUTTON         = block(GotModBlocks.BURL_BUTTON);
-    public static final DeferredItem<Item> BURL_DOOR           = door(GotModBlocks.BURL_DOOR);
-    public static final DeferredItem<Item> BURL_TRAPDOOR       = block(GotModBlocks.BURL_TRAPDOOR);
-    public static final DeferredItem<Item> BURL_BRANCH         = block(GotModBlocks.BURL_BRANCH);
-    public static final DeferredItem<Item> STRIPPED_BURL_BRANCH = block(GotModBlocks.STRIPPED_BURL_BRANCH);
-    public static final DeferredItem<Item> BURL_SIGN           = REGISTRY.registerItem("burl_sign",         p -> new SignItem(GotModBlocks.BURL_SIGN.get(), GotModBlocks.BURL_WALL_SIGN.get(), p));
-    public static final DeferredItem<Item> BURL_HANGING_SIGN   = REGISTRY.registerItem("burl_hanging_sign", p -> new HangingSignItem(GotModBlocks.BURL_HANGING_SIGN.get(), GotModBlocks.BURL_WALL_HANGING_SIGN.get(), p));
-    public static final DeferredItem<Item> BURL_BOAT           = REGISTRY.registerItem("burl_boat",       p -> new GotBoatItem(GotModBoatEntities.BURL_BOAT.get(), p));
-    public static final DeferredItem<Item> BURL_CHEST_BOAT     = REGISTRY.registerItem("burl_chest_boat", p -> new GotBoatItem(GotModBoatEntities.BURL_CHEST_BOAT.get(), p));
-    public static final DeferredItem<Item> BURL_SAPLING        = block(GotModBlocks.BURL_SAPLING);
-    public static final DeferredItem<Item> STRIPPED_BURL_LOG   = block(GotModBlocks.STRIPPED_BURL_LOG);
-    public static final DeferredItem<Item> STRIPPED_BURL_WOOD  = block(GotModBlocks.STRIPPED_BURL_WOOD);
-    public static final DeferredItem<BlockItem> BURL_ROOFING = REGISTRY.registerSimpleBlockItem("burl_roofing", GotModBlocks.BURL_ROOFING);
-    public static final DeferredItem<BlockItem> BURL_ROOFING_SLAB = REGISTRY.registerSimpleBlockItem("burl_roofing_slab", GotModBlocks.BURL_ROOFING_SLAB);
-    public static final DeferredItem<BlockItem> BURL_ROOFING_STAIRS = REGISTRY.registerSimpleBlockItem("burl_roofing_stairs", GotModBlocks.BURL_ROOFING_STAIRS);
-    public static final DeferredItem<BlockItem> BURL_ROOFING_WALL = REGISTRY.registerSimpleBlockItem("burl_roofing_wall", GotModBlocks.BURL_ROOFING_WALL);
 
     // ── sandalwood items ──
     public static final DeferredItem<Item> SANDALWOOD_LOG            = block(GotModBlocks.SANDALWOOD_LOG);
@@ -3148,9 +3118,6 @@ public class GotModItems {
     public static final DeferredItem<Item> BLUE_MAHOE_WOOD_VERTICAL_SLAB = block(GotModBlocks.BLUE_MAHOE_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> BLUE_WOOL_VERTICAL_SLAB = block(GotModBlocks.BLUE_WOOL_VERTICAL_SLAB);
     public static final DeferredItem<Item> BROWN_WOOL_VERTICAL_SLAB = block(GotModBlocks.BROWN_WOOL_VERTICAL_SLAB);
-    public static final DeferredItem<Item> BURL_ROOFING_VERTICAL_SLAB = block(GotModBlocks.BURL_ROOFING_VERTICAL_SLAB);
-    public static final DeferredItem<Item> BURL_VERTICAL_SLAB = block(GotModBlocks.BURL_VERTICAL_SLAB);
-    public static final DeferredItem<Item> BURL_WOOD_VERTICAL_SLAB = block(GotModBlocks.BURL_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> CEDAR_ROOFING_VERTICAL_SLAB = block(GotModBlocks.CEDAR_ROOFING_VERTICAL_SLAB);
     public static final DeferredItem<Item> CEDAR_VERTICAL_SLAB = block(GotModBlocks.CEDAR_VERTICAL_SLAB);
     public static final DeferredItem<Item> CEDAR_WOOD_VERTICAL_SLAB = block(GotModBlocks.CEDAR_WOOD_VERTICAL_SLAB);
@@ -3381,7 +3348,6 @@ public class GotModItems {
     public static final DeferredItem<Item> STRIPPED_BLACKTHORN_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_BLACKTHORN_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> STRIPPED_BLOODWOOD_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_BLOODWOOD_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> STRIPPED_BLUE_MAHOE_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD_VERTICAL_SLAB);
-    public static final DeferredItem<Item> STRIPPED_BURL_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_BURL_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> STRIPPED_CEDAR_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_CEDAR_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> STRIPPED_CHERRY_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_CHERRY_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> STRIPPED_CHESTNUT_WOOD_VERTICAL_SLAB = block(GotModBlocks.STRIPPED_CHESTNUT_WOOD_VERTICAL_SLAB);

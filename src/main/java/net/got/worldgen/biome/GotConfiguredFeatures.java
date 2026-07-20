@@ -164,7 +164,6 @@ public final class GotConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> NIGHTWOOD    = key("nightwood");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PURPLEHEART  = key("purpleheart");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TIGERWOOD    = key("tigerwood");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BURL         = key("burl");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SANDALWOOD   = key("sandalwood");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SANDBEGGAR   = key("sandbeggar");
     public static final ResourceKey<ConfiguredFeature<?, ?>> APRICOT      = key("apricot");

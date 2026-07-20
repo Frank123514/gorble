@@ -1164,34 +1164,6 @@ public class GotModTabs {
                         safeAccept(output, Block.byItem(GotModItems.TIGERWOOD_BOAT.get()));
                         safeAccept(output, Block.byItem(GotModItems.TIGERWOOD_CHEST_BOAT.get()));
 
-                        // ── Burl ─────────────────────────────────────────────────────
-                        safeAccept(output, GotModBlocks.BURL_LOG.get());
-                        safeAccept(output, GotModBlocks.BURL_WOOD.get());
-                        safeAccept(output, GotModBlocks.STRIPPED_BURL_LOG.get());
-                        safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD.get());
-                        safeAccept(output, GotModBlocks.BURL_WOOD_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_WOOD_STAIRS.get());
-                        safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD_SLAB.get());
-                        safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BURL_PLANKS.get());
-                        safeAccept(output, GotModBlocks.BURL_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BURL_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_FENCE.get());
-                        safeAccept(output, GotModBlocks.BURL_FENCE_GATE.get());
-                        safeAccept(output, GotModBlocks.BURL_PRESSURE_PLATE.get());
-                        safeAccept(output, GotModBlocks.BURL_BUTTON.get());
-                        safeAccept(output, GotModBlocks.BURL_DOOR.get());
-                        safeAccept(output, GotModBlocks.BURL_TRAPDOOR.get());
-                        safeAccept(output, GotModBlocks.BURL_BRANCH.get());
-                        safeAccept(output, GotModBlocks.STRIPPED_BURL_BRANCH.get());
-                        safeAccept(output, GotModBlocks.BURL_ROOFING.get());
-                        safeAccept(output, GotModBlocks.BURL_ROOFING_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_ROOFING_STAIRS.get());
-                        safeAccept(output, GotModBlocks.BURL_ROOFING_WALL.get());
-                        safeAccept(output, Block.byItem(GotModItems.BURL_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BURL_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BURL_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BURL_CHEST_BOAT.get()));
 
                         // ── Sandalwood ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.SANDALWOOD_LOG.get());
@@ -2291,7 +2263,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NIGHTWOOD_LEAVES.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_LEAVES.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_LEAVES.get());
-                        safeAccept(output, GotModBlocks.BURL_LEAVES.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_LEAVES.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_LEAVES.get());
                         safeAccept(output, GotModBlocks.APRICOT_LEAVES.get());
@@ -2353,7 +2324,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NIGHTWOOD_SAPLING.get());
                         safeAccept(output, GotModBlocks.PURPLEHEART_SAPLING.get());
                         safeAccept(output, GotModBlocks.TIGERWOOD_SAPLING.get());
-                        safeAccept(output, GotModBlocks.BURL_SAPLING.get());
                         safeAccept(output, GotModBlocks.SANDALWOOD_SAPLING.get());
                         safeAccept(output, GotModBlocks.SANDBEGGAR_SAPLING.get());
                         safeAccept(output, GotModBlocks.APRICOT_SAPLING.get());
@@ -3070,9 +3040,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.BLUE_WOOL_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.BROWN_WOOL_VERTICAL_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_ROOFING_VERTICAL_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_VERTICAL_SLAB.get());
-                        safeAccept(output, GotModBlocks.BURL_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.CEDAR_ROOFING_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.CEDAR_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.CEDAR_WOOD_VERTICAL_SLAB.get());
@@ -3303,7 +3270,6 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.STRIPPED_BLACKTHORN_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLOODWOOD_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD_VERTICAL_SLAB.get());
-                        safeAccept(output, GotModBlocks.STRIPPED_BURL_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CEDAR_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CHERRY_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, GotModBlocks.STRIPPED_CHESTNUT_WOOD_VERTICAL_SLAB.get());

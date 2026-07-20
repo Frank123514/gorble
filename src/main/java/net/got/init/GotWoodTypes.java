@@ -47,7 +47,6 @@ public final class GotWoodTypes {
 public static final WoodType NIGHTWOOD            = WoodType.register(new WoodType(GotMod.MODID + ":nightwood",  BlockSetType.OAK));
     public static final WoodType PURPLEHEART          = WoodType.register(new WoodType(GotMod.MODID + ":purpleheart",  BlockSetType.OAK));
     public static final WoodType TIGERWOOD            = WoodType.register(new WoodType(GotMod.MODID + ":tigerwood",  BlockSetType.OAK));
-    public static final WoodType BURL                 = WoodType.register(new WoodType(GotMod.MODID + ":burl",  BlockSetType.OAK));
     public static final WoodType SANDALWOOD           = WoodType.register(new WoodType(GotMod.MODID + ":sandalwood",  BlockSetType.OAK));
     public static final WoodType SANDBEGGAR           = WoodType.register(new WoodType(GotMod.MODID + ":sandbeggar",  BlockSetType.OAK));
     public static final WoodType APRICOT              = WoodType.register(new WoodType(GotMod.MODID + ":apricot",  BlockSetType.OAK));

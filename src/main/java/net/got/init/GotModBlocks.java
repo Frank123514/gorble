@@ -752,8 +752,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> STRIPPED_PURPLEHEART_WOOD_SLAB   = woodBlock("stripped_purpleheart_wood_slab",   p -> new SlabBlock(p));
     public static final DeferredBlock<Block> TIGERWOOD_WOOD_SLAB            = woodBlock("tigerwood_wood_slab",            p -> new SlabBlock(p));
     public static final DeferredBlock<Block> STRIPPED_TIGERWOOD_WOOD_SLAB   = woodBlock("stripped_tigerwood_wood_slab",   p -> new SlabBlock(p));
-    public static final DeferredBlock<Block> BURL_WOOD_SLAB            = woodBlock("burl_wood_slab",            p -> new SlabBlock(p));
-    public static final DeferredBlock<Block> STRIPPED_BURL_WOOD_SLAB   = woodBlock("stripped_burl_wood_slab",   p -> new SlabBlock(p));
     public static final DeferredBlock<Block> SANDALWOOD_WOOD_SLAB            = woodBlock("sandalwood_wood_slab",            p -> new SlabBlock(p));
     public static final DeferredBlock<Block> STRIPPED_SANDALWOOD_WOOD_SLAB   = woodBlock("stripped_sandalwood_wood_slab",   p -> new SlabBlock(p));
     public static final DeferredBlock<Block> SANDBEGGAR_WOOD_SLAB            = woodBlock("sandbeggar_wood_slab",            p -> new SlabBlock(p));
@@ -2771,34 +2769,6 @@ public class GotModBlocks {
     // LOGS.put("tigerwood", TIGERWOOD_LOG); STRIPPED_LOGS.put("tigerwood", STRIPPED_TIGERWOOD_LOG);
     // WOODS.put("tigerwood", TIGERWOOD_WOOD); STRIPPED_WOODS.put("tigerwood", STRIPPED_TIGERWOOD_WOOD);
 
-    // ── Burl ──
-    public static final DeferredBlock<Block> BURL_LOG            = logBlock("burl_log",            BurlLogBlock::new);
-    public static final DeferredBlock<Block> BURL_WOOD           = logBlock("burl_wood",           BurlWoodBlock::new);
-    public static final DeferredBlock<Block> BURL_PLANKS         = woodBlock("burl_planks",         BurlPlanksBlock::new);
-    public static final DeferredBlock<Block> BURL_LEAVES         = woodBlock("burl_leaves",         BurlLeavesBlock::new);
-    public static final DeferredBlock<Block> BURL_STAIRS         = woodBlock("burl_stairs",         p -> new BurlStairsBlock(BURL_PLANKS.get().defaultBlockState(), p));
-    public static final DeferredBlock<Block> BURL_SLAB           = woodBlock("burl_slab",           BurlSlabBlock::new);
-    public static final DeferredBlock<Block> BURL_FENCE          = woodBlock("burl_fence",          BurlFenceBlock::new);
-    public static final DeferredBlock<Block> BURL_FENCE_GATE     = woodBlock("burl_fence_gate",     p -> new GotFenceGateBlock(GotWoodTypes.BURL, p));
-    public static final DeferredBlock<Block> BURL_PRESSURE_PLATE = woodBlock("burl_pressure_plate", p -> new PressurePlateBlock(BlockSetType.OAK, p));
-    public static final DeferredBlock<Block> BURL_BUTTON         = woodBlock("burl_button",         p -> new ButtonBlock(BlockSetType.OAK, 10, p));
-    public static final DeferredBlock<Block> BURL_DOOR           = doorBlock("burl_door",     p -> new DoorBlock(BlockSetType.OAK, p));
-    public static final DeferredBlock<Block> BURL_TRAPDOOR       = trapdoorBlock("burl_trapdoor", p -> new TrapDoorBlock(BlockSetType.OAK, p));
-    public static final DeferredBlock<Block> BURL_SIGN           = woodBlock("burl_sign",      p -> new GotStandingSignBlock(GotWoodTypes.BURL, p, () -> GotModBlockEntities.BURL_SIGN.get()));
-    public static final DeferredBlock<Block> BURL_WALL_SIGN      = woodBlock("burl_wall_sign", p -> new GotWallSignBlock(GotWoodTypes.BURL, p, () -> GotModBlockEntities.BURL_SIGN.get()));
-    public static final DeferredBlock<Block> BURL_HANGING_SIGN      = woodBlock("burl_hanging_sign",      p -> new CeilingHangingSignBlock(GotWoodTypes.BURL, p));
-    public static final DeferredBlock<Block> BURL_WALL_HANGING_SIGN = woodBlock("burl_wall_hanging_sign", p -> new WallHangingSignBlock(GotWoodTypes.BURL, p));
-    public static final DeferredBlock<Block> BURL_BRANCH         = woodBlock("burl_branch",         WoodBranchBlock::new);
-    public static final DeferredBlock<Block> STRIPPED_BURL_BRANCH = woodBlock("stripped_burl_branch", WoodStrippedBranchBlock::new);
-    public static final DeferredBlock<Block> BURL_SAPLING        = woodBlock("burl_sapling",        p -> new GotSaplingBlock(GotTreeGrowers.BURL, p));
-    public static final DeferredBlock<Block> STRIPPED_BURL_LOG   = logBlock("stripped_burl_log",   GotStrippedLogBlock::new);
-    public static final DeferredBlock<Block> STRIPPED_BURL_WOOD  = logBlock("stripped_burl_wood",  GotStrippedLogBlock::new);
-    public static final DeferredBlock<Block> BURL_ROOFING        = REGISTRY.registerBlock("burl_roofing",        p -> new Block(p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> BURL_ROOFING_SLAB   = REGISTRY.registerBlock("burl_roofing_slab",   p -> new SlabBlock(p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> BURL_ROOFING_STAIRS = REGISTRY.registerBlock("burl_roofing_stairs", p -> new StairBlock(BURL_ROOFING.get().defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> BURL_ROOFING_WALL   = REGISTRY.registerBlock("burl_roofing_wall",   p -> new WallBlock(p), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    // LOGS.put("burl", BURL_LOG); STRIPPED_LOGS.put("burl", STRIPPED_BURL_LOG);
-    // WOODS.put("burl", BURL_WOOD); STRIPPED_WOODS.put("burl", STRIPPED_BURL_WOOD);
 
     // ── Sandalwood ──
     public static final DeferredBlock<Block> SANDALWOOD_LOG            = logBlock("sandalwood_log",            SandalwoodLogBlock::new);
@@ -3492,8 +3462,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> STRIPPED_PURPLEHEART_WOOD_STAIRS = woodBlock("stripped_purpleheart_wood_stairs", p -> new StairBlock(STRIPPED_PURPLEHEART_WOOD.get().defaultBlockState(), p));
     public static final DeferredBlock<Block> TIGERWOOD_WOOD_STAIRS          = woodBlock("tigerwood_wood_stairs",          p -> new StairBlock(TIGERWOOD_WOOD.get().defaultBlockState(), p));
     public static final DeferredBlock<Block> STRIPPED_TIGERWOOD_WOOD_STAIRS = woodBlock("stripped_tigerwood_wood_stairs", p -> new StairBlock(STRIPPED_TIGERWOOD_WOOD.get().defaultBlockState(), p));
-    public static final DeferredBlock<Block> BURL_WOOD_STAIRS          = woodBlock("burl_wood_stairs",          p -> new StairBlock(BURL_WOOD.get().defaultBlockState(), p));
-    public static final DeferredBlock<Block> STRIPPED_BURL_WOOD_STAIRS = woodBlock("stripped_burl_wood_stairs", p -> new StairBlock(STRIPPED_BURL_WOOD.get().defaultBlockState(), p));
     public static final DeferredBlock<Block> SANDALWOOD_WOOD_STAIRS          = woodBlock("sandalwood_wood_stairs",          p -> new StairBlock(SANDALWOOD_WOOD.get().defaultBlockState(), p));
     public static final DeferredBlock<Block> STRIPPED_SANDALWOOD_WOOD_STAIRS = woodBlock("stripped_sandalwood_wood_stairs", p -> new StairBlock(STRIPPED_SANDALWOOD_WOOD.get().defaultBlockState(), p));
     public static final DeferredBlock<Block> SANDBEGGAR_WOOD_STAIRS          = woodBlock("sandbeggar_wood_stairs",          p -> new StairBlock(SANDBEGGAR_WOOD.get().defaultBlockState(), p));
@@ -3589,7 +3557,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> POTTED_NIGHTWOOD_SAPLING       = pottedBlock("potted_nightwood_sapling",       () -> NIGHTWOOD_SAPLING);
     public static final DeferredBlock<Block> POTTED_PURPLEHEART_SAPLING     = pottedBlock("potted_purpleheart_sapling",     () -> PURPLEHEART_SAPLING);
     public static final DeferredBlock<Block> POTTED_TIGERWOOD_SAPLING       = pottedBlock("potted_tigerwood_sapling",       () -> TIGERWOOD_SAPLING);
-    public static final DeferredBlock<Block> POTTED_BURL_SAPLING            = pottedBlock("potted_burl_sapling",            () -> BURL_SAPLING);
     public static final DeferredBlock<Block> POTTED_SANDALWOOD_SAPLING      = pottedBlock("potted_sandalwood_sapling",      () -> SANDALWOOD_SAPLING);
     public static final DeferredBlock<Block> POTTED_SANDBEGGAR_SAPLING      = pottedBlock("potted_sandbeggar_sapling",      () -> SANDBEGGAR_SAPLING);
     public static final DeferredBlock<Block> POTTED_APRICOT_SAPLING         = pottedBlock("potted_apricot_sapling",         () -> APRICOT_SAPLING);
@@ -3700,9 +3667,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> BLUE_MAHOE_WOOD_VERTICAL_SLAB = verticalSlab("blue_mahoe_wood_vertical_slab", GotModBlocks.BLUE_MAHOE_WOOD_SLAB);
     public static final DeferredBlock<Block> BLUE_WOOL_VERTICAL_SLAB = verticalSlab("blue_wool_vertical_slab", GotModBlocks.BLUE_WOOL_SLAB);
     public static final DeferredBlock<Block> BROWN_WOOL_VERTICAL_SLAB = verticalSlab("brown_wool_vertical_slab", GotModBlocks.BROWN_WOOL_SLAB);
-    public static final DeferredBlock<Block> BURL_ROOFING_VERTICAL_SLAB = verticalSlab("burl_roofing_vertical_slab", GotModBlocks.BURL_ROOFING_SLAB);
-    public static final DeferredBlock<Block> BURL_VERTICAL_SLAB = verticalSlab("burl_vertical_slab", GotModBlocks.BURL_SLAB);
-    public static final DeferredBlock<Block> BURL_WOOD_VERTICAL_SLAB = verticalSlab("burl_wood_vertical_slab", GotModBlocks.BURL_WOOD_SLAB);
     public static final DeferredBlock<Block> CEDAR_ROOFING_VERTICAL_SLAB = verticalSlab("cedar_roofing_vertical_slab", GotModBlocks.CEDAR_ROOFING_SLAB);
     public static final DeferredBlock<Block> CEDAR_VERTICAL_SLAB = verticalSlab("cedar_vertical_slab", GotModBlocks.CEDAR_SLAB);
     public static final DeferredBlock<Block> CEDAR_WOOD_VERTICAL_SLAB = verticalSlab("cedar_wood_vertical_slab", GotModBlocks.CEDAR_WOOD_SLAB);
@@ -3933,7 +3897,6 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> STRIPPED_BLACKTHORN_WOOD_VERTICAL_SLAB = verticalSlab("stripped_blackthorn_wood_vertical_slab", GotModBlocks.STRIPPED_BLACKTHORN_WOOD_SLAB);
     public static final DeferredBlock<Block> STRIPPED_BLOODWOOD_WOOD_VERTICAL_SLAB = verticalSlab("stripped_bloodwood_wood_vertical_slab", GotModBlocks.STRIPPED_BLOODWOOD_WOOD_SLAB);
     public static final DeferredBlock<Block> STRIPPED_BLUE_MAHOE_WOOD_VERTICAL_SLAB = verticalSlab("stripped_blue_mahoe_wood_vertical_slab", GotModBlocks.STRIPPED_BLUE_MAHOE_WOOD_SLAB);
-    public static final DeferredBlock<Block> STRIPPED_BURL_WOOD_VERTICAL_SLAB = verticalSlab("stripped_burl_wood_vertical_slab", GotModBlocks.STRIPPED_BURL_WOOD_SLAB);
     public static final DeferredBlock<Block> STRIPPED_CEDAR_WOOD_VERTICAL_SLAB = verticalSlab("stripped_cedar_wood_vertical_slab", GotModBlocks.STRIPPED_CEDAR_WOOD_SLAB);
     public static final DeferredBlock<Block> STRIPPED_CHERRY_WOOD_VERTICAL_SLAB = verticalSlab("stripped_cherry_wood_vertical_slab", GotModBlocks.STRIPPED_CHERRY_WOOD_SLAB);
     public static final DeferredBlock<Block> STRIPPED_CHESTNUT_WOOD_VERTICAL_SLAB = verticalSlab("stripped_chestnut_wood_vertical_slab", GotModBlocks.STRIPPED_CHESTNUT_WOOD_SLAB);
@@ -4191,7 +4154,6 @@ public class GotModBlocks {
         LOGS.put("nightwood",    NIGHTWOOD_LOG);
         LOGS.put("purpleheart",  PURPLEHEART_LOG);
         LOGS.put("tigerwood",    TIGERWOOD_LOG);
-        LOGS.put("burl",         BURL_LOG);
         LOGS.put("sandalwood",   SANDALWOOD_LOG);
         LOGS.put("sandbeggar",   SANDBEGGAR_LOG);
         LOGS.put("apricot",      APRICOT_LOG);
@@ -4220,7 +4182,6 @@ public class GotModBlocks {
         STRIPPED_LOGS.put("nightwood",    STRIPPED_NIGHTWOOD_LOG);
         STRIPPED_LOGS.put("purpleheart",  STRIPPED_PURPLEHEART_LOG);
         STRIPPED_LOGS.put("tigerwood",    STRIPPED_TIGERWOOD_LOG);
-        STRIPPED_LOGS.put("burl",         STRIPPED_BURL_LOG);
         STRIPPED_LOGS.put("sandalwood",   STRIPPED_SANDALWOOD_LOG);
         STRIPPED_LOGS.put("sandbeggar",   STRIPPED_SANDBEGGAR_LOG);
         STRIPPED_LOGS.put("apricot",      STRIPPED_APRICOT_LOG);
@@ -4249,7 +4210,6 @@ public class GotModBlocks {
         WOODS.put("nightwood",    NIGHTWOOD_WOOD);
         WOODS.put("purpleheart",  PURPLEHEART_WOOD);
         WOODS.put("tigerwood",    TIGERWOOD_WOOD);
-        WOODS.put("burl",         BURL_WOOD);
         WOODS.put("sandalwood",   SANDALWOOD_WOOD);
         WOODS.put("sandbeggar",   SANDBEGGAR_WOOD);
         WOODS.put("apricot",      APRICOT_WOOD);
@@ -4278,7 +4238,6 @@ public class GotModBlocks {
         STRIPPED_WOODS.put("nightwood",    STRIPPED_NIGHTWOOD_WOOD);
         STRIPPED_WOODS.put("purpleheart",  STRIPPED_PURPLEHEART_WOOD);
         STRIPPED_WOODS.put("tigerwood",    STRIPPED_TIGERWOOD_WOOD);
-        STRIPPED_WOODS.put("burl",         STRIPPED_BURL_WOOD);
         STRIPPED_WOODS.put("sandalwood",   STRIPPED_SANDALWOOD_WOOD);
         STRIPPED_WOODS.put("sandbeggar",   STRIPPED_SANDBEGGAR_WOOD);
         STRIPPED_WOODS.put("apricot",      STRIPPED_APRICOT_WOOD);
@@ -4339,7 +4298,6 @@ public class GotModBlocks {
         BRANCHES.put("nightwood", NIGHTWOOD_BRANCH);
         BRANCHES.put("purpleheart", PURPLEHEART_BRANCH);
         BRANCHES.put("tigerwood", TIGERWOOD_BRANCH);
-        BRANCHES.put("burl", BURL_BRANCH);
         BRANCHES.put("sandalwood", SANDALWOOD_BRANCH);
         BRANCHES.put("sandbeggar", SANDBEGGAR_BRANCH);
         BRANCHES.put("apricot", APRICOT_BRANCH);
@@ -4408,7 +4366,6 @@ public class GotModBlocks {
         STRIPPED_BRANCHES.put("nightwood", STRIPPED_NIGHTWOOD_BRANCH);
         STRIPPED_BRANCHES.put("purpleheart", STRIPPED_PURPLEHEART_BRANCH);
         STRIPPED_BRANCHES.put("tigerwood", STRIPPED_TIGERWOOD_BRANCH);
-        STRIPPED_BRANCHES.put("burl", STRIPPED_BURL_BRANCH);
         STRIPPED_BRANCHES.put("sandalwood", STRIPPED_SANDALWOOD_BRANCH);
         STRIPPED_BRANCHES.put("sandbeggar", STRIPPED_SANDBEGGAR_BRANCH);
         STRIPPED_BRANCHES.put("apricot", STRIPPED_APRICOT_BRANCH);

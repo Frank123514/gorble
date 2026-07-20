@@ -132,8 +132,6 @@ public final class ClientSetup {
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.PURPLEHEART_TRAPDOOR.get(), RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.TIGERWOOD_DOOR.get(),     RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.TIGERWOOD_TRAPDOOR.get(), RenderType.cutout());
-            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.BURL_DOOR.get(),     RenderType.cutout());
-            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.BURL_TRAPDOOR.get(), RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.SANDALWOOD_DOOR.get(),     RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.SANDALWOOD_TRAPDOOR.get(), RenderType.cutout());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.SANDBEGGAR_DOOR.get(),     RenderType.cutout());
@@ -306,8 +304,6 @@ public final class ClientSetup {
         event.registerEntityRenderer(boat(GotModBoatEntities.PURPLEHEART_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "purpleheart"));
         event.registerEntityRenderer(boat(GotModBoatEntities.TIGERWOOD_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "tigerwood"));
         event.registerEntityRenderer(boat(GotModBoatEntities.TIGERWOOD_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "tigerwood"));
-        event.registerEntityRenderer(boat(GotModBoatEntities.BURL_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "burl"));
-        event.registerEntityRenderer(boat(GotModBoatEntities.BURL_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "burl"));
         event.registerEntityRenderer(boat(GotModBoatEntities.SANDALWOOD_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "sandalwood"));
         event.registerEntityRenderer(boat(GotModBoatEntities.SANDALWOOD_CHEST_BOAT.get()), ctx -> new GotBoatRenderer(ctx, true,  "sandalwood"));
         event.registerEntityRenderer(boat(GotModBoatEntities.SANDBEGGAR_BOAT.get()),       ctx -> new GotBoatRenderer(ctx, false, "sandbeggar"));
@@ -429,7 +425,6 @@ public final class ClientSetup {
         event.registerBlockEntityRenderer(GotModBlockEntities.NIGHTWOOD_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.PURPLEHEART_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.TIGERWOOD_SIGN.get(), SignRenderer::new);
-        event.registerBlockEntityRenderer(GotModBlockEntities.BURL_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.SANDALWOOD_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.SANDBEGGAR_SIGN.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(GotModBlockEntities.APRICOT_SIGN.get(), SignRenderer::new);

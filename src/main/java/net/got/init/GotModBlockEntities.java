@@ -135,8 +135,6 @@ public class GotModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             TIGERWOOD_SIGN = sign("tigerwood", GotModBlocks.TIGERWOOD_SIGN, GotModBlocks.TIGERWOOD_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
-            BURL_SIGN = sign("burl", GotModBlocks.BURL_SIGN, GotModBlocks.BURL_WALL_SIGN);
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             SANDALWOOD_SIGN = sign("sandalwood", GotModBlocks.SANDALWOOD_SIGN, GotModBlocks.SANDALWOOD_WALL_SIGN);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignBlockEntity>>
             SANDBEGGAR_SIGN = sign("sandbeggar", GotModBlocks.SANDBEGGAR_SIGN, GotModBlocks.SANDBEGGAR_WALL_SIGN);

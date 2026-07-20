@@ -111,7 +111,6 @@ public final class GotTreeGrowers {
 public static final TreeGrower NIGHTWOOD            = simple("nightwood", GotConfiguredFeatures.NIGHTWOOD);
     public static final TreeGrower PURPLEHEART          = simple("purpleheart", GotConfiguredFeatures.PURPLEHEART);
     public static final TreeGrower TIGERWOOD            = simple("tigerwood", GotConfiguredFeatures.TIGERWOOD);
-    public static final TreeGrower BURL                 = simple("burl", GotConfiguredFeatures.BURL);
     public static final TreeGrower SANDALWOOD           = simple("sandalwood", GotConfiguredFeatures.SANDALWOOD);
     public static final TreeGrower SANDBEGGAR           = simple("sandbeggar", GotConfiguredFeatures.SANDBEGGAR);
     public static final TreeGrower APRICOT              = simple("apricot", GotConfiguredFeatures.APRICOT);

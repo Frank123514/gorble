@@ -75,7 +75,6 @@ public final class SeasonFoliageColorProvider {
     private static final int[] NIGHTWOOD          = { 0x506838, 0x2A3C1E, 0x6A4830, 0x484038 };
     private static final int[] PURPLEHEART        = { 0x7868A0, 0x5C4A80, 0x8C5460, 0x605868 };
     private static final int[] TIGERWOOD          = { 0x789040, 0x587030, 0xC07818, 0x686050 };
-    private static final int[] BURL               = { 0x708850, 0x507040, 0xB07020, 0x686058 };
     private static final int[] SANDALWOOD         = { 0x90A860, 0x708048, 0xC09030, 0x787060 };
     private static final int[] SANDBEGGAR         = { 0xA09858, 0x887840, 0xB07828, 0x806858 };
     private static final int[] APRICOT            = { 0x88C048, 0x60902C, 0xC87020, 0x706050 };
@@ -165,7 +164,6 @@ public final class SeasonFoliageColorProvider {
         event.register(treeColor(NIGHTWOOD),        GotModBlocks.NIGHTWOOD_LEAVES.get());
         event.register(treeColor(PURPLEHEART),        GotModBlocks.PURPLEHEART_LEAVES.get());
         event.register(treeColor(TIGERWOOD),        GotModBlocks.TIGERWOOD_LEAVES.get());
-        event.register(treeColor(BURL),        GotModBlocks.BURL_LEAVES.get());
         event.register(treeColor(SANDALWOOD),        GotModBlocks.SANDALWOOD_LEAVES.get());
         event.register(treeColor(SANDBEGGAR),        GotModBlocks.SANDBEGGAR_LEAVES.get());
         event.register(treeColor(APRICOT),        GotModBlocks.APRICOT_LEAVES.get());
