@@ -282,10 +282,17 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     // ── Structure terrain blend ───────────────────────────────────────────
-    // Same smoothstep weighting used above for subbiome/biome-border blending
-    // (see computeRawSurfaceY), just applied radially from structure pieces
-    // instead of radially from a biomemap pixel. No per-structure config —
-    // every jigsaw structure gets this for free based on its own piece boxes.
+    // Vanilla (and LOTR, which still runs vanilla 1.16's own structure-beard
+    // code almost verbatim) blends structures into terrain by modifying the
+    // 3D noise DENSITY field near a piece, using a ~12-block-radius
+    // gaussian-like falloff kernel. We don't have a density field — this
+    // generator picks one surface height per column and fills solid below
+    // it — so we approximate the same visual result by blending the target
+    // HEIGHT radially instead, but we now match vanilla's actual radius
+    // (12, not 6) and use a smooth gaussian-style falloff instead of a
+    // linear smoothstep, since a narrow linear blend reads as an abrupt
+    // slope/cliff right at the edge rather than a gradual rise into the
+    // structure.
     //
     // The blend target used to just be `box.minY() - 1`, which assumes the
     // piece sits ON TOP of untouched natural terrain (true for e.g. the
@@ -305,8 +312,12 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // behaviour exactly; a structure with its own captured ground layer at
     // row 0 sets delta=2 in its start_pool.json so the blend meets that
     // layer directly instead of tunnelling under it.
+    //
+    // IMPORTANT: this only affects chunks generated AFTER this change.
+    // Already-generated chunks are baked permanently — testing needs to
+    // happen in a fresh, never-loaded area (or a new world) to see it.
 
-    private static final float STRUCTURE_PAD_RADIUS = 6f;
+    private static final float STRUCTURE_PAD_RADIUS = 12f; // matches vanilla's actual beard radius
 
     private static float computeBlendedSurfaceY(int wx, int wz, List<StructureStart> starts) {
         float naturalY = computeRawSurfaceY(wx, wz);
@@ -319,8 +330,13 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 float dist = distanceToBox(wx, wz, box);
                 if (dist >= STRUCTURE_PAD_RADIUS) continue;
 
-                float t      = Mth.clamp(dist / STRUCTURE_PAD_RADIUS, 0f, 1f);
-                float weight = t * t * (3f - 2f * t); // smoothstep, same as line ~222
+                // Gaussian-style falloff instead of linear smoothstep — stays
+                // close to 1.0 (fully the structure's floor) for a while near
+                // the piece, then eases out gradually, rather than a straight
+                // ramp across the whole radius. Same shape family vanilla's
+                // own beard kernel uses (exp of squared distance).
+                float t      = dist / STRUCTURE_PAD_RADIUS; // 0..1
+                float weight = (float) Math.exp(-(t * t) * 4.0);
 
                 int groundLevelDelta = 1; // vanilla default — matches old hardcoded behaviour
                 if (piece instanceof PoolElementStructurePiece pep) {
@@ -328,7 +344,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 }
                 float floorY = box.minY() + groundLevelDelta - 2;
 
-                blended = Mth.lerp(weight, floorY, blended);
+                blended = Mth.lerp(weight, blended, floorY);
             }
         }
         return blended;
