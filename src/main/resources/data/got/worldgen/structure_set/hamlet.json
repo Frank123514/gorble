@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "got:hamlet",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 34,
+    "separation": 14,
+    "salt": 8823410,
+    "frequency_reduction_method": "legacy_type_1",
+    "frequency": 0.15,
+    "locate_offset": [0, 0, 0]
+  }
+}

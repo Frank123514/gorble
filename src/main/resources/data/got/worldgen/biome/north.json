@@ -74,7 +74,10 @@
       "got:wheatgrass",
       "got:noisy_patch_coarse_dirt",
       "got:short_reeds_patch",
-      "got:reeds_patch"
+      "got:reeds_patch",
+      "got:nettle",
+      "got:wild_mustard_plant",
+      "got:wild_cucumber"
     ],
     [
       "minecraft:freeze_top_layer"

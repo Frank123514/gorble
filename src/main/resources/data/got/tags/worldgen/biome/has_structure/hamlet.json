@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "got:reach",
+    "got:lower_reach",
+    "got:riverlands",
+    "got:westerlands",
+    "got:western_hills",
+    "got:vale",
+    "got:stormlands",
+    "got:sheepshead_hills"
+  ]
+}

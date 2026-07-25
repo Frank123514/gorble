@@ -9,8 +9,7 @@
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right": {
-      "model": "got:block/smooth_basalt_rock_stairs_inner",
-      "uvlock": true
+      "model": "got:block/smooth_basalt_rock_stairs_inner"
     },
     "facing=east,half=bottom,shape=outer_left": {
       "model": "got:block/smooth_basalt_rock_stairs_outer",
@@ -18,8 +17,7 @@
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right": {
-      "model": "got:block/smooth_basalt_rock_stairs_outer",
-      "uvlock": true
+      "model": "got:block/smooth_basalt_rock_stairs_outer"
     },
     "facing=east,half=top,shape=straight": {
       "model": "got:block/smooth_basalt_rock_stairs",
@@ -107,8 +105,7 @@
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left": {
-      "model": "got:block/smooth_basalt_rock_stairs_inner",
-      "uvlock": true
+      "model": "got:block/smooth_basalt_rock_stairs_inner"
     },
     "facing=south,half=bottom,shape=inner_right": {
       "model": "got:block/smooth_basalt_rock_stairs_inner",
@@ -116,8 +113,7 @@
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left": {
-      "model": "got:block/smooth_basalt_rock_stairs_outer",
-      "uvlock": true
+      "model": "got:block/smooth_basalt_rock_stairs_outer"
     },
     "facing=south,half=bottom,shape=outer_right": {
       "model": "got:block/smooth_basalt_rock_stairs_outer",

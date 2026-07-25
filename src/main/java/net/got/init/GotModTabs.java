@@ -4,6 +4,7 @@ import net.got.GotMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
@@ -30,6 +31,21 @@ public class GotModTabs {
             }
         } catch (Exception ignored) {
             // Block has no item form yet — skip silently
+        }
+    }
+
+    /**
+     * Overloaded safe wrapper for Item objects (boats, chest boats, etc.)
+     */
+    private static void safeAccept(CreativeModeTab.Output output,
+                                   Item item) {
+        try {
+            ItemStack stack = new ItemStack(item);
+            if (!stack.isEmpty() && stack.getCount() == 1) {
+                output.accept(stack);
+            }
+        } catch (Exception ignored) {
+            // Item not registered yet — skip silently
         }
     }
 
@@ -84,8 +100,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ALDER_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.ALDER_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ALDER_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ALDER_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ALDER_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.ALDER_BOAT.get());
+                        safeAccept(output, GotModItems.ALDER_CHEST_BOAT.get());
 
                         // ── Apple ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.APPLE_LOG.get());
@@ -113,8 +129,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.APPLE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.APPLE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.APPLE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.APPLE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.APPLE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.APPLE_BOAT.get());
+                        safeAccept(output, GotModItems.APPLE_CHEST_BOAT.get());
 
                         // ── Ash ───────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ASH_LOG.get());
@@ -142,8 +158,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASH_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.ASH_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ASH_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ASH_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ASH_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.ASH_BOAT.get());
+                        safeAccept(output, GotModItems.ASH_CHEST_BOAT.get());
 
                         // ── Aspen ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ASPEN_LOG.get());
@@ -171,8 +187,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ASPEN_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.ASPEN_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ASPEN_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ASPEN_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ASPEN_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.ASPEN_BOAT.get());
+                        safeAccept(output, GotModItems.ASPEN_CHEST_BOAT.get());
 
                         // ── Thatch (light and dark) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.LIGHT_THATCH.get());
@@ -216,8 +232,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BEECH_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.BEECH_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BEECH_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BEECH_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BEECH_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BEECH_BOAT.get());
+                        safeAccept(output, GotModItems.BEECH_CHEST_BOAT.get());
 
                         // ── Birch (vanilla) ───────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BIRCH_ROOFING.get());
@@ -257,8 +273,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACKBARK_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.BLACKBARK_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BLACKBARK_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACKBARK_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACKBARK_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BLACKBARK_BOAT.get());
+                        safeAccept(output, GotModItems.BLACKBARK_CHEST_BOAT.get());
 
                         // ── Black Cottonwood ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_LOG.get());
@@ -286,8 +302,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACK_COTTONWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.BLACK_COTTONWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BLACK_COTTONWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACK_COTTONWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACK_COTTONWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BLACK_COTTONWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.BLACK_COTTONWOOD_CHEST_BOAT.get());
 
                         // ── Bloodwood ─────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLOODWOOD_LOG.get());
@@ -315,8 +331,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLOODWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.BLOODWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BLOODWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLOODWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLOODWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BLOODWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.BLOODWOOD_CHEST_BOAT.get());
 
                         // ── Blue Mahoe ────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_LOG.get());
@@ -344,8 +360,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLUE_MAHOE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.BLUE_MAHOE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BLUE_MAHOE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLUE_MAHOE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLUE_MAHOE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BLUE_MAHOE_BOAT.get());
+                        safeAccept(output, GotModItems.BLUE_MAHOE_CHEST_BOAT.get());
 
                         // ── Cedar ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CEDAR_LOG.get());
@@ -373,8 +389,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CEDAR_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.CEDAR_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.CEDAR_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CEDAR_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CEDAR_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.CEDAR_BOAT.get());
+                        safeAccept(output, GotModItems.CEDAR_CHEST_BOAT.get());
 
                         // ── Cherry (vanilla) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CHERRY_ROOFING.get());
@@ -426,8 +442,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CHESTNUT_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.CHESTNUT_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.CHESTNUT_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CHESTNUT_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CHESTNUT_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.CHESTNUT_BOAT.get());
+                        safeAccept(output, GotModItems.CHESTNUT_CHEST_BOAT.get());
 
                         // ── Cinnamon ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CINNAMON_LOG.get());
@@ -455,8 +471,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CINNAMON_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.CINNAMON_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.CINNAMON_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CINNAMON_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CINNAMON_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.CINNAMON_BOAT.get());
+                        safeAccept(output, GotModItems.CINNAMON_CHEST_BOAT.get());
 
                         // ── Clove ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CLOVE_LOG.get());
@@ -484,8 +500,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CLOVE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.CLOVE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.CLOVE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CLOVE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CLOVE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.CLOVE_BOAT.get());
+                        safeAccept(output, GotModItems.CLOVE_CHEST_BOAT.get());
 
                         // ── Cottonwood ────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.COTTONWOOD_LOG.get());
@@ -513,8 +529,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.COTTONWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.COTTONWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.COTTONWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.COTTONWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.COTTONWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.COTTONWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.COTTONWOOD_CHEST_BOAT.get());
 
                         // ── Dark Oak (vanilla) ────────────────────────────────────────
                         safeAccept(output, GotModBlocks.DARK_OAK_ROOFING.get());
@@ -554,8 +570,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.EBONY_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.EBONY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.EBONY_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.EBONY_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.EBONY_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.EBONY_BOAT.get());
+                        safeAccept(output, GotModItems.EBONY_CHEST_BOAT.get());
 
                         // ── Elm ───────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ELM_LOG.get());
@@ -583,8 +599,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ELM_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.ELM_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ELM_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ELM_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ELM_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.ELM_BOAT.get());
+                        safeAccept(output, GotModItems.ELM_CHEST_BOAT.get());
 
                         // ── Fir ───────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.FIR_LOG.get());
@@ -612,8 +628,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.FIR_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.FIR_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.FIR_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.FIR_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.FIR_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.FIR_BOAT.get());
+                        safeAccept(output, GotModItems.FIR_CHEST_BOAT.get());
 
                         // ── Goldenheart ───────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.GOLDENHEART_LOG.get());
@@ -641,8 +657,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.GOLDENHEART_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.GOLDENHEART_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.GOLDENHEART_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.GOLDENHEART_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.GOLDENHEART_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.GOLDENHEART_BOAT.get());
+                        safeAccept(output, GotModItems.GOLDENHEART_CHEST_BOAT.get());
 
                         // ── Hawthorn ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.HAWTHORN_LOG.get());
@@ -670,8 +686,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HAWTHORN_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.HAWTHORN_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.HAWTHORN_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.HAWTHORN_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.HAWTHORN_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.HAWTHORN_BOAT.get());
+                        safeAccept(output, GotModItems.HAWTHORN_CHEST_BOAT.get());
 
                         // ── Ironwood ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.IRONWOOD_LOG.get());
@@ -699,8 +715,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.IRONWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.IRONWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.IRONWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.IRONWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.IRONWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.IRONWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.IRONWOOD_CHEST_BOAT.get());
 
                         // ── Jungle (vanilla) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.JUNGLE_ROOFING.get());
@@ -740,8 +756,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LINDEN_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.LINDEN_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.LINDEN_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.LINDEN_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.LINDEN_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.LINDEN_BOAT.get());
+                        safeAccept(output, GotModItems.LINDEN_CHEST_BOAT.get());
 
                         // ── Mahogany ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.MAHOGANY_LOG.get());
@@ -769,8 +785,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MAHOGANY_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.MAHOGANY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.MAHOGANY_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.MAHOGANY_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.MAHOGANY_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.MAHOGANY_BOAT.get());
+                        safeAccept(output, GotModItems.MAHOGANY_CHEST_BOAT.get());
 
                         // ── Mangrove (vanilla) ────────────────────────────────────────
                         safeAccept(output, GotModBlocks.MANGROVE_ROOFING.get());
@@ -810,8 +826,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MAPLE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.MAPLE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.MAPLE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.MAPLE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.MAPLE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.MAPLE_BOAT.get());
+                        safeAccept(output, GotModItems.MAPLE_CHEST_BOAT.get());
 
                         // ── Myrrh ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.MYRRH_LOG.get());
@@ -839,8 +855,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.MYRRH_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.MYRRH_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.MYRRH_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.MYRRH_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.MYRRH_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.MYRRH_BOAT.get());
+                        safeAccept(output, GotModItems.MYRRH_CHEST_BOAT.get());
 
                         // ── Oak (vanilla) ─────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.OAK_ROOFING.get());
@@ -888,8 +904,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PINE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PINE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PINE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PINE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PINE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PINE_BOAT.get());
+                        safeAccept(output, GotModItems.PINE_CHEST_BOAT.get());
 
                         // ── Redwood ───────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.REDWOOD_LOG.get());
@@ -917,8 +933,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.REDWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.REDWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.REDWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.REDWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.REDWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.REDWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.REDWOOD_CHEST_BOAT.get());
 
                         // ── Sentinal ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.SENTINAL_LOG.get());
@@ -946,8 +962,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SENTINAL_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.SENTINAL_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.SENTINAL_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SENTINAL_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SENTINAL_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.SENTINAL_BOAT.get());
+                        safeAccept(output, GotModItems.SENTINAL_CHEST_BOAT.get());
 
                         // ── Soldier Pine ──────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_LOG.get());
@@ -975,8 +991,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SOLDIER_PINE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.SOLDIER_PINE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.SOLDIER_PINE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SOLDIER_PINE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SOLDIER_PINE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.SOLDIER_PINE_BOAT.get());
+                        safeAccept(output, GotModItems.SOLDIER_PINE_CHEST_BOAT.get());
 
                         // ── Spruce (vanilla) ──────────────────────────────────────────
                         safeAccept(output, GotModBlocks.SPRUCE_ROOFING.get());
@@ -1016,8 +1032,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WEIRWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.WEIRWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.WEIRWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WEIRWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WEIRWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.WEIRWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.WEIRWOOD_CHEST_BOAT.get());
 
                         // ── Willow ────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WILLOW_LOG.get());
@@ -1045,8 +1061,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WILLOW_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.WILLOW_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.WILLOW_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WILLOW_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WILLOW_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.WILLOW_BOAT.get());
+                        safeAccept(output, GotModItems.WILLOW_CHEST_BOAT.get());
 
                         // ── Wormtree ──────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.WORMTREE_LOG.get());
@@ -1074,8 +1090,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WORMTREE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.WORMTREE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.WORMTREE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WORMTREE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WORMTREE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.WORMTREE_BOAT.get());
+                        safeAccept(output, GotModItems.WORMTREE_CHEST_BOAT.get());
 
                         // ── Nightwood ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.NIGHTWOOD_LOG.get());
@@ -1103,8 +1119,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NIGHTWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.NIGHTWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.NIGHTWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.NIGHTWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.NIGHTWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.NIGHTWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.NIGHTWOOD_CHEST_BOAT.get());
 
                         // ── Purpleheart ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PURPLEHEART_LOG.get());
@@ -1132,8 +1148,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PURPLEHEART_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PURPLEHEART_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PURPLEHEART_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PURPLEHEART_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PURPLEHEART_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PURPLEHEART_BOAT.get());
+                        safeAccept(output, GotModItems.PURPLEHEART_CHEST_BOAT.get());
 
                         // ── Tigerwood ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.TIGERWOOD_LOG.get());
@@ -1161,8 +1177,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.TIGERWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.TIGERWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.TIGERWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.TIGERWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.TIGERWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.TIGERWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.TIGERWOOD_CHEST_BOAT.get());
 
 
                         // ── Sandalwood ─────────────────────────────────────────────────────
@@ -1191,8 +1207,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SANDALWOOD_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.SANDALWOOD_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.SANDALWOOD_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SANDALWOOD_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SANDALWOOD_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.SANDALWOOD_BOAT.get());
+                        safeAccept(output, GotModItems.SANDALWOOD_CHEST_BOAT.get());
 
                         // ── Sandbeggar ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.SANDBEGGAR_LOG.get());
@@ -1220,8 +1236,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.SANDBEGGAR_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.SANDBEGGAR_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.SANDBEGGAR_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SANDBEGGAR_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.SANDBEGGAR_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.SANDBEGGAR_BOAT.get());
+                        safeAccept(output, GotModItems.SANDBEGGAR_CHEST_BOAT.get());
 
                         // ── Apricot ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.APRICOT_LOG.get());
@@ -1249,8 +1265,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.APRICOT_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.APRICOT_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.APRICOT_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.APRICOT_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.APRICOT_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.APRICOT_BOAT.get());
+                        safeAccept(output, GotModItems.APRICOT_CHEST_BOAT.get());
 
                         // ── Blackthorn ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.BLACKTHORN_LOG.get());
@@ -1278,8 +1294,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.BLACKTHORN_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.BLACKTHORN_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BLACKTHORN_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACKTHORN_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACKTHORN_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BLACKTHORN_BOAT.get());
+                        safeAccept(output, GotModItems.BLACKTHORN_CHEST_BOAT.get());
 
                         // ── Cherry ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.RED_CHERRY_LOG.get());
@@ -1359,16 +1375,16 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WHITE_CHERRY_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.RED_CHERRY_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.RED_CHERRY_BOAT.get());
+                        safeAccept(output, GotModItems.RED_CHERRY_CHEST_BOAT.get());
                         safeAccept(output, Block.byItem(GotModItems.BLACK_CHERRY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.BLACK_CHERRY_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACK_CHERRY_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.BLACK_CHERRY_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.BLACK_CHERRY_BOAT.get());
+                        safeAccept(output, GotModItems.BLACK_CHERRY_CHEST_BOAT.get());
                         safeAccept(output, Block.byItem(GotModItems.WHITE_CHERRY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.WHITE_CHERRY_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WHITE_CHERRY_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.WHITE_CHERRY_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.WHITE_CHERRY_BOAT.get());
+                        safeAccept(output, GotModItems.WHITE_CHERRY_CHEST_BOAT.get());
 
                         // ── Crabapple ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.CRABAPPLE_LOG.get());
@@ -1396,8 +1412,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.CRABAPPLE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.CRABAPPLE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.CRABAPPLE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CRABAPPLE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.CRABAPPLE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.CRABAPPLE_BOAT.get());
+                        safeAccept(output, GotModItems.CRABAPPLE_CHEST_BOAT.get());
 
                         // ── Date Palm ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.DATE_PALM_LOG.get());
@@ -1425,8 +1441,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.DATE_PALM_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.DATE_PALM_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.DATE_PALM_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.DATE_PALM_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.DATE_PALM_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.DATE_PALM_BOAT.get());
+                        safeAccept(output, GotModItems.DATE_PALM_CHEST_BOAT.get());
 
                         // ── Fig ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.FIG_LOG.get());
@@ -1454,8 +1470,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.FIG_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.FIG_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.FIG_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.FIG_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.FIG_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.FIG_BOAT.get());
+                        safeAccept(output, GotModItems.FIG_CHEST_BOAT.get());
 
                         // ── Lemon ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.LEMON_LOG.get());
@@ -1483,8 +1499,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LEMON_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.LEMON_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.LEMON_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.LEMON_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.LEMON_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.LEMON_BOAT.get());
+                        safeAccept(output, GotModItems.LEMON_CHEST_BOAT.get());
 
                         // ── Lime ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.LIME_LOG.get());
@@ -1512,8 +1528,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.LIME_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.LIME_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.LIME_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.LIME_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.LIME_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.LIME_BOAT.get());
+                        safeAccept(output, GotModItems.LIME_CHEST_BOAT.get());
 
                         // ── Olive ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.OLIVE_LOG.get());
@@ -1541,8 +1557,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.OLIVE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.OLIVE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.OLIVE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.OLIVE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.OLIVE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.OLIVE_BOAT.get());
+                        safeAccept(output, GotModItems.OLIVE_CHEST_BOAT.get());
 
                         // ── Orange ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ORANGE_LOG.get());
@@ -1570,8 +1586,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ORANGE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.ORANGE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ORANGE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ORANGE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ORANGE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.ORANGE_BOAT.get());
+                        safeAccept(output, GotModItems.ORANGE_CHEST_BOAT.get());
 
                         // ── Peach ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PEACH_LOG.get());
@@ -1599,8 +1615,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PEACH_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PEACH_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PEACH_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PEACH_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PEACH_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PEACH_BOAT.get());
+                        safeAccept(output, GotModItems.PEACH_CHEST_BOAT.get());
 
                         // ── Pear ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PEAR_LOG.get());
@@ -1628,8 +1644,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PEAR_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PEAR_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PEAR_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PEAR_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PEAR_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PEAR_BOAT.get());
+                        safeAccept(output, GotModItems.PEAR_CHEST_BOAT.get());
 
                         // ── Persimmon ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PERSIMMON_LOG.get());
@@ -1657,8 +1673,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PERSIMMON_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PERSIMMON_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PERSIMMON_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PERSIMMON_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PERSIMMON_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PERSIMMON_BOAT.get());
+                        safeAccept(output, GotModItems.PERSIMMON_CHEST_BOAT.get());
 
                         // ── Pink Ivory ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PINK_IVORY_LOG.get());
@@ -1686,8 +1702,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PINK_IVORY_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PINK_IVORY_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PINK_IVORY_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PINK_IVORY_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PINK_IVORY_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PINK_IVORY_BOAT.get());
+                        safeAccept(output, GotModItems.PINK_IVORY_CHEST_BOAT.get());
 
                         // ── Plum ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PLUM_LOG.get());
@@ -1715,8 +1731,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PLUM_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PLUM_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PLUM_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PLUM_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PLUM_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PLUM_BOAT.get());
+                        safeAccept(output, GotModItems.PLUM_CHEST_BOAT.get());
 
                         // ── Pomegranate ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.POMEGRANATE_LOG.get());
@@ -1744,8 +1760,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.POMEGRANATE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.POMEGRANATE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.POMEGRANATE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.POMEGRANATE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.POMEGRANATE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.POMEGRANATE_BOAT.get());
+                        safeAccept(output, GotModItems.POMEGRANATE_CHEST_BOAT.get());
 
                         // ── Prune ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.PRUNE_LOG.get());
@@ -1773,8 +1789,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.PRUNE_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.PRUNE_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.PRUNE_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PRUNE_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.PRUNE_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.PRUNE_BOAT.get());
+                        safeAccept(output, GotModItems.PRUNE_CHEST_BOAT.get());
 
                         // ── Almond ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.ALMOND_LOG.get());
@@ -1802,8 +1818,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.ALMOND_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.ALMOND_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.ALMOND_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ALMOND_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.ALMOND_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.ALMOND_BOAT.get());
+                        safeAccept(output, GotModItems.ALMOND_CHEST_BOAT.get());
 
                         // ── Nutmeg ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.NUTMEG_LOG.get());
@@ -1831,8 +1847,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.NUTMEG_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.NUTMEG_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.NUTMEG_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.NUTMEG_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.NUTMEG_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.NUTMEG_BOAT.get());
+                        safeAccept(output, GotModItems.NUTMEG_CHEST_BOAT.get());
 
                         // ── Hemlock ─────────────────────────────────────────────────────
                         safeAccept(output, GotModBlocks.HEMLOCK_LOG.get());
@@ -1860,8 +1876,8 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.HEMLOCK_ROOFING_WALL.get());
                         safeAccept(output, Block.byItem(GotModItems.HEMLOCK_SIGN.get()));
                         safeAccept(output, Block.byItem(GotModItems.HEMLOCK_HANGING_SIGN.get()));
-                        safeAccept(output, Block.byItem(GotModItems.HEMLOCK_BOAT.get()));
-                        safeAccept(output, Block.byItem(GotModItems.HEMLOCK_CHEST_BOAT.get()));
+                        safeAccept(output, GotModItems.HEMLOCK_BOAT.get());
+                        safeAccept(output, GotModItems.HEMLOCK_CHEST_BOAT.get());
 
 
                     })

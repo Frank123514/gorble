@@ -114,22 +114,30 @@ public class GotBroadleafTrunkPlacer extends TrunkPlacer {
     }
 
     // Chance that any given diagonal corner gets a root buttress at all —
-    // keeps the flare irregular instead of a perfect symmetric ring.
-    private static final float BUTTRESS_CHANCE = 0.75F;
+    // kept high (not guaranteed) so the flare still reads as slightly
+    // irregular rather than a perfectly symmetric collar, while being
+    // reliable enough to actually show up on nearly every tree.
+    private static final float BUTTRESS_CHANCE = 0.95F;
     // Chance that a placed buttress root climbs a second block for variation.
-    private static final float TALL_BUTTRESS_CHANCE = 0.35F;
+    // Kept high so the flare is chunky and tall like the reference, with just
+    // occasional shorter roots for variety.
+    private static final float TALL_BUTTRESS_CHANCE = 0.85F;
 
-    // The four diagonal offsets around the trunk core (no cardinals — those
-    // stay open so the flare reads as root-like rather than a solid ring).
-    private static final int[][] BUTTRESS_CORNERS = { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    // The four cardinal offsets around the trunk core. Cardinal (not
+    // diagonal) offsets are what makes each root sit flush against a full
+    // face of the 1x1 trunk column instead of only touching it edge-to-edge
+    // at a corner, which is what made the base look like four disconnected
+    // floating posts instead of a merged root flare.
+    private static final int[][] BUTTRESS_CORNERS = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
 
     /**
      * Flares the base of the trunk out a little, like the root crown of a
      * real hardwood, instead of letting it rise as a plain 1×1 column.
-     * Only the diagonal corners around the core get stumpy buttress-root
-     * logs (cardinals stay open), each corner appears only some of the
+     * The four cardinal positions around the core get stumpy buttress-root
+     * logs flush against the trunk's faces, each appears only some of the
      * time, and some buttresses climb a second block, so the flare reads
-     * as irregular roots rather than a perfectly symmetric collar.
+     * as irregular roots merged into the trunk rather than a perfectly
+     * symmetric collar of separate posts.
      */
     private void thickenBase(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> placer,
                              RandomSource random, BlockPos startPos, TreeConfiguration config) {

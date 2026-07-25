@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gorble-2f80baa5c8aeba9f22031ac7b0196d07ec998a7e.iml" filepath="$PROJECT_DIR$/.idea/modules/gorble-2f80baa5c8aeba9f22031ac7b0196d07ec998a7e.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gorble3.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gorble3.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gorble3.test.iml" filepath="$PROJECT_DIR$/.idea/modules/gorble3.test.iml" />
     </modules>
   </component>
 </project>

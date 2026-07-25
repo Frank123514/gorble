@@ -202,9 +202,9 @@ public final class SeasonFoliageColorProvider {
                         bc.getColor(Blocks.SHORT_GRASS.defaultBlockState(),
                                 level, pos, tintIndex),
                 GotModBlocks.DEVILGRASS.get(),
-                GotModBlocks.PIPERS_GRASS.get(),
                 GotModBlocks.WHEATGRASS.get(),
-                GotModBlocks.IVY.get()
+                GotModBlocks.IVY.get(),
+                GotModBlocks.NETTLE.get()
         );
     }
 

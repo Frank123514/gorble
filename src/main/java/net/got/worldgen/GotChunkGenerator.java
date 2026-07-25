@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -285,6 +286,25 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // (see computeRawSurfaceY), just applied radially from structure pieces
     // instead of radially from a biomemap pixel. No per-structure config —
     // every jigsaw structure gets this for free based on its own piece boxes.
+    //
+    // The blend target used to just be `box.minY() - 1`, which assumes the
+    // piece sits ON TOP of untouched natural terrain (true for e.g. the
+    // watchtower/windmill, which don't capture any ground blocks of their
+    // own). That assumption breaks for a structure like the hamlet, which
+    // has its own dirt/grass foundation baked directly into row 0 of its
+    // NBT (box.minY() itself IS the walkable grass surface, not the natural
+    // terrain a fixed 1 block below it). Blending toward box.minY()-1 in
+    // that case digs a moat exactly 1 block deep around the whole structure
+    // instead of meeting its actual surface.
+    //
+    // `ground_level_delta` (set per template_pool element, default 1) is
+    // the existing vanilla-standard way of describing how many blocks of a
+    // piece are "buried" below its own natural ground line. We reuse it
+    // here instead of inventing new per-structure config: delta=1 (the
+    // default, used by watchtower/windmill) reproduces the old box.minY()-1
+    // behaviour exactly; a structure with its own captured ground layer at
+    // row 0 sets delta=2 in its start_pool.json so the blend meets that
+    // layer directly instead of tunnelling under it.
 
     private static final float STRUCTURE_PAD_RADIUS = 6f;
 
@@ -301,7 +321,12 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
                 float t      = Mth.clamp(dist / STRUCTURE_PAD_RADIUS, 0f, 1f);
                 float weight = t * t * (3f - 2f * t); // smoothstep, same as line ~222
-                float floorY = box.minY() - 1;
+
+                int groundLevelDelta = 1; // vanilla default — matches old hardcoded behaviour
+                if (piece instanceof PoolElementStructurePiece pep) {
+                    groundLevelDelta = pep.getElement().getGroundLevelDelta();
+                }
+                float floorY = box.minY() + groundLevelDelta - 2;
 
                 blended = Mth.lerp(weight, floorY, blended);
             }
@@ -369,7 +394,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
             int y = minY + i;
             states[i] = y <= surface ? Blocks.STONE.defaultBlockState()
                     : y <= sea       ? settings.value().defaultFluid()
-                      : Blocks.AIR.defaultBlockState();
+                    : Blocks.AIR.defaultBlockState();
         }
         return new NoiseColumn(minY, states);
     }

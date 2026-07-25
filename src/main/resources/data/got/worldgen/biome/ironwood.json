@@ -51,14 +51,14 @@
       "minecraft:glow_lichen",
       "got:patch_tall_grass",
       "got:patch_grass",
-      "got:aspen",
       "got:sentinal",
       "got:soldier_pine",
       "got:hawthorn",
       "got:ironwood",
       "got:fir",
       "got:pine",
-      "got:weirwood"
+      "got:weirwood",
+      "got:aspen"
     ],
     [
       "minecraft:freeze_top_layer"
