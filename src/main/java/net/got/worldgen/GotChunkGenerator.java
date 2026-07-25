@@ -44,8 +44,26 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // Detail layer — smaller ridges on top of the base shape
     private static final double DETAIL_SCALE_X = 80.0;
     private static final double DETAIL_SCALE_Z = 80.0;
-    private static final double DETAIL_WEIGHT   = 0.35; // how much detail contributes vs base
+    private static final double DETAIL_WEIGHT   = 0.4; // how much detail contributes vs base
 
+    // ── Fractal (fBm) tuning ─────────────────────────────────────────────
+    // Base and detail are each a small sum of noise octaves instead of one
+    // flat simplex sample — dialed back to just 2-3 octaves apiece so it
+    // roughs the terrain up without turning into busy, layered noise.
+    private static final int    BASE_OCTAVES    = 3;
+    private static final int    DETAIL_OCTAVES  = 2;
+    private static final double FBM_PERSISTENCE = 0.5;
+    private static final double FBM_LACUNARITY  = 2.13;
+    private static final double FBM_ROTATION    = 0.5;
+
+    // ── Subbiome height blend ────────────────────────────────────────────
+    // Exponent applied to the subbiome's own [0,1] noise value to get a
+    // continuous (never a hard edge) height-blend weight — see
+    // computeRawSurfaceY. Higher = boost concentrates into fewer, more
+    // pronounced peaks with a wider gentle falloff around them; lower =
+    // more of the biome gets a mild lift. 4-6 reads as "occasional broad
+    // hills," not "the whole biome is a bit bumpy."
+    private static final double HEIGHT_BLEND_CURVE = 5.0;
 
     // ── Codec ──────────────────────────────────────────────────────────────
 
@@ -207,37 +225,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 float gridH = p.baseHeight();
                 float gridV = p.heightVariation();
 
-                // If this grid cell is a land biome, check whether a
-                // terrain-overriding subbiome is active at this pixel's world
-                // position and lerp its h/v values in-place.
-                // The bicubic spline then blends these modified values with the
-                // surrounding unmodified cells — EXACTLY the same interpolation
-                // used for all normal biome borders.
-                if (!p.isWater()) {
-                    int gridWorldX = Math.round(
-                            (px - BiomemapLoader.getWidth()  * 0.5f) * BiomemapLoader.MAP_SCALE);
-                    int gridWorldZ = Math.round(
-                            (pz - BiomemapLoader.getHeight() * 0.5f) * BiomemapLoader.MAP_SCALE);
-
-                    float[] noiseOut = { -1f };
-                    SubbiomeDef sub = SubbiomeResolver.resolveTerrain(
-                            p.biomeId(), gridWorldX, gridWorldZ, noiseOut);
-
-                    if (sub != null) {
-                        // Map noise [threshold, 1] → blend weight [0, 1], smoothstepped.
-                        float t      = (float) sub.threshold();
-                        float range  = Math.max(1f - t, 0.001f);
-                        float blendT = Mth.clamp((noiseOut[0] - t) / range, 0f, 1f);
-                        float weight = blendT * blendT * (3f - 2f * blendT);
-
-                        float subH = sub.baseHeight()      >= 0 ? sub.baseHeight()      : gridH;
-                        float subV = sub.heightVariation() >= 0 ? sub.heightVariation() : gridV;
-
-                        gridH = Mth.lerp(weight, gridH, subH);
-                        gridV = Mth.lerp(weight, gridV, subV);
-                    }
-                }
-
                 h[row * 4 + col] = gridH;
                 v[row * 4 + col] = gridV;
             }
@@ -246,13 +233,51 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float rawHeight       = bicubicBspline(h, fx, fz);
         float heightVariation = bicubicBspline(v, fx, fz);
 
+        // Subbiome height — sampled ONCE at the real world position
+        // (worldX, worldZ), not at the surrounding biomemap pixels' own
+        // fixed grid coordinates (that mismatch was the earlier bug: a
+        // continuous noise patch checked at 4 fixed points ~45 blocks
+        // apart missed it almost every time).
+        //
+        // This is deliberately NOT a threshold cutoff. A hard "in the
+        // patch or not" test always looks like a stamped-down plateau no
+        // matter how wide you make the edge blend, because everything
+        // past that edge is still 100% one value or the other. Instead
+        // the extra height is blended in proportionally to the raw noise
+        // value itself, continuously, same as the base terrain shape —
+        // there's no "edge" anywhere, just smoothly more or less height
+        // depending on where the noise happens to be higher or lower.
+        // HEIGHT_BLEND_CURVE pulls that curve toward the noise field's
+        // peaks (via Math.pow) so most of the biome stays close to normal
+        // and the boost concentrates into broad, gently-rounded rises —
+        // real hills, not the whole biome getting uniformly bumpy.
+        GotBiomeTerrainParams.Params nearest = paramsAt(ipx, ipz);
+        if (!nearest.isWater()) {
+            float[] noiseOut = { -1f };
+            SubbiomeDef sub = SubbiomeResolver.resolveTerrain(
+                    nearest.biomeId(), worldX, worldZ, noiseOut);
+
+            if (sub != null && noiseOut[0] >= 0f) {
+                float weight = (float) Math.pow(Mth.clamp(noiseOut[0], 0f, 1f), HEIGHT_BLEND_CURVE);
+
+                float subH = sub.baseHeight()      >= 0 ? sub.baseHeight()      : rawHeight;
+                float subV = sub.heightVariation() >= 0 ? sub.heightVariation() : heightVariation;
+
+                rawHeight       = Mth.lerp(weight, rawHeight, subH);
+                heightVariation = Mth.lerp(weight, heightVariation, subV);
+            }
+        }
+
         double ox = noiseOffX + worldX;
         double oz = noiseOffZ + worldZ;
 
-        // Base shape — large smooth hills
-        double base   = simplexEval(noisePerm,       ox / NOISE_SCALE_X,  oz / NOISE_SCALE_Z);
-        // Detail layer — smaller rolling ridges, weighted down
-        double detail = simplexEval(noisePermDetail, ox / DETAIL_SCALE_X, oz / DETAIL_SCALE_Z);
+        // Base shape — light fbm (few octaves) so it's rougher than one flat
+        // sample but doesn't turn into busy, over-layered noise.
+        double base   = fbm(noisePerm,       ox, oz, NOISE_SCALE_X,   NOISE_SCALE_Z,
+                BASE_OCTAVES,   FBM_PERSISTENCE, FBM_LACUNARITY);
+        // Detail layer — same idea at a smaller wavelength, weighted down.
+        double detail = fbm(noisePermDetail, ox, oz, DETAIL_SCALE_X,  DETAIL_SCALE_Z,
+                DETAIL_OCTAVES, FBM_PERSISTENCE, FBM_LACUNARITY);
 
         double noiseVal = (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
 
@@ -460,6 +485,44 @@ public final class GotChunkGenerator extends ChunkGenerator {
                 "[GoT] Y=%d  raw=%.1f  nearestPixelBase=%.0f  px=(%d,%d)",
                 surfY, rawY, p.baseHeight(), px, pz));
         info.add("[GoT] " + SlopeSurfaceResolver.debugInfo(p.biomeId(), pos.getX(), pos.getZ()));
+    }
+
+    // ── Fractal Brownian Motion ──────────────────────────────────────────
+    // Sums a couple of octaves of the base simplex noise: each octave is
+    // sampled at a higher frequency (freq *= lacunarity) and contributes
+    // less (amp *= persistence) than the one before it. Coordinates are
+    // also rotated per-octave so the lattice of one octave doesn't stack
+    // visibly on top of another. Result stays in roughly [-1, 1], same
+    // range as a single simplexEval sample, so it's a drop-in replacement
+    // anywhere a flat sample was used before.
+    private static double fbm(short[] perm, double worldX, double worldZ,
+                              double scaleX, double scaleZ,
+                              int octaves, double persistence, double lacunarity) {
+        double sx = worldX / scaleX;
+        double sz = worldZ / scaleZ;
+
+        double sum   = 0.0;
+        double norm  = 0.0;
+        double amp   = 1.0;
+        double freq  = 1.0;
+
+        for (int o = 0; o < octaves; o++) {
+            double nx = sx * freq;
+            double nz = sz * freq;
+
+            double angle = o * FBM_ROTATION;
+            double cs = Math.cos(angle), sn = Math.sin(angle);
+            double rx = nx * cs - nz * sn;
+            double rz = nx * sn + nz * cs;
+
+            sum  += simplexEval(perm, rx, rz) * amp;
+            norm += amp;
+
+            amp  *= persistence;
+            freq *= lacunarity;
+        }
+
+        return norm > 0 ? sum / norm : 0.0;
     }
 
     // ── Inline 2-D simplex helpers ─────────────────────────────────────────

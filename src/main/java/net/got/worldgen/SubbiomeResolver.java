@@ -158,30 +158,40 @@ public final class SubbiomeResolver {
     /**
      * Terrain-aware variant of {@link #resolve}.
      *
-     * <p>Returns the matching {@link SubbiomeDef} if it has a terrain override
-     * ({@link SubbiomeDef#hasTerrainOverride()} is true), so the chunk generator
-     * can blend in the subbiome's {@code base_height} / {@code height_variation}.
-     * Returns {@code null} when there is no match or the match has no terrain
-     * override (terrain should be left as-is in that case).
-     *
-     * <p>Also exposes the raw normalised noise value via {@code noiseOut[0]}
-     * so the caller can compute an edge-blend weight without re-sampling noise.
+     * <p>Unlike {@link #resolve} (which is a hard threshold cutoff — you're
+     * either in the patch or you're not, because a named biome/feature swap
+     * genuinely needs a boundary), this is deliberately NOT threshold-gated.
+     * Height should never have a hard edge — a threshold cutoff always
+     * looks like a stamped-down patch no matter how wide you make the
+     * blend band at the edge, because everything outside the band is
+     * still 100% untouched. Instead this always returns the first def
+     * with a terrain override (if the parent has one) along with the
+     * raw, continuous, normalised noise value at this exact position, so
+     * the chunk generator can blend height proportionally to the same
+     * smooth noise field the patch shape is drawn from — the terrain
+     * just gradually rises and falls with the noise, same as the base
+     * terrain shape does, with the "hills" simply being where that noise
+     * happens to peak.
      *
      * @param parentBiomeId parent biome ID
      * @param worldX        world X block coordinate
      * @param worldZ        world Z block coordinate
      * @param noiseOut      single-element array; receives the normalised noise
-     *                      value [0,1] of the first matching def, or -1 if no
-     *                      match.  Pass {@code null} to skip.
-     * @return the first matching {@link SubbiomeDef} with a terrain override,
-     *         or {@code null}
+     *                      value [0,1] at this position for the returned def,
+     *                      or -1 if the parent has no terrain-override
+     *                      subbiome at all. Pass {@code null} to skip.
+     * @return the first {@link SubbiomeDef} with a terrain override for this
+     *         parent, or {@code null} if the parent has none
      */
     @Nullable
     public static SubbiomeDef resolveTerrain(String parentBiomeId,
                                              int worldX, int worldZ,
                                              float @Nullable [] noiseOut) {
         List<SubbiomeDef> defs = subbiomeMap.get(parentBiomeId);
-        if (defs == null || defs.isEmpty()) return null;
+        if (defs == null || defs.isEmpty()) {
+            if (noiseOut != null) noiseOut[0] = -1f;
+            return null;
+        }
 
         SimplexNoise n = noise;
         for (SubbiomeDef def : defs) {
@@ -191,10 +201,8 @@ public final class SubbiomeResolver {
                     (worldZ + def.noiseOffsetZ()) / def.noiseScale()
             );
             double normalised = (raw + 1.0) * 0.5;
-            if (normalised >= def.threshold()) {
-                if (noiseOut != null) noiseOut[0] = (float) normalised;
-                return def;
-            }
+            if (noiseOut != null) noiseOut[0] = (float) normalised;
+            return def;
         }
         if (noiseOut != null) noiseOut[0] = -1f;
         return null;

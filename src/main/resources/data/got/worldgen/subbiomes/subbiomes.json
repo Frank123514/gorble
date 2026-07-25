@@ -8,8 +8,8 @@
     },
     {
       "subbiome": "got:north_hills",
-      "noise_scale": 280.0,
-      "threshold": 0.94,
+      "noise_scale": 180.0,
+      "threshold": 0.80,
       "priority": 0,
       "base_height": 95,
       "height_variation": 22
