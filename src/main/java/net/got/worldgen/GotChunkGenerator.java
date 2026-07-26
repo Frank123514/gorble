@@ -216,57 +216,66 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float[] h = new float[16];
         float[] v = new float[16];
 
+        // Subbiome height is blended in PER CELL, before the bicubic pass,
+        // not applied once afterward from a single "nearest" pixel.
+        //
+        // Each of the 16 surrounding biomemap pixels can belong to a
+        // different parent biome, each with its own subbiome list (e.g.
+        // got:north_hills has different noise_scale/base_height under
+        // got:north vs. got:wolfswood). If we only sampled the single
+        // nearest pixel's parent, that parent — and therefore the whole
+        // noise_scale/base_height it blends toward — would flip the
+        // instant "nearest" crosses a biomemap pixel boundary, producing
+        // a hard seam right at that boundary even though the base
+        // terrain around it is smoothly bicubic-interpolated. Resolving
+        // the override separately for each of the 16 cells (using that
+        // cell's own parent, but the noise sampled at the true world
+        // position so patch shape stays pixel-accurate) means the
+        // bicubic pass smooths across parent borders exactly the same
+        // way it already smooths the plain terrain.
+        //
+        // The override itself is still NOT a threshold cutoff — a hard
+        // "in the patch or not" test always looks like a stamped-down
+        // plateau no matter how wide the edge blend is, since everything
+        // past that edge is still 100% one value or the other. Instead
+        // the extra height is blended in proportionally to the raw noise
+        // value itself, continuously, same as the base terrain shape.
+        // HEIGHT_BLEND_CURVE pulls that curve toward the noise field's
+        // peaks (via Math.pow) so most of the biome stays close to normal
+        // and the boost concentrates into broad, gently-rounded rises —
+        // real hills, not the whole biome getting uniformly bumpy.
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 int px = ipx + col - 1;
                 int pz = ipz + row - 1;
                 GotBiomeTerrainParams.Params p = paramsAt(px, pz);
 
-                float gridH = p.baseHeight();
-                float gridV = p.heightVariation();
+                float cellH = p.baseHeight();
+                float cellV = p.heightVariation();
 
-                h[row * 4 + col] = gridH;
-                v[row * 4 + col] = gridV;
+                if (!p.isWater()) {
+                    float[] noiseOut = { -1f };
+                    SubbiomeDef sub = SubbiomeResolver.resolveTerrain(
+                            p.biomeId(), worldX, worldZ, noiseOut);
+
+                    if (sub != null && noiseOut[0] >= 0f) {
+                        float weight = (float) Math.pow(Mth.clamp(noiseOut[0], 0f, 1f), HEIGHT_BLEND_CURVE);
+
+                        float subH = sub.baseHeight()      >= 0 ? sub.baseHeight()      : cellH;
+                        float subV = sub.heightVariation() >= 0 ? sub.heightVariation() : cellV;
+
+                        cellH = Mth.lerp(weight, cellH, subH);
+                        cellV = Mth.lerp(weight, cellV, subV);
+                    }
+                }
+
+                h[row * 4 + col] = cellH;
+                v[row * 4 + col] = cellV;
             }
         }
 
         float rawHeight       = bicubicBspline(h, fx, fz);
         float heightVariation = bicubicBspline(v, fx, fz);
-
-        // Subbiome height — sampled ONCE at the real world position
-        // (worldX, worldZ), not at the surrounding biomemap pixels' own
-        // fixed grid coordinates (that mismatch was the earlier bug: a
-        // continuous noise patch checked at 4 fixed points ~45 blocks
-        // apart missed it almost every time).
-        //
-        // This is deliberately NOT a threshold cutoff. A hard "in the
-        // patch or not" test always looks like a stamped-down plateau no
-        // matter how wide you make the edge blend, because everything
-        // past that edge is still 100% one value or the other. Instead
-        // the extra height is blended in proportionally to the raw noise
-        // value itself, continuously, same as the base terrain shape —
-        // there's no "edge" anywhere, just smoothly more or less height
-        // depending on where the noise happens to be higher or lower.
-        // HEIGHT_BLEND_CURVE pulls that curve toward the noise field's
-        // peaks (via Math.pow) so most of the biome stays close to normal
-        // and the boost concentrates into broad, gently-rounded rises —
-        // real hills, not the whole biome getting uniformly bumpy.
-        GotBiomeTerrainParams.Params nearest = paramsAt(ipx, ipz);
-        if (!nearest.isWater()) {
-            float[] noiseOut = { -1f };
-            SubbiomeDef sub = SubbiomeResolver.resolveTerrain(
-                    nearest.biomeId(), worldX, worldZ, noiseOut);
-
-            if (sub != null && noiseOut[0] >= 0f) {
-                float weight = (float) Math.pow(Mth.clamp(noiseOut[0], 0f, 1f), HEIGHT_BLEND_CURVE);
-
-                float subH = sub.baseHeight()      >= 0 ? sub.baseHeight()      : rawHeight;
-                float subV = sub.heightVariation() >= 0 ? sub.heightVariation() : heightVariation;
-
-                rawHeight       = Mth.lerp(weight, rawHeight, subH);
-                heightVariation = Mth.lerp(weight, heightVariation, subV);
-            }
-        }
 
         double ox = noiseOffX + worldX;
         double oz = noiseOffZ + worldZ;
