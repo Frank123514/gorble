@@ -5,7 +5,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -22,13 +24,17 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public final class GotChunkGenerator extends ChunkGenerator {
@@ -184,6 +190,56 @@ public final class GotChunkGenerator extends ChunkGenerator {
         WallWorldGen.buildWallInChunk(chunk);
         SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
         PuddleSurfaceResolver.apply(chunk, region);
+    }
+
+    // ── Structure placement — water avoidance ───────────────────────────────
+    // vanilla/NeoForge don't expose a generic "keep structures away from
+    // water" knob in structure_set/structure JSON — the only built-in filter
+    // is a biome check at a single anchor point, which doesn't help here
+    // since a puddle/pond sits inside the same biome as the dry land around
+    // it. So: let vanilla place structures as normal, then veto any start
+    // whose footprint (expanded by a buffer) overlaps a flooded column.
+
+    /** Buffer (blocks) added around a structure's bounding box when checking for nearby water. */
+    private static final int STRUCTURE_WATER_AVOID_RADIUS = 12;
+    /** How many columns to sample per axis across the (expanded) bounding box. */
+    private static final int STRUCTURE_WATER_SAMPLE_STEPS = 12;
+
+    @Override
+    public void createStructures(@NotNull RegistryAccess registryAccess, @NotNull ChunkGeneratorStructureState structureState,
+                                 @NotNull StructureManager structures, @NotNull ChunkAccess chunk,
+                                 @NotNull StructureTemplateManager templateManager, @NotNull ResourceKey<Level> dimension) {
+        super.createStructures(registryAccess, structureState, structures, chunk, templateManager, dimension);
+
+        for (Map.Entry<Structure, StructureStart> entry : chunk.getAllStarts().entrySet()) {
+            StructureStart start = entry.getValue();
+            if (start == null || !start.isValid()) continue;
+
+            if (isNearWater(start.getBoundingBox())) {
+                LOGGER.info("[GoT] Cancelled structure {} at {} — too close to water",
+                        entry.getKey(), start.getBoundingBox());
+                chunk.setStartForStructure(entry.getKey(), StructureStart.INVALID_START);
+            }
+        }
+    }
+
+    /** True if any sampled column within {@code box} (expanded by the avoid radius) is flooded. */
+    private boolean isNearWater(BoundingBox box) {
+        int minX = box.minX() - STRUCTURE_WATER_AVOID_RADIUS;
+        int maxX = box.maxX() + STRUCTURE_WATER_AVOID_RADIUS;
+        int minZ = box.minZ() - STRUCTURE_WATER_AVOID_RADIUS;
+        int maxZ = box.maxZ() + STRUCTURE_WATER_AVOID_RADIUS;
+        int sea  = getSeaLevel();
+
+        int stepX = Math.max(1, (maxX - minX) / STRUCTURE_WATER_SAMPLE_STEPS);
+        int stepZ = Math.max(1, (maxZ - minZ) / STRUCTURE_WATER_SAMPLE_STEPS);
+
+        for (int x = minX; x <= maxX; x += stepX) {
+            for (int z = minZ; z <= maxZ; z += stepZ) {
+                if (computeSurfaceY(x, z) <= sea) return true;
+            }
+        }
+        return false;
     }
 
     // ── Surface height ─────────────────────────────────────────────────────
@@ -412,7 +468,18 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public int getBaseHeight(int x, int z, Heightmap.@NotNull Types type,
                              @NotNull LevelHeightAccessor level,
                              @NotNull RandomState random) {
-        return computeSurfaceY(x, z);
+        int surface = computeSurfaceY(x, z);
+        // WORLD_SURFACE(_WG) means "top of whatever occupies this column,
+        // fluids included" — vanilla semantics treat water as non-air, so a
+        // flooded column's surface is the water level, not the lakebed.
+        // Returning the raw stone floor here was the root cause of
+        // structures (which project onto this heightmap) landing at pond-
+        // bottom elevation instead of on dry ground.
+        if (type == Heightmap.Types.WORLD_SURFACE || type == Heightmap.Types.WORLD_SURFACE_WG) {
+            int sea = getSeaLevel();
+            if (surface < sea) return sea;
+        }
+        return surface;
     }
 
     @Override

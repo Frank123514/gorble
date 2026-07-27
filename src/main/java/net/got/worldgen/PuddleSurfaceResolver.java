@@ -26,15 +26,17 @@ import org.slf4j.Logger;
  *       it for real water (tagged {@link FluidTags#WATER}). Direct
  *       block check, not a height-vs-sea-level guess, so it finds
  *       puddles at any elevation.</li>
- *   <li><b>Coverage pass</b> — samples
- *       {@link GotChunkGenerator#computeTerrainNoiseAtWorldPos} — the
- *       exact same base+detail noise field used for terrain shape,
- *       not a separate noise system — then fades that value down by
- *       distance from the nearest wet column (only in the outer half
- *       of {@link #HALO_RADIUS}, so the threshold crossing happens
- *       gradually instead of at a hard circular edge). One threshold
- *       decides coverage, a second (higher) threshold on that same
- *       value decides mud vs quagmire.</li>
+ *   <li><b>Coverage pass</b> — samples a dedicated, domain-warped
+ *       {@link SimplexNoise} field (own seeded instances, same
+ *       low-freq-envelope + warped-high-freq-speckle technique as
+ *       {@link net.got.worldgen.biome.placers.NoisyBlockPatchFeature}
+ *       uses for mud splashes) — <b>not</b> the terrain-shape noise —
+ *       then fades that value down by distance from the nearest wet
+ *       column (only in the outer half of {@link #HALO_RADIUS}, so
+ *       the threshold crossing happens gradually instead of at a
+ *       hard circular edge). One threshold decides coverage, a
+ *       second (higher) threshold on that same value decides mud vs
+ *       quagmire.</li>
  * </ol>
  *
  * <p>Only natural ground blocks ({@link #isTargetBlock}) are ever
@@ -50,19 +52,42 @@ public final class PuddleSurfaceResolver {
     private static final int WATER_CHECK_HEIGHT = 6;
 
     /** Radius (blocks) the muddy halo reaches out from a wet column. */
-    private static final double HALO_RADIUS = 9.0;
+    private static final double HALO_RADIUS = 15.0;
 
-    /** Coverage cutoff on the terrain noise value — lower = fatter halo. */
-    private static final double COVERAGE_THRESHOLD = -0.05;
-    /** Mud-vs-quagmire cutoff on the same noise value — higher = more
-     *  quagmire, less mud (only values above coverage threshold matter). */
+    /** Radius (blocks) from a wet column where coverage is forced regardless
+     *  of noise, so ground touching water is never left uncovered. */
+    private static final double GUARANTEED_COVER_RADIUS = 2.5;
+
+    /** Coverage cutoff on the noise value — lower = fatter halo. */
+    private static final double COVERAGE_THRESHOLD = -0.20;
+    /** Mud-vs-quagmire cutoff — compared against a high-freq-dominated
+     *  split value (see mudSplit below), not the coverage value directly.
+     *  Higher = more quagmire, less mud. */
     private static final double MUD_THRESHOLD = 0.15;
 
+    // ── Dedicated coverage noise ─────────────────────────────────────────────
+    // Low-freq envelope (overall blotch shape) + domain-warped high-freq
+    // layer (speckled/ragged edges) — same technique NoisyBlockPatchFeature
+    // uses for mud splashes — sampled directly in world space, independent
+    // of the terrain-shape noise. This is what actually gives the coverage
+    // field its speckled, organic look instead of one smooth gradient.
+    private static final double SCALE_LOW  = 0.045; // overall blotch/cluster size
+    private static final double SCALE_HIGH = 0.30;  // fine speckle grain size
+    private static final double SCALE_WARP = 0.16;  // warp-offset frequency
+    private static final double WARP_WEIGHT = 0.6;  // how much the speckle layer contributes
+    private static final double WARP_AMP    = HALO_RADIUS * 0.6; // world-unit warp displacement
+
+    private static volatile SimplexNoise noiseLow   = SimplexNoise.seeded(0L);
+    private static volatile SimplexNoise noiseWarpX = SimplexNoise.seeded(1L);
+    private static volatile SimplexNoise noiseWarpZ = SimplexNoise.seeded(2L);
+    private static volatile SimplexNoise noiseHigh  = SimplexNoise.seeded(3L);
+
     public static void initSeed(long worldSeed) {
-        // No separate noise state to (re)seed — this resolver samples
-        // GotChunkGenerator's own terrain noise directly, so it's already
-        // seeded correctly the moment GotChunkGenerator.initNoise runs.
-        LOGGER.debug("[GoT] PuddleSurfaceResolver ready (sampling terrain noise directly), world seed {}", worldSeed);
+        noiseLow   = SimplexNoise.seeded(worldSeed ^ 0x51ED270B39ACL);
+        noiseWarpX = SimplexNoise.seeded(worldSeed ^ 0x9E3779B97F4A7C15L);
+        noiseWarpZ = SimplexNoise.seeded(worldSeed ^ 0xC0FFEE1AFADEL);
+        noiseHigh  = SimplexNoise.seeded(worldSeed ^ 0xB16B00B5DEADBEEFL);
+        LOGGER.debug("[GoT] PuddleSurfaceResolver noise (re)seeded for world seed {}", worldSeed);
     }
 
     private PuddleSurfaceResolver() {}
@@ -108,7 +133,7 @@ public final class PuddleSurfaceResolver {
             }
         }
 
-        // ── Pass 2: terrain-noise coverage, faded by wet-distance ──────────
+        // ── Pass 2: dedicated speckle-noise coverage, faded by wet-distance ─
         int placedThisChunk = 0;
         double searchRadius = HALO_RADIUS + 1.0;
 
@@ -125,8 +150,17 @@ public final class PuddleSurfaceResolver {
                 int wx = baseX + lx;
                 int wz = baseZ + lz;
 
-                // Same noise field the terrain itself is built from.
-                double value = GotChunkGenerator.computeTerrainNoiseAtWorldPos(wx, wz);
+                // Dedicated domain-warped coverage noise — NOT the terrain
+                // shape noise. Low-freq envelope gives the overall blotch,
+                // the warped high-freq layer breaks it up into the ragged,
+                // speckled edges puddles/quagmire actually want.
+                double low    = noiseLow.eval(wx * SCALE_LOW, wz * SCALE_LOW);
+                double warpXv = noiseWarpX.eval(wx * SCALE_WARP, wz * SCALE_WARP);
+                double warpZv = noiseWarpZ.eval(wx * SCALE_WARP + 31.7, wz * SCALE_WARP + 17.3);
+                double high   = noiseHigh.eval(
+                        (wx + warpXv * WARP_AMP) * SCALE_HIGH,
+                        (wz + warpZv * WARP_AMP) * SCALE_HIGH);
+                double value  = low + WARP_WEIGHT * high;
 
                 // Radial falloff by distance from the nearest wet column —
                 // only fades in the outer half of the halo, so the threshold
@@ -135,14 +169,24 @@ public final class PuddleSurfaceResolver {
                 double falloff = dist <= 0.5 ? 0.0 : (dist - 0.5) * 2.0;
                 value -= falloff * falloff * 0.6;
 
-                if (value < COVERAGE_THRESHOLD) continue;
+                if (value < COVERAGE_THRESHOLD && nearestWetDist > GUARANTEED_COVER_RADIUS) continue;
 
                 BlockPos localPos = new BlockPos(lx, surfaceY, lz);
                 BlockState curr = chunk.getBlockState(localPos);
                 if (curr.isAir() || curr.liquid()) continue;
                 if (!isTargetBlock(curr)) continue;
 
-                BlockState replacement = value > MUD_THRESHOLD
+                // Mud-vs-quagmire split gets its OWN value, weighted toward
+                // the high-frequency layer. Reusing `value` directly (which
+                // is low-freq-dominated) meant the mud threshold only ever
+                // triggered near the smooth peaks of the low-freq envelope,
+                // where there's barely any high-freq wiggle left to rough up
+                // the edge — that's what read as "blocky" next to quagmire's
+                // jagged boundary (which sits on the steep flank, where the
+                // high-freq layer actually has room to matter).
+                double mudSplit = high + 0.35 * low;
+
+                BlockState replacement = mudSplit > MUD_THRESHOLD
                         ? Blocks.MUD.defaultBlockState()
                         : GotModBlocks.QUAGMIRE.get().defaultBlockState();
 

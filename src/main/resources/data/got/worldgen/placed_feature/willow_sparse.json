@@ -32,6 +32,12 @@
       "type": "minecraft:biome"
     },
     {
+      "type": "got:near_fluid",
+      "fluid_tag": "minecraft:water",
+      "radius": 3,
+      "vertical_range": 1
+    },
+    {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
         "type": "minecraft:would_survive",

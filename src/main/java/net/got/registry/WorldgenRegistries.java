@@ -7,11 +7,13 @@ import net.got.worldgen.GotBiomeSource;
 import net.got.worldgen.biome.placers.NoisyBlockPatchFeature;
 import net.got.worldgen.biome.placers.BoulderFeature;
 import net.got.worldgen.biome.placers.TripleReedsPatchFeature;
+import net.got.worldgen.biome.placers.NearFluidFilter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -71,6 +73,22 @@ public final class WorldgenRegistries {
             () -> new BoulderFeature(BoulderFeature.CONFIG_CODEC));
 
     /* ------------------------------------------------------------------ */
+    /* Placement modifiers                                                  */
+    /* ------------------------------------------------------------------ */
+
+    public static final DeferredRegister<PlacementModifierType<?>> PLACEMENT_MODIFIER_TYPES =
+            DeferredRegister.create(Registries.PLACEMENT_MODIFIER_TYPE, GotMod.MODID);
+
+    /**
+     * Requires a matching fluid within a radius (not just the exact
+     * candidate block) — see {@link NearFluidFilter}. Usage: add
+     * {@code {"type": "got:near_fluid", "fluid_tag": "minecraft:water",
+     * "radius": 3}} to a placed_feature's placement list.
+     */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<PlacementModifierType<?>, PlacementModifierType<NearFluidFilter>> NEAR_FLUID =
+            PLACEMENT_MODIFIER_TYPES.register("near_fluid", () -> () -> NearFluidFilter.CODEC);
+
+    /* ------------------------------------------------------------------ */
     /* Registration                                                         */
     /* ------------------------------------------------------------------ */
 
@@ -85,6 +103,7 @@ public final class WorldgenRegistries {
         CHUNK_GENERATORS.register(bus);
         BIOME_SOURCES   .register(bus);
         FEATURES        .register(bus);
+        PLACEMENT_MODIFIER_TYPES.register(bus);
         System.out.println("[GoT] Worldgen registries registered to event bus");
     }
 
