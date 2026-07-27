@@ -40,13 +40,7 @@
       "got:ore_grey_granite_rock",
       "got:ore_limestone_rock",
       "got:ore_flint_rock",
-      "got:ore_slate_rock",
-      "got:wild_cotton",
-      "got:wild_onion",
-      "got:wild_garlic",
-      "got:wild_carrot",
-      "got:wild_cabbage",
-      "got:blackberry_bush"
+      "got:ore_slate_rock"
     ],
     [],
     [],
@@ -54,10 +48,16 @@
       "minecraft:glow_lichen",
       "got:patch_tall_grass",
       "got:patch_grass",
+      "got:blackberry_bush",
       "got:boulder",
-      "got:limestone_boulder",
       "got:grey_granite_boulder",
-      "got:slate_boulder"
+      "got:limestone_boulder",
+      "got:slate_boulder",
+      "got:wild_cabbage",
+      "got:wild_carrot",
+      "got:wild_cotton",
+      "got:wild_garlic",
+      "got:wild_onion"
     ],
     [
       "minecraft:freeze_top_layer"

@@ -49,11 +49,19 @@
     [],
     [
       "minecraft:glow_lichen",
-      "minecraft:patch_tall_grass_2",
-      "minecraft:patch_grass_plain",
+      "got:patch_tall_grass",
+      "got:patch_grass",
       "got:beech",
-      "got:maple"
-
+      "got:maple",
+      "got:oak",
+      "got:wild_strawberry",
+      "got:blackberry_bush",
+      "got:forget_me_not",
+      "got:nightshade",
+      "got:shrub",
+      "got:wheatgrass",
+      "got:noisy_patch_coarse_dirt",
+      "got:noisy_patch_podzol"
     ],
     [
       "minecraft:freeze_top_layer"
@@ -65,12 +73,6 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      {
-        "type": "minecraft:wolf",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 8
-      },
       {
         "type": "minecraft:rabbit",
         "maxCount": 3,
@@ -84,16 +86,10 @@
         "weight": 8
       },
       {
-        "type": "got:northman",
-        "weight": 5,
-        "minCount": 1,
-        "maxCount": 3
-      },
-      {
-        "type": "got:stark_levy",
-        "weight": 3,
-        "minCount": 1,
-        "maxCount": 2
+        "type": "got:got_stag",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 6
       }
     ],
     "misc": [],

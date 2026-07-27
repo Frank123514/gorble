@@ -1,5 +1,5 @@
 {
-  "feature": "got:acacia",
+  "feature": "got:spruce",
   "placement": [
     {
       "type": "minecraft:count",
@@ -8,10 +8,14 @@
         "distribution": [
           {
             "data": 0,
-            "weight": 150
+            "weight": 15
           },
           {
             "data": 1,
+            "weight": 12
+          },
+          {
+            "data": 5,
             "weight": 1
           }
         ]
@@ -36,7 +40,7 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "minecraft:acacia_sapling",
+          "Name": "minecraft:spruce_sapling",
           "Properties": {
             "stage": "0"
           }

@@ -49,10 +49,10 @@
       "got:patch_grass",
       "got:oak_sparse",
       "got:acacia_sparse",
-      "got:shrub",
       "got:boulder",
-      "got:limestone_boulder",
       "got:grey_granite_boulder",
+      "got:limestone_boulder",
+      "got:shrub",
       "got:slate_boulder",
       "got:noisy_patch_sand",
       "got:noisy_patch_mud"

@@ -1,6 +1,12 @@
 {
   "got:north": [
     {
+      "subbiome": "got:subbiome/beech_maple_forest",
+      "noise_scale": 400,
+      "threshold": 0.85,
+      "priority": 0
+    },
+    {
       "subbiome": "got:subbiome/wheat_field",
       "noise_scale": 240.0,
       "threshold": 0.85,
@@ -8,10 +14,10 @@
     },
     {
       "subbiome": "got:north_hills",
-      "noise_scale": 180.0,
-      "threshold": 0.91,
+      "noise_scale": 230.0,
+      "threshold": 1.0,
       "priority": 0,
-      "base_height": 95,
+      "base_height": 85,
       "height_variation": 22
     }
   ],
@@ -20,7 +26,7 @@
     {
       "subbiome": "got:subbiome/wheat_field",
       "noise_scale": 240.0,
-      "threshold": 0.85,
+      "threshold": 0.90,
       "priority": 0
     }
   ],

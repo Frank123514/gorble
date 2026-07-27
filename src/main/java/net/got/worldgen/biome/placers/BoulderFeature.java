@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.got.worldgen.SimplexNoise;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -17,19 +18,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Places a single rounded, partially-embedded boulder cluster — an irregular
+ * Places a single rounded, partially-embedded boulder mound — an irregular
  * lumpy rock pile instead of vanilla's {@code minecraft:forest_rock}, which
  * just drops one block on the surface.
  *
  * <h2>Shape</h2>
  * A main vertically-squashed sphere ({@code height_scale} controls the
  * squash) centered a bit below the found surface, so it pokes up as a mound
- * with a naturally grounded, buried base instead of floating. One or two
- * smaller "shoulder" lobes are fused onto the side, offset lower than the
- * main mass, so the boulder reads as an asymmetric rock pile with a stepped
- * silhouette rather than a single perfect dome. Per-column simplex noise
- * jitters each lobe's effective radius (with its own noise offset) so the
- * outline is lumpy/rocky rather than smooth.
+ * with a naturally grounded, buried base instead of floating. At most one
+ * smaller "shoulder" lobe is fused tightly onto the side, offset lower than
+ * the main mass, so the boulder reads as a single compact mound with a
+ * slightly stepped silhouette rather than a scattered cluster of separate
+ * rocks. Per-column simplex noise jitters each lobe's effective radius (with
+ * its own noise offset) so the outline is lumpy/rocky rather than perfectly
+ * smooth, without reading as "scattered."
+ *
+ * <h2>Placement safety</h2>
+ * Before placing anything, the whole footprint (a box around the boulder,
+ * generous enough to cover every lobe plus jitter) is scanned up front. If
+ * that scan finds water/lava, any log or leaf block (i.e. a tree), or any
+ * other solid block that isn't one of {@code targets} and isn't naturally
+ * replaceable (grass, flowers, snow layers, etc.) — which in practice means
+ * a structure or other foreign object — placement is aborted entirely with
+ * no partial boulder left behind. Structures generate before decoration
+ * features in vanilla's chunk pipeline, so by the time this feature runs any
+ * structure blocks are already physically in the world and get caught by
+ * this same "foreign block" check.
  *
  * <h2>JSON example</h2>
  * <pre>{@code
@@ -61,7 +75,7 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
                     .optionalFieldOf("height_scale", 0.75)
                     .forGetter(Config::heightScale),
             Codec.doubleRange(0.0, 1.0)
-                    .optionalFieldOf("jitter", 0.3)
+                    .optionalFieldOf("jitter", 0.2)
                     .forGetter(Config::jitter)
     ).apply(inst, Config::new));
 
@@ -96,29 +110,32 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
         List<Lobe> lobes = new ArrayList<>();
         lobes.add(new Lobe(mainCenter, radius, heightScale, 0.0, 0.0));
 
-        // Fuse one or two smaller "shoulder" lobes onto the main mass,
-        // offset to a side and sitting lower, so the boulder reads as an
-        // asymmetric rock pile with a stepped silhouette instead of a
-        // single perfect dome.
-        int extraLobes = radius >= 2 ? 1 + rand.nextInt(2) : rand.nextInt(2);
-        for (int i = 0; i < extraLobes; i++) {
+        // At most one small "shoulder" lobe, fused tightly against the main
+        // mass, so the boulder reads as one compact mound instead of a
+        // scattered pile of separate rocks. Kept close and modest in size —
+        // this is a nudge to the silhouette, not a second rock.
+        boolean hasShoulder = radius >= 2 && rand.nextFloat() < 0.5f;
+        if (hasShoulder) {
             double angle = rand.nextDouble() * Math.PI * 2;
-            double dist  = radius * (0.45 + rand.nextDouble() * 0.35);
+            double dist  = radius * (0.25 + rand.nextDouble() * 0.2);
             int lobeDx = (int) Math.round(Math.cos(angle) * dist);
             int lobeDz = (int) Math.round(Math.sin(angle) * dist);
             int lobeDy = -(1 + rand.nextInt(Math.max(1, radius / 2 + 1)));
-            double lobeRadius = radius * (0.5 + rand.nextDouble() * 0.3);
-            double lobeHeightScale = heightScale * (0.7 + rand.nextDouble() * 0.4);
+            double lobeRadius = radius * (0.45 + rand.nextDouble() * 0.25);
+            double lobeHeightScale = heightScale * (0.75 + rand.nextDouble() * 0.3);
             lobes.add(new Lobe(
                     mainCenter.offset(lobeDx, lobeDy, lobeDz),
                     lobeRadius, lobeHeightScale,
-                    (i + 1) * 37.0, (i + 1) * 71.0));
+                    37.0, 71.0));
         }
 
-        // Generous margin: shoulder lobes can sit up to ~radius*0.8 away from
-        // the main center and extend up to ~radius*1.05 further with jitter,
-        // so a small fixed radius+2 pad isn't always enough headroom.
-        int reach = radius + 4;
+        // Margin around the main center that comfortably covers every lobe
+        // plus jitter headroom. Kept tighter than before since lobes now sit
+        // much closer to the main mass.
+        int reach = radius + 3;
+
+        if (hasObstruction(level, mainCenter, reach, cfg)) return false;
+
         boolean placed = false;
         for (int dx = -reach; dx <= reach; dx++) {
             for (int dz = -reach; dz <= reach; dz++) {
@@ -129,10 +146,11 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
                     BlockState existing = level.getBlockState(pos);
 
                     if (dy >= 0) {
-                        // Above-ground portion: only build out into open air
-                        // or ground poking through (e.g. surface grass),
+                        // Above-ground portion: only build out into open air,
+                        // ground poking through (e.g. surface grass), or
+                        // naturally replaceable plants (flowers, tall grass) —
                         // never through unrelated solid terrain/structures.
-                        if (!existing.isAir() && !isTarget(existing, cfg)) continue;
+                        if (!existing.isAir() && !existing.canBeReplaced() && !isTarget(existing, cfg)) continue;
                     } else {
                         // Embedded portion: only carve into ordinary ground,
                         // never air pockets/caves/water below the surface.
@@ -172,6 +190,33 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
         return false;
     }
 
+    /**
+     * Scans the whole footprint box up front. Returns true (abort placement)
+     * if anything in the area is: a fluid (water/lava), a log or leaf block
+     * (a tree), or any other solid block that isn't a configured target and
+     * isn't naturally replaceable — which in practice covers structures and
+     * any other foreign object sitting in/near the spot.
+     */
+    private static boolean hasObstruction(WorldGenLevel level, BlockPos center, int reach, Config cfg) {
+        for (int dx = -reach; dx <= reach; dx++) {
+            for (int dz = -reach; dz <= reach; dz++) {
+                for (int dy = -reach; dy <= reach; dy++) {
+                    BlockPos pos = center.offset(dx, dy, dz);
+                    BlockState state = level.getBlockState(pos);
+
+                    if (!state.getFluidState().isEmpty()) return true;
+                    if (state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES)) return true;
+
+                    if (!state.isAir() && !state.canBeReplaced()
+                            && !isTarget(state, cfg)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private static BlockPos findSurface(WorldGenLevel level, BlockPos pos, int yRange) {
         for (int dy = yRange; dy >= -yRange; dy--) {
             BlockPos candidate = pos.above(dy);
@@ -202,7 +247,7 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
      *                     (default 0.75).
      * @param jitter       0..1 — how much the per-column radius varies for a
      *                     lumpy, irregular outline instead of a smooth dome
-     *                     (default 0.3).
+     *                     (default 0.2).
      */
     public record Config(
             BlockStateProvider block,

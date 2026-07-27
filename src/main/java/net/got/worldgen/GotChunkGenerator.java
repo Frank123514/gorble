@@ -46,16 +46,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static final double DETAIL_SCALE_Z = 80.0;
     private static final double DETAIL_WEIGHT   = 0.4; // how much detail contributes vs base
 
-    // ── Fractal (fBm) tuning ─────────────────────────────────────────────
-    // Base and detail are each a small sum of noise octaves instead of one
-    // flat simplex sample — dialed back to just 2-3 octaves apiece so it
-    // roughs the terrain up without turning into busy, layered noise.
-    private static final int    BASE_OCTAVES    = 3;
-    private static final int    DETAIL_OCTAVES  = 2;
-    private static final double FBM_PERSISTENCE = 0.5;
-    private static final double FBM_LACUNARITY  = 2.13;
-    private static final double FBM_ROTATION    = 0.5;
-
     // ── Subbiome height blend ────────────────────────────────────────────
     // Exponent applied to the subbiome's own [0,1] noise value to get a
     // continuous (never a hard edge) height-blend weight — see
@@ -129,6 +119,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
         SlopeSurfaceResolver.initSeed(worldSeed);
+        PuddleSurfaceResolver.initSeed(worldSeed);
     }
 
     @Override
@@ -192,6 +183,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         RoadWorldGen.clearVegetationFromRoads(chunk);
         WallWorldGen.buildWallInChunk(chunk);
         SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
+        PuddleSurfaceResolver.apply(chunk, region);
     }
 
     // ── Surface height ─────────────────────────────────────────────────────
@@ -280,15 +272,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         double ox = noiseOffX + worldX;
         double oz = noiseOffZ + worldZ;
 
-        // Base shape — light fbm (few octaves) so it's rougher than one flat
-        // sample but doesn't turn into busy, over-layered noise.
-        double base   = fbm(noisePerm,       ox, oz, NOISE_SCALE_X,   NOISE_SCALE_Z,
-                BASE_OCTAVES,   FBM_PERSISTENCE, FBM_LACUNARITY);
-        // Detail layer — same idea at a smaller wavelength, weighted down.
-        double detail = fbm(noisePermDetail, ox, oz, DETAIL_SCALE_X,  DETAIL_SCALE_Z,
-                DETAIL_OCTAVES, FBM_PERSISTENCE, FBM_LACUNARITY);
-
-        double noiseVal = (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
+        double noiseVal = computeTerrainNoise(ox, oz);
 
         // ── Slopemap height bonus ──────────────────────────────────────────
         // For mountain biomes, add a bonus derived from how far this pixel
@@ -496,45 +480,29 @@ public final class GotChunkGenerator extends ChunkGenerator {
         info.add("[GoT] " + SlopeSurfaceResolver.debugInfo(p.biomeId(), pos.getX(), pos.getZ()));
     }
 
-    // ── Fractal Brownian Motion ──────────────────────────────────────────
-    // Sums a couple of octaves of the base simplex noise: each octave is
-    // sampled at a higher frequency (freq *= lacunarity) and contributes
-    // less (amp *= persistence) than the one before it. Coordinates are
-    // also rotated per-octave so the lattice of one octave doesn't stack
-    // visibly on top of another. Result stays in roughly [-1, 1], same
-    // range as a single simplexEval sample, so it's a drop-in replacement
-    // anywhere a flat sample was used before.
-    private static double fbm(short[] perm, double worldX, double worldZ,
-                              double scaleX, double scaleZ,
-                              int octaves, double persistence, double lacunarity) {
-        double sx = worldX / scaleX;
-        double sz = worldZ / scaleZ;
+    // ── Inline 2-D simplex helpers ─────────────────────────────────────────
 
-        double sum   = 0.0;
-        double norm  = 0.0;
-        double amp   = 1.0;
-        double freq  = 1.0;
-
-        for (int o = 0; o < octaves; o++) {
-            double nx = sx * freq;
-            double nz = sz * freq;
-
-            double angle = o * FBM_ROTATION;
-            double cs = Math.cos(angle), sn = Math.sin(angle);
-            double rx = nx * cs - nz * sn;
-            double rz = nx * sn + nz * cs;
-
-            sum  += simplexEval(perm, rx, rz) * amp;
-            norm += amp;
-
-            amp  *= persistence;
-            freq *= lacunarity;
-        }
-
-        return norm > 0 ? sum / norm : 0.0;
+    /**
+     * The same base+detail noise combination used for terrain shape (see
+     * {@link #computeSurfaceY}), exposed so other resolvers can sample the
+     * exact same field instead of maintaining their own separate noise
+     * instances. {@code x}/{@code z} should already include the world-seed
+     * offset ({@code noiseOffX}/{@code noiseOffZ} + world coords) — pass
+     * raw world coordinates plus that offset, same as computeSurfaceY does
+     * internally.
+     */
+    public static double computeTerrainNoise(double x, double z) {
+        double base   = simplexEval(noisePerm,       x / NOISE_SCALE_X,  z / NOISE_SCALE_Z);
+        double detail = simplexEval(noisePermDetail, x / DETAIL_SCALE_X, z / DETAIL_SCALE_Z);
+        return (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
     }
 
-    // ── Inline 2-D simplex helpers ─────────────────────────────────────────
+    /** Same as {@link #computeTerrainNoise(double, double)} but takes raw
+     *  world coordinates directly (applies the world-seed offset itself) —
+     *  the convenient entry point for external callers. */
+    public static double computeTerrainNoiseAtWorldPos(double worldX, double worldZ) {
+        return computeTerrainNoise(noiseOffX + worldX, noiseOffZ + worldZ);
+    }
 
     private static short[] buildPerm(long seed) {
         short[] p = new short[256];

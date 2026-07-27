@@ -60,20 +60,20 @@
       "got:pine",
       "got:weirwood",
       "got:birch",
-      "got:maple",
+      "got:spruce",
       "got:spruce_shrub",
       "got:forget_me_not",
       "got:liverwort",
       "got:lungwort",
+      "got:patch_leaves",
       "got:pennyroyal",
       "got:red_rose_bush",
       "got:thistle",
       "got:thornbush",
-      "got:winter_rose_bush",
-      "got:patch_leaves",
       "got:wheatgrass",
-      "got:noisy_patch_podzol",
-      "got:noisy_patch_coarse_dirt"
+      "got:winter_rose_bush",
+      "got:noisy_patch_coarse_dirt",
+      "got:noisy_patch_podzol"
     ],
     [
       "minecraft:freeze_top_layer"
