@@ -61,7 +61,8 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             short[][] mountainDistanceField =
                     MountainSlopemapResolver.compute(pixels, w, h);
 
-            return new Prepared(pixels, w, h, params, subbiomes, slopeRules, mountainDistanceField);
+            return new Prepared(pixels, w, h, params, subbiomes, slopeRules,
+                    mountainDistanceField);
         } finally {
             profiler.pop();
         }

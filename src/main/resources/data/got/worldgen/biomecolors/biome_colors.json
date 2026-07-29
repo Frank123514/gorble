@@ -91,7 +91,7 @@
   },
   "##93A4A6": {
     "biome": "got:north_mountains",
-    "base_height": 72,
+    "base_height": 200,
     "height_variation": 30
   },
   "#2A5E2A": {
@@ -131,7 +131,7 @@
   },
   "#B5CACC": {
     "biome": "got:mountains_of_the_moon",
-    "base_height": 72,
+    "base_height": 260,
     "height_variation": 30
   },
   "#69994B": {

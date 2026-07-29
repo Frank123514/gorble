@@ -5,8 +5,10 @@ import org.slf4j.Logger;
 
 /**
  * Computes a distance-to-edge field across the biomemap for mountain biomes,
- * then uses that distance to automatically ramp terrain height upward toward
- * the interior of each mountain blob.
+ * then uses that distance to smoothly ramp terrain height up toward the
+ * interior of each mountain blob, the way real mountain flanks rise into
+ * their ridgeline instead of jumping straight to full height at the biome
+ * border.
  *
  * <h3>How it works</h3>
  * <p>When the biomemap loads, {@link #compute} runs a fast two-pass
@@ -15,15 +17,27 @@ import org.slf4j.Logger;
  * deep inside the mountain blob it sits. Edge pixels get distance 1, pixels
  * one step in get distance 2, and so on up to the core.
  *
- * <p>In {@link #slopedHeight}, that distance is converted into a height bonus
- * that is added on top of the biome's {@code base_height}. The bonus ramps
- * smoothly from 0 at the edge up to {@link #MAX_HEIGHT_BONUS} blocks at the
- * core, using a smoothstep curve so the slope feels natural rather than linear.
+ * <p>{@link #rampWeight} turns that distance into a 0-to-1 blend weight
+ * using a smoothstep curve, so the climb feels natural rather than linear:
+ * slow start right at the edge, steepest partway up the flank, levelling
+ * off toward the core.
  *
- * <p>The result: paint one flat mountain color on the biomemap, get a mountain
- * that automatically rises toward its center and slopes down at its edges —
- * exactly the slopemap behavior described by the Westeros hachure art style,
- * where ridgelines are at the center of each range and flanks radiate outward.
+ * <p>Crucially, this class only ever hands back a blend *weight* — never a
+ * height value. The caller ({@link GotChunkGenerator#computeRawSurfaceY})
+ * uses that weight, PER BIOMEMAP PIXEL, to blend that pixel's contribution
+ * to the height field between {@link #FOOT_HEIGHT} (a modest, roughly
+ * sea-level value used right at the mountain's edge) and the pixel's own
+ * configured {@code base_height} from {@code biome_colors.json} (the full
+ * peak, used once deep enough inside the blob). That blend happens BEFORE
+ * the ordinary bicubic terrain blend runs, not after — so the long-distance
+ * climb and the normal short-range biome-border blend are one continuous
+ * height field instead of two separate systems that can double up into an
+ * abrupt cliff. The height mountains actually reach at their core is always
+ * exactly whatever's painted on the biomemap color entry — the same fixed
+ * number for a narrow ridge and a sprawling range — rather than something
+ * that scales with how wide the blob of pixels is. Only how quickly/
+ * gradually that fixed height is reached depends on the blob's shape, which
+ * is the whole point of a slope.
  *
  * <h3>Biome eligibility</h3>
  * <p>A biome is treated as a mountain biome (participates in the distance
@@ -35,7 +49,7 @@ import org.slf4j.Logger;
  * <h3>Thread safety</h3>
  * <p>{@link #compute} is called off the main thread in
  * {@code MapReloadListener#prepare}. {@link #apply} pushes the result to the
- * volatile store on the main thread. Reads via {@link #slopedHeight} are safe
+ * volatile store on the main thread. Reads via {@link #rampWeight} are safe
  * any time after {@link #apply} returns.
  */
 public final class MountainSlopemapResolver {
@@ -44,34 +58,33 @@ public final class MountainSlopemapResolver {
 
     /**
      * Height-variation threshold (blocks of noise amplitude) above which a
-     * biome participates in the mountain distance field.  Biomes below this
+     * biome participates in the mountain distance field. Biomes below this
      * value are ignored by the slopemap system entirely.
-     *
-     * Set to 18 so that north_hills (30), frostfangs (75), north_mountains*
-     * (20-40) all qualify, while plains/forests (10) and rivers (1-2) do not.
      */
     public static final float MOUNTAIN_VARIATION_THRESHOLD = 30f;
 
     /**
-     * Maximum extra height (blocks) added at the core of a mountain blob —
-     * i.e. the pixel furthest from any non-mountain edge.
-     *
-     * At distance D from the edge, the bonus is:
-     *   bonus = MAX_HEIGHT_BONUS * smoothstep(min(D / RAMP_PIXELS, 1))
-     *
-     * This means a small isolated peak (narrow blob) may never reach the full
-     * bonus; only wide ranges with deep interiors get full height. That's
-     * physically correct — narrow ridges are lower than broad massifs.
-     */
-    public static final float MAX_HEIGHT_BONUS = 160f;
-
-    /**
-     * Distance in biomemap pixels over which the height ramps from 0 to full.
-     * 1 pixel = {@value BiomemapLoader#MAP_SCALE} blocks in world space.
-     * At MAP_SCALE=46, RAMP_PIXELS=12 → ramp covers ~552 world blocks (~34 chunks),
-     * giving a gradual, realistic mountain flank.
+     * Distance in biomemap pixels over which the ramp weight climbs from 0
+     * (right at the mountain's edge) to 1 (fully at the mountain biome's own
+     * configured {@code base_height}). 1 pixel = {@value BiomemapLoader#MAP_SCALE}
+     * blocks in world space. At MAP_SCALE=46, RAMP_PIXELS=10 → ramp covers
+     * ~460 world blocks (~28 chunks), giving a gradual, realistic mountain
+     * flank climbing up to its configured peak height.
      */
     public static final int RAMP_PIXELS = 10;
+
+    /**
+     * The height a mountain-classified pixel contributes to the ordinary
+     * short-range terrain blend right at its own edge (ramp weight ≈ 0),
+     * before it's had any distance to climb toward its own configured
+     * peak. Deliberately close to a typical lowland biome's base_height
+     * (most sit in the 60s) so a mountain border blends naturally into
+     * whatever's next to it instead of jumping toward the peak value
+     * immediately. This is what actually makes the climb take the full
+     * {@link #RAMP_PIXELS}-pixel distance instead of mostly happening in
+     * the first pixel or two via the ordinary bicubic blend.
+     */
+    public static final float FOOT_HEIGHT = 66f;
 
     // ── Live state ─────────────────────────────────────────────────────────
 
@@ -177,21 +190,22 @@ public final class MountainSlopemapResolver {
     // ── Query ──────────────────────────────────────────────────────────────
 
     /**
-     * Returns the height bonus in blocks for a biomemap pixel at (px, pz).
-     * Returns 0 if the pixel is not a mountain biome or the field is unloaded.
+     * Returns how far, on a 0-to-1 scale, a biomemap pixel at (px, pz) has
+     * climbed from its mountain biome's edge toward full height. Returns 0
+     * if the pixel is not a mountain biome or the field is unloaded.
      *
-     * <p>The bonus is:
+     * <p>The weight is:
      * <pre>
      *   t = clamp(distance / RAMP_PIXELS, 0, 1)
-     *   smoothT = t*t*(3 - 2*t)          // smoothstep
-     *   bonus = MAX_HEIGHT_BONUS * smoothT
+     *   weight = t*t*(3 - 2*t)          // smoothstep
      * </pre>
      *
-     * This produces a gentle S-curve: slow start at the edge, steepest slope
-     * partway up the flank, then levelling off toward the core — which is
-     * exactly how real mountain profiles look.
+     * <p>The caller uses this purely to blend toward a fixed target height —
+     * see {@link GotChunkGenerator#computeRawSurfaceY}. This class never
+     * decides what that target height is; it only decides how much of it to
+     * apply at a given point.
      */
-    public static float heightBonus(int px, int pz) {
+    public static float rampWeight(int px, int pz) {
         short[][] field = distanceField;
         if (field == null) return 0f;
         px = Math.max(0, Math.min(fieldWidth  - 1, px));
@@ -200,8 +214,7 @@ public final class MountainSlopemapResolver {
         if (d == 0) return 0f;
 
         float t = Math.min(d / (float) RAMP_PIXELS, 1f);
-        float smoothT = t * t * (3f - 2f * t); // smoothstep
-        return MAX_HEIGHT_BONUS * smoothT;
+        return t * t * (3f - 2f * t); // smoothstep
     }
 
     /** @return true if the distance field has been loaded and applied. */

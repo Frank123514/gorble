@@ -125,7 +125,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
         SlopeSurfaceResolver.initSeed(worldSeed);
-        PuddleSurfaceResolver.initSeed(worldSeed);
     }
 
     @Override
@@ -189,7 +188,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         RoadWorldGen.clearVegetationFromRoads(chunk);
         WallWorldGen.buildWallInChunk(chunk);
         SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
-        PuddleSurfaceResolver.apply(chunk, region);
     }
 
     // ── Structure placement — water avoidance ───────────────────────────────
@@ -317,6 +315,25 @@ public final class GotChunkGenerator extends ChunkGenerator {
                     }
                 }
 
+                // ── Mountain slopemap ────────────────────────────────────
+                // Ramp THIS cell's own contribution to the height field
+                // between a modest foot height (right at the mountain's
+                // edge) and its own full configured peak (deep inside the
+                // blob), based on how far this specific biomemap pixel
+                // sits from the nearest non-mountain edge. Doing this here,
+                // per cell, before the bicubic pass below, means the long
+                // slopemap climb and the ordinary short-range biome-border
+                // blend are the same continuous field — not two separate
+                // systems that can each independently pull toward the peak
+                // value and produce a cliff. Non-mountain pixels get a ramp
+                // weight of 0 and are completely unaffected.
+                if (MountainSlopemapResolver.isLoaded()) {
+                    float rampWeight = MountainSlopemapResolver.rampWeight(px, pz);
+                    if (rampWeight > 0f) {
+                        cellH = Mth.lerp(rampWeight, MountainSlopemapResolver.FOOT_HEIGHT, cellH);
+                    }
+                }
+
                 h[row * 4 + col] = cellH;
                 v[row * 4 + col] = cellV;
             }
@@ -330,29 +347,9 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
         double noiseVal = computeTerrainNoise(ox, oz);
 
-        // ── Slopemap height bonus ──────────────────────────────────────────
-        // For mountain biomes, add a bonus derived from how far this pixel
-        // sits from the edge of its mountain blob on the biomemap.
-        // Edge pixels → bonus 0.  Deep interior pixels → bonus up to MAX_HEIGHT_BONUS.
-        // The bicubic spline already smoothly interpolates between biomemap pixels,
-        // so the slope at the mountain border is already blended. The bonus is
-        // sampled at the same bilinear position and also interpolated across the
-        // 4x4 bicubic neighbourhood so it transitions seamlessly.
-        float slopemapBonus = 0f;
-        if (MountainSlopemapResolver.isLoaded()) {
-            // Sample the distance-field bonus at the same 4x4 bicubic grid as height
-            float[] sb = new float[16];
-            for (int row = 0; row < 4; row++) {
-                for (int col = 0; col < 4; col++) {
-                    int px = ipx + col - 1;
-                    int pz = ipz + row - 1;
-                    sb[row * 4 + col] = MountainSlopemapResolver.heightBonus(px, pz);
-                }
-            }
-            slopemapBonus = bicubicBspline(sb, fx, fz);
-        }
+        float finalHeight = rawHeight + (float) noiseVal * heightVariation;
 
-        return rawHeight + slopemapBonus + (float) noiseVal * heightVariation;
+        return finalHeight;
     }
 
     // ── Structure terrain blend ───────────────────────────────────────────
@@ -432,7 +429,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     // ── Bicubic B-spline ───────────────────────────────────────────────────
 
-    private static float bicubicBspline(float[] grid, float fx, float fz) {
+    static float bicubicBspline(float[] grid, float fx, float fz) {
         float r0 = cubicBspline1D(grid[0],  grid[1],  grid[2],  grid[3],  fx);
         float r1 = cubicBspline1D(grid[4],  grid[5],  grid[6],  grid[7],  fx);
         float r2 = cubicBspline1D(grid[8],  grid[9],  grid[10], grid[11], fx);
