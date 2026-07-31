@@ -56,7 +56,9 @@
     [],
     [],
     [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "got:fir_mountain_base",
+      "got:oak_mountain_base"
     ],
     [
       "minecraft:freeze_top_layer"

@@ -45,6 +45,11 @@
     { "min_slope": 22, "block": "minecraft:stone",  "depth": 2, "jitter": 4 }
   ],
 
+  "got:north": [
+    { "min_slope": 38, "block": "minecraft:stone",        "depth": 4, "jitter": 4 },
+    { "min_slope": 22, "block": "minecraft:stone",  "depth": 2, "jitter": 4 }
+  ],
+
   "got:sheepshead_hills": [
     { "min_slope": 38, "block": "minecraft:sandstone",    "depth": 4, "jitter": 5 },
     { "min_slope": 22, "block": "minecraft:coarse_dirt",  "depth": 2, "jitter": 4 }

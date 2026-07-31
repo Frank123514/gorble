@@ -61,6 +61,41 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // hills," not "the whole biome is a bit bumpy."
     private static final double HEIGHT_BLEND_CURVE = 5.0;
 
+    // How much of the ramp climb's height gain a ridge "valley" (the saddle
+    // between two branches of a mountain's skeleton, where ridgeWeight
+    // bottoms out at 0) keeps at minimum. 1.0 would mean ridgeWeight does
+    // nothing; 0.0 would let valleys collapse all the way to FOOT_HEIGHT
+    // (near sea level), turning every saddle into a lake once the mountain's
+    // own large heightVariation is layered on top. Low enough that valleys
+    // and passes read as real, prevalent, snaking low ground cutting through
+    // the range rather than a barely-dipped plateau.
+    private static final float RIDGE_VALLEY_FLOOR = 0.3f;
+
+    // The skeleton/ridgeline itself only climbs to this fraction of the
+    // full configured height — NOT all the way to 1.0. Reserving that
+    // remaining headroom for peakWeight (see computeRawSurfaceY) is what
+    // turns the ridgeline from one continuous wall at uniform crest height
+    // into a lower connecting ridge with distinct summits poking above it.
+    private static final float RIDGE_SHOULDER_FRACTION = 0.75f;
+
+    // Height-variation amplitude applied at a mountain pixel's own edge
+    // (rampWeight ≈ 0), before cellH has had any distance to lerp toward
+    // FOOT_HEIGHT. A biome only qualifies as "mountain" in the first place
+    // once its heightVariation >= MountainSlopemapResolver.MOUNTAIN_VARIATION_THRESHOLD
+    // (30+) — and until now that full amplitude applied unchanged right at
+    // the mountain's own foot, on top of a cellH that had already been
+    // lerped almost all the way down to FOOT_HEIGHT (66, barely above
+    // SEA_LEVEL 63). One column of noise landing near -1 there subtracts
+    // most/all of that 30+ variation from a base height with almost no
+    // headroom left to absorb it, carving the terrain below sea level and
+    // filling the dip with a lake — exactly the pools visible at the base
+    // of the mountains in-game. Ramping heightVariation itself up
+    // alongside cellH — mild right at the edge, the mountain's full
+    // configured amplitude only once the ramp is complete — keeps the
+    // smooth foot actually smooth instead of secretly still rolling with
+    // full mountain-scale noise on top of foot-scale height.
+    private static final float FOOT_HEIGHT_VARIATION = 8f;
+
     // ── Codec ──────────────────────────────────────────────────────────────
 
     public static final MapCodec<GotChunkGenerator> CODEC =
@@ -331,6 +366,63 @@ public final class GotChunkGenerator extends ChunkGenerator {
                     float rampWeight = MountainSlopemapResolver.rampWeight(px, pz);
                     if (rampWeight > 0f) {
                         cellH = Mth.lerp(rampWeight, MountainSlopemapResolver.FOOT_HEIGHT, cellH);
+                        cellV = Mth.lerp(rampWeight, FOOT_HEIGHT_VARIATION, cellV);
+
+                        // ridgeWeight alone would fall back to 0 in the saddle
+                        // between two ridge branches of a wide blob — but
+                        // lerping the FULL height there straight to FOOT_HEIGHT
+                        // (barely above sea level) turns every saddle into a
+                        // giant lake, since the mountain's own large
+                        // heightVariation is still active on top of it. A real
+                        // saddle is still elevated, just lower than the crest —
+                        // so only taper the portion of height the ramp climb
+                        // already earned above the foot, and keep a floor
+                        // (RIDGE_VALLEY_FLOOR) so the least-ridgey point in the
+                        // interior still keeps most of that climb instead of
+                        // collapsing toward the foot. The ridgeline itself is
+                        // also capped at RIDGE_SHOULDER_FRACTION rather than
+                        // the full 1.0 — the remaining headroom belongs to
+                        // peakWeight below, so the crest reads as a lower
+                        // connecting ridge, not a wall at uniform height.
+                        float ridgeWeight  = MountainSlopemapResolver.ridgeWeight(px, pz);
+                        float ridgeFactor  = RIDGE_VALLEY_FLOOR
+                                + (RIDGE_SHOULDER_FRACTION - RIDGE_VALLEY_FLOOR) * ridgeWeight;
+
+                        // Mountain passes: occasional low gaps cut into the
+                        // connecting ridge crest itself — the kind of saddle
+                        // a road actually threads through — rather than into
+                        // the open flanks. Gating by ridgeWeight keeps the
+                        // cut localized to the crest; pulling toward
+                        // RIDGE_VALLEY_FLOOR (not below it) keeps a pass a
+                        // walkable gap rather than a notch to sea level.
+                        float passWeight = MountainSlopemapResolver.passWeight(px, pz) * ridgeWeight;
+                        ridgeFactor = ridgeFactor + (RIDGE_VALLEY_FLOOR - ridgeFactor) * passWeight;
+
+                        // Spend the headroom the ridgeline left unclaimed
+                        // (1 - ridgeFactor) on peakWeight, which is 1 only at
+                        // a handful of selected summit points and falls off
+                        // LINEARLY (an actual pointed pyramid, not a
+                        // smoothstepped dome) — so only real summits reach
+                        // full configured height; everywhere else settles
+                        // onto the lower connecting ridge/valley beneath it.
+                        float peakWeight   = MountainSlopemapResolver.peakWeight(px, pz);
+                        float totalFactor  = ridgeFactor + peakWeight * (1f - ridgeFactor);
+
+                        // Parallel sub-ridges: a wide mountain blob folds
+                        // into several roughly-parallel ridgelines instead
+                        // of one flat interior plateau, tracing the blob's
+                        // own edge contour (see foldWeight) — narrow spurs
+                        // barely complete one fold period and stay smooth,
+                        // wide ranges fit several and read as a proper
+                        // range. Scaled by rampWeight so it fades in from
+                        // the border instead of starting sharp right at the
+                        // mountain's edge.
+                        float foldWeight = MountainSlopemapResolver.foldWeight(px, pz);
+                        float foldFactor = 1f - MountainSlopemapResolver.FOLD_STRENGTH * rampWeight * (1f - foldWeight);
+                        totalFactor *= foldFactor;
+
+                        cellH = MountainSlopemapResolver.FOOT_HEIGHT
+                                + (cellH - MountainSlopemapResolver.FOOT_HEIGHT) * totalFactor;
                     }
                 }
 

@@ -8,6 +8,7 @@ import net.got.worldgen.biome.placers.NoisyBlockPatchFeature;
 import net.got.worldgen.biome.placers.BoulderFeature;
 import net.got.worldgen.biome.placers.TripleReedsPatchFeature;
 import net.got.worldgen.biome.placers.NearFluidFilter;
+import net.got.worldgen.biome.placers.MountainBaseFilter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -87,6 +88,16 @@ public final class WorldgenRegistries {
      */
     public static final net.neoforged.neoforge.registries.DeferredHolder<PlacementModifierType<?>, PlacementModifierType<NearFluidFilter>> NEAR_FLUID =
             PLACEMENT_MODIFIER_TYPES.register("near_fluid", () -> () -> NearFluidFilter.CODEC);
+
+    /**
+     * Restricts a feature to the smooth foot of a mountain biome, using the
+     * chunk generator's own edge-distance ramp field rather than just the
+     * local slope — see {@link MountainBaseFilter}. Usage: add
+     * {@code {"type": "got:mountain_base_filter", "max_ramp_weight": 0.35}}
+     * to a placed_feature's placement list.
+     */
+    public static final net.neoforged.neoforge.registries.DeferredHolder<PlacementModifierType<?>, PlacementModifierType<MountainBaseFilter>> MOUNTAIN_BASE_FILTER =
+            PLACEMENT_MODIFIER_TYPES.register("mountain_base_filter", () -> () -> MountainBaseFilter.CODEC);
 
     /* ------------------------------------------------------------------ */
     /* Registration                                                         */

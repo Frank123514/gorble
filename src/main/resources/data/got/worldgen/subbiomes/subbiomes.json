@@ -19,6 +19,14 @@
       "priority": 0,
       "base_height": 85,
       "height_variation": 22
+    },
+    {
+      "subbiome": "got:creek",
+      "noise_scale": 230.0,
+      "threshold": 1.0,
+      "priority": 0,
+      "base_height": 58,
+      "height_variation": 5
     }
   ],
 
@@ -34,10 +42,10 @@
   "got:wolfswood": [
     {
       "subbiome": "got:north_hills",
-      "noise_scale": 280.0,
-      "threshold": 0.97,
+      "noise_scale": 230.0,
+      "threshold": 1.0,
       "priority": 0,
-      "base_height": 105,
+      "base_height": 85,
       "height_variation": 22
     }
   ]
