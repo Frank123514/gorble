@@ -1,7 +1,7 @@
 package net.got.menu;
 
-import net.got.entity.npc.data.GotNpcOccupation;
-import net.got.entity.npc.data.GotNpcTrades;
+import net.got.event.entity.npc.data.GotNpcOccupation;
+import net.got.event.entity.npc.data.GotNpcTrades;
 import net.got.init.GotModMenus;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;

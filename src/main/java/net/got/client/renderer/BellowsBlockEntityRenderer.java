@@ -6,7 +6,7 @@ import net.got.block.BellowsBlock;
 import net.got.block.BellowsBlockEntity;
 import net.got.client.animation.BellowsAnimations;
 import net.got.client.model.BellowsModel;
-import net.got.entity.client.model.GotModelLayers;
+import net.got.event.entity.client.model.GotModelLayers;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

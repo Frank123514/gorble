@@ -1927,6 +1927,9 @@ public class GotModItems {
     public static final DeferredItem<BlockItem> SHORT_REEDS = REGISTRY.registerSimpleBlockItem(
             "short_reeds", GotModBlocks.SHORT_REEDS);
 
+    public static final DeferredItem<BlockItem> RUSHES = REGISTRY.registerSimpleBlockItem(
+            "rushes", GotModBlocks.RUSHES);
+
     // ── Crop seeds (seed-type crops) ──────────────────────────────────────
     public static final DeferredItem<Item> OAT_SEEDS     = REGISTRY.registerItem("oat_seeds",     p -> new BlockItem(GotModBlocks.OAT_CROP.get(),      p));
     public static final DeferredItem<Item> RYE_SEEDS     = REGISTRY.registerItem("rye_seeds",     p -> new BlockItem(GotModBlocks.RYE_CROP.get(),      p));

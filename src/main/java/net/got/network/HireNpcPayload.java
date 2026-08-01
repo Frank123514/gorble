@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
  * {@link net.got.client.gui.NpcHireScreen}.
  *
  * <p>The server validates that the entity exists, is a
- * {@link net.got.entity.npc.smallfolk.SmallfolkEntity}, is currently
+ * {@link net.got.event.entity.npc.smallfolk.SmallfolkEntity}, is currently
  * unemployed, and is within interaction range before assigning the job.
  */
 public record HireNpcPayload(int entityId, String occupationId) implements CustomPacketPayload {

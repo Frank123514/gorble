@@ -2447,6 +2447,7 @@ public class GotModTabs {
                         safeAccept(output, GotModBlocks.WHEATGRASS.get());
                         safeAccept(output, GotModBlocks.REEDS.get());
                         safeAccept(output, GotModBlocks.SHORT_REEDS.get());
+                        safeAccept(output, GotModBlocks.RUSHES.get());
                         safeAccept(output, GotModBlocks.QUAGMIRE.get());
 
                         // ── Wool Slabs & Stairs ─────────────────────────────────────────

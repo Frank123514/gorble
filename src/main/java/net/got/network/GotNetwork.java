@@ -1,7 +1,7 @@
 package net.got.network;
 
-import net.got.entity.npc.data.GotNpcTrades;
-import net.got.entity.npc.smallfolk.SmallfolkEntity;
+import net.got.event.entity.npc.data.GotNpcTrades;
+import net.got.event.entity.npc.smallfolk.SmallfolkEntity;
 import net.got.event.GotPlayerEvents;
 import net.got.faction.GotFactions;
 import net.got.item.GotCoin;
@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.got.network.SmithingAnvilStatePayload;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.List;

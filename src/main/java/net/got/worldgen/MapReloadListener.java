@@ -29,7 +29,8 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             Map<Integer, GotBiomeTerrainParams.Params> params,
             Map<String, List<SubbiomeDef>> subbiomes,
             Map<String, List<SlopeRuleDef>> slopeRules,
-            MountainSlopemapResolver.Fields mountainFields
+            MountainSlopemapResolver.Fields mountainFields,
+            RiverFlowMap.Fields riverFlowFields
     ) {}
 
     @Override
@@ -60,9 +61,11 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             GotBiomeTerrainParams.apply(params);
             MountainSlopemapResolver.Fields mountainFields =
                     MountainSlopemapResolver.compute(pixels, w, h);
+            RiverFlowMap.Fields riverFlowFields =
+                    RiverFlowMap.compute(pixels, w, h);
 
             return new Prepared(pixels, w, h, params, subbiomes, slopeRules,
-                    mountainFields);
+                    mountainFields, riverFlowFields);
         } finally {
             profiler.pop();
         }
@@ -83,6 +86,9 @@ public class MapReloadListener extends SimplePreparableReloadListener<MapReloadL
             if (prepared.mountainFields() != null)
                 MountainSlopemapResolver.apply(
                         prepared.mountainFields(), prepared.width(), prepared.height());
+            if (prepared.riverFlowFields() != null)
+                RiverFlowMap.apply(
+                        prepared.riverFlowFields(), prepared.width(), prepared.height());
 
             LOGGER.info("[GoT] BiomeMap applied ({}x{}, {} biome colors, {} subbiome parents, {} slope biomes)",
                     prepared.width(), prepared.height(),

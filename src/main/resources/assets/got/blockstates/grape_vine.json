@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "tip=false": {
       "model": "got:block/grape_vine"
+    },
+    "tip=true": {
+      "model": "got:block/grape_vine_tip"
     }
   }
 }

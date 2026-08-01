@@ -1,6 +1,6 @@
 package net.got.client.gui;
 
-import net.got.entity.npc.data.GotNpcOccupation;
+import net.got.event.entity.npc.data.GotNpcOccupation;
 import net.got.network.HireNpcPayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;

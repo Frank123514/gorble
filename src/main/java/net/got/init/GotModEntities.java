@@ -2,33 +2,33 @@ package net.got.init;
 
 import net.got.GotMod;
 // ── Tier-1 Smallfolk imports ───────────────────────────────────────────────────
-import net.got.entity.brownbear.GotBrownBearEntity;
-import net.got.entity.stag.GotStagEntity;
-import net.got.entity.heron.GotHeronEntity;
-import net.got.entity.npc.smallfolk.NorthmanEntity;
-import net.got.entity.npc.smallfolk.RiverlanderEntity;
-import net.got.entity.npc.smallfolk.ValemanEntity;
-import net.got.entity.npc.smallfolk.WestermanEntity;
-import net.got.entity.npc.smallfolk.StormlorderEntity;
-import net.got.entity.npc.smallfolk.IronbornEntity;
-import net.got.entity.npc.smallfolk.DornishmanEntity;
-import net.got.entity.npc.smallfolk.ReachmanEntity;
+import net.got.event.entity.brownbear.GotBrownBearEntity;
+import net.got.event.entity.stag.GotStagEntity;
+import net.got.event.entity.heron.GotHeronEntity;
+import net.got.event.entity.npc.smallfolk.NorthmanEntity;
+import net.got.event.entity.npc.smallfolk.RiverlanderEntity;
+import net.got.event.entity.npc.smallfolk.ValemanEntity;
+import net.got.event.entity.npc.smallfolk.WestermanEntity;
+import net.got.event.entity.npc.smallfolk.StormlorderEntity;
+import net.got.event.entity.npc.smallfolk.IronbornEntity;
+import net.got.event.entity.npc.smallfolk.DornishmanEntity;
+import net.got.event.entity.npc.smallfolk.ReachmanEntity;
 // ── Levy imports ──────────────────────────────────────────────────────────────
-import net.got.entity.npc.levy.stark.StarkLevyEntity;
-import net.got.entity.npc.levy.tully.TullyLevyEntity;
-import net.got.entity.npc.levy.lannister.LannisterLevyEntity;
-import net.got.entity.npc.levy.baratheon.BaratheonLevyEntity;
-import net.got.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
-import net.got.entity.npc.levy.martell.MartellLevyEntity;
-import net.got.entity.npc.levy.tyrell.TyrellLevyEntity;
-import net.got.entity.npc.levy.arryn.ArrynLevyEntity;
+import net.got.event.entity.npc.levy.stark.StarkLevyEntity;
+import net.got.event.entity.npc.levy.tully.TullyLevyEntity;
+import net.got.event.entity.npc.levy.lannister.LannisterLevyEntity;
+import net.got.event.entity.npc.levy.baratheon.BaratheonLevyEntity;
+import net.got.event.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
+import net.got.event.entity.npc.levy.martell.MartellLevyEntity;
+import net.got.event.entity.npc.levy.tyrell.TyrellLevyEntity;
+import net.got.event.entity.npc.levy.arryn.ArrynLevyEntity;
 // ── Skilled Fighter imports ───────────────────────────────────────────────────
-import net.got.entity.npc.fighter.north.NorthSoldierEntity;
-import net.got.entity.npc.fighter.vale.ValeKnightEntity;
-import net.got.entity.direwolf.GotDirewolfEntity;
-import net.got.entity.crow.GotCrowEntity;
-import net.got.entity.mammoth.GotMammothEntity;
-import net.got.entity.giant.GotGiantEntity;
+import net.got.event.entity.npc.fighter.north.NorthSoldierEntity;
+import net.got.event.entity.npc.fighter.vale.ValeKnightEntity;
+import net.got.event.entity.direwolf.GotDirewolfEntity;
+import net.got.event.entity.crow.GotCrowEntity;
+import net.got.event.entity.mammoth.GotMammothEntity;
+import net.got.event.entity.giant.GotGiantEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +47,7 @@ public class GotModEntities {
 
     // ── Helper: standard humanoid size ────────────────────────────────────────
 
-    private static <T extends net.got.entity.npc.smallfolk.SmallfolkEntity>
+    private static <T extends net.got.event.entity.npc.smallfolk.SmallfolkEntity>
     DeferredHolder<EntityType<?>, EntityType<T>> smallfolk(
             String id, EntityType.EntityFactory<T> factory) {
         return REGISTRY.register(id, () ->

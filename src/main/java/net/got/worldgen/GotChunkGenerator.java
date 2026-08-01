@@ -33,6 +33,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -277,6 +278,37 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     // ── Surface height ─────────────────────────────────────────────────────
 
+    /**
+     * Per-thread memo cache for {@link #computeRawSurfaceY}. The same
+     * (worldX, worldZ) column gets recomputed from scratch by several
+     * independent call sites during normal generation — getBaseHeight,
+     * getBaseColumn, SlopeSurfaceResolver's gradient sampling, the biome
+     * source's containment/shore checks, road/wall scanning — each doing
+     * the full 16-cell bicubic blend + subbiome/slopemap work again. This
+     * cache lets repeat calls for a coordinate that's already been computed
+     * (by this thread) return instantly instead of redoing all of that.
+     *
+     * <p>Bounded + access-ordered (LRU) rather than a single last-value slot,
+     * since call sites interleave several distinct nearby coordinates (e.g.
+     * gradient sampling at x±3, z±3) rather than repeating the exact same
+     * one back-to-back. ThreadLocal because chunk generation runs many
+     * worker threads concurrently and this must not be shared/synchronized
+     * across them.
+     */
+    private static final int RAW_SURFACE_CACHE_CAPACITY = 256;
+
+    private static final ThreadLocal<LinkedHashMap<Long, Float>> RAW_SURFACE_CACHE =
+            ThreadLocal.withInitial(() -> new LinkedHashMap<>(RAW_SURFACE_CACHE_CAPACITY * 4 / 3, 0.75f, true) {
+                @Override
+                protected boolean removeEldestEntry(Map.Entry<Long, Float> eldest) {
+                    return size() > RAW_SURFACE_CACHE_CAPACITY;
+                }
+            });
+
+    private static long packColumnKey(int worldX, int worldZ) {
+        return ((long) worldX << 32) ^ (worldZ & 0xFFFFFFFFL);
+    }
+
     public static int computeSurfaceY(int worldX, int worldZ) {
         return Mth.floor(computeRawSurfaceY(worldX, worldZ));
     }
@@ -284,6 +316,17 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static float computeRawSurfaceY(int worldX, int worldZ) {
         if (!BiomemapLoader.isLoaded()) return SEA_LEVEL;
 
+        Map<Long, Float> cache = RAW_SURFACE_CACHE.get();
+        long key = packColumnKey(worldX, worldZ);
+        Float cached = cache.get(key);
+        if (cached != null) return cached;
+
+        float result = computeRawSurfaceYUncached(worldX, worldZ);
+        cache.put(key, result);
+        return result;
+    }
+
+    private static float computeRawSurfaceYUncached(int worldX, int worldZ) {
         float cx = worldX / (float) BiomemapLoader.MAP_SCALE
                 + BiomemapLoader.getWidth()  * 0.5f;
         float cz = worldZ / (float) BiomemapLoader.MAP_SCALE

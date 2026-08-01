@@ -32,6 +32,16 @@ public final class GotBiomeSource extends BiomeSource {
     private static final int SHORE_PROBE_COUNT = 4;
 
     /**
+     * Per-thread scratch map for the biome-voting step in {@link #getNoiseBiome}.
+     * Chunk generation runs multiple worker threads concurrently, so this can't
+     * be a single shared field — each thread gets its own map and reuses it
+     * across calls instead of allocating a fresh HashMap every time. The map is
+     * cleared at the top of each call before use.
+     */
+    private static final ThreadLocal<Map<String, Float>> VOTE_SCRATCH =
+            ThreadLocal.withInitial(HashMap::new);
+
+    /**
      * Cold biomes where an open water pocket gets frozen_lake instead of
      * staying as plain land. North, North Hills, and Barrowlands are chilly
      * but not frozen-tundra cold, so they're left off this list and get no
@@ -132,7 +142,8 @@ public final class GotBiomeSource extends BiomeSource {
             }
         }
 
-        Map<String, Float> biomeVotes = new HashMap<>();
+        Map<String, Float> biomeVotes = VOTE_SCRATCH.get();
+        biomeVotes.clear();
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {

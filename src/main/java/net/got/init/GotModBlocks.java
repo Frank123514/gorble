@@ -1588,7 +1588,9 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> GHOSTSKIN         = REGISTRY.registerBlock("ghostskin",
             GhostskinBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_HANGING_MOSS));
-    public static final DeferredBlock<Block> GRAPE_VINE        = flowerBlock("grape_vine");
+    public static final DeferredBlock<Block> GRAPE_VINE        = REGISTRY.registerBlock("grape_vine",
+            GhostskinBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_HANGING_MOSS));
     public static final DeferredBlock<Block> HARPYS_GOLD       = flowerBlock("harpys_gold");
     public static final DeferredBlock<Block> WILD_HEMP         = tallFlowerBlock("wild_hemp");
     public static final DeferredBlock<Block> HORNWORT          = flowerBlock("hornwort");
@@ -1723,6 +1725,10 @@ public class GotModBlocks {
             ShortReedsBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion());
 
+    public static final DeferredBlock<Block> RUSHES = REGISTRY.registerBlock("rushes",
+            RushesBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noOcclusion());
+
 
     // ── Crops — Seed-type (planted with seed, harvests crop + seeds) ──────
     // Block registered first; seed item wired in via supplier after items load.
@@ -1747,7 +1753,7 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> ONION_CROP   = produceCropBlock("onion_crop",   () -> GotModItems.ONION.get());
     public static final DeferredBlock<Block> TURNIP_CROP  = produceCropBlock("turnip_crop",  () -> GotModItems.TURNIP.get());
     public static final DeferredBlock<Block> PEAS_CROP    = produceCropBlock("peas_crop",    () -> GotModItems.PEAS.get());
-    public static final DeferredBlock<Block> CABBAGE_CROP = seedCropBlock("cabbage_crop", () -> GotModItems.CABBAGE_PLANT_SEEDS.get());
+    public static final DeferredBlock<Block> CABBAGE_CROP = shortSeedCropBlock("cabbage_crop", () -> GotModItems.CABBAGE_PLANT_SEEDS.get());
     public static final DeferredBlock<Block> GARLIC_CROP      = produceCropBlock("garlic_crop",      () -> GotModItems.GARLIC.get());
     public static final DeferredBlock<Block> NEEP_CROP        = produceCropBlock("neep_crop",        () -> GotModItems.NEEP.get());
     public static final DeferredBlock<Block> HORSERADISH_CROP = produceCropBlock("horseradish_crop", () -> GotModItems.HORSERADISH.get());

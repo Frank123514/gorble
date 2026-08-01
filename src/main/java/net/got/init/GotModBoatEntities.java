@@ -1,8 +1,8 @@
 package net.got.init;
 
 import net.got.GotMod;
-import net.got.entity.GotBoat;
-import net.got.entity.GotChestBoat;
+import net.got.event.entity.GotBoat;
+import net.got.event.entity.GotChestBoat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

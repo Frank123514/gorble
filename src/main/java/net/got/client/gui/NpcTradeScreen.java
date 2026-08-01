@@ -1,7 +1,7 @@
 package net.got.client.gui;
 
-import net.got.entity.npc.data.GotNpcOccupation;
-import net.got.entity.npc.data.GotNpcTrades;
+import net.got.event.entity.npc.data.GotNpcOccupation;
+import net.got.event.entity.npc.data.GotNpcTrades;
 import net.got.network.CloseInteractScreenPayload;
 import net.got.network.ExecuteSellPayload;
 import net.minecraft.client.Minecraft;

@@ -12,6 +12,7 @@ public final class GotClient {
 
     public static void init() {
         NeoForge.EVENT_BUS.addListener(GotClient::onClientTick);
+        RiverCurrentParticles.init();
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {
