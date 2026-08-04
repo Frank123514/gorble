@@ -38,6 +38,13 @@ import java.util.Set;
  * has already been applied (it needs {@code forColor} to resolve biome IDs).
  * {@link #apply} pushes the result to the volatile store on the main
  * thread. {@link #flowAt} is safe any time after {@link #apply} returns.
+ *
+ * <h3>Tributary support</h3>
+ * <p>Alongside the downstream direction, this also tracks each river
+ * pixel's distance-to-mouth ({@link #distanceAt}) and a "bank normal" —
+ * the land-ward direction roughly perpendicular to the current
+ * ({@link #bankNormalAt}) — for {@link RiverBranchPoints}, which picks
+ * where tributary creeks should start and which way to grow.
  */
 public final class RiverFlowMap {
 
@@ -68,12 +75,14 @@ public final class RiverFlowMap {
     /** Normalized downstream direction at a world column. */
     public record FlowVector(float dx, float dz) {}
 
-    public record Fields(byte[][] direction) {}
+    public record Fields(byte[][] direction, byte[][] bankNormal, short[][] distance) {}
 
     // Volatile so writes from apply() are visible to reader threads.
-    private static volatile byte[][] directionField = null;
-    private static volatile int      fieldWidth      = 0;
-    private static volatile int      fieldHeight      = 0;
+    private static volatile byte[][]  directionField = null;
+    private static volatile byte[][]  bankNormalField = null;
+    private static volatile short[][] distanceField   = null;
+    private static volatile int       fieldWidth      = 0;
+    private static volatile int       fieldHeight      = 0;
 
     private RiverFlowMap() {}
 
@@ -88,7 +97,7 @@ public final class RiverFlowMap {
      */
     public static Fields compute(int[][] pixels, int width, int height) {
         if (pixels == null || width == 0 || height == 0) {
-            return new Fields(new byte[0][0]);
+            return new Fields(new byte[0][0], new byte[0][0], new short[0][0]);
         }
 
         boolean[][] isRiver = new boolean[width][height];
@@ -171,19 +180,113 @@ public final class RiverFlowMap {
             }
         }
 
+        // Bank normal: for every river pixel with a flow direction, the
+        // land-ward direction a tributary should start growing from — i.e.
+        // roughly perpendicular to the current, like a real confluence,
+        // rather than pointing straight up- or downstream. Prefers whichever
+        // of the two perpendicular neighbors is actually land (not river,
+        // not sink); falls back to any adjacent land neighbor; 0 if the
+        // pixel has no land neighbor at all (mid-river / wide channel).
+        byte[][] bankNormal = new byte[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int z = 0; z < height; z++) {
+                int d = direction[x][z];
+                if (d == 0) continue;
+
+                // Directions are indexed 1-8 clockwise from north in steps of
+                // 45°; ±2 steps = ±90° = perpendicular to the flow.
+                int perp1 = ((d - 1 + 2) % 8) + 1;
+                int perp2 = ((d - 1 - 2 + 8) % 8) + 1;
+
+                byte chosen = 0;
+                if (isLandNeighbor(isRiver, isSink, x, z, perp1, width, height)) {
+                    chosen = (byte) perp1;
+                } else if (isLandNeighbor(isRiver, isSink, x, z, perp2, width, height)) {
+                    chosen = (byte) perp2;
+                } else {
+                    for (int dir = 1; dir < 9; dir++) {
+                        if (isLandNeighbor(isRiver, isSink, x, z, dir, width, height)) {
+                            chosen = (byte) dir;
+                            break;
+                        }
+                    }
+                }
+                bankNormal[x][z] = chosen;
+            }
+        }
+
         LOGGER.info("[GoT] Computed river flow map ({}x{})", width, height);
-        return new Fields(direction);
+        return new Fields(direction, bankNormal, distance);
+    }
+
+    private static boolean isLandNeighbor(boolean[][] isRiver, boolean[][] isSink,
+                                           int x, int z, int dir, int width, int height) {
+        int nx = x + DX[dir], nz = z + DZ[dir];
+        if (nx < 0 || nz < 0 || nx >= width || nz >= height) return false;
+        return !isRiver[nx][nz] && !isSink[nx][nz];
     }
 
     // ── Apply ──────────────────────────────────────────────────────────────
 
     public static void apply(Fields fields, int width, int height) {
-        directionField = fields.direction();
+        directionField  = fields.direction();
+        bankNormalField = fields.bankNormal();
+        distanceField   = fields.distance();
         fieldWidth  = width;
         fieldHeight = height;
     }
 
     // ── Query ──────────────────────────────────────────────────────────────
+
+    /**
+     * Distance, in biomemap pixels, from this river column to the nearest
+     * connected sink (ocean/lake). -1 if not part of a connected river.
+     */
+    public static int distanceAt(int worldX, int worldZ) {
+        int[] px = worldToPixel(worldX, worldZ);
+        short[][] field = distanceField;
+        if (px == null || field == null) return -1;
+        return field[px[0]][px[1]];
+    }
+
+    /**
+     * The land-ward direction, roughly perpendicular to the current, that a
+     * tributary should grow away from at this river column — see
+     * {@link #compute}'s bank-normal pass. {@code null} if this isn't a
+     * connected river column or has no adjacent land pixel.
+     */
+    public static FlowVector bankNormalAt(int worldX, int worldZ) {
+        int[] px = worldToPixel(worldX, worldZ);
+        byte[][] field = bankNormalField;
+        if (px == null || field == null) return null;
+        byte dir = field[px[0]][px[1]];
+        if (dir == 0) return null;
+        return new FlowVector(NORM_DX[dir], NORM_DZ[dir]);
+    }
+
+    /** Biomemap pixel width/height of the loaded field, for iterating the whole network. */
+    public static int fieldWidth()  { return fieldWidth; }
+    public static int fieldHeight() { return fieldHeight; }
+
+    /** World-space center of the given biomemap pixel. */
+    public static int pixelToWorldX(int px) {
+        return Math.round((px - fieldWidth  * 0.5f) * BiomemapLoader.MAP_SCALE);
+    }
+
+    public static int pixelToWorldZ(int pz) {
+        return Math.round((pz - fieldHeight * 0.5f) * BiomemapLoader.MAP_SCALE);
+    }
+
+    /** {x, z} pixel coordinates for a world column, or null if the field isn't loaded / out of range. */
+    private static int[] worldToPixel(int worldX, int worldZ) {
+        if (fieldWidth == 0 || fieldHeight == 0) return null;
+        float cx = worldX / (float) BiomemapLoader.MAP_SCALE + fieldWidth  * 0.5f;
+        float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + fieldHeight * 0.5f;
+        int px = (int) Math.floor(cx);
+        int pz = (int) Math.floor(cz);
+        if (px < 0 || pz < 0 || px >= fieldWidth || pz >= fieldHeight) return null;
+        return new int[]{px, pz};
+    }
 
     /**
      * Returns the downstream flow direction at the given world column, or
@@ -192,20 +295,11 @@ public final class RiverFlowMap {
      * {@code null} — meaning "no current here").
      */
     public static FlowVector flowAt(int worldX, int worldZ) {
+        int[] px = worldToPixel(worldX, worldZ);
         byte[][] field = directionField;
-        if (field == null || fieldWidth == 0 || fieldHeight == 0) return null;
+        if (px == null || field == null) return null;
 
-        // Same world→pixel conversion used by GotBiomeSource and
-        // GotChunkGenerator: world (0,0) sits at the CENTER of the
-        // biomemap image, not its top-left corner.
-        float cx = worldX / (float) BiomemapLoader.MAP_SCALE + fieldWidth  * 0.5f;
-        float cz = worldZ / (float) BiomemapLoader.MAP_SCALE + fieldHeight * 0.5f;
-
-        int px = (int) Math.floor(cx);
-        int pz = (int) Math.floor(cz);
-        if (px < 0 || pz < 0 || px >= fieldWidth || pz >= fieldHeight) return null;
-
-        byte dir = field[px][pz];
+        byte dir = field[px[0]][px[1]];
         if (dir == 0) return null;
 
         return new FlowVector(NORM_DX[dir], NORM_DZ[dir]);

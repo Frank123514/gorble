@@ -10,6 +10,7 @@
   ],
   "client": [
     "BiomeColorsMixin",
+    "LiquidBlockRendererMixin",
     "WeatherEffectRendererMixin"
   ],
   "injectors": {

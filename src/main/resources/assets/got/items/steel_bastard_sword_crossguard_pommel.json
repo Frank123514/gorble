@@ -1,6 +1,26 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "got:item/steel_bastard_sword_crossguard_pommel"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": "gui",
+        "model": {
+          "type": "minecraft:model",
+          "model": "got:item/steel_bastard_sword_crossguard_pommel_gui"
+        }
+      },
+      {
+        "when": "fixed",
+        "model": {
+          "type": "minecraft:model",
+          "model": "got:item/steel_bastard_sword_crossguard_pommel_gui"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "got:item/steel_bastard_sword_crossguard_pommel"
+    }
   }
 }

@@ -1,6 +1,30 @@
 {
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "got:item/steel_falchion_crossguard_pommel"
+  "loader": "neoforge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "minecraft:item/handheld",
+    "textures": {
+      "layer0": "got:item/steel_falchion_crossguard_pommel"
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "got:item/falchion_icon"
+      }
+    },
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "got:item/falchion_icon"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "got:item/falchion_icon"
+      }
+    }
   }
 }

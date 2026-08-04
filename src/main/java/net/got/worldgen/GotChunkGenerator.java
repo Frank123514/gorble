@@ -44,14 +44,25 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     public static final int SEA_LEVEL = 63;
 
-    // Base shape — large rolling hills
-    private static final double NOISE_SCALE_X = 280.0;
-    private static final double NOISE_SCALE_Z = 240.0;
+    // Fractal terrain noise — multiple octaves, each double the frequency
+    // and roughly half the amplitude of the last. Two isolated layers
+    // (280/240 "base" + 80 "detail") left a whole band of scale with no
+    // contribution at all — nothing between "broad rolling shape" and
+    // "80-block ridges" — which is exactly what read as smooth up close:
+    // there was no noise actually operating at the 10-60 block range a
+    // player walks around and looks at. Stacking real octaves fills that
+    // gap at every scale simultaneously instead of just two discrete ones.
+    private static final double  BASE_NOISE_SCALE_X = 280.0; // scale of the lowest (broadest) octave
+    private static final double  BASE_NOISE_SCALE_Z = 240.0;
+    private static final int     NOISE_OCTAVES      = 5;     // 280 → 140 → 70 → 35 → 17.5 block scales
+    private static final double  NOISE_LACUNARITY    = 2.0;  // frequency multiplier per octave
+    private static final double  NOISE_PERSISTENCE   = 0.5;  // amplitude multiplier per octave
 
-    // Detail layer — smaller ridges on top of the base shape
-    private static final double DETAIL_SCALE_X = 80.0;
-    private static final double DETAIL_SCALE_Z = 80.0;
-    private static final double DETAIL_WEIGHT   = 0.4; // how much detail contributes vs base
+    // One permutation table per octave so adjacent octaves (which land on
+    // exact power-of-two multiples of each other's frequency) don't share
+    // a gradient pattern — that correlation shows up as faint repeating
+    // alignment between octaves otherwise.
+    private static volatile short[][] noiseOctavePerms = buildOctavePerms(0L);
 
     // ── Subbiome height blend ────────────────────────────────────────────
     // Exponent applied to the subbiome's own [0,1] noise value to get a
@@ -61,6 +72,12 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // more of the biome gets a mild lift. 4-6 reads as "occasional broad
     // hills," not "the whole biome is a bit bumpy."
     private static final double HEIGHT_BLEND_CURVE = 5.0;
+
+    // How many blocks above a river's own base height a neighboring land
+    // pixel is allowed to pull the bicubic patch toward, when interpolating
+    // a river column. Smaller = steeper/closer-to-vertical banks; larger =
+    // softer, more gradually-sloped banks. Tune to taste.
+    private static final float RIVER_BANK_CLAMP = 4f;
 
     // How much of the ramp climb's height gain a ridge "valley" (the saddle
     // between two branches of a mountain's skeleton, where ridgeWeight
@@ -132,9 +149,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
             { 1, 1}, {-1, 1}, { 1,-1}, {-1,-1},
             { 1, 0}, {-1, 0}, { 0, 1}, { 0,-1}
     };
-    // Two independent perm tables so base and detail don't share the same pattern
-    private static volatile short[] noisePerm       = buildPerm(0L);
-    private static volatile short[] noisePermDetail = buildPerm(0x9E3779B97F4A7C15L);
     private static volatile double  noiseOffX = 0, noiseOffZ = 0;
 
     // ── Constructor ────────────────────────────────────────────────────────
@@ -155,8 +169,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     public static void initNoise(long worldSeed) {
-        noisePerm       = buildPerm(worldSeed);
-        noisePermDetail = buildPerm(worldSeed ^ 0x9E3779B97F4A7C15L);
+        noiseOctavePerms = buildOctavePerms(worldSeed);
         noiseOffX = ((worldSeed       & 0xFFFFL) / 65536.0) * 1000.0;
         noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
@@ -337,6 +350,12 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float fx  = cx - ipx;
         float fz  = cz - ipz;
 
+        // This column's own river depth (if it's part of a connected river),
+        // used below to clamp how far neighboring land pixels are allowed
+        // to pull the bicubic patch upward.
+        boolean isRiverColumn = RiverFlowMap.distanceAt(worldX, worldZ) >= 0;
+        float   riverBaseHeight = isRiverColumn ? paramsAt(ipx, ipz).baseHeight() : 0f;
+
         float[] h = new float[16];
         float[] v = new float[16];
 
@@ -467,6 +486,25 @@ public final class GotChunkGenerator extends ChunkGenerator {
                         cellH = MountainSlopemapResolver.FOOT_HEIGHT
                                 + (cellH - MountainSlopemapResolver.FOOT_HEIGHT) * totalFactor;
                     }
+                }
+
+                // Bank steepening: when THIS column is river, cap how high
+                // any non-river neighbor pixel is allowed to pull the curve,
+                // as a final cap after subbiome/mountain blending — those
+                // can pull a land cell's height back up, so capping first
+                // wouldn't reliably hold. Still fully bicubic — river-to-
+                // river cells are untouched, so the channel's own depth
+                // still varies smoothly along its length exactly as before —
+                // this only stops the spline from reaching all the way up
+                // to full (often much higher) land height across the same
+                // neighborhood that's supposed to be a riverbank. The real,
+                // unclamped land height still applies the instant a column
+                // is actually governed by that land pixel instead of the
+                // river one, so the climb from "clamped edge" to "true land
+                // height" compresses into that boundary instead of
+                // spreading across the whole patch.
+                if (isRiverColumn && !p.isWater()) {
+                    cellH = Math.min(cellH, riverBaseHeight + RIVER_BANK_CLAMP);
                 }
 
                 h[row * 4 + col] = cellH;
@@ -682,7 +720,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // ── Inline 2-D simplex helpers ─────────────────────────────────────────
 
     /**
-     * The same base+detail noise combination used for terrain shape (see
+     * The same multi-octave fBm noise used for terrain shape (see
      * {@link #computeSurfaceY}), exposed so other resolvers can sample the
      * exact same field instead of maintaining their own separate noise
      * instances. {@code x}/{@code z} should already include the world-seed
@@ -691,9 +729,22 @@ public final class GotChunkGenerator extends ChunkGenerator {
      * internally.
      */
     public static double computeTerrainNoise(double x, double z) {
-        double base   = simplexEval(noisePerm,       x / NOISE_SCALE_X,  z / NOISE_SCALE_Z);
-        double detail = simplexEval(noisePermDetail, x / DETAIL_SCALE_X, z / DETAIL_SCALE_Z);
-        return (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
+        short[][] perms = noiseOctavePerms;
+        double frequency = 1.0;
+        double amplitude = 1.0;
+        double sum        = 0.0;
+        double maxAmplitude = 0.0;
+
+        for (int o = 0; o < NOISE_OCTAVES; o++) {
+            double nx = x / BASE_NOISE_SCALE_X * frequency;
+            double nz = z / BASE_NOISE_SCALE_Z * frequency;
+            sum += simplexEval(perms[o], nx, nz) * amplitude;
+            maxAmplitude += amplitude;
+            amplitude *= NOISE_PERSISTENCE;
+            frequency *= NOISE_LACUNARITY;
+        }
+
+        return sum / maxAmplitude; // normalized back to roughly [-1, 1]
     }
 
     /** Same as {@link #computeTerrainNoise(double, double)} but takes raw
@@ -701,6 +752,14 @@ public final class GotChunkGenerator extends ChunkGenerator {
      *  the convenient entry point for external callers. */
     public static double computeTerrainNoiseAtWorldPos(double worldX, double worldZ) {
         return computeTerrainNoise(noiseOffX + worldX, noiseOffZ + worldZ);
+    }
+
+    private static short[][] buildOctavePerms(long worldSeed) {
+        short[][] perms = new short[NOISE_OCTAVES][];
+        for (int o = 0; o < NOISE_OCTAVES; o++) {
+            perms[o] = buildPerm(worldSeed ^ (0x9E3779B97F4A7C15L * (o + 1)));
+        }
+        return perms;
     }
 
     private static short[] buildPerm(long seed) {
