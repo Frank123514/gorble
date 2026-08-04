@@ -2031,22 +2031,7 @@ public class GotModItems {
     public static final DeferredItem<Item> WILD_STRAWBERRY  = block(GotModBlocks.WILD_STRAWBERRY);
 
 
-    // ── Copper tools ──────────────────────────────────────────────────────
-    // Constructors: ToolMaterial, float attackDamageBonus, float attackSpeed, Properties
-    public static final DeferredItem<SwordItem>  COPPER_SWORD    = REGISTRY.registerItem("copper_sword",
-            p -> new SwordItem(GotModTiers.COPPER, 3.0f, -2.4f, p));
-    public static final DeferredItem<PickaxeItem> COPPER_PICKAXE = REGISTRY.registerItem("copper_pickaxe",
-            p -> new PickaxeItem(GotModTiers.COPPER, 1.0f, -2.8f, p));
-    public static final DeferredItem<AxeItem>    COPPER_AXE      = REGISTRY.registerItem("copper_axe",
-            p -> new AxeItem(GotModTiers.COPPER, 6.0f, -3.1f, p));
-    public static final DeferredItem<ShovelItem> COPPER_SHOVEL   = REGISTRY.registerItem("copper_shovel",
-            p -> new ShovelItem(GotModTiers.COPPER, 1.5f, -3.0f, p));
-    public static final DeferredItem<HoeItem>    COPPER_HOE      = REGISTRY.registerItem("copper_hoe",
-            p -> new HoeItem(GotModTiers.COPPER, 0.0f, -3.0f, p));
-
     // ── Bronze tools ──────────────────────────────────────────────────────
-    public static final DeferredItem<SwordItem>  BRONZE_SWORD    = REGISTRY.registerItem("bronze_sword",
-            p -> new SwordItem(GotModTiers.BRONZE, 4.0f, -2.4f, p));
     public static final DeferredItem<PickaxeItem> BRONZE_PICKAXE = REGISTRY.registerItem("bronze_pickaxe",
             p -> new PickaxeItem(GotModTiers.BRONZE, 1.0f, -2.8f, p));
     public static final DeferredItem<AxeItem>    BRONZE_AXE      = REGISTRY.registerItem("bronze_axe",
@@ -2057,8 +2042,6 @@ public class GotModItems {
             p -> new HoeItem(GotModTiers.BRONZE, 0.0f, -3.0f, p));
 
     // ── Steel tools ───────────────────────────────────────────────────────
-    public static final DeferredItem<SwordItem>  STEEL_SWORD     = REGISTRY.registerItem("steel_sword",
-            p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
     public static final DeferredItem<PickaxeItem> STEEL_PICKAXE  = REGISTRY.registerItem("steel_pickaxe",
             p -> new PickaxeItem(GotModTiers.STEEL, 1.0f, -2.8f, p));
     public static final DeferredItem<AxeItem>    STEEL_AXE       = REGISTRY.registerItem("steel_axe",
@@ -2067,16 +2050,6 @@ public class GotModItems {
             p -> new ShovelItem(GotModTiers.STEEL, 1.5f, -3.0f, p));
     public static final DeferredItem<HoeItem>    STEEL_HOE       = REGISTRY.registerItem("steel_hoe",
             p -> new HoeItem(GotModTiers.STEEL, 0.0f, -3.0f, p));
-
-    // ── Copper armor ──────────────────────────────────────────────────────
-    public static final DeferredItem<ArmorItem> COPPER_HELMET     = REGISTRY.registerItem("copper_helmet",
-            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.HELMET, p));
-    public static final DeferredItem<ArmorItem> COPPER_CHESTPLATE = REGISTRY.registerItem("copper_chestplate",
-            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.CHESTPLATE, p));
-    public static final DeferredItem<ArmorItem> COPPER_LEGGINGS   = REGISTRY.registerItem("copper_leggings",
-            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.LEGGINGS, p));
-    public static final DeferredItem<ArmorItem> COPPER_BOOTS      = REGISTRY.registerItem("copper_boots",
-            p -> new ArmorItem(GotModArmorMaterials.COPPER.value(), ArmorType.BOOTS, p));
 
     // ── Bronze armor ──────────────────────────────────────────────────────
     public static final DeferredItem<ArmorItem> BRONZE_HELMET     = REGISTRY.registerItem("bronze_helmet",

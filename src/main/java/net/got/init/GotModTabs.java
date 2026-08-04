@@ -2660,35 +2660,20 @@ public class GotModTabs {
             REGISTRY.register("got_armory", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_FOOD.getId())
                     .title(Component.translatable("itemGroup.got.got_armory"))
-                    .icon(() -> new ItemStack(GotModItems.BRONZE_SWORD.get()))
+                    .icon(() -> new ItemStack(GotModItems.BRONZE_LONGSWORD_CROSSGUARD_POMMEL.get()))
                     .displayItems((params, output) -> {
 
-                        // ── Copper Weapons ────────────────────────────────────────────
-                        output.accept(GotModItems.COPPER_SWORD.get());
-                        output.accept(GotModItems.COPPER_AXE.get());
-                        output.accept(GotModItems.COPPER_PICKAXE.get());
-                        output.accept(GotModItems.COPPER_SHOVEL.get());
-                        output.accept(GotModItems.COPPER_HOE.get());
-
                         // ── Bronze Weapons ────────────────────────────────────────────
-                        output.accept(GotModItems.BRONZE_SWORD.get());
                         output.accept(GotModItems.BRONZE_AXE.get());
                         output.accept(GotModItems.BRONZE_PICKAXE.get());
                         output.accept(GotModItems.BRONZE_SHOVEL.get());
                         output.accept(GotModItems.BRONZE_HOE.get());
 
                         // ── Steel Weapons ─────────────────────────────────────────────
-                        output.accept(GotModItems.STEEL_SWORD.get());
                         output.accept(GotModItems.STEEL_AXE.get());
                         output.accept(GotModItems.STEEL_PICKAXE.get());
                         output.accept(GotModItems.STEEL_SHOVEL.get());
                         output.accept(GotModItems.STEEL_HOE.get());
-
-                        // ── Copper Armor ──────────────────────────────────────────────
-                        output.accept(GotModItems.COPPER_HELMET.get());
-                        output.accept(GotModItems.COPPER_CHESTPLATE.get());
-                        output.accept(GotModItems.COPPER_LEGGINGS.get());
-                        output.accept(GotModItems.COPPER_BOOTS.get());
 
                         // ── Bronze Armor ──────────────────────────────────────────────
                         output.accept(GotModItems.BRONZE_HELMET.get());

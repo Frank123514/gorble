@@ -36,27 +36,6 @@ public class GotModArmorMaterials {
     }
 
     /**
-     * Copper: 2/5/4/2 defense, enchantability 9, 0 toughness.
-     */
-    public static final Holder<ArmorMaterial> COPPER = Holder.direct(
-            new ArmorMaterial(
-                    250,
-                    Map.of(
-                            ArmorType.HELMET,     2,
-                            ArmorType.CHESTPLATE, 5,
-                            ArmorType.LEGGINGS,   4,
-                            ArmorType.BOOTS,      2
-                    ),
-                    9,
-                    SoundEvents.ARMOR_EQUIP_IRON,
-                    0.0f,
-                    0.0f,
-                    repairTag("repairs_copper_armor"),
-                    equipmentKey("copper")  // ← ResourceKey<EquipmentAsset>, not ResourceLocation
-            )
-    );
-
-    /**
      * Steel: 3/6/5/3 defense, enchantability 10, 1.0 toughness.
      */
     public static final Holder<ArmorMaterial> STEEL = Holder.direct(

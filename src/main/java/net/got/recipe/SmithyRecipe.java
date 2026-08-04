@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
  * {
  *   "type": "got:smithy",
  *   "ingredient": { "item": "got:bronze_ingot" },
- *   "result": { "id": "got:bronze_sword", "count": 1 },
+ *   "result": { "id": "got:bronze_longsword_crossguard_pommel", "count": 1 },
  *   "cookingtime": 200
  * }
  * </pre>

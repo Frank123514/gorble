@@ -19,16 +19,6 @@ public class GotModTiers {
         return TagKey.create(Registries.ITEM, ResourceLocation.withDefaultNamespace(path));
     }
 
-    /** Copper: durability 250, speed 6, +1.5 dmg bonus, enchantability 14 */
-    public static final ToolMaterial COPPER = new ToolMaterial(
-            BlockTags.NEEDS_STONE_TOOL,
-            250,
-            6.0f,
-            1.5f,
-            14,
-            repairTag("repairs_iron_tools")
-    );
-
     /** Bronze: durability 400, speed 7, +2 dmg bonus, enchantability 12 */
     public static final ToolMaterial BRONZE = new ToolMaterial(
             BlockTags.NEEDS_IRON_TOOL,
