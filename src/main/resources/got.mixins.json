@@ -11,7 +11,10 @@
   "client": [
     "BiomeColorsMixin",
     "LiquidBlockRendererMixin",
-    "WeatherEffectRendererMixin"
+    "WeatherEffectRendererMixin",
+    "PlayerRenderStateMixin",
+    "PlayerRendererMixin",
+    "PlayerModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
