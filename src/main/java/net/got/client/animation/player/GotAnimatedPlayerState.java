@@ -27,4 +27,19 @@ public interface GotAnimatedPlayerState {
     GotSwingStyle got$getSwingStyle();
 
     void got$setSwingStyle(GotSwingStyle style);
+
+    /**
+     * Which sword attack of the 2-swing combo (0 or 1) should play next —
+     * toggled by {@code PlayerRendererMixin} each time a fresh swing starts,
+     * so consecutive sword hits alternate {@code sword_attack} /
+     * {@code sword_attack_2} instead of replaying the same one every time.
+     */
+    int got$getComboIndex();
+
+    void got$setComboIndex(int value);
+
+    /** Last frame's clamped swing progress (0..1), kept only to detect the rising edge that marks a new swing starting. */
+    float got$getPrevSwing();
+
+    void got$setPrevSwing(float value);
 }

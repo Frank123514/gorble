@@ -1,11 +1,11 @@
 package net.got.mixin;
 
 import net.got.client.animation.player.GotPlayerAnimator;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -32,32 +32,43 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * the old entity+multiple-float-args signature), which is what's targeted
  * below. If Mixin fails to locate the method, confirm this signature against
  * a decompile of {@code PlayerModel}.
+ *
+ * <p><b>Why this extends {@code HumanoidModel<PlayerRenderState>}:</b> as of
+ * the 1.21.2 entity-render-state rewrite, {@code PlayerModel} is no longer
+ * generic and extends {@code HumanoidModel<PlayerRenderState>} directly, and
+ * head/hat/body/rightArm/leftArm/rightLeg/leftLeg are still declared on
+ * {@code HumanoidModel}, not on {@code PlayerModel} itself. Mixin only
+ * resolves {@code @Shadow} fields against classes that appear in *this*
+ * class's own extends chain — it won't walk the real target's superclasses
+ * on its own — so without extending {@code HumanoidModel} here, those
+ * seven inherited fields fail to resolve ("was not located in the target
+ * class") even though they genuinely exist at runtime. jacket/leftSleeve/
+ * rightSleeve/leftPants/rightPants are declared directly on
+ * {@code PlayerModel} and don't need this.
  */
 @Mixin(value = PlayerModel.class, remap = false)
-public abstract class PlayerModelMixin {
+public abstract class PlayerModelMixin extends HumanoidModel<PlayerRenderState> {
 
-    @Shadow(remap = false) public ModelPart head;
-    @Shadow(remap = false) public ModelPart hat;
-    @Shadow(remap = false) public ModelPart body;
-    @Shadow(remap = false) public ModelPart rightArm;
-    @Shadow(remap = false) public ModelPart leftArm;
-    @Shadow(remap = false) public ModelPart rightLeg;
-    @Shadow(remap = false) public ModelPart leftLeg;
-    @Shadow(remap = false) public ModelPart jacket;
-    @Shadow(remap = false) public ModelPart leftSleeve;
-    @Shadow(remap = false) public ModelPart rightSleeve;
-    @Shadow(remap = false) public ModelPart leftPants;
-    @Shadow(remap = false) public ModelPart rightPants;
+    public PlayerModelMixin(ModelPart root) {
+        super(root);
+    }
+
+    // head/hat/body/rightArm/leftArm/rightLeg/leftLeg are inherited
+    // directly from HumanoidModel via the extends clause above, so
+    // `this.body` etc. below already resolve without being shadowed.
+    //
+    // jacket/leftSleeve/rightSleeve/leftPants/rightPants aren't shadowed
+    // here at all: they're children of body/arms/legs in the model's part
+    // hierarchy and inherit rotation from their parent automatically at
+    // render time, so this mixin never needs to touch them directly.
 
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/PlayerRenderState;)V",
             at = @At("RETURN"), remap = false)
     private void got_overridePose(PlayerRenderState state, CallbackInfo ci) {
         GotPlayerAnimator.apply(
                 state,
-                head, hat, body,
+                body, head,
                 rightArm, leftArm,
-                rightLeg, leftLeg,
-                jacket, leftSleeve, rightSleeve,
-                leftPants, rightPants);
+                rightLeg, leftLeg);
     }
 }

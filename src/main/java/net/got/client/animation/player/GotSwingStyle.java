@@ -1,5 +1,7 @@
 package net.got.client.animation.player;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
@@ -22,6 +24,16 @@ public enum GotSwingStyle {
     PUNCH,
     /** Sword-type items: wide horizontal slash. */
     SWORD,
+    /**
+     * Two-handed greatswords/claymores: {@link SwordItem}s classified by
+     * registry name rather than a distinct Java class, since this mod's
+     * greatswords are just {@code SwordItem}s registered with heavier
+     * damage/speed stats — there's no {@code GreatswordItem} type to check
+     * {@code instanceof} against, so {@link #fromItem} matches on the
+     * item's own registry path instead. Bigger wind-up, slower overhead
+     * arc than a one-handed {@link #SWORD}.
+     */
+    GREATSWORD,
     /** Axe-type items: big overhead chop. */
     AXE,
     /** Trident: overhead thrust/throw motion, similar arc family to axe but sharper. */
@@ -37,6 +49,14 @@ public enum GotSwingStyle {
         }
         Item item = stack.getItem();
         if (item instanceof SwordItem) {
+            ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+            String path = id.getPath();
+            // Greatswords/claymores share SwordItem with regular swords,
+            // distinguished only by name (and matching heavier stats) —
+            // see the GREATSWORD enum doc.
+            if (path.contains("greatsword") || path.contains("claymore")) {
+                return GREATSWORD;
+            }
             return SWORD;
         }
         if (item instanceof TridentItem) {

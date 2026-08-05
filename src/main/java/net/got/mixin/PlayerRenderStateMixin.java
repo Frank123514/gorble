@@ -32,6 +32,12 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     @Unique
     private GotSwingStyle got$swingStyle = GotSwingStyle.PUNCH;
 
+    @Unique
+    private int got$comboIndex = 0;
+
+    @Unique
+    private float got$prevSwing = 0.0F;
+
     @Override
     public float got$getClimbProgress() {
         return got$climbProgress;
@@ -60,5 +66,25 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     @Override
     public void got$setSwingStyle(GotSwingStyle style) {
         this.got$swingStyle = style;
+    }
+
+    @Override
+    public int got$getComboIndex() {
+        return got$comboIndex;
+    }
+
+    @Override
+    public void got$setComboIndex(int value) {
+        this.got$comboIndex = value;
+    }
+
+    @Override
+    public float got$getPrevSwing() {
+        return got$prevSwing;
+    }
+
+    @Override
+    public void got$setPrevSwing(float value) {
+        this.got$prevSwing = value;
     }
 }

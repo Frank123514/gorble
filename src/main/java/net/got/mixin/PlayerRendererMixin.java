@@ -6,6 +6,7 @@ import net.got.client.animation.player.GotSwingStyle;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -46,5 +47,16 @@ public abstract class PlayerRendererMixin {
         anim.got$setAirborneProgress(GotAnimMath.approach(anim.got$getAirborneProgress(), airborneTarget, 0.25F));
 
         anim.got$setSwingStyle(GotSwingStyle.fromItem(player.getMainHandItem()));
+
+        // Toggle the 2-swing sword combo on the rising edge of a new swing
+        // (previous frame's progress near 0, this frame's above it) rather
+        // than on any particular attackTime value, since that's the one
+        // moment guaranteed to happen exactly once per swing regardless of
+        // how fast the swing animation itself plays.
+        float swingNow = Mth.clamp(state.attackTime, 0.0F, 1.0F);
+        if (anim.got$getPrevSwing() < 0.02F && swingNow >= 0.02F) {
+            anim.got$setComboIndex((anim.got$getComboIndex() + 1) % 2);
+        }
+        anim.got$setPrevSwing(swingNow);
     }
 }
