@@ -2675,6 +2675,9 @@ public class GotModTabs {
                         output.accept(GotModItems.STEEL_SHOVEL.get());
                         output.accept(GotModItems.STEEL_HOE.get());
 
+                        // ── Ranged Weapons ───────────────────────────────────────────
+                        output.accept(GotModItems.LONGBOW.get());
+
                         // ── Bronze Armor ──────────────────────────────────────────────
                         output.accept(GotModItems.BRONZE_HELMET.get());
                         output.accept(GotModItems.BRONZE_CHESTPLATE.get());

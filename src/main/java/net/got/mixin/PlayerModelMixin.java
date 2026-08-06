@@ -65,7 +65,13 @@ public abstract class PlayerModelMixin extends HumanoidModel<PlayerRenderState> 
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/PlayerRenderState;)V",
             at = @At("RETURN"), remap = false)
     private void got_overridePose(PlayerRenderState state, CallbackInfo ci) {
+        // `this` is passed as the Model argument KeyframeAnimations.animate
+        // needs to resolve PlayerAnimations' bone names ("body", "rightArm",
+        // etc.) against the real player model tree — HumanoidModel extends
+        // EntityModel<PlayerRenderState> extends Model, the same way
+        // GotStagModel/BellowsModel already feed themselves into that call.
         GotPlayerAnimator.apply(
+                this,
                 state,
                 body, head,
                 rightArm, leftArm,

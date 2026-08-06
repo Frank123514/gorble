@@ -4,7 +4,6 @@ import net.got.GotMod;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredItem;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import net.minecraft.world.level.block.Block;
@@ -2060,6 +2059,10 @@ public class GotModItems {
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS, p));
     public static final DeferredItem<ArmorItem> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
             p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS, p));
+
+    // ── Ranged weapons ───────────────────────────────────────────────────
+    public static final DeferredItem<BowItem> LONGBOW = REGISTRY.registerItem("longbow",
+            p -> new BowItem(p.durability(384).enchantable(1)));
 
     // ── Steel armor ───────────────────────────────────────────────────────
     public static final DeferredItem<ArmorItem> STEEL_HELMET      = REGISTRY.registerItem("steel_helmet",

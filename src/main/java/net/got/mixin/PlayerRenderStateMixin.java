@@ -30,6 +30,9 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     private float got$airborneProgress = 0.0F;
 
     @Unique
+    private float got$sprintProgress = 0.0F;
+
+    @Unique
     private GotSwingStyle got$swingStyle = GotSwingStyle.PUNCH;
 
     @Unique
@@ -37,6 +40,18 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
 
     @Unique
     private float got$prevSwing = 0.0F;
+
+    @Unique
+    private float got$swingStartAge = -1.0E6F;
+
+    @Unique
+    private boolean got$miningWithAxe = false;
+
+    @Unique
+    private boolean got$ridingHorse = false;
+
+    @Unique
+    private float got$horseRunBlend = 0.0F;
 
     @Override
     public float got$getClimbProgress() {
@@ -56,6 +71,16 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     @Override
     public void got$setAirborneProgress(float value) {
         this.got$airborneProgress = value;
+    }
+
+    @Override
+    public float got$getSprintProgress() {
+        return got$sprintProgress;
+    }
+
+    @Override
+    public void got$setSprintProgress(float value) {
+        this.got$sprintProgress = value;
     }
 
     @Override
@@ -86,5 +111,45 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     @Override
     public void got$setPrevSwing(float value) {
         this.got$prevSwing = value;
+    }
+
+    @Override
+    public float got$getSwingStartAge() {
+        return got$swingStartAge;
+    }
+
+    @Override
+    public void got$setSwingStartAge(float value) {
+        this.got$swingStartAge = value;
+    }
+
+    @Override
+    public boolean got$isMiningWithAxe() {
+        return got$miningWithAxe;
+    }
+
+    @Override
+    public void got$setMiningWithAxe(boolean value) {
+        this.got$miningWithAxe = value;
+    }
+
+    @Override
+    public boolean got$isRidingHorse() {
+        return got$ridingHorse;
+    }
+
+    @Override
+    public void got$setRidingHorse(boolean value) {
+        this.got$ridingHorse = value;
+    }
+
+    @Override
+    public float got$getHorseRunBlend() {
+        return got$horseRunBlend;
+    }
+
+    @Override
+    public void got$setHorseRunBlend(float value) {
+        this.got$horseRunBlend = value;
     }
 }
