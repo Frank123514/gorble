@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,9 +60,12 @@ public final class GotSkillEvents {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (!(event.getPlayer() instanceof ServerPlayer player)) return;
         BlockState state = event.getState();
-        var heldItem = player.getMainHandItem().getItem();
+        var heldStack = player.getMainHandItem();
+        var heldItem = heldStack.getItem();
 
-        if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) && heldItem instanceof PickaxeItem) {
+        // NOTE (1.21.5 port): PickaxeItem was removed — pickaxes are now plain Items
+        // configured via Item.Properties#pickaxe, so classify by vanilla item tag instead.
+        if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) && heldStack.is(ItemTags.PICKAXES)) {
             boolean isOre = state.getBlock() instanceof DropExperienceBlock;
             SkillXpService.grantXp(player, GotSkill.MINING, isOre ? XP_MINE_ORE : XP_MINE_STONE);
             maybeDropBonus(player, GotSkill.MINING, state, event);

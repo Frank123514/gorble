@@ -22,14 +22,14 @@ config = "got.mixins.json"
 [[dependencies.got]]
     modId="neoforge"
     type="required"
-    versionRange="[21.4,)"
+    versionRange="[21.5,)"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.got]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.4]"
+    versionRange="[1.21.5]"
     ordering="AFTER"
     side="BOTH"
 

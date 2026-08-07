@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.got.item.GotBoatItem;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ProvidesBannerPatterns;
 
 import java.util.function.Function;
 
@@ -2031,8 +2033,8 @@ public class GotModItems {
 
 
     // ── Bronze tools ──────────────────────────────────────────────────────
-    public static final DeferredItem<PickaxeItem> BRONZE_PICKAXE = REGISTRY.registerItem("bronze_pickaxe",
-            p -> new PickaxeItem(GotModTiers.BRONZE, 1.0f, -2.8f, p));
+    public static final DeferredItem<Item> BRONZE_PICKAXE = REGISTRY.registerItem("bronze_pickaxe",
+            p -> new Item(p.pickaxe(GotModTiers.BRONZE, 1.0f, -2.8f)));
     public static final DeferredItem<AxeItem>    BRONZE_AXE      = REGISTRY.registerItem("bronze_axe",
             p -> new AxeItem(GotModTiers.BRONZE, 7.0f, -3.1f, p));
     public static final DeferredItem<ShovelItem> BRONZE_SHOVEL   = REGISTRY.registerItem("bronze_shovel",
@@ -2041,8 +2043,8 @@ public class GotModItems {
             p -> new HoeItem(GotModTiers.BRONZE, 0.0f, -3.0f, p));
 
     // ── Steel tools ───────────────────────────────────────────────────────
-    public static final DeferredItem<PickaxeItem> STEEL_PICKAXE  = REGISTRY.registerItem("steel_pickaxe",
-            p -> new PickaxeItem(GotModTiers.STEEL, 1.0f, -2.8f, p));
+    public static final DeferredItem<Item> STEEL_PICKAXE  = REGISTRY.registerItem("steel_pickaxe",
+            p -> new Item(p.pickaxe(GotModTiers.STEEL, 1.0f, -2.8f)));
     public static final DeferredItem<AxeItem>    STEEL_AXE       = REGISTRY.registerItem("steel_axe",
             p -> new AxeItem(GotModTiers.STEEL, 6.0f, -3.1f, p));
     public static final DeferredItem<ShovelItem> STEEL_SHOVEL    = REGISTRY.registerItem("steel_shovel",
@@ -2051,28 +2053,28 @@ public class GotModItems {
             p -> new HoeItem(GotModTiers.STEEL, 0.0f, -3.0f, p));
 
     // ── Bronze armor ──────────────────────────────────────────────────────
-    public static final DeferredItem<ArmorItem> BRONZE_HELMET     = REGISTRY.registerItem("bronze_helmet",
-            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.HELMET, p));
-    public static final DeferredItem<ArmorItem> BRONZE_CHESTPLATE = REGISTRY.registerItem("bronze_chestplate",
-            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.CHESTPLATE, p));
-    public static final DeferredItem<ArmorItem> BRONZE_LEGGINGS   = REGISTRY.registerItem("bronze_leggings",
-            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS, p));
-    public static final DeferredItem<ArmorItem> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
-            p -> new ArmorItem(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS, p));
+    public static final DeferredItem<Item> BRONZE_HELMET     = REGISTRY.registerItem("bronze_helmet",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.HELMET)));
+    public static final DeferredItem<Item> BRONZE_CHESTPLATE = REGISTRY.registerItem("bronze_chestplate",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.CHESTPLATE)));
+    public static final DeferredItem<Item> BRONZE_LEGGINGS   = REGISTRY.registerItem("bronze_leggings",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS)));
+    public static final DeferredItem<Item> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS)));
 
     // ── Ranged weapons ───────────────────────────────────────────────────
     public static final DeferredItem<BowItem> LONGBOW = REGISTRY.registerItem("longbow",
             p -> new BowItem(p.durability(384).enchantable(1)));
 
     // ── Steel armor ───────────────────────────────────────────────────────
-    public static final DeferredItem<ArmorItem> STEEL_HELMET      = REGISTRY.registerItem("steel_helmet",
-            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.HELMET, p));
-    public static final DeferredItem<ArmorItem> STEEL_CHESTPLATE  = REGISTRY.registerItem("steel_chestplate",
-            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.CHESTPLATE, p));
-    public static final DeferredItem<ArmorItem> STEEL_LEGGINGS    = REGISTRY.registerItem("steel_leggings",
-            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.LEGGINGS, p));
-    public static final DeferredItem<ArmorItem> STEEL_BOOTS       = REGISTRY.registerItem("steel_boots",
-            p -> new ArmorItem(GotModArmorMaterials.STEEL.value(), ArmorType.BOOTS, p));
+    public static final DeferredItem<Item> STEEL_HELMET      = REGISTRY.registerItem("steel_helmet",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.HELMET)));
+    public static final DeferredItem<Item> STEEL_CHESTPLATE  = REGISTRY.registerItem("steel_chestplate",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.CHESTPLATE)));
+    public static final DeferredItem<Item> STEEL_LEGGINGS    = REGISTRY.registerItem("steel_leggings",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.LEGGINGS)));
+    public static final DeferredItem<Item> STEEL_BOOTS       = REGISTRY.registerItem("steel_boots",
+            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.BOOTS)));
 
     // ── Smithy components — iron ──────────────────────────────────────────────
     public static final DeferredItem<Item> IRON_SPEAR_HEAD          = simple("iron_spear_head");
@@ -2120,34 +2122,34 @@ public class GotModItems {
     // ── Assembled swords (blade + hilt + crossguard + pommel) ────────────────
     // Iron swords
     // Iron greatsword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> IRON_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("iron_greatsword_crossguard_pommel",   p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
+    public static final DeferredItem<Item> IRON_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("iron_greatsword_crossguard_pommel",   p -> new Item(p.sword(ToolMaterial.IRON, 4.5f, -2.8f)));
 
     // Iron sword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> IRON_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_shortsword_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_longsword_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> IRON_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_bastard_sword_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> IRON_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_falchion_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> IRON_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_pommel", p -> new SwordItem(ToolMaterial.IRON, 4.5f, -2.8f, p));
+    public static final DeferredItem<Item> IRON_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_shortsword_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 2.0f, -2.4f)));
+    public static final DeferredItem<Item> IRON_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_longsword_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 3.0f, -2.4f)));
+    public static final DeferredItem<Item> IRON_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_bastard_sword_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 3.5f, -2.5f)));
+    public static final DeferredItem<Item> IRON_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_falchion_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 2.5f, -2.3f)));
+    public static final DeferredItem<Item> IRON_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 4.5f, -2.8f)));
     // Bronze swords
     // Bronze greatsword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> BRONZE_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("bronze_greatsword_crossguard_pommel",   p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
+    public static final DeferredItem<Item> BRONZE_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("bronze_greatsword_crossguard_pommel",   p -> new Item(p.sword(GotModTiers.BRONZE, 4.5f, -2.8f)));
 
     // Bronze sword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> BRONZE_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_shortsword_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_longsword_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> BRONZE_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_falchion_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_pommel", p -> new SwordItem(GotModTiers.BRONZE, 4.5f, -2.8f, p));
+    public static final DeferredItem<Item> BRONZE_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_shortsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 2.0f, -2.4f)));
+    public static final DeferredItem<Item> BRONZE_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_longsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 3.0f, -2.4f)));
+    public static final DeferredItem<Item> BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 3.5f, -2.5f)));
+    public static final DeferredItem<Item> BRONZE_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_falchion_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 2.5f, -2.3f)));
+    public static final DeferredItem<Item> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 4.5f, -2.8f)));
     // Steel swords
     // Steel greatsword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> STEEL_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("steel_greatsword_crossguard_pommel",   p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
+    public static final DeferredItem<Item> STEEL_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("steel_greatsword_crossguard_pommel",   p -> new Item(p.sword(GotModTiers.STEEL, 4.5f, -2.8f)));
 
     // Steel sword variants (crossguard × pommel)
-    public static final DeferredItem<SwordItem> STEEL_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_shortsword_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_longsword_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.0f, -2.4f, p));
-    public static final DeferredItem<SwordItem> STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_bastard_sword_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 3.5f, -2.5f, p));
-    public static final DeferredItem<SwordItem> STEEL_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_falchion_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 2.5f, -2.3f, p));
-    public static final DeferredItem<SwordItem> STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_pommel", p -> new SwordItem(GotModTiers.STEEL, 4.5f, -2.8f, p));
+    public static final DeferredItem<Item> STEEL_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_shortsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 2.0f, -2.4f)));
+    public static final DeferredItem<Item> STEEL_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_longsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 3.0f, -2.4f)));
+    public static final DeferredItem<Item> STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_bastard_sword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 3.5f, -2.5f)));
+    public static final DeferredItem<Item> STEEL_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_falchion_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 2.5f, -2.3f)));
+    public static final DeferredItem<Item> STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 4.5f, -2.8f)));
 
 
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
@@ -2220,36 +2222,36 @@ public class GotModItems {
 
     // ── Great House Banner Pattern Items (used in the loom) ──────────────────
 
-    public static final DeferredItem<BannerPatternItem> STARK_BANNER_PATTERN =
+    public static final DeferredItem<Item> STARK_BANNER_PATTERN =
             REGISTRY.registerItem("stark_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.STARK_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> LANNISTER_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.STARK_PATTERN_TAG))));
+    public static final DeferredItem<Item> LANNISTER_BANNER_PATTERN =
             REGISTRY.registerItem("lannister_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.LANNISTER_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> TARGARYEN_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.LANNISTER_PATTERN_TAG))));
+    public static final DeferredItem<Item> TARGARYEN_BANNER_PATTERN =
             REGISTRY.registerItem("targaryen_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.TARGARYEN_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> BARATHEON_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.TARGARYEN_PATTERN_TAG))));
+    public static final DeferredItem<Item> BARATHEON_BANNER_PATTERN =
             REGISTRY.registerItem("baratheon_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.BARATHEON_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> GREYJOY_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.BARATHEON_PATTERN_TAG))));
+    public static final DeferredItem<Item> GREYJOY_BANNER_PATTERN =
             REGISTRY.registerItem("greyjoy_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.GREYJOY_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> TYRELL_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.GREYJOY_PATTERN_TAG))));
+    public static final DeferredItem<Item> TYRELL_BANNER_PATTERN =
             REGISTRY.registerItem("tyrell_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.TYRELL_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> MARTELL_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.TYRELL_PATTERN_TAG))));
+    public static final DeferredItem<Item> MARTELL_BANNER_PATTERN =
             REGISTRY.registerItem("martell_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.MARTELL_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> TULLY_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.MARTELL_PATTERN_TAG))));
+    public static final DeferredItem<Item> TULLY_BANNER_PATTERN =
             REGISTRY.registerItem("tully_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.TULLY_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> ARRYN_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.TULLY_PATTERN_TAG))));
+    public static final DeferredItem<Item> ARRYN_BANNER_PATTERN =
             REGISTRY.registerItem("arryn_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.ARRYN_PATTERN_TAG, p));
-    public static final DeferredItem<BannerPatternItem> BOLTON_BANNER_PATTERN =
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.ARRYN_PATTERN_TAG))));
+    public static final DeferredItem<Item> BOLTON_BANNER_PATTERN =
             REGISTRY.registerItem("bolton_banner_pattern",
-                    p -> new BannerPatternItem(GotModBannerPatterns.BOLTON_PATTERN_TAG, p));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.BOLTON_PATTERN_TAG))));
 
     // ── Utility block items ───────────────────────────────────────────────────
     public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);

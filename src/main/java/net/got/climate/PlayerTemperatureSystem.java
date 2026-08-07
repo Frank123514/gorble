@@ -6,7 +6,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.FluidState;
@@ -248,8 +247,12 @@ public final class PlayerTemperatureSystem {
         for (EquipmentSlot slot : new EquipmentSlot[]{
                 EquipmentSlot.HEAD, EquipmentSlot.CHEST,
                 EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            // NOTE (1.21.5 port): ArmorItem was removed — armor pieces are now plain
+            // Items configured via Item.Properties#humanoidArmor, with no dedicated
+            // subclass left to instanceof-check. Anything occupying a HEAD/CHEST/LEGS/FEET
+            // equipment slot is armor for this purpose, so just check the slot is filled.
             ItemStack s = player.getItemBySlot(slot);
-            if (!s.isEmpty() && s.getItem() instanceof ArmorItem) n++;
+            if (!s.isEmpty()) n++;
         }
         return n;
     }

@@ -15,7 +15,7 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
@@ -844,8 +844,12 @@ public final class GotConfiguredFeatures {
      * one flat color.
      */
     private static BlockStateProvider mossyBlend(BlockState base) {
+        // NOTE-VERIFY: WeightedStateProvider's constructor signature is listed by the
+        // NeoForge 1.21.5 primer as "now works with WeightedLists" but not documented
+        // as fully one-to-one with SimpleWeightedRandomList. If the compiler complains
+        // that a Builder isn't accepted directly, add ".build()" to the chain below.
         return new WeightedStateProvider(
-                SimpleWeightedRandomList.<BlockState>builder()
+                WeightedList.<BlockState>builder()
                         .add(base, 5)
                         .add(Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3)
                         .add(Blocks.COBBLESTONE.defaultBlockState(), 2)
