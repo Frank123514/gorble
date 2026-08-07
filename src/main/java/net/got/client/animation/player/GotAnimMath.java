@@ -31,19 +31,18 @@ import net.minecraft.util.Mth;
  * gone rather than left dead, since {@code PlayerAnimations} is now the
  * single source of truth for those poses.
  *
- * <p><b>What's still procedural, and why:</b> idle breathing sway, sneak,
+ * <p><b>What's still procedural, and why:</b> idle breathing sway,
  * climbing, and the punch/trident/tool/generic swing styles have no
  * Blockbench-authored clip to play back (the source export only covered
  * walk/run/jump/sword/greatsword/axe), so those stay as the continuous
  * sine/eased curves reverse-engineered from Kelvin's Better Player
- * Animations in earlier passes — unchanged by this one.
+ * Animations in earlier passes — unchanged by this one. Sneaking isn't
+ * approximated here at all: {@link GotPlayerAnimator} leaves it as
+ * vanilla's own default pose instead.
  */
 public final class GotAnimMath {
 
     private GotAnimMath() {}
-
-    /** Vanilla's own walk-gait frequency constant — reused so sneak's gait still lines up with footstep sounds/particles the same way the old full-body walk cycle did. */
-    private static final float GAIT_FREQUENCY = 0.6662F;
 
     /**
      * How long (in ticks) each *procedural* swing style's pose curves get to
@@ -110,44 +109,10 @@ public final class GotAnimMath {
         return primary + secondary;
     }
 
-    // ── Sneak ────────────────────────────────────────────────────────────────
-
-    public static float sneakBodyPitch() {
-        return rad(14.0F);
-    }
-
-    public static float sneakArmForward() {
-        return rad(10.0F);
-    }
-
-    /**
-     * Tighter, forward-biased leg gait while crouched, replacing the
-     * normal walk leg swing entirely (sneaking doesn't blend with
-     * {@link PlayerAnimations#WALKING} — see {@code GotPlayerAnimator}) —
-     * Kelvin's sneak_walk.json legs swing a shorter ~16° arc mostly forward
-     * of rest rather than symmetric front/back like a regular stride.
-     */
-    public static float sneakLegSwing(float walkPos, float intensity) {
-        return rad(16.0F) * Mth.cos(walkPos * GAIT_FREQUENCY) * intensity - rad(7.0F) * intensity;
-    }
-
-    /**
-     * Arms held slightly out from the body for balance while sneaking —
-     * Kelvin's sneak_idle/sneak_walk right_arm.z / left_arm.z sit around
-     * +11°/-10° at rest. Caller negates/adjusts sign per side as needed.
-     */
-    public static float sneakArmSideways(boolean rightSide) {
-        return rightSide ? rad(11.0F) : -rad(10.0F);
-    }
-
-    /** Torso twists more while sneak-walking than at a normal walk (Kelvin: ~9.5° vs ~7.5°). */
-    public static float sneakTorsoTwist(float walkPos, float intensity) {
-        return rad(9.5F) * Mth.sin(walkPos * GAIT_FREQUENCY) * intensity;
-    }
-
-    public static float sneakTorsoRoll(float walkPos, float intensity) {
-        return rad(3.0F) * Mth.cos(walkPos * GAIT_FREQUENCY) * intensity;
-    }
+    // Sneak: intentionally not implemented here. GotPlayerAnimator skips
+    // its own locomotion pose entirely while crouching, so the player uses
+    // vanilla's default HumanoidModel sneak pose instead of a Got-authored
+    // one — see GotPlayerAnimator's class doc.
 
     // ── Climbing (ladders/vines/scaffolding) ────────────────────────────────
 

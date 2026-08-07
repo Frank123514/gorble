@@ -118,4 +118,18 @@ public interface GotAnimatedPlayerState {
     float got$getHorseRunBlend();
 
     void got$setHorseRunBlend(float value);
+
+    /**
+     * True only for the local client's own player, and only while the
+     * camera is in {@code CameraType.FIRST_PERSON}. Captured by {@code
+     * PlayerRendererMixin} off {@code Minecraft.getInstance()} the same
+     * way {@code miningWithAxe} is. {@code PlayerModelMixin} uses this to
+     * hide the head/hat cubes for that one render (see {@code
+     * LevelRendererMixin}, which is what makes the local player's body
+     * render in first person at all instead of being skipped like
+     * vanilla does).
+     */
+    boolean got$isLocalFirstPerson();
+
+    void got$setLocalFirstPerson(boolean value);
 }

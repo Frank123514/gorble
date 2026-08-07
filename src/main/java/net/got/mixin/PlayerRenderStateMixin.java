@@ -53,6 +53,9 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     @Unique
     private float got$horseRunBlend = 0.0F;
 
+    @Unique
+    private boolean got$localFirstPerson = false;
+
     @Override
     public float got$getClimbProgress() {
         return got$climbProgress;
@@ -151,5 +154,15 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     @Override
     public void got$setHorseRunBlend(float value) {
         this.got$horseRunBlend = value;
+    }
+
+    @Override
+    public boolean got$isLocalFirstPerson() {
+        return got$localFirstPerson;
+    }
+
+    @Override
+    public void got$setLocalFirstPerson(boolean value) {
+        this.got$localFirstPerson = value;
     }
 }

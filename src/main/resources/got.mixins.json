@@ -14,7 +14,11 @@
     "WeatherEffectRendererMixin",
     "PlayerRenderStateMixin",
     "PlayerRendererMixin",
-    "PlayerModelMixin"
+    "PlayerModelMixin",
+    "LevelRendererMixin",
+    "EntityPositionAccessor",
+    "ItemInHandRendererMixin",
+    "GotSwingDurationMixin"
   ],
   "injectors": {
     "defaultRequire": 1

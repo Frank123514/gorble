@@ -20,7 +20,7 @@ import net.minecraft.client.animation.KeyframeAnimations;
  * SWORD_ATTACK_2, GREATSWORD_ATTACK, AXE_ATTACK) are one-shots played over
  * a fixed visual swing window (see {@code GotPlayerAnimator.applySwing}).
  *
- * <p>IDLE_SNEAK, HORSE_IDLE, and HORSE_RUNNING loop the same way
+ * <p>HORSE_IDLE and HORSE_RUNNING loop the same way
  * WALKING/RUNNING/JUMP do. SWORD_BLOCK is a single-keyframe hold pose (its
  * source only has one keyframe per channel) but is still marked
  * {@code .looping()} in the export, so it's played back the same way too
@@ -702,52 +702,6 @@ public class PlayerAnimations {
                         new Keyframe(0.7083F, KeyframeAnimations.posVec(0.82F, 0.3F, 1.25F), AnimationChannel.Interpolations.LINEAR),
                         new Keyframe(0.8333F, KeyframeAnimations.posVec(0.73F, 0.3F, 0.4F), AnimationChannel.Interpolations.LINEAR),
                         new Keyframe(1.1667F, KeyframeAnimations.posVec(0.5F, 0.3F, 0.7F), AnimationChannel.Interpolations.LINEAR)
-                ))
-                .build();
-
-        public static final AnimationDefinition IDLE_SNEAK = AnimationDefinition.Builder.withLength(3.5F).looping()
-                .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                        new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.1F, KeyframeAnimations.degreeVec(35.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.degreeVec(30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
-                ))
-                .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                        new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -1.25F, -6.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.9F, KeyframeAnimations.posVec(0.0F, -1.57F, -6.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, -2.0F, -7.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.posVec(0.0F, -1.25F, -6.0F), AnimationChannel.Interpolations.CATMULLROM)
-                ))
-                .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                        new Keyframe(0.0F, KeyframeAnimations.degreeVec(-25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                        new Keyframe(3.5F, KeyframeAnimations.degreeVec(-25.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
-                ))
-                .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                        new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -0.25F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.9F, KeyframeAnimations.posVec(0.0F, 0.43F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.posVec(0.0F, -0.25F, -1.0F), AnimationChannel.Interpolations.CATMULLROM)
-                ))
-                .addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                        new Keyframe(0.0F, KeyframeAnimations.degreeVec(15.15F, -2.71F, 1.74F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.1F, KeyframeAnimations.degreeVec(14.39F, -5.5F, 12.33F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.degreeVec(15.15F, -2.71F, 1.74F), AnimationChannel.Interpolations.CATMULLROM)
-                ))
-                .addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                        new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -1.21F, -0.53F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.9F, KeyframeAnimations.posVec(0.0F, -0.6F, -0.53F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, -1.11F, -0.53F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.posVec(0.0F, -1.21F, -0.53F), AnimationChannel.Interpolations.CATMULLROM)
-                ))
-                .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                        new Keyframe(0.0F, KeyframeAnimations.degreeVec(15.15F, 2.71F, -1.74F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.1F, KeyframeAnimations.degreeVec(14.39F, 5.5F, -12.33F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.degreeVec(15.15F, 2.71F, -1.74F), AnimationChannel.Interpolations.CATMULLROM)
-                ))
-                .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                        new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -1.21F, -0.53F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.9F, KeyframeAnimations.posVec(0.0F, -0.6F, -0.53F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, -1.11F, -0.53F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(3.5F, KeyframeAnimations.posVec(0.0F, -1.21F, -0.53F), AnimationChannel.Interpolations.CATMULLROM)
                 ))
                 .build();
 

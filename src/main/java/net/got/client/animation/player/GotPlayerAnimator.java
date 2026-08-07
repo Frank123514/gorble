@@ -13,11 +13,19 @@ import org.joml.Vector3f;
 
 /**
  * Writes {@link PlayerAnimations} keyframe clips (walk/run/jump/sword/
- * sword2/greatsword/axe/block/horse-idle/horse-running/idle-sneak) and
- * {@link GotAnimMath}'s remaining procedural curves (idle sway, sneak
- * locomotion, climb, punch/trident/tool/generic swings) onto the real
- * player {@link ModelPart}s, fully replacing vanilla's rotations for the
- * poses Got owns.
+ * sword2/greatsword/axe/block/horse-idle/horse-running) and
+ * {@link GotAnimMath}'s remaining procedural curves (idle sway, climb,
+ * punch/trident/tool/generic swings) onto the real player
+ * {@link ModelPart}s, fully replacing vanilla's rotations for the poses
+ * Got owns.
+ *
+ * <p><b>Sneaking is explicitly NOT one of the poses Got owns:</b> the base
+ * locomotion block in {@link #apply} is skipped entirely whenever the
+ * player is crouching (and not climbing), so vanilla's own default sneak
+ * pose from {@code HumanoidModel.setupAnim} — already computed before this
+ * class runs, see {@code PlayerModelMixin} — is left completely untouched.
+ * Attack swings, blocking, and bow-draw still layer on top of that vanilla
+ * pose exactly the way they would on top of a Got walk/run/climb pose.
  *
  * <p><b>Eighth pass — locomotion and sword/greatsword/axe go from math back
  * to literal keyframe playback:</b> this class used to compute every pose
@@ -28,7 +36,7 @@ import org.joml.Vector3f;
  * via {@code KeyframeAnimations.animate}, the same vanilla playback path
  * {@code GotStagModel}/{@code GotBrownBearModel}/{@code BellowsModel}
  * already use for their own clips, rather than being resampled through a
- * hand-tuned pendulum/spring model. Idle sway, sneak, climbing, and the
+ * hand-tuned pendulum/spring model. Idle sway, climbing, and the
  * punch/trident/tool/generic swing styles have no source clip to play
  * back, so those stay procedural exactly as before.
  *
@@ -40,7 +48,7 @@ import org.joml.Vector3f;
  * {@code GotStagModel#applyAnimation} resets before playing its own clips),
  * then layers WALKING/RUNNING (crossfaded by {@code runBlend}, and by
  * movement intensity so the clip's contribution fades to zero at a
- * standstill rather than freezing mid-stride) or the sneak/climb procedural
+ * standstill rather than freezing mid-stride) or the climb procedural
  * pose, then layers JUMP on top at {@code weight = airborneProgress}. A
  * sword/greatsword/axe swing is different: those clips carry a full-body
  * performance (their own body/head/leg channels, not just an arm), so an
@@ -48,7 +56,8 @@ import org.joml.Vector3f;
  * six parts, replacing this frame's locomotion pose outright rather than
  * adding to it — see {@link #applyKeyframeSwing}.
  *
- * <p><b>What this intentionally leaves alone:</b> crossbow draw, eating
+ * <p><b>What this intentionally leaves alone:</b> sneaking (see above),
+ * crossbow draw, eating
  * &amp; drinking, spyglass, brush, horn, spear throw, elytra flight, sleeping,
  * and non-horse riding poses (boats, minecarts, pigs, etc. — vanilla
  * already has bespoke poses for those and there's no authored Got clip for
@@ -158,95 +167,86 @@ public final class GotPlayerAnimator {
         float runBlend = anim.got$getSprintProgress();
         float moveIntensity = walkSpeed;
 
-        // Fresh baseline every frame: KeyframeAnimations.animate() ADDS onto
-        // whatever's already on a part, so start from bind pose the same
-        // way GotStagModel#applyAnimation etc. do, rather than layering on
-        // top of vanilla's own HumanoidModel.setupAnim pose.
-        body.resetPose();
-        head.resetPose();
-        rightArm.resetPose();
-        leftArm.resetPose();
-        rightLeg.resetPose();
-        leftLeg.resetPose();
+        // Sneaking is intentionally left alone: this whole locomotion+jump
+        // block (including the resetPose() calls that would otherwise wipe
+        // it) is skipped while crouching, so vanilla's own
+        // HumanoidModel.setupAnim sneak pose (already computed before this
+        // mixin runs — see PlayerModelMixin) survives untouched instead of
+        // being replaced with a Got-authored crouch pose. Attack swings,
+        // blocking, and bow-draw below still run and layer on top exactly
+        // as before, whether the base pose underneath is vanilla's sneak or
+        // Got's own walk/run/climb.
+        boolean sneaking = climb <= 0.01F && state.isCrouching;
 
-        // ── Base locomotion pose (climb / sneak / walk+run keyframe) ────────
-        if (climb > 0.01F) {
-            // Climbing replaces normal locomotion entirely while active, and
-            // blends back out smoothly via climbProgress as the player lets go.
-            // Blended from rest (0) rather than from the walk pose at
-            // climb's low end, since there's no cheap way to read a scalar
-            // "current leg angle" back out of a keyframe clip mid-blend —
-            // climbProgress itself already ramps in smoothly (see
-            // PlayerRendererMixin), so the transition still reads as smooth.
-            float armR = Mth.lerp(climb, 0.0F, GotAnimMath.climbArmReach(age, true));
-            float armL = Mth.lerp(climb, 0.0F, GotAnimMath.climbArmReach(age, false));
-            float legR = Mth.lerp(climb, 0.0F, GotAnimMath.climbLegPush(age, true));
-            float legL = Mth.lerp(climb, 0.0F, GotAnimMath.climbLegPush(age, false));
-            body.xRot = GotAnimMath.climbBodyPitch() * climb;
-            rightArm.xRot = armR;
-            leftArm.xRot = armL;
-            rightLeg.xRot = legR;
-            leftLeg.xRot = legL;
-        } else if (state.isCrouching) {
-            // Sneaking replaces the normal walk gait with a tighter,
-            // forward-biased crouch-step (no keyframe clip for this), and
-            // holds the arms out to the sides for balance.
-            float sneakLeg = GotAnimMath.sneakLegSwing(walkPos, moveIntensity);
-            body.xRot = GotAnimMath.sneakBodyPitch();
-            body.yRot = GotAnimMath.sneakTorsoTwist(walkPos, moveIntensity);
-            body.zRot = GotAnimMath.sneakTorsoRoll(walkPos, moveIntensity);
-            rightArm.xRot = GotAnimMath.sneakArmForward();
-            leftArm.xRot = GotAnimMath.sneakArmForward();
-            rightArm.zRot = GotAnimMath.sneakArmSideways(true);
-            leftArm.zRot = GotAnimMath.sneakArmSideways(false);
-            rightLeg.xRot = sneakLeg;
-            leftLeg.xRot = -sneakLeg;
+        if (!sneaking) {
+            // Fresh baseline every frame: KeyframeAnimations.animate() ADDS
+            // onto whatever's already on a part, so start from bind pose the
+            // same way GotStagModel#applyAnimation etc. do, rather than
+            // layering on top of vanilla's own HumanoidModel.setupAnim pose.
+            body.resetPose();
+            head.resetPose();
+            rightArm.resetPose();
+            leftArm.resetPose();
+            rightLeg.resetPose();
+            leftLeg.resetPose();
 
-            // Layered breathing idle on top of the crouch pose, fading out
-            // the moment the player actually starts sneak-walking — same
-            // moveIntensity/airborne blend the standing idle sway below
-            // uses, just applied to the crouch pose instead of the walk one.
-            float sneakIdleBlend = (1.0F - moveIntensity) * (1.0F - airborne);
-            KeyframeAnimations.animate(model, PlayerAnimations.IDLE_SNEAK, (long) (age * 50F), sneakIdleBlend, ANIM_VEC);
-        } else {
-            // WALKING/RUNNING are crossfaded by runBlend and additionally
-            // weighted by moveIntensity, so the clip's contribution fades
-            // out smoothly to a standstill instead of freezing on whatever
-            // frame walkAnimationPos happened to stop on.
-            long walkMs = (long) (walkPos * 50F);
-            KeyframeAnimations.animate(model, PlayerAnimations.WALKING, walkMs, (1.0F - runBlend) * moveIntensity, ANIM_VEC);
-            KeyframeAnimations.animate(model, PlayerAnimations.RUNNING, walkMs, runBlend * moveIntensity, ANIM_VEC);
+            // ── Base locomotion pose (climb / walk+run keyframe) ─────────────
+            if (climb > 0.01F) {
+                // Climbing replaces normal locomotion entirely while active, and
+                // blends back out smoothly via climbProgress as the player lets go.
+                // Blended from rest (0) rather than from the walk pose at
+                // climb's low end, since there's no cheap way to read a scalar
+                // "current leg angle" back out of a keyframe clip mid-blend —
+                // climbProgress itself already ramps in smoothly (see
+                // PlayerRendererMixin), so the transition still reads as smooth.
+                float armR = Mth.lerp(climb, 0.0F, GotAnimMath.climbArmReach(age, true));
+                float armL = Mth.lerp(climb, 0.0F, GotAnimMath.climbArmReach(age, false));
+                float legR = Mth.lerp(climb, 0.0F, GotAnimMath.climbLegPush(age, true));
+                float legL = Mth.lerp(climb, 0.0F, GotAnimMath.climbLegPush(age, false));
+                body.xRot = GotAnimMath.climbBodyPitch() * climb;
+                rightArm.xRot = armR;
+                leftArm.xRot = armL;
+                rightLeg.xRot = legR;
+                leftLeg.xRot = legL;
+            } else {
+                // WALKING/RUNNING are crossfaded by runBlend and additionally
+                // weighted by moveIntensity, so the clip's contribution fades
+                // out smoothly to a standstill instead of freezing on whatever
+                // frame walkAnimationPos happened to stop on.
+                long walkMs = (long) (walkPos * 50F);
+                KeyframeAnimations.animate(model, PlayerAnimations.WALKING, walkMs, (1.0F - runBlend) * moveIntensity, ANIM_VEC);
+                KeyframeAnimations.animate(model, PlayerAnimations.RUNNING, walkMs, runBlend * moveIntensity, ANIM_VEC);
 
-            // Idle breathing sway fades in as movement stops and fades back
-            // out the moment the player starts walking or leaves the ground,
-            // so there's no seam between "standing still" and "just started
-            // walking".
-            float idleBlend = (1.0F - moveIntensity) * (1.0F - airborne);
-            rightArm.zRot += GotAnimMath.idleArmSway(age) * idleBlend;
-            leftArm.zRot += -GotAnimMath.idleArmSway(age) * idleBlend;
-            rightLeg.zRot += GotAnimMath.idleLegSplay(true) * idleBlend;
-            leftLeg.zRot += GotAnimMath.idleLegSplay(false) * idleBlend;
-            body.yRot += GotAnimMath.idleBodySway(age) * idleBlend;
-        }
+                // Idle breathing sway fades in as movement stops and fades back
+                // out the moment the player starts walking or leaves the ground,
+                // so there's no seam between "standing still" and "just started
+                // walking".
+                float idleBlend = (1.0F - moveIntensity) * (1.0F - airborne);
+                rightArm.zRot += GotAnimMath.idleArmSway(age) * idleBlend;
+                leftArm.zRot += -GotAnimMath.idleArmSway(age) * idleBlend;
+                rightLeg.zRot += GotAnimMath.idleLegSplay(true) * idleBlend;
+                leftLeg.zRot += GotAnimMath.idleLegSplay(false) * idleBlend;
+                body.yRot += GotAnimMath.idleBodySway(age) * idleBlend;
+            }
 
-        // ── Jump / airborne ──────────────────────────────────────────────────
-        // Layered on top of whichever base pose above via KeyframeAnimations'
-        // additive weight semantics — applies even while sneaking (matching
-        // the pre-keyframe behavior), just not while climbing.
-        if (climb <= 0.01F && airborne > 0.01F) {
-            KeyframeAnimations.animate(model, PlayerAnimations.JUMP, (long) (age * 50F), airborne, ANIM_VEC);
+            // ── Jump / airborne ──────────────────────────────────────────────
+            // Layered on top of whichever base pose above via
+            // KeyframeAnimations' additive weight semantics.
+            if (airborne > 0.01F) {
+                KeyframeAnimations.animate(model, PlayerAnimations.JUMP, (long) (age * 50F), airborne, ANIM_VEC);
 
-            // Rotation-only torso attach (unlike the swing path's full
-            // attachToBody): composing body's POSITION here as well
-            // dragged the arms down by body's small anticipation-dip
-            // translation and knocked the head sideways off-center,
-            // since JUMP's arm/head channels are already authored at
-            // their normal resting height/offset and don't expect to
-            // also be carried by the body's own squash/dip. Only the
-            // torso's tilt should be inherited here, not its translation.
-            attachRotationToBody(rightArm, body);
-            attachRotationToBody(leftArm, body);
-            attachRotationToBody(head, body);
+                // Rotation-only torso attach (unlike the swing path's full
+                // attachToBody): composing body's POSITION here as well
+                // dragged the arms down by body's small anticipation-dip
+                // translation and knocked the head sideways off-center,
+                // since JUMP's arm/head channels are already authored at
+                // their normal resting height/offset and don't expect to
+                // also be carried by the body's own squash/dip. Only the
+                // torso's tilt should be inherited here, not its translation.
+                attachRotationToBody(rightArm, body);
+                attachRotationToBody(leftArm, body);
+                attachRotationToBody(head, body);
+            }
         }
 
         // ── Attack swings (punch / weapon), applied per-arm ─────────────────

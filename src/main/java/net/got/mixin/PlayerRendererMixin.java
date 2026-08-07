@@ -2,7 +2,9 @@ package net.got.mixin;
 
 import net.got.client.animation.player.GotAnimMath;
 import net.got.client.animation.player.GotAnimatedPlayerState;
+import net.got.client.animation.player.GotFirstPersonRenderState;
 import net.got.client.animation.player.GotSwingStyle;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -67,6 +69,22 @@ public abstract class PlayerRendererMixin {
                 && gameMode.isDestroying()
                 && GotSwingStyle.fromItem(player.getMainHandItem()) == GotSwingStyle.AXE;
         anim.got$setMiningWithAxe(miningWithAxe);
+
+        // Local player's own model, camera currently first-person, AND
+        // this extractRenderState call is happening inside
+        // LevelRendererMixin's forced world-render (not the inventory
+        // screen's player preview or any other PlayerRenderer use that
+        // also targets mc.player while the camera option still reads
+        // FIRST_PERSON — see GotFirstPersonRenderState's doc). The one
+        // case LevelRendererMixin makes render at all instead of being
+        // skipped like vanilla. PlayerModelMixin reads this to hide the
+        // head/hat cubes so we're not looking at the inside of our own
+        // skull, without also hiding the head on menu previews where the
+        // camera option is irrelevant.
+        anim.got$setLocalFirstPerson(
+                mc.player == player
+                        && mc.options.getCameraType() == CameraType.FIRST_PERSON
+                        && GotFirstPersonRenderState.isRenderingLocalBody());
 
         // Horse riding pose: HORSE_IDLE/HORSE_RUNNING crossfade off the
         // ridden horse's own ground speed (the player has no walk speed

@@ -1,5 +1,6 @@
 package net.got.mixin;
 
+import net.got.client.animation.player.GotAnimatedPlayerState;
 import net.got.client.animation.player.GotPlayerAnimator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -13,8 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * Runs after vanilla's own {@code PlayerModel.setupAnim}, then hands the
  * (already-populated) model parts to {@link GotPlayerAnimator} to
- * overwrite the rotations for the poses this mod owns (walk, run, sneak,
- * jump, climb, punch, weapon swings, blocking). See
+ * overwrite the rotations for the poses this mod owns (walk, run,
+ * jump, climb, punch, weapon swings, blocking — sneaking is deliberately
+ * left as vanilla's default pose, see {@link GotPlayerAnimator}). See
  * {@link GotPlayerAnimator}'s class doc for exactly what's left untouched
  * and why.
  *
@@ -76,5 +78,23 @@ public abstract class PlayerModelMixin extends HumanoidModel<PlayerRenderState> 
                 body, head,
                 rightArm, leftArm,
                 rightLeg, leftLeg);
+
+        // Hide the head/hat cubes only for the one frame this is the
+        // local player's own body rendering in first person (see
+        // GotAnimatedPlayerState#got$isLocalFirstPerson /
+        // LevelRendererMixin). This single PlayerModel instance is reused
+        // to render every player each frame, so the flag must be
+        // explicitly cleared here too, not just set when true — otherwise
+        // the first local-first-person frame would leave heads hidden on
+        // every other player rendered afterward.
+        boolean hideHead = ((GotAnimatedPlayerState) state).got$isLocalFirstPerson();
+        head.visible = !hideHead;
+        hat.visible = !hideHead;
+        // Arms ARE shown here (unlike the head/hat). ItemInHandRendererMixin
+        // cancels vanilla's separate first-person hand model entirely for
+        // the local player and renders this same PlayerRenderer body
+        // instead, so the arms drawn here are what the player sees as
+        // their own hands — full body, real armor/skin, real swing
+        // animation, no separate hardcoded hand model to fight with.
     }
 }
