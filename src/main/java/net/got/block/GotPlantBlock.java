@@ -14,7 +14,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class GotPlantBlock extends BushBlock {
 
-    public static final MapCodec<GotPlantBlock> CODEC = simpleCodec(GotPlantBlock::new);
+    public static final MapCodec<BushBlock> CODEC = simpleCodec(GotPlantBlock::new);
     protected static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
 
     public GotPlantBlock(Properties properties) {
@@ -22,7 +22,7 @@ public class GotPlantBlock extends BushBlock {
     }
 
     @Override
-    protected MapCodec<GotPlantBlock> codec() {
+    public MapCodec<BushBlock> codec() {
         return CODEC;
     }
 

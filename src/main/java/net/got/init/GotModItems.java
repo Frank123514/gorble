@@ -11,7 +11,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.got.item.GotBoatItem;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.ProvidesBannerPatterns;
 
 import java.util.function.Function;
 
@@ -2224,34 +2223,34 @@ public class GotModItems {
 
     public static final DeferredItem<Item> STARK_BANNER_PATTERN =
             REGISTRY.registerItem("stark_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.STARK_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.STARK_PATTERN_TAG)));
     public static final DeferredItem<Item> LANNISTER_BANNER_PATTERN =
             REGISTRY.registerItem("lannister_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.LANNISTER_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.LANNISTER_PATTERN_TAG)));
     public static final DeferredItem<Item> TARGARYEN_BANNER_PATTERN =
             REGISTRY.registerItem("targaryen_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.TARGARYEN_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.TARGARYEN_PATTERN_TAG)));
     public static final DeferredItem<Item> BARATHEON_BANNER_PATTERN =
             REGISTRY.registerItem("baratheon_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.BARATHEON_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.BARATHEON_PATTERN_TAG)));
     public static final DeferredItem<Item> GREYJOY_BANNER_PATTERN =
             REGISTRY.registerItem("greyjoy_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.GREYJOY_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.GREYJOY_PATTERN_TAG)));
     public static final DeferredItem<Item> TYRELL_BANNER_PATTERN =
             REGISTRY.registerItem("tyrell_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.TYRELL_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.TYRELL_PATTERN_TAG)));
     public static final DeferredItem<Item> MARTELL_BANNER_PATTERN =
             REGISTRY.registerItem("martell_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.MARTELL_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.MARTELL_PATTERN_TAG)));
     public static final DeferredItem<Item> TULLY_BANNER_PATTERN =
             REGISTRY.registerItem("tully_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.TULLY_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.TULLY_PATTERN_TAG)));
     public static final DeferredItem<Item> ARRYN_BANNER_PATTERN =
             REGISTRY.registerItem("arryn_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.ARRYN_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.ARRYN_PATTERN_TAG)));
     public static final DeferredItem<Item> BOLTON_BANNER_PATTERN =
             REGISTRY.registerItem("bolton_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, new ProvidesBannerPatterns(GotModBannerPatterns.BOLTON_PATTERN_TAG))));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.BOLTON_PATTERN_TAG)));
 
     // ── Utility block items ───────────────────────────────────────────────────
     public static final DeferredItem<Item> OVEN = block(GotModBlocks.OVEN);

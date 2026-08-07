@@ -29,10 +29,10 @@ public class GotBerryBushBlock extends BushBlock implements BonemealableBlock {
 
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
 
-    public static final MapCodec<GotBerryBushBlock> CODEC = MapCodec.unit(() -> null);
+    public static final MapCodec<BushBlock> CODEC = MapCodec.unit(() -> null);
 
     @Override
-    public MapCodec<? extends BushBlock> codec() {
+    public MapCodec<BushBlock> codec() {
         return CODEC;
     }
 

@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.PushReaction;
 public class WeirwoodLeavesBlock extends LeavesBlock {
 
     public WeirwoodLeavesBlock(Properties properties) {
-        super(properties.sound(SoundType.GRASS).strength(0.2f).noOcclusion()
+        super(0.1f, properties.sound(SoundType.GRASS).strength(0.2f).noOcclusion()
                 .pushReaction(PushReaction.DESTROY)
                 .isRedstoneConductor((bs, br, bp) -> false)
                 .ignitedByLava()
@@ -44,4 +44,7 @@ public class WeirwoodLeavesBlock extends LeavesBlock {
     public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
         return 30;
     }
+
+	@Override
+	protected void spawnFallingLeavesParticle(net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos, net.minecraft.util.RandomSource random) {}
 }

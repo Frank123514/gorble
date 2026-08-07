@@ -14,7 +14,6 @@ import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -31,11 +30,11 @@ import javax.annotation.Nullable;
  */
 public class TriplePlantBlock extends BushBlock {
 
-    public static final MapCodec<TriplePlantBlock> CODEC = MapCodec.unit(
+    public static final MapCodec<BushBlock> CODEC = MapCodec.unit(
             () -> new TriplePlantBlock(Properties.of()));
 
     @Override
-    public MapCodec<? extends BushBlock> codec() { return CODEC; }
+    public MapCodec<BushBlock> codec() { return CODEC; }
 
     public static final IntegerProperty SECTION = IntegerProperty.create("section", 0, 2);
 

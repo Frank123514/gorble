@@ -8,14 +8,12 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -35,11 +33,11 @@ import javax.annotation.Nullable;
  */
 public class ShortReedsBlock extends DoublePlantBlock implements SimpleWaterloggedBlock {
 
-    public static final MapCodec<ShortReedsBlock> CODEC =
+    public static final MapCodec<DoublePlantBlock> CODEC =
             MapCodec.unit(() -> new ShortReedsBlock(Properties.of()));
 
     @Override
-    public MapCodec<ShortReedsBlock> codec() { return CODEC; }
+    public MapCodec<DoublePlantBlock> codec() { return CODEC; }
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

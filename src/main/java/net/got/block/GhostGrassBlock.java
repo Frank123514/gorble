@@ -2,14 +2,12 @@ package net.got.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -23,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class GhostGrassBlock extends TriplePlantBlock {
 
-    public static final MapCodec<GhostGrassBlock> CODEC =
+    public static final MapCodec<BushBlock> CODEC =
             MapCodec.unit(() -> new GhostGrassBlock(Properties.of()));
 
     // Search radius - how far to look for plants to convert (12 = large area but not overwhelming)
@@ -32,7 +30,7 @@ public class GhostGrassBlock extends TriplePlantBlock {
     private static final int MAX_CONVERSIONS_PER_TICK = 3;
 
     @Override
-    public MapCodec<? extends BushBlock> codec() { return CODEC; }
+    public MapCodec<BushBlock> codec() { return CODEC; }
 
     public GhostGrassBlock(Properties properties) {
         super(properties);

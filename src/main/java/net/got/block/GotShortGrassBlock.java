@@ -10,7 +10,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class GotShortGrassBlock extends BushBlock {
 
-    public static final MapCodec<GotShortGrassBlock> CODEC = MapCodec.unit(() -> null);
+    public static final MapCodec<BushBlock> CODEC = MapCodec.unit(() -> null);
 
     protected static final VoxelShape SHAPE = box(5.0, 0.0, 5.0, 11.0, 10.0, 11.0);
 
@@ -19,7 +19,7 @@ public class GotShortGrassBlock extends BushBlock {
     }
 
     @Override
-    protected MapCodec<? extends BushBlock> codec() {
+    public MapCodec<BushBlock> codec() {
         return CODEC;
     }
 

@@ -536,13 +536,13 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
         super.loadAdditional(tag, registries);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items, registries);
-        cookingProgress   = tag.getInt("CookTime");
-        cookingTotalTime  = tag.getInt("CookTimeTotal");
-        litTime           = tag.getInt("BurnTime");
-        litDuration       = tag.getInt("BurnDuration");
-        selectedRecipeIdx = tag.getInt("SelectedRecipe");
-        mode              = tag.getInt("Mode");
-        int[] savedHeat = tag.getIntArray("HeatProgress");
+        cookingProgress   = tag.getIntOr("CookTime", 0);
+        cookingTotalTime  = tag.getIntOr("CookTimeTotal", 0);
+        litTime           = tag.getIntOr("BurnTime", 0);
+        litDuration       = tag.getIntOr("BurnDuration", 0);
+        selectedRecipeIdx = tag.getIntOr("SelectedRecipe", 0);
+        mode              = tag.getIntOr("Mode", 0);
+        int[] savedHeat = tag.getIntArray("HeatProgress").orElse(new int[0]);
         for (int i = 0; i < heatProgress.length; i++) {
             heatProgress[i] = i < savedHeat.length ? savedHeat[i] : 0;
         }

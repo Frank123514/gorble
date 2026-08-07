@@ -1,14 +1,14 @@
 package net.got.climate;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.got.GotMod;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.got.climate.SeasonCache;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.got.network.SeasonSyncPayload;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -37,31 +37,32 @@ public final class SeasonManager extends SavedData {
     private GotSeason currentSeason  = GotSeason.SUMMER;
     private long      ticksRemaining = daysToTicks(BASE_LONG_DAYS);
 
-    private static final Factory<SeasonManager> FACTORY =
-            new Factory<>(SeasonManager::new, SeasonManager::load, null);
+    public static final SavedDataType<SeasonManager> TYPE = new SavedDataType<>(
+            DATA_NAME,
+            SeasonManager::new,
+            RecordCodecBuilder.create(instance -> instance.group(
+                    Codec.STRING.fieldOf("season").forGetter(m -> m.currentSeason.name()),
+                    Codec.LONG.fieldOf("ticksRemaining").forGetter(m -> m.ticksRemaining)
+            ).apply(instance, SeasonManager::new)),
+            null
+    );
 
     public static SeasonManager get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(FACTORY, DATA_NAME);
+        return level.getDataStorage().computeIfAbsent(TYPE);
     }
 
-    @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.putString("season", currentSeason.name());
-        tag.putLong("ticksRemaining", ticksRemaining);
-        return tag;
+    public SeasonManager() {
     }
 
-    public static SeasonManager load(CompoundTag tag, HolderLookup.Provider registries) {
-        SeasonManager mgr = new SeasonManager();
+    private SeasonManager(String seasonName, long ticksRemaining) {
         try {
-            mgr.currentSeason = GotSeason.valueOf(tag.getString("season"));
+            this.currentSeason = GotSeason.valueOf(seasonName);
         } catch (IllegalArgumentException ignored) {
-            mgr.currentSeason = GotSeason.SUMMER;
+            this.currentSeason = GotSeason.SUMMER;
         }
-        mgr.ticksRemaining = tag.getLong("ticksRemaining");
-        CURRENT_SEASON = mgr.currentSeason;
-        SeasonCache.set(mgr.currentSeason);
-        return mgr;
+        this.ticksRemaining = ticksRemaining;
+        CURRENT_SEASON = this.currentSeason;
+        SeasonCache.set(this.currentSeason);
     }
 
     @SubscribeEvent

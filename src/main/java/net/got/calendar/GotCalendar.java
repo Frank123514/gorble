@@ -1,14 +1,15 @@
 package net.got.calendar;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.got.GotMod;
 import net.got.climate.SeasonManager;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -59,13 +60,22 @@ public final class GotCalendar extends SavedData {
 
     private static final String DATA_NAME = "got_calendar";
 
-    private static final SavedData.Factory<GotCalendar> FACTORY =
-            new SavedData.Factory<>(GotCalendar::new, GotCalendar::load, null);
+    public static final SavedDataType<GotCalendar> TYPE = new SavedDataType<>(
+            DATA_NAME,
+            GotCalendar::new,
+            RecordCodecBuilder.create(instance -> instance.group(
+                    Codec.INT.fieldOf("day").forGetter(c -> c.day),
+                    Codec.INT.fieldOf("month").forGetter(c -> c.month),
+                    Codec.INT.fieldOf("year").forGetter(c -> c.year),
+                    Codec.LONG.fieldOf("lastMinecraftDay").forGetter(c -> c.lastMinecraftDay)
+            ).apply(instance, GotCalendar::new)),
+            null
+    );
 
     public static GotCalendar get(ServerLevel level) {
         // Always retrieve from overworld so all dimensions share one calendar.
         ServerLevel overworld = level.getServer().overworld();
-        return overworld.getDataStorage().computeIfAbsent(FACTORY, DATA_NAME);
+        return overworld.getDataStorage().computeIfAbsent(TYPE);
     }
 
     // ── Persisted state ───────────────────────────────────────────────────────
@@ -76,6 +86,20 @@ public final class GotCalendar extends SavedData {
 
     /** Last absolute Minecraft day index we processed; used to detect day changes. */
     private long lastMinecraftDay = -1L;
+
+    public GotCalendar() {
+    }
+
+    private GotCalendar(int day, int month, int year, long lastMinecraftDay) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.lastMinecraftDay = lastMinecraftDay;
+        // Sanity clamp in case of corrupted data
+        if (this.day   < 1 || this.day   > DAYS_PER_MONTH)  this.day   = 1;
+        if (this.month < 1 || this.month > MONTHS_PER_YEAR) this.month = 1;
+        if (this.year  < 1)                                  this.year  = DEFAULT_START_YEAR;
+    }
 
     // ── Tick event ────────────────────────────────────────────────────────────
 
@@ -253,27 +277,4 @@ public final class GotCalendar extends SavedData {
         };
     }
 
-    // ── SavedData ─────────────────────────────────────────────────────────────
-
-    @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.putInt("day",              day);
-        tag.putInt("month",            month);
-        tag.putInt("year",             year);
-        tag.putLong("lastMinecraftDay", lastMinecraftDay);
-        return tag;
-    }
-
-    public static GotCalendar load(CompoundTag tag, HolderLookup.Provider registries) {
-        GotCalendar cal = new GotCalendar();
-        cal.day              = tag.getInt("day");
-        cal.month            = tag.getInt("month");
-        cal.year             = tag.getInt("year");
-        cal.lastMinecraftDay = tag.getLong("lastMinecraftDay");
-        // Sanity clamp in case of corrupted data
-        if (cal.day   < 1 || cal.day   > DAYS_PER_MONTH)   cal.day   = 1;
-        if (cal.month < 1 || cal.month > MONTHS_PER_YEAR)   cal.month = 1;
-        if (cal.year  < 1)                                   cal.year  = DEFAULT_START_YEAR;
-        return cal;
-    }
 }

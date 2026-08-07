@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -75,17 +73,10 @@ public class ForgeBlock extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos,
-                         BlockState newState, boolean movedByPiston) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof ForgeBlockEntity forge) {
-                Containers.dropContents(level, pos, forge);
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
+    // NOTE (1.21.5): onRemove was split into BlockEntity#preRemoveSideEffects and
+    // BlockBehaviour#affectNeighborsAfterRemoval. ForgeBlockEntity is a Container
+    // (WorldlyContainer), so vanilla now automatically drops its contents on removal
+    // via the default preRemoveSideEffects — no manual override needed here.
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,

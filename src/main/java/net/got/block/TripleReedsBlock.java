@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -31,11 +30,11 @@ import javax.annotation.Nullable;
  */
 public class TripleReedsBlock extends TriplePlantBlock implements SimpleWaterloggedBlock {
 
-    public static final MapCodec<TripleReedsBlock> CODEC =
+    public static final MapCodec<BushBlock> CODEC =
             MapCodec.unit(() -> new TripleReedsBlock(Properties.of()));
 
     @Override
-    public MapCodec<? extends BushBlock> codec() { return CODEC; }
+    public MapCodec<BushBlock> codec() { return CODEC; }
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
