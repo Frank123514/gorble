@@ -114,6 +114,22 @@ public final class GotPlayerAnimator {
      */
     private static final float MINING_LOOP_SPEED = 3.0F;
 
+    /**
+     * How much of the walk/run torso sway (both the yaw-twist rotation and
+     * the up/down/forward bob position, WALKING/RUNNING's "body" channels)
+     * survives when this is the local player's own body in first person —
+     * see {@link GotAnimatedPlayerState#got$isLocalFirstPerson()}. The full
+     * authored amplitude (~11 degrees of twist, up to 2 units of bob) reads
+     * fine on other players and in third person, but right up against the
+     * camera it's a lot of visible torso motion, right in the area
+     * (collar/shoulder) that was already poking into frame — dampening it
+     * quiets that down without touching the arm swing itself, which stays
+     * at full amplitude. 0.4 was picked by eye, not measured; raise it
+     * toward 1.0 if the torso ends up reading as too stiff/lifeless in
+     * first person, lower it if it's still too busy.
+     */
+    private static final float FIRST_PERSON_BODY_SWAY_DAMPEN = 0.4F;
+
     public static void apply(
             Model model,
             PlayerRenderState state,
@@ -227,6 +243,20 @@ public final class GotPlayerAnimator {
                 rightLeg.zRot += GotAnimMath.idleLegSplay(true) * idleBlend;
                 leftLeg.zRot += GotAnimMath.idleLegSplay(false) * idleBlend;
                 body.yRot += GotAnimMath.idleBodySway(age) * idleBlend;
+            }
+
+            // Only the torso's own walk/run sway gets quieted down here —
+            // rightArm/leftArm/rightLeg/leftLeg are untouched, so the arm
+            // swing you actually watch your hands/weapon do every frame in
+            // first person keeps its full, correctly-timed amplitude. See
+            // FIRST_PERSON_BODY_SWAY_DAMPEN's doc for why body specifically.
+            if (anim.got$isLocalFirstPerson()) {
+                body.xRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+                body.yRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+                body.zRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+                body.x *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+                body.y *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+                body.z *= FIRST_PERSON_BODY_SWAY_DAMPEN;
             }
 
             // ── Jump / airborne ──────────────────────────────────────────────

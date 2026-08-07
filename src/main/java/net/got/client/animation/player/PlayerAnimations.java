@@ -411,10 +411,10 @@ public class PlayerAnimations {
                 ))
                 .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
                         new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.125F, KeyframeAnimations.posVec(-1.0F, -1.2F, -1.18F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.3125F, KeyframeAnimations.posVec(0.0F, -0.25F, 2.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.5625F, KeyframeAnimations.posVec(0.0F, -2.0F, -4.0F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.875F, KeyframeAnimations.posVec(0.0F, -1.5F, -3.33F), AnimationChannel.Interpolations.CATMULLROM)
+                        new Keyframe(0.125F, KeyframeAnimations.posVec(-1.0F, -1.2F, -0.59F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.3125F, KeyframeAnimations.posVec(0.0F, -0.25F, 1.0F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.5625F, KeyframeAnimations.posVec(0.0F, -2.0F, -2.0F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.875F, KeyframeAnimations.posVec(0.0F, -1.5F, -1.67F), AnimationChannel.Interpolations.CATMULLROM)
                 ))
                 .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                         new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -500,12 +500,12 @@ public class PlayerAnimations {
                         new Keyframe(0.95F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
                 ))
                 .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                        new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.5F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.1F, KeyframeAnimations.posVec(-1.0F, -1.25F, -0.36F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.25F, KeyframeAnimations.posVec(0.0F, -2.0F, -2.5F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.45F, KeyframeAnimations.posVec(-0.75F, 0.0F, 3.5F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.65F, KeyframeAnimations.posVec(-0.5F, -0.86F, 2.4F), AnimationChannel.Interpolations.CATMULLROM),
-                        new Keyframe(0.8F, KeyframeAnimations.posVec(-0.42F, -0.36F, -1.15F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -0.75F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.1F, KeyframeAnimations.posVec(-1.0F, -1.25F, -0.18F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.25F, KeyframeAnimations.posVec(0.0F, -2.0F, -1.25F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.45F, KeyframeAnimations.posVec(-0.75F, 0.0F, 1.75F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.65F, KeyframeAnimations.posVec(-0.5F, -0.86F, 1.2F), AnimationChannel.Interpolations.CATMULLROM),
+                        new Keyframe(0.8F, KeyframeAnimations.posVec(-0.42F, -0.36F, -0.58F), AnimationChannel.Interpolations.CATMULLROM),
                         new Keyframe(0.95F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
                 ))
                 .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,

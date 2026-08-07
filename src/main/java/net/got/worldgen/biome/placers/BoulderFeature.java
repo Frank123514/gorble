@@ -34,16 +34,18 @@ import java.util.List;
  * smooth, without reading as "scattered."
  *
  * <h2>Placement safety</h2>
- * Before placing anything, the whole footprint (a box around the boulder,
- * generous enough to cover every lobe plus jitter) is scanned up front. If
- * that scan finds water/lava, any log or leaf block (i.e. a tree), or any
- * other solid block that isn't one of {@code targets} and isn't naturally
- * replaceable (grass, flowers, snow layers, etc.) — which in practice means
- * a structure or other foreign object — placement is aborted entirely with
- * no partial boulder left behind. Structures generate before decoration
- * features in vanilla's chunk pipeline, so by the time this feature runs any
- * structure blocks are already physically in the world and get caught by
- * this same "foreign block" check.
+ * Before placing anything, the boulder's own shape (every lobe, with jitter)
+ * is scanned up front using the same inside-the-shape test the actual
+ * placement loop uses — not a full bounding box around it. If that scan
+ * finds water/lava, any log or leaf block (i.e. a tree), or any other solid
+ * block that isn't one of {@code targets} and isn't naturally replaceable
+ * (grass, flowers, snow layers, etc.) anywhere the boulder's shape actually
+ * reaches — which in practice means a structure or other foreign object —
+ * placement is aborted entirely with no partial boulder left behind.
+ * Structures generate before decoration features in vanilla's chunk
+ * pipeline, so by the time this feature runs any structure blocks are
+ * already physically in the world and get caught by this same "foreign
+ * block" check.
  *
  * <h2>JSON example</h2>
  * <pre>{@code
@@ -134,7 +136,7 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
         // much closer to the main mass.
         int reach = radius + 3;
 
-        if (hasObstruction(level, mainCenter, reach, cfg)) return false;
+        if (hasObstruction(level, mainCenter, reach, lobes, noise, noiseScale, jitter, cfg)) return false;
 
         boolean placed = false;
         for (int dx = -reach; dx <= reach; dx++) {
@@ -191,17 +193,37 @@ public class BoulderFeature extends Feature<BoulderFeature.Config> {
     }
 
     /**
-     * Scans the whole footprint box up front. Returns true (abort placement)
-     * if anything in the area is: a fluid (water/lava), a log or leaf block
-     * (a tree), or any other solid block that isn't a configured target and
-     * isn't naturally replaceable — which in practice covers structures and
-     * any other foreign object sitting in/near the spot.
+     * Scans only the cells the boulder's actual shape will touch (any cell
+     * inside any lobe — same test {@link #insideAnyLobe} uses for real
+     * placement below), not the whole bounding cube around it. Returns true
+     * (abort placement) if any of those cells is: a fluid (water/lava), a
+     * log or leaf block (a tree), or any other solid block that isn't a
+     * configured target and isn't naturally replaceable — which in practice
+     * covers structures and any other foreign object sitting where the
+     * boulder would actually go.
+     *
+     * <p><b>Bug history:</b> this used to scan the whole {@code reach}
+     * bounding cube unconditionally (13×13×13 = 2197 cells for the default
+     * {@code radius: 3} config), rejecting placement for a foreign block
+     * anywhere in that cube — including its corners, up to ~10 blocks away
+     * diagonally, well outside where a ~3-4 block-radius lumpy sphere could
+     * ever actually reach. In practice that meant placement failed
+     * constantly near anything (a path, a fence, a single non-target block)
+     * within {@code reach} blocks even though the boulder itself would
+     * never have touched it. Gating each cell on {@code insideAnyLobe} —
+     * the exact same test the placement loop below already uses — fixes
+     * that: only cells the boulder shape genuinely occupies can block
+     * placement.
      */
-    private static boolean hasObstruction(WorldGenLevel level, BlockPos center, int reach, Config cfg) {
+    private static boolean hasObstruction(WorldGenLevel level, BlockPos mainCenter, int reach,
+                                          List<Lobe> lobes, SimplexNoise noise, double noiseScale,
+                                          double jitter, Config cfg) {
         for (int dx = -reach; dx <= reach; dx++) {
             for (int dz = -reach; dz <= reach; dz++) {
                 for (int dy = -reach; dy <= reach; dy++) {
-                    BlockPos pos = center.offset(dx, dy, dz);
+                    BlockPos pos = mainCenter.offset(dx, dy, dz);
+                    if (!insideAnyLobe(pos, lobes, noise, noiseScale, jitter)) continue;
+
                     BlockState state = level.getBlockState(pos);
 
                     if (!state.getFluidState().isEmpty()) return true;

@@ -16,6 +16,7 @@
     "PlayerRendererMixin",
     "PlayerModelMixin",
     "LevelRendererMixin",
+    "CameraMixin",
     "EntityPositionAccessor",
     "ItemInHandRendererMixin",
     "GotSwingDurationMixin"

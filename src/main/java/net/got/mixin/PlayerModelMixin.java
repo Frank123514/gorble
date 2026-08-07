@@ -1,6 +1,7 @@
 package net.got.mixin;
 
 import net.got.client.animation.player.GotAnimatedPlayerState;
+import net.got.client.animation.player.GotHeadBobState;
 import net.got.client.animation.player.GotPlayerAnimator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -79,22 +80,33 @@ public abstract class PlayerModelMixin extends HumanoidModel<PlayerRenderState> 
                 rightArm, leftArm,
                 rightLeg, leftLeg);
 
-        // Hide the head/hat cubes only for the one frame this is the
-        // local player's own body rendering in first person (see
-        // GotAnimatedPlayerState#got$isLocalFirstPerson /
-        // LevelRendererMixin). This single PlayerModel instance is reused
-        // to render every player each frame, so the flag must be
-        // explicitly cleared here too, not just set when true — otherwise
-        // the first local-first-person frame would leave heads hidden on
-        // every other player rendered afterward.
+        // Hide the head/hat cubes only for the one frame this is the local
+        // player's own body rendering in first person (see
+        // GotAnimatedPlayerState#got$isLocalFirstPerson / LevelRendererMixin).
+        // This single PlayerModel instance is reused to render every player
+        // each frame, so the flag must be explicitly cleared here too, not
+        // just set when true — otherwise the first local-first-person frame
+        // would leave these hidden on every other player rendered afterward.
         boolean hideHead = ((GotAnimatedPlayerState) state).got$isLocalFirstPerson();
         head.visible = !hideHead;
         hat.visible = !hideHead;
-        // Arms ARE shown here (unlike the head/hat). ItemInHandRendererMixin
-        // cancels vanilla's separate first-person hand model entirely for
-        // the local player and renders this same PlayerRenderer body
-        // instead, so the arms drawn here are what the player sees as
-        // their own hands — full body, real armor/skin, real swing
-        // animation, no separate hardcoded hand model to fight with.
+        if (hideHead) {
+            // Hand this frame's just-computed head bob (from the walk/run
+            // clips' "head" POSITION channel above) to CameraMixin, so the
+            // actual first-person camera can nudge along with it next
+            // frame instead of just the (now-invisible) head cube moving
+            // on its own with nobody able to see it. See GotHeadBobState's
+            // class doc for the one-frame-lag caveat and why only x/y (not
+            // z, not rotation) gets passed through.
+            GotHeadBobState.setHeadBob(head.x, head.y);
+        }
+        // body is left alone — always visible, same as vanilla. Arms are
+        // always shown here too (unlike the head/hat). ItemInHandRendererMixin
+        // cancels vanilla's separate first-person
+        // hand model entirely for the local player and renders this same
+        // PlayerRenderer body instead, so the arms drawn here are what the
+        // player sees as their own hands — full body, real armor/skin,
+        // real swing animation, no separate hardcoded hand model to fight
+        // with.
     }
 }
