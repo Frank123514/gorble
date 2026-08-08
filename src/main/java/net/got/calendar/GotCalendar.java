@@ -36,7 +36,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  * Call {@link #get(ServerLevel)} with the overworld to retrieve the instance.
  * Use {@link #formatDate()} for a full date string.
  */
-@EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = GotMod.MODID)
 public final class GotCalendar extends SavedData {
 
     // ── Calendar constants ────────────────────────────────────────────────────

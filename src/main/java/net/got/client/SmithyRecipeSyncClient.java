@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * recipes in {@link SmithyClientRecipes} so the Smithy GUI can read them.
  * Also clears the cache when the player disconnects.
  */
-@EventBusSubscriber(modid = GotMod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = GotMod.MODID, value = Dist.CLIENT)
 public final class SmithyRecipeSyncClient {
 
     @SubscribeEvent

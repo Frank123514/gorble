@@ -19,7 +19,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.Random;
 
-@EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = GotMod.MODID)
 public final class SeasonManager extends SavedData {
 
     private static final String DATA_NAME    = "got_seasons";

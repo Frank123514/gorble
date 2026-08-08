@@ -11,7 +11,7 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
  * whenever datapacks are (re)loaded.  Without this the client RecipeMap
  * is empty for custom recipe types and the Smithy GUI shows nothing.
  */
-@EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = GotMod.MODID)
 public final class SmithyRecipeSync {
 
     @SubscribeEvent

@@ -25,7 +25,7 @@ import java.util.Map;
  * Loads NPC name banks from {@code data/got/npc_names/<path>.json}.
  * Each JSON file is a flat array of strings: {@code ["Eddard","Robb","Jon"]}
  */
-@EventBusSubscriber(modid = "got", bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = "got")
 public class GotNameBankManager extends SimplePreparableReloadListener<Map<ResourceLocation, GotNameBank>> {
 
     private static final Logger LOGGER = LogManager.getLogger();

@@ -59,11 +59,10 @@ import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
 import net.minecraft.world.level.block.Blocks;
 
-// The bus parameter was deprecated for removal in NeoForge 21.3.x.
-// Omitting it defaults to the MOD bus, which is the correct behaviour here.
+// The bus parameter was removed in NeoForge 21.4+: the bus is now inferred
+// automatically from the event types of the @SubscribeEvent methods.
 @EventBusSubscriber(
         modid = "got",
-        bus = EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public final class ClientSetup {

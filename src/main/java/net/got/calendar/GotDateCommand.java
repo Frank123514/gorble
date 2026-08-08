@@ -30,7 +30,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  *   /gotdate skip &lt;days&gt;                        — Advance calendar + season N days (op)
  * </pre>
  */
-@EventBusSubscriber(modid = GotMod.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = GotMod.MODID)
 public final class GotDateCommand {
 
     @SubscribeEvent

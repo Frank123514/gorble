@@ -7,7 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 
-@EventBusSubscriber(modid = "got", value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = "got", value = Dist.CLIENT)
 public final class BiomeDebugOverlay {
 
     private BiomeDebugOverlay() {}

@@ -5,12 +5,12 @@ import net.got.network.SmithingAnvilStatePayload;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.gui.GuiLayer;
 
 /**
  * Full-screen HUD overlay that shows the smithing timing bar while the player
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
  * State is pushed from the server each tick via {@link SmithingAnvilStatePayload}.
  */
 @EventBusSubscriber(modid = "got", value = Dist.CLIENT)
-public final class SmithingAnvilHudOverlay implements LayeredDraw.Layer {
+public final class SmithingAnvilHudOverlay implements GuiLayer {
 
     public static final SmithingAnvilHudOverlay INSTANCE = new SmithingAnvilHudOverlay();
     public static final ResourceLocation ID =
