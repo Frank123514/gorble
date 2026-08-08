@@ -67,17 +67,17 @@ public final class GotPlayerEvents {
         if (oldData.contains(PlayerFactionState.KEY_FACTION)) {
             player.getPersistentData().putString(
                     PlayerFactionState.KEY_FACTION,
-                    oldData.getString(PlayerFactionState.KEY_FACTION));
+                    oldData.getStringOr(PlayerFactionState.KEY_FACTION, ""));
         }
         if (oldData.contains(PlayerFactionState.KEY_STANDING)) {
             player.getPersistentData().putInt(
                     PlayerFactionState.KEY_STANDING,
-                    oldData.getInt(PlayerFactionState.KEY_STANDING));
+                    oldData.getIntOr(PlayerFactionState.KEY_STANDING, 0));
         }
         if (oldData.contains(PlayerFactionState.KEY_TITLE)) {
             player.getPersistentData().putString(
                     PlayerFactionState.KEY_TITLE,
-                    oldData.getString(PlayerFactionState.KEY_TITLE));
+                    oldData.getStringOr(PlayerFactionState.KEY_TITLE, ""));
         }
 
         if (!PlayerFactionState.hasFaction(player)) {

@@ -3,7 +3,6 @@ package net.got.event.entity.npc;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -45,13 +44,13 @@ public final class NpcInventory extends SimpleContainer {
 
     public void load(CompoundTag entityTag, HolderLookup.Provider registries) {
         clearContent();
-        if (!entityTag.contains(NBT_KEY, Tag.TAG_LIST)) return;
-        ListTag list = entityTag.getList(NBT_KEY, Tag.TAG_COMPOUND);
+        if (!entityTag.contains(NBT_KEY)) return;
+        ListTag list = entityTag.getListOrEmpty(NBT_KEY);
         for (int i = 0; i < list.size(); i++) {
-            CompoundTag entry = list.getCompound(i);
-            int slot = entry.getByte("Slot") & 0xFF;
+            CompoundTag entry = list.getCompoundOrEmpty(i);
+            int slot = entry.getByteOr("Slot", (byte) 0) & 0xFF;
             if (slot < SIZE) {
-                setItem(slot, ItemStack.parseOptional(registries, entry.getCompound("Item")));
+                setItem(slot, ItemStack.parseOptional(registries, entry.getCompoundOrEmpty("Item")));
             }
         }
     }

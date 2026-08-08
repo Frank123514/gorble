@@ -302,10 +302,10 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
         super.loadAdditional(tag, registries);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items, registries);
-        cookingProgress  = tag.getInt("CookTime");
-        cookingTotalTime = tag.getInt("CookTimeTotal");
-        litTime          = tag.getInt("BurnTime");
-        litDuration      = tag.getInt("BurnDuration");
+        cookingProgress  = tag.getIntOr("CookTime", 0);
+        cookingTotalTime = tag.getIntOr("CookTimeTotal", 0);
+        litTime          = tag.getIntOr("BurnTime", 0);
+        litDuration      = tag.getIntOr("BurnDuration", 0);
     }
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {

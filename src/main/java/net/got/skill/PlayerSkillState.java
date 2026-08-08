@@ -33,15 +33,15 @@ public final class PlayerSkillState {
     private static CompoundTag root(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
         if (!data.contains(ROOT)) data.put(ROOT, new CompoundTag());
-        return data.getCompound(ROOT);
+        return data.getCompoundOrEmpty(ROOT);
     }
 
     /** Total accumulated XP the player has in the given skill. */
     public static int getXp(ServerPlayer player, GotSkill skill) {
         CompoundTag root = root(player);
         if (!root.contains(KEY_XP)) return 0;
-        CompoundTag xp = root.getCompound(KEY_XP);
-        return xp.contains(skill.id) ? xp.getInt(skill.id) : 0;
+        CompoundTag xp = root.getCompoundOrEmpty(KEY_XP);
+        return xp.getIntOr(skill.id, 0);
     }
 
     /** Current level (1-100) in the given skill, derived from XP. */
@@ -73,8 +73,8 @@ public final class PlayerSkillState {
         CompoundTag root = root(player);
         List<String> ids = new ArrayList<>();
         if (!root.contains(KEY_PERKS)) return ids;
-        ListTag list = root.getList(KEY_PERKS, net.minecraft.nbt.Tag.TAG_STRING);
-        for (int i = 0; i < list.size(); i++) ids.add(list.getString(i));
+        ListTag list = root.getListOrEmpty(KEY_PERKS);
+        for (int i = 0; i < list.size(); i++) ids.add(list.getStringOr(i, ""));
         return ids;
     }
 
@@ -92,7 +92,7 @@ public final class PlayerSkillState {
      */
     public static void copyAcrossRespawn(CompoundTag oldPersistentData, ServerPlayer newPlayer) {
         if (oldPersistentData.contains(ROOT)) {
-            newPlayer.getPersistentData().put(ROOT, oldPersistentData.getCompound(ROOT).copy());
+            newPlayer.getPersistentData().put(ROOT, oldPersistentData.getCompoundOrEmpty(ROOT).copy());
         }
     }
 
@@ -108,7 +108,7 @@ public final class PlayerSkillState {
     public static int addXp(ServerPlayer player, GotSkill skill, int amount) {
         if (amount == 0) return getXp(player, skill);
         CompoundTag root = root(player);
-        CompoundTag xp = root.contains(KEY_XP) ? root.getCompound(KEY_XP) : new CompoundTag();
+        CompoundTag xp = root.getCompoundOrEmpty(KEY_XP);
         int updated = SkillLevelCurve.clampTotalXp(getXp(player, skill) + amount);
         xp.putInt(skill.id, updated);
         root.put(KEY_XP, xp);
@@ -135,9 +135,7 @@ public final class PlayerSkillState {
         }
 
         CompoundTag root = root(player);
-        ListTag list = root.contains(KEY_PERKS)
-                ? root.getList(KEY_PERKS, net.minecraft.nbt.Tag.TAG_STRING)
-                : new ListTag();
+        ListTag list = root.getListOrEmpty(KEY_PERKS);
         list.add(StringTag.valueOf(perk.id()));
         root.put(KEY_PERKS, list);
         return true;

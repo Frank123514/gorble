@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -152,17 +150,8 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
     @Override
     public boolean useShapeForLightOcclusion(BlockState state) { return true; }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos,
-                         BlockState newState, boolean movedByPiston) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof SmithingAnvilBlockEntity anvil) {
-                Containers.dropContents(level, pos, anvil);
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
+    // Inventory contents are now dropped automatically via
+    // BlockEntity#preRemoveSideEffects since SmithingAnvilBlockEntity is a Container.
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
@@ -234,7 +223,7 @@ public class SmithingAnvilBlock extends BaseEntityBlock {
         if (hammer.getDamageValue() >= hammer.getMaxDamage()) {
             hammer.shrink(1);
             player.level().playSound(null, player.blockPosition(),
-                    SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    SoundEvents.ITEM_BREAK.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
     }
 

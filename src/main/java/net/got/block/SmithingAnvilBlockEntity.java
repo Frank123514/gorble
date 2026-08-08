@@ -4,7 +4,6 @@ import net.got.init.GotModBlockEntities;
 import net.got.init.GotModDataComponents;
 import net.got.init.GotModRecipeTypes;
 import net.got.menu.SmithingAnvilMenu;
-import net.minecraft.util.Unit;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -418,15 +417,15 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         super.loadAdditional(tag, registries);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items, registries);
-        hitCount          = tag.getInt("HitCount");
-        selectedRecipeIdx = tag.getInt("SelectedRecipe");
-        markerPos         = tag.getInt("MarkerPos");
-        markerDir         = tag.getInt("MarkerDir");
+        hitCount          = tag.getIntOr("HitCount", 0);
+        selectedRecipeIdx = tag.getIntOr("SelectedRecipe", 0);
+        markerPos         = tag.getIntOr("MarkerPos", 0);
+        markerDir         = tag.getIntOr("MarkerDir", 0);
         if (markerDir == 0) markerDir = 1;
         if (tag.contains("LastCrafted")) {
-            lastCraftedItem = ItemStack.parse(registries, tag.getCompound("LastCrafted")).orElse(ItemStack.EMPTY);
+            lastCraftedItem = ItemStack.parse(registries, tag.getCompoundOrEmpty("LastCrafted")).orElse(ItemStack.EMPTY);
         }
-        awaitingPickup = tag.getBoolean("AwaitingPickup");
+        awaitingPickup = tag.getBooleanOr("AwaitingPickup", false);
     }
 
     @Override

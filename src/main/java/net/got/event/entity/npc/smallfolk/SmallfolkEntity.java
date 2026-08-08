@@ -391,12 +391,12 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setGender(NpcGender.fromByte(tag.getByte(NpcGender.NBT_KEY)));
-        setVariant(tag.getInt("Variant"));
-        setNpcName(tag.getString("NpcName"));
-        personality = GotNpcPersonality.fromString(tag.getString("Personality"));
+        setGender(NpcGender.fromByte(tag.getByteOr(NpcGender.NBT_KEY, (byte) 0)));
+        setVariant(tag.getIntOr("Variant", 0));
+        setNpcName(tag.getStringOr("NpcName", ""));
+        personality = GotNpcPersonality.fromString(tag.getStringOr("Personality", ""));
         if (isCivilian()) {
-            setOccupation(GotNpcOccupation.fromString(tag.getString(GotNpcOccupation.NBT_KEY)));
+            setOccupation(GotNpcOccupation.fromString(tag.getStringOr(GotNpcOccupation.NBT_KEY, "")));
         } else {
             setOccupation(GotNpcOccupation.NONE);
         }

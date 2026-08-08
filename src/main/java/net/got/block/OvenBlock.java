@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -77,18 +75,8 @@ public class OvenBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    /** Drop inventory contents when the block is broken (ported from OFAW). */
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos,
-                         BlockState newState, boolean movedByPiston) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof OvenBlockEntity oven) {
-                Containers.dropContents(level, pos, oven);
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
+    // Inventory contents are now dropped automatically via
+    // BlockEntity#preRemoveSideEffects since OvenBlockEntity is a Container.
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,

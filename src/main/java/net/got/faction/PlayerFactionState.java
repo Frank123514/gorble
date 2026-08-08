@@ -47,7 +47,7 @@ public final class PlayerFactionState {
     /** Returns the player's chosen faction id, or empty string if none. */
     public static String getFactionId(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
-        return data.contains(KEY_FACTION) ? data.getString(KEY_FACTION) : "";
+        return data.getStringOr(KEY_FACTION, "");
     }
 
     /** Returns {@code true} if the player has chosen a valid faction. */
@@ -62,13 +62,13 @@ public final class PlayerFactionState {
      */
     public static int getStanding(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
-        return data.contains(KEY_STANDING) ? data.getInt(KEY_STANDING) : STANDING_DEFAULT;
+        return data.getIntOr(KEY_STANDING, STANDING_DEFAULT);
     }
 
     /** Returns the cached title string for the player, or an empty string. */
     public static String getCachedTitle(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
-        return data.contains(KEY_TITLE) ? data.getString(KEY_TITLE) : "";
+        return data.getStringOr(KEY_TITLE, "");
     }
 
     /**
