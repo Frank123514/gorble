@@ -245,7 +245,7 @@ public class GotDirewolfEntity extends TamableAnimal {
     public @Nullable GotDirewolfEntity getBreedOffspring(ServerLevel level, AgeableMob mate) {
         GotDirewolfEntity baby = (GotDirewolfEntity) getType().create(level, EntitySpawnReason.BREEDING);
         if (baby != null && mate instanceof TamableAnimal tamedMate && tamedMate.isTame()) {
-            baby.setOwnerUUID(tamedMate.getOwnerUUID());
+            baby.setOwnerReference(tamedMate.getOwnerReference());
             baby.setTame(true, true);
         }
         return baby;

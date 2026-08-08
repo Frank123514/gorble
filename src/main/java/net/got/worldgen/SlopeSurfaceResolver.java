@@ -14,7 +14,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.got.worldgen.SimplexNoise;
 import org.slf4j.Logger;
 
 import java.io.InputStreamReader;
@@ -193,7 +192,7 @@ public final class SlopeSurfaceResolver {
                     BlockState curr = chunk.getBlockState(localPos);
                     if (curr.isAir() || curr.liquid()) continue;
                     if (!curr.equals(replacement)) {
-                        chunk.setBlockState(localPos, replacement, false);
+                        chunk.setBlockState(localPos, replacement, 3);
                     }
                     replaced++;
                 }

@@ -86,7 +86,7 @@ public final class LatitudeIceHandler {
 
                 if (!isFrozenByLatitudeNoise(worldX, worldZ, strength)) continue;
 
-                chunk.setBlockState(surfaceWater, Blocks.ICE.defaultBlockState(), false);
+                chunk.setBlockState(surfaceWater, Blocks.ICE.defaultBlockState(), 3);
             }
         }
     }

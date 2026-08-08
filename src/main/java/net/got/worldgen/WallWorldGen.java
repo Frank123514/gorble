@@ -537,22 +537,22 @@ public final class WallWorldGen {
                         if (!insideBody) continue;
 
                         if (inTunnel && relY >= 0 && relY < TUNNEL_HEIGHT) {
-                            chunk.setBlockState(new BlockPos(lx, y, lz), AIR, false);
+                            chunk.setBlockState(new BlockPos(lx, y, lz), AIR, 3);
                             continue;
                         }
 
                         boolean isNorthFace = dz <= northEdge + 1.0; // outermost layer
 
                         if (relY == WALL_HEIGHT) {
-                            chunk.setBlockState(new BlockPos(lx, y, lz), PACKED_ICE, false);
+                            chunk.setBlockState(new BlockPos(lx, y, lz), PACKED_ICE, 3);
                             if (!isNorthFace) {
-                                chunk.setBlockState(new BlockPos(lx, y + 1, lz), SNOW, false);
+                                chunk.setBlockState(new BlockPos(lx, y + 1, lz), SNOW, 3);
                             }
                             continue;
                         }
 
                         chunk.setBlockState(new BlockPos(lx, y, lz),
-                                isNorthFace ? BLUE_ICE : PACKED_ICE, false);
+                                isNorthFace ? BLUE_ICE : PACKED_ICE, 3);
                     }
 
                     // North battlement merlons (placed at top of north face column,
@@ -566,7 +566,7 @@ public final class WallWorldGen {
                             for (int h = 0; h < BATTLEMENT_HEIGHT; h++) {
                                 chunk.setBlockState(
                                         new BlockPos(lx, merlonBase + h, lz),
-                                        PACKED_ICE, false);
+                                        PACKED_ICE, 3);
                             }
                         }
                     }
@@ -580,22 +580,22 @@ public final class WallWorldGen {
                         if (!insideBody) continue;
 
                         if (inTunnel && relY >= 0 && relY < TUNNEL_HEIGHT) {
-                            chunk.setBlockState(new BlockPos(lx, y, lz), AIR, false);
+                            chunk.setBlockState(new BlockPos(lx, y, lz), AIR, 3);
                             continue;
                         }
 
                         boolean isSouthFace = dz >= southEdge - 1.0; // outermost layer
 
                         if (relY == WALL_HEIGHT) {
-                            chunk.setBlockState(new BlockPos(lx, y, lz), PACKED_ICE, false);
+                            chunk.setBlockState(new BlockPos(lx, y, lz), PACKED_ICE, 3);
                             if (!isSouthFace) {
-                                chunk.setBlockState(new BlockPos(lx, y + 1, lz), SNOW, false);
+                                chunk.setBlockState(new BlockPos(lx, y + 1, lz), SNOW, 3);
                             }
                             continue;
                         }
 
                         chunk.setBlockState(new BlockPos(lx, y, lz),
-                                isSouthFace ? BLUE_ICE : PACKED_ICE, false);
+                                isSouthFace ? BLUE_ICE : PACKED_ICE, 3);
                     }
 
                     // South battlement merlons (placed at top of south face column,
@@ -609,7 +609,7 @@ public final class WallWorldGen {
                             for (int h = 0; h < BATTLEMENT_HEIGHT; h++) {
                                 chunk.setBlockState(
                                         new BlockPos(lx, merlonBase + h, lz),
-                                        PACKED_ICE, false);
+                                        PACKED_ICE, 3);
                             }
                         }
                     }
@@ -620,7 +620,7 @@ public final class WallWorldGen {
                     int terrainY = GotChunkGenerator.computeSurfaceY(wx, wz);
                     int fillFrom = Math.min(terrainY, baseY);
                     for (int y = fillFrom; y <= driftTop; y++) {
-                        chunk.setBlockState(new BlockPos(lx, y, lz), SNOW, false);
+                        chunk.setBlockState(new BlockPos(lx, y, lz), SNOW, 3);
                     }
 
                 } else if (inNorthDriftZone) {
@@ -629,7 +629,7 @@ public final class WallWorldGen {
                     int terrainY = GotChunkGenerator.computeSurfaceY(wx, wz);
                     int fillFrom = Math.min(terrainY, baseY);
                     for (int y = fillFrom; y <= driftTop; y++) {
-                        chunk.setBlockState(new BlockPos(lx, y, lz), SNOW, false);
+                        chunk.setBlockState(new BlockPos(lx, y, lz), SNOW, 3);
                     }
                 }
             }

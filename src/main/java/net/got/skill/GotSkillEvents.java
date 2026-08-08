@@ -4,7 +4,6 @@ import net.got.GotMod;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.tags.ItemTags;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -102,9 +100,14 @@ public final class GotSkillEvents {
         float amount = event.getAmount();
         if (amount <= 0) return;
 
-        // Attacker's side - Combat or Archery XP.
+        // Attacker's side - Combat or Archery XP, plus the ranged damage perk.
         if (source.getEntity() instanceof ServerPlayer attacker && victim != attacker) {
             if (source.getDirectEntity() instanceof Projectile) {
+                float multiplier = SkillPerkEffects.rangedDamageMultiplier(attacker);
+                if (multiplier > 1.0f) {
+                    event.setAmount(amount * multiplier);
+                    amount = event.getAmount();
+                }
                 SkillXpService.grantXp(attacker, GotSkill.ARCHERY, Math.max(1, Math.round(amount)));
             } else if (source.getDirectEntity() == source.getEntity()) {
                 SkillXpService.grantXp(attacker, GotSkill.COMBAT, Math.max(1, Math.round(amount)));
@@ -114,20 +117,6 @@ public final class GotSkillEvents {
         // Defender's side - Defense XP, regardless of what hurt them.
         if (victim instanceof ServerPlayer defender) {
             SkillXpService.grantXp(defender, GotSkill.DEFENSE, Math.max(1, Math.round(amount / 2f)));
-        }
-    }
-
-    // ── Archery ranged damage perk (applied directly to fired projectiles) ────────
-
-    @SubscribeEvent
-    public static void onProjectileJoinLevel(EntityJoinLevelEvent event) {
-        if (event.getLevel().isClientSide()) return;
-        if (!(event.getEntity() instanceof AbstractArrow arrow)) return;
-        if (!(arrow.getOwner() instanceof ServerPlayer player)) return;
-
-        float multiplier = SkillPerkEffects.rangedDamageMultiplier(player);
-        if (multiplier > 1.0f) {
-            arrow.setBaseDamage(arrow.getBaseDamage() * multiplier);
         }
     }
 

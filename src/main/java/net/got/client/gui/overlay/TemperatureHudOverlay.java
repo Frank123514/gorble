@@ -2,7 +2,6 @@ package net.got.client.gui.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.got.climate.PlayerTemperatureSystem;
-import net.got.climate.PlayerThirstSystem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -157,9 +156,6 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
      * </ul>
      */
     private static void drawDroplet(GuiGraphics gfx, int x, int y, FillState state) {
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
         if (state == FillState.FULL) {
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
@@ -182,7 +178,6 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
         }
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.disableBlend();
     }
 
     // ── Temperature text ──────────────────────────────────────────────────────
@@ -204,13 +199,10 @@ public final class TemperatureHudOverlay implements LayeredDraw.Layer {
                                           float bodyTemp) {
         if (bodyTemp >= COLD_OVERLAY_START) return;
         float intensity = clamp((COLD_OVERLAY_START - bodyTemp) / COLD_OVERLAY_START, 0f, 1f);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1f, 1f, 1f, intensity);
         gfx.blit(RenderType::guiTextured, POWDER_SNOW_RL,
                 0, 0, 0f, 0f, screenW, screenH, screenW, screenH);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.disableBlend();
     }
 
     private static void renderHeatOverlay(GuiGraphics gfx, int screenW, int screenH,

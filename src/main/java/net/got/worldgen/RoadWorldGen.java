@@ -112,7 +112,7 @@ public final class RoadWorldGen {
 
                     // Clear everything above the road surface up to a reasonable height
                     for (int y = surfaceY + 1; y <= surfaceY + 3; y++) {
-                        chunk.setBlockState(new BlockPos(lx, y, lz), AIR, false);
+                        chunk.setBlockState(new BlockPos(lx, y, lz), AIR, 3);
                     }
                 }
             }
@@ -200,9 +200,9 @@ public final class RoadWorldGen {
 
                 // Place surface block from the road's palette
                 chunk.setBlockState(new BlockPos(lx, surfaceY, lz),
-                        surfaceBlock(nearest), false);
+                        surfaceBlock(nearest), 3);
                 // Clear the block directly above (removes grass, flowers, saplings, etc.)
-                chunk.setBlockState(new BlockPos(lx, surfaceY + 1, lz), AIR, false);
+                chunk.setBlockState(new BlockPos(lx, surfaceY + 1, lz), AIR, 3);
                 placed++;
             }
         }

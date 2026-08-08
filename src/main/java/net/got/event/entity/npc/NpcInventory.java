@@ -50,7 +50,7 @@ public final class NpcInventory extends SimpleContainer {
             CompoundTag entry = list.getCompoundOrEmpty(i);
             int slot = entry.getByteOr("Slot", (byte) 0) & 0xFF;
             if (slot < SIZE) {
-                setItem(slot, ItemStack.parseOptional(registries, entry.getCompoundOrEmpty("Item")));
+                setItem(slot, ItemStack.parse(registries, entry.getCompoundOrEmpty("Item")).orElse(ItemStack.EMPTY));
             }
         }
     }

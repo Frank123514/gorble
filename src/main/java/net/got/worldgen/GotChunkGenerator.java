@@ -22,7 +22,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -210,7 +209,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
                     } else {
                         state = Blocks.STONE.defaultBlockState();
                     }
-                    chunk.setBlockState(new BlockPos(lx, y, lz), state, false);
+                    chunk.setBlockState(new BlockPos(lx, y, lz), state, 3);
                 }
             }
         }

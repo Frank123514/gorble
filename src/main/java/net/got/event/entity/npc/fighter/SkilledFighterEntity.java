@@ -87,12 +87,12 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         Horse horse = EntityType.HORSE
                 .create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
         if (horse == null) return;
-        horse.moveTo(getX(), getY(), getZ(), getYRot(), 0f);
+        horse.snapTo(getX(), getY(), getZ(), getYRot(), 0f);
         horse.setTamed(true);
-        horse.setOwnerUUID(getUUID());
+        horse.setOwner(this);
         // Always give the horse a saddle so the rider can properly control it.
-        horse.equipSaddle(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SADDLE),
-                net.minecraft.sounds.SoundSource.NEUTRAL);
+        horse.setItemSlot(net.minecraft.world.entity.EquipmentSlot.SADDLE,
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SADDLE));
         if (serverLevel.tryAddFreshEntityWithPassengers(horse)) startRiding(horse, true);
     }
 }
