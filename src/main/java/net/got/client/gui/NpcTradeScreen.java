@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -225,7 +226,7 @@ public class NpcTradeScreen extends Screen {
                     tooltip.add(Component.literal(can ? "§aLeft-click to sell" : "§cNot enough items"));
                 }
 
-                g.renderComponentTooltip(font, tooltip, mx, my);
+                g.setTooltipForNextFrame(font, (Component) tooltip, mx, my);
                 return;
             }
         }
@@ -286,7 +287,7 @@ public class NpcTradeScreen extends Screen {
 
     @Override
     public void onClose() {
-        PacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
+        ClientPacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
         super.onClose();
     }
 
@@ -338,7 +339,7 @@ public class NpcTradeScreen extends Screen {
     private void executeSell(int idx) {
         if (idx >= sellOffers.size() || minecraft == null || minecraft.player == null) return;
         if (!canExecute(idx, minecraft.player.getInventory())) return;
-        PacketDistributor.sendToServer(new ExecuteSellPayload(entityId, idx));
+        ClientPacketDistributor.sendToServer(new ExecuteSellPayload(entityId, idx));
 
         // Optimistic client-side update so the player sees inventory change instantly
         GotNpcTrades.SellOffer offer = sellOffers.get(idx);

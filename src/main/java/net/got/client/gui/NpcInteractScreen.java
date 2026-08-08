@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -79,13 +80,13 @@ public class NpcInteractScreen extends Screen {
 
             addRenderableWidget(Button.builder(
                     Component.literal("Trade"),
-                    btn -> { PacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId)); onClose(); }
+                    btn -> { ClientPacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId)); onClose(); }
             ).bounds(col1, row1y, BTN_W, BTN_H).build());
 
             String jobLabel = capitalize(occupationId.equals("none") ? "Civilian" : occupationId);
             addRenderableWidget(Button.builder(
                     Component.literal(jobLabel),
-                    btn -> { PacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId)); onClose(); }
+                    btn -> { ClientPacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId)); onClose(); }
             ).bounds(col2, row1y, BTN_W, BTN_H).build());
 
             // Row 2: [Exchange Coins]
@@ -128,7 +129,7 @@ public class NpcInteractScreen extends Screen {
 
     @Override
     public void onClose() {
-        PacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
+        ClientPacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
         super.onClose();
     }
 

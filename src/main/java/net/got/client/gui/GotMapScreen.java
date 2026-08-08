@@ -5,7 +5,7 @@ import net.got.faction.WaypointRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -99,7 +99,7 @@ public class GotMapScreen extends Screen {
                 && mouseY >= btnY && mouseY < btnY + BUTTON_H;
         int btnV = btnHovered ? BUTTON_V_HOVERED : BUTTON_V_NORMAL;
 
-        gfx.blit(RenderType::guiTextured, WIDGETS_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE,
                 btnX, btnY,
                 0, btnV,
                 BUTTON_W, BUTTON_H,

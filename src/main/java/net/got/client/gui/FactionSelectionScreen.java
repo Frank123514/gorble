@@ -11,6 +11,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
@@ -283,7 +284,7 @@ public final class FactionSelectionScreen extends Screen {
     private void confirmSelection() {
         GotFactionData f = currentFaction();
         if (f == null || f.id().contains("coming_soon")) return;
-        PacketDistributor.sendToServer(new SelectFactionPayload(f.id()));
+        ClientPacketDistributor.sendToServer(new SelectFactionPayload(f.id()));
         onClose();
     }
 

@@ -1,11 +1,14 @@
 package net.got.event.entity.client.giant;
 
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom giant model for {@link net.got.event.entity.giant.GotGiantEntity}.
@@ -50,8 +53,8 @@ public class GotGiantModel extends EntityModel<GotGiantRenderState> {
     final ModelPart leg_upper_left;
     final ModelPart leg_lower_left;
     final ModelPart foot_left;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
@@ -266,12 +269,9 @@ public class GotGiantModel extends EntityModel<GotGiantRenderState> {
         // render() it would run before setupAnim and be overwritten by
         // super.setupAnim()'s reset pass.
         if (state.animationToPlay != null) {
-            KeyframeAnimations.animate(
-                    this,
-                    state.animationToPlay,
+            bakedAnimations.computeIfAbsent(state.animationToPlay, d -> d.bake(this.root)).apply(
                     (long)(state.animationTime * 1000L / 20L),
-                    1.0F,
-                    ANIM_VEC);
+                    1.0F);
         }
     }
 }

@@ -5,12 +5,13 @@ import net.got.network.SelectSmithingAnvilRecipePayload;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
         int x = this.leftPos;
         int y = this.topPos;
 
-        g.blit(RenderType::guiTextured, STONECUTTER_TEXTURE,
+        g.blit(RenderPipelines.GUI_TEXTURED, STONECUTTER_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // Clear the stonecutter's built-in input/fuel slot area
@@ -127,10 +128,10 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
                 boolean isActive = (ri == selectedIdx);
 
                 if (isActive) {
-                    g.blitSprite(RenderType::guiTextured, RECIPE_SELECTED,
+                    g.blitSprite(RenderPipelines.GUI_TEXTURED, RECIPE_SELECTED,
                             bx, by, CELL_W, CELL_H);
                 } else if (hovered) {
-                    g.blitSprite(RenderType::guiTextured, RECIPE_HIGHLIGHTED,
+                    g.blitSprite(RenderPipelines.GUI_TEXTURED, RECIPE_HIGHLIGHTED,
                             bx, by, CELL_W, CELL_H);
                 }
 
@@ -145,7 +146,7 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
                 ? gy + (int) Math.round((double) scrollOffset / maxScroll * trackH)
                 : gy;
 
-        g.blitSprite(RenderType::guiTextured,
+        g.blitSprite(RenderPipelines.GUI_TEXTURED,
                 canScroll ? SCROLLER : SCROLLER_DISABLED,
                 leftPos + SCROLL_X, thumbY, SCROLLER_W, SCROLLER_H);
     }
@@ -158,7 +159,7 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
                 if (ri >= recipes.size()) return;
                 int bx = gx + col * CELL_W, by = gy + row * CELL_H;
                 if (mouseX >= bx && mouseX < bx + CELL_W && mouseY >= by && mouseY < by + CELL_H) {
-                    g.renderTooltip(font, recipes.get(ri).value().getResult(), mouseX, mouseY);
+                    g.setTooltipForNextFrame(font, recipes.get(ri).value().getResult(), mouseX, mouseY);
                     return;
                 }
             }
@@ -181,7 +182,7 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
                 int ri  = (row + scrollOffset) * GRID_COLS + col;
                 if (ri >= 0 && ri < recipes.size()) {
                     int toSend = (ri == menu.getSelectedRecipeIndex()) ? -1 : ri;
-                    PacketDistributor.sendToServer(new SelectSmithingAnvilRecipePayload(toSend));
+                    ClientPacketDistributor.sendToServer(new SelectSmithingAnvilRecipePayload(toSend));
                     return true;
                 }
             }

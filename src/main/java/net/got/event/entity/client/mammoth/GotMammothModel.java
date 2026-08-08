@@ -1,12 +1,14 @@
 package net.got.event.entity.client.mammoth;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom mammoth model for {@link net.got.event.entity.mammoth.GotMammothEntity},
@@ -39,9 +41,12 @@ public class GotMammothModel extends EntityModel<GotMammothRenderState> {
     final ModelPart leg_back_left;
     final ModelPart leg_back_right;
     final ModelPart shoulder;
+    private final ModelPart root;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
     public GotMammothModel(ModelPart root) {
         super(root);
+        this.root            = root;
         this.body            = root.getChild("body");
         this.head            = root.getChild("head");
         this.trunk_a         = this.head.getChild("trunk_a");
@@ -146,7 +151,6 @@ public class GotMammothModel extends EntityModel<GotMammothRenderState> {
 
     // ── Animation ─────────────────────────────────────────────────────────────
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
 
     public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
         body.resetPose();
@@ -171,7 +175,7 @@ public class GotMammothModel extends EntityModel<GotMammothRenderState> {
         leg_back_left.resetPose();
         leg_back_right.resetPose();
         shoulder.resetPose();
-        KeyframeAnimations.animate(this, definition, (long)(ageInTicks * 50F), weight, ANIM_VEC);
+        bakedAnimations.computeIfAbsent(definition, d -> d.bake(this.root)).apply((long)(ageInTicks * 50F), weight);
     }
 
     @Override

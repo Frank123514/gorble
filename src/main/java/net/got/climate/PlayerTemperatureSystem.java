@@ -130,7 +130,7 @@ public final class PlayerTemperatureSystem {
     }
 
     public static float getEffectiveBiomeTemp(ServerPlayer player) {
-        var   level = player.serverLevel();
+        var   level = (net.minecraft.server.level.ServerLevel) player.level();
         var   pos   = player.blockPosition();
         Biome biome = level.getBiome(pos).value();
         float base  = biome.getTemperature(pos, level.getSeaLevel());
@@ -213,7 +213,7 @@ public final class PlayerTemperatureSystem {
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     public static boolean isWet(ServerPlayer player) {
-        var level = player.serverLevel();
+        var level = (net.minecraft.server.level.ServerLevel) player.level();
         var pos   = player.blockPosition();
         // Submerged in water
         FluidState fluid = level.getFluidState(pos);
@@ -224,11 +224,11 @@ public final class PlayerTemperatureSystem {
     }
 
     private static boolean isOutdoors(ServerPlayer player) {
-        return player.serverLevel().canSeeSky(player.blockPosition().above());
+        return ((net.minecraft.server.level.ServerLevel) player.level()).canSeeSky(player.blockPosition().above());
     }
 
     private static boolean isNearHeatSource(ServerPlayer player) {
-        var level = player.serverLevel();
+        var level = (net.minecraft.server.level.ServerLevel) player.level();
         var pos   = player.blockPosition();
         for (int dy = -1; dy <= 2; dy++) {
             var state = level.getBlockState(pos.below(dy));

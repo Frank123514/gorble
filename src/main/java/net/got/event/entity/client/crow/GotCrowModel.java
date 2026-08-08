@@ -1,12 +1,14 @@
 package net.got.event.entity.client.crow;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom crow model for {@link net.got.event.entity.crow.GotCrowEntity}.
@@ -33,9 +35,12 @@ public class GotCrowModel extends EntityModel<GotCrowRenderState> {
     final ModelPart tail;
     final ModelPart wingLeft;
     final ModelPart wingRight;
+    private final ModelPart root;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
     public GotCrowModel(ModelPart root) {
         super(root);
+        this.root      = root;
         this.body      = root.getChild("body");
         this.head      = root.getChild("head");
         this.beak      = this.head.getChild("beak");
@@ -106,7 +111,6 @@ public class GotCrowModel extends EntityModel<GotCrowRenderState> {
         return LayerDefinition.create(mesh, 64, 32);
     }
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
 
     public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
         body.resetPose();
@@ -115,7 +119,7 @@ public class GotCrowModel extends EntityModel<GotCrowRenderState> {
         tail.resetPose();
         wingLeft.resetPose();
         wingRight.resetPose();
-        KeyframeAnimations.animate(this, definition, (long) (ageInTicks * 50F), weight, ANIM_VEC);
+        bakedAnimations.computeIfAbsent(definition, d -> d.bake(this.root)).apply((long) (ageInTicks * 50F), weight);
     }
 
     @Override

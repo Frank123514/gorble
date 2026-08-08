@@ -28,7 +28,7 @@ public final class GotNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null || !player.hasPermissions(2)) return;
-                    ServerLevel level = player.serverLevel();
+                    ServerLevel level = (ServerLevel) player.level();
                     int x = payload.x(), z = payload.z();
 
                     // Ground height comes straight from the terrain-noise/biomemap
@@ -67,7 +67,7 @@ public final class GotNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    Entity entity = player.serverLevel().getEntity(payload.entityId());
+                    Entity entity = ((ServerLevel) player.level()).getEntity(payload.entityId());
                     if (entity instanceof SmallfolkEntity npc) npc.stopTalking();
                 }));
 
@@ -76,7 +76,7 @@ public final class GotNetwork {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    Entity entity = player.serverLevel().getEntity(payload.entityId());
+                    Entity entity = ((ServerLevel) player.level()).getEntity(payload.entityId());
                     if (!(entity instanceof SmallfolkEntity npc)) return;
                     if (!npc.getOccupation().isEmployed()) return;
                     if (npc.distanceTo(player) > 12.0f) return;
@@ -110,7 +110,7 @@ public final class GotNetwork {
                     if (player == null) return;
 
                     // Validate NPC still exists and player is close enough
-                    Entity entity = player.serverLevel().getEntity(payload.entityId());
+                    Entity entity = ((ServerLevel) player.level()).getEntity(payload.entityId());
                     if (!(entity instanceof SmallfolkEntity npc)) return;
                     if (!npc.getOccupation().isEmployed()) return;
                     if (npc.distanceTo(player) > 12.0f) return;

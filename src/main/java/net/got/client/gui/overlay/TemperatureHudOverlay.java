@@ -1,11 +1,10 @@
 package net.got.client.gui.overlay;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.got.climate.PlayerTemperatureSystem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -157,28 +156,33 @@ public final class TemperatureHudOverlay implements GuiLayer {
      */
     private static void drawDroplet(GuiGraphics gfx, int x, int y, FillState state) {
         if (state == FillState.FULL) {
-            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
-                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H);
+            gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
+                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H, WHITE);
 
         } else if (state == FillState.EMPTY) {
-            RenderSystem.setShaderColor(0.18f, 0.22f, 0.30f, 1f);
-            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
-                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H);
+            gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
+                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H, DARK_TINT);
 
         } else { // HALF — top half dark, bottom half full colour
             // Dark tint over entire sprite first
-            RenderSystem.setShaderColor(0.18f, 0.22f, 0.30f, 1f);
-            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
-                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H);
+            gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
+                    x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H, DARK_TINT);
             // Overwrite bottom 5 rows at full colour
-            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-            gfx.blit(RenderType::guiTextured, THIRST_DROPLET_RL,
-                    x, y + 5, 0f, 5f, DROPLET_W, 5, DROPLET_W, DROPLET_H);
+            gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
+                    x, y + 5, 0f, 5f, DROPLET_W, 5, DROPLET_W, DROPLET_H, WHITE);
         }
-
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
+
+    /** Packs float (0..1) RGBA into an ARGB int for tinted blit calls. */
+    private static int argb(float a, float r, float g, float b) {
+        return ((int) (clamp(a, 0f, 1f) * 255f) << 24)
+                | ((int) (clamp(r, 0f, 1f) * 255f) << 16)
+                | ((int) (clamp(g, 0f, 1f) * 255f) << 8)
+                | (int) (clamp(b, 0f, 1f) * 255f);
+    }
+
+    private static final int WHITE     = argb(1f, 1f, 1f, 1f);
+    private static final int DARK_TINT = argb(1f, 0.18f, 0.22f, 0.30f);
 
     // ── Temperature text ──────────────────────────────────────────────────────
 
@@ -199,10 +203,8 @@ public final class TemperatureHudOverlay implements GuiLayer {
                                           float bodyTemp) {
         if (bodyTemp >= COLD_OVERLAY_START) return;
         float intensity = clamp((COLD_OVERLAY_START - bodyTemp) / COLD_OVERLAY_START, 0f, 1f);
-        RenderSystem.setShaderColor(1f, 1f, 1f, intensity);
-        gfx.blit(RenderType::guiTextured, POWDER_SNOW_RL,
-                0, 0, 0f, 0f, screenW, screenH, screenW, screenH);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        gfx.blit(RenderPipelines.GUI_TEXTURED, POWDER_SNOW_RL,
+                0, 0, 0f, 0f, screenW, screenH, screenW, screenH, argb(intensity, 1f, 1f, 1f));
     }
 
     private static void renderHeatOverlay(GuiGraphics gfx, int screenW, int screenH,

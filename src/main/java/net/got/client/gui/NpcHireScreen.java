@@ -5,6 +5,7 @@ import net.got.network.HireNpcPayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -135,7 +136,7 @@ public class NpcHireScreen extends Screen {
                 int by = y + 22    + row * (BTN_H + GAP);
 
                 if (mx >= bx && mx < bx + BTN_W && my >= by && my < by + BTN_H) {
-                    PacketDistributor.sendToServer(
+                    ClientPacketDistributor.sendToServer(
                             new HireNpcPayload(entityId, JOBS[idx].id));
                     onClose();
                     return true;

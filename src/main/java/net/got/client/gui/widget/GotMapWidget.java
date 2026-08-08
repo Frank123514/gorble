@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -224,7 +224,7 @@ public class GotMapWidget extends AbstractWidget {
         int zoomedH = (int) Math.round(textureHeight * zoom);
         int drawX   = (int) Math.round(getX() - panX);
         int drawY   = (int) Math.round(getY() - panY);
-        gfx.blit(RenderType::guiTextured, mapTexture,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, mapTexture,
                 drawX, drawY, 0, 0,
                 zoomedW, zoomedH,
                 zoomedW, zoomedH);
@@ -241,7 +241,7 @@ public class GotMapWidget extends AbstractWidget {
         // Compass rose
         int compassSize   = Math.max(16, (int) (height * COMPASS_FRACTION));
         int compassMargin = Math.max(4,  (int) (height * COMPASS_MARGIN_FRACTION));
-        gfx.blit(RenderType::guiTextured, COMPASS_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, COMPASS_TEXTURE,
                 getX() + compassMargin,
                 getY() + height - compassSize - compassMargin,
                 0, 0, compassSize, compassSize, compassSize, compassSize);
@@ -258,7 +258,7 @@ public class GotMapWidget extends AbstractWidget {
             WaypointData wp = waypoints.get(hoveredWaypointIndex);
             List<Component> tooltip = new java.util.ArrayList<>();
             tooltip.add(Component.literal(wp.name()));
-            gfx.renderComponentTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+            gfx.setTooltipForNextFrame(Minecraft.getInstance().font, (Component) tooltip, mouseX, mouseY);
         }
     }
 
@@ -361,7 +361,7 @@ public class GotMapWidget extends AbstractWidget {
         int drawX = Mth.clamp(rawScreenX - 4, cx1, cx2 - 8);
         int drawY = Mth.clamp(rawScreenY - 4, cy1, cy2 - 8);
 
-        gfx.blit(RenderType::guiTextured, player.getSkin().texture(),
+        gfx.blit(RenderPipelines.GUI_TEXTURED, player.getSkin().texture(),
                 drawX, drawY, 8, 8, 8, 8, 64, 64);
     }
 

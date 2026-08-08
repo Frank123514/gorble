@@ -1,12 +1,14 @@
 package net.got.event.entity.client.stag;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom deer model for {@link net.got.event.entity.stag.GotStagEntity},
@@ -27,9 +29,12 @@ public class GotStagModel extends EntityModel<GotStagRenderState> {
     final ModelPart Ear1;
     final ModelPart Ear2;
     final ModelPart Neck;
+    private final ModelPart root;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
     public GotStagModel(ModelPart root) {
         super(root);
+        this.root  = root;
         this.Body  = root.getChild("Body");
         this.TailA = root.getChild("TailA");
         this.Leg1A = root.getChild("Leg1A");
@@ -191,7 +196,6 @@ public class GotStagModel extends EntityModel<GotStagRenderState> {
 
     // ── Animation ─────────────────────────────────────────────────────────────
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
 
     public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
         Body.resetPose();
@@ -204,7 +208,7 @@ public class GotStagModel extends EntityModel<GotStagRenderState> {
         Ear1.resetPose();
         Ear2.resetPose();
         Neck.resetPose();
-        KeyframeAnimations.animate(this, definition, (long)(ageInTicks * 50F), weight, ANIM_VEC);
+        bakedAnimations.computeIfAbsent(definition, d -> d.bake(this.root)).apply((long)(ageInTicks * 50F), weight);
     }
 
     @Override

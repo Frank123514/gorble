@@ -3,7 +3,7 @@ package net.got.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +119,7 @@ public final class GotMainMenuScreen extends Screen {
         // Close button
         boolean closeHov = isOver(mouseX, mouseY, closeBtnX, closeBtnY, CLOSE_W, CLOSE_H);
         int closeV = closeHov ? V_HOV : V_NORM;
-        gfx.blit(RenderType::guiTextured, WIDGETS_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE,
                 closeBtnX, closeBtnY,
                 0, closeV,
                 CLOSE_W, CLOSE_H,
@@ -134,7 +134,7 @@ public final class GotMainMenuScreen extends Screen {
     private void drawPlaque(GuiGraphics gfx, int bx, int by, int w, int h,
                             boolean hovered, String label) {
         int v = hovered ? V_HOV : V_NORM;
-        gfx.blit(RenderType::guiTextured, WIDGETS_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE,
                 bx, by,
                 0, v,
                 w, h,

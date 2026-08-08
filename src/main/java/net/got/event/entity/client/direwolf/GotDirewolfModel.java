@@ -1,12 +1,14 @@
 package net.got.event.entity.client.direwolf;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom direwolf model for {@link net.got.event.entity.direwolf.GotDirewolfEntity},
@@ -39,9 +41,12 @@ public class GotDirewolfModel extends EntityModel<GotDirewolfRenderState> {
     final ModelPart shoulder_back_right;
     final ModelPart leg_back_right;
     final ModelPart leg_back_right_lower;
+    private final ModelPart root;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
     public GotDirewolfModel(ModelPart root) {
         super(root);
+        this.root                  = root;
         this.body                  = root.getChild("body");
         this.neck                  = root.getChild("neck");
         this.head                  = root.getChild("head");
@@ -139,7 +144,6 @@ public class GotDirewolfModel extends EntityModel<GotDirewolfRenderState> {
 
     // ── Animation ─────────────────────────────────────────────────────────────
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
 
     public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
         body.resetPose();
@@ -164,7 +168,7 @@ public class GotDirewolfModel extends EntityModel<GotDirewolfRenderState> {
         shoulder_back_right.resetPose();
         leg_back_right.resetPose();
         leg_back_right_lower.resetPose();
-        KeyframeAnimations.animate(this, definition, (long)(ageInTicks * 50F), weight, ANIM_VEC);
+        bakedAnimations.computeIfAbsent(definition, d -> d.bake(this.root)).apply((long)(ageInTicks * 50F), weight);
     }
 
     @Override

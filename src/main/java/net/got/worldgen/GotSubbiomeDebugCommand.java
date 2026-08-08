@@ -89,7 +89,7 @@ public final class GotSubbiomeDebugCommand {
         send(src, "§ePosition: §f" + worldX + ", " + worldZ);
 
         // 4. What biome does the registry think is here?
-        ServerLevel level = player.serverLevel();
+        ServerLevel level = (ServerLevel) player.level();
         BlockPos pos = player.blockPosition();
         ResourceLocation actualBiome = level.registryAccess()
                 .lookupOrThrow(Registries.BIOME)

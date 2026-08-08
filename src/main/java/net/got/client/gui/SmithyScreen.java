@@ -6,12 +6,13 @@ import net.got.network.SelectSmithyRecipePayload;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
             ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
     private static final ResourceLocation ARROW_SPRITE =
             ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
-    
+
     // ── Sprite dimensions ─────────────────────────────────────────────────────
     private static final int FLAME_SPRITE_W = 14;
     private static final int FLAME_SPRITE_H = 14;
@@ -153,7 +154,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
         // 1. Blit the full vanilla stonecutter background.
         //    This draws: outer panel, input slot, recipe panel inset, scroller track,
         //    static arrow, output slot, and all 36 player-inventory slot backgrounds.
-        g.blit(RenderType::guiTextured, STONECUTTER_TEXTURE,
+        g.blit(RenderPipelines.GUI_TEXTURED, STONECUTTER_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // Paint over the stonecutter texture's built-in input slot at (20,33)
@@ -172,7 +173,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
         if (menu.isFlaming()) {
             int flameHeight = menu.getFlameProgress();  // 0-13
             if (flameHeight > 0) {
-                g.blitSprite(RenderType::guiTextured, LIT_SPRITE,
+                g.blitSprite(RenderPipelines.GUI_TEXTURED, LIT_SPRITE,
                         FLAME_SPRITE_W, FLAME_SPRITE_H,
                         0, FLAME_SPRITE_H - flameHeight,
                         x + FLAME_X, y + FLAME_Y + FLAME_SPRITE_H - flameHeight,
@@ -185,7 +186,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
         if (menu.isCrafting()) {
             int arrowWidth = menu.getArrowProgress();  // 0-24
             if (arrowWidth > 0) {
-                g.blitSprite(RenderType::guiTextured, ARROW_SPRITE,
+                g.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW_SPRITE,
                         ARROW_SPRITE_W, ARROW_SPRITE_H,
                         0, 0,
                         x + ARROW_X, y + ARROW_Y,
@@ -220,10 +221,10 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
                 boolean isActive = (ri == selectedIdx);
 
                 if (isActive) {
-                    g.blitSprite(RenderType::guiTextured, RECIPE_SELECTED,
+                    g.blitSprite(RenderPipelines.GUI_TEXTURED, RECIPE_SELECTED,
                             bx, by, CELL_W, CELL_H);
                 } else if (hovered) {
-                    g.blitSprite(RenderType::guiTextured, RECIPE_HIGHLIGHTED,
+                    g.blitSprite(RenderPipelines.GUI_TEXTURED, RECIPE_HIGHLIGHTED,
                             bx, by, CELL_W, CELL_H);
                 }
 
@@ -238,7 +239,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
                 ? gy + (int) Math.round((double) scrollOffset / maxScroll * trackH)
                 : gy;
 
-        g.blitSprite(RenderType::guiTextured,
+        g.blitSprite(RenderPipelines.GUI_TEXTURED,
                 canScroll ? SCROLLER : SCROLLER_DISABLED,
                 leftPos + SCROLL_X, thumbY, SCROLLER_W, SCROLLER_H);
     }
@@ -263,7 +264,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
                 if (ri >= recipes.size()) return;
                 int bx = gx + col * CELL_W, by = gy + row * CELL_H;
                 if (mouseX >= bx && mouseX < bx + CELL_W && mouseY >= by && mouseY < by + CELL_H) {
-                    g.renderTooltip(font, recipes.get(ri).value().getResult(), mouseX, mouseY);
+                    g.setTooltipForNextFrame(font, recipes.get(ri).value().getResult(), mouseX, mouseY);
                     return;
                 }
             }
@@ -281,7 +282,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
 
             int tbx = leftPos + TAB_X, tby = topPos + TAB_Y;
             if (mx >= tbx && mx < tbx + TAB_W && my >= tby && my < tby + TAB_H) {
-                PacketDistributor.sendToServer(
+                ClientPacketDistributor.sendToServer(
                         new SelectForgeModePayload(net.got.block.ForgeBlockEntity.MODE_ALLOYING));
                 return true;
             }
@@ -294,7 +295,7 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
                 int ri  = (row + scrollOffset) * GRID_COLS + col;
                 if (ri >= 0 && ri < recipes.size()) {
                     int toSend = (ri == menu.getSelectedRecipeIndex()) ? -1 : ri;
-                    PacketDistributor.sendToServer(new SelectSmithyRecipePayload(toSend));
+                    ClientPacketDistributor.sendToServer(new SelectSmithyRecipePayload(toSend));
                     return true;
                 }
             }

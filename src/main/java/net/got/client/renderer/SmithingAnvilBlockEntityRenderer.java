@@ -70,8 +70,4 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
         return LightTexture.pack(block, sky);
     }
 
-    @Override
-    public boolean shouldRenderOffScreen(SmithingAnvilBlockEntity be) {
-        return false;
-    }
 }

@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -246,7 +246,7 @@ public final class GotPlaceholderScreen extends Screen {
         // Book background — drawn at native 271x180 size, no scaling at all.
         // Minecraft's GUI Scale setting handles all magnification uniformly
         // for the whole screen, same as every other texture here.
-        gfx.blit(RenderType::guiTextured, BOOK_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, BOOK_TEXTURE,
                 bookX, bookY, 0f, 0f,
                 BOOK_TEX_W, BOOK_TEX_H,
                 BOOK_TEX_W, BOOK_TEX_H);
@@ -269,7 +269,7 @@ public final class GotPlaceholderScreen extends Screen {
         // "Menu" button
         boolean btnHov = isOver(mouseX, mouseY, btnX, btnY, BUTTON_W, BUTTON_H);
         int btnV = btnHov ? V_HOV : V_NORM;
-        gfx.blit(RenderType::guiTextured, WIDGETS_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE,
                 btnX, btnY,
                 0, btnV,
                 BUTTON_W, BUTTON_H,

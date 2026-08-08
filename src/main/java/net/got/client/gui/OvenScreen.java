@@ -3,7 +3,7 @@ import net.got.GotMod;
 import net.got.menu.OvenMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,17 +29,17 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         int x = this.leftPos;
         int y = this.topPos;
         // Draw the crafting table background (this gives us the 3x3 grid, inventory, and arrow)
-        graphics.blit(RenderType::guiTextured, CRAFTING_TABLE_LOCATION,
+        graphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TABLE_LOCATION,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
         // Draw a single slot background for our fuel slot at (8, 53)
         // We just grab the texture of one of the crafting slots
-        graphics.blit(RenderType::guiTextured, CRAFTING_TABLE_LOCATION,
+        graphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TABLE_LOCATION,
                 x + 8 - 1, y + 53 - 1, 29, 16, 18, 18, 256, 256);
         // Draw Flame indicator (fuel remaining) above the fuel slot
         if (menu.isFlaming()) {
             int k = menu.getFlameScaledProgress(); // 0-13
             if (k > 0) {
-                graphics.blitSprite(RenderType::guiTextured, LIT_PROGRESS_SPRITE,
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, LIT_PROGRESS_SPRITE,
                         14, 14, 0, 14 - k,
                         x + 10, y + 36 + 14 - k,
                         14, k);
@@ -49,7 +49,7 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         if (menu.isCrafting()) {
             int l = menu.getArrowScaledProgress(); // 0-24
             if (l > 0) {
-                graphics.blitSprite(RenderType::guiTextured, BURN_PROGRESS_SPRITE,
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BURN_PROGRESS_SPRITE,
                         24, 16, 0, 0,
                         x + 90, y + 35,
                         l, 16);

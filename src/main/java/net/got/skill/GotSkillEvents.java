@@ -2,6 +2,7 @@ package net.got.skill;
 
 import net.got.GotMod;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -84,10 +85,10 @@ public final class GotSkillEvents {
         if (chance <= 0 || ThreadLocalRandom.current().nextFloat() >= chance) return;
 
         var drops = net.minecraft.world.level.block.Block.getDrops(
-                state, player.serverLevel(), event.getPos(), null, player, player.getMainHandItem());
+                state, (ServerLevel) player.level(), event.getPos(), null, player, player.getMainHandItem());
         var pos = event.getPos();
         for (var stack : drops) {
-            net.minecraft.world.level.block.Block.popResource(player.serverLevel(), pos, stack.copy());
+            net.minecraft.world.level.block.Block.popResource((ServerLevel) player.level(), pos, stack.copy());
         }
     }
 

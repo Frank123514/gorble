@@ -1,12 +1,14 @@
 package net.got.event.entity.client.brownbear;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom brown bear model for {@link net.got.event.entity.brownbear.GotBrownBearEntity},
@@ -33,11 +35,13 @@ public class GotBrownBearModel extends EntityModel<GotBrownBearRenderState> {
     final ModelPart leg_back_right_lower;
     final ModelPart leg_back_left;
     final ModelPart leg_back_left_lower;
+    private final ModelPart root;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
 
     public GotBrownBearModel(ModelPart root) {
         super(root);
+        this.root                   = root;
         this.body                   = root.getChild("body");
         this.head                   = root.getChild("head");
         this.snout                  = this.head.getChild("snout");
@@ -207,7 +211,7 @@ public class GotBrownBearModel extends EntityModel<GotBrownBearRenderState> {
         leg_back_right_lower.resetPose();
         leg_back_left.resetPose();
         leg_back_left_lower.resetPose();
-        KeyframeAnimations.animate(this, animation, (long)(ageInTicks * 50F), weight, ANIM_VEC);
+        bakedAnimations.computeIfAbsent(animation, d -> d.bake(this.root)).apply((long)(ageInTicks * 50F), weight);
     }
 
     @Override

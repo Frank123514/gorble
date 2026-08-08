@@ -1,5 +1,6 @@
 package net.got.client.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import net.got.client.ClientSkillCache;
 import net.got.network.UnlockPerkPayload;
 import net.got.skill.GotSkill;
@@ -16,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -284,7 +285,7 @@ public final class GotSkillsScreen extends Screen {
         // Book background — native 271x180 size, same convention as
         // GotPlaceholderScreen; Minecraft's GUI Scale setting handles all
         // magnification uniformly for the whole screen.
-        gfx.blit(RenderType::guiTextured, BOOK_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, BOOK_TEXTURE,
                 bookX, bookY, 0f, 0f,
                 BOOK_TEX_W, BOOK_TEX_H,
                 BOOK_TEX_W, BOOK_TEX_H);
@@ -306,7 +307,7 @@ public final class GotSkillsScreen extends Screen {
         // "Menu" button
         boolean btnHov = isOver(mouseX, mouseY, btnX, btnY, BUTTON_W, BUTTON_H);
         int btnV = btnHov ? V_HOV : V_NORM;
-        gfx.blit(RenderType::guiTextured, WIDGETS_TEXTURE,
+        gfx.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE,
                 btnX, btnY, 0, btnV, BUTTON_W, BUTTON_H, 256, 256);
         String btnLabel = "Menu";
         gfx.drawString(font, btnLabel,
@@ -324,8 +325,8 @@ public final class GotSkillsScreen extends Screen {
         int docMouseY = mouseY + listScroll;
 
         gfx.enableScissor(listX, listY, listX + listW, listBottom);
-        gfx.pose().pushPose();
-        gfx.pose().translate(0, -listScroll, 0);
+        gfx.pose().pushMatrix();
+        gfx.pose().translate(0, -listScroll);
 
         GotSkillCategory lastCategory = null;
         for (GotSkill skill : GotSkill.values()) {
@@ -365,7 +366,7 @@ public final class GotSkillsScreen extends Screen {
             }
         }
 
-        gfx.pose().popPose();
+        gfx.pose().popMatrix();
         gfx.disableScissor();
     }
 
@@ -455,7 +456,7 @@ public final class GotSkillsScreen extends Screen {
                 for (PerkRow row : perkPages.get(perkPageIndex)) {
                     if (isOver(mouseX, mouseY, row.x, row.y, row.w, row.h)) {
                         if (ClientSkillCache.canUnlock(row.perk)) {
-                            PacketDistributor.sendToServer(new UnlockPerkPayload(row.perk.id()));
+                            ClientPacketDistributor.sendToServer(new UnlockPerkPayload(row.perk.id()));
                         }
                         return true;
                     }

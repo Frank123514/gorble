@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -81,14 +82,14 @@ public class NpcCoinExchangeScreen extends Screen {
             if (coin.smaller != null) {
                 addRenderableWidget(Button.builder(
                         Component.literal("▼ Break"),
-                        btn -> PacketDistributor.sendToServer(
+                        btn -> ClientPacketDistributor.sendToServer(
                                 new CoinExchangePayload(coin.id, true))
                 ).bounds(px + COL_BREAK, midY, BTN_W, BTN_H).build());
 
                 // Combine button
                 addRenderableWidget(Button.builder(
                         Component.literal("▲ Combine"),
-                        btn -> PacketDistributor.sendToServer(
+                        btn -> ClientPacketDistributor.sendToServer(
                                 new CoinExchangePayload(coin.id, false))
                 ).bounds(px + COL_COMB, midY, BTN_W, BTN_H).build());
             }
@@ -188,7 +189,7 @@ public class NpcCoinExchangeScreen extends Screen {
 
     @Override
     public void onClose() {
-        PacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
+        ClientPacketDistributor.sendToServer(new CloseInteractScreenPayload(entityId));
         super.onClose();
     }
 

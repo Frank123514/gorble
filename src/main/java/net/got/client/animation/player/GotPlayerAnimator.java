@@ -1,7 +1,7 @@
 package net.got.client.animation.player;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
@@ -10,6 +10,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Writes {@link PlayerAnimations} keyframe clips (walk/run/jump/sword/
@@ -102,8 +106,29 @@ public final class GotPlayerAnimator {
 
     private GotPlayerAnimator() {}
 
-    /** Reusable scratch vector for {@code KeyframeAnimations.animate} — see e.g. {@code BellowsModel}/{@code GotStagModel} for the same pattern. Never read, only written into by vanilla's sampler. */
+    /** Reusable scratch vector for {@code KeyframeAnimation#apply} — see e.g. {@code BellowsModel}/{@code GotStagModel} for the same pattern. Never read, only written into by vanilla's sampler. */
     private static final Vector3f ANIM_VEC = new Vector3f();
+
+    /**
+     * 1.21.6 removed the old static {@code KeyframeAnimations.animate(Model,
+     * AnimationDefinition, long, float, Vector3f)} helper entirely — an
+     * {@link AnimationDefinition} must now be baked once against a specific
+     * {@link ModelPart} root via {@link AnimationDefinition#bake}, producing
+     * a reusable {@link KeyframeAnimation} whose {@code apply(long, float,
+     * Vector3f)} does what the old static method used to do. Baking is not
+     * free (it walks the whole part tree resolving names), so this caches
+     * the baked result per (definition, root) pair — keyed weakly on the
+     * root so it doesn't outlive the model it was baked against — instead
+     * of re-baking every single frame for every player on screen.
+     */
+    private static final Map<AnimationDefinition, WeakHashMap<ModelPart, KeyframeAnimation>> BAKED_ANIMATIONS =
+            new IdentityHashMap<>();
+
+    private static KeyframeAnimation baked(AnimationDefinition definition, ModelPart root) {
+        return BAKED_ANIMATIONS
+                .computeIfAbsent(definition, d -> new WeakHashMap<>())
+                .computeIfAbsent(root, definition::bake);
+    }
 
     /**
      * How much faster the axe's mining loop plays than its real combat
@@ -160,8 +185,8 @@ public final class GotPlayerAnimator {
 
                 float horseRun = anim.got$getHorseRunBlend();
                 long ms = (long) (state.ageInTicks * 50F);
-                KeyframeAnimations.animate(model, PlayerAnimations.HORSE_IDLE, ms, 1.0F - horseRun, ANIM_VEC);
-                KeyframeAnimations.animate(model, PlayerAnimations.HORSE_RUNNING, ms, horseRun, ANIM_VEC);
+                baked(PlayerAnimations.HORSE_IDLE, model.root()).apply(ms, 1.0F - horseRun);
+                baked(PlayerAnimations.HORSE_RUNNING, model.root()).apply(ms, horseRun);
             }
             return;
         }
@@ -230,8 +255,8 @@ public final class GotPlayerAnimator {
                 // out smoothly to a standstill instead of freezing on whatever
                 // frame walkAnimationPos happened to stop on.
                 long walkMs = (long) (walkPos * 50F);
-                KeyframeAnimations.animate(model, PlayerAnimations.WALKING, walkMs, (1.0F - runBlend) * moveIntensity, ANIM_VEC);
-                KeyframeAnimations.animate(model, PlayerAnimations.RUNNING, walkMs, runBlend * moveIntensity, ANIM_VEC);
+                baked(PlayerAnimations.WALKING, model.root()).apply(walkMs, (1.0F - runBlend) * moveIntensity);
+                baked(PlayerAnimations.RUNNING, model.root()).apply(walkMs, runBlend * moveIntensity);
 
                 // Idle breathing sway fades in as movement stops and fades back
                 // out the moment the player starts walking or leaves the ground,
@@ -263,7 +288,7 @@ public final class GotPlayerAnimator {
             // Layered on top of whichever base pose above via
             // KeyframeAnimations' additive weight semantics.
             if (airborne > 0.01F) {
-                KeyframeAnimations.animate(model, PlayerAnimations.JUMP, (long) (age * 50F), airborne, ANIM_VEC);
+                baked(PlayerAnimations.JUMP, model.root()).apply((long) (age * 50F), airborne);
 
                 // Rotation-only torso attach (unlike the swing path's full
                 // attachToBody): composing body's POSITION here as well
@@ -481,7 +506,7 @@ public final class GotPlayerAnimator {
         // own timeline exactly, rather than stretching/compressing it into
         // an artificial window.
         long ms = (long) (t * clip.lengthInSeconds() * 1000.0F);
-        KeyframeAnimations.animate(model, clip, ms, 1.0F, ANIM_VEC);
+        baked(clip, model.root()).apply(ms, 1.0F);
 
         // The source rig authors right_arm/left_arm/head as children of
         // the torso, so their keyframes are local to the body's own
@@ -630,7 +655,7 @@ public final class GotPlayerAnimator {
         // the real clip length rather than hardcoding 0 in case a future
         // re-export adds motion to it.
         long ms = (long) (PlayerAnimations.SWORD_BLOCK.lengthInSeconds() * 1000.0F);
-        KeyframeAnimations.animate(model, PlayerAnimations.SWORD_BLOCK, ms, 1.0F, ANIM_VEC);
+        baked(PlayerAnimations.SWORD_BLOCK, model.root()).apply(ms, 1.0F);
 
         attachToBody(rightArm, body);
         attachToBody(leftArm, body);

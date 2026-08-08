@@ -1,27 +1,28 @@
 package net.got.client.model;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
-import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Bellows block-entity model.
  * Extends {@link Model} directly (same as the original) so we avoid the
  * 1.21.4 {@code EntityModel<T extends EntityRenderState>} type constraint.
- * Animations are driven by {@link KeyframeAnimations#animate}, which only
- * requires a {@link Model} — the same approach used by {@code GotPlayerModel}.
+ * Animations are driven by {@link AnimationDefinition#bake} + {@link KeyframeAnimation#apply},
+ * which is the 1.21.6+ approach used for keyframe animation.
  */
 public class BellowsModel extends Model {
 
-    private static final Vector3f ANIM_VEC = new Vector3f();
-
     private final ModelPart root;
     private final ModelPart topBoard;
+    private final Map<AnimationDefinition, KeyframeAnimation> bakedAnimations = new HashMap<>();
 
     public BellowsModel(ModelPart root) {
         super(root, RenderType::entityCutout);
@@ -38,7 +39,7 @@ public class BellowsModel extends Model {
      */
     public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
         topBoard.resetPose();
-        KeyframeAnimations.animate(this, definition, (long) (ageInTicks * 50F), weight, ANIM_VEC);
+        bakedAnimations.computeIfAbsent(definition, d -> d.bake(this.root)).apply((long) (ageInTicks * 50F), weight);
     }
 
     public static LayerDefinition createBodyLayer() {
