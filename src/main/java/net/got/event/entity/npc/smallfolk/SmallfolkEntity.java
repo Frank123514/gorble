@@ -11,7 +11,6 @@ import net.got.event.entity.npc.data.name.GotNameGenerator;
 import net.got.network.OpenInteractScreenPayload;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -26,6 +25,8 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.InteractionHand;
@@ -378,29 +379,29 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     // ── NBT ───────────────────────────────────────────────────────────────────
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putByte(NpcGender.NBT_KEY, getGender().toByte());
-        tag.putInt("Variant", getVariant());
-        tag.putString("NpcName", getNpcName());
-        tag.putString("Personality", personality.id);
-        tag.putString(GotNpcOccupation.NBT_KEY, occupation.id);
-        npcInventory.save(tag, level().registryAccess());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte(NpcGender.NBT_KEY, getGender().toByte());
+        output.putInt("Variant", getVariant());
+        output.putString("NpcName", getNpcName());
+        output.putString("Personality", personality.id);
+        output.putString(GotNpcOccupation.NBT_KEY, occupation.id);
+        npcInventory.save(output);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setGender(NpcGender.fromByte(tag.getByteOr(NpcGender.NBT_KEY, (byte) 0)));
-        setVariant(tag.getIntOr("Variant", 0));
-        setNpcName(tag.getStringOr("NpcName", ""));
-        personality = GotNpcPersonality.fromString(tag.getStringOr("Personality", ""));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setGender(NpcGender.fromByte(input.getByteOr(NpcGender.NBT_KEY, (byte) 0)));
+        setVariant(input.getIntOr("Variant", 0));
+        setNpcName(input.getStringOr("NpcName", ""));
+        personality = GotNpcPersonality.fromString(input.getStringOr("Personality", ""));
         if (isCivilian()) {
-            setOccupation(GotNpcOccupation.fromString(tag.getStringOr(GotNpcOccupation.NBT_KEY, "")));
+            setOccupation(GotNpcOccupation.fromString(input.getStringOr(GotNpcOccupation.NBT_KEY, "")));
         } else {
             setOccupation(GotNpcOccupation.NONE);
         }
-        npcInventory.load(tag, level().registryAccess());
+        npcInventory.load(input);
     }
 
     // ── Default AI ────────────────────────────────────────────────────────────

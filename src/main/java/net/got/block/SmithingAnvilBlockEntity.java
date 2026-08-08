@@ -30,6 +30,8 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -413,32 +415,30 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     // ── NBT ──────────────────────────────────────────────────────────────────
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tag, items, registries);
-        hitCount          = tag.getIntOr("HitCount", 0);
-        selectedRecipeIdx = tag.getIntOr("SelectedRecipe", 0);
-        markerPos         = tag.getIntOr("MarkerPos", 0);
-        markerDir         = tag.getIntOr("MarkerDir", 0);
+        ContainerHelper.loadAllItems(input, items);
+        hitCount          = input.getIntOr("HitCount", 0);
+        selectedRecipeIdx = input.getIntOr("SelectedRecipe", 0);
+        markerPos         = input.getIntOr("MarkerPos", 0);
+        markerDir         = input.getIntOr("MarkerDir", 0);
         if (markerDir == 0) markerDir = 1;
-        if (tag.contains("LastCrafted")) {
-            lastCraftedItem = ItemStack.parse(registries, tag.getCompoundOrEmpty("LastCrafted")).orElse(ItemStack.EMPTY);
-        }
-        awaitingPickup = tag.getBooleanOr("AwaitingPickup", false);
+        lastCraftedItem = input.read("LastCrafted", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+        awaitingPickup = input.getBooleanOr("AwaitingPickup", false);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        ContainerHelper.saveAllItems(tag, items, registries);
-        tag.putInt("HitCount",       hitCount);
-        tag.putInt("SelectedRecipe", selectedRecipeIdx);
-        tag.putInt("MarkerPos",      markerPos);
-        tag.putInt("MarkerDir",      markerDir);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ContainerHelper.saveAllItems(output, items);
+        output.putInt("HitCount",       hitCount);
+        output.putInt("SelectedRecipe", selectedRecipeIdx);
+        output.putInt("MarkerPos",      markerPos);
+        output.putInt("MarkerDir",      markerDir);
         if (!lastCraftedItem.isEmpty()) {
-            tag.put("LastCrafted", lastCraftedItem.save(registries));
+            output.store("LastCrafted", ItemStack.CODEC, lastCraftedItem);
         }
-        tag.putBoolean("AwaitingPickup", awaitingPickup);
+        output.putBoolean("AwaitingPickup", awaitingPickup);
     }
 }

@@ -8,9 +8,7 @@ import net.got.recipe.AlloyRecipe;
 import net.got.recipe.AlloyRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -27,6 +25,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -532,32 +532,32 @@ public class ForgeBlockEntity extends BaseContainerBlockEntity implements Worldl
     // ── NBT ───────────────────────────────────────────────────────────────────
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tag, items, registries);
-        cookingProgress   = tag.getIntOr("CookTime", 0);
-        cookingTotalTime  = tag.getIntOr("CookTimeTotal", 0);
-        litTime           = tag.getIntOr("BurnTime", 0);
-        litDuration       = tag.getIntOr("BurnDuration", 0);
-        selectedRecipeIdx = tag.getIntOr("SelectedRecipe", 0);
-        mode              = tag.getIntOr("Mode", 0);
-        int[] savedHeat = tag.getIntArray("HeatProgress").orElse(new int[0]);
+        ContainerHelper.loadAllItems(input, items);
+        cookingProgress   = input.getIntOr("CookTime", 0);
+        cookingTotalTime  = input.getIntOr("CookTimeTotal", 0);
+        litTime           = input.getIntOr("BurnTime", 0);
+        litDuration       = input.getIntOr("BurnDuration", 0);
+        selectedRecipeIdx = input.getIntOr("SelectedRecipe", 0);
+        mode              = input.getIntOr("Mode", 0);
+        int[] savedHeat = input.getIntArray("HeatProgress").orElse(new int[0]);
         for (int i = 0; i < heatProgress.length; i++) {
             heatProgress[i] = i < savedHeat.length ? savedHeat[i] : 0;
         }
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        ContainerHelper.saveAllItems(tag, items, registries);
-        tag.putInt("CookTime",       cookingProgress);
-        tag.putInt("CookTimeTotal",  cookingTotalTime);
-        tag.putInt("BurnTime",       litTime);
-        tag.putInt("BurnDuration",   litDuration);
-        tag.putInt("SelectedRecipe", selectedRecipeIdx);
-        tag.putInt("Mode",           mode);
-        tag.putIntArray("HeatProgress", heatProgress);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ContainerHelper.saveAllItems(output, items);
+        output.putInt("CookTime",       cookingProgress);
+        output.putInt("CookTimeTotal",  cookingTotalTime);
+        output.putInt("BurnTime",       litTime);
+        output.putInt("BurnDuration",   litDuration);
+        output.putInt("SelectedRecipe", selectedRecipeIdx);
+        output.putInt("Mode",           mode);
+        output.putIntArray("HeatProgress", heatProgress);
     }
 }

@@ -1,10 +1,9 @@
 package net.got.event.entity.npc;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * A 9-slot personal stash for an NPC.
@@ -28,29 +27,24 @@ public final class NpcInventory extends SimpleContainer {
 
     // ── NBT ──────────────────────────────────────────────────────────────────
 
-    public void save(CompoundTag entityTag, HolderLookup.Provider registries) {
-        ListTag list = new ListTag();
+    public void save(ValueOutput output) {
+        ValueOutput.ValueOutputList list = output.childrenList(NBT_KEY);
         for (int i = 0; i < SIZE; i++) {
             ItemStack stack = getItem(i);
             if (!stack.isEmpty()) {
-                CompoundTag entry = new CompoundTag();
+                ValueOutput entry = list.addChild();
                 entry.putByte("Slot", (byte) i);
-                entry.put("Item", stack.save(registries));
-                list.add(entry);
+                entry.store("Item", ItemStack.CODEC, stack);
             }
         }
-        entityTag.put(NBT_KEY, list);
     }
 
-    public void load(CompoundTag entityTag, HolderLookup.Provider registries) {
+    public void load(ValueInput input) {
         clearContent();
-        if (!entityTag.contains(NBT_KEY)) return;
-        ListTag list = entityTag.getListOrEmpty(NBT_KEY);
-        for (int i = 0; i < list.size(); i++) {
-            CompoundTag entry = list.getCompoundOrEmpty(i);
+        for (ValueInput entry : input.childrenListOrEmpty(NBT_KEY)) {
             int slot = entry.getByteOr("Slot", (byte) 0) & 0xFF;
             if (slot < SIZE) {
-                setItem(slot, ItemStack.parse(registries, entry.getCompoundOrEmpty("Item")).orElse(ItemStack.EMPTY));
+                setItem(slot, entry.read("Item", ItemStack.CODEC).orElse(ItemStack.EMPTY));
             }
         }
     }

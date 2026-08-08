@@ -5,9 +5,7 @@ import net.got.menu.OvenMenu;
 import net.got.recipe.OvenRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -25,6 +23,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import javax.annotation.Nullable;
 import java.util.Optional;
 /**
@@ -298,22 +298,22 @@ public class OvenBlockEntity extends BaseContainerBlockEntity implements Worldly
     public ContainerData getDataAccess() { return dataAccess; }
     // ── NBT ──────────────────────────────────────────────────────────────────
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tag, items, registries);
-        cookingProgress  = tag.getIntOr("CookTime", 0);
-        cookingTotalTime = tag.getIntOr("CookTimeTotal", 0);
-        litTime          = tag.getIntOr("BurnTime", 0);
-        litDuration      = tag.getIntOr("BurnDuration", 0);
+        ContainerHelper.loadAllItems(input, items);
+        cookingProgress  = input.getIntOr("CookTime", 0);
+        cookingTotalTime = input.getIntOr("CookTimeTotal", 0);
+        litTime          = input.getIntOr("BurnTime", 0);
+        litDuration      = input.getIntOr("BurnDuration", 0);
     }
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        ContainerHelper.saveAllItems(tag, items, registries);
-        tag.putInt("CookTime",      cookingProgress);
-        tag.putInt("CookTimeTotal", cookingTotalTime);
-        tag.putInt("BurnTime",      litTime);
-        tag.putInt("BurnDuration",  litDuration);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ContainerHelper.saveAllItems(output, items);
+        output.putInt("CookTime",      cookingProgress);
+        output.putInt("CookTimeTotal", cookingTotalTime);
+        output.putInt("BurnTime",      litTime);
+        output.putInt("BurnDuration",  litDuration);
     }
 }
