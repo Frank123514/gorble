@@ -13,6 +13,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.entity.InsideBlockEffectApplier; // TODO-VERIFY: confirm exact package for your NeoForge 1.21.5 build (IDE autocomplete)
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -83,7 +84,7 @@ public class QuagmireBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier) {
         if (!(entity instanceof LivingEntity livingEntity)) return;
 
         entity.makeStuckInBlock(state, new Vec3(0.8D, 0.5D, 0.8D));
@@ -97,7 +98,7 @@ public class QuagmireBlock extends Block implements SimpleWaterloggedBlock {
 
                 if (livingEntity instanceof Player) {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 100, false, false));
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 4, false, false));
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 4, false, false));
                 }
 
                 if (tickCount == 0) {

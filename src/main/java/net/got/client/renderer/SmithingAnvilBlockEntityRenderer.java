@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -30,7 +31,7 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
     @Override
     public void render(SmithingAnvilBlockEntity be, float partialTick,
                        PoseStack poseStack, MultiBufferSource bufferSource,
-                       int packedLight, int packedOverlay) {
+                       int packedLight, int packedOverlay, Vec3 cameraPos) {
 
         ItemStack input = be.getInputItem();
         ItemStack toRender = input.isEmpty() ? be.getLastCraftedItem() : input;
@@ -44,7 +45,6 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
                 renderState,
                 toRender,
                 ItemDisplayContext.FIXED,
-                false,
                 be.getLevel(),
                 null,
                 0

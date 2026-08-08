@@ -105,7 +105,7 @@ public class GotHeronEntity extends Animal {
 
     /** Birds don't take fall damage. */
     @Override
-    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+    public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

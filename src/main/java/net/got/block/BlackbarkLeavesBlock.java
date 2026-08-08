@@ -1,5 +1,6 @@
 package net.got.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SoundType;
@@ -9,6 +10,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
 public class BlackbarkLeavesBlock extends LeavesBlock {
+	public static final MapCodec<BlackbarkLeavesBlock> CODEC = simpleCodec(BlackbarkLeavesBlock::new);
+
+	@Override
+	public MapCodec<BlackbarkLeavesBlock> codec() { return CODEC; }
+
     public BlackbarkLeavesBlock(Properties properties) {
         super(0.1f, properties.sound(SoundType.GRASS).strength(0.2f).noOcclusion()
             .pushReaction(PushReaction.DESTROY)

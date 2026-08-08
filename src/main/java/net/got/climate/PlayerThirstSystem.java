@@ -7,7 +7,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -149,20 +148,20 @@ public final class PlayerThirstSystem {
 
     private static void applyEffects(ServerPlayer player, float thirst) {
         if (thirst >= THIRST_HYDRATED) {
-            player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-            player.removeEffect(MobEffects.DIG_SLOWDOWN);
+            player.removeEffect(MobEffects.SLOWNESS);
+            player.removeEffect(MobEffects.MINING_FATIGUE);
             player.removeEffect(MobEffects.WEAKNESS);
             return;
         }
 
         // Thirsty — subtle slowness, completely silent visually
         // ambient=true (no particles), visible=false, showIcon=false
-        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, INTERVAL + 5, 0, true, false, false));
+        player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, INTERVAL + 5, 0, true, false, false));
 
         if (thirst < THIRST_THIRSTY) {
             // Dehydrated — stronger penalties, still invisible
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, INTERVAL + 5, 1, true, false, false)); // Slowness II
-            player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN,      INTERVAL + 5, 0, true, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, INTERVAL + 5, 1, true, false, false)); // Slowness II
+            player.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE,      INTERVAL + 5, 0, true, false, false));
             player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,          INTERVAL + 5, 0, true, false, false));
         }
 

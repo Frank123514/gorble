@@ -195,9 +195,9 @@ public final class PlayerTemperatureSystem {
 
     private static void applyEffects(ServerPlayer player, float body) {
         // Always clear any lingering climate potion effects (e.g. from old saves)
-        player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
-        player.removeEffect(MobEffects.DIG_SLOWDOWN);
-        player.removeEffect(MobEffects.CONFUSION);
+        player.removeEffect(MobEffects.SLOWNESS);
+        player.removeEffect(MobEffects.MINING_FATIGUE);
+        player.removeEffect(MobEffects.NAUSEA);
 
         // Extreme cold — freeze damage (screen overlay handles the visual)
         if (body < BODY_COLD) {

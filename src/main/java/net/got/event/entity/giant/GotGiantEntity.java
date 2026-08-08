@@ -254,7 +254,7 @@ public class GotGiantEntity extends PathfinderMob {
 
     /** Giants are immune to fall damage — they just step over obstacles. */
     @Override
-    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+    public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

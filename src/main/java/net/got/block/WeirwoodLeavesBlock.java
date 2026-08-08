@@ -1,5 +1,6 @@
 package net.got.block;
 
+import com.mojang.serialization.MapCodec;
 import net.got.init.GotModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 
 public class WeirwoodLeavesBlock extends LeavesBlock {
+	public static final MapCodec<WeirwoodLeavesBlock> CODEC = simpleCodec(WeirwoodLeavesBlock::new);
+
+	@Override
+	public MapCodec<WeirwoodLeavesBlock> codec() { return CODEC; }
+
 
     public WeirwoodLeavesBlock(Properties properties) {
         super(0.1f, properties.sound(SoundType.GRASS).strength(0.2f).noOcclusion()

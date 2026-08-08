@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -37,7 +38,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     @Override
     public void render(BellowsBlockEntity be, float partialTick,
                        PoseStack poseStack, MultiBufferSource bufferSource,
-                       int packedLight, int packedOverlay) {
+                       int packedLight, int packedOverlay, Vec3 cameraPos) {
 
         BlockState state = be.getBlockState();
 
