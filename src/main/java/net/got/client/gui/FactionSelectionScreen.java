@@ -302,7 +302,6 @@ public final class FactionSelectionScreen extends Screen {
         int px = (width  - PANEL_W) / 2;
         int py = (height - PANEL_H) / 2;
 
-        renderBackground(gfx, mouseX, mouseY, partialTick);
         renderPanelBorder(gfx, px, py);
 
         super.render(gfx, mouseX, mouseY, partialTick);
@@ -494,4 +493,14 @@ public final class FactionSelectionScreen extends Screen {
 
     @Override public boolean shouldCloseOnEsc() { return false; }
     @Override public boolean isPauseScreen()    { return true;  }
+
+    // isPauseScreen() being true makes the vanilla renderer apply its own
+    // blurred-background pass automatically. Screen only allows one blur
+    // pass per frame (GuiRenderState.blurBeforeThisStratum), so we must not
+    // also blur manually here or the game crashes with
+    // "IllegalStateException: Can only blur once per frame" the first time
+    // this screen renders. This panel draws its own border/background via
+    // renderPanelBorder(), so no-op the built-in background instead.
+    @Override
+    public void renderBackground(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {}
 }

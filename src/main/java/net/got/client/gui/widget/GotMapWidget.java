@@ -258,7 +258,10 @@ public class GotMapWidget extends AbstractWidget {
             WaypointData wp = waypoints.get(hoveredWaypointIndex);
             List<Component> tooltip = new java.util.ArrayList<>();
             tooltip.add(Component.literal(wp.name()));
-            gfx.setTooltipForNextFrame(Minecraft.getInstance().font, (Component) tooltip, mouseX, mouseY);
+            List<net.minecraft.util.FormattedCharSequence> tooltipSeqs = tooltip.stream()
+                    .map(Component::getVisualOrderText)
+                    .collect(java.util.stream.Collectors.toList());
+            gfx.setTooltipForNextFrame(Minecraft.getInstance().font, tooltipSeqs, mouseX, mouseY);
         }
     }
 

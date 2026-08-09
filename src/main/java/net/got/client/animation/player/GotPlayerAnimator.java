@@ -169,6 +169,13 @@ public final class GotPlayerAnimator {
         }
 
         GotAnimatedPlayerState anim = (GotAnimatedPlayerState) state;
+        // Read once and threaded through to every pose below (locomotion,
+        // jump, and both swing paths) instead of each site re-querying the
+        // render state — this is what lets jump and the sword/greatsword/
+        // axe swings dampen their own torso contribution the same way
+        // walk/run already did, rather than only the locomotion block
+        // knowing about it.
+        boolean firstPerson = anim.got$isLocalFirstPerson();
 
         if (state.isPassenger) {
             // Horses get their own authored riding pose, crossfaded by the
@@ -270,12 +277,30 @@ public final class GotPlayerAnimator {
                 body.yRot += GotAnimMath.idleBodySway(age) * idleBlend;
             }
 
-            // Only the torso's own walk/run sway gets quieted down here —
+            // ── Jump / airborne ──────────────────────────────────────────────
+            // Layered on top of whichever base pose above via
+            // KeyframeAnimations' additive weight semantics. Applied BEFORE
+            // the first-person damping block below (rather than after, as
+            // an earlier version did) so that jump's own torso lean gets
+            // quieted down too instead of only the walk/run sway underneath
+            // it — see that block's doc for why this ordering matters.
+            if (airborne > 0.01F) {
+                baked(PlayerAnimations.JUMP, model.root()).apply((long) (age * 50F), airborne);
+            }
+
+            // Only the torso's own contribution gets quieted down here —
             // rightArm/leftArm/rightLeg/leftLeg are untouched, so the arm
-            // swing you actually watch your hands/weapon do every frame in
-            // first person keeps its full, correctly-timed amplitude. See
-            // FIRST_PERSON_BODY_SWAY_DAMPEN's doc for why body specifically.
-            if (anim.got$isLocalFirstPerson()) {
+            // swing/reach you actually watch your hands/weapon do every
+            // frame in first person keeps its full, correctly-timed
+            // amplitude. See FIRST_PERSON_BODY_SWAY_DAMPEN's doc for why
+            // body specifically. Runs once, after BOTH the walk/run/idle
+            // sway above and jump's own body lean above have accumulated
+            // onto body (KeyframeAnimations' apply() is additive, so by
+            // this point body already carries the full combined
+            // locomotion+jump pose for the frame) — scaling once here
+            // damps the whole torso motion for the frame rather than only
+            // whichever contribution happened to run first.
+            if (firstPerson) {
                 body.xRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
                 body.yRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
                 body.zRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
@@ -284,12 +309,7 @@ public final class GotPlayerAnimator {
                 body.z *= FIRST_PERSON_BODY_SWAY_DAMPEN;
             }
 
-            // ── Jump / airborne ──────────────────────────────────────────────
-            // Layered on top of whichever base pose above via
-            // KeyframeAnimations' additive weight semantics.
             if (airborne > 0.01F) {
-                baked(PlayerAnimations.JUMP, model.root()).apply((long) (age * 50F), airborne);
-
                 // Rotation-only torso attach (unlike the swing path's full
                 // attachToBody): composing body's POSITION here as well
                 // dragged the arms down by body's small anticipation-dip
@@ -297,7 +317,10 @@ public final class GotPlayerAnimator {
                 // since JUMP's arm/head channels are already authored at
                 // their normal resting height/offset and don't expect to
                 // also be carried by the body's own squash/dip. Only the
-                // torso's tilt should be inherited here, not its translation.
+                // torso's tilt should be inherited here, not its
+                // translation. Runs after the damping above so the tilt
+                // these parts inherit is the already-quieted-down, first-
+                // person-appropriate amount, not the full third-person one.
                 attachRotationToBody(rightArm, body);
                 attachRotationToBody(leftArm, body);
                 attachRotationToBody(head, body);
@@ -343,7 +366,7 @@ public final class GotPlayerAnimator {
             boolean swingingRight = state.attackArm != HumanoidArm.LEFT;
             HumanoidModel.ArmPose swingingPose = swingingRight ? state.rightArmPose : state.leftArmPose;
             if (shouldOverrideArm(swingingPose)) {
-                applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, head, swing, swingingRight, style, comboIndex);
+                applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, head, swing, swingingRight, style, comboIndex, firstPerson);
             }
         }
 
@@ -413,16 +436,24 @@ public final class GotPlayerAnimator {
      * {@link #applyKeyframeSwing} entirely (see that method's doc); the
      * remaining styles keep the pitch/yaw/roll-on-the-striking-arm plus
      * counter-balance/torso-twist/leg-weight-shift approach from before.
+     *
+     * <p>{@code firstPerson} only scales the two lines that touch {@code
+     * body} ({@code swingBodyFollow}/{@code swingBodyPitchSnap}) — the same
+     * "quiet the torso, keep the limb" split used for locomotion/jump (see
+     * {@link #FIRST_PERSON_BODY_SWAY_DAMPEN}'s doc). The striking arm, off-
+     * arm counter-balance, and legs are what you're actually watching swing
+     * the weapon and keep their full amplitude regardless of camera mode.
      */
     private static void applySwing(
             Model model,
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg,
             ModelPart body, ModelPart head,
-            float t, boolean rightSide, GotSwingStyle style, int comboIndex) {
+            float t, boolean rightSide, GotSwingStyle style, int comboIndex,
+            boolean firstPerson) {
 
         if (style == GotSwingStyle.SWORD || style == GotSwingStyle.GREATSWORD || style == GotSwingStyle.AXE) {
-            applyKeyframeSwing(model, body, head, rightArm, leftArm, rightLeg, leftLeg, t, rightSide, style, comboIndex);
+            applyKeyframeSwing(model, body, head, rightArm, leftArm, rightLeg, leftLeg, t, rightSide, style, comboIndex, firstPerson);
             return;
         }
 
@@ -449,8 +480,9 @@ public final class GotPlayerAnimator {
         offArm.xRot -= GotAnimMath.offArmCounterPitch(t);
         offArm.zRot += GotAnimMath.offArmCounterRoll(t, !rightSide);
 
-        body.yRot += GotAnimMath.swingBodyFollow(t, rightSide);
-        body.xRot += GotAnimMath.swingBodyPitchSnap(t);
+        float torsoScale = firstPerson ? FIRST_PERSON_BODY_SWAY_DAMPEN : 1.0F;
+        body.yRot += GotAnimMath.swingBodyFollow(t, rightSide) * torsoScale;
+        body.xRot += GotAnimMath.swingBodyPitchSnap(t) * torsoScale;
 
         swingLeg.xRot += GotAnimMath.swingLegWeightShift(t, rightSide);
         offLeg.xRot -= GotAnimMath.swingLegWeightShift(t, rightSide);
@@ -479,13 +511,26 @@ public final class GotPlayerAnimator {
      * the body's left-right axis and carry over unchanged; yaw/roll
      * (yRot/zRot) and sideways position (x) flip sign — see
      * {@link #mirrorInPlace}/{@link #swapMirrored}.
+     *
+     * <p>{@code firstPerson} dampens {@code body}'s just-sampled clip pose
+     * (both rotation and position — unlike locomotion/jump, this clip's
+     * body channel is a real lunge/lean the arms are meant to travel with,
+     * not just a small sway) by {@link #FIRST_PERSON_BODY_SWAY_DAMPEN}
+     * <i>before</i> {@link #attachToBody} composes it onto the arms/head
+     * below. Since {@code attachToBody} adds the torso's (now quieted)
+     * rotation/position on top of each limb's own already-sampled local
+     * clip motion, this shrinks only the "carried by the torso" portion of
+     * the arm swing — the arm's own authored swing angles are untouched,
+     * the same "quiet the torso, keep the limb" split used for locomotion
+     * and jump.
      */
     private static void applyKeyframeSwing(
             Model model,
             ModelPart body, ModelPart head,
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg,
-            float t, boolean rightSide, GotSwingStyle style, int comboIndex) {
+            float t, boolean rightSide, GotSwingStyle style, int comboIndex,
+            boolean firstPerson) {
 
         AnimationDefinition clip = switch (style) {
             case GREATSWORD -> PlayerAnimations.GREATSWORD_ATTACK;
@@ -507,6 +552,15 @@ public final class GotPlayerAnimator {
         // an artificial window.
         long ms = (long) (t * clip.lengthInSeconds() * 1000.0F);
         baked(clip, model.root()).apply(ms, 1.0F);
+
+        if (firstPerson) {
+            body.xRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+            body.yRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+            body.zRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+            body.x *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+            body.y *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+            body.z *= FIRST_PERSON_BODY_SWAY_DAMPEN;
+        }
 
         // The source rig authors right_arm/left_arm/head as children of
         // the torso, so their keyframes are local to the body's own
