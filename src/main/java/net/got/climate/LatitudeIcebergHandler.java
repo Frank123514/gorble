@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -59,9 +59,9 @@ public final class LatitudeIcebergHandler {
     // within it), same granularity vanilla's iceberg placed-feature uses
     // (a handful of tries per chunk, not a per-block roll).
     private static final ResourceKey<ConfiguredFeature<?, ?>> ICEBERG_PACKED =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.withDefaultNamespace("iceberg_packed"));
+            ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.withDefaultNamespace("iceberg_packed"));
     private static final ResourceKey<ConfiguredFeature<?, ?>> ICEBERG_BLUE =
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.withDefaultNamespace("iceberg_blue"));
+            ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.withDefaultNamespace("iceberg_blue"));
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event) {

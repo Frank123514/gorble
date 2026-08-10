@@ -1,6 +1,6 @@
 package net.got.event.entity.npc.data.name;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 
 /**
@@ -9,17 +9,17 @@ import net.minecraft.util.RandomSource;
  */
 public final class GotSimpleGenderedNameGenerator implements GotNameGenerator {
 
-    private final ResourceLocation maleBank;
-    private final ResourceLocation femaleBank;
+    private final Identifier maleBank;
+    private final Identifier femaleBank;
 
-    public GotSimpleGenderedNameGenerator(ResourceLocation maleBank, ResourceLocation femaleBank) {
+    public GotSimpleGenderedNameGenerator(Identifier maleBank, Identifier femaleBank) {
         this.maleBank = maleBank;
         this.femaleBank = femaleBank;
     }
 
     @Override
     public String generateName(RandomSource rand, boolean male) {
-        ResourceLocation bank = male ? maleBank : femaleBank;
+        Identifier bank = male ? maleBank : femaleBank;
         return GotNameBankManager.INSTANCE.fetchBank(bank).getRandomName(rand);
     }
 }

@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>server → client</b> when a player right-clicks any NPC.
@@ -17,8 +17,8 @@ public record OpenInteractScreenPayload(int entityId, String occupationId,
                                         String npcName, String militaryTitle)
         implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "open_interact_screen");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "open_interact_screen");
 
     public static final Type<OpenInteractScreenPayload> TYPE = new Type<>(ID);
 

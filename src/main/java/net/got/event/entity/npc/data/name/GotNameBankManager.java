@@ -3,7 +3,7 @@ package net.got.event.entity.npc.data.name;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -26,7 +26,7 @@ import java.util.Map;
  * Each JSON file is a flat array of strings: {@code ["Eddard","Robb","Jon"]}
  */
 @EventBusSubscriber(modid = "got")
-public class GotNameBankManager extends SimplePreparableReloadListener<Map<ResourceLocation, GotNameBank>> {
+public class GotNameBankManager extends SimplePreparableReloadListener<Map<Identifier, GotNameBank>> {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = new GsonBuilder().create();
@@ -35,22 +35,22 @@ public class GotNameBankManager extends SimplePreparableReloadListener<Map<Resou
     private static final String SUFFIX = ".json";
 
     public static final GotNameBankManager INSTANCE = new GotNameBankManager();
-    private Map<ResourceLocation, GotNameBank> banks = new HashMap<>();
+    private Map<Identifier, GotNameBank> banks = new HashMap<>();
 
     @SubscribeEvent
     public static void onAddReloadListeners(AddServerReloadListenersEvent event) {
-        event.addListener(ResourceLocation.fromNamespaceAndPath("got", "npc_names"), INSTANCE);
+        event.addListener(Identifier.fromNamespaceAndPath("got", "npc_names"), INSTANCE);
     }
 
     @Override
-    protected Map<ResourceLocation, GotNameBank> prepare(ResourceManager mgr, ProfilerFiller profiler) {
-        Map<ResourceLocation, GotNameBank> result = new HashMap<>();
+    protected Map<Identifier, GotNameBank> prepare(ResourceManager mgr, ProfilerFiller profiler) {
+        Map<Identifier, GotNameBank> result = new HashMap<>();
         mgr.listResources("npc_names", rl -> rl.getPath().endsWith(SUFFIX)).forEach((rl, resource) -> {
             try (var reader = new InputStreamReader(resource.open(), StandardCharsets.UTF_8)) {
                 List<String> names = GSON.fromJson(reader, NAME_LIST_TYPE);
                 // Convert npc_names/got/... path back to got:...
                 String path = rl.getPath().substring(PREFIX.length(), rl.getPath().length() - SUFFIX.length());
-                ResourceLocation bankId = ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), path);
+                Identifier bankId = Identifier.fromNamespaceAndPath(rl.getNamespace(), path);
                 result.put(bankId, new GotNameBank(names));
             } catch (IOException e) {
                 LOGGER.error("Failed to load name bank {}: {}", rl, e.getMessage());
@@ -60,13 +60,13 @@ public class GotNameBankManager extends SimplePreparableReloadListener<Map<Resou
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, GotNameBank> prepared, ResourceManager mgr, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, GotNameBank> prepared, ResourceManager mgr, ProfilerFiller profiler) {
         this.banks = prepared;
         LOGGER.info("Loaded {} GoT NPC name banks", prepared.size());
     }
 
     /** Retrieves a bank by its resource-location key. Falls back to an empty bank if not found. */
-    public GotNameBank fetchBank(ResourceLocation id) {
+    public GotNameBank fetchBank(Identifier id) {
         return banks.getOrDefault(id, new GotNameBank(List.of(id.getPath())));
     }
 }

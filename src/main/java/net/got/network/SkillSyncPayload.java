@@ -4,7 +4,7 @@ import net.got.skill.GotSkill;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public record SkillSyncPayload(
         List<String> unlockedPerkIds
 ) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "skill_sync");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "skill_sync");
 
     public static final Type<SkillSyncPayload> TYPE = new Type<>(ID);
 

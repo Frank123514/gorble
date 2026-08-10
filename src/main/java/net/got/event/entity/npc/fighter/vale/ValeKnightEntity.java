@@ -5,7 +5,7 @@ import net.got.event.entity.npc.smallfolk.ValemanEntity;
 import net.got.event.entity.npc.data.name.GotNameGenerator;
 import net.got.event.entity.npc.data.name.GotNpcNames;
 import net.got.event.entity.npc.fighter.SkilledFighterEntity;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -28,8 +28,8 @@ public class ValeKnightEntity extends SkilledFighterEntity {
             GotSpawnEquipment.of(Items.IRON_SWORD, Items.IRON_SWORD, Items.IRON_AXE);
 
     /** Reuse the regional smallfolk male skins — levies are drawn from the same population. */
-    public static final ResourceLocation[] MALE_TEXTURES   = ValemanEntity.MALE_TEXTURES;
-    public static final ResourceLocation[] FEMALE_TEXTURES = ValemanEntity.MALE_TEXTURES;
+    public static final Identifier[] MALE_TEXTURES   = ValemanEntity.MALE_TEXTURES;
+    public static final Identifier[] FEMALE_TEXTURES = ValemanEntity.MALE_TEXTURES;
 
     public ValeKnightEntity(EntityType<? extends ValeKnightEntity> type, Level level) {
         super(type, level);

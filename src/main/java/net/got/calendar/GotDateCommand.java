@@ -51,7 +51,7 @@ public final class GotDateCommand {
                         .then(Commands.literal("season")
                                 .executes(GotDateCommand::executeSeason)
                                 .then(Commands.literal("set")
-                                        .requires(src -> src.hasPermission(2))
+                                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                                         .then(Commands.argument("season", StringArgumentType.word())
                                                 .suggests((ctx, builder) -> {
                                                     for (GotSeason s : GotSeason.values())
@@ -62,7 +62,7 @@ public final class GotDateCommand {
 
                         // /gotdate set <year> <month> <day>  — op only
                         .then(Commands.literal("set")
-                                .requires(src -> src.hasPermission(2))
+                                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                                 .then(Commands.argument("year",  IntegerArgumentType.integer(1))
                                         .then(Commands.argument("month", IntegerArgumentType.integer(1, 12))
                                                 .then(Commands.argument("day",   IntegerArgumentType.integer(1, 30))
@@ -70,7 +70,7 @@ public final class GotDateCommand {
 
                         // /gotdate skip <days>  — op only
                         .then(Commands.literal("skip")
-                                .requires(src -> src.hasPermission(2))
+                                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                                 .then(Commands.argument("days", IntegerArgumentType.integer(1, 36000))
                                         .executes(GotDateCommand::executeSkip)))
         );

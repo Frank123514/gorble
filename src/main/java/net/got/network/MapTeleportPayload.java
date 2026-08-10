@@ -3,12 +3,12 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public record MapTeleportPayload(int x, int z) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "map_teleport");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "map_teleport");
 
     public static final Type<MapTeleportPayload> TYPE =
             new Type<>(ID);

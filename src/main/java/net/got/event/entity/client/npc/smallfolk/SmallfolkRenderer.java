@@ -7,7 +7,7 @@ import net.got.event.entity.npc.smallfolk.SmallfolkEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Renderer for all Smallfolk NPC tiers.
@@ -26,14 +26,14 @@ import net.minecraft.resources.ResourceLocation;
 public final class SmallfolkRenderer<T extends SmallfolkEntity>
         extends HumanoidMobRenderer<T, SmallfolkRenderState, HumanoidModel<SmallfolkRenderState>> {
 
-    private final ResourceLocation[] maleTextures;
-    private final ResourceLocation[] femaleTextures;
+    private final Identifier[] maleTextures;
+    private final Identifier[] femaleTextures;
 
     private static final float PLAYER_SCALE = 0.9375F;
 
     public SmallfolkRenderer(EntityRendererProvider.Context ctx,
-                             ResourceLocation[] maleTextures,
-                             ResourceLocation[] femaleTextures) {
+                             Identifier[] maleTextures,
+                             Identifier[] femaleTextures) {
         super(ctx,
                 new GotSmallfolkModel(ctx.bakeLayer(GotModelLayers.SMALLFOLK)),
                 PLAYER_SCALE);
@@ -80,7 +80,7 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
     // ── Texture ───────────────────────────────────────────────────────────
 
     @Override
-    public ResourceLocation getTextureLocation(SmallfolkRenderState state) {
+    public Identifier getTextureLocation(SmallfolkRenderState state) {
         return state.texture;
     }
 }

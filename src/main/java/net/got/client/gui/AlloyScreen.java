@@ -7,10 +7,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * AlloyScreen — GUI for the Forge block's alloying mode.
@@ -35,13 +34,13 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
 
     // ── Textures / sprites ────────────────────────────────────────────────────
 
-    private static final ResourceLocation FORGE_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/forge.png");
+    private static final Identifier FORGE_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/forge.png");
 
-    private static final ResourceLocation LIT_SPRITE =
-            ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
-    private static final ResourceLocation ARROW_SPRITE =
-            ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
+    private static final Identifier LIT_SPRITE =
+            Identifier.withDefaultNamespace("container/furnace/lit_progress");
+    private static final Identifier ARROW_SPRITE =
+            Identifier.withDefaultNamespace("container/furnace/burn_progress");
 
     // ── Sprite dimensions ─────────────────────────────────────────────────────
 

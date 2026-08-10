@@ -5,7 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -22,8 +22,8 @@ import java.util.Map;
  */
 public class HotIronIngotModel implements ItemModel {
 
-    private static final ResourceLocation HOT_INGOT_KEY =
-            ResourceLocation.fromNamespaceAndPath("got", "hot_ingot");
+    private static final Identifier HOT_INGOT_KEY =
+            Identifier.fromNamespaceAndPath("got", "hot_ingot");
 
     private final ItemModel normalModel;
     private final ItemModel hotModel;
@@ -49,9 +49,9 @@ public class HotIronIngotModel implements ItemModel {
      * Called from ClientSetup.onModifyBakingResult.
      * Wraps the vanilla iron_ingot ItemModel with our hot-aware version.
      */
-    public static void inject(Map<ResourceLocation, ItemModel> itemStackModels) {
-        ResourceLocation ironKey = ResourceLocation.withDefaultNamespace("iron_ingot");
-        ResourceLocation hotKey  = HOT_INGOT_KEY;
+    public static void inject(Map<Identifier, ItemModel> itemStackModels) {
+        Identifier ironKey = Identifier.withDefaultNamespace("iron_ingot");
+        Identifier hotKey  = HOT_INGOT_KEY;
 
         ItemModel normalModel = itemStackModels.get(ironKey);
         ItemModel hotModel    = itemStackModels.get(hotKey);

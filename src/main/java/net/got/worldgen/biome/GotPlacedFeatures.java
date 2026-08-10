@@ -1,14 +1,13 @@
 package net.got.worldgen.biome;
 
 import net.got.GotMod;
-import net.got.worldgen.biome.GotConfiguredFeatures;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -737,7 +736,7 @@ public final class GotPlacedFeatures {
 
     public static ResourceKey<PlacedFeature> key(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE,
-                ResourceLocation.fromNamespaceAndPath(GotMod.MODID, name));
+                Identifier.fromNamespaceAndPath(GotMod.MODID, name));
     }
 
     private static void register(BootstrapContext<PlacedFeature> ctx,

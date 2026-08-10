@@ -4,7 +4,7 @@ import net.got.climate.GotSeason;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>server → client</b> whenever the season changes, and to each player
@@ -12,8 +12,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record SeasonSyncPayload(GotSeason season) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "season_sync");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "season_sync");
 
     public static final Type<SeasonSyncPayload> TYPE = new Type<>(ID);
 

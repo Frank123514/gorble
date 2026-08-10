@@ -66,7 +66,7 @@ public class TriplePlantBlock extends BushBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state,
                             @Nullable LivingEntity placer, ItemStack stack) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             level.setBlock(pos.above(),  defaultBlockState().setValue(SECTION, 1), Block.UPDATE_ALL);
             level.setBlock(pos.above(2), defaultBlockState().setValue(SECTION, 2), Block.UPDATE_ALL);
         }
@@ -105,7 +105,7 @@ public class TriplePlantBlock extends BushBlock {
 
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             int     section = state.getValue(SECTION);
             BlockPos bottom = switch (section) {
                 case 2 -> pos.below(2);

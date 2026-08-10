@@ -1,7 +1,7 @@
 package net.got.worldgen;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
@@ -23,8 +23,8 @@ public final class BiomemapLoader {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final ResourceLocation BIOMEMAP_LOC =
-            ResourceLocation.fromNamespaceAndPath("got", "worldgen/map/biomemap.png");
+    private static final Identifier BIOMEMAP_LOC =
+            Identifier.fromNamespaceAndPath("got", "worldgen/map/biomemap.png");
 
     /** Number of world blocks represented by one biomemap pixel. */
     public static final int MAP_SCALE = 45;

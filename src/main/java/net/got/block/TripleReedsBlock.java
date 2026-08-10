@@ -64,7 +64,7 @@ public class TripleReedsBlock extends TriplePlantBlock implements SimpleWaterlog
     public void setPlacedBy(Level level, BlockPos pos, BlockState state,
                             @Nullable net.minecraft.world.entity.LivingEntity placer,
                             net.minecraft.world.item.ItemStack stack) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             // Middle/top inherit waterlogged=false; they're above the waterline
             level.setBlock(pos.above(),  defaultBlockState().setValue(SECTION, 1).setValue(WATERLOGGED, false), Block.UPDATE_ALL);
             level.setBlock(pos.above(2), defaultBlockState().setValue(SECTION, 2).setValue(WATERLOGGED, false), Block.UPDATE_ALL);

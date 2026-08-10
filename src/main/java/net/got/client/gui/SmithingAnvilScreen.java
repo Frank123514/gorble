@@ -7,12 +7,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
@@ -25,17 +24,17 @@ import java.util.List;
  */
 public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMenu> {
 
-    private static final ResourceLocation STONECUTTER_TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/gui/container/stonecutter.png");
+    private static final Identifier STONECUTTER_TEXTURE =
+            Identifier.withDefaultNamespace("textures/gui/container/stonecutter.png");
 
-    private static final ResourceLocation RECIPE_SELECTED =
-            ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_selected");
-    private static final ResourceLocation RECIPE_HIGHLIGHTED =
-            ResourceLocation.withDefaultNamespace("container/stonecutter/recipe_highlighted");
-    private static final ResourceLocation SCROLLER =
-            ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED =
-            ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
+    private static final Identifier RECIPE_SELECTED =
+            Identifier.withDefaultNamespace("container/stonecutter/recipe_selected");
+    private static final Identifier RECIPE_HIGHLIGHTED =
+            Identifier.withDefaultNamespace("container/stonecutter/recipe_highlighted");
+    private static final Identifier SCROLLER =
+            Identifier.withDefaultNamespace("container/stonecutter/scroller");
+    private static final Identifier SCROLLER_DISABLED =
+            Identifier.withDefaultNamespace("container/stonecutter/scroller_disabled");
 
     private static final int GRID_X    = 52;
     private static final int GRID_Y    = 14;

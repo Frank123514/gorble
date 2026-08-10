@@ -1,6 +1,5 @@
 package net.got.block;
 
-import net.got.init.GotModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -98,7 +97,7 @@ public class QuagmireBlock extends Block implements SimpleWaterloggedBlock {
         boolean headFullyInside = headY > pos.getY() && headY < pos.getY() + 1.0D;
 
         if (headFullyInside) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 int tickCount = (int) (level.getGameTime() % DAMAGE_TICK_INTERVAL);
 
                 if (livingEntity instanceof Player) {

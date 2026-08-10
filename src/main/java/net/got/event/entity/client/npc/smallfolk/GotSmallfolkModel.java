@@ -5,7 +5,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Unified Smallfolk NPC model containing both male and female geometry.
@@ -20,7 +20,7 @@ public class GotSmallfolkModel extends HumanoidModel<SmallfolkRenderState>
         implements SmallfolkModelParts {
 
     public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("got", "smallfolk"), "main");
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath("got", "smallfolk"), "main");
 
     // ── Female-only parts (not known to HumanoidModel) ─────────────────────
 

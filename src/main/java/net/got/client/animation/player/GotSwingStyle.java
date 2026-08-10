@@ -1,7 +1,7 @@
 package net.got.client.animation.player;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
@@ -53,7 +53,7 @@ public enum GotSwingStyle {
         // #pickaxe / #shovel / #hoe data components instead of dedicated subclasses.
         // Vanilla item tags are the stable way to classify them post-port.
         if (stack.is(ItemTags.SWORDS)) {
-            ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+            Identifier id = BuiltInRegistries.ITEM.getKey(item);
             String path = id.getPath();
             // Greatswords/claymores share the sword tag with regular swords,
             // distinguished only by name (and matching heavier stats) —

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
@@ -39,8 +39,8 @@ public final class GotBiomeTerrainParams {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final ResourceLocation COLORS_LOC =
-            ResourceLocation.fromNamespaceAndPath("got", "worldgen/biomecolors/biome_colors.json");
+    private static final Identifier COLORS_LOC =
+            Identifier.fromNamespaceAndPath("got", "worldgen/biomecolors/biome_colors.json");
 
     /** Sea level used to derive {@link Params#isWater()}. */
     private static final int SEA_LEVEL = GotChunkGenerator.SEA_LEVEL;

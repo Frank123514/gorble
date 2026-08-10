@@ -145,7 +145,7 @@ public class SmithyMenu extends AbstractContainerMenu {
 
     /**
      * Returns all SmithyRecipes that match the current input item,
-     * sorted by their ResourceLocation so ordering is stable on both sides.
+     * sorted by their Identifier so ordering is stable on both sides.
      *
      * Works on both the server (ServerLevel) and the client (ClientLevel),
      * because recipeAccess() is available on the base Level class and recipes

@@ -7,13 +7,13 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class GotBrownBearRenderer
         extends MobRenderer<GotBrownBearEntity, GotBrownBearRenderState, GotBrownBearModel> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_brown_bear.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_brown_bear.png");
 
     private static final float ATTACK_LENGTH_TICKS = 1.2F * 20F;
     private static final float STAND_LENGTH_TICKS  = 1.6667F * 20F;
@@ -103,7 +103,7 @@ public class GotBrownBearRenderer
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GotBrownBearRenderState state) {
+    public Identifier getTextureLocation(GotBrownBearRenderState state) {
         return TEXTURE;
     }
 

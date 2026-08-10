@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent client→server when the player clicks a recipe in the Smithy screen.
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public record SelectSmithyRecipePayload(int recipeIndex) implements CustomPacketPayload {
 
     public static final Type<SelectSmithyRecipePayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath("got", "select_smithy_recipe"));
+            new Type<>(Identifier.fromNamespaceAndPath("got", "select_smithy_recipe"));
 
     public static final StreamCodec<FriendlyByteBuf, SelectSmithyRecipePayload> STREAM_CODEC =
             StreamCodec.of(

@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * GOT Stag — a great red deer stag of the Westerosi forests.
  *
- * <p>Extends {@link Animal} directly (not {@link net.minecraft.world.entity.animal.horse.Horse})
+ * <p>Extends {@link Animal} directly (not {@link net.minecraft.world.entity.animal.equine.Horse})
  * because the stag uses a fully custom geo model ({@code gotdeer.bbmodel}) and its own
  * animation set ({@link net.got.event.entity.client.stag.GotStagAnimations}).  No horse-specific
  * machinery (taming, saddle slots, AbstractHorse data-accessors) is needed or wanted.

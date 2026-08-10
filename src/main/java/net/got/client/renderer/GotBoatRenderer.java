@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.AbstractBoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class GotBoatRenderer extends AbstractBoatRenderer implements GotBoat {
 
-    private final ResourceLocation texture;
+    private final Identifier texture;
     private final EntityModel<BoatRenderState> model;
     private final RenderType renderType;
     private final ModelPart waterPatch;
@@ -19,11 +19,11 @@ public class GotBoatRenderer extends AbstractBoatRenderer implements GotBoat {
     public GotBoatRenderer(EntityRendererProvider.Context ctx, boolean isChestBoat, String woodType) {
         super(ctx);
         this.texture = isChestBoat
-                ? ResourceLocation.fromNamespaceAndPath("got", "textures/entity/chest_boat/" + woodType + ".png")
-                : ResourceLocation.fromNamespaceAndPath("got", "textures/entity/boat/" + woodType + ".png");
+                ? Identifier.fromNamespaceAndPath("got", "textures/entity/chest_boat/" + woodType + ".png")
+                : Identifier.fromNamespaceAndPath("got", "textures/entity/boat/" + woodType + ".png");
 
         ModelLayerLocation layerLocation = new ModelLayerLocation(
-                ResourceLocation.withDefaultNamespace(isChestBoat ? "chest_boat/oak" : "boat/oak"),
+                Identifier.withDefaultNamespace(isChestBoat ? "chest_boat/oak" : "boat/oak"),
                 "main"
         );
 
@@ -39,7 +39,7 @@ public class GotBoatRenderer extends AbstractBoatRenderer implements GotBoat {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BoatRenderState state) {
+    public Identifier getTextureLocation(BoatRenderState state) {
         return this.texture;
     }
 

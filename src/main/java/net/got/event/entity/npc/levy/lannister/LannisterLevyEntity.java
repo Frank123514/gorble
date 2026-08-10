@@ -5,7 +5,7 @@ import net.got.event.entity.npc.data.GotGenderProvider;
 import net.got.event.entity.npc.data.name.GotNameGenerator;
 import net.got.event.entity.npc.data.name.GotNpcNames;
 import net.got.event.entity.npc.levy.LevyEntity;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -20,18 +20,18 @@ public class LannisterLevyEntity extends LevyEntity {
 
     private static final GotSpawnEquipment WEAPONS = GotSpawnEquipment.of(Items.GOLDEN_SWORD, Items.IRON_SWORD);
 
-    private static ResourceLocation[] textures(boolean female) {
+    private static Identifier[] textures(boolean female) {
         String prefix = female ? "female" : "male";
-        ResourceLocation[] arr = new ResourceLocation[16];
+        Identifier[] arr = new Identifier[16];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = ResourceLocation.fromNamespaceAndPath("got",
+            arr[i] = Identifier.fromNamespaceAndPath("got",
                     "textures/entity/npc/smallfolk/westerman/generated/" + prefix + "_" + String.format("%02d", i + 1) + ".png");
         }
         return arr;
     }
 
-    public static final ResourceLocation[] MALE_TEXTURES   = textures(false);
-    public static final ResourceLocation[] FEMALE_TEXTURES = textures(true);
+    public static final Identifier[] MALE_TEXTURES   = textures(false);
+    public static final Identifier[] FEMALE_TEXTURES = textures(true);
 
     public LannisterLevyEntity(EntityType<? extends LannisterLevyEntity> type, Level level) {
         super(type, level);

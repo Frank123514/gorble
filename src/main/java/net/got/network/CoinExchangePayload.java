@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>client → server</b> when the player clicks Break or Combine
@@ -17,8 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 public record CoinExchangePayload(String fromCoinId, boolean toSmaller)
         implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "coin_exchange");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "coin_exchange");
 
     public static final Type<CoinExchangePayload> TYPE = new Type<>(ID);
 

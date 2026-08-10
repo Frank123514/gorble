@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,10 +26,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class GotPlaceholderScreen extends Screen {
 
-    private static final ResourceLocation BOOK_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/book/book_background.png");
-    private static final ResourceLocation WIDGETS_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
+    private static final Identifier BOOK_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/book/book_background.png");
+    private static final Identifier WIDGETS_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
 
     /** Native texture size. Drawn 1:1 — no extra scale factor. Minecraft's
      *  own GUI Scale setting already scales this whole screen uniformly,

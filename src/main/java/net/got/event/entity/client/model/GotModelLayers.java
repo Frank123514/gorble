@@ -1,7 +1,7 @@
 package net.got.event.entity.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Central registry of all GOT entity {@link ModelLayerLocation}s.
@@ -84,6 +84,6 @@ public final class GotModelLayers {
 
     private static ModelLayerLocation location(String name) {
         return new ModelLayerLocation(
-                ResourceLocation.fromNamespaceAndPath("got", name), "main");
+                Identifier.fromNamespaceAndPath("got", name), "main");
     }
 }

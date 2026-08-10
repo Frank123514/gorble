@@ -5,10 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.got.worldgen.SimplexNoise;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -76,8 +75,8 @@ public final class SubbiomeResolver {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final ResourceLocation SUBBIOMES_LOC =
-            ResourceLocation.fromNamespaceAndPath("got", "worldgen/subbiomes/subbiomes.json");
+    private static final Identifier SUBBIOMES_LOC =
+            Identifier.fromNamespaceAndPath("got", "worldgen/subbiomes/subbiomes.json");
 
     /**
      * Spread applied to noise coordinates so each subbiome uses a different

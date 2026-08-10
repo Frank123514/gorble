@@ -2,7 +2,7 @@ package net.got.skill;
 
 import net.got.GotMod;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -25,9 +25,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
  */
 public final class SkillPerkEffects {
 
-    private static final ResourceLocation COMBAT_DAMAGE_MODIFIER =
+    private static final Identifier COMBAT_DAMAGE_MODIFIER =
             GotMod.id("skill_combat_melee_damage");
-    private static final ResourceLocation DEFENSE_ARMOR_MODIFIER =
+    private static final Identifier DEFENSE_ARMOR_MODIFIER =
             GotMod.id("skill_defense_armor_bonus");
 
     /** Sums the magnitude of every unlocked perk of {@code type} within {@code skill}. */
@@ -87,7 +87,7 @@ public final class SkillPerkEffects {
     }
 
     private static void applyPercentModifier(ServerPlayer player, Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute,
-                                             ResourceLocation id, double fraction) {
+                                             Identifier id, double fraction) {
         AttributeInstance instance = player.getAttribute(attribute);
         if (instance == null) return;
         instance.removeModifier(id);
@@ -98,7 +98,7 @@ public final class SkillPerkEffects {
     }
 
     private static void applyFlatModifier(ServerPlayer player, Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute,
-                                          ResourceLocation id, double flat) {
+                                          Identifier id, double flat) {
         AttributeInstance instance = player.getAttribute(attribute);
         if (instance == null) return;
         instance.removeModifier(id);

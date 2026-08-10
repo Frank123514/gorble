@@ -224,7 +224,7 @@ public final class RoadWorldGen {
                 String blockId = palette.get(RANDOM.nextInt(palette.size()));
                 try {
                     return net.minecraft.core.registries.BuiltInRegistries.BLOCK
-                            .getOptional(net.minecraft.resources.ResourceLocation.parse(blockId))
+                            .getOptional(net.minecraft.resources.Identifier.parse(blockId))
                             .map(block -> block.defaultBlockState())
                             .orElse(GRAVEL);
                 } catch (Exception e) {

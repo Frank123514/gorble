@@ -5,7 +5,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -38,15 +38,15 @@ import net.neoforged.neoforge.client.gui.GuiLayer;
 public final class TemperatureHudOverlay implements GuiLayer {
 
     public static final TemperatureHudOverlay INSTANCE = new TemperatureHudOverlay();
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "vitals_hud");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "vitals_hud");
 
-    private static final ResourceLocation POWDER_SNOW_RL =
-            ResourceLocation.fromNamespaceAndPath("minecraft", "textures/misc/powder_snow_outline.png");
+    private static final Identifier POWDER_SNOW_RL =
+            Identifier.fromNamespaceAndPath("minecraft", "textures/misc/powder_snow_outline.png");
 
     /** Thirst droplet sprite — got:textures/gui/thirst_droplet.png (9×10 px). */
-    private static final ResourceLocation THIRST_DROPLET_RL =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/thirst_droplet.png");
+    private static final Identifier THIRST_DROPLET_RL =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/thirst_droplet.png");
 
     // ── Client-side cache ─────────────────────────────────────────────────────
     private static volatile float clientBodyTemp = 0.5f;

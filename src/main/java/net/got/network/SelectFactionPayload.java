@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>client → server</b> when the player presses "Confirm Selection" on
@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record SelectFactionPayload(String factionId) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "select_faction");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "select_faction");
 
     public static final Type<SelectFactionPayload> TYPE = new Type<>(ID);
 

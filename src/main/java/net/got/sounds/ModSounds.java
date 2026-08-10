@@ -3,7 +3,7 @@ package net.got.sounds;
 
 import net.got.GotMod;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -23,7 +23,7 @@ public class ModSounds {
 
     //Helper Method to register the sounds
     private static DeferredHolder<SoundEvent, SoundEvent> registerSoundEvents(String name) {
-        ResourceLocation id = GotMod.id(name);
+        Identifier id = GotMod.id(name);
         return SOUNDS_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
 

@@ -6,7 +6,7 @@ import net.got.event.entity.heron.GotHeronEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Renderer for {@link GotHeronEntity}.
@@ -22,14 +22,14 @@ import net.minecraft.resources.ResourceLocation;
 public class GotHeronRenderer
         extends MobRenderer<GotHeronEntity, GotHeronRenderState, GotHeronModel> {
 
-    private static final ResourceLocation TEXTURE_GREY =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron.png");
-    private static final ResourceLocation TEXTURE_BLUE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_blue.png");
-    private static final ResourceLocation TEXTURE_WHITE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_white.png");
-    private static final ResourceLocation TEXTURE_NIGHT =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_night.png");
+    private static final Identifier TEXTURE_GREY =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_heron.png");
+    private static final Identifier TEXTURE_BLUE =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_blue.png");
+    private static final Identifier TEXTURE_WHITE =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_white.png");
+    private static final Identifier TEXTURE_NIGHT =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_heron_night.png");
 
     public GotHeronRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
@@ -83,7 +83,7 @@ public class GotHeronRenderer
     // ── Texture ───────────────────────────────────────────────────────────────
 
     @Override
-    public ResourceLocation getTextureLocation(GotHeronRenderState state) {
+    public Identifier getTextureLocation(GotHeronRenderState state) {
         return switch (state.variant) {
             case 1  -> TEXTURE_BLUE;
             case 2  -> TEXTURE_WHITE;

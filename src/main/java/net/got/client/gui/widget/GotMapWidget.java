@@ -10,7 +10,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,8 +24,8 @@ public class GotMapWidget extends AbstractWidget {
     /* ======================== CONSTANTS ========================== */
     /* ============================================================= */
 
-    private static final ResourceLocation COMPASS_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/compass_rose.png");
+    private static final Identifier COMPASS_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/map/compass_rose.png");
 
     private static final int CANVAS_BG_COLOR = 0xFF000000;
 
@@ -60,7 +60,7 @@ public class GotMapWidget extends AbstractWidget {
     /* ========================== STATE ============================ */
     /* ============================================================= */
 
-    private final ResourceLocation mapTexture;
+    private final Identifier mapTexture;
     private final int textureWidth;
     private final int textureHeight;
 
@@ -99,7 +99,7 @@ public class GotMapWidget extends AbstractWidget {
     /* ============================================================= */
 
     public GotMapWidget(int x, int y, int width, int height,
-                        ResourceLocation texture,
+                        Identifier texture,
                         int textureWidth, int textureHeight) {
         super(x, y, width, height, Component.empty());
         this.mapTexture    = texture;

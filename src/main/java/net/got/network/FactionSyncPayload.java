@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>server → client</b> to sync the player's faction id, standing value,
@@ -27,8 +27,8 @@ public record FactionSyncPayload(
         String title
 ) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "faction_sync");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "faction_sync");
 
     public static final Type<FactionSyncPayload> TYPE = new Type<>(ID);
 

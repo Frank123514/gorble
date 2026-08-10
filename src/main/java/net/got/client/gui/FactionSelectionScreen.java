@@ -10,9 +10,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -44,8 +43,8 @@ import java.util.*;
 public final class FactionSelectionScreen extends Screen {
 
     // ── Map texture ───────────────────────────────────────────────────────────
-    private static final ResourceLocation MAP_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/known_world.png");
+    private static final Identifier MAP_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/map/known_world.png");
     private static final int MAP_PIXEL_W = 4207;
     private static final int MAP_PIXEL_H = 3277;
 

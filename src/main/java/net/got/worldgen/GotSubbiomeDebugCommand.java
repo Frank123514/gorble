@@ -3,16 +3,14 @@ package net.got.worldgen;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import net.got.GotMod;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
 import java.util.Map;
@@ -91,7 +89,7 @@ public final class GotSubbiomeDebugCommand {
         // 4. What biome does the registry think is here?
         ServerLevel level = (ServerLevel) player.level();
         BlockPos pos = player.blockPosition();
-        ResourceLocation actualBiome = level.registryAccess()
+        Identifier actualBiome = level.registryAccess()
                 .lookupOrThrow(Registries.BIOME)
                 .getKey(level.getBiome(pos).value());
         send(src, "§eActual biome at pos: §f" + actualBiome);
@@ -130,7 +128,7 @@ public final class GotSubbiomeDebugCommand {
         send(src, "§eRegistry check for subbiome biomes:");
         for (List<SubbiomeDef> defs : subMap.values()) {
             for (SubbiomeDef def : defs) {
-                ResourceLocation loc = ResourceLocation.tryParse(def.subbiomeId());
+                Identifier loc = Identifier.tryParse(def.subbiomeId());
                 boolean inRegistry = loc != null && level.registryAccess()
                         .lookupOrThrow(Registries.BIOME)
                         .containsKey(loc);

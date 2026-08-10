@@ -11,10 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -53,10 +52,10 @@ import java.util.Map;
  */
 public final class GotSkillsScreen extends Screen {
 
-    private static final ResourceLocation BOOK_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/book/book_background.png");
-    private static final ResourceLocation WIDGETS_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
+    private static final Identifier BOOK_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/book/book_background.png");
+    private static final Identifier WIDGETS_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
 
     /** Native texture size — see {@link GotPlaceholderScreen} for why this is
      *  drawn 1:1 with no manual scale factor. */

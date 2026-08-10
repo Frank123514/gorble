@@ -3,7 +3,7 @@ package net.got.event.entity.npc.smallfolk;
 import net.got.event.entity.npc.data.GotGenderProvider;
 import net.got.event.entity.npc.data.name.GotNameGenerator;
 import net.got.event.entity.npc.data.name.GotNpcNames;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
@@ -16,15 +16,15 @@ public class RiverlanderEntity extends SmallfolkEntity {
     /** Number of female skin variants. */
     public static final int FEMALE_VARIANT_COUNT = 12;
     /** Male texture variants — riverlander/generated/male_01.png ... male_12.png */
-    public static final ResourceLocation[] MALE_TEXTURES   = textures("riverlander", false, MALE_VARIANT_COUNT);
+    public static final Identifier[] MALE_TEXTURES   = textures("riverlander", false, MALE_VARIANT_COUNT);
     /** Female texture variants — riverlander/generated/female_01.png ... female_12.png */
-    public static final ResourceLocation[] FEMALE_TEXTURES = textures("riverlander", true,  FEMALE_VARIANT_COUNT);
+    public static final Identifier[] FEMALE_TEXTURES = textures("riverlander", true,  FEMALE_VARIANT_COUNT);
 
-    private static ResourceLocation[] textures(String id, boolean female, int count) {
+    private static Identifier[] textures(String id, boolean female, int count) {
         String prefix = female ? "female" : "male";
-        ResourceLocation[] arr = new ResourceLocation[Math.max(1, count)];
+        Identifier[] arr = new Identifier[Math.max(1, count)];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = ResourceLocation.fromNamespaceAndPath("got",
+            arr[i] = Identifier.fromNamespaceAndPath("got",
                     "textures/entity/npc/smallfolk/" + id + "/generated/" + prefix + "_" + String.format("%02d", i + 1) + ".png");
         }
         return arr;

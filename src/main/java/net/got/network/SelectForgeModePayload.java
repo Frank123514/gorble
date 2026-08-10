@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent client→server when the player clicks the mode tab in the Forge GUI
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public record SelectForgeModePayload(int mode) implements CustomPacketPayload {
 
     public static final Type<SelectForgeModePayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath("got", "select_forge_mode"));
+            new Type<>(Identifier.fromNamespaceAndPath("got", "select_forge_mode"));
 
     public static final StreamCodec<FriendlyByteBuf, SelectForgeModePayload> STREAM_CODEC =
             StreamCodec.of(

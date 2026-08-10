@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>client → server</b> when the player clicks a job in
@@ -15,8 +15,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record HireNpcPayload(int entityId, String occupationId) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "hire_npc");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "hire_npc");
 
     public static final Type<HireNpcPayload> TYPE = new Type<>(ID);
 

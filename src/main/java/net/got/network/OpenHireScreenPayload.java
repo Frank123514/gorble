@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>server → client</b> when a player sneak-right-clicks an unemployed
@@ -12,8 +12,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record OpenHireScreenPayload(int entityId) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "open_hire_screen");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "open_hire_screen");
 
     public static final Type<OpenHireScreenPayload> TYPE = new Type<>(ID);
 

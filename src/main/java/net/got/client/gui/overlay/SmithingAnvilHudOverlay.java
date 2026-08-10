@@ -5,7 +5,7 @@ import net.got.network.SmithingAnvilStatePayload;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -22,8 +22,8 @@ import net.neoforged.neoforge.client.gui.GuiLayer;
 public final class SmithingAnvilHudOverlay implements GuiLayer {
 
     public static final SmithingAnvilHudOverlay INSTANCE = new SmithingAnvilHudOverlay();
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "smithing_anvil_hud");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "smithing_anvil_hud");
 
     // ── Client-side state (updated by network packet) ──────────────────────
     private static volatile boolean active       = false;

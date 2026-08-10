@@ -6,7 +6,7 @@ import net.got.event.entity.stag.GotStagEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Renderer for {@link GotStagEntity}.
@@ -28,10 +28,10 @@ import net.minecraft.resources.ResourceLocation;
 public class GotStagRenderer
         extends MobRenderer<GotStagEntity, GotStagRenderState, GotStagModel> {
 
-    private static final ResourceLocation TEXTURE_RED =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_stag.png");
-    private static final ResourceLocation TEXTURE_WHITE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_stag_white.png");
+    private static final Identifier TEXTURE_RED =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_stag.png");
+    private static final Identifier TEXTURE_WHITE =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_stag_white.png");
 
     public GotStagRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
@@ -88,7 +88,7 @@ public class GotStagRenderer
     // ── Texture ───────────────────────────────────────────────────────────────
 
     @Override
-    public ResourceLocation getTextureLocation(GotStagRenderState state) {
+    public Identifier getTextureLocation(GotStagRenderState state) {
         return state.variant == 1 ? TEXTURE_WHITE : TEXTURE_RED;
     }
 

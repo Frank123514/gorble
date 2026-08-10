@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>client → server</b> when the player clicks an unlockable perk node
@@ -16,8 +16,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record UnlockPerkPayload(String perkId) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "unlock_perk");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "unlock_perk");
 
     public static final Type<UnlockPerkPayload> TYPE = new Type<>(ID);
 

@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,11 +19,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GotMapScreen extends Screen {
 
-    private static final ResourceLocation MAP_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/known_world.png");
+    private static final Identifier MAP_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/map/known_world.png");
 
-    private static final ResourceLocation WIDGETS_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
+    private static final Identifier WIDGETS_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/map/widgets.png");
 
     private static final int BUTTON_W = 120;
     private static final int BUTTON_H = 20;

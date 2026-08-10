@@ -6,7 +6,7 @@ import net.got.event.entity.crow.GotCrowEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Renderer for {@link GotCrowEntity}.
@@ -21,8 +21,8 @@ import net.minecraft.resources.ResourceLocation;
 public class GotCrowRenderer
         extends MobRenderer<GotCrowEntity, GotCrowRenderState, GotCrowModel> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/entity/animals/got_crow.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/entity/animals/got_crow.png");
 
     public GotCrowRenderer(EntityRendererProvider.Context ctx) {
         super(ctx,
@@ -73,7 +73,7 @@ public class GotCrowRenderer
     // ── Texture ───────────────────────────────────────────────────────────────
 
     @Override
-    public ResourceLocation getTextureLocation(GotCrowRenderState state) {
+    public Identifier getTextureLocation(GotCrowRenderState state) {
         return TEXTURE;
     }
 

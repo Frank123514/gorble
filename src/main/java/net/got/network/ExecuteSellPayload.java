@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>client → server</b> when the player clicks a sell-offer icon in
@@ -15,8 +15,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record ExecuteSellPayload(int entityId, int offerIndex) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "execute_sell");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "execute_sell");
 
     public static final Type<ExecuteSellPayload> TYPE = new Type<>(ID);
 

@@ -1,6 +1,6 @@
 package net.got.event.entity.npc.data.name;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Central registry of all NPC name generators for the GoT mod.
@@ -23,8 +23,8 @@ public final class GotNpcNames {
                 rl(culture + "_female"));
     }
 
-    private static ResourceLocation rl(String path) {
-        return ResourceLocation.fromNamespaceAndPath("got", path);
+    private static Identifier rl(String path) {
+        return Identifier.fromNamespaceAndPath("got", path);
     }
 
     // ── Tier-1 Smallfolk (civilians) ──────────────────────────────────────────

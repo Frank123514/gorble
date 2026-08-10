@@ -3,7 +3,7 @@ package net.got.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Sent <b>server → client</b> once per second to keep the client's displayed
@@ -15,8 +15,8 @@ import net.minecraft.resources.ResourceLocation;
  */
 public record PlayerTemperaturePayload(float temperature) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath("got", "player_temperature");
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "player_temperature");
 
     public static final Type<PlayerTemperaturePayload> TYPE = new Type<>(ID);
 

@@ -6,9 +6,8 @@ import net.got.menu.HeatTreatingMenu;
 import net.got.network.SelectForgeModePayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
@@ -16,11 +15,11 @@ import java.util.List;
 
 public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu> {
 
-    private static final ResourceLocation HEATING_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("got", "textures/gui/heating.png");
+    private static final Identifier HEATING_TEXTURE =
+            Identifier.fromNamespaceAndPath("got", "textures/gui/heating.png");
 
-    private static final ResourceLocation LIT_SPRITE =
-            ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
+    private static final Identifier LIT_SPRITE =
+            Identifier.withDefaultNamespace("container/furnace/lit_progress");
 
     private static final int FLAME_W = 14;
     private static final int FLAME_H = 14;
