@@ -1,16 +1,6 @@
 {
-  "model": {
-    "type": "minecraft:model",
-    "model": "minecraft:item/template_spawn_egg",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4868682
-      },
-      {
-        "type": "minecraft:constant",
-        "value": 11579568
-      }
-    ]
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "got:item/greyjoy_levy_spawn_egg"
   }
 }

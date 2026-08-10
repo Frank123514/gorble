@@ -72,12 +72,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // hills," not "the whole biome is a bit bumpy."
     private static final double HEIGHT_BLEND_CURVE = 5.0;
 
-    // How many blocks above a river's own base height a neighboring land
-    // pixel is allowed to pull the bicubic patch toward, when interpolating
-    // a river column. Smaller = steeper/closer-to-vertical banks; larger =
-    // softer, more gradually-sloped banks. Tune to taste.
-    private static final float RIVER_BANK_CLAMP = 4f;
-
     // How much of the ramp climb's height gain a ridge "valley" (the saddle
     // between two branches of a mountain's skeleton, where ridgeWeight
     // bottoms out at 0) keeps at minimum. 1.0 would mean ridgeWeight does
@@ -349,12 +343,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         float fx  = cx - ipx;
         float fz  = cz - ipz;
 
-        // This column's own river depth (if it's part of a connected river),
-        // used below to clamp how far neighboring land pixels are allowed
-        // to pull the bicubic patch upward.
-        boolean isRiverColumn = RiverFlowMap.distanceAt(worldX, worldZ) >= 0;
-        float   riverBaseHeight = isRiverColumn ? paramsAt(ipx, ipz).baseHeight() : 0f;
-
         float[] h = new float[16];
         float[] v = new float[16];
 
@@ -485,25 +473,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
                         cellH = MountainSlopemapResolver.FOOT_HEIGHT
                                 + (cellH - MountainSlopemapResolver.FOOT_HEIGHT) * totalFactor;
                     }
-                }
-
-                // Bank steepening: when THIS column is river, cap how high
-                // any non-river neighbor pixel is allowed to pull the curve,
-                // as a final cap after subbiome/mountain blending — those
-                // can pull a land cell's height back up, so capping first
-                // wouldn't reliably hold. Still fully bicubic — river-to-
-                // river cells are untouched, so the channel's own depth
-                // still varies smoothly along its length exactly as before —
-                // this only stops the spline from reaching all the way up
-                // to full (often much higher) land height across the same
-                // neighborhood that's supposed to be a riverbank. The real,
-                // unclamped land height still applies the instant a column
-                // is actually governed by that land pixel instead of the
-                // river one, so the climb from "clamped edge" to "true land
-                // height" compresses into that boundary instead of
-                // spreading across the whole patch.
-                if (isRiverColumn && !p.isWater()) {
-                    cellH = Math.min(cellH, riverBaseHeight + RIVER_BANK_CLAMP);
                 }
 
                 h[row * 4 + col] = cellH;

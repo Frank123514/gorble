@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "got:item/vale_knight_spawn_egg"
+    "layer0": "got:item/got_heron_spawn_egg"
   }
 }

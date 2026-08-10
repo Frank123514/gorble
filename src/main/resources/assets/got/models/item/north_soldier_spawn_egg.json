@@ -1,16 +1,6 @@
 {
-  "model": {
-    "type": "minecraft:model",
-    "model": "minecraft:item/template_spawn_egg",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4344137
-      },
-      {
-        "type": "minecraft:constant",
-        "value": 7437694
-      }
-    ]
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "got:item/north_soldier_spawn_egg"
   }
 }

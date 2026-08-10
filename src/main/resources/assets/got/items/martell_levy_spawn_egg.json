@@ -1,16 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/template_spawn_egg",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 15105570
-      },
-      {
-        "type": "minecraft:constant",
-        "value": 16044095
-      }
-    ]
+    "model": "got:item/martell_levy_spawn_egg"
   }
 }

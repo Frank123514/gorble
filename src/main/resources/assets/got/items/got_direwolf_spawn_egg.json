@@ -1,16 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/template_spawn_egg",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 4210752
-      },
-      {
-        "type": "minecraft:constant",
-        "value": 11711154
-      }
-    ]
+    "model": "got:item/got_direwolf_spawn_egg"
   }
 }

@@ -1,16 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/template_spawn_egg",
-    "tints": [
-      {
-        "type": "minecraft:constant",
-        "value": 13158600
-      },
-      {
-        "type": "minecraft:constant",
-        "value": 13804032
-      }
-    ]
+    "model": "got:item/got_heron_spawn_egg"
   }
 }
