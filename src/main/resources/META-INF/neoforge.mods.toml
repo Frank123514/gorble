@@ -20,26 +20,26 @@ config = "got.mixins.json"
 # End of user code block custom mixins
 
 [[dependencies.got]]
-    modId="neoforge"
-    type="required"
-    versionRange="[21.8,)"
-    ordering="AFTER"
-    side="BOTH"
+modId="neoforge"
+type="required"
+versionRange="[21.11,)"
+ordering="AFTER"
+side="BOTH"
 
 [[dependencies.got]]
-    modId="minecraft"
-    type="required"
-    versionRange="[1.21.8]"
-    ordering="AFTER"
-    side="BOTH"
+modId="minecraft"
+type="required"
+versionRange="[1.21.11]"
+ordering="AFTER"
+side="BOTH"
 
 
 
 # Start of user code block dependencies configuration
 [[dependencies.got]]
-    modId="jei"
-    type="optional"
-    versionRange="[20.0.0,)"
-    ordering="NONE"
-    side="CLIENT"
+modId="jei"
+type="optional"
+versionRange="[20.0.0,)"
+ordering="NONE"
+side="CLIENT"
 # End of user code block dependencies configuration

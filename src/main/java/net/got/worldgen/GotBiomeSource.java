@@ -7,7 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
@@ -91,14 +91,14 @@ public final class GotBiomeSource extends BiomeSource {
     );
 
     private final List<Holder<Biome>>                  biomes;
-    private final Map<ResourceLocation, Holder<Biome>> locationToHolder;
+    private final Map<Identifier, Holder<Biome>> locationToHolder;
     private final Holder<Biome>                        fallback;
 
     public GotBiomeSource(List<Holder<Biome>> biomes) {
         this.biomes = List.copyOf(biomes);
         this.locationToHolder = new HashMap<>(biomes.size() * 2);
         for (Holder<Biome> h : biomes)
-            h.unwrapKey().ifPresent(key -> locationToHolder.put(key.location(), h));
+            h.unwrapKey().ifPresent(key -> locationToHolder.put(key.identifier(), h));
 
         Holder<Biome> fb = locationToHolder.get(GotMod.id("north"));
         if (fb == null) fb = locationToHolder.get(GotMod.id("ocean"));
@@ -212,7 +212,7 @@ public final class GotBiomeSource extends BiomeSource {
             if (subbiome != null) winner = subbiome;
         }
 
-        ResourceLocation loc = ResourceLocation.tryParse(winner);
+        Identifier loc = Identifier.tryParse(winner);
         if (loc == null) return fallback;
         Holder<Biome> h = locationToHolder.get(loc);
         return h != null ? h : fallback;

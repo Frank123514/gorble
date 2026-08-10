@@ -57,7 +57,7 @@ public class GotModTabs {
      * ───────────────────────────────────────────────────────────────────── */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_CARPENTRY =
             REGISTRY.register("got_carpentry", () -> CreativeModeTab.builder()
-                    .withTabsBefore(net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS.location())
+                    .withTabsBefore(net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS.identifier())
                     .title(Component.translatable("itemGroup.got.got_carpentry"))
                     .icon(() -> new ItemStack(GotModBlocks.WEIRWOOD_PLANKS.get()))
                     .displayItems((params, output) -> {

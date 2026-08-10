@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -56,8 +56,8 @@ public final class SlopeSurfaceResolver {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final ResourceLocation SLOPE_RULES_LOC =
-            ResourceLocation.fromNamespaceAndPath("got", "worldgen/slope_rules/slope_rules.json");
+    private static final Identifier SLOPE_RULES_LOC =
+            Identifier.fromNamespaceAndPath("got", "worldgen/slope_rules/slope_rules.json");
 
     /**
      * World-space scale of the threshold-jitter noise in blocks.
@@ -156,7 +156,7 @@ public final class SlopeSurfaceResolver {
 
                 String biomeId = region.getBiome(new BlockPos(wx, surfaceY, wz))
                         .unwrapKey()
-                        .map(k -> k.location().toString())
+                        .map(k -> k.identifier().toString())
                         .orElse("");
 
                 List<SlopeRuleDef> biomeRules = rules.get(biomeId);
@@ -235,7 +235,7 @@ public final class SlopeSurfaceResolver {
                             ? obj.get("jitter").getAsFloat() : 3.0f;
 
                     Block block = BuiltInRegistries.BLOCK
-                            .getOptional(ResourceLocation.parse(blockId))
+                            .getOptional(Identifier.parse(blockId))
                             .orElse(null);
                     if (block == null) {
                         LOGGER.warn("[GoT] slope_rules.json — unknown block '{}' for biome '{}', skipping",

@@ -222,7 +222,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
             loggedBuildSurface = true;
             ChunkPos cp0 = chunk.getPos();
             LOGGER.info("[GoT][DEBUG] GotChunkGenerator.buildSurface: FIRST CALL — dimension={}, chunk=({},{})",
-                    region.getLevel().dimension().location(), cp0.x, cp0.z);
+                    region.getLevel().dimension().identifier(), cp0.x, cp0.z);
         }
 
         vanilla.buildSurface(region, structures, random, chunk);

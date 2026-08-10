@@ -84,7 +84,12 @@ public class QuagmireBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier) {
+    // TODO(port-1.21.11): 1.21.9->1.21.10 primer adds a trailing `boolean` param to
+    // entityInside ("indicating whether the entity is intersecting or inside the block").
+    // Param name/position guessed as `isInside` appended last — verify against the actual
+    // BlockBehaviour#entityInside signature in your IDE/decompiled sources and adjust if the
+    // compiler complains about the override not matching.
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean isInside) {
         if (!(entity instanceof LivingEntity livingEntity)) return;
 
         entity.makeStuckInBlock(state, new Vec3(0.8D, 0.5D, 0.8D));

@@ -35,6 +35,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * <p>remap=false: named/Parchment mappings used directly, see other mixins
  * in this package for why.
  */
+// TODO(port-1.21.11): The 1.21.11 primer reworks swing timing into a new data-component
+// system — `LivingEntity#SWING_DURATION` is replaced by `SwingAnimation#duration`
+// ("not one-to-one"), and items now carry `DataComponents#SWING_ANIMATION`
+// (SwingAnimationType.NONE/WHACK/STAB + a duration) instead of a single hardcoded
+// constant. It's unclear from the primer summary alone whether
+// `LivingEntity#getCurrentSwingDuration()` still exists with the same name/signature, or
+// whether swing length is now read from `ItemStack#getSwingAnimation()` directly. This
+// mixin could not be safely auto-migrated — verify the method still exists post-upgrade;
+// if not, the equivalent behavior (extending sword/greatsword swing length) likely needs
+// to be implemented via a component override (e.g. `DataComponents.SWING_ANIMATION` on
+// the relevant ItemStack) rather than this Inject.
 @Mixin(value = LivingEntity.class, remap = false)
 public abstract class GotSwingDurationMixin {
 
