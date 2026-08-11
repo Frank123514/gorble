@@ -140,7 +140,7 @@ public class GotMammothEntity extends Animal {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             if (attackAnimTicks > 0) {
                 attackAnimTicks--;
                 if (attackAnimTicks == 0) {

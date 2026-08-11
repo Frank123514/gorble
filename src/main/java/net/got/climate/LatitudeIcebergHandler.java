@@ -117,7 +117,7 @@ public final class LatitudeIcebergHandler {
                 .get(featureKey)
                 .orElse(null);
         if (feature == null) {
-            GotMod.LOGGER.warn("[LatitudeIcebergHandler] configured feature not found: {}", featureKey.location());
+            GotMod.LOGGER.warn("[LatitudeIcebergHandler] configured feature not found: {}", featureKey.identifier());
             return;
         }
 
@@ -126,7 +126,7 @@ public final class LatitudeIcebergHandler {
 
         boolean placed = feature.value().place(level, level.getChunkSource().getGenerator(), featureRandom, surfaceWater);
         GotMod.LOGGER.info("[LatitudeIcebergHandler] chunk {} strength={} feature={} placed={}",
-                chunkPos, strength, featureKey.location(), placed);
+                chunkPos, strength, featureKey.identifier(), placed);
     }
 
     private LatitudeIcebergHandler() {}

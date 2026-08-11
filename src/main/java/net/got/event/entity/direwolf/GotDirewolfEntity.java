@@ -145,7 +145,7 @@ public class GotDirewolfEntity extends TamableAnimal {
                     itemstack.shrink(1);
                 }
 
-                if (!this.level().isClientSide) {
+                if (!this.level().isClientSide()) {
                     if (this.random.nextInt(3) == 0) {
                         this.tame(player);
                         this.setTarget(null);
@@ -181,7 +181,7 @@ public class GotDirewolfEntity extends TamableAnimal {
             }
 
             // TOGGLE SIT: empty hand or any non-food item
-            if (!this.level().isClientSide) {
+            if (!this.level().isClientSide()) {
                 this.setOrderedToSit(!this.isOrderedToSit());
                 this.jumping = false;
                 this.navigation.stop();
@@ -198,7 +198,7 @@ public class GotDirewolfEntity extends TamableAnimal {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             if (attackAnimTicks > 0) {
                 attackAnimTicks--;
                 if (attackAnimTicks == 0) setAttacking(false);

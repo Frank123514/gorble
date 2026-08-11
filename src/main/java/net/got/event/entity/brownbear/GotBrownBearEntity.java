@@ -119,7 +119,7 @@ public class GotBrownBearEntity extends Animal {
     public void tick() {
         super.tick();
 
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             // Attack animation hold
             if (attackAnimTicks > 0) {
                 attackAnimTicks--;

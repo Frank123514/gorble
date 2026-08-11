@@ -93,6 +93,7 @@ public abstract class SkilledFighterEntity extends SmallfolkEntity {
         // Always give the horse a saddle so the rider can properly control it.
         horse.setItemSlot(net.minecraft.world.entity.EquipmentSlot.SADDLE,
                 new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.SADDLE));
-        if (serverLevel.tryAddFreshEntityWithPassengers(horse)) startRiding(horse, true);
+        // TODO(port-1.21.11): Mob#startRiding now takes a 3rd boolean param in this NeoForge build — verify semantics.
+        if (serverLevel.tryAddFreshEntityWithPassengers(horse)) startRiding(horse, true, true);
     }
 }

@@ -10,6 +10,12 @@ import net.minecraft.data.worldgen.placement.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
+// TODO(port-1.21.11): AmbientMoodSettings still exists at this package path per the NeoForge 1.21.11
+// primer, but it's no longer set via BiomeSpecialEffects.Builder#ambientMoodSound (removed). It now goes
+// through the new AmbientSounds / EnvironmentAttributes system - see the TODOs below for each biome.
+// Re-add a real usage (or delete this import) once that's wired up.
+import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
@@ -245,12 +251,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(0)
-                        .skyColor(7964853)
                         .grassColorOverride(294167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 0)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7964853)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -291,13 +298,15 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(937679)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_MEADOW))
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
+                // TODO(port-1.21.11): verify BackgroundMusic construction from this sound source
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_MEADOW))
                 .build();
     }
 
@@ -324,11 +333,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -353,13 +363,15 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(0)
-                        .skyColor(7964853)
                         .grassColorOverride(12433480)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_JAGGED_PEAKS))
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 0)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7964853)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
+                // TODO(port-1.21.11): verify BackgroundMusic construction from this sound source
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_JAGGED_PEAKS))
                 .build();
     }
 
@@ -389,11 +401,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(3750089)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8364543)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8364543)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -417,11 +430,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(3750089)
-                        .waterFogColor(329011)
-                        .fogColor(0)
-                        .skyColor(7964853)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 0)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7964853)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -455,12 +469,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4020182)
-                        .waterFogColor(329011)
-                        .fogColor(0)
-                        .skyColor(7964853)
                         .grassColorOverride(294167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 0)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7964853)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -486,12 +501,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233727)
                         .grassColorOverride(294167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8233727)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -527,13 +543,20 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233983)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST))
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8233983)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
+                // TODO(port-1.21.11): ModSounds.WINDY_FOREST is our own mod's SoundEvent. Vanilla's
+                // 1.21.11 OverworldBiomes builds BackgroundMusic directly from a Holder<Music> (see
+                // SoundEvents.MUSIC_BIOME_* usage elsewhere in this file) rather than wrapping a SoundEvent
+                // via Musics.createGameMusic. Confirm whether Musics.createGameMusic(SoundEvent) still
+                // exists in this NeoForge build, or whether ModSounds.WINDY_FOREST needs to become its own
+                // Music registry entry instead.
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST)))
                 .build();
     }
 
@@ -557,11 +580,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -586,14 +610,16 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(3832426)
-                        .waterFogColor(5077600)
-                        .fogColor(12638463)
-                        .skyColor(7907327)
                         .foliageColorOverride(9285927)
                         .grassColorModifier(BiomeSpecialEffects.GrassColorModifier.SWAMP)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_SWAMP))
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 5077600)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7907327)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
+                // TODO(port-1.21.11): verify BackgroundMusic construction from this sound source
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_SWAMP))
                 .build();
     }
 
@@ -620,11 +646,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(3832426)
-                        .waterFogColor(5077600)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 5077600)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -667,12 +694,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(7907327)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7907327)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -705,12 +733,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233727)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8233727)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -737,13 +766,15 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8560639)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_SNOWY_SLOPES))
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8560639)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
+                // TODO(port-1.21.11): verify BackgroundMusic construction from this sound source
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(SoundEvents.MUSIC_BIOME_SNOWY_SLOPES))
                 .build();
     }
 
@@ -784,12 +815,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(7973647)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7973647)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -828,12 +860,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8036351)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8036351)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -860,11 +893,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -890,11 +924,12 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -930,12 +965,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233727)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8233727)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -959,12 +995,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233727)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8233727)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -1006,13 +1043,20 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8233983)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-                        .backgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST))
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8233983)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
+                // TODO(port-1.21.11): ModSounds.WINDY_FOREST is our own mod's SoundEvent. Vanilla's
+                // 1.21.11 OverworldBiomes builds BackgroundMusic directly from a Holder<Music> (see
+                // SoundEvents.MUSIC_BIOME_* usage elsewhere in this file) rather than wrapping a SoundEvent
+                // via Musics.createGameMusic. Confirm whether Musics.createGameMusic(SoundEvent) still
+                // exists in this NeoForge build, or whether ModSounds.WINDY_FOREST needs to become its own
+                // Music registry entry instead.
+                .setAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(Musics.createGameMusic(ModSounds.WINDY_FOREST)))
                 .build();
     }
 
@@ -1051,12 +1095,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(7907327)
                         .grassColorOverride(2391380)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7907327)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -1095,12 +1140,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8036351)
                         .grassColorOverride(3487232)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8036351)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -1139,12 +1185,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(7973647)
                         .grassColorOverride(4539008)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 7973647)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 
@@ -1183,12 +1230,13 @@ public class GotBiomes {
                 .mobSpawnSettings(spawnBuilder.build())
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(4159204)
-                        .waterFogColor(329011)
-                        .fogColor(12638463)
-                        .skyColor(8103167)
                         .grassColorOverride(5658112)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 329011)
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 12638463)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 8103167)
+                // TODO(port-1.21.11): confirm the real EnvironmentAttributes field for ambient cave mood
+                // (was BiomeSpecialEffects.Builder#ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS) pre-1.21.9)
                 .build();
     }
 }

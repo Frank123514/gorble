@@ -73,7 +73,7 @@ public final class GotMod {
 
         NeoForge.EVENT_BUS.register(this);
 
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
             GotClient.init();
         }
 

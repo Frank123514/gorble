@@ -247,7 +247,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     private void setTalking(boolean b) { entityData.set(DATA_TALKING, b); }
 
     public void startTalkingTo(Player player) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             setTalking(true);
             talkTimer = TALK_DURATION;
             talkingPlayer = player;
@@ -258,7 +258,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     }
 
     public void extendTalkTimer(int ticks) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (!isTalking()) setTalking(true);
             if (talkTimer < ticks) talkTimer = ticks;
             getNavigation().stop();
@@ -270,7 +270,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     }
 
     public void stopTalking() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             setTalking(false);
             talkingPlayer = null;
             entityData.set(DATA_DIALOGUE_LINE, "");
@@ -352,7 +352,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             talkAnimations.serverTick();
             if (speechCooldown < Integer.MAX_VALUE) speechCooldown++;
 
@@ -425,7 +425,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
             return super.mobInteract(player, hand);
         }
 
-        if (!level().isClientSide && player instanceof ServerPlayer sp) {
+        if (!level().isClientSide() && player instanceof ServerPlayer sp) {
             String npcName = getNpcName().isEmpty()
                     ? getType().getDescription().getString() : getNpcName();
             String milTitle = isCivilian() ? "" : (getMilitaryTitle() != null ? getMilitaryTitle() : "");

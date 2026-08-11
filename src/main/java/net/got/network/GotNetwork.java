@@ -62,7 +62,7 @@ public final class GotNetwork {
         // ── Open interact screen (S→C) ────────────────────────────────────────
         r.playToClient(OpenInteractScreenPayload.TYPE, OpenInteractScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.client.gui.NpcInteractScreen.open(
                                 payload.entityId(), payload.occupationId(), payload.npcName(), payload.militaryTitle());
                     }
@@ -103,7 +103,7 @@ public final class GotNetwork {
         // ── Open trade screen (S→C) ───────────────────────────────────────────
         r.playToClient(OpenTradeScreenPayload.TYPE, OpenTradeScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.client.gui.NpcTradeScreen.open(
                                 payload.entityId(), payload.occupationId(), payload.npcName());
                     }
@@ -178,7 +178,7 @@ public final class GotNetwork {
         // ── Faction sync (S→C) ───────────────────────────────────────────────
         r.playToClient(FactionSyncPayload.TYPE, FactionSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.client.ClientFactionCache.onSyncReceived(payload);
                     }
                 }));
@@ -186,7 +186,7 @@ public final class GotNetwork {
         // ── Open faction screen (S→C) ─────────────────────────────────────────
         r.playToClient(OpenFactionScreenPayload.TYPE, OpenFactionScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
                         if (mc != null) mc.setScreen(new net.got.client.gui.FactionSelectionScreen());
                     }
@@ -263,7 +263,7 @@ public final class GotNetwork {
         // ── Season sync (S→C) ────────────────────────────────────────────────────
         r.playToClient(SeasonSyncPayload.TYPE, SeasonSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.climate.GotSeason prev = net.got.climate.SeasonCache.get();
                         net.got.climate.SeasonCache.set(payload.season());
                         // Re-render all loaded chunks immediately so foliage colors
@@ -280,7 +280,7 @@ public final class GotNetwork {
         // ── Player temperature sync (S→C) ─────────────────────────────────────
         r.playToClient(PlayerVitalsPayload.TYPE, PlayerVitalsPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.client.gui.overlay.TemperatureHudOverlay
                                 .setClientVitals(payload.bodyTemp(), payload.thirst());
                     }
@@ -289,7 +289,7 @@ public final class GotNetwork {
         // ── Smithing anvil HUD state (S→C) ──────────────────────────────────────
         r.playToClient(SmithingAnvilStatePayload.TYPE, SmithingAnvilStatePayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.client.gui.overlay.SmithingAnvilHudOverlay.onStatePacket(payload);
                     }
                 }));
@@ -297,7 +297,7 @@ public final class GotNetwork {
         // ── Skill sync (S→C) ──────────────────────────────────────────────────
         r.playToClient(SkillSyncPayload.TYPE, SkillSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
-                    if (FMLEnvironment.dist == Dist.CLIENT) {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.client.ClientSkillCache.onSyncReceived(payload);
                     }
                 }));

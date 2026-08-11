@@ -103,7 +103,7 @@ public class NpcTradeMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        if (!player.level().isClientSide) {
+        if (!player.level().isClientSide()) {
             var leftover = sellInput.getItem(0);
             if (!leftover.isEmpty()) {
                 player.getInventory().add(leftover);
