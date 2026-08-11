@@ -176,8 +176,7 @@ public final class SeasonManager extends SavedData {
     public static void onServerStarted(ServerStartedEvent event) {
         ServerLevel overworld = event.getServer().overworld();
         overworld.getGameRules()
-                .getRule(net.minecraft.world.level.GameRules.RULE_SNOW_ACCUMULATION_HEIGHT)
-                .set(8, event.getServer());
+                .set(net.minecraft.world.level.gamerules.GameRules.MAX_SNOW_ACCUMULATION_HEIGHT, 8, event.getServer());
         GotMod.LOGGER.info("[GoT Seasons] snowAccumulationHeight set to 8");
     }
 

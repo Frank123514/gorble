@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.util.Unit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +18,12 @@ import java.util.Map;
  * 1.21.4 {@code EntityModel<T extends EntityRenderState>} type constraint.
  * Animations are driven by {@link AnimationDefinition#bake} + {@link KeyframeAnimation#apply},
  * which is the 1.21.6+ approach used for keyframe animation.
+ *
+ * {@code Model} is generic as of 1.21.9+ ({@code Model<T>}); block entity
+ * models that don't need a dedicated render state use {@link Unit}, the
+ * same pattern vanilla uses for e.g. {@code ShieldModel}.
  */
-public class BellowsModel extends Model {
+public class BellowsModel extends Model<Unit> {
 
     private final ModelPart root;
     private final ModelPart topBoard;

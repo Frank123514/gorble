@@ -75,7 +75,8 @@ public final class RiverCurrentSystem {
                 flow.dx() * CURRENT_STRENGTH,
                 0.0,
                 flow.dz() * CURRENT_STRENGTH));
-        entity.hasImpulse = true;
+        entity.hurtMarked = true;
+        entity.needsSync = true;
     }
 
     /**

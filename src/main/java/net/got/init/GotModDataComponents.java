@@ -22,8 +22,8 @@ public class GotModDataComponents {
      */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> HOT =
             REGISTRY.register("hot", () -> DataComponentType.<Unit>builder()
-                    .persistent(Codec.unit(Unit.INSTANCE))
-                    .networkSynchronized(ByteBufCodecs.fromCodec(Codec.unit(Unit.INSTANCE)))
+                    .persistent(Unit.CODEC)
+                    .networkSynchronized(ByteBufCodecs.fromCodec(Unit.CODEC))
                     .build());
 
     public static void register(IEventBus bus) {

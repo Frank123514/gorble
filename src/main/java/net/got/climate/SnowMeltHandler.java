@@ -54,10 +54,8 @@ public final class SnowMeltHandler {
         float chance = meltChance(season);
         if (chance <= 0f) return;
 
-        // Iterate every ticking chunk and maybe melt one random surface column
-        level.getChunkSource().chunkMap.getChunks().forEach(chunkHolder -> {
-            LevelChunk chunk = chunkHolder.getTickingChunk();
-            if (chunk == null) return;
+        // Iterate every block-ticking chunk and maybe melt one random surface column
+        level.getChunkSource().chunkMap.forEachBlockTickingChunk(chunk -> {
             ChunkPos chunkPos = chunk.getPos();
             if (!level.shouldTickBlocksAt(chunkPos.toLong())) return;
 

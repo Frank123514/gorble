@@ -229,17 +229,17 @@ public class GotSmallfolkModel extends HumanoidModel<SmallfolkRenderState>
             // ── Copy vanilla pose from the (now-hidden) male arms ───────
             //    to the visible female arms so walk / attack / swim / item
             //    animations are preserved.
-            rightArmFemale.copyFrom(rightArm);
-            leftArmFemale.copyFrom(leftArm);
+            rightArmFemale.loadPose(rightArm.storePose());
+            leftArmFemale.loadPose(leftArm.storePose());
 
             // ── Copy sleeve pose (used by skin layer rendering) ─────────
             ModelPart rightSleeveFemale = rightArmFemale.getChild("right_sleeve_female");
             ModelPart leftSleeveFemale  = leftArmFemale.getChild("left_sleeve_female");
             if (rightSleeveFemale != null && rightArm.getChild("right_sleeve") != null) {
-                rightSleeveFemale.copyFrom(rightArm.getChild("right_sleeve"));
+                rightSleeveFemale.loadPose(rightArm.getChild("right_sleeve").storePose());
             }
             if (leftSleeveFemale != null && leftArm.getChild("left_sleeve") != null) {
-                leftSleeveFemale.copyFrom(leftArm.getChild("left_sleeve"));
+                leftSleeveFemale.loadPose(leftArm.getChild("left_sleeve").storePose());
             }
 
         } else {

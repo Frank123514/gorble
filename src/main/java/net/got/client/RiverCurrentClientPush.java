@@ -76,6 +76,7 @@ public final class RiverCurrentClientPush {
                 flow.dx() * RiverCurrentSystem.CURRENT_STRENGTH,
                 0.0,
                 flow.dz() * RiverCurrentSystem.CURRENT_STRENGTH));
-        entity.hasImpulse = true;
+        entity.hurtMarked = true;
+        entity.needsSync = true;
     }
 }
