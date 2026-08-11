@@ -3,9 +3,10 @@ package net.got.event.entity.client.stag;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.got.event.entity.client.model.GotModelLayers;
 import net.got.event.entity.stag.GotStagEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -60,17 +61,19 @@ public class GotStagRenderer
     // ── Animation ─────────────────────────────────────────────────────────────
 
     /**
-     * In 1.21.4+, {@code render} takes {@code (state, poseStack, bufferSource, packedLight)}.
+     * In 1.21.9+, {@code render} was replaced by {@code submit}, which takes
+     * {@code (state, poseStack, collector, cameraState)} and pushes to a
+     * {@link SubmitNodeCollector} instead of drawing directly to a {@code MultiBufferSource}.
      * We apply the animation here so the model's bone transforms are ready before
-     * {@code super.render} calls {@code setupAnim}.
+     * {@code super.submit} calls {@code setupAnim}.
      */
     @Override
-    public void render(GotStagRenderState state,
+    public void submit(GotStagRenderState state,
                        PoseStack poseStack,
-                       MultiBufferSource bufferSource,
-                       int packedLight) {
+                       SubmitNodeCollector collector,
+                       CameraRenderState cameraState) {
         selectAndApplyAnimation(state);
-        super.render(state, poseStack, bufferSource, packedLight);
+        super.submit(state, poseStack, collector, cameraState);
     }
 
     private void selectAndApplyAnimation(GotStagRenderState state) {

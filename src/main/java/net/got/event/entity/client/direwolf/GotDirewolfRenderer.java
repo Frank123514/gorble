@@ -4,9 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.got.event.entity.client.model.GotModelLayers;
 import net.got.event.entity.direwolf.GotDirewolfEntity;
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.Identifier;
 
 public class GotDirewolfRenderer
@@ -48,12 +49,12 @@ public class GotDirewolfRenderer
     }
 
     @Override
-    public void render(GotDirewolfRenderState state,
+    public void submit(GotDirewolfRenderState state,
                        PoseStack poseStack,
-                       MultiBufferSource bufferSource,
-                       int packedLight) {
+                       SubmitNodeCollector collector,
+                       CameraRenderState cameraState) {
         selectAndApplyAnimation(state);
-        super.render(state, poseStack, bufferSource, packedLight);
+        super.submit(state, poseStack, collector, cameraState);
     }
 
     private void selectAndApplyAnimation(GotDirewolfRenderState state) {

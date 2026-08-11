@@ -22,18 +22,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-// NOTE (1.21.9+ rendering rewrite): see BellowsBlockEntityRenderer for background on the
-// extractRenderState()/submit() split. ItemStackRenderState#render was renamed to #submit and now
-// takes a SubmitNodeCollector + outline color instead of a MultiBufferSource - that part is
-// confirmed by the migration primer. The submit() method signature/light-coord source below is
-// my best-effort reconstruction and should be checked against your local NeoForge jar.
 @OnlyIn(Dist.CLIENT)
 public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<SmithingAnvilBlockEntity, SmithingAnvilBlockEntityRenderer.AnvilRenderState> {
 
     private final ItemModelResolver itemModelResolver;
 
     public SmithingAnvilBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.itemModelResolver = ctx.getItemModelResolver();
+        this.itemModelResolver = ctx.itemModelResolver();
     }
 
     public static class AnvilRenderState extends BlockEntityRenderState {
@@ -49,8 +44,8 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
 
     @Override
     public void extractRenderState(SmithingAnvilBlockEntity be, AnvilRenderState state, float partialTick,
-                                    Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+                                   Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderState.extractBase(be, state, crumblingOverlay);
 
         ItemStack input = be.getInputItem();
         ItemStack toRender = input.isEmpty() ? be.getLastCraftedItem() : input;
@@ -72,7 +67,7 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
 
     @Override
     public void submit(AnvilRenderState state, PoseStack poseStack, SubmitNodeCollector collector,
-                        CameraRenderState cameraState) {
+                       CameraRenderState cameraState) {
         if (!state.hasItem || state.itemRenderState.isEmpty()) return;
 
         poseStack.pushPose();
@@ -80,7 +75,14 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
         poseStack.scale(0.75f, 0.75f, 0.75f);
         poseStack.mulPose(Axis.XP.rotationDegrees(90f));
 
-        state.itemRenderState.submit(poseStack, collector, state.aboveLight, state.outlineColor);
+        // NOTE: ItemStackRenderState#submit's exact parameter list could not be verified against your
+        // local jar (the decompiler failed on that class). This follows the confirmed pattern from the
+        // 1.21.9 migration primer ("render -> submit, taking a SubmitNodeCollector instead of a
+        // MultiBufferSource, plus an outline color") applied to the old render(PoseStack, MultiBufferSource,
+        // packedLight, packedOverlay) signature. If this doesn't compile locally, check IntelliJ's
+        // "go to declaration" on ItemStackRenderState#submit and let me know the real parameter list.
+        state.itemRenderState.submit(poseStack, collector, state.aboveLight,
+                net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY, 0);
 
         poseStack.popPose();
     }

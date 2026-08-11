@@ -364,12 +364,7 @@ public class GotMapWidget extends AbstractWidget {
         int drawX = Mth.clamp(rawScreenX - 4, cx1, cx2 - 8);
         int drawY = Mth.clamp(rawScreenY - 4, cy1, cy2 - 8);
 
-        // TODO (1.21.11): PlayerSkin#texture() was removed/renamed and I could not confirm the exact
-        // replacement accessor from documentation alone. Likely candidates to try locally:
-        //   player.getSkin().body().texture()   (if skins now expose a Material per layer)
-        //   player.getSkin().texture(Sheets...) via the new MaterialSet-based lookup
-        // Check net.minecraft.client.resources.PlayerSkin in your local NeoForge jar for the real accessor.
-        gfx.blit(RenderPipelines.GUI_TEXTURED, player.getSkin().texture(),
+        gfx.blit(RenderPipelines.GUI_TEXTURED, player.getSkin().body().texturePath(),
                 drawX, drawY, 8, 8, 8, 8, 64, 64);
     }
 
