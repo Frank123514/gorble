@@ -27,7 +27,13 @@ public final class GotNetwork {
         r.playToServer(MapTeleportPayload.TYPE, MapTeleportPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
-                    if (player == null || !player.hasPermissions(2)) return;
+                    // NOTE (1.21.11 permission overhaul): Player#hasPermissions(int) was removed in
+                    // favor of Player#permissions() returning a PermissionSet, checked against a
+                    // Permission constant. Verify Permissions.COMMANDS_GAMEMASTER is the right
+                    // constant for what used to be level 2 against your local NeoForge jar.
+                    if (player == null
+                            || !player.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER))
+                        return;
                     ServerLevel level = (ServerLevel) player.level();
                     int x = payload.x(), z = payload.z();
 

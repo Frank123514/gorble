@@ -235,15 +235,15 @@ public class NpcTradeScreen extends Screen {
     // ── Input ─────────────────────────────────────────────────────────────────
 
     @Override
-    public boolean mouseClicked(double mx, double my, int btn) {
-        if (btn != 0) return super.mouseClicked(mx, my, btn);
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() != 0) return super.mouseClicked(__event, __doubleClick);
         int px = (width - GUI_W) / 2, py = (height - GUI_H) / 2;
 
         // Tabs
-        if (inRect(mx, my, px + 4, py + TAB_Y, TAB_W, TAB_H)) {
+        if (inRect(__event.x(), __event.y(), px + 4, py + TAB_Y, TAB_W, TAB_H)) {
             tab = 0; scrollY = 0; return true;
         }
-        if (inRect(mx, my, px + 4 + TAB_W + 4, py + TAB_Y, TAB_W, TAB_H)) {
+        if (inRect(__event.x(), __event.y(), px + 4 + TAB_W + 4, py + TAB_Y, TAB_W, TAB_H)) {
             tab = 1; scrollY = 0; return true;
         }
 
@@ -258,7 +258,7 @@ public class NpcTradeScreen extends Screen {
                 if (idx >= offers.size()) break;
                 int cx = px + GRID_X + col * CELL;
                 int cy = py + GRID_Y + (row - scrollY) * CELL;
-                if (inRect(mx, my, cx, cy, CELL - 2, CELL - 2)) {
+                if (inRect(__event.x(), __event.y(), cx, cy, CELL - 2, CELL - 2)) {
                     if (tab == 0) executeBuy(idx);
                     else          executeSell(idx);
                     return true;
@@ -266,7 +266,7 @@ public class NpcTradeScreen extends Screen {
             }
         }
 
-        return super.mouseClicked(mx, my, btn);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     @Override
@@ -280,9 +280,9 @@ public class NpcTradeScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int key, int scan, int mods) {
-        if (key == 256) { onClose(); return true; }
-        return super.keyPressed(key, scan, mods);
+    public boolean keyPressed(net.minecraft.client.input.KeyEvent __event){
+        if (__event.key() == 256) { onClose(); return true; }
+        return super.keyPressed(__event);
     }
 
     @Override

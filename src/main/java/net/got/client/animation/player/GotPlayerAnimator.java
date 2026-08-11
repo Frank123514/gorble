@@ -5,7 +5,7 @@ import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import org.joml.Quaternionf;
@@ -90,7 +90,7 @@ import java.util.WeakHashMap;
  * 1.21.4 Mojang-mapped names. They were written from memory of the
  * render-state refactor and not compiled in this environment (no network
  * access to the NeoForge/Mojang maven repos here) — if the mod fails to
- * compile, {@code PlayerRenderState}/{@code HumanoidRenderState} field
+ * compile, {@code AvatarRenderState}/{@code HumanoidRenderState} field
  * names are the first thing to check against decompiled sources
  * (Mojang mappings via a local Gradle {@code genSources}/IDE decompile).
  * The fields used are: {@code walkAnimationPos}, {@code walkAnimationSpeed},
@@ -157,7 +157,7 @@ public final class GotPlayerAnimator {
 
     public static void apply(
             Model model,
-            PlayerRenderState state,
+            AvatarRenderState state,
             ModelPart body, ModelPart head,
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg) {

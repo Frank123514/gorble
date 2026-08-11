@@ -118,8 +118,8 @@ public class NpcHireScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int btn) {
-        if (btn != 0) return super.mouseClicked(mx, my, btn);
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() != 0) return super.mouseClicked(__event, __doubleClick);
 
         int x = (width  - GUI_W) / 2;
         int y = (height - GUI_H) / 2;
@@ -135,7 +135,7 @@ public class NpcHireScreen extends Screen {
                 int bx = x + PAD_X + col * (BTN_W + GAP);
                 int by = y + 22    + row * (BTN_H + GAP);
 
-                if (mx >= bx && mx < bx + BTN_W && my >= by && my < by + BTN_H) {
+                if (__event.x() >= bx && __event.x() < bx + BTN_W && __event.y() >= by && __event.y() < by + BTN_H) {
                     ClientPacketDistributor.sendToServer(
                             new HireNpcPayload(entityId, JOBS[idx].id));
                     onClose();
@@ -143,7 +143,7 @@ public class NpcHireScreen extends Screen {
                 }
             }
         }
-        return super.mouseClicked(mx, my, btn);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     @Override
@@ -156,9 +156,9 @@ public class NpcHireScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(net.minecraft.client.input.KeyEvent __event){
         // Escape closes
-        if (keyCode == 256) { onClose(); return true; }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        if (__event.key() == 256) { onClose(); return true; }
+        return super.keyPressed(__event);
     }
 }

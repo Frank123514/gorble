@@ -136,7 +136,7 @@ public final class GotCalendar extends SavedData {
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        ServerLevel overworld = player.serverLevel().getServer().overworld();
+        ServerLevel overworld = ((ServerLevel) player.level()).getServer().overworld();
         GotCalendar cal = get(overworld);
         sendDateTitle(player, cal, false);
     }

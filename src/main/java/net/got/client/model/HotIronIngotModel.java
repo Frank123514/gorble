@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,7 @@ public class HotIronIngotModel implements ItemModel {
                        ItemModelResolver resolver,
                        ItemDisplayContext displayContext,
                        @Nullable ClientLevel level,
-                       @Nullable LivingEntity entity,
+                       @Nullable ItemOwner entity,
                        int seed) {
         ItemModel target = stack.has(GotModDataComponents.HOT.get()) ? hotModel : normalModel;
         target.update(renderState, stack, resolver, displayContext, level, entity, seed);

@@ -1,15 +1,21 @@
 package net.got.client.input;
 
 import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 public final class GotKeybinds {
+
+    // 1.21.9+: KeyMapping categories are no longer raw translation-key strings; they must be
+    // registered as a KeyMapping.Category via KeyMapping.Category#register.
+    public static final KeyMapping.Category CATEGORY =
+            KeyMapping.Category.register(Identifier.fromNamespaceAndPath("got", "got"));
 
     public static final KeyMapping OPEN_MAP =
             new KeyMapping(
                     "key.got.open_map",
                     GLFW.GLFW_KEY_M,
-                    "key.categories.got"
+                    CATEGORY
             );
 
     /**
@@ -23,7 +29,7 @@ public final class GotKeybinds {
             new KeyMapping(
                     "key.got.block",
                     GLFW.GLFW_KEY_R,   // default: Q — easy to reach while WASD-moving
-                    "key.categories.got"
+                    CATEGORY
             );
 
     private GotKeybinds() {}

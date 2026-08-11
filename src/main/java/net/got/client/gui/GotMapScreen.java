@@ -128,20 +128,20 @@ public class GotMapScreen extends Screen {
     /* ------------------------------------------------------------------ */
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && mouseX >= btnX && mouseX < btnX + BUTTON_W
-                && mouseY >= btnY && mouseY < btnY + BUTTON_H) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() == 0 && __event.x() >= btnX && __event.x() < btnX + BUTTON_W
+                && __event.y() >= btnY && __event.y() < btnY + BUTTON_H) {
             Minecraft.getInstance().setScreen(new GotMainMenuScreen());
             return true;
         }
-        if (super.mouseClicked(mouseX, mouseY, button)) return true;
-        return mapWidget != null && mapWidget.mouseClicked(mouseX, mouseY, button);
+        if (super.mouseClicked(__event, __doubleClick)) return true;
+        return mapWidget != null && mapWidget.mouseClicked(__event, __doubleClick);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
-        if (super.mouseDragged(mouseX, mouseY, button, dx, dy)) return true;
-        return mapWidget != null && mapWidget.mouseDragged(mouseX, mouseY, button, dx, dy);
+    public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent __event, double dx, double dy){
+        if (super.mouseDragged(__event, dx, dy)) return true;
+        return mapWidget != null && mapWidget.mouseDragged(__event, dx, dy);
     }
 
     @Override
@@ -151,9 +151,9 @@ public class GotMapScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (super.keyPressed(keyCode, scanCode, modifiers)) return true;
-        return mapWidget != null && mapWidget.keyPressed(keyCode, scanCode, modifiers);
+    public boolean keyPressed(net.minecraft.client.input.KeyEvent __event){
+        if (super.keyPressed(__event)) return true;
+        return mapWidget != null && mapWidget.keyPressed(__event);
     }
 
     @Override

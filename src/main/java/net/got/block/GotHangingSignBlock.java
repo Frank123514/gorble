@@ -10,7 +10,7 @@ public class GotHangingSignBlock extends CeilingHangingSignBlock {
         super(woodType, properties
                 .sound(SoundType.HANGING_SIGN)
                 .strength(1f)
-                .noCollission()
+                .noCollision()
                 .ignitedByLava());
     }
 }

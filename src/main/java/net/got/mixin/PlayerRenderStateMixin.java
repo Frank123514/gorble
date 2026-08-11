@@ -2,12 +2,12 @@ package net.got.mixin;
 
 import net.got.client.animation.player.GotAnimatedPlayerState;
 import net.got.client.animation.player.GotSwingStyle;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 /**
- * Merges {@link GotAnimatedPlayerState} onto {@code PlayerRenderState},
+ * Merges {@link GotAnimatedPlayerState} onto {@code AvatarRenderState},
  * storing the extra data our custom player animations need that vanilla
  * doesn't already extract (climbing/airborne progress, swing style).
  *
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Unique;
  * <p>remap=false: named/Parchment mappings used directly, see other mixins
  * in this package for why.
  */
-@Mixin(value = PlayerRenderState.class, remap = false)
+@Mixin(value = AvatarRenderState.class, remap = false)
 public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
 
     @Unique

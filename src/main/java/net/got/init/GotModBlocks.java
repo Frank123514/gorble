@@ -8,14 +8,12 @@ import net.got.block.RegionalRockBlock;
 import net.got.block.RegionalRockPillarBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.PushReaction;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.Registries;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.effect.MobEffects;
 import net.got.block.GotSeedCropBlock;
 import net.got.block.GotShortSeedCropBlock;
 import net.got.block.GotProduceCropBlock;
@@ -23,17 +21,12 @@ import net.got.block.GotBerryBushBlock;
 import net.minecraft.world.item.Item;
 import net.got.block.GotStandingSignBlock;
 import net.got.block.GotWallSignBlock;
-import net.got.block.ReedsBlock;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 import net.got.GotMod;
-import net.got.init.GotTreeGrowers;
-import net.got.init.GotModBlockEntities;
-import net.got.init.GotWoodTypes;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.function.Function;
 
 import static net.minecraft.world.item.Items.registerBlock;
@@ -1766,7 +1759,7 @@ public class GotModBlocks {
     public static final DeferredBlock<Block> STRAWBERRY_CROP   = REGISTRY.registerBlock("strawberry_crop",
             p -> new GotStrawberryCropBlock(p),
             BlockBehaviour.Properties.of()
-                    .noCollission()
+                    .noCollision()
                     .randomTicks()
                     .instabreak()
                     .sound(SoundType.CROP)
@@ -2541,7 +2534,7 @@ public class GotModBlocks {
         return REGISTRY.registerBlock(name,
                 p -> new GotShortSeedCropBlock(seed, p),
                 BlockBehaviour.Properties.of()
-                        .noCollission()
+                        .noCollision()
                         .randomTicks()
                         .instabreak()
                         .sound(SoundType.CROP)
@@ -2572,7 +2565,7 @@ public class GotModBlocks {
         return REGISTRY.registerBlock(name,
                 p -> new GotShortProduceCropBlock(produce, p),
                 BlockBehaviour.Properties.of()
-                        .noCollission()
+                        .noCollision()
                         .randomTicks()
                         .instabreak()
                         .sound(SoundType.CROP)

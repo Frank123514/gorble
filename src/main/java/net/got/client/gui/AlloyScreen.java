@@ -149,9 +149,9 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
-            int mx = (int) mouseX, my = (int) mouseY;
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() == 0) {
+            int mx = (int) __event.x(), my = (int) __event.y();
             int tbx = leftPos + TAB_X, tby = topPos + TAB_Y;
             if (mx >= tbx && mx < tbx + TAB_W && my >= tby && my < tby + TAB_H) {
                 ClientPacketDistributor.sendToServer(
@@ -159,6 +159,6 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(__event, __doubleClick);
     }
 }

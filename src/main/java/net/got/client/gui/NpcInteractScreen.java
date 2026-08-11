@@ -134,9 +134,9 @@ public class NpcInteractScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int key, int scan, int mods) {
-        if (key == 256) { onClose(); return true; }
-        return super.keyPressed(key, scan, mods);
+    public boolean keyPressed(net.minecraft.client.input.KeyEvent __event){
+        if (__event.key() == 256) { onClose(); return true; }
+        return super.keyPressed(__event);
     }
 
     @Override

@@ -304,18 +304,18 @@ public final class GotPlaceholderScreen extends Screen {
     /* ------------------------------------------------------------------ */
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
-            if (isOver(mouseX, mouseY, btnX, btnY, BUTTON_W, BUTTON_H)) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() == 0) {
+            if (isOver(__event.x(), __event.y(), btnX, btnY, BUTTON_W, BUTTON_H)) {
                 Minecraft.getInstance().setScreen(new GotMainMenuScreen());
                 return true;
             }
-            if (resetBtnVisible && isOver(mouseX, mouseY, resetBtnX, resetBtnY, RESET_BTN_W, RESET_BTN_H)) {
+            if (resetBtnVisible && isOver(__event.x(), __event.y(), resetBtnX, resetBtnY, RESET_BTN_W, RESET_BTN_H)) {
                 onResetAffiliation();
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     private boolean isOver(double mx, double my, int bx, int by, int w, int h) {

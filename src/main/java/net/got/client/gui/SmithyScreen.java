@@ -273,11 +273,11 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
     // ── Mouse input ───────────────────────────────────────────────────────────
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
         isDraggingScroller = false;
 
-        if (button == 0) {
-            int mx = (int) mouseX, my = (int) mouseY;
+        if (__event.button() == 0) {
+            int mx = (int) __event.x(), my = (int) __event.y();
 
             int tbx = leftPos + TAB_X, tby = topPos + TAB_Y;
             if (mx >= tbx && mx < tbx + TAB_W && my >= tby && my < tby + TAB_H) {
@@ -307,22 +307,22 @@ public class SmithyScreen extends AbstractContainerScreen<SmithyMenu> {
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (isDraggingScroller && button == 0) {
-            updateScrollFromMouse((int) mouseY);
+    public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent __event, double dragX, double dragY){
+        if (isDraggingScroller && __event.button() == 0) {
+            updateScrollFromMouse((int) __event.y());
             return true;
         }
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(__event, dragX, dragY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent __event){
         if (isDraggingScroller) { isDraggingScroller = false; return true; }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(__event);
     }
 
     @Override

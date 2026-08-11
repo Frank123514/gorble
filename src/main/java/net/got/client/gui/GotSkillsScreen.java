@@ -433,18 +433,18 @@ public final class GotSkillsScreen extends Screen {
     /* ------------------------------------------------------------------ */
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
-            if (isOver(mouseX, mouseY, btnX, btnY, BUTTON_W, BUTTON_H)) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() == 0) {
+            if (isOver(__event.x(), __event.y(), btnX, btnY, BUTTON_W, BUTTON_H)) {
                 Minecraft.getInstance().setScreen(new GotMainMenuScreen());
                 return true;
             }
 
-            if (isOver(mouseX, mouseY, listX, listY, listW, listBottom - listY)) {
-                double docMouseY = mouseY + listScroll;
+            if (isOver(__event.x(), __event.y(), listX, listY, listW, listBottom - listY)) {
+                double docMouseY = __event.y() + listScroll;
                 for (Map.Entry<GotSkill, int[]> entry : skillRowBounds.entrySet()) {
                     int[] b = entry.getValue();
-                    if (isOver(mouseX, docMouseY, b[0] - 2, b[1] - 1, b[2] + 2, b[3])) {
+                    if (isOver(__event.x(), docMouseY, b[0] - 2, b[1] - 1, b[2] + 2, b[3])) {
                         selectSkill(entry.getKey());
                         return true;
                     }
@@ -453,7 +453,7 @@ public final class GotSkillsScreen extends Screen {
 
             if (!perkPages.isEmpty()) {
                 for (PerkRow row : perkPages.get(perkPageIndex)) {
-                    if (isOver(mouseX, mouseY, row.x, row.y, row.w, row.h)) {
+                    if (isOver(__event.x(), __event.y(), row.x, row.y, row.w, row.h)) {
                         if (ClientSkillCache.canUnlock(row.perk)) {
                             ClientPacketDistributor.sendToServer(new UnlockPerkPayload(row.perk.id()));
                         }
@@ -462,7 +462,7 @@ public final class GotSkillsScreen extends Screen {
                 }
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     @Override

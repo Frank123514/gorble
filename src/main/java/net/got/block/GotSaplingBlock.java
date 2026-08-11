@@ -17,7 +17,7 @@ public class GotSaplingBlock extends SaplingBlock {
         super(grower, p
                 .sound(SoundType.GRASS)
                 .strength(0.0f)
-                .noCollission()
+                .noCollision()
                 .noOcclusion()
                 .pushReaction(PushReaction.DESTROY)
                 .instabreak());

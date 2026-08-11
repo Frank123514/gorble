@@ -60,14 +60,14 @@ public class GotIdlePreviewWidget extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (!isMouseOver(mouseX, mouseY)) return false;
-        if (button == 0) { dragging = true; return true; }
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (!isMouseOver(__event.x(), __event.y())) return false;
+        if (__event.button() == 0) { dragging = true; return true; }
         return false;
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+    public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent __event, double dx, double dy){
         if (!dragging) return false;
         previewYaw   += (float) dx * DRAG_SENSITIVITY;
         previewPitch  = Mth.clamp(previewPitch - (float) dy * DRAG_SENSITIVITY, -MAX_PITCH, MAX_PITCH);
@@ -75,7 +75,7 @@ public class GotIdlePreviewWidget extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent __event){
         dragging = false;
         return false;
     }

@@ -150,21 +150,21 @@ public final class GotMainMenuScreen extends Screen {
     /* ------------------------------------------------------------------ */
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (__event.button() == 0) {
             for (int i = 0; i < GotMenuTab.values().length; i++) {
-                if (isOver(mouseX, mouseY, tabX[i], tabRowY, TAB_W, TAB_H)) {
+                if (isOver(__event.x(), __event.y(), tabX[i], tabRowY, TAB_W, TAB_H)) {
                     openTab(GotMenuTab.values()[i]);
                     return true;
                 }
             }
-            if (isOver(mouseX, mouseY, closeBtnX, closeBtnY, CLOSE_W, CLOSE_H)) {
+            if (isOver(__event.x(), __event.y(), closeBtnX, closeBtnY, CLOSE_W, CLOSE_H)) {
                 Minecraft.getInstance().setScreen(null);
                 return true;
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     private boolean isOver(double mx, double my, int bx, int by, int w, int h) {

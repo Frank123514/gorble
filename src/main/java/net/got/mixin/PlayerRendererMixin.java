@@ -8,8 +8,8 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Populates the {@link GotAnimatedPlayerState} fields mixed onto
- * {@code PlayerRenderState} (see {@link PlayerRenderStateMixin}) each time
+ * {@code AvatarRenderState} (see {@link PlayerRenderStateMixin}) each time
  * the renderer pulls a fresh snapshot from the live {@code AbstractClientPlayer}.
  *
  * <p>This is the only place in the whole custom-animation system that
@@ -30,18 +30,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * meant to be used.
  *
  * <p><b>Confirmed at runtime (1.21.4):</b> {@code extractRenderState} is
- * {@code void (AbstractClientPlayer, PlayerRenderState, float)} — it mutates
+ * {@code void (AbstractClientPlayer, AvatarRenderState, float)} — it mutates
  * the reused state in place rather than returning it, hence the plain
  * {@link CallbackInfo} here (an earlier draft assumed a returned value and
  * used {@code CallbackInfoReturnable}, which Mixin rejected at launch with
  * an "Invalid descriptor" error).
  */
-@Mixin(value = PlayerRenderer.class, remap = false)
+@Mixin(value = AvatarRenderer.class, remap = false)
 public abstract class PlayerRendererMixin {
 
     @Inject(method = "extractRenderState", at = @At("RETURN"), remap = false)
     private void got_extractCustomAnimState(
-            AbstractClientPlayer player, PlayerRenderState state, float partialTick,
+            AbstractClientPlayer player, AvatarRenderState state, float partialTick,
             CallbackInfo ci) {
 
         GotAnimatedPlayerState anim = (GotAnimatedPlayerState) state;
@@ -73,7 +73,7 @@ public abstract class PlayerRendererMixin {
         // Local player's own model, camera currently first-person, AND
         // this extractRenderState call is happening inside
         // LevelRendererMixin's forced world-render (not the inventory
-        // screen's player preview or any other PlayerRenderer use that
+        // screen's player preview or any other AvatarRenderer use that
         // also targets mc.player while the camera option still reads
         // FIRST_PERSON — see GotFirstPersonRenderState's doc). The one
         // case LevelRendererMixin makes render at all instead of being

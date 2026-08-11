@@ -29,7 +29,9 @@ public final class GotSubbiomeDebugCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("gotsubdebug")
-                        .requires(src -> src.hasPermission(2))
+                        // NOTE (1.21.11 permission overhaul): see GotMapCommand for details -
+                        // CommandSourceStack#hasPermission(int) was replaced with PermissionCheck objects.
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 
                         // /gotsubdebug  — report at current position
                         .executes(GotSubbiomeDebugCommand::executeReport)

@@ -364,6 +364,11 @@ public class GotMapWidget extends AbstractWidget {
         int drawX = Mth.clamp(rawScreenX - 4, cx1, cx2 - 8);
         int drawY = Mth.clamp(rawScreenY - 4, cy1, cy2 - 8);
 
+        // TODO (1.21.11): PlayerSkin#texture() was removed/renamed and I could not confirm the exact
+        // replacement accessor from documentation alone. Likely candidates to try locally:
+        //   player.getSkin().body().texture()   (if skins now expose a Material per layer)
+        //   player.getSkin().texture(Sheets...) via the new MaterialSet-based lookup
+        // Check net.minecraft.client.resources.PlayerSkin in your local NeoForge jar for the real accessor.
         gfx.blit(RenderPipelines.GUI_TEXTURED, player.getSkin().texture(),
                 drawX, drawY, 8, 8, 8, 8, 64, 64);
     }
@@ -407,15 +412,15 @@ public class GotMapWidget extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (!isMouseOver(mouseX, mouseY)) return false;
-        if (button == 0) { dragging = true; return true; }
-        if (button == 1) { teleportTo(mouseX, mouseY); return true; }
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
+        if (!isMouseOver(__event.x(), __event.y())) return false;
+        if (__event.button() == 0) { dragging = true; return true; }
+        if (__event.button() == 1) { teleportTo(__event.x(), __event.y()); return true; }
         return false;
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+    public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent __event, double dx, double dy){
         if (!dragging) return false;
         // Shift anchor in map-space for instant direct-feel panning
         anchorMapX -= dx / zoom;
@@ -427,7 +432,7 @@ public class GotMapWidget extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent __event){
         dragging = false; return false;
     }
 
@@ -452,7 +457,13 @@ public class GotMapWidget extends AbstractWidget {
 
     private void teleportTo(double mouseX, double mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || !mc.player.hasPermissions(2)) return;
+        // NOTE (1.21.11 permission overhaul): Player#hasPermissions(int) was removed in favor of
+        // Player#permissions() returning a PermissionSet, checked against a Permission constant.
+        // net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER corresponds to the old level-2 check.
+        // Verify the exact constant name against your local NeoForge jar.
+        if (mc.player == null
+                || !mc.player.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER))
+            return;
         double localX = (mouseX - getX() + panX) / zoom;
         double localY = (mouseY - getY() + panY) / zoom;
         int blockX = (int) (localX * BLOCKS_PER_PIXEL - WORLD_WIDTH_BLOCKS  / 2.0);

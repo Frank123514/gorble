@@ -168,11 +168,11 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
     // ── Mouse input ───────────────────────────────────────────────────────────
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
         isDraggingScroller = false;
 
-        if (button == 0) {
-            int mx = (int) mouseX, my = (int) mouseY;
+        if (__event.button() == 0) {
+            int mx = (int) __event.x(), my = (int) __event.y();
 
             int gx = leftPos + GRID_X, gy = topPos + GRID_Y;
             if (mx >= gx && mx < gx + GRID_W && my >= gy && my < gy + GRID_H) {
@@ -193,22 +193,22 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(__event, __doubleClick);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (isDraggingScroller && button == 0) {
-            updateScrollFromMouse((int) mouseY);
+    public boolean mouseDragged(net.minecraft.client.input.MouseButtonEvent __event, double dragX, double dragY){
+        if (isDraggingScroller && __event.button() == 0) {
+            updateScrollFromMouse((int) __event.y());
             return true;
         }
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(__event, dragX, dragY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(net.minecraft.client.input.MouseButtonEvent __event){
         if (isDraggingScroller) { isDraggingScroller = false; return true; }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(__event);
     }
 
     @Override

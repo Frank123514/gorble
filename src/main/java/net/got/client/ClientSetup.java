@@ -118,8 +118,8 @@ public final class ClientSetup {
             // copied from vanilla's grass_block model. That texture has transparent
             // pixels and needs a cutout render layer, same as vanilla grass_block;
             // without it, the transparent areas render as solid black.
-            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.GRASS_BLOCK_SLAB.get(),   ChunkSectionLayer.CUTOUT_MIPPED);
-            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.GRASS_BLOCK_STAIRS.get(), ChunkSectionLayer.CUTOUT_MIPPED);
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.GRASS_BLOCK_SLAB.get(),   ChunkSectionLayer.CUTOUT /* was CUTOUT_MIPPED, removed in 1.21.11 - mipmapping is now per-texture metadata */);
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.GRASS_BLOCK_STAIRS.get(), ChunkSectionLayer.CUTOUT /* was CUTOUT_MIPPED, removed in 1.21.11 - mipmapping is now per-texture metadata */);
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(GotModBlocks.DIRT_PATH_SLAB.get(),     ChunkSectionLayer.CUTOUT);
 
             // ── Doors ────────────────────────────────────────────────────

@@ -3,7 +3,7 @@ package net.got.client.renderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.AbstractBoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
@@ -29,7 +29,8 @@ public class GotBoatRenderer extends AbstractBoatRenderer implements GotBoat {
 
         ModelPart root = ctx.bakeLayer(layerLocation);
 
-        net.minecraft.client.model.BoatModel boatModel = new net.minecraft.client.model.BoatModel(root);
+        // 1.21.11 rename shuffle: net.minecraft.client.model.BoatModel -> .model.object.boat.BoatModel
+        net.minecraft.client.model.object.boat.BoatModel boatModel = new net.minecraft.client.model.object.boat.BoatModel(root);
         this.model = boatModel;
         this.renderType = this.model.renderType(this.texture);
 
