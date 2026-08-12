@@ -1,22 +1,21 @@
 package net.got.mixin;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.got.client.animation.player.GotFirstPersonRenderState;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.entity.Pose;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Makes the local player's own entity actually get rendered while the
@@ -25,15 +24,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * their own {@code PlayerRenderer} body) — the same behavior mods like
  * "First Person Model" / "Not Enough Animations" provide.
  *
- * <p>Vanilla's entity-culling pass, {@code LevelRenderer.collectVisibleEntities},
- * only includes the camera entity itself when {@link Camera#isDetached()}
- * is true (i.e. third person / spectator-detached) — confirmed by
- * disassembling this project's own {@code LevelRenderer.class} (1.21.4 /
- * NeoForge 21.4.147): {@code isDetached()} is called exactly once in that
- * class, from inside {@code collectVisibleEntities(Camera, Frustum, List)}.
- * This redirects that one call site so it also reports {@code true}
- * whenever the camera is first-person, letting the local player fall
- * through the same render path every other player already takes.
+ * <p>Vanilla's entity-culling pass now lives inline inside
+ * {@code LevelRenderer.extractVisibleEntities(Camera, Frustum, DeltaTracker,
+ * LevelRenderState)} — confirmed by decompiling this project's own
+ * {@code LevelRenderer.class} (1.21.11 / NeoForge 21.11.45), which no
+ * longer has a standalone {@code collectVisibleEntities} method at all
+ * (that logic, and the {@link Camera#isDetached()} check gating whether the
+ * camera's own entity is included, got folded directly into
+ * {@code extractVisibleEntities}'s loop body). This redirects that same
+ * {@code isDetached()} call site so it also reports {@code true} whenever
+ * the camera is first-person, letting the local player fall through the
+ * same render path every other player already takes.
  * {@code PlayerModelMixin} then hides the head/hat cubes for that one
  * render via {@code GotAnimatedPlayerState#got$isLocalFirstPerson}, which
  * is itself gated on {@link GotFirstPersonRenderState} being set true for
@@ -49,16 +50,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * look-down-and-see-your-own-body view "First Person Model" produces (see
  * that mod's own {@code LogicHandler#updatePositionOffset} /
  * {@code WorldRendererMixin}). {@code got_applyRenderOffset}/{@code
- * got_restoreRenderOffset} below reproduce that trick: for the one frame
- * the local player is rendered, its raw position (via
- * {@link EntityPositionAccessor}) and interpolation fields
- * ({@code xo}/{@code yo}/{@code zo}/{@code xOld}/{@code yOld}/{@code zOld})
- * are nudged a short distance out along the body's own facing direction
- * before the render call, then restored immediately after — so the model
- * renders slightly ahead of where the camera actually is instead of
- * centered on it, exactly the way {@code renderEntity} is called once per
- * visible entity each frame in this MC version (see the {@code renderEntity}
- * shadow signature this targets below).
+ * got_restoreRenderOffset} below reproduce that trick, but now hook
+ * {@code LevelRenderer.extractEntity(Entity, float)} instead of a
+ * per-entity {@code renderEntity} draw call — that method no longer exists
+ * in 1.21.11. Rendering was split into an extract phase (builds an
+ * immutable {@code EntityRenderState} with position already baked in) and
+ * a separate submit phase that only reads {@code x}/{@code y}/{@code z}
+ * off that state, so this is the last point the entity's live position can
+ * still be nudged before it's captured. For the one frame the local player
+ * is extracted, its raw position (via {@link EntityPositionAccessor}) and
+ * interpolation fields ({@code xo}/{@code yo}/{@code zo}/{@code xOld}/
+ * {@code yOld}/{@code zOld}) are nudged a short distance out along the
+ * body's own facing direction before extraction, then restored
+ * immediately after.
  */
 @Mixin(value = LevelRenderer.class, remap = false)
 public abstract class LevelRendererMixin {
@@ -80,7 +84,7 @@ public abstract class LevelRendererMixin {
     private boolean got$offsetApplied;
 
     @Redirect(
-            method = "collectVisibleEntities(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;Ljava/util/List;)Z",
+            method = "extractVisibleEntities(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;Lnet/minecraft/client/DeltaTracker;Lnet/minecraft/client/renderer/state/LevelRenderState;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;isDetached()Z")
     )
     private boolean got_forceRenderLocalPlayerBody(Camera camera) {
@@ -91,21 +95,17 @@ public abstract class LevelRendererMixin {
     }
 
     /**
-     * {@code renderEntity} is the per-entity draw call {@code renderLevel}
-     * invokes once for every entity {@code collectVisibleEntities} decided
-     * was visible — including, now, the local player in first person. Only
-     * that one case is touched here; every other entity (other players,
-     * mobs, etc.) passes straight through untouched.
-     *
-     * <p><b>Verification note:</b> written from memory of the 1.21.4
-     * render-entity signature, matching this project's other mixins'
-     * verification caveats — confirm against a decompile of
-     * {@code LevelRenderer} if Mixin fails to locate this method.
+     * {@code extractEntity} is called once per visible entity from
+     * {@code extractVisibleEntities} to build that entity's
+     * {@code EntityRenderState} — including, now, the local player in
+     * first person. Position is baked into the returned state here and
+     * never revisited, so this is the last point the nudge can happen.
+     * Only the local-first-person case is touched; every other entity
+     * (other players, mobs, etc.) passes straight through untouched.
      */
-    @Inject(method = "renderEntity(Lnet/minecraft/world/entity/Entity;DDDFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V",
+    @Inject(method = "extractEntity(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;",
             at = @At("HEAD"))
-    private void got_applyRenderOffset(Entity entity, double camX, double camY, double camZ,
-                                       float tickDelta, PoseStack poseStack, MultiBufferSource bufferSource, CallbackInfo ci) {
+    private void got_applyRenderOffset(Entity entity, float partialTick, CallbackInfoReturnable<EntityRenderState> cir) {
         got$offsetApplied = false;
 
         Minecraft mc = Minecraft.getInstance();
@@ -121,7 +121,7 @@ public abstract class LevelRendererMixin {
             return;
         }
 
-        float realYaw = Mth.rotLerp(tickDelta, living.yBodyRotO, living.yBodyRot);
+        float realYaw = Mth.rotLerp(partialTick, living.yBodyRotO, living.yBodyRot);
         float renderOffset = (living.isCrouching() || living.getPose() == Pose.CROUCHING)
                 ? GOT_SNEAK_RENDER_OFFSET
                 : GOT_STANDING_RENDER_OFFSET;
@@ -143,10 +143,9 @@ public abstract class LevelRendererMixin {
         entity.zOld += got$offsetZ;
     }
 
-    @Inject(method = "renderEntity(Lnet/minecraft/world/entity/Entity;DDDFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V",
+    @Inject(method = "extractEntity(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;",
             at = @At("RETURN"))
-    private void got_restoreRenderOffset(Entity entity, double camX, double camY, double camZ,
-                                         float tickDelta, PoseStack poseStack, MultiBufferSource bufferSource, CallbackInfo ci) {
+    private void got_restoreRenderOffset(Entity entity, float partialTick, CallbackInfoReturnable<EntityRenderState> cir) {
         GotFirstPersonRenderState.setRenderingLocalBody(false);
 
         if (!got$offsetApplied) {

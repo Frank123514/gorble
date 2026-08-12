@@ -5,7 +5,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,12 +47,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * recomputes the head pose, so this is always reading last frame's value.
  * Not perceptible for a smooth continuous curve at normal framerates.
  *
- * <p><b>Verification note:</b> {@code setup}'s signature below and the
- * shadowed {@code getPosition}/{@code setPosition}/{@code getYRot} methods
- * are written from memory of the vanilla {@code Camera} class (confirmed
- * against public NeoForge 1.21 javadocs, not a local decompile) — if Mixin
- * fails to locate any of these at launch, confirm against a decompile of
- * {@code Camera.class} the same way this project's other mixins note doing.
+ * <p><b>Confirmed against the official 1.21.11 Mojang mappings:</b> two of
+ * the three shadowed accessors were renamed from their 1.21.4 names —
+ * {@code getPosition()} is now {@code position()} and {@code getYRot()} is
+ * now {@code yRot()}. {@code setPosition(double, double, double)} is
+ * unchanged. {@code setup}'s method name is unchanged, but its first
+ * parameter is {@code Level}, not {@code BlockGetter} — the actual runtime
+ * type was always {@code Level} (an earlier draft loosened it to the
+ * {@code BlockGetter} interface Level implements, which doesn't match the
+ * real erased descriptor Mixin matches against).
  */
 @Mixin(value = Camera.class, remap = false)
 public abstract class CameraMixin {
@@ -61,17 +64,17 @@ public abstract class CameraMixin {
     private static final float GOT_MODEL_UNITS_PER_BLOCK = 16.0F;
 
     @Shadow
-    public abstract Vec3 getPosition();
+    public abstract Vec3 position();
 
     @Shadow
     protected abstract void setPosition(double x, double y, double z);
 
     @Shadow
-    public abstract float getYRot();
+    public abstract float yRot();
 
-    @Inject(method = "setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V",
+    @Inject(method = "setup(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;ZZF)V",
             at = @At("TAIL"), remap = false)
-    private void got_applyHeadBobToCamera(BlockGetter level, Entity entity, boolean detached,
+    private void got_applyHeadBobToCamera(Level level, Entity entity, boolean detached,
                                           boolean thirdPersonMirrored, float partialTick, CallbackInfo ci) {
         if (detached) {
             return;
@@ -91,7 +94,7 @@ public abstract class CameraMixin {
         // Local +X (character's own left) rotated into world space by the
         // camera's current yaw, matching the same sin/cos-from-yaw pattern
         // LevelRendererMixin's own render-offset push already uses.
-        double yawRadians = Math.toRadians(getYRot());
+        double yawRadians = Math.toRadians(yRot());
         double leftBlocks = bobX / GOT_MODEL_UNITS_PER_BLOCK;
         double leftWorldX = -Math.cos(yawRadians) * leftBlocks;
         double leftWorldZ = -Math.sin(yawRadians) * leftBlocks;
@@ -99,7 +102,7 @@ public abstract class CameraMixin {
         // Model Y is down-positive, so world-up is the negation.
         double upWorldY = -(bobY / GOT_MODEL_UNITS_PER_BLOCK);
 
-        Vec3 pos = getPosition();
+        Vec3 pos = position();
         setPosition(pos.x + leftWorldX, pos.y + upWorldY, pos.z + leftWorldZ);
     }
 }

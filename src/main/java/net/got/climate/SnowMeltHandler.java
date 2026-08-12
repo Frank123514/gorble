@@ -2,6 +2,7 @@ package net.got.climate;
 
 import net.got.GotMod;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
@@ -54,12 +55,19 @@ public final class SnowMeltHandler {
         float chance = meltChance(season);
         if (chance <= 0f) return;
 
-        // Iterate every block-ticking chunk and maybe melt one random surface column
-        level.getChunkSource().chunkMap.forEachBlockTickingChunk(chunk -> {
-            ChunkPos chunkPos = chunk.getPos();
-            if (!level.shouldTickBlocksAt(chunkPos.toLong())) return;
+        // Iterate every block-ticking chunk and maybe melt one random surface column.
+        // ChunkMap#forEachBlockTickingChunk is package-private in 1.21.11, so
+        // instead we walk visibleChunkMap directly (already made public via our
+        // own accesstransformer.cfg) and pull each holder's ticking chunk
+        // (null if that particular chunk isn't currently block-ticking).
+        for (ChunkHolder holder : level.getChunkSource().chunkMap.visibleChunkMap.values()) {
+            LevelChunk chunk = holder.getTickingChunk();
+            if (chunk == null) continue;
 
-            if (level.random.nextFloat() >= chance) return;
+            ChunkPos chunkPos = chunk.getPos();
+            if (!level.shouldTickBlocksAt(chunkPos.toLong())) continue;
+
+            if (level.random.nextFloat() >= chance) continue;
 
             int minX = chunkPos.getMinBlockX();
             int minZ = chunkPos.getMinBlockZ();
@@ -91,7 +99,7 @@ public final class SnowMeltHandler {
                     ((IceBlock) Blocks.ICE).melt(groundState, level, surfaceGround);
                 }
             }
-        });
+        }
     }
 
     /**

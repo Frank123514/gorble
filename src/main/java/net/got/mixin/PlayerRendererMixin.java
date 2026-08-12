@@ -11,6 +11,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,21 +30,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * keeps us aligned with how the rest of vanilla's render-state pipeline is
  * meant to be used.
  *
- * <p><b>Confirmed at runtime (1.21.4):</b> {@code extractRenderState} is
- * {@code void (AbstractClientPlayer, AvatarRenderState, float)} — it mutates
- * the reused state in place rather than returning it, hence the plain
- * {@link CallbackInfo} here (an earlier draft assumed a returned value and
- * used {@code CallbackInfoReturnable}, which Mixin rejected at launch with
- * an "Invalid descriptor" error).
+ * <p><b>1.21.11 signature change:</b> {@code AvatarRenderer} is now generic
+ * over {@code T extends Avatar} (a new player-avatar abstraction), so
+ * {@code extractRenderState}'s erased/bytecode parameter type is
+ * {@code net.minecraft.world.entity.Avatar}, not {@code AbstractClientPlayer}
+ * — confirmed directly from Mixin's own "Invalid descriptor" error at launch,
+ * which reports the exact expected descriptor. The only concrete renderer
+ * registered for actual client players still only ever receives real
+ * {@code AbstractClientPlayer} instances here, so the parameter is declared
+ * as {@code Avatar} to satisfy the descriptor match and immediately cast
+ * back to {@code AbstractClientPlayer} for the rest of the method, which is
+ * otherwise unchanged from 1.21.4. Still {@code void}/plain
+ * {@link CallbackInfo} — {@code extractRenderState} mutates the reused
+ * state in place rather than returning it.
  */
 @Mixin(value = AvatarRenderer.class, remap = false)
 public abstract class PlayerRendererMixin {
 
     @Inject(method = "extractRenderState", at = @At("RETURN"), remap = false)
     private void got_extractCustomAnimState(
-            AbstractClientPlayer player, AvatarRenderState state, float partialTick,
+            Avatar entity, AvatarRenderState state, float partialTick,
             CallbackInfo ci) {
 
+        AbstractClientPlayer player = (AbstractClientPlayer) entity;
         GotAnimatedPlayerState anim = (GotAnimatedPlayerState) state;
 
         float climbTarget = player.onClimbable() ? 1.0F : 0.0F;
