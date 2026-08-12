@@ -10,22 +10,29 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Stretches the vanilla arm-swing duration for sword/greatsword swings so
- * the elaborate keyframe-ported attack animations in {@code GotAnimMath}
- * (the {@code sword1}/{@code sword2}/{@code greatsword} keyframe tables,
- * authored as ~1.05-1.48s clips — see {@code SWORD1_LENGTH},
- * {@code SWORD2_LENGTH}, {@code GSWORD_LENGTH}) actually get enough real
- * time to play out.
+ * Stretches the vanilla arm-swing duration for every {@link GotSwingStyle}
+ * whose visual swing (either a real authored
+ * {@link net.got.client.animation.player.PlayerAnimations} keyframe clip
+ * for SWORD/GREATSWORD/AXE, or a hand-tuned
+ * {@link net.got.client.animation.player.GotAnimMath#swingVisualDuration}
+ * window for TRIDENT/TOOL/GENERIC) runs longer than vanilla's fixed 6-tick
+ * default, so each style actually gets enough real time to play out before
+ * the next swing re-triggers and cuts it off.
  *
  * <p>Vanilla's {@code LivingEntity#getCurrentSwingDuration()} is a fixed
- * 6 ticks (0.3s) for every held item, regardless of weapon. {@code
- * GotPlayerAnimator} drives its keyframe playback off {@code
- * state.attackTime}, which is just swing-progress-through-that-6-tick
- * window — so the whole ~1-1.5s authored slash was being compressed into
- * 0.3 real seconds, which is what made it read as an instant flourish
- * instead of a swing. This mixin gives sword-classified holds enough
- * ticks to actually show the full arc; every other held item (fists,
- * axes, tools, tridents, etc.) keeps vanilla's normal snappy 6-tick swing.
+ * 6 ticks (0.3s) for every held item, regardless of weapon. This duration
+ * governs how long {@code attackTime} takes to cycle, and {@code
+ * PlayerRendererMixin} treats {@code attackTime} crossing back near 0 and
+ * rising again as "a new swing started" — resetting the clip's clock. Any
+ * style whose visual swing window is longer than 6 ticks would otherwise
+ * get reset back to frame 0 partway through, reading as stuck-at-the-start
+ * or a swing that never finishes rather than a full attack arc — this bit
+ * PUNCH (6 ticks, matches vanilla, unaffected) but also silently bit
+ * TRIDENT (10 ticks), TOOL (8 ticks), and GENERIC (7 ticks) even before
+ * SWORD/GREATSWORD/AXE were added here, since all three already run past
+ * vanilla's window. This mixin now stretches every style whose window
+ * exceeds 6 ticks; only PUNCH is left on vanilla's normal snappy swing
+ * since it's the one style actually sized to fit inside it.
  *
  * <p>Cosmetic only — {@code getCurrentSwingDuration} controls the arm-swing
  * animation timer, not attack cooldown/damage timing (that's the separate
@@ -49,11 +56,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = LivingEntity.class, remap = false)
 public abstract class GotSwingDurationMixin {
 
-    // 20 ticks/sec, rounded up from GotAnimMath's SWORD1_LENGTH/SWORD2_LENGTH
-    // (1.125s / 1.05s) so both combo swings finish inside the window.
-    private static final int SWORD_SWING_TICKS = 22;
-    // Rounded up from GotAnimMath's GSWORD_LENGTH (1.4813s).
+    // 20 ticks/sec, rounded up from PlayerAnimations' own real clip lengths
+    // (via lengthInSeconds() * 20) so every combo swing finishes inside the
+    // window instead of getting cut off/restarted mid-clip by the next
+    // rising-edge re-trigger in PlayerRendererMixin:
+    //   SWORD_ATTACK   = 1.125s -> 22.5 ticks
+    //   SWORD_ATTACK_2 = 1.6s   -> 32.0 ticks  (the actual long pole — the
+    //                              old 22-tick value only covered combo 1
+    //                              and was cutting combo 2 off ~10 ticks
+    //                              early on every other hit)
+    // Both combos share one duration here since this mixin can't see which
+    // combo index is about to play (that's tracked client-side on the
+    // render state), so it must cover the longer of the two.
+    private static final int SWORD_SWING_TICKS = 32;
+    // Rounded up from GREATSWORD_ATTACK's real length (1.4813s -> 29.626 ticks).
     private static final int GREATSWORD_SWING_TICKS = 30;
+    // Rounded up from AXE_ATTACK's real length (1.5267s -> 30.534 ticks).
+    // Previously missing entirely, which left axes on vanilla's fixed
+    // 6-tick swing window — about 1/5th of AXE_ATTACK's real length — so
+    // a new swing retriggered and reset the clip long before it could ever
+    // finish playing.
+    private static final int AXE_SWING_TICKS = 31;
+    // These three are GotAnimMath.swingVisualDuration()'s hand-tuned
+    // windows, not real clip lengths — must be kept in sync with
+    // TRIDENT_DURATION_TICKS / TOOL_DURATION_TICKS / GENERIC_DURATION_TICKS
+    // there. All three were already longer than vanilla's 6-tick default
+    // and were silently getting cut off the same way SWORD/AXE were before
+    // those were stretched.
+    private static final int TRIDENT_SWING_TICKS = 10;
+    private static final int TOOL_SWING_TICKS = 8;
+    private static final int GENERIC_SWING_TICKS = 7;
 
     @Inject(method = "getCurrentSwingDuration", at = @At("RETURN"), cancellable = true, remap = false)
     private void got_stretchSwordSwing(CallbackInfoReturnable<Integer> cir) {
@@ -66,8 +98,13 @@ public abstract class GotSwingDurationMixin {
         switch (style) {
             case SWORD -> cir.setReturnValue(SWORD_SWING_TICKS);
             case GREATSWORD -> cir.setReturnValue(GREATSWORD_SWING_TICKS);
+            case AXE -> cir.setReturnValue(AXE_SWING_TICKS);
+            case TRIDENT -> cir.setReturnValue(TRIDENT_SWING_TICKS);
+            case TOOL -> cir.setReturnValue(TOOL_SWING_TICKS);
+            case GENERIC -> cir.setReturnValue(GENERIC_SWING_TICKS);
             default -> {
-                // Leave vanilla's value (fists, axes, tools, etc.) untouched.
+                // PUNCH: leave vanilla's 6-tick value untouched — it's the
+                // one style actually sized to fit inside it.
             }
         }
     }
