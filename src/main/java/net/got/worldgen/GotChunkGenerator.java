@@ -509,21 +509,22 @@ public final class GotChunkGenerator extends ChunkGenerator {
     // The blend target used to just be `box.minY() - 1`, which assumes the
     // piece sits ON TOP of untouched natural terrain (true for e.g. the
     // watchtower/windmill, which don't capture any ground blocks of their
-    // own). That assumption breaks for a structure like the hamlet, which
-    // has its own dirt/grass foundation baked directly into row 0 of its
-    // NBT (box.minY() itself IS the walkable grass surface, not the natural
-    // terrain a fixed 1 block below it). Blending toward box.minY()-1 in
-    // that case digs a moat exactly 1 block deep around the whole structure
-    // instead of meeting its actual surface.
+    // own). That assumption breaks for a structure like the village types
+    // (north_village, riverlands_village, reach_village, westerlands_village),
+    // which have their own dirt/grass foundation baked directly into row 0
+    // of their NBT (box.minY() itself IS the walkable grass surface, not the
+    // natural terrain a fixed 1 block below it). Blending toward
+    // box.minY()-1 in that case digs a moat exactly 1 block deep around the
+    // whole structure instead of meeting its actual surface.
     //
     // `ground_level_delta` (set per template_pool element, default 1) is
     // the existing vanilla-standard way of describing how many blocks of a
     // piece are "buried" below its own natural ground line. We reuse it
     // here instead of inventing new per-structure config: delta=1 (the
     // default, used by watchtower/windmill) reproduces the old box.minY()-1
-    // behaviour exactly; a structure with its own captured ground layer at
-    // row 0 sets delta=2 in its start_pool.json so the blend meets that
-    // layer directly instead of tunnelling under it.
+    // behaviour exactly; a village structure with its own captured ground
+    // layer at row 0 sets delta=2 in its start_pool.json so the blend meets
+    // that layer directly instead of tunnelling under it.
     //
     // IMPORTANT: this only affects chunks generated AFTER this change.
     // Already-generated chunks are baked permanently — testing needs to
