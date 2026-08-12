@@ -2153,71 +2153,75 @@ public class GotModItems {
 
     // ── Smallfolk NPC Spawn Eggs ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "northman_spawn_egg", p -> new SpawnEggItem(p));
+            "northman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.NORTHMAN.get())));
     public static final DeferredItem<SpawnEggItem> RIVERLANDER_SPAWN_EGG = REGISTRY.registerItem(
-            "riverlander_spawn_egg", p -> new SpawnEggItem(p));
+            "riverlander_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.RIVERLANDER.get())));
     public static final DeferredItem<SpawnEggItem> VALEMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "valeman_spawn_egg", p -> new SpawnEggItem(p));
+            "valeman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.VALEMAN.get())));
     public static final DeferredItem<SpawnEggItem> IRONBORN_SPAWN_EGG = REGISTRY.registerItem(
-            "ironborn_spawn_egg", p -> new SpawnEggItem(p));
+            "ironborn_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.IRONBORN.get())));
     public static final DeferredItem<SpawnEggItem> WESTERMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "westerman_spawn_egg", p -> new SpawnEggItem(p));
+            "westerman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.WESTERMAN.get())));
     public static final DeferredItem<SpawnEggItem> REACHMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "reachman_spawn_egg", p -> new SpawnEggItem(p));
+            "reachman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.REACHMAN.get())));
     public static final DeferredItem<SpawnEggItem> STORMLORDER_SPAWN_EGG = REGISTRY.registerItem(
-            "stormlorder_spawn_egg", p -> new SpawnEggItem(p));
+            "stormlorder_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.STORMLORDER.get())));
     public static final DeferredItem<SpawnEggItem> DORNISHMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "dornishman_spawn_egg", p -> new SpawnEggItem(p));
+            "dornishman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.DORNISHMAN.get())));
 
     // ── Levy Spawn Eggs (Tier 2) ─────────────────────────────────────────────
     public static final DeferredItem<SpawnEggItem> STARK_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "stark_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "stark_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.STARK_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> TULLY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "tully_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "tully_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.TULLY_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> LANNISTER_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "lannister_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "lannister_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.LANNISTER_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> BARATHEON_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "baratheon_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "baratheon_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.BARATHEON_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> GREYJOY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "greyjoy_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "greyjoy_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GREYJOY_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> MARTELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "martell_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "martell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.MARTELL_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> TYRELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "tyrell_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "tyrell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.TYRELL_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> ARRYN_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "arryn_levy_spawn_egg", p -> new SpawnEggItem(p));
+            "arryn_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.ARRYN_LEVY.get())));
 
     // ── Skilled Fighter Spawn Eggs (Tier 3) ──────────────────────────────────
     public static final DeferredItem<SpawnEggItem> NORTH_SOLDIER_SPAWN_EGG = REGISTRY.registerItem(
-            "north_soldier_spawn_egg", p -> new SpawnEggItem(p));
+            "north_soldier_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.NORTH_SOLDIER.get())));
     public static final DeferredItem<SpawnEggItem> VALE_KNIGHT_SPAWN_EGG = REGISTRY.registerItem(
-            "vale_knight_spawn_egg", p -> new SpawnEggItem(p));
+            "vale_knight_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.VALE_KNIGHT.get())));
 
     // ── Mount & Wildlife Spawn Eggs ───────────────────────────────────────────
 
     /** Stag spawn egg — bark brown with antler-cream spots. */
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
-            "got_stag_spawn_egg", p -> new SpawnEggItem(p));
+            "got_stag_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_STAG.get())));
 
     /** Heron spawn egg — pale grey body with a yellow-gold beak accent. */
     public static final DeferredItem<SpawnEggItem> GOT_HERON_SPAWN_EGG = REGISTRY.registerItem(
-            "got_heron_spawn_egg", p -> new SpawnEggItem(p));
+            "got_heron_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_HERON.get())));
 
     /** Direwolf spawn egg — dark grey fur with pale grey underbelly. */
     public static final DeferredItem<SpawnEggItem> GOT_DIREWOLF_SPAWN_EGG = REGISTRY.registerItem(
-            "got_direwolf_spawn_egg", p -> new SpawnEggItem(p));
+            "got_direwolf_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_DIREWOLF.get())));
 
     /** Crow spawn egg — jet black body with dark grey wing-tip accent. */
     public static final DeferredItem<SpawnEggItem> GOT_CROW_SPAWN_EGG = REGISTRY.registerItem(
-            "got_crow_spawn_egg", p -> new SpawnEggItem(p));
+            "got_crow_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_CROW.get())));
 
     /** Mammoth spawn egg — shaggy dark brown body with ivory tusk accent. */
     public static final DeferredItem<SpawnEggItem> GOT_MAMMOTH_SPAWN_EGG = REGISTRY.registerItem(
-            "got_mammoth_spawn_egg", p -> new SpawnEggItem(p));
+            "got_mammoth_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_MAMMOTH.get())));
 
     /** Brown Bear spawn egg — shaggy brown fur with light brown paw accent. */
     public static final DeferredItem<SpawnEggItem> GOT_BROWN_BEAR_SPAWN_EGG = REGISTRY.registerItem(
-            "got_brown_bear_spawn_egg", p -> new SpawnEggItem(p));
+            "got_brown_bear_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_BROWN_BEAR.get())));
+
+    /** Giant spawn egg — rust-brown hide with pale bone/cloth accent. */
+    public static final DeferredItem<SpawnEggItem> GOT_GIANT_SPAWN_EGG = REGISTRY.registerItem(
+            "got_giant_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_GIANT.get())));
 
     // ── Great House Banner Pattern Items (used in the loom) ──────────────────
 

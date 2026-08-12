@@ -2980,6 +2980,7 @@ public class GotModTabs {
                         output.accept(GotModItems.GOT_CROW_SPAWN_EGG.get());
                         output.accept(GotModItems.GOT_MAMMOTH_SPAWN_EGG.get());
                         output.accept(GotModItems.GOT_BROWN_BEAR_SPAWN_EGG.get());
+                        output.accept(GotModItems.GOT_GIANT_SPAWN_EGG.get());
 
                     })
                     .build());
