@@ -1,0 +1,149 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/corner_01",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/corner_02",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/corner_03",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/straight_01",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/straight_02",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/straight_03",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/straight_04",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/straight_05",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/straight_06",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/crossroad_01",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/crossroad_02",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/crossroad_03",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/crossroad_04",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/crossroad_05",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/crossroad_06",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:hamlet_westerlands/streets/turn_01",
+        "processors": "got:street_westerlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    }
+  ],
+  "fallback": "got:hamlet_westerlands/terminators"
+}
