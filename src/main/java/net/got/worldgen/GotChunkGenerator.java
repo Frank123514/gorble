@@ -28,7 +28,9 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -172,7 +174,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     private static final int STRUCTURE_WATER_AVOID_RADIUS = 12;
-    
+
     private static final int STRUCTURE_WATER_SAMPLE_STEPS = 12;
 
     @Override
@@ -324,38 +326,60 @@ public final class GotChunkGenerator extends ChunkGenerator {
         return finalHeight;
     }
 
-    private static final float STRUCTURE_PAD_RADIUS = 12f;
+    // Ported from Middle Earth mod's MiddleEarthChunkGenerator#buildSurface structure-adaptation logic.
+    // Rigid, beard_box pieces get a hard flatten to their floor level directly under their footprint,
+    // fading back out to natural terrain over a margin around the edges.
+    private static final float STRUCTURE_ADAPT_MARGIN = 10f;
+    private static final float STRUCTURE_ADAPT_DIRT_HEIGHT = 1f;
 
     private static float computeBlendedSurfaceY(int wx, int wz, List<StructureStart> starts) {
         float naturalY = computeRawSurfaceY(wx, wz);
         if (starts.isEmpty()) return naturalY;
 
-        float blended = naturalY;
+        float newHeight = naturalY;
+        float bestInfluence = 0f;
+
+        outer:
         for (StructureStart start : starts) {
+            Structure structure = start.getStructure();
+            if (structure.terrainAdaptation() != TerrainAdjustment.BEARD_BOX) continue;
+
             for (StructurePiece piece : start.getPieces()) {
+                if (!(piece instanceof PoolElementStructurePiece pep)) continue;
+                if (pep.getElement().getProjection() != StructureTemplatePool.Projection.RIGID) continue;
+
                 BoundingBox box = piece.getBoundingBox();
-                float dist = distanceToBox(wx, wz, box);
-                if (dist >= STRUCTURE_PAD_RADIUS) continue;
+                float floorY = box.minY() - STRUCTURE_ADAPT_DIRT_HEIGHT;
 
-                float t      = dist / STRUCTURE_PAD_RADIUS;
-                float weight = (float) Math.exp(-(t * t) * 4.0);
+                int minX = box.minX(), maxX = box.maxX();
+                int minZ = box.minZ(), maxZ = box.maxZ();
 
-                int groundLevelDelta = 1;
-                if (piece instanceof PoolElementStructurePiece pep) {
-                    groundLevelDelta = pep.getElement().getGroundLevelDelta();
+                // quick reject: outside the margin-expanded box entirely
+                if (wx < minX - STRUCTURE_ADAPT_MARGIN - 1 || wx > maxX + STRUCTURE_ADAPT_MARGIN + 1
+                        || wz < minZ - STRUCTURE_ADAPT_MARGIN - 1 || wz > maxZ + STRUCTURE_ADAPT_MARGIN + 1) {
+                    continue;
                 }
-                float floorY = box.minY() + groundLevelDelta - 2;
 
-                blended = Mth.lerp(weight, blended, floorY);
+                if (wx >= minX && wx <= maxX && wz >= minZ && wz <= maxZ) {
+                    // directly under the piece's footprint: fully flatten to its floor
+                    bestInfluence = 1.0f;
+                    newHeight = floorY;
+                    break outer;
+                } else {
+                    // within the margin outside the footprint: fade toward the floor by distance to the nearest edge
+                    double dx = Math.max(0, Math.max(minX - wx, wx - maxX));
+                    double dz = Math.max(0, Math.max(minZ - wz, wz - maxZ));
+                    float distanceToEdge = (float) Math.sqrt(dx * dx + dz * dz);
+
+                    float influence = 1.0f - Math.min(1.0f, distanceToEdge / STRUCTURE_ADAPT_MARGIN);
+                    if (influence > bestInfluence) {
+                        bestInfluence = influence;
+                        newHeight = Mth.lerp(influence, naturalY, floorY);
+                    }
+                }
             }
         }
-        return blended;
-    }
-
-    private static float distanceToBox(int x, int z, BoundingBox box) {
-        float dx = Math.max(Math.max(box.minX() - x, 0), x - box.maxX());
-        float dz = Math.max(Math.max(box.minZ() - z, 0), z - box.maxZ());
-        return Mth.sqrt(dx * dx + dz * dz);
+        return newHeight;
     }
 
     static float bicubicBspline(float[] grid, float fx, float fz) {
@@ -391,7 +415,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
                              @NotNull LevelHeightAccessor level,
                              @NotNull RandomState random) {
         int surface = computeSurfaceY(x, z);
-        
+
         if (type == Heightmap.Types.WORLD_SURFACE || type == Heightmap.Types.WORLD_SURFACE_WG) {
             int sea = getSeaLevel();
             if (surface < sea) return sea;

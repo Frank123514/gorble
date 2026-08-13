@@ -1967,32 +1967,32 @@ public class ModItems {
     public static final DeferredItem<Item> STEEL_PICKAXE  = REGISTRY.registerItem("steel_pickaxe",
             p -> new Item(p.pickaxe(ModTiers.STEEL, 1.0f, -2.8f)));
     public static final DeferredItem<AxeItem>    STEEL_AXE       = REGISTRY.registerItem("steel_axe",
-            p -> new AxeItem(GotModTiers.STEEL, 6.0f, -3.1f, p));
+            p -> new AxeItem(ModTiers.STEEL, 6.0f, -3.1f, p));
     public static final DeferredItem<ShovelItem> STEEL_SHOVEL    = REGISTRY.registerItem("steel_shovel",
-            p -> new ShovelItem(GotModTiers.STEEL, 1.5f, -3.0f, p));
+            p -> new ShovelItem(ModTiers.STEEL, 1.5f, -3.0f, p));
     public static final DeferredItem<HoeItem>    STEEL_HOE       = REGISTRY.registerItem("steel_hoe",
-            p -> new HoeItem(GotModTiers.STEEL, 0.0f, -3.0f, p));
+            p -> new HoeItem(ModTiers.STEEL, 0.0f, -3.0f, p));
 
     public static final DeferredItem<Item> BRONZE_HELMET     = REGISTRY.registerItem("bronze_helmet",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.HELMET)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.BRONZE.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> BRONZE_CHESTPLATE = REGISTRY.registerItem("bronze_chestplate",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.CHESTPLATE)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.BRONZE.value(), ArmorType.CHESTPLATE)));
     public static final DeferredItem<Item> BRONZE_LEGGINGS   = REGISTRY.registerItem("bronze_leggings",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.BRONZE.value(), ArmorType.LEGGINGS)));
     public static final DeferredItem<Item> BRONZE_BOOTS      = REGISTRY.registerItem("bronze_boots",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.BRONZE.value(), ArmorType.BOOTS)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.BRONZE.value(), ArmorType.BOOTS)));
 
     public static final DeferredItem<BowItem> LONGBOW = REGISTRY.registerItem("longbow",
             p -> new BowItem(p.durability(384).enchantable(1)));
 
     public static final DeferredItem<Item> STEEL_HELMET      = REGISTRY.registerItem("steel_helmet",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.HELMET)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.STEEL.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> STEEL_CHESTPLATE  = REGISTRY.registerItem("steel_chestplate",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.CHESTPLATE)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.STEEL.value(), ArmorType.CHESTPLATE)));
     public static final DeferredItem<Item> STEEL_LEGGINGS    = REGISTRY.registerItem("steel_leggings",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.LEGGINGS)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.STEEL.value(), ArmorType.LEGGINGS)));
     public static final DeferredItem<Item> STEEL_BOOTS       = REGISTRY.registerItem("steel_boots",
-            p -> new Item(p.humanoidArmor(GotModArmorMaterials.STEEL.value(), ArmorType.BOOTS)));
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.STEEL.value(), ArmorType.BOOTS)));
 
     public static final DeferredItem<Item> IRON_SPEAR_HEAD          = simple("iron_spear_head");
     public static final DeferredItem<Item> IRON_ARROWHEAD           = simple("iron_arrowhead");
@@ -2044,112 +2044,112 @@ public class ModItems {
     public static final DeferredItem<Item> IRON_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_falchion_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 2.5f, -2.3f)));
     public static final DeferredItem<Item> IRON_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("iron_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(ToolMaterial.IRON, 4.5f, -2.8f)));
 
-    public static final DeferredItem<Item> BRONZE_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("bronze_greatsword_crossguard_pommel",   p -> new Item(p.sword(GotModTiers.BRONZE, 4.5f, -2.8f)));
+    public static final DeferredItem<Item> BRONZE_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("bronze_greatsword_crossguard_pommel",   p -> new Item(p.sword(ModTiers.BRONZE, 4.5f, -2.8f)));
 
-    public static final DeferredItem<Item> BRONZE_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_shortsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 2.0f, -2.4f)));
-    public static final DeferredItem<Item> BRONZE_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_longsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 3.0f, -2.4f)));
-    public static final DeferredItem<Item> BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 3.5f, -2.5f)));
-    public static final DeferredItem<Item> BRONZE_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_falchion_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 2.5f, -2.3f)));
-    public static final DeferredItem<Item> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(GotModTiers.BRONZE, 4.5f, -2.8f)));
+    public static final DeferredItem<Item> BRONZE_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_shortsword_crossguard_pommel", p -> new Item(p.sword(ModTiers.BRONZE, 2.0f, -2.4f)));
+    public static final DeferredItem<Item> BRONZE_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_longsword_crossguard_pommel", p -> new Item(p.sword(ModTiers.BRONZE, 3.0f, -2.4f)));
+    public static final DeferredItem<Item> BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_bastard_sword_crossguard_pommel", p -> new Item(p.sword(ModTiers.BRONZE, 3.5f, -2.5f)));
+    public static final DeferredItem<Item> BRONZE_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_falchion_crossguard_pommel", p -> new Item(p.sword(ModTiers.BRONZE, 2.5f, -2.3f)));
+    public static final DeferredItem<Item> BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("bronze_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(ModTiers.BRONZE, 4.5f, -2.8f)));
 
-    public static final DeferredItem<Item> STEEL_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("steel_greatsword_crossguard_pommel",   p -> new Item(p.sword(GotModTiers.STEEL, 4.5f, -2.8f)));
+    public static final DeferredItem<Item> STEEL_GREATSWORD_CROSSGUARD_POMMEL   = REGISTRY.registerItem("steel_greatsword_crossguard_pommel",   p -> new Item(p.sword(ModTiers.STEEL, 4.5f, -2.8f)));
 
-    public static final DeferredItem<Item> STEEL_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_shortsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 2.0f, -2.4f)));
-    public static final DeferredItem<Item> STEEL_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_longsword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 3.0f, -2.4f)));
-    public static final DeferredItem<Item> STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_bastard_sword_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 3.5f, -2.5f)));
-    public static final DeferredItem<Item> STEEL_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_falchion_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 2.5f, -2.3f)));
-    public static final DeferredItem<Item> STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(GotModTiers.STEEL, 4.5f, -2.8f)));
+    public static final DeferredItem<Item> STEEL_SHORTSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_shortsword_crossguard_pommel", p -> new Item(p.sword(ModTiers.STEEL, 2.0f, -2.4f)));
+    public static final DeferredItem<Item> STEEL_LONGSWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_longsword_crossguard_pommel", p -> new Item(p.sword(ModTiers.STEEL, 3.0f, -2.4f)));
+    public static final DeferredItem<Item> STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_bastard_sword_crossguard_pommel", p -> new Item(p.sword(ModTiers.STEEL, 3.5f, -2.5f)));
+    public static final DeferredItem<Item> STEEL_FALCHION_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_falchion_crossguard_pommel", p -> new Item(p.sword(ModTiers.STEEL, 2.5f, -2.3f)));
+    public static final DeferredItem<Item> STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL = REGISTRY.registerItem("steel_claymore_sloped_crossguard_pommel", p -> new Item(p.sword(ModTiers.STEEL, 4.5f, -2.8f)));
 
     public static final DeferredItem<SpawnEggItem> NORTHMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "northman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.NORTHMAN.get())));
+            "northman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.NORTHMAN.get())));
     public static final DeferredItem<SpawnEggItem> RIVERLANDER_SPAWN_EGG = REGISTRY.registerItem(
-            "riverlander_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.RIVERLANDER.get())));
+            "riverlander_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.RIVERLANDER.get())));
     public static final DeferredItem<SpawnEggItem> VALEMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "valeman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.VALEMAN.get())));
+            "valeman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.VALEMAN.get())));
     public static final DeferredItem<SpawnEggItem> IRONBORN_SPAWN_EGG = REGISTRY.registerItem(
-            "ironborn_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.IRONBORN.get())));
+            "ironborn_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.IRONBORN.get())));
     public static final DeferredItem<SpawnEggItem> WESTERMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "westerman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.WESTERMAN.get())));
+            "westerman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.WESTERMAN.get())));
     public static final DeferredItem<SpawnEggItem> REACHMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "reachman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.REACHMAN.get())));
+            "reachman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.REACHMAN.get())));
     public static final DeferredItem<SpawnEggItem> STORMLORDER_SPAWN_EGG = REGISTRY.registerItem(
-            "stormlorder_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.STORMLORDER.get())));
+            "stormlorder_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.STORMLORDER.get())));
     public static final DeferredItem<SpawnEggItem> DORNISHMAN_SPAWN_EGG = REGISTRY.registerItem(
-            "dornishman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.DORNISHMAN.get())));
+            "dornishman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.DORNISHMAN.get())));
 
     public static final DeferredItem<SpawnEggItem> STARK_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "stark_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.STARK_LEVY.get())));
+            "stark_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.STARK_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> TULLY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "tully_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.TULLY_LEVY.get())));
+            "tully_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.TULLY_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> LANNISTER_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "lannister_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.LANNISTER_LEVY.get())));
+            "lannister_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.LANNISTER_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> BARATHEON_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "baratheon_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.BARATHEON_LEVY.get())));
+            "baratheon_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.BARATHEON_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> GREYJOY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "greyjoy_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GREYJOY_LEVY.get())));
+            "greyjoy_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GREYJOY_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> MARTELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "martell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.MARTELL_LEVY.get())));
+            "martell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MARTELL_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> TYRELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "tyrell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.TYRELL_LEVY.get())));
+            "tyrell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.TYRELL_LEVY.get())));
     public static final DeferredItem<SpawnEggItem> ARRYN_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "arryn_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.ARRYN_LEVY.get())));
+            "arryn_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.ARRYN_LEVY.get())));
 
     public static final DeferredItem<SpawnEggItem> NORTH_SOLDIER_SPAWN_EGG = REGISTRY.registerItem(
-            "north_soldier_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.NORTH_SOLDIER.get())));
+            "north_soldier_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.NORTH_SOLDIER.get())));
     public static final DeferredItem<SpawnEggItem> VALE_KNIGHT_SPAWN_EGG = REGISTRY.registerItem(
-            "vale_knight_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.VALE_KNIGHT.get())));
+            "vale_knight_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.VALE_KNIGHT.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
-            "got_stag_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_STAG.get())));
+            "got_stag_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_STAG.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_HERON_SPAWN_EGG = REGISTRY.registerItem(
-            "got_heron_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_HERON.get())));
+            "got_heron_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_HERON.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_DIREWOLF_SPAWN_EGG = REGISTRY.registerItem(
-            "got_direwolf_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_DIREWOLF.get())));
+            "got_direwolf_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_DIREWOLF.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_CROW_SPAWN_EGG = REGISTRY.registerItem(
-            "got_crow_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_CROW.get())));
+            "got_crow_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_CROW.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_MAMMOTH_SPAWN_EGG = REGISTRY.registerItem(
-            "got_mammoth_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_MAMMOTH.get())));
+            "got_mammoth_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_MAMMOTH.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_BROWN_BEAR_SPAWN_EGG = REGISTRY.registerItem(
-            "got_brown_bear_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_BROWN_BEAR.get())));
+            "got_brown_bear_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_BROWN_BEAR.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_GIANT_SPAWN_EGG = REGISTRY.registerItem(
-            "got_giant_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(GotModEntities.GOT_GIANT.get())));
+            "got_giant_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_GIANT.get())));
 
     public static final DeferredItem<Item> STARK_BANNER_PATTERN =
             REGISTRY.registerItem("stark_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.STARK_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.STARK_PATTERN_TAG)));
     public static final DeferredItem<Item> LANNISTER_BANNER_PATTERN =
             REGISTRY.registerItem("lannister_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.LANNISTER_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.LANNISTER_PATTERN_TAG)));
     public static final DeferredItem<Item> TARGARYEN_BANNER_PATTERN =
             REGISTRY.registerItem("targaryen_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.TARGARYEN_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.TARGARYEN_PATTERN_TAG)));
     public static final DeferredItem<Item> BARATHEON_BANNER_PATTERN =
             REGISTRY.registerItem("baratheon_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.BARATHEON_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.BARATHEON_PATTERN_TAG)));
     public static final DeferredItem<Item> GREYJOY_BANNER_PATTERN =
             REGISTRY.registerItem("greyjoy_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.GREYJOY_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.GREYJOY_PATTERN_TAG)));
     public static final DeferredItem<Item> TYRELL_BANNER_PATTERN =
             REGISTRY.registerItem("tyrell_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.TYRELL_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.TYRELL_PATTERN_TAG)));
     public static final DeferredItem<Item> MARTELL_BANNER_PATTERN =
             REGISTRY.registerItem("martell_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.MARTELL_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.MARTELL_PATTERN_TAG)));
     public static final DeferredItem<Item> TULLY_BANNER_PATTERN =
             REGISTRY.registerItem("tully_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.TULLY_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.TULLY_PATTERN_TAG)));
     public static final DeferredItem<Item> ARRYN_BANNER_PATTERN =
             REGISTRY.registerItem("arryn_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.ARRYN_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.ARRYN_PATTERN_TAG)));
     public static final DeferredItem<Item> BOLTON_BANNER_PATTERN =
             REGISTRY.registerItem("bolton_banner_pattern",
-                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, GotModBannerPatterns.BOLTON_PATTERN_TAG)));
+                    p -> new Item(p.component(DataComponents.PROVIDES_BANNER_PATTERNS, ModBannerPatterns.BOLTON_PATTERN_TAG)));
 
     public static final DeferredItem<Item> OVEN = block(ModBlocks.OVEN);
     public static final DeferredItem<Item> FORGE = block(ModBlocks.FORGE);
