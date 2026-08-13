@@ -8,11 +8,6 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
-/**
- * Custom boat entity for GoT wood types.
- * Stores a texture Identifier (read by GotBoatRenderer) and passes the
- * drop-item supplier directly to AbstractBoat (getDropItem() is final in 1.21.x).
- */
 public class GotBoat extends Boat {
 
     private final Identifier boatTexture;
@@ -23,7 +18,6 @@ public class GotBoat extends Boat {
         this.boatTexture = texture;
     }
 
-    /** Called by GotBoatRenderer to determine which texture to use. */
     public Identifier getBoatTexture() {
         return boatTexture;
     }

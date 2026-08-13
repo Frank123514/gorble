@@ -9,10 +9,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * Overrides Level.isRainingAt so rain biomes return false in winter.
- * remap=false — see WeatherEffectRendererMixin for explanation.
- */
 @Mixin(Level.class)
 public class LevelMixin {
 

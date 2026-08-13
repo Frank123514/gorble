@@ -5,11 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>server → client</b> when a player sneak-right-clicks an unemployed
- * NPC.  The client opens {@link net.got.client.gui.NpcHireScreen} for the
- * given entity so the player can choose a job.
- */
 public record OpenHireScreenPayload(int entityId) implements CustomPacketPayload {
 
     public static final Identifier ID =

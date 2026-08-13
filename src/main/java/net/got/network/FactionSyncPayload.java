@@ -5,22 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>server → client</b> to sync the player's faction id, standing value,
- * and current title string so the HUD and selection screen can display live data
- * without an extra round-trip.
- *
- * <p>Send this:
- * <ul>
- *   <li>On login ({@code PlayerLoggedInEvent}).</li>
- *   <li>Whenever standing changes ({@link net.got.faction.PlayerFactionState#modifyStanding}).</li>
- *   <li>Whenever the faction is changed ({@link net.got.faction.PlayerFactionState#setFaction}).</li>
- * </ul>
- *
- * @param factionId The player's faction id string, e.g. {@code "north"}.
- * @param standing  Current reputation value (0 – 10 000).
- * @param title     Current rank title string, e.g. {@code "Bannerman of House Stark"}.
- */
 public record FactionSyncPayload(
         String factionId,
         int    standing,

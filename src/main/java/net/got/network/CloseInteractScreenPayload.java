@@ -5,10 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>client → server</b> when the player closes {@link net.got.client.gui.NpcInteractScreen}.
- * The server calls {@code stopTalking()} on the NPC so it resumes normal behaviour.
- */
 public record CloseInteractScreenPayload(int entityId)
         implements CustomPacketPayload {
 

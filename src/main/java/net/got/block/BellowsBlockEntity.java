@@ -1,6 +1,6 @@
 package net.got.block;
 
-import net.got.init.GotModBlockEntities;
+import net.got.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,15 +15,12 @@ public class BellowsBlockEntity extends BlockEntity {
 
     public static final int MAX_TICKS = 30;
 
-    /** Client-side only — driven by triggerEvent, not saved to NBT. */
     public int animationProgress;
     public boolean pumping;
 
     public BellowsBlockEntity(BlockPos pos, BlockState state) {
-        super(GotModBlockEntities.BELLOWS.get(), pos, state);
+        super(ModBlockEntities.BELLOWS.get(), pos, state);
     }
-
-    // ── Sync ─────────────────────────────────────────────────────────────────
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -38,21 +35,19 @@ public class BellowsBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        // pumping and animationProgress are transient — not persisted.
+        
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        // pumping and animationProgress are transient — not loaded.
+        
     }
-
-    // ── Block event triggers the animation on the client ─────────────────────
 
     @Override
     public boolean triggerEvent(int id, int data) {
         if (id == 1) {
-            // Client-side only: start the animation.
+            
             this.pumping = true;
             this.animationProgress = 0;
             return true;
@@ -60,11 +55,6 @@ public class BellowsBlockEntity extends BlockEntity {
         return super.triggerEvent(id, data);
     }
 
-    /**
-     * Call from server side to start a pump cycle.
-     * Uses level.blockEvent which is position-specific and routes only to
-     * this block entity's triggerEvent on the client.
-     */
     public boolean tryStartPump() {
         if (!pumping && level != null && !level.isClientSide()) {
             pumping = true;
@@ -74,8 +64,6 @@ public class BellowsBlockEntity extends BlockEntity {
         }
         return false;
     }
-
-    // ── Ticking ──────────────────────────────────────────────────────────────
 
     private static void tick(BellowsBlockEntity be) {
         if (be.pumping) {

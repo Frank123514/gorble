@@ -11,28 +11,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-/**
- * AlloyScreen — GUI for the Forge block's alloying mode.
- *
- * Blits assets/got/textures/gui/forge.png as the full background (256×256
- * sheet, 176×166 used region). The texture has all slots, the player
- * inventory, the static arrow shape, and the static flame shape already
- * baked in. We overlay the vanilla animated lit_progress and burn_progress
- * sprites on top — only while the forge is actually burning / cooking.
- *
- * Pixel positions are measured directly from forge.png:
- *   Inputs A-D : (20,17) (38,17) (56,17) (74,17)   — 18×18 each
- *   Fuel       : (48,53)                             — 18×18
- *   Output     : (130,13)                            — 26×26 big slot
- *   Flame area : baked at (49,37), 13×13 px
- *   Arrow area : baked at (88,16), right-pointing shape
- *
- * The flame sprite (14×14) is placed to exactly cover the baked flame pixels.
- * The arrow sprite (24×16) is placed to cover the baked arrow shaft.
- */
 public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
-
-    // ── Textures / sprites ────────────────────────────────────────────────────
 
     private static final Identifier FORGE_TEXTURE =
             Identifier.fromNamespaceAndPath("got", "textures/gui/forge.png");
@@ -42,25 +21,16 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
     private static final Identifier ARROW_SPRITE =
             Identifier.withDefaultNamespace("container/furnace/burn_progress");
 
-    // ── Sprite dimensions ─────────────────────────────────────────────────────
-
     private static final int FLAME_W = 14;
     private static final int FLAME_H = 14;
     private static final int ARROW_W = 24;
     private static final int ARROW_H = 16;
 
-    // ── Overlay positions (panel-relative, measured from forge.png) ───────────
-
-    // Flame: covers the baked flame pixels at (49,37)–(61,49).
-    // lit_progress sprite grows upward, so we anchor at the bottom of the area.
     private static final int FLAME_X = 49;
-    private static final int FLAME_Y = 36;   // 1px above baked pixels so it fills cleanly
+    private static final int FLAME_Y = 36;
 
-    // Arrow: the baked arrow shaft centre is y≈24; 16px tall sprite centred there.
     private static final int ARROW_X = 96;
     private static final int ARROW_Y = 17;
-
-    // ── Tab ───────────────────────────────────────────────────────────────────
 
     private static final int TAB_W = 20;
     private static final int TAB_H = 14;
@@ -69,8 +39,6 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
 
     private static final int C_TEXT = 0xFF_404040;
 
-    // ─────────────────────────────────────────────────────────────────────────
-
     public AlloyScreen(AlloyMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
         this.imageWidth      = 176;
@@ -78,15 +46,11 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         this.inventoryLabelY = this.imageHeight - 94;
     }
 
-    // ── Labels ────────────────────────────────────────────────────────────────
-
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         g.drawString(font, this.title,                8, 6,                     C_TEXT, false);
         g.drawString(font, this.playerInventoryTitle, 8, this.imageHeight - 94, C_TEXT, false);
     }
-
-    // ── Full render ───────────────────────────────────────────────────────────
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
@@ -96,23 +60,16 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
         renderTooltip(g, mouseX, mouseY);
     }
 
-    // ── Background ────────────────────────────────────────────────────────────
-
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
 
-        // 1. Blit the custom forge texture — panel, all slots, arrow, flame,
-        //    and player inventory all baked in.
         g.blit(RenderPipelines.GUI_TEXTURED, FORGE_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // 2. Animated flame — overlaid on the baked flame pixels.
-        //    lit_progress grows upward (src y offset from bottom).
-        //    Only shown while fuel is burning.
         if (menu.isFlaming()) {
-            int h = menu.getFlameProgress(); // 0–13
+            int h = menu.getFlameProgress();
             if (h > 0) {
                 g.blitSprite(RenderPipelines.GUI_TEXTURED, LIT_SPRITE,
                         FLAME_W, FLAME_H,
@@ -122,11 +79,8 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
             }
         }
 
-        // 3. Animated arrow — overlaid on the baked arrow pixels.
-        //    burn_progress fills left-to-right.
-        //    Only shown while a recipe is cooking.
         if (menu.isCrafting()) {
-            int w = menu.getArrowProgress(); // 0–24
+            int w = menu.getArrowProgress();
             if (w > 0) {
                 g.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW_SPRITE,
                         ARROW_W, ARROW_H, 0, 0,
@@ -135,8 +89,6 @@ public class AlloyScreen extends AbstractContainerScreen<AlloyMenu> {
             }
         }
     }
-
-    // ── Mode-switch tab ───────────────────────────────────────────────────────
 
     private void renderModeTab(GuiGraphics g, int mouseX, int mouseY) {
         int bx = leftPos + TAB_X, by = topPos + TAB_Y;

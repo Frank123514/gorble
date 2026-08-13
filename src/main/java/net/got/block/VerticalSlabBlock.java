@@ -27,13 +27,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/**
- * Generic vertical slab: occupies one horizontal half of a block (north/south/east/west),
- * and merges into a full "double" block when a matching vertical slab is placed against
- * the open face of an existing single one. Behaves like vanilla's SlabBlock but rotated
- * onto the horizontal plane. One class is shared by every vertical-slab variant in the
- * mod — each variant simply supplies its own copied BlockBehaviour.Properties.
- */
 public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final MapCodec<VerticalSlabBlock> CODEC = simpleCodec(VerticalSlabBlock::new);
@@ -66,8 +59,6 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         builder.add(FACING, TYPE, WATERLOGGED);
     }
 
-    // ── Shape ────────────────────────────────────────────────────────────────
-
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
         if (state.getValue(TYPE) == Type.DOUBLE) {
@@ -86,8 +77,6 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         return true;
     }
 
-    // ── Placement ────────────────────────────────────────────────────────────
-
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         BlockPos pos = ctx.getClickedPos();
@@ -101,9 +90,7 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         Direction facing;
 
         if (clickedFace.getAxis().isHorizontal()) {
-            // If we're placing against the side of an existing single vertical slab
-            // (rather than its open/matching face, which merges above), continue its
-            // facing so a row of slabs forms a flat wall instead of turning to face us.
+            
             BlockPos neighborPos = pos.relative(clickedFace.getOpposite());
             BlockState neighbor = ctx.getLevel().getBlockState(neighborPos);
             facing = (neighbor.is(this) && neighbor.getValue(TYPE) == Type.SINGLE)
@@ -130,17 +117,13 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         }
         Direction clickedFace = ctx.getClickedFace();
         if (!clickedFace.getAxis().isHorizontal()) {
-            // Clicking the top/bottom of a single vertical slab should stack a new
-            // slab in the space above/below, not merge this one into a full block.
+            
             return false;
         }
         Direction existingFacing = state.getValue(FACING);
-        // Only the exact open/matching face merges into a double (full) block —
-        // clicking a perpendicular side face should place a new slab next to it instead.
+        
         return clickedFace == existingFacing.getOpposite();
     }
-
-    // ── Fluids / neighbour updates ──────────────────────────────────────────
 
     @Override
     public FluidState getFluidState(BlockState state) {
@@ -157,8 +140,6 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         }
         return state;
     }
-
-    // ── Rotation / mirror / piston behaviour ────────────────────────────────
 
     @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {

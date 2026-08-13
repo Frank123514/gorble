@@ -1,8 +1,8 @@
 package net.got.block;
 
-import net.got.init.GotModBlockEntities;
-import net.got.init.GotModDataComponents;
-import net.got.init.GotModRecipeTypes;
+import net.got.init.ModBlockEntities;
+import net.got.init.ModDataComponents;
+import net.got.init.ModRecipeTypes;
 import net.got.menu.SmithingAnvilMenu;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.core.BlockPos;
@@ -38,38 +38,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * SmithingAnvilBlockEntity — powers the Smithing Anvil block.
- *
- * Slot layout:
- *   0 — smithing input  (the heated ingot / source material)
- *   1 — output
- *
- * ContainerData layout:
- *   0 — hitCount            (0–HITS_REQUIRED)
- *   1 — selectedRecipeIndex (-1 = none)
- *   2 — markerPos           (0–100, position of the timing bar marker)
- *   3 — markerDir           (+1 or -1, direction of travel)
- *   4 — lastHitQuality      (0=none, 1=miss, 2=good, 3=perfect)
- */
 public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
-    /** Number of hammer strikes needed to finish a recipe. */
     public static final int HITS_REQUIRED = 3;
 
-    // Sweet-spot zone: 0–100 range, green zone is ±ZONE_HALF around center (50)
     public static final int ZONE_CENTER = 50;
-    public static final int ZONE_HALF   = 12; // so zone is [38,62]
+    public static final int ZONE_HALF   = 12;
 
-    /** Ticks per full marker sweep (0→100→0). Higher = slower. */
     private static final int TICKS_PER_SWEEP = 40;
 
-    // ── Slot indices ──────────────────────────────────────────────────────────
     public static final int SLOT_INPUT  = 0;
     public static final int SLOT_OUTPUT = 1;
     public static final int NUM_SLOTS   = 2;
 
-    // ── ContainerData indices ─────────────────────────────────────────────────
     public static final int DATA_HIT_COUNT       = 0;
     public static final int DATA_SELECTED_RECIPE = 1;
     public static final int DATA_MARKER_POS      = 2;
@@ -77,13 +58,11 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     public static final int DATA_LAST_HIT_QUALITY = 4;
     public static final int NUM_DATA             = 5;
 
-    // lastHitQuality values
     public static final int HIT_QUALITY_NONE    = 0;
     public static final int HIT_QUALITY_MISS    = 1;
     public static final int HIT_QUALITY_GOOD    = 2;
     public static final int HIT_QUALITY_PERFECT = 3;
 
-    // ── State ─────────────────────────────────────────────────────────────────
     private NonNullList<ItemStack> items =
             NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
     private int hitCount          = 0;
@@ -91,9 +70,9 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     private int markerPos         = 0;
     private int markerDir         = 1;
     private int lastHitQuality    = HIT_QUALITY_NONE;
-    /** The last item successfully crafted here; shown on the anvil model until a new input is placed. */
+    
     private ItemStack lastCraftedItem = ItemStack.EMPTY;
-    /** True after a craft completes — blocks the menu from opening until the player right-clicks to collect. */
+    
     private boolean awaitingPickup = false;
 
     protected final ContainerData dataAccess = new ContainerData() {
@@ -123,14 +102,8 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     };
 
     public SmithingAnvilBlockEntity(BlockPos pos, BlockState state) {
-        super(GotModBlockEntities.SMITHING_ANVIL.get(), pos, state);
+        super(ModBlockEntities.SMITHING_ANVIL.get(), pos, state);
     }
-
-    // ── Sync ─────────────────────────────────────────────────────────────────
-    // Without these overrides the client's copy of this block entity never
-    // receives the contained ItemStacks, so the world-space renderer (which
-    // reads getInputItem() straight off the client BE) always sees it as
-    // empty even though the menu/screen shows it fine via slot syncing.
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -142,14 +115,11 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         return saveWithoutMetadata(registries);
     }
 
-    /** Pushes the current state to nearby clients; call after the input slot changes. */
     private void syncToClient() {
         if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
-
-    // ── Tick ──────────────────────────────────────────────────────────────────
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SmithingAnvilBlockEntity be) {
         boolean armed = be.selectedRecipeIdx >= 0 && !be.items.get(SLOT_INPUT).isEmpty();
@@ -164,7 +134,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
             }
             be.setChanged();
         }
-        // Broadcast HUD state to players near this block every tick
+        
         if (level instanceof ServerLevel sl) {
             int qualityToSend = be.lastHitQuality;
             if (qualityToSend != HIT_QUALITY_NONE) {
@@ -182,31 +152,23 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         }
     }
 
-    // ── Hammer strikes ────────────────────────────────────────────────────────
-
-    /**
-     * Called from {@link SmithingAnvilBlock#attack} when the player hits this
-     * anvil while holding a SmithingHammerItem.
-     */
     public HitResult hitWithHammer(ServerLevel level) {
         RecipeHolder<SmithyRecipe> recipe = getSelectedSmithingRecipe(level);
         if (items.get(SLOT_INPUT).isEmpty() || recipe == null || !canBurn(recipe)) {
             return HitResult.NOTHING_TO_WORK;
         }
 
-        // Check timing: is the marker in the sweet zone?
         int dist = Math.abs(markerPos - ZONE_CENTER);
         boolean inZone = dist <= ZONE_HALF;
 
         if (!inZone) {
-            // Miss — reset progress
+            
             lastHitQuality = HIT_QUALITY_MISS;
             hitCount = 0;
             setChanged();
             return HitResult.MISS;
         }
 
-        // Perfect if within half the zone
         lastHitQuality = (dist <= ZONE_HALF / 2) ? HIT_QUALITY_PERFECT : HIT_QUALITY_GOOD;
 
         hitCount++;
@@ -224,8 +186,6 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     public enum HitResult { NOTHING_TO_WORK, PROGRESSED, COMPLETED, MISS }
 
     public int getHitCount() { return hitCount; }
-
-    // ── Internal helpers ──────────────────────────────────────────────────────
 
     private boolean canBurn(RecipeHolder<SmithyRecipe> recipe) {
         ItemStack result = recipe.value().getResult();
@@ -249,7 +209,6 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         input.shrink(1);
         if (input.isEmpty()) items.set(SLOT_INPUT, ItemStack.EMPTY);
 
-        // Reset recipe selection so the player must choose again for the next piece
         selectedRecipeIdx = -1;
         markerPos         = 0;
         markerDir         = 1;
@@ -277,13 +236,11 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
         if (!(serverLevel.recipeAccess() instanceof RecipeManager rm)) return List.of();
 
         SingleRecipeInput recipeInput = new SingleRecipeInput(input);
-        return rm.recipeMap().byType(GotModRecipeTypes.SMITHY.get()).stream()
+        return rm.recipeMap().byType(ModRecipeTypes.SMITHY.get()).stream()
                 .filter(h -> h.value().matches(recipeInput, serverLevel))
                 .sorted(Comparator.comparing(h -> h.id().toString()))
                 .collect(Collectors.toList());
     }
-
-    // ── Public API ────────────────────────────────────────────────────────────
 
     public void setSelectedRecipeIndex(int idx) {
         this.selectedRecipeIdx = idx;
@@ -298,10 +255,6 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     public ItemStack getLastCraftedItem() { return lastCraftedItem; }
     public boolean isAwaitingPickup() { return awaitingPickup; }
 
-    /**
-     * Called when the player right-clicks the anvil while awaitingPickup is true.
-     * Gives the output stack to the player (or drops it) and resets the anvil.
-     */
     public void collectCraftedItem(Player player) {
         ItemStack output = items.get(SLOT_OUTPUT);
         if (!output.isEmpty()) {
@@ -317,8 +270,6 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     }
 
     public ContainerData getDataAccess() { return dataAccess; }
-
-    // ── Container ─────────────────────────────────────────────────────────────
 
     @Override public NonNullList<ItemStack> getItems()           { return items; }
     @Override public void setItems(NonNullList<ItemStack> items) { this.items = items; }
@@ -351,7 +302,7 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
             markerPos         = 0;
             markerDir         = 1;
             lastHitQuality    = HIT_QUALITY_NONE;
-            if (!stack.isEmpty()) lastCraftedItem = ItemStack.EMPTY; // new input clears display
+            if (!stack.isEmpty()) lastCraftedItem = ItemStack.EMPTY;
             setChanged();
             syncToClient();
         }
@@ -363,8 +314,6 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     }
 
     @Override public void clearContent() { items.clear(); }
-
-    // ── WorldlyContainer ──────────────────────────────────────────────────────
 
     private static final int[] SLOTS_TOP    = { SLOT_INPUT };
     private static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT };
@@ -391,16 +340,14 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == SLOT_OUTPUT) return false;
         if (slot == SLOT_INPUT) {
-            // Only accept hot ingots (must have the got:hot component)
-            return stack.has(GotModDataComponents.HOT.get());
+            
+            return stack.has(ModDataComponents.HOT.get());
         }
         return true;
     }
 
     @Override
     public int getMaxStackSize() { return 1; }
-
-    // ── Menu ─────────────────────────────────────────────────────────────────
 
     @Override
     protected Component getDefaultName() {
@@ -411,8 +358,6 @@ public class SmithingAnvilBlockEntity extends BaseContainerBlockEntity implement
     protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
         return new SmithingAnvilMenu(id, inventory, this, dataAccess);
     }
-
-    // ── NBT ──────────────────────────────────────────────────────────────────
 
     @Override
     protected void loadAdditional(ValueInput input) {

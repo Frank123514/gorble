@@ -5,14 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>client → server</b> when the player clicks a job in
- * {@link net.got.client.gui.NpcHireScreen}.
- *
- * <p>The server validates that the entity exists, is a
- * {@link net.got.event.entity.npc.smallfolk.SmallfolkEntity}, is currently
- * unemployed, and is within interaction range before assigning the job.
- */
 public record HireNpcPayload(int entityId, String occupationId) implements CustomPacketPayload {
 
     public static final Identifier ID =

@@ -2,7 +2,7 @@ package net.got.worldgen.biome.placers;
 
 import com.mojang.serialization.Codec;
 import net.got.block.TripleReedsBlock;
-import net.got.init.GotModBlocks;
+import net.got.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -13,27 +13,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-/**
- * Scatters clumps of 3-tall reeds ({@code got:reeds}) in shallow water and on
- * wet shorelines.
- *
- * <p>Placement contract (from the placed-feature JSON):
- * <ul>
- *   <li>Heightmap: {@code OCEAN_FLOOR_WG} — the origin pos is the topmost
- *       solid block, i.e. the ground under any water column.</li>
- *   <li>Count/in_square scatter the origin across the chunk.</li>
- * </ul>
- *
- * <p>For each attempt this feature:
- * <ol>
- *   <li>Picks a random offset within {@code ±XZ_SPREAD, 0 y} of the origin.</li>
- *   <li>Verifies the candidate ground block is in the valid-ground set.</li>
- *   <li>Verifies the water column above is 1–2 blocks deep (shallow only).</li>
- *   <li>Places all three reed sections (section=0/1/2) starting one block
- *       above the ground, skipping waterlogged state — reeds emerge above the
- *       waterline.</li>
- * </ol>
- */
 public class TripleReedsPatchFeature extends Feature<NoneFeatureConfiguration> {
 
     public static final int TRIES     = 32;
@@ -46,7 +25,7 @@ public class TripleReedsPatchFeature extends Feature<NoneFeatureConfiguration> {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
         WorldGenLevel level  = ctx.level();
-        BlockPos      origin = ctx.origin();   // OCEAN_FLOOR_WG → top solid block
+        BlockPos      origin = ctx.origin();
         RandomSource  rand   = ctx.random();
 
         boolean placed = false;
@@ -59,7 +38,6 @@ public class TripleReedsPatchFeature extends Feature<NoneFeatureConfiguration> {
 
             if (!isValidGround(level, ground)) continue;
 
-            // Count water blocks directly above the ground (shallow = 1 or 2)
             int waterDepth = 0;
             for (int w = 1; w <= 3; w++) {
                 if (level.getFluidState(ground.above(w)).is(FluidTags.WATER)) {
@@ -69,18 +47,15 @@ public class TripleReedsPatchFeature extends Feature<NoneFeatureConfiguration> {
                 }
             }
 
-            // Must have at least 1 water block above (in water), max 2 deep
             if (waterDepth < 1 || waterDepth > 2) continue;
 
-            // The bottom reed section goes one block above the ground (in water)
             BlockPos bottom = ground.above(1);
 
-            // Need 3 clear blocks for the full plant
             if (!canReplace(level, bottom) ||
                 !canReplace(level, bottom.above(1)) ||
                 !canReplace(level, bottom.above(2))) continue;
 
-            Block reedBlock = GotModBlocks.REEDS.get();
+            Block reedBlock = ModBlocks.REEDS.get();
             BlockState s0 = reedBlock.defaultBlockState()
                     .setValue(TripleReedsBlock.SECTION, 0)
                     .setValue(TripleReedsBlock.WATERLOGGED, true);

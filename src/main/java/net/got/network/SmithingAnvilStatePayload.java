@@ -5,12 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent server→client to push the current smithing anvil working state
- * so the client HUD overlay can display the timing bar without the GUI open.
- *
- * active=false means the anvil is no longer "armed" (no recipe / ingot removed).
- */
 public record SmithingAnvilStatePayload(
         boolean active,
         int markerPos,

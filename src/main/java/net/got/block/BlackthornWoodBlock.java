@@ -1,6 +1,6 @@
 package net.got.block;
 
-public class BlackthornWoodBlock extends GotFlammableRotatedPillarBlock {
+public class BlackthornWoodBlock extends FlammableRotatedPillarBlock {
 
     public BlackthornWoodBlock(Properties properties) {
         super(properties);

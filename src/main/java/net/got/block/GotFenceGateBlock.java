@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
-/** Generic fence gate for all GOT wood types. */
 public class GotFenceGateBlock extends FenceGateBlock {
     public GotFenceGateBlock(WoodType woodType, Properties p) {
         super(woodType, p.sound(SoundType.WOOD).strength(2f, 3f).ignitedByLava().forceSolidOn());

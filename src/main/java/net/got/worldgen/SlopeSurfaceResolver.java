@@ -20,38 +20,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/**
- * Data-driven system that replaces surface blocks on steep terrain with
- * biome-specific "exposed rock" to create natural cliff faces, mountain flanks,
- * and eroded hillsides.
- *
- * <h3>How it works</h3>
- * <p>After vanilla {@code buildSurface} runs, {@link #applySlopeBlocks} iterates
- * every surface column, computes the terrain slope angle in <em>degrees</em>
- * using the same approach as the Middle Earth mod — rise/run gradient sampled
- * at offset 3 across all four cardinal directions, averaged, then passed through
- * {@code Math.atan} — looks up the biome, and applies the first matching rule.
- *
- * <p>Using a real angle (0°–90°) instead of raw integer height-diffs eliminates
- * the staircase-quantisation artefact where {@code Mth.floor} on gentle slopes
- * produced spurious 2–3 block integer jumps that triggered rules everywhere.
- *
- * <p>Per-column noise jitter shifts the threshold slightly at each position so
- * band edges are organic and irregular rather than geometric.
- *
- * <h3>Data file</h3>
- * {@code data/got/worldgen/slope_rules/slope_rules.json}
- *
- * <ul>
- *   <li>{@code min_slope} — angle threshold in <strong>degrees</strong> (0–90).
- *       Typical values: 20° = noticeable hill, 35° = steep hillside,
- *       50° = cliff face, 65° = near-vertical escarpment.</li>
- *   <li>{@code block}     — namespaced block ID (default {@code minecraft:stone}).</li>
- *   <li>{@code depth}     — blocks below surface top to replace (default 3, min 1).</li>
- *   <li>{@code jitter}    — noise magnitude in degrees added to threshold per-column
- *       to break up band edges (default 3.0, range 0–10 recommended).</li>
- * </ul>
- */
 public final class SlopeSurfaceResolver {
 
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -59,61 +27,21 @@ public final class SlopeSurfaceResolver {
     private static final Identifier SLOPE_RULES_LOC =
             Identifier.fromNamespaceAndPath("got", "worldgen/slope_rules/slope_rules.json");
 
-    /**
-     * World-space scale of the threshold-jitter noise in blocks.
-     * ~40 blocks gives island-sized organic variation within each slope band.
-     */
     private static final double JITTER_NOISE_SCALE = 40.0;
 
-    /**
-     * Offset in blocks used when sampling neighbours for slope computation.
-     * Matching Middle Earth's value of 3 gives a gradient averaged over a
-     * wider base, smoothing out single-block terrain irregularities.
-     */
     private static final int SLOPE_SAMPLE_OFFSET = 3;
 
-    // ── Live state ─────────────────────────────────────────────────────────
-
-    /** Biome ID → sorted (steepest-first) rule list. */
     private static volatile Map<String, List<SlopeRuleDef>> ruleMap = Map.of();
 
-    /**
-     * Noise used to jitter per-column thresholds so band edges are organic.
-     * Seeded differently from terrain noise to avoid correlation.
-     */
     private static volatile SimplexNoise jitterNoise = SimplexNoise.seeded(0L);
 
     private SlopeSurfaceResolver() {}
-
-    // ── Seed initialisation ────────────────────────────────────────────────
 
     public static void initSeed(long worldSeed) {
         jitterNoise = SimplexNoise.seeded(worldSeed ^ 0xC0FFEE1AFADEL);
         LOGGER.debug("[GoT] SlopeSurfaceResolver seeded with world seed {}", worldSeed);
     }
 
-    // ── Slope computation ──────────────────────────────────────────────────
-
-    /**
-     * Returns the terrain slope angle in <strong>degrees</strong> (0–90) at
-     * ({@code worldX}, {@code worldZ}).
-     *
-     * <p>Uses a <em>central-difference Euclidean gradient</em>:
-     * <ol>
-     *   <li>Compute X and Z partial derivatives via symmetric central differences:
-     *       {@code dX = (h(x+off) - h(x-off)) / (2*off)},
-     *       {@code dZ = (h(z+off) - h(z-off)) / (2*off)}.</li>
-     *   <li>Combine into the true 2D gradient magnitude:
-     *       {@code |grad| = sqrt(dX^2 + dZ^2)}.</li>
-     *   <li>Convert to degrees: {@code atan(|grad|) * (180/pi)}.</li>
-     * </ol>
-     *
-     * <p>Central differences are second-order accurate and treat the terrain
-     * as a proper 2D vector field, giving a steepness measure that is
-     * rotationally symmetric and does not over-count diagonal slopes.
-     *
-     * @return slope angle in degrees (0 = flat, 90 = vertical)
-     */
     public static float computeSlope(int worldX, int worldZ) {
         int off = SLOPE_SAMPLE_OFFSET;
         float span = 2.0f * off;
@@ -127,21 +55,11 @@ public final class SlopeSurfaceResolver {
         return (float) Math.toDegrees(Math.atan(gradientMagnitude));
     }
 
-    // ── Chunk post-processor ───────────────────────────────────────────────
-
-    /**
-     * Post-processes surface columns in {@code chunk}, replacing the top
-     * {@code depth} solid blocks wherever slope angle exceeds a (noise-jittered)
-     * threshold in degrees.
-     *
-     * <p>Call from {@link GotChunkGenerator#buildSurface} after vanilla surface
-     * generation and road/wall passes.
-     */
     public static void applySlopeBlocks(ChunkAccess chunk, WorldGenLevel region) {
         Map<String, List<SlopeRuleDef>> rules = ruleMap;
         if (rules.isEmpty()) return;
 
-        SimplexNoise noise = jitterNoise; // capture volatile once
+        SimplexNoise noise = jitterNoise;
         int baseX = chunk.getPos().getMinBlockX();
         int baseZ = chunk.getPos().getMinBlockZ();
 
@@ -163,10 +81,8 @@ public final class SlopeSurfaceResolver {
                 if (biomeRules == null || biomeRules.isEmpty()) continue;
 
                 float slopeDegrees = computeSlope(wx, wz);
-                if (slopeDegrees < 0.5f) continue; // effectively flat, skip early
+                if (slopeDegrees < 0.5f) continue;
 
-                // Find first matching rule (steepest-first), applying per-column
-                // noise jitter (in degrees) to break up smooth band boundaries.
                 SlopeRuleDef matched = null;
                 for (SlopeRuleDef rule : biomeRules) {
                     float effectiveThreshold = rule.minSlope();
@@ -199,8 +115,6 @@ public final class SlopeSurfaceResolver {
             }
         }
     }
-
-    // ── Load / apply ───────────────────────────────────────────────────────
 
     public static Map<String, List<SlopeRuleDef>> load(ResourceManager manager) {
         Map<String, List<SlopeRuleDef>> result = new LinkedHashMap<>();
@@ -269,7 +183,6 @@ public final class SlopeSurfaceResolver {
         return Collections.unmodifiableMap(ruleMap);
     }
 
-    /** Debug string for the F3 overlay. */
     public static String debugInfo(String biomeId, int worldX, int worldZ) {
         float slopeDeg = computeSlope(worldX, worldZ);
         List<SlopeRuleDef> rules = ruleMap.get(biomeId);

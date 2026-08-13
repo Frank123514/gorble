@@ -1,8 +1,8 @@
 package net.got.menu;
 
 import net.got.block.SmithingAnvilBlockEntity;
-import net.got.init.GotModDataComponents;
-import net.got.init.GotModMenus;
+import net.got.init.ModDataComponents;
+import net.got.init.ModMenus;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -18,15 +18,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * SmithingAnvilMenu — container menu for the Smithing Anvil block.
- *
- * Slot layout in the menu (indices used by AbstractContainerMenu.slots):
- *   0–26 — player main inventory
- *   27–35 — player hotbar
- *   36    — anvil input  (container slot 0)
- *   37    — anvil output (container slot 1)
- */
 public class SmithingAnvilMenu extends AbstractContainerMenu {
 
     public static final int INPUT_X  = 20;
@@ -43,17 +34,15 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
     private static final int TE_INPUT_IDX     = 36;
     private static final int TE_OUTPUT_IDX    = 37;
 
-    /** Client-side constructor (called by MenuType factory). */
     public SmithingAnvilMenu(int windowId, Inventory playerInv) {
         this(windowId, playerInv,
                 new SimpleContainer(SmithingAnvilBlockEntity.NUM_SLOTS),
                 new SimpleContainerData(SmithingAnvilBlockEntity.NUM_DATA));
     }
 
-    /** Server-side constructor (called by SmithingAnvilBlockEntity). */
     public SmithingAnvilMenu(int windowId, Inventory playerInv,
                              Container container, ContainerData data) {
-        super(GotModMenus.SMITHING_ANVIL.get(), windowId);
+        super(ModMenus.SMITHING_ANVIL.get(), windowId);
         this.container = container;
         this.data      = data;
         this.level     = playerInv.player.level();
@@ -62,25 +51,20 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, SmithingAnvilBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // Player main inventory (rows 0–2)
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
                         8 + col * 18, 84 + row * 18));
 
-        // Hotbar
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // Anvil slots
         this.addSlot(new HotIngotSlot(container, SmithingAnvilBlockEntity.SLOT_INPUT, INPUT_X, INPUT_Y));
         this.addSlot(new ResultSlot(playerInv.player, container,
                 SmithingAnvilBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
 
         this.addDataSlots(data);
     }
-
-    // ── Progress helpers (used by SmithingAnvilScreen) ────────────────────────
 
     public int getHitCount() {
         return data.get(SmithingAnvilBlockEntity.DATA_HIT_COUNT);
@@ -111,8 +95,6 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
 
     public Container getContainer() { return container; }
 
-    // ── Client-side recipe list ───────────────────────────────────────────────
-
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes() {
         ItemStack input = getInputItem();
         if (input.isEmpty()) return List.of();
@@ -123,8 +105,6 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
                 .sorted(Comparator.comparing(h -> h.id().toString()))
                 .collect(Collectors.toList());
     }
-
-    // ── Shift-click ───────────────────────────────────────────────────────────
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
@@ -158,13 +138,10 @@ public class SmithingAnvilMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    // ── Inner slot types ──────────────────────────────────────────────────────
-
-    /** Input slot — only accepts hot ingots, one at a time. */
     private static class HotIngotSlot extends Slot {
         HotIngotSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public boolean mayPlace(ItemStack stack) {
-            return stack.has(GotModDataComponents.HOT.get());
+            return stack.has(ModDataComponents.HOT.get());
         }
         @Override public int getMaxStackSize() { return 1; }
         @Override public int getMaxStackSize(ItemStack stack) { return 1; }

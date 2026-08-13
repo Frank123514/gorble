@@ -15,13 +15,6 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import java.util.List;
 
-/**
- * SmithingAnvilScreen — the GUI for the Smithing Anvil block.
- *
- * Displays the stonecutter-style recipe selection panel, and a timing
- * bar below the output slot that the player must hit at the right moment
- * with the smithing hammer.
- */
 public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMenu> {
 
     private static final Identifier STONECUTTER_TEXTURE =
@@ -49,19 +42,15 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
     private static final int SCROLLER_H = 15;
     private static final int SCROLL_X   = 119;
 
-    // Colors
     private static final int C_SLOT_BG = 0xFF_8B8B8B;
     private static final int C_LT      = 0xFF_FFFFFF;
     private static final int C_DK      = 0xFF_555555;
     private static final int C_TEXT    = 0xFF_404040;
 
-    // ── State ─────────────────────────────────────────────────────────────────
     private int     scrollOffset       = 0;
     private boolean isDraggingScroller = false;
     private List<RecipeHolder<SmithyRecipe>> recipes = List.of();
     private ItemStack lastInput = ItemStack.EMPTY;
-
-
 
     public SmithingAnvilScreen(SmithingAnvilMenu menu, Inventory playerInv, Component title) {
         super(menu, playerInv, title);
@@ -94,14 +83,10 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
         g.blit(RenderPipelines.GUI_TEXTURED, STONECUTTER_TEXTURE,
                 x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        // Clear the stonecutter's built-in input/fuel slot area
         g.fill(x + 19, y + 32, x + 37, y + 51, 0xFFC6C6C6);
 
-        // Draw our single input slot
         vanillaSlot(g, x + SmithingAnvilMenu.INPUT_X - 1, y + SmithingAnvilMenu.INPUT_Y - 1);
     }
-
-    // ── Recipe grid ───────────────────────────────────────────────────────────
 
     private void renderRecipeGrid(GuiGraphics g, int mouseX, int mouseY) {
         int gx = leftPos + GRID_X;
@@ -138,7 +123,6 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
             }
         }
 
-        // Scroller thumb
         boolean canScroll = maxScroll > 0;
         int trackH = GRID_H - SCROLLER_H;
         int thumbY  = canScroll
@@ -164,8 +148,6 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
             }
         }
     }
-
-    // ── Mouse input ───────────────────────────────────────────────────────────
 
     @Override
     public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
@@ -222,8 +204,6 @@ public class SmithingAnvilScreen extends AbstractContainerScreen<SmithingAnvilMe
         }
         return super.mouseScrolled(mx, my, sx, sy);
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private void updateScrollFromMouse(int mouseY) {
         int maxRows   = (int) Math.ceil((double) recipes.size() / GRID_COLS);

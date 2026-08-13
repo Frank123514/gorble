@@ -15,30 +15,6 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import java.util.stream.Stream;
 
-/**
- * Placement filter that only lets a candidate position through if a
- * matching fluid (typically {@code minecraft:water}) is found within
- * {@code radius} blocks on the XZ plane (checked across a small vertical
- * band too, since a pond's surface and the dry ground beside it aren't
- * always exactly the same Y).
- *
- * <p>This exists specifically because vanilla's {@code matching_fluids}
- * block predicate doesn't support the kind of "look around a radius, not
- * just this one block" check we need for e.g. willows wanting to spawn
- * near — not just not-inside — water. Rolling our own means we control
- * the exact JSON shape and don't have to guess at whether some vanilla
- * predicate field exists in this version.
- *
- * <h2>JSON example</h2>
- * <pre>{@code
- * {
- *   "type": "got:near_fluid",
- *   "fluid_tag": "minecraft:water",
- *   "radius": 3,
- *   "vertical_range": 1
- * }
- * }</pre>
- */
 public class NearFluidFilter extends PlacementModifier {
 
     public static final MapCodec<NearFluidFilter> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(

@@ -1,7 +1,7 @@
 package net.got.block;
 
 import com.mojang.serialization.MapCodec;
-import net.got.init.GotModParticles;
+import net.got.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -18,7 +18,6 @@ public class WeirwoodLeavesBlock extends LeavesBlock {
 	@Override
 	public MapCodec<WeirwoodLeavesBlock> codec() { return CODEC; }
 
-
     public WeirwoodLeavesBlock(Properties properties) {
         super(0.1f, properties.sound(SoundType.GRASS).strength(0.2f).noOcclusion()
                 .pushReaction(PushReaction.DESTROY)
@@ -32,12 +31,11 @@ public class WeirwoodLeavesBlock extends LeavesBlock {
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
 
-        // ~1-in-15 chance per tick, matching cherry leaves frequency
         if (random.nextInt(15) == 0) {
             double x = pos.getX() + random.nextDouble();
             double y = pos.getY() - 0.05;
             double z = pos.getZ() + random.nextDouble();
-            level.addParticle(GotModParticles.WEIRWOOD_LEAF.get(), x, y, z, 0, 0, 0);
+            level.addParticle(ModParticles.WEIRWOOD_LEAF.get(), x, y, z, 0, 0, 0);
         }
     }
 

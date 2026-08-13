@@ -13,36 +13,6 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import java.util.stream.Stream;
 
-/**
- * Placement filter that only lets a candidate position through if it sits
- * in the smooth, gently-climbing <em>foot</em> of a mountain biome — not
- * merely anywhere the local slope happens to be gentle (ridge shoulders,
- * saddles, and fold valleys can all be locally flat too, high up in the
- * range).
- *
- * <p>Reuses {@link MountainSlopemapResolver#rampWeight(int, int)}, the same
- * edge-distance field {@code GotChunkGenerator} uses to climb a mountain
- * pixel's height from {@link MountainSlopemapResolver#FOOT_HEIGHT} up to its
- * full configured peak. {@code rampWeight} is 0 right at the mountain's
- * border and rises to 1 once a pixel is {@link MountainSlopemapResolver#RAMP_PIXELS}
- * pixels deep into the blob — so capping it at a low threshold restricts a
- * feature to that first stretch of the climb (the actual foot of the
- * mountain, still near its edge) regardless of what the terrain is doing
- * further up the ridge or in some other locally-flat pocket.
- *
- * <p>If the biomemap/slopemap isn't loaded yet, this fails open (lets the
- * position through) rather than silently deleting the feature everywhere —
- * mirroring how {@code GotChunkGenerator} treats an unloaded map as "no
- * mountain shaping applies here".
- *
- * <h2>JSON example</h2>
- * <pre>{@code
- * {
- *   "type": "got:mountain_base_filter",
- *   "max_ramp_weight": 0.35
- * }
- * }</pre>
- */
 public class MountainBaseFilter extends PlacementModifier {
 
     public static final MapCodec<MountainBaseFilter> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(

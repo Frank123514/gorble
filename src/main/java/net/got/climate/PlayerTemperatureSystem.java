@@ -17,75 +17,39 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Body temperature system.
- *
- * <h3>Body temperature scale: [0.0, 1.0]</h3>
- * <ul>
- *   <li>1.0 = dangerously overheated</li>
- *   <li>~0.5 = comfortable/neutral</li>
- *   <li>0.0 = dangerously frozen</li>
- * </ul>
- *
- * <h3>Environmental target</h3>
- * Effective biome temp (biome + season offset) is mapped linearly to a body
- * temp target. Comfortable neutral is biome temp ~0.65 (temperate plains) → 0.5.
- *
- * <h3>Wet modifier</h3>
- * Being submerged in water or standing in rain while cold drives body temp down
- * much faster (hypothermia). Being wet while already overheated slightly cools you.
- *
- * <h3>Effects</h3>
- * <table>
- *   <tr><th>Band</th>         <th>Range</th>        <th>Effects</th></tr>
- *   <tr><td>Overheated</td>   <td>≥ 0.85</td>       <td>Nausea, Mining Fatigue</td></tr>
- *   <tr><td>Warm</td>         <td>0.60–0.85</td>     <td>None (comfortable)</td></tr>
- *   <tr><td>Chilly</td>       <td>0.40–0.60</td>     <td>Slowness I</td></tr>
- *   <tr><td>Cold</td>         <td>0.20–0.40</td>     <td>Slowness I + Mining Fatigue I</td></tr>
- *   <tr><td>Freezing</td>     <td>&lt; 0.20</td>     <td>Above + freeze damage</td></tr>
- * </table>
- */
 @EventBusSubscriber(modid = GotMod.MODID)
 public final class PlayerTemperatureSystem {
 
-    // ── Public thresholds (used by HUD and ThirstSystem) ─────────────────────
     public static final float BODY_MAX        = 1.0f;
     public static final float BODY_MIN        = 0.0f;
-    public static final float BODY_OVERHEAT   = 0.85f; // dangerously hot
-    public static final float BODY_WARM       = 0.60f; // comfortable
+    public static final float BODY_OVERHEAT   = 0.85f;
+    public static final float BODY_WARM       = 0.60f;
     public static final float BODY_CHILLY     = 0.40f;
-    public static final float BODY_COLD       = 0.20f; // dangerously cold
+    public static final float BODY_COLD       = 0.20f;
 
-    // ── Drift rates (per 20-tick interval) ───────────────────────────────────
-    /** Normal drift rate toward environmental target. */
     private static final float DRIFT_NORMAL       = 0.035f;
-    /** Extra speed when wet and body temp < 0.5 (hypothermia). */
+    
     private static final float DRIFT_WET_COLD     = 0.09f;
-    /** Cooling bonus when wet and overheated. */
+    
     private static final float DRIFT_WET_HOT      = 0.05f;
-    /** Each armor piece slows cooling (not warming). */
+    
     private static final float ARMOR_INSULATION   = 0.007f;
-    /** Heat source warms you toward BODY_MAX quickly. */
+    
     private static final float HEAT_SOURCE_BONUS  = 0.06f;
 
     private static final int   INTERVAL           = 20;
     private static final float FREEZE_DAMAGE      = 0.5f;
     private static final float OVERHEAT_DAMAGE    = 0.5f;
 
-    // ── Season adjustments (shared with BiomeMixin / SnowMeltHandler) ─────────
-    public static final float ADJ_SUMMER =  0.00f; // summer = normal biome temperature, no adjustment
+    public static final float ADJ_SUMMER =  0.00f;
     public static final float ADJ_SPRING = +0.05f;
     public static final float ADJ_AUTUMN = -0.20f;
     public static final float ADJ_WINTER = -0.80f;
 
-    // ── Biome temp → body temp mapping ────────────────────────────────────────
-    // Biome temp range [-0.5, 2.0] → body temp [0.0, 1.0]
-    // Comfort zone: effective biome ~0.65 → body 0.5 (neutral)
     public static final float BIOME_TEMP_MIN   = -0.5f;
     public static final float BIOME_TEMP_MAX   =  2.0f;
-    private static final float BIOME_RANGE     = BIOME_TEMP_MAX - BIOME_TEMP_MIN; // 2.5
+    private static final float BIOME_RANGE     = BIOME_TEMP_MAX - BIOME_TEMP_MIN;
 
-    // ── Per-player storage ────────────────────────────────────────────────────
     private static final ConcurrentHashMap<UUID, Float> BODY_TEMPS =
             new ConcurrentHashMap<>();
 
@@ -100,8 +64,6 @@ public final class PlayerTemperatureSystem {
     public static void remove(UUID id) {
         BODY_TEMPS.remove(id);
     }
-
-    // ── Tick ──────────────────────────────────────────────────────────────────
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -121,11 +83,9 @@ public final class PlayerTemperatureSystem {
         applyEffects(sp, body);
     }
 
-    // ── Environment target ────────────────────────────────────────────────────
-
     private static float computeEnvTarget(ServerPlayer player) {
         if (isNearHeatSource(player)) return Mth.clamp(BODY_WARM + 0.1f, BODY_MIN, BODY_MAX);
-        if (!isOutdoors(player))      return 0.5f; // indoors — drift toward neutral
+        if (!isOutdoors(player))      return 0.5f;
         return biomeToBodyTarget(getEffectiveBiomeTemp(player));
     }
 
@@ -136,9 +96,6 @@ public final class PlayerTemperatureSystem {
         float base  = biome.getTemperature(pos, level.getSeaLevel());
         float latitudeAdj = LatitudeClimate.temperatureAdjustment(pos.getX(), pos.getZ());
 
-        // Hot biomes unaffected by season (same rule as BiomeMixin), but the
-        // far north's latitude override still applies — no biome stays warm
-        // forever once you're deep enough beyond the freeze line.
         if (biome.getBaseTemperature() > 0.8f) {
             return Mth.clamp(base + latitudeAdj, BIOME_TEMP_MIN, BIOME_TEMP_MAX);
         }
@@ -159,8 +116,7 @@ public final class PlayerTemperatureSystem {
         );
     }
 
-    // ── Drift ─────────────────────────────────────────────────────────────────
-
+    // moves body temp toward the target, capped per tick; armor/heat/wetness change the rate
     private static float drift(float current, float target, ServerPlayer player) {
         float diff = target - current;
         float step;
@@ -168,18 +124,17 @@ public final class PlayerTemperatureSystem {
         boolean wet = isWet(player);
 
         if (diff > 0f) {
-            // Warming up
+            
             step = Math.min(diff, DRIFT_NORMAL);
             if (isNearHeatSource(player)) step += HEAT_SOURCE_BONUS;
-            // Being wet when overheated provides mild cooling (evaporative)
+            
             if (wet && current > 0.5f) step -= DRIFT_WET_HOT;
         } else {
-            // Cooling down
+            
             int   armor      = countArmor(player);
             float insulation = armor * ARMOR_INSULATION;
             float rate       = DRIFT_NORMAL - insulation;
 
-            // Wet + cold = hypothermia: rapid cooling
             if (wet && current < 0.5f) rate += DRIFT_WET_COLD;
 
             step = Math.max(diff, -Math.max(0f, rate));
@@ -188,38 +143,29 @@ public final class PlayerTemperatureSystem {
         return Mth.clamp(current + step, BODY_MIN, BODY_MAX);
     }
 
-    // ── Effects ───────────────────────────────────────────────────────────────
-    // No potion effects are applied for temperature — visual feedback comes
-    // entirely from the HUD screen overlays (frozen / heat vignette).
-    // Only raw damage is applied at the extremes.
-
     private static void applyEffects(ServerPlayer player, float body) {
-        // Always clear any lingering climate potion effects (e.g. from old saves)
+        
         player.removeEffect(MobEffects.SLOWNESS);
         player.removeEffect(MobEffects.MINING_FATIGUE);
         player.removeEffect(MobEffects.NAUSEA);
 
-        // Extreme cold — freeze damage (screen overlay handles the visual)
         if (body < BODY_COLD) {
             player.hurt(player.damageSources().freeze(), FREEZE_DAMAGE);
         }
 
-        // Extreme heat — hotfloor damage (heat vignette overlay handles the visual)
         if (body >= BODY_MAX) {
             player.hurt(player.damageSources().hotFloor(), OVERHEAT_DAMAGE);
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
     public static boolean isWet(ServerPlayer player) {
         var level = (net.minecraft.server.level.ServerLevel) player.level();
         var pos   = player.blockPosition();
-        // Submerged in water
+        
         FluidState fluid = level.getFluidState(pos);
         if (!fluid.isEmpty() && fluid.is(Fluids.WATER)) return true;
         if (!fluid.isEmpty() && fluid.is(Fluids.FLOWING_WATER)) return true;
-        // Standing in rain (outdoors, raining, no overhead cover)
+        
         return level.isRainingAt(pos) && isOutdoors(player);
     }
 
@@ -247,17 +193,12 @@ public final class PlayerTemperatureSystem {
         for (EquipmentSlot slot : new EquipmentSlot[]{
                 EquipmentSlot.HEAD, EquipmentSlot.CHEST,
                 EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
-            // NOTE (1.21.5 port): ArmorItem was removed — armor pieces are now plain
-            // Items configured via Item.Properties#humanoidArmor, with no dedicated
-            // subclass left to instanceof-check. Anything occupying a HEAD/CHEST/LEGS/FEET
-            // equipment slot is armor for this purpose, so just check the slot is filled.
+            
             ItemStack s = player.getItemBySlot(slot);
             if (!s.isEmpty()) n++;
         }
         return n;
     }
-
-    // ── Public API ────────────────────────────────────────────────────────────
 
     public static TempBand getBand(UUID id) {
         float t = getBodyTemp(id);

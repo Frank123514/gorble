@@ -12,7 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.entity.InsideBlockEffectApplier; // TODO-VERIFY: confirm exact package for your NeoForge 1.21.5 build (IDE autocomplete)
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -83,11 +83,7 @@ public class QuagmireBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    // TODO(port-1.21.11): 1.21.9->1.21.10 primer adds a trailing `boolean` param to
-    // entityInside ("indicating whether the entity is intersecting or inside the block").
-    // Param name/position guessed as `isInside` appended last — verify against the actual
-    // BlockBehaviour#entityInside signature in your IDE/decompiled sources and adjust if the
-    // compiler complains about the override not matching.
+    
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean isInside) {
         if (!(entity instanceof LivingEntity livingEntity)) return;
 
@@ -122,7 +118,6 @@ public class QuagmireBlock extends Block implements SimpleWaterloggedBlock {
     public boolean canBeReplaced(BlockState state, Fluid fluid) {
         return false;
     }
-
 
     @Override
     public FluidState getFluidState(BlockState state) {

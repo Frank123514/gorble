@@ -5,11 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent client→server when the player clicks the mode tab in the Forge GUI
- * (Smithing &lt;-&gt; Alloying). The server sets the Forge's mode and
- * re-opens the menu so the player gets the correct screen/slots.
- */
 public record SelectForgeModePayload(int mode) implements CustomPacketPayload {
 
     public static final Type<SelectForgeModePayload> TYPE =

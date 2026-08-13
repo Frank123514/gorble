@@ -52,7 +52,6 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
         state.hasItem = !toRender.isEmpty();
         if (!state.hasItem) return;
 
-        // Sample light from the air above the anvil top face, not the block itself
         state.aboveLight = getLightAbove(be.getLevel(), be.getBlockPos());
 
         itemModelResolver.updateForTopItem(
@@ -75,12 +74,6 @@ public class SmithingAnvilBlockEntityRenderer implements BlockEntityRenderer<Smi
         poseStack.scale(0.75f, 0.75f, 0.75f);
         poseStack.mulPose(Axis.XP.rotationDegrees(90f));
 
-        // NOTE: ItemStackRenderState#submit's exact parameter list could not be verified against your
-        // local jar (the decompiler failed on that class). This follows the confirmed pattern from the
-        // 1.21.9 migration primer ("render -> submit, taking a SubmitNodeCollector instead of a
-        // MultiBufferSource, plus an outline color") applied to the old render(PoseStack, MultiBufferSource,
-        // packedLight, packedOverlay) signature. If this doesn't compile locally, check IntelliJ's
-        // "go to declaration" on ItemStackRenderState#submit and let me know the real parameter list.
         state.itemRenderState.submit(poseStack, collector, state.aboveLight,
                 net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY, 0);
 

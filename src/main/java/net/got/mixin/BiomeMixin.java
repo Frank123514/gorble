@@ -17,25 +17,12 @@ public class BiomeMixin {
 
     private static final float WINTER_TEMP_ADJUSTMENT = -0.8f;
 
-    // Snow-layer accumulation is disabled entirely — neither normal biome
-    // temperature nor the winter season adjustment causes snow to actually
-    // be placed in the world anymore. Only the visual snow particle effect
-    // during winter remains (see WeatherEffectRendererMixin). This is the
-    // gate vanilla's tickPrecipitation checks right before placing a snow
-    // layer, so cancelling it to always return false stops all of it at
-    // the source.
     @Inject(method = "shouldSnow", at = @At("HEAD"), cancellable = true, remap = false)
     public void gotSeason_shouldSnow(LevelReader level, BlockPos pos,
                                      CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(false);
     }
 
-    // NOTE: the frozen latitude line does NOT use this hook. Vanilla's
-    // shouldFreeze only turns water into ice when it's adjacent to already-
-    // cold/snowy land, so relying on it here would mean latitude ice can only
-    // ever spread in from an existing frozen shore — exactly the shore-
-    // dependent behaviour we don't want north of the line. See
-    // LatitudeIceHandler for the independent gradient-based instant freeze.
     @Redirect(
             method = "shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Z)Z",
             at = @At(value = "INVOKE",
@@ -50,7 +37,7 @@ public class BiomeMixin {
 
         boolean hotBiome = biome.getBaseTemperature() > 0.8f;
         if (hotBiome) {
-            // Hot biomes are untouched — unchanged behaviour.
+            
             return biome.warmEnoughToRain(pos, seaLevel);
         }
 

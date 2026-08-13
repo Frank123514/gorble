@@ -5,12 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>client → server</b> when the player presses "Confirm Selection" on
- * the {@link net.got.client.gui.FactionSelectionScreen}.
- *
- * @param factionId The unique faction id chosen, e.g. {@code "north"}.
- */
 public record SelectFactionPayload(String factionId) implements CustomPacketPayload {
 
     public static final Identifier ID =

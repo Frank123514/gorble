@@ -1,6 +1,6 @@
 package net.got.block;
 
-public class AppleLogBlock extends GotFlammableRotatedPillarBlock {
+public class AppleLogBlock extends FlammableRotatedPillarBlock {
 
     public AppleLogBlock(Properties properties) {
         super(properties);

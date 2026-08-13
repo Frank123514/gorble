@@ -8,10 +8,6 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
-/**
- * Custom chest-boat entity for GoT wood types.
- * Passes the drop-item supplier directly to AbstractBoat (getDropItem() is final in 1.21.x).
- */
 public class GotChestBoat extends ChestBoat {
 
     private final Identifier boatTexture;
@@ -22,7 +18,6 @@ public class GotChestBoat extends ChestBoat {
         this.boatTexture = texture;
     }
 
-    /** Called by GotBoatRenderer to determine which texture to use. */
     public Identifier getBoatTexture() {
         return boatTexture;
     }

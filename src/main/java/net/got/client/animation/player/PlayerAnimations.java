@@ -5,35 +5,6 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-/**
- * Player keyframe animations exported from Blockbench 5.1.6.
- * Minecraft 1.21.4 / Mojang mappings.
- *
- * <p>Bone names ("body", "head", "right_arm", "left_arm", "right_leg",
- * "left_leg") match vanilla {@code HumanoidModel}/{@code PlayerModel} part
- * names exactly, so these definitions play back directly on the real
- * player model via {@link KeyframeAnimations#animate} &mdash; no retargeting
- * needed. See {@link GotPlayerAnimator} for how/when each clip is selected
- * and blended.
- *
- * <p>WALKING/RUNNING/JUMP loop; the attack clips (SWORD_ATTACK,
- * SWORD_ATTACK_2, GREATSWORD_ATTACK, AXE_ATTACK) are one-shots played over
- * a fixed visual swing window (see {@code GotPlayerAnimator.applySwing}).
- *
- * <p>HORSE_IDLE and HORSE_RUNNING loop the same way
- * WALKING/RUNNING/JUMP do. SWORD_BLOCK is a single-keyframe hold pose (its
- * source only has one keyframe per channel) but is still marked
- * {@code .looping()} in the export, so it's played back the same way too
- * rather than as a one-shot.
- *
- * <p>GREATSWORD_ATTACK also carries "right_pants"/"left_pants" position
- * channels from the source file; those bones aren't wired up here since
- * the player mixin only owns body/head/rightArm/leftArm/rightLeg/leftLeg
- * (pants layers inherit their parent leg's rotation automatically — see
- * {@code PlayerModelMixin}'s class doc) &mdash; harmless to leave in place if
- * that ever changes, since {@code KeyframeAnimations.animate} silently
- * skips bones it can't find on the target model.
- */
 public class PlayerAnimations {
 
         public static final AnimationDefinition WALKING = AnimationDefinition.Builder.withLength(0.8575F).looping()

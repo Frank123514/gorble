@@ -6,7 +6,7 @@ import net.got.block.BellowsBlock;
 import net.got.block.BellowsBlockEntity;
 import net.got.client.animation.BellowsAnimations;
 import net.got.client.model.BellowsModel;
-import net.got.event.entity.client.model.GotModelLayers;
+import net.got.event.entity.client.model.ModelLayers;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -32,7 +32,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     private final BellowsModel model;
 
     public BellowsBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.model = new BellowsModel(ctx.bakeLayer(GotModelLayers.BELLOWS));
+        this.model = new BellowsModel(ctx.bakeLayer(ModelLayers.BELLOWS));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -65,10 +65,6 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     public void submit(BellowsRenderState state, PoseStack poseStack, SubmitNodeCollector collector,
                        CameraRenderState cameraState) {
 
-        // Drive animation from the block entity's existing tick counter.
-        // Always call applyAnimation - even when not pumping - so the shared model
-        // instance is reset to rest pose before each bellows is rendered.
-        // (A single BellowsModel is reused for every bellows in the world.)
         if (state.pumping) {
             float ageInTicks = state.animationProgress + state.partialTick;
             model.applyAnimation(BellowsAnimations.PUMPING, ageInTicks, 1.0F);

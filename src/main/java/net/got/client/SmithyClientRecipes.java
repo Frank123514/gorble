@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Holds the smithy recipe list that was last synced from the server.
- * Populated by {@link SmithyRecipeSyncClient} on {@code RecipesReceivedEvent}.
- */
 @OnlyIn(Dist.CLIENT)
 public final class SmithyClientRecipes {
 

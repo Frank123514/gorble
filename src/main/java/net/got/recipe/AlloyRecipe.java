@@ -3,8 +3,8 @@ package net.got.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.got.init.GotModRecipeSerializers;
-import net.got.init.GotModRecipeTypes;
+import net.got.init.ModRecipeSerializers;
+import net.got.init.ModRecipeTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -13,26 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-/**
- * AlloyRecipe — four-slot 3:1 recipe processed by the Forge block's alloying mode.
- * Three slots hold ingredient_a and one slot holds ingredient_b.
- * For example: 3× copper_ingot + 1× tin_ingot → 4× bronze_ingot.
- *
- * JSON format (type "got:alloy"):
- * <pre>
- * {
- *   "type": "got:alloy",
- *   "ingredient_a": { "item": "minecraft:copper_ingot" },
- *   "ingredient_b": { "item": "got:tin_ingot" },
- *   "result": { "id": "got:bronze_ingot", "count": 4 },
- *   "cookingtime": 240
- * }
- * </pre>
- */
 public class AlloyRecipe implements Recipe<AlloyRecipeInput> {
 
-    private final Ingredient ingredientA; // the ×3 ingredient
-    private final Ingredient ingredientB; // the ×1 ingredient
+    private final Ingredient ingredientA;
+    private final Ingredient ingredientB;
     private final ItemStack  result;
     private final int        cookingTime;
 
@@ -43,27 +27,17 @@ public class AlloyRecipe implements Recipe<AlloyRecipeInput> {
         this.cookingTime = cookingTime;
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
-
     public Ingredient getIngredientA() { return ingredientA; }
     public Ingredient getIngredientB() { return ingredientB; }
     public ItemStack   getResult()     { return result; }
     public int         getCookingTime(){ return cookingTime; }
 
-    // ── Recipe<AlloyRecipeInput> ──────────────────────────────────────────────
-
-    /**
-     * Matches when all four input slots are filled:
-     *   - exactly 3 slots satisfy ingredientA
-     *   - exactly 1 slot  satisfies ingredientB
-     * (also accepts the reverse assignment — A is the ×1 and B is the ×3)
-     */
     @Override
     public boolean matches(AlloyRecipeInput input, Level level) {
         ItemStack[] stacks = {
             input.itemA(), input.itemB(), input.itemC(), input.itemD()
         };
-        // All four slots must be non-empty
+        
         for (ItemStack s : stacks) {
             if (s.isEmpty()) return false;
         }
@@ -71,7 +45,6 @@ public class AlloyRecipe implements Recipe<AlloyRecipeInput> {
             || matchesRatio(stacks, ingredientB, ingredientA);
     }
 
-    /** Returns true when exactly 3 stacks satisfy {@code three} and 1 satisfies {@code one}. */
     private static boolean matchesRatio(ItemStack[] stacks, Ingredient three, Ingredient one) {
         int threeCount = 0, oneCount = 0;
         for (ItemStack s : stacks) {
@@ -103,15 +76,13 @@ public class AlloyRecipe implements Recipe<AlloyRecipeInput> {
 
     @Override
     public RecipeSerializer<AlloyRecipe> getSerializer() {
-        return GotModRecipeSerializers.ALLOY_RECIPE.get();
+        return ModRecipeSerializers.ALLOY_RECIPE.get();
     }
 
     @Override
     public RecipeType<AlloyRecipe> getType() {
-        return GotModRecipeTypes.ALLOY.get();
+        return ModRecipeTypes.ALLOY.get();
     }
-
-    // ── Serializer ────────────────────────────────────────────────────────────
 
     public static class Serializer implements RecipeSerializer<AlloyRecipe> {
 

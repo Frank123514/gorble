@@ -1,7 +1,7 @@
 package net.got.client.gui;
 
-import net.got.event.entity.npc.data.GotNpcOccupation;
-import net.got.event.entity.npc.data.GotNpcTrades;
+import net.got.event.entity.npc.data.NpcOccupation;
+import net.got.event.entity.npc.data.NpcTrades;
 import net.got.network.CloseInteractScreenPayload;
 import net.got.network.ExecuteSellPayload;
 import net.minecraft.client.Minecraft;
@@ -16,33 +16,20 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Redesigned NPC trade screen.
- *
- * - No text labels ("You can buy" etc. removed)
- * - Buy tab: grid of item icons — left-click to buy
- * - Sell tab: grid of item icons — left-click to sell (items taken from inventory)
- * - Hovering an icon shows a tooltip with name + price
- * - Tinted red when you can't afford / don't have enough items
- * - Larger panel with generous spacing
- * - Extends Screen (not AbstractContainerScreen) — no container slot overhead
- */
 public class NpcTradeScreen extends Screen {
 
-    // ── Layout ────────────────────────────────────────────────────────────────
     private static final int GUI_W       = 252;
     private static final int GUI_H       = 260;
     private static final int COLS        = 5;
-    private static final int CELL        = 40;   // cell stride (px)
-    private static final int ICON_PAD    = 12;   // padding inside cell before icon (centres 16px icon)
-    private static final int GRID_X      = 14;   // left margin of grid
-    private static final int GRID_Y      = 36;   // top of grid (below tab bar)
+    private static final int CELL        = 40;
+    private static final int ICON_PAD    = 12;
+    private static final int GRID_X      = 14;
+    private static final int GRID_Y      = 36;
     private static final int TAB_Y       = 8;
     private static final int TAB_W       = 60;
     private static final int TAB_H       = 18;
-    private static final int MAX_ROWS    = 4;    // visible rows before scroll
+    private static final int MAX_ROWS    = 4;
 
-    // ── Colours ───────────────────────────────────────────────────────────────
     private static final int C_BG        = 0xFF_C6C6C6;
     private static final int C_HILITE    = 0xFF_FFFFFF;
     private static final int C_SHADOW    = 0xFF_555555;
@@ -58,23 +45,22 @@ public class NpcTradeScreen extends Screen {
     private static final int TINT_HOVER  = 0x55_FFFFFF;
     private static final int TINT_GOOD   = 0x33_40FF40;
 
-    // ── State ─────────────────────────────────────────────────────────────────
     private final int            entityId;
-    private final GotNpcOccupation occupation;
+    private final NpcOccupation occupation;
     private final String         npcName;
-    private int  tab     = 0;   // 0 = buy, 1 = sell
-    private int  scrollY = 0;   // current scroll row offset
+    private int  tab     = 0;
+    private int  scrollY = 0;
 
-    private List<GotNpcTrades.BuyOffer>  buyOffers;
-    private List<GotNpcTrades.SellOffer> sellOffers;
+    private List<NpcTrades.BuyOffer>  buyOffers;
+    private List<NpcTrades.SellOffer> sellOffers;
 
     private NpcTradeScreen(int entityId, String occupationId, String npcName) {
         super(Component.empty());
         this.entityId   = entityId;
-        this.occupation = GotNpcOccupation.fromString(occupationId);
+        this.occupation = NpcOccupation.fromString(occupationId);
         this.npcName    = npcName;
-        this.buyOffers  = GotNpcTrades.getBuyOffers(this.occupation);
-        this.sellOffers = GotNpcTrades.getSellOffers(this.occupation);
+        this.buyOffers  = NpcTrades.getBuyOffers(this.occupation);
+        this.sellOffers = NpcTrades.getSellOffers(this.occupation);
     }
 
     public static void open(int entityId, String occupationId, String npcName) {
@@ -83,8 +69,6 @@ public class NpcTradeScreen extends Screen {
     }
 
     @Override public boolean isPauseScreen() { return false; }
-
-    // ── Rendering ─────────────────────────────────────────────────────────────
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float delta) {
@@ -99,18 +83,17 @@ public class NpcTradeScreen extends Screen {
     }
 
     private void drawPanel(GuiGraphics g, int px, int py) {
-        // Outer border
+        
         g.fill(px - 1, py - 1, px + GUI_W + 1, py + GUI_H + 1, C_BORDER);
-        // Background
+        
         g.fill(px, py, px + GUI_W, py + GUI_H, C_BG);
-        // Highlight (top + left edge)
+        
         g.fill(px, py, px + GUI_W, py + 1, C_HILITE);
         g.fill(px, py, px + 1, py + GUI_H, C_HILITE);
-        // Shadow (bottom + right edge)
+        
         g.fill(px, py + GUI_H - 1, px + GUI_W, py + GUI_H, C_SHADOW);
         g.fill(px + GUI_W - 1, py, px + GUI_W, py + GUI_H, C_SHADOW);
 
-        // NPC name centred at top
         g.drawCenteredString(font, npcName.isEmpty() ? capitalize(occupation.id) : npcName,
                 px + GUI_W / 2, py + 2, C_TEXT);
     }
@@ -155,21 +138,17 @@ public class NpcTradeScreen extends Screen {
 
                 boolean canDo = (inv != null) && canExecute(idx, inv);
 
-                // Slot background
                 g.fill(cx - 1, cy - 1, cx + CELL - 3, cy + CELL - 3, C_SLOT_BDR);
                 g.fill(cx, cy, cx + CELL - 4, cy + CELL - 4, C_SLOT);
 
-                // Affordability tint
                 if (!canDo)
                     g.fill(cx, cy, cx + CELL - 4, cy + CELL - 4, TINT_BAD);
                 else if (hov)
                     g.fill(cx, cy, cx + CELL - 4, cy + CELL - 4, TINT_HOVER);
 
-                // Item icon — centred in cell
                 ItemStack stack = getDisplayStack(idx);
                 g.renderItem(stack, cx + ICON_PAD, cy + ICON_PAD);
 
-                // Count badge (bottom-right of icon)
                 int count = stack.getCount();
                 if (count > 1) {
                     String cnt = String.valueOf(count);
@@ -180,7 +159,6 @@ public class NpcTradeScreen extends Screen {
             }
         }
 
-        // Scroll arrows
         int arrowX = px + GUI_W - 14;
         if (scrollY > 0)
             g.drawString(font, "▲", arrowX, py + GRID_Y, C_WHITE, true);
@@ -211,13 +189,13 @@ public class NpcTradeScreen extends Screen {
                 tooltip.add(stack.getHoverName());
 
                 if (tab == 0) {
-                    GotNpcTrades.BuyOffer offer = buyOffers.get(idx);
+                    NpcTrades.BuyOffer offer = buyOffers.get(idx);
                     String coinName = capitalize(offer.coinType().id);
                     tooltip.add(Component.literal("§7Cost: §e" + offer.coinCost() + " " + coinName));
                     boolean can = inv != null && canExecute(idx, inv);
                     tooltip.add(Component.literal(can ? "§aLeft-click to buy" : "§cNot enough coins"));
                 } else {
-                    GotNpcTrades.SellOffer offer = sellOffers.get(idx);
+                    NpcTrades.SellOffer offer = sellOffers.get(idx);
                     String coinName = capitalize(offer.coinType().id);
                     tooltip.add(Component.literal("§7Need: §f" + offer.costCount() + "x "
                             + new ItemStack(offer.costItem()).getHoverName().getString()));
@@ -232,14 +210,11 @@ public class NpcTradeScreen extends Screen {
         }
     }
 
-    // ── Input ─────────────────────────────────────────────────────────────────
-
     @Override
     public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent __event, boolean __doubleClick){
         if (__event.button() != 0) return super.mouseClicked(__event, __doubleClick);
         int px = (width - GUI_W) / 2, py = (height - GUI_H) / 2;
 
-        // Tabs
         if (inRect(__event.x(), __event.y(), px + 4, py + TAB_Y, TAB_W, TAB_H)) {
             tab = 0; scrollY = 0; return true;
         }
@@ -247,7 +222,6 @@ public class NpcTradeScreen extends Screen {
             tab = 1; scrollY = 0; return true;
         }
 
-        // Grid cells
         List<?> offers = (tab == 0) ? buyOffers : sellOffers;
         int rows = (int) Math.ceil((double) offers.size() / COLS);
         int visRows = Math.min(rows, MAX_ROWS);
@@ -291,20 +265,17 @@ public class NpcTradeScreen extends Screen {
         super.onClose();
     }
 
-    // World shows through — no background dim
     @Override
     public void renderBackground(GuiGraphics g, int mx, int my, float delta) {}
-
-    // ── Trade execution ───────────────────────────────────────────────────────
 
     private boolean canExecute(int idx, Inventory inv) {
         if (tab == 0) {
             if (idx >= buyOffers.size()) return false;
-            GotNpcTrades.BuyOffer o = buyOffers.get(idx);
+            NpcTrades.BuyOffer o = buyOffers.get(idx);
             return o.coinType().countIn(inv) >= o.coinCost();
         } else {
             if (idx >= sellOffers.size()) return false;
-            GotNpcTrades.SellOffer o = sellOffers.get(idx);
+            NpcTrades.SellOffer o = sellOffers.get(idx);
             int have = 0;
             for (int i = 0; i < inv.getContainerSize(); i++) {
                 ItemStack s = inv.getItem(i);
@@ -316,18 +287,17 @@ public class NpcTradeScreen extends Screen {
 
     private ItemStack getDisplayStack(int idx) {
         if (tab == 0) {
-            GotNpcTrades.BuyOffer o = buyOffers.get(idx);
+            NpcTrades.BuyOffer o = buyOffers.get(idx);
             return o.payStack();
         } else {
-            GotNpcTrades.SellOffer o = sellOffers.get(idx);
+            NpcTrades.SellOffer o = sellOffers.get(idx);
             return o.costStack();
         }
     }
 
-    /** Buy: remove coins from inventory, grant items. (client-side) */
     private void executeBuy(int idx) {
         if (idx >= buyOffers.size() || minecraft == null || minecraft.player == null) return;
-        GotNpcTrades.BuyOffer offer = buyOffers.get(idx);
+        NpcTrades.BuyOffer offer = buyOffers.get(idx);
         Inventory inv = minecraft.player.getInventory();
         if (!canExecute(idx, inv)) return;
         offer.coinType().removeFrom(inv, offer.coinCost());
@@ -335,14 +305,12 @@ public class NpcTradeScreen extends Screen {
         inv.setChanged();
     }
 
-    /** Sell: server-authoritative, sends payload. */
     private void executeSell(int idx) {
         if (idx >= sellOffers.size() || minecraft == null || minecraft.player == null) return;
         if (!canExecute(idx, minecraft.player.getInventory())) return;
         ClientPacketDistributor.sendToServer(new ExecuteSellPayload(entityId, idx));
 
-        // Optimistic client-side update so the player sees inventory change instantly
-        GotNpcTrades.SellOffer offer = sellOffers.get(idx);
+        NpcTrades.SellOffer offer = sellOffers.get(idx);
         Inventory inv = minecraft.player.getInventory();
         int toRemove = offer.costCount();
         for (int i = 0; i < inv.getContainerSize() && toRemove > 0; i++) {
@@ -357,8 +325,6 @@ public class NpcTradeScreen extends Screen {
         inv.add(offer.coinStack());
         inv.setChanged();
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static boolean inRect(double mx, double my, int x, int y, int w, int h) {
         return mx >= x && mx < x + w && my >= y && my < y + h;

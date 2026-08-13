@@ -2,8 +2,8 @@ package net.got.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.got.init.GotModRecipeSerializers;
-import net.got.init.GotModRecipeTypes;
+import net.got.init.ModRecipeSerializers;
+import net.got.init.ModRecipeTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,24 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-/**
- * OvenRecipe — ported from OFAW (1.16.5) to NeoForge 1.21.4.
- *
- * A shaped, 3×3 recipe processed by the Oven block with a cooking timer and
- * fuel consumption (like a furnace-grid hybrid).
- *
- * JSON format (type "got:oven"):
- * <pre>
- * {
- *   "type": "got:oven",
- *   "pattern": ["ABC", "DEF", "GHI"],
- *   "key": { "A": {"item": "minecraft:..."}, ... },
- *   "result": { "id": "minecraft:...", "count": 1 },
- *   "cookingtime": 200,
- *   "experience": 0.1
- * }
- * </pre>
- */
 public class OvenRecipe implements Recipe<CraftingInput> {
 
     private final ShapedRecipePattern pattern;
@@ -45,13 +27,9 @@ public class OvenRecipe implements Recipe<CraftingInput> {
         this.cookingTime = cookingTime;
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
-
     public float getExperience()  { return experience; }
     public int   getCookingTime() { return cookingTime; }
     public ItemStack getResult()  { return result; }
-
-    // ── Recipe<CraftingInput> ─────────────────────────────────────────────────
 
     @Override
     public boolean matches(CraftingInput input, Level level) {
@@ -63,7 +41,6 @@ public class OvenRecipe implements Recipe<CraftingInput> {
         return result.copy();
     }
 
-    /** Exposes ingredient positions for the recipe book. */
     @Override
     public PlacementInfo placementInfo() {
         return PlacementInfo.createFromOptionals(pattern.ingredients());
@@ -76,15 +53,13 @@ public class OvenRecipe implements Recipe<CraftingInput> {
 
     @Override
     public RecipeSerializer<OvenRecipe> getSerializer() {
-        return GotModRecipeSerializers.OVEN_RECIPE.get();
+        return ModRecipeSerializers.OVEN_RECIPE.get();
     }
 
     @Override
     public RecipeType<OvenRecipe> getType() {
-        return GotModRecipeTypes.OVEN.get();
+        return ModRecipeTypes.OVEN.get();
     }
-
-    // ── Serializer ────────────────────────────────────────────────────────────
 
     public static class Serializer implements RecipeSerializer<OvenRecipe> {
 

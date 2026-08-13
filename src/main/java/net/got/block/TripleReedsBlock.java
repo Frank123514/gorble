@@ -24,10 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 
 import javax.annotation.Nullable;
 
-/**
- * TripleReedsBlock — a 3-block-tall waterloggable reed.
- * Can be placed on water-edge terrain OR directly submerged in water.
- */
 public class TripleReedsBlock extends TriplePlantBlock implements SimpleWaterloggedBlock {
 
     public static final MapCodec<BushBlock> CODEC =
@@ -45,11 +41,9 @@ public class TripleReedsBlock extends TriplePlantBlock implements SimpleWaterlog
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder); // adds SECTION
+        super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
-
-    // ── Placement ─────────────────────────────────────────────────────────────
 
     @Override
     @Nullable
@@ -65,13 +59,11 @@ public class TripleReedsBlock extends TriplePlantBlock implements SimpleWaterlog
                             @Nullable net.minecraft.world.entity.LivingEntity placer,
                             net.minecraft.world.item.ItemStack stack) {
         if (!level.isClientSide()) {
-            // Middle/top inherit waterlogged=false; they're above the waterline
+            
             level.setBlock(pos.above(),  defaultBlockState().setValue(SECTION, 1).setValue(WATERLOGGED, false), Block.UPDATE_ALL);
             level.setBlock(pos.above(2), defaultBlockState().setValue(SECTION, 2).setValue(WATERLOGGED, false), Block.UPDATE_ALL);
         }
     }
-
-    // ── Survival ─────────────────────────────────────────────────────────────
 
     @Override
     protected boolean canSurviveAtBottom(BlockState state, LevelReader level, BlockPos pos) {
@@ -95,8 +87,6 @@ public class TripleReedsBlock extends TriplePlantBlock implements SimpleWaterlog
         }
         return false;
     }
-
-    // ── Waterlogging ──────────────────────────────────────────────────────────
 
     @Override
     public FluidState getFluidState(BlockState state) {

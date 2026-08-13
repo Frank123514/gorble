@@ -24,13 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 
 import javax.annotation.Nullable;
 
-/**
- * ShortReedsBlock — a 2-block-tall waterloggable reed.
- *
- * Can be placed:
- *   - On water-edge terrain next to water  (classic shoreline placement)
- *   - Directly in water  (waterlogged; both halves survive submerged)
- */
 public class ShortReedsBlock extends DoublePlantBlock implements SimpleWaterloggedBlock {
 
     public static final MapCodec<DoublePlantBlock> CODEC =
@@ -48,11 +41,9 @@ public class ShortReedsBlock extends DoublePlantBlock implements SimpleWaterlogg
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder); // adds HALF
+        super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
-
-    // ── Ground / water checks ─────────────────────────────────────────────────
 
     @Override
     protected boolean mayPlaceOn(BlockState ground, BlockGetter level, BlockPos groundPos) {
@@ -69,7 +60,7 @@ public class ShortReedsBlock extends DoublePlantBlock implements SimpleWaterlogg
             BlockState below = level.getBlockState(pos.below());
             return below.is(this) && below.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
-        // Lower half: valid ground below AND (adjacent water OR waterlogged)
+        
         BlockPos groundPos = pos.below();
         if (!mayPlaceOn(level.getBlockState(groundPos), level, groundPos)) return false;
         return state.getValue(WATERLOGGED) || hasAdjacentWater(level, pos);
@@ -82,8 +73,6 @@ public class ShortReedsBlock extends DoublePlantBlock implements SimpleWaterlogg
         }
         return false;
     }
-
-    // ── Waterlogging ──────────────────────────────────────────────────────────
 
     @Override
     @Nullable

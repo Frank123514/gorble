@@ -12,26 +12,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/**
- * Central registry of every named waypoint on the Known-World map.
- *
- * <p>All waypoint data is loaded from the JSON resource file at
- * {@code assets/got/waypoints.json}. Edit that file to add, remove,
- * or reposition waypoints — no Java recompilation required.
- *
- * <p>The {@link #ALL} list exposes every waypoint for the full map view.
- * {@link #BY_FACTION} groups them for the faction-selection minimap.
- */
 public final class WaypointRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WaypointRegistry.class);
     private static final Gson GSON = new Gson();
     private static final String WAYPOINTS_RESOURCE = "/data/got/worldgen/waypoints/waypoints.json";
 
-    /** Maps faction id → its list of waypoints. */
     public static final Map<String, List<WaypointData>> BY_FACTION;
 
-    /** Every waypoint across all factions — used by the full-map screen. */
     public static final List<WaypointData> ALL;
 
     static {
@@ -47,7 +35,6 @@ public final class WaypointRegistry {
                         JsonObject.class
                 );
 
-                // Parse per-faction waypoints
                 JsonObject factions = root.getAsJsonObject("factions");
                 if (factions != null) {
                     for (Map.Entry<String, JsonElement> entry : factions.entrySet()) {
@@ -56,7 +43,6 @@ public final class WaypointRegistry {
                     }
                 }
 
-                // Build ALL by flattening every faction's waypoints
                 for (List<WaypointData> list : factionMap.values()) {
                     allList.addAll(list);
                 }

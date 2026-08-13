@@ -1,6 +1,6 @@
 package net.got.block;
 
-public class AspenLogBlock extends GotFlammableRotatedPillarBlock {
+public class AspenLogBlock extends FlammableRotatedPillarBlock {
 
     public AspenLogBlock(Properties properties) {
         super(properties);

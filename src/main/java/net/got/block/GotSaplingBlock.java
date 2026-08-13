@@ -5,12 +5,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.material.PushReaction;
 
-/**
- * Generic sapling block for all GOT wood types.
- * Each instance receives its own {@link TreeGrower} so it grows
- * into the correct species-specific tree when bone-mealed or
- * ticked on a valid surface.
- */
 public class GotSaplingBlock extends SaplingBlock {
 
     public GotSaplingBlock(TreeGrower grower, Properties p) {

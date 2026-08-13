@@ -5,11 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent client→server when the player clicks a recipe in the Smithy screen.
- * {@code recipeIndex} is the position within the sorted list of matching
- * SmithyRecipes for the current input item (-1 to deselect).
- */
 public record SelectSmithyRecipePayload(int recipeIndex) implements CustomPacketPayload {
 
     public static final Type<SelectSmithyRecipePayload> TYPE =

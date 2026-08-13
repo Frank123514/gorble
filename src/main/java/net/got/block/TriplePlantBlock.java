@@ -20,14 +20,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import javax.annotation.Nullable;
 
-/**
- * TriplePlantBlock — a 3-block-tall plant.
- *
- * SECTION property: 0 = bottom, 1 = middle, 2 = top.
- * Placing the bottom auto-places middle and top.
- * Breaking any section removes all three.
- * Drops only fire from section=0 (loot table condition).
- */
 public class TriplePlantBlock extends BushBlock {
 
     public static final MapCodec<BushBlock> CODEC = MapCodec.unit(
@@ -47,8 +39,6 @@ public class TriplePlantBlock extends BushBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(SECTION);
     }
-
-    // ── Placement ─────────────────────────────────────────────────────────────
 
     @Override
     @Nullable
@@ -72,8 +62,6 @@ public class TriplePlantBlock extends BushBlock {
         }
     }
 
-    // ── Survival ──────────────────────────────────────────────────────────────
-
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         int section = state.getValue(SECTION);
@@ -85,8 +73,6 @@ public class TriplePlantBlock extends BushBlock {
     protected boolean canSurviveAtBottom(BlockState state, LevelReader level, BlockPos pos) {
         return super.canSurvive(state, level, pos);
     }
-
-    // ── Shape updates — return AIR if unsupported; cascade handles the rest ───
 
     @Override
     protected BlockState updateShape(BlockState state, LevelReader levelReader,
@@ -100,8 +86,6 @@ public class TriplePlantBlock extends BushBlock {
         return super.updateShape(state, levelReader, scheduledTickAccess, pos,
                 direction, neighborPos, neighborState, random);
     }
-
-    // ── Player break — remove all three sections ──────────────────────────────
 
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {

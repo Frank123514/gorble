@@ -5,14 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>client → server</b> when the player clicks a sell-offer icon in
- * {@link net.got.client.gui.NpcTradeScreen}.
- *
- * <p>The server looks up the NPC by {@code entityId}, reads its occupation,
- * finds the sell offer at {@code offerIndex}, and if the player has the
- * required items in their inventory it removes them and grants the coin reward.
- */
 public record ExecuteSellPayload(int entityId, int offerIndex) implements CustomPacketPayload {
 
     public static final Identifier ID =

@@ -1,7 +1,7 @@
 package net.got.client.color;
 
 import net.got.climate.SeasonManager;
-import net.got.init.GotModBlocks;
+import net.got.init.ModBlocks;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.world.level.block.Blocks;
@@ -10,19 +10,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
-/**
- * Seasonal foliage tinting using desaturated (greyscale) leaf textures.
- *
- * Each tree's texture is greyscale. In summer the tint is set to the tree's
- * original average color so it looks exactly like the original texture.
- * In spring, autumn and winter a distinct seasonal tint is applied instead.
- *
- * Weirwood is excluded — its red texture is intentionally non-tinted.
- */
 @EventBusSubscriber(modid = "got", value = Dist.CLIENT)
 public final class SeasonFoliageColorProvider {
 
-    // ── Global season colors (used by BiomeColorsMixin for grass + generic foliage) ──
     public static final int SPRING_FOLIAGE = 0x80C050;
     public static final int SUMMER_FOLIAGE = 0x48B518;
     public static final int AUTUMN_FOLIAGE = 0xC07820;
@@ -34,11 +24,6 @@ public final class SeasonFoliageColorProvider {
     public static final int WINTER_GRASS   = 0x8C7D5E;
 
     public static final float SEASON_BLEND = 0.70f;
-
-    // ── Per-tree season colors ────────────────────────────────────────────────
-    // Format: { SPRING, SUMMER, AUTUMN, WINTER }
-    // SUMMER values are sampled from the original texture so summer = unchanged look.
-    // Spring is a fresh bright green. Autumn varies by species. Winter is desaturated/brown.
 
     private static final int[] ALDER        = { 0x6CB830, 0x358712, 0xC07014, 0x6A5E48 };
     private static final int[] APPLE        = { 0x7AB828, 0x606E2A, 0xB06010, 0x706050 };
@@ -100,15 +85,7 @@ public final class SeasonFoliageColorProvider {
     private static final int[] NUTMEG             = { 0x80B048, 0x608830, 0xA07828, 0x686050 };
     private static final int[] HEMLOCK            = { 0x508838, 0x386830, 0x306830, 0x406050 };
 
-    // Hranna: blood red in spring (flowers bloom), grass-tinted in summer,
-    // deep brown in autumn (dry season), grass-tinted in winter
-    // Hranna: blood red in spring (flowers bloom), grass-tinted in summer,
-    // deep brown in autumn (dry season), grass-tinted in winter
-    // Summer = SUMMER_GRASS (0x5DB535), Winter = WINTER_GRASS (0x8C7D5E)
     private static final int[] HRANNA             = { 0x8B1010, 0x5DB535, 0x5C3208, 0x8C7D5E };
-
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static int pick(int[] colors) {
         return switch (SeasonManager.getCurrentSeason()) {
@@ -123,92 +100,84 @@ public final class SeasonFoliageColorProvider {
         return (state, level, pos, tintIndex) -> pick(colors);
     }
 
-    // ── Registration ─────────────────────────────────────────────────────────
-
     @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         BlockColors bc = event.getBlockColors();
 
-        event.register(treeColor(ALDER),        GotModBlocks.ALDER_LEAVES.get());
-        event.register(treeColor(APPLE),        GotModBlocks.APPLE_LEAVES.get());
-        event.register(treeColor(ASH),          GotModBlocks.ASH_LEAVES.get());
-        event.register(treeColor(ASPEN),        GotModBlocks.ASPEN_LEAVES.get());
-        event.register(treeColor(BEECH),        GotModBlocks.BEECH_LEAVES.get());
-        event.register(treeColor(BLACK_COTTON), GotModBlocks.BLACK_COTTONWOOD_LEAVES.get());
-        event.register(treeColor(BLACKBARK),    GotModBlocks.BLACKBARK_LEAVES.get());
-        event.register(treeColor(BLOODWOOD),    GotModBlocks.BLOODWOOD_LEAVES.get());
-        event.register(treeColor(BLUE_MAHOE),   GotModBlocks.BLUE_MAHOE_LEAVES.get());
-        event.register(treeColor(CEDAR),        GotModBlocks.CEDAR_LEAVES.get());
-        event.register(treeColor(CHESTNUT),     GotModBlocks.CHESTNUT_LEAVES.get());
-        event.register(treeColor(CINNAMON),     GotModBlocks.CINNAMON_LEAVES.get());
-        event.register(treeColor(CLOVE),        GotModBlocks.CLOVE_LEAVES.get());
-        event.register(treeColor(COTTONWOOD),   GotModBlocks.COTTONWOOD_LEAVES.get());
-        event.register(treeColor(EBONY),        GotModBlocks.EBONY_LEAVES.get());
-        event.register(treeColor(ELM),          GotModBlocks.ELM_LEAVES.get());
-        event.register(treeColor(FIR),          GotModBlocks.FIR_LEAVES.get());
-        event.register(treeColor(GOLDENHEART),  GotModBlocks.GOLDENHEART_LEAVES.get());
-        event.register(treeColor(HAWTHORN),     GotModBlocks.HAWTHORN_LEAVES.get());
-        event.register(treeColor(IRONWOOD),     GotModBlocks.IRONWOOD_LEAVES.get());
-        event.register(treeColor(LINDEN),       GotModBlocks.LINDEN_LEAVES.get());
-        event.register(treeColor(MAHOGANY),     GotModBlocks.MAHOGANY_LEAVES.get());
-        event.register(treeColor(MAPLE),        GotModBlocks.MAPLE_LEAVES.get());
-        event.register(treeColor(MYRRH),        GotModBlocks.MYRRH_LEAVES.get());
+        event.register(treeColor(ALDER),        ModBlocks.ALDER_LEAVES.get());
+        event.register(treeColor(APPLE),        ModBlocks.APPLE_LEAVES.get());
+        event.register(treeColor(ASH),          ModBlocks.ASH_LEAVES.get());
+        event.register(treeColor(ASPEN),        ModBlocks.ASPEN_LEAVES.get());
+        event.register(treeColor(BEECH),        ModBlocks.BEECH_LEAVES.get());
+        event.register(treeColor(BLACK_COTTON), ModBlocks.BLACK_COTTONWOOD_LEAVES.get());
+        event.register(treeColor(BLACKBARK),    ModBlocks.BLACKBARK_LEAVES.get());
+        event.register(treeColor(BLOODWOOD),    ModBlocks.BLOODWOOD_LEAVES.get());
+        event.register(treeColor(BLUE_MAHOE),   ModBlocks.BLUE_MAHOE_LEAVES.get());
+        event.register(treeColor(CEDAR),        ModBlocks.CEDAR_LEAVES.get());
+        event.register(treeColor(CHESTNUT),     ModBlocks.CHESTNUT_LEAVES.get());
+        event.register(treeColor(CINNAMON),     ModBlocks.CINNAMON_LEAVES.get());
+        event.register(treeColor(CLOVE),        ModBlocks.CLOVE_LEAVES.get());
+        event.register(treeColor(COTTONWOOD),   ModBlocks.COTTONWOOD_LEAVES.get());
+        event.register(treeColor(EBONY),        ModBlocks.EBONY_LEAVES.get());
+        event.register(treeColor(ELM),          ModBlocks.ELM_LEAVES.get());
+        event.register(treeColor(FIR),          ModBlocks.FIR_LEAVES.get());
+        event.register(treeColor(GOLDENHEART),  ModBlocks.GOLDENHEART_LEAVES.get());
+        event.register(treeColor(HAWTHORN),     ModBlocks.HAWTHORN_LEAVES.get());
+        event.register(treeColor(IRONWOOD),     ModBlocks.IRONWOOD_LEAVES.get());
+        event.register(treeColor(LINDEN),       ModBlocks.LINDEN_LEAVES.get());
+        event.register(treeColor(MAHOGANY),     ModBlocks.MAHOGANY_LEAVES.get());
+        event.register(treeColor(MAPLE),        ModBlocks.MAPLE_LEAVES.get());
+        event.register(treeColor(MYRRH),        ModBlocks.MYRRH_LEAVES.get());
         event.register(treeColor(OAK),          Blocks.OAK_LEAVES);
-        event.register(treeColor(PINE),         GotModBlocks.PINE_LEAVES.get());
-        event.register(treeColor(REDWOOD),      GotModBlocks.REDWOOD_LEAVES.get());
-        event.register(treeColor(SENTINAL),     GotModBlocks.SENTINAL_LEAVES.get());
-        event.register(treeColor(SOLDIER_PINE), GotModBlocks.SOLDIER_PINE_LEAVES.get());
-        event.register(treeColor(WILLOW),       GotModBlocks.WILLOW_LEAVES.get());
-        event.register(treeColor(WORMTREE),     GotModBlocks.WORMTREE_LEAVES.get());
+        event.register(treeColor(PINE),         ModBlocks.PINE_LEAVES.get());
+        event.register(treeColor(REDWOOD),      ModBlocks.REDWOOD_LEAVES.get());
+        event.register(treeColor(SENTINAL),     ModBlocks.SENTINAL_LEAVES.get());
+        event.register(treeColor(SOLDIER_PINE), ModBlocks.SOLDIER_PINE_LEAVES.get());
+        event.register(treeColor(WILLOW),       ModBlocks.WILLOW_LEAVES.get());
+        event.register(treeColor(WORMTREE),     ModBlocks.WORMTREE_LEAVES.get());
 
-        event.register(treeColor(NIGHTWOOD),        GotModBlocks.NIGHTWOOD_LEAVES.get());
-        event.register(treeColor(PURPLEHEART),        GotModBlocks.PURPLEHEART_LEAVES.get());
-        event.register(treeColor(TIGERWOOD),        GotModBlocks.TIGERWOOD_LEAVES.get());
-        event.register(treeColor(SANDALWOOD),        GotModBlocks.SANDALWOOD_LEAVES.get());
-        event.register(treeColor(SANDBEGGAR),        GotModBlocks.SANDBEGGAR_LEAVES.get());
-        event.register(treeColor(APRICOT),        GotModBlocks.APRICOT_LEAVES.get());
-        event.register(treeColor(BLACKTHORN),        GotModBlocks.BLACKTHORN_LEAVES.get());
-        event.register(treeColor(RED_CHERRY),        GotModBlocks.RED_CHERRY_LEAVES.get());
-        event.register(treeColor(BLACK_CHERRY),      GotModBlocks.BLACK_CHERRY_LEAVES.get());
-        event.register(treeColor(WHITE_CHERRY),      GotModBlocks.WHITE_CHERRY_LEAVES.get());
-        event.register(treeColor(CRABAPPLE),        GotModBlocks.CRABAPPLE_LEAVES.get());
-        event.register(treeColor(DATE_PALM),        GotModBlocks.DATE_PALM_LEAVES.get());
-        event.register(treeColor(FIG),        GotModBlocks.FIG_LEAVES.get());
-        event.register(treeColor(LEMON),        GotModBlocks.LEMON_LEAVES.get());
-        event.register(treeColor(LIME),        GotModBlocks.LIME_LEAVES.get());
-        event.register(treeColor(OLIVE),        GotModBlocks.OLIVE_LEAVES.get());
-        event.register(treeColor(ORANGE),        GotModBlocks.ORANGE_LEAVES.get());
-        event.register(treeColor(PEACH),        GotModBlocks.PEACH_LEAVES.get());
-        event.register(treeColor(PEAR),        GotModBlocks.PEAR_LEAVES.get());
-        event.register(treeColor(PERSIMMON),        GotModBlocks.PERSIMMON_LEAVES.get());
-        event.register(treeColor(PINK_IVORY),        GotModBlocks.PINK_IVORY_LEAVES.get());
-        event.register(treeColor(PLUM),        GotModBlocks.PLUM_LEAVES.get());
-        event.register(treeColor(POMEGRANATE),        GotModBlocks.POMEGRANATE_LEAVES.get());
-        event.register(treeColor(PRUNE),        GotModBlocks.PRUNE_LEAVES.get());
-        event.register(treeColor(ALMOND),        GotModBlocks.ALMOND_LEAVES.get());
-        event.register(treeColor(NUTMEG),        GotModBlocks.NUTMEG_LEAVES.get());
-        event.register(treeColor(HEMLOCK),        GotModBlocks.HEMLOCK_LEAVES.get());
+        event.register(treeColor(NIGHTWOOD),        ModBlocks.NIGHTWOOD_LEAVES.get());
+        event.register(treeColor(PURPLEHEART),        ModBlocks.PURPLEHEART_LEAVES.get());
+        event.register(treeColor(TIGERWOOD),        ModBlocks.TIGERWOOD_LEAVES.get());
+        event.register(treeColor(SANDALWOOD),        ModBlocks.SANDALWOOD_LEAVES.get());
+        event.register(treeColor(SANDBEGGAR),        ModBlocks.SANDBEGGAR_LEAVES.get());
+        event.register(treeColor(APRICOT),        ModBlocks.APRICOT_LEAVES.get());
+        event.register(treeColor(BLACKTHORN),        ModBlocks.BLACKTHORN_LEAVES.get());
+        event.register(treeColor(RED_CHERRY),        ModBlocks.RED_CHERRY_LEAVES.get());
+        event.register(treeColor(BLACK_CHERRY),      ModBlocks.BLACK_CHERRY_LEAVES.get());
+        event.register(treeColor(WHITE_CHERRY),      ModBlocks.WHITE_CHERRY_LEAVES.get());
+        event.register(treeColor(CRABAPPLE),        ModBlocks.CRABAPPLE_LEAVES.get());
+        event.register(treeColor(DATE_PALM),        ModBlocks.DATE_PALM_LEAVES.get());
+        event.register(treeColor(FIG),        ModBlocks.FIG_LEAVES.get());
+        event.register(treeColor(LEMON),        ModBlocks.LEMON_LEAVES.get());
+        event.register(treeColor(LIME),        ModBlocks.LIME_LEAVES.get());
+        event.register(treeColor(OLIVE),        ModBlocks.OLIVE_LEAVES.get());
+        event.register(treeColor(ORANGE),        ModBlocks.ORANGE_LEAVES.get());
+        event.register(treeColor(PEACH),        ModBlocks.PEACH_LEAVES.get());
+        event.register(treeColor(PEAR),        ModBlocks.PEAR_LEAVES.get());
+        event.register(treeColor(PERSIMMON),        ModBlocks.PERSIMMON_LEAVES.get());
+        event.register(treeColor(PINK_IVORY),        ModBlocks.PINK_IVORY_LEAVES.get());
+        event.register(treeColor(PLUM),        ModBlocks.PLUM_LEAVES.get());
+        event.register(treeColor(POMEGRANATE),        ModBlocks.POMEGRANATE_LEAVES.get());
+        event.register(treeColor(PRUNE),        ModBlocks.PRUNE_LEAVES.get());
+        event.register(treeColor(ALMOND),        ModBlocks.ALMOND_LEAVES.get());
+        event.register(treeColor(NUTMEG),        ModBlocks.NUTMEG_LEAVES.get());
+        event.register(treeColor(HEMLOCK),        ModBlocks.HEMLOCK_LEAVES.get());
 
-        // Hranna — seasonal tint: blood red spring, grass summer, deep brown autumn, grass winter
-        event.register(treeColor(HRANNA), GotModBlocks.HRANNA.get());
+        event.register(treeColor(HRANNA), ModBlocks.HRANNA.get());
 
-        // Weirwood — registered with a white (0xFFFFFF) no-op tint so neither
-        // seasonal nor biome foliage color is ever multiplied onto the texture.
-        event.register((state, level, pos, tintIndex) -> 0xFFFFFF, GotModBlocks.WEIRWOOD_LEAVES.get());
+        event.register((state, level, pos, tintIndex) -> 0xFFFFFF, ModBlocks.WEIRWOOD_LEAVES.get());
 
-        // Grass blocks
         event.register(
                 (state, level, pos, tintIndex) ->
                         bc.getColor(Blocks.SHORT_GRASS.defaultBlockState(),
                                 level, pos, tintIndex),
-                GotModBlocks.DEVILGRASS.get(),
-                GotModBlocks.WHEATGRASS.get(),
-                GotModBlocks.IVY.get(),
-                GotModBlocks.NETTLE.get()
+                ModBlocks.DEVILGRASS.get(),
+                ModBlocks.WHEATGRASS.get(),
+                ModBlocks.IVY.get(),
+                ModBlocks.NETTLE.get()
         );
     }
-
-    // ── Public helpers used by BiomeColorsMixin ───────────────────────────────
 
     public static int getFoliageSeasonColor() {
         return switch (SeasonManager.getCurrentSeason()) {
@@ -235,42 +204,19 @@ public final class SeasonFoliageColorProvider {
         };
     }
 
-    // ── Cold-latitude dead grass ──────────────────────────────────────────────
-    // North of a line traced on the biomemap, grass gradually turns a dead
-    // yellow-brown regardless of season, matching the WesterosCraft look for
-    // the far north. The line is not flat — it slopes gently across the map —
-    // so it's defined as two endpoints in biomemap pixel space and interpolated
-    // by map column.
-    //
-    // These values (and the dead-grass dark/light colors below) used to be hardcoded here.
-    // They now live in the same /net/got/climate/latitude_climate.json that
-    // backs LatitudeClimate's ice spine, so both latitude-driven systems —
-    // water freezing into ice, and grass fading brown — are configured from
-    // one shared JSON file, the way LOTR Mod keeps its water_latitude.json.
     private static final net.got.climate.LatitudeClimateConfig LATITUDE_CONFIG =
             net.got.climate.LatitudeClimateConfig.get();
 
-    private static final int DEAD_GRASS_LINE_MAP_X0 = LATITUDE_CONFIG.deadGrassMapX0(); // biomemap column at west edge
-    private static final int DEAD_GRASS_LINE_ROW_X0  = LATITUDE_CONFIG.deadGrassRowX0(); // biomemap row at that column
-    private static final int DEAD_GRASS_LINE_MAP_X1  = LATITUDE_CONFIG.deadGrassMapX1(); // biomemap column at east edge
-    private static final int DEAD_GRASS_LINE_ROW_X1  = LATITUDE_CONFIG.deadGrassRowX1(); // biomemap row at that column
+    private static final int DEAD_GRASS_LINE_MAP_X0 = LATITUDE_CONFIG.deadGrassMapX0();
+    private static final int DEAD_GRASS_LINE_ROW_X0  = LATITUDE_CONFIG.deadGrassRowX0();
+    private static final int DEAD_GRASS_LINE_MAP_X1  = LATITUDE_CONFIG.deadGrassMapX1();
+    private static final int DEAD_GRASS_LINE_ROW_X1  = LATITUDE_CONFIG.deadGrassRowX1();
 
-    /** How many biomemap rows the transition fades over, north of the line, for a soft edge instead of a hard cut. */
     private static final float DEAD_GRASS_FADE_ROWS = LATITUDE_CONFIG.deadGrassFadeRows();
 
-    // Dead grass is no longer a single flat color: it blends between a dark
-    // and a light shade using the same regional patch noise as
-    // getGrassPatchVariation, so the dead-grass zone reads with natural
-    // light/dark patches instead of one uniform tint.
     public static final int DEAD_GRASS_COLOR_DARK  = LATITUDE_CONFIG.deadGrassColorDark();
     public static final int DEAD_GRASS_COLOR_LIGHT = LATITUDE_CONFIG.deadGrassColorLight();
 
-    /**
-     * Returns a blend factor in [0, 1] for how "dead" (cold, yellow-brown)
-     * grass at this world position should look, based on its position
-     * relative to the sloped latitude line on the biomemap. 0 = normal
-     * seasonal grass, 1 = fully dead grass color.
-     */
     public static float getDeadGrassBlend(int worldX, int worldZ) {
         float mapX = worldX / (float) net.got.worldgen.BiomemapLoader.MAP_SCALE
                 + net.got.worldgen.BiomemapLoader.getWidth() * 0.5f;
@@ -282,59 +228,26 @@ public final class SeasonFoliageColorProvider {
                 0f, 1f);
         float thresholdRow = DEAD_GRASS_LINE_ROW_X0 + (DEAD_GRASS_LINE_ROW_X1 - DEAD_GRASS_LINE_ROW_X0) * t;
 
-        // North of the line means a smaller map row (row 0 is the top/north edge).
         float rowsNorth = thresholdRow - mapY;
         return net.minecraft.util.Mth.clamp(rowsNorth / DEAD_GRASS_FADE_ROWS, 0f, 1f);
     }
 
-    // ── Regional grass patch variation ────────────────────────────────────────
-    // Adds subtle brightness variation across large patches of terrain — some
-    // areas of the same biome read a touch darker/lighter than others, the
-    // way LOTR Mod's grass looks. Uses low-frequency noise so the variation
-    // is smooth and regional rather than a per-block speckle/static look.
-    // Kept intentionally mild (+/-6% brightness) so it reads as natural
-    // variation, not a visible pattern or a different biome.
+    private static final double GRASS_VARIATION_SCALE = 0.02;
+    private static final float  GRASS_VARIATION_STRENGTH = 0.10f;
 
-    private static final double GRASS_VARIATION_SCALE = 0.02; // large, slow-changing regions
-    private static final float  GRASS_VARIATION_STRENGTH = 0.10f; // max +/-10% brightness shift
-
-    /**
-     * Returns a brightness multiplier in [1 - strength, 1 + strength] for the
-     * given world position, smoothly varying across large regions.
-     */
     public static float getGrassPatchVariation(int x, int z) {
         double n = net.got.worldgen.SimplexNoise.noise(
-                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
+                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE);
         return 1f + (float) n * GRASS_VARIATION_STRENGTH;
     }
 
-    /**
-     * Same regional noise as {@link #getGrassPatchVariation}, but returned
-     * as a plain 0..1 fraction instead of a brightness multiplier, for
-     * blending between two discrete colors (dark patch vs. light patch)
-     * rather than scaling a single color's brightness.
-     */
     private static float getGrassPatchNoise01(int x, int z) {
         double n = net.got.worldgen.SimplexNoise.noise(
-                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE); // [-1, 1]
-        return (float) (n * 0.5 + 0.5); // -> [0, 1]
+                x * GRASS_VARIATION_SCALE, z * GRASS_VARIATION_SCALE);
+        return (float) (n * 0.5 + 0.5);
     }
 
-    /**
-     * Dead-grass color for this world position: blends between
-     * {@link #DEAD_GRASS_COLOR_DARK} and {@link #DEAD_GRASS_COLOR_LIGHT}
-     * using the same regional patch noise as {@link #getGrassPatchVariation},
-     * so dark and light dead-grass patches read as natural regions instead
-     * of a single flat tint.
-     *
-     * <p>The raw noise swings all the way from 0 to 1, which put the full
-     * dark/light color difference on screen and looked far too harsh/blotchy.
-     * {@link #DEAD_GRASS_PATCH_CONTRAST} pulls the blend factor in toward the
-     * middle so most of the terrain sits closer to an in-between shade, and
-     * only the strongest noise peaks/troughs approach the pure dark or light
-     * color — a softer, more gradual look.
-     */
-    private static final float DEAD_GRASS_PATCH_CONTRAST = 0.35f; // 0 = flat single blend, 1 = full raw contrast
+    private static final float DEAD_GRASS_PATCH_CONTRAST = 0.35f;
 
     public static int getDeadGrassColor(int x, int z) {
         float t = getGrassPatchNoise01(x, z);
@@ -342,7 +255,6 @@ public final class SeasonFoliageColorProvider {
         return blendColors(DEAD_GRASS_COLOR_DARK, DEAD_GRASS_COLOR_LIGHT, softened);
     }
 
-    /** Multiplies each RGB channel of {@code color} by {@code factor}, clamped to [0, 255]. */
     public static int applyBrightness(int color, float factor) {
         int r = (int) net.minecraft.util.Mth.clamp(((color >> 16) & 0xFF) * factor, 0f, 255f);
         int g = (int) net.minecraft.util.Mth.clamp(((color >>  8) & 0xFF) * factor, 0f, 255f);

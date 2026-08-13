@@ -12,28 +12,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.GuiLayer;
 
-/**
- * HUD overlay for body temperature and thirst.
- *
- * <h3>Thirst</h3>
- * 10 water-droplet icons on the right side of the screen, one row above the
- * vanilla hunger bar. All 10 are always visible — filled icons use the mod
- * sprite at {@code got:textures/gui/thirst_droplet.png}; empty icons are the
- * same sprite rendered with a dark tint. Half-fill intermediate states give
- * 20 visual phases across the 10 droplets.
- * Droplets fill/empty left-to-right: the leftmost droplet empties first as
- * the player gets thirstier.
- *
- * <h3>Temperature</h3>
- * Small °F readout positioned above the health bar row (bottom-left),
- * only shown when outside the comfortable warm band.
- *
- * <h3>Screen overlays</h3>
- * <ul>
- *   <li><b>Cold</b>: vanilla {@code powder_snow_outline.png} full-screen.</li>
- *   <li><b>Heat</b>: orange-red vignette at the screen edges.</li>
- * </ul>
- */
 @EventBusSubscriber(modid = "got", value = Dist.CLIENT)
 public final class TemperatureHudOverlay implements GuiLayer {
 
@@ -44,11 +22,9 @@ public final class TemperatureHudOverlay implements GuiLayer {
     private static final Identifier POWDER_SNOW_RL =
             Identifier.fromNamespaceAndPath("minecraft", "textures/misc/powder_snow_outline.png");
 
-    /** Thirst droplet sprite — got:textures/gui/thirst_droplet.png (9×10 px). */
     private static final Identifier THIRST_DROPLET_RL =
             Identifier.fromNamespaceAndPath("got", "textures/gui/thirst_droplet.png");
 
-    // ── Client-side cache ─────────────────────────────────────────────────────
     private static volatile float clientBodyTemp = 0.5f;
     private static volatile float clientThirst   = 1.0f;
 
@@ -61,37 +37,27 @@ public final class TemperatureHudOverlay implements GuiLayer {
         clientBodyTemp = clamp(value, 0f, 1f);
     }
 
-    // ── Thirst icon layout ────────────────────────────────────────────────────
     private static final int THIRST_RIGHT_EDGE   = 91;
     private static final int THIRST_ICON_SPACING = 8;
     private static final int THIRST_Y_OFFSET     = 61;
-    /** Sprite dimensions in pixels. */
+    
     private static final int DROPLET_W = 9;
     private static final int DROPLET_H = 10;
 
-    // ── Temperature display ───────────────────────────────────────────────────
-    /**
-     * Y distance from screen bottom to the temperature text baseline.
-     * Sits one text-line above the thirst droplet row (screenH - THIRST_Y_OFFSET),
-     * stacking neatly: temp → thirst → health/hunger → hotbar.
-     */
     private static final int TEMP_MARGIN_Y = 59;
 
     private static float toFahrenheit(float bodyTemp) {
         return 85.0f + bodyTemp * 27.2f;
     }
 
-    // ── Overlay thresholds ────────────────────────────────────────────────────
     private static final float COLD_OVERLAY_START = PlayerTemperatureSystem.BODY_COLD;
     private static final float HEAT_OVERLAY_START = PlayerTemperatureSystem.BODY_WARM;
 
-    // ── Registration ──────────────────────────────────────────────────────────
     @SubscribeEvent
     public static void onRegisterGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAboveAll(ID, INSTANCE);
     }
 
-    // ── Render ────────────────────────────────────────────────────────────────
     @Override
     public void render(GuiGraphics gfx, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
@@ -114,12 +80,6 @@ public final class TemperatureHudOverlay implements GuiLayer {
         }
     }
 
-    // ── Thirst droplets ───────────────────────────────────────────────────────
-
-    /**
-     * Renders 10 droplet icons with 20 half-step phases.
-     * Fill direction: rightmost icons fill first; empties from left as thirst drops.
-     */
     private static void renderThirstDroplets(GuiGraphics gfx, int screenW, int screenH,
                                              float thirst) {
         int filled20     = Math.max(0, Math.min(20, Math.round(thirst * 20f)));
@@ -146,14 +106,6 @@ public final class TemperatureHudOverlay implements GuiLayer {
 
     private enum FillState { FULL, HALF, EMPTY }
 
-    /**
-     * Draws one droplet icon using the mod texture.
-     * <ul>
-     *   <li>FULL  — sprite at natural colour.</li>
-     *   <li>EMPTY — sprite with a dark blue-grey tint.</li>
-     *   <li>HALF  — bottom 5 rows at natural colour, top 5 rows dark-tinted.</li>
-     * </ul>
-     */
     private static void drawDroplet(GuiGraphics gfx, int x, int y, FillState state) {
         if (state == FillState.FULL) {
             gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
@@ -163,17 +115,16 @@ public final class TemperatureHudOverlay implements GuiLayer {
             gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
                     x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H, DARK_TINT);
 
-        } else { // HALF — top half dark, bottom half full colour
-            // Dark tint over entire sprite first
+        } else {
+            
             gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
                     x, y, 0f, 0f, DROPLET_W, DROPLET_H, DROPLET_W, DROPLET_H, DARK_TINT);
-            // Overwrite bottom 5 rows at full colour
+            
             gfx.blit(RenderPipelines.GUI_TEXTURED, THIRST_DROPLET_RL,
                     x, y + 5, 0f, 5f, DROPLET_W, 5, DROPLET_W, DROPLET_H, WHITE);
         }
     }
 
-    /** Packs float (0..1) RGBA into an ARGB int for tinted blit calls. */
     private static int argb(float a, float r, float g, float b) {
         return ((int) (clamp(a, 0f, 1f) * 255f) << 24)
                 | ((int) (clamp(r, 0f, 1f) * 255f) << 16)
@@ -184,20 +135,16 @@ public final class TemperatureHudOverlay implements GuiLayer {
     private static final int WHITE     = argb(1f, 1f, 1f, 1f);
     private static final int DARK_TINT = argb(1f, 0.18f, 0.22f, 0.30f);
 
-    // ── Temperature text ──────────────────────────────────────────────────────
-
     private static void renderTempText(GuiGraphics gfx, Minecraft mc,
                                        int screenW, int screenH, float bodyTemp,
                                        PlayerTemperatureSystem.TempBand band) {
         float  tempF = toFahrenheit(bodyTemp);
         String icon  = (bodyTemp < 0.5f) ? "\u2744" : "\u2605";
         String label = String.format("%s %.1f\u00b0F", icon, tempF);
-        // Align with the left edge of the vanilla health bar (screenW/2 - 91)
+        
         int x = screenW / 2 - 91;
         gfx.drawString(mc.font, label, x, screenH - TEMP_MARGIN_Y, band.color, false);
     }
-
-    // ── Screen overlays ───────────────────────────────────────────────────────
 
     private static void renderColdOverlay(GuiGraphics gfx, int screenW, int screenH,
                                           float bodyTemp) {
@@ -226,8 +173,6 @@ public final class TemperatureHudOverlay implements GuiLayer {
             gfx.fill(screenW - p - 2, p,               screenW - p,     screenH - p,     col);
         }
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static PlayerTemperatureSystem.TempBand tempBand(float t) {
         if (t >= PlayerTemperatureSystem.BODY_OVERHEAT) return PlayerTemperatureSystem.TempBand.OVERHEATED;

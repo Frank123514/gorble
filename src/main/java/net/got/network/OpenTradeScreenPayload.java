@@ -5,12 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>server → client</b> in response to {@link RequestTradeMenuPayload}.
- * The client opens {@link net.got.client.gui.NpcTradeScreen} directly
- * (no container menu needed — all trade logic runs client-side for buy,
- * server-side for sell via {@link ExecuteSellPayload}).
- */
 public record OpenTradeScreenPayload(int entityId, String occupationId, String npcName)
         implements CustomPacketPayload {
 

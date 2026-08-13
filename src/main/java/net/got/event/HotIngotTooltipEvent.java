@@ -1,7 +1,7 @@
 package net.got.event;
 
 import net.got.GotMod;
-import net.got.init.GotModDataComponents;
+import net.got.init.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Unit;
@@ -15,7 +15,7 @@ public final class HotIngotTooltipEvent {
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
-        if (event.getItemStack().has(GotModDataComponents.HOT.get())) {
+        if (event.getItemStack().has(ModDataComponents.HOT.get())) {
             event.getToolTip().add(
                 Component.translatable("item.got.hot_ingot.tooltip")
                     .withStyle(ChatFormatting.RED)

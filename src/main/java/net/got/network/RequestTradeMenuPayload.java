@@ -5,11 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>client → server</b> when the player clicks "Trade" in
- * {@link net.got.client.gui.NpcInteractScreen}.
- * The server looks up the entity and opens the {@link net.got.menu.NpcTradeMenu}.
- */
 public record RequestTradeMenuPayload(int entityId) implements CustomPacketPayload {
 
     public static final Identifier ID =

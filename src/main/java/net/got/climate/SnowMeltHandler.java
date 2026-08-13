@@ -17,26 +17,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-/**
- * Melts snow and ice on loaded chunks during non-winter seasons.
- *
- * Mirrors Serene Seasons' RandomUpdateHandler.meltInChunk approach:
- * each tick, a random surface column in each loaded chunk has a chance
- * to melt snow/ice if the seasonal biome temperature is warm enough (≥ 0.15).
- *
- * Melt rates by season (probability per chunk per tick):
- *   Spring — 0.10  (gradual melt)
- *   Summer — 0.25  (fast melt)
- *   Autumn — 0.03  (very slow, first frosts arriving)
- *   Winter — 0.0   (no melt)
- */
 @EventBusSubscriber(modid = GotMod.MODID)
 public final class SnowMeltHandler {
 
     private static final float WINTER_TEMP_ADJUSTMENT = -0.8f;
 
-    /** Probability per chunk per tick that one random surface column is checked. */
-    private static float meltChance(GotSeason season) {
+    private static float meltChance(Season season) {
         return switch (season) {
             case SPRING -> 0.10f;
             case SUMMER -> 0.25f;
@@ -51,15 +37,11 @@ public final class SnowMeltHandler {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         if (!level.dimension().equals(Level.OVERWORLD)) return;
 
-        GotSeason season = SeasonCache.get();
+        Season season = SeasonCache.get();
         float chance = meltChance(season);
         if (chance <= 0f) return;
 
-        // Iterate every block-ticking chunk and maybe melt one random surface column.
-        // ChunkMap#forEachBlockTickingChunk is package-private in 1.21.11, so
-        // instead we walk visibleChunkMap directly (already made public via our
-        // own accesstransformer.cfg) and pull each holder's ticking chunk
-        // (null if that particular chunk isn't currently block-ticking).
+        // roll a random surface block per loaded chunk each tick, melt snow/ice if warm enough
         for (ChunkHolder holder : level.getChunkSource().chunkMap.visibleChunkMap.values()) {
             LevelChunk chunk = holder.getTickingChunk();
             if (chunk == null) continue;
@@ -72,7 +54,6 @@ public final class SnowMeltHandler {
             int minX = chunkPos.getMinBlockX();
             int minZ = chunkPos.getMinBlockZ();
 
-            // Pick a random surface column, same approach as SS
             BlockPos surfaceAir = level.getHeightmapPos(
                     Heightmap.Types.MOTION_BLOCKING,
                     level.getBlockRandomPos(minX, 0, minZ, 15));
@@ -81,7 +62,6 @@ public final class SnowMeltHandler {
             BlockState airState    = level.getBlockState(surfaceAir);
             BlockState groundState = level.getBlockState(surfaceGround);
 
-            // Melt snow if the biome is warm enough at this position.
             if (airState.getBlock() == Blocks.SNOW) {
                 float temp = getSeasonalBiomeTemp(level, season, level.getBiome(surfaceAir).value(), surfaceGround);
                 if (temp >= 0.15f) {
@@ -89,9 +69,6 @@ public final class SnowMeltHandler {
                 }
             }
 
-            // Melt ice if the biome is warm enough at this position.
-            // North of the frozen latitude line, water stays frozen regardless
-            // of season/biome — that's the one effect the line still has.
             if (groundState.getBlock() == Blocks.ICE) {
                 float temp = getSeasonalBiomeTempWithLatitude(level, season,
                         level.getBiome(surfaceGround).value(), surfaceGround);
@@ -102,19 +79,7 @@ public final class SnowMeltHandler {
         }
     }
 
-    /**
-     * Plain seasonal biome temperature, no latitude adjustment — used for
-     * ground snow melt only, the snow counterpart to
-     * {@link #getSeasonalBiomeTempWithLatitude} below (which still applies
-     * the ice/freeze latitude line for ice melt).
-     *
-     * <p>The seasonal warming adjustment (spring/summer) is scaled down the
-     * colder the biome's base temperature is, so already-cold biomes stay
-     * snow-covered through spring/summer instead of melting out just because
-     * the season nudged the number up. Cooling adjustments (autumn/winter)
-     * are left at full strength — only the warming push is dampened.
-     */
-    private static float getSeasonalBiomeTemp(ServerLevel level, GotSeason season, Biome biome, BlockPos pos) {
+    private static float getSeasonalBiomeTemp(ServerLevel level, Season season, Biome biome, BlockPos pos) {
         float base = biome.getTemperature(pos, level.getSeaLevel());
 
         if (biome.getBaseTemperature() > 0.8f) {
@@ -128,6 +93,7 @@ public final class SnowMeltHandler {
             case WINTER -> WINTER_TEMP_ADJUSTMENT;
         };
 
+        // colder biomes warm up less in summer/spring than warmer ones
         if (adjustment > 0f) {
             float coldness = 1f - Mth.clamp(base / 0.5f, 0f, 1f);
             float warmingScale = Mth.lerp(coldness, 1f, 0.15f);
@@ -137,12 +103,7 @@ public final class SnowMeltHandler {
         return Mth.clamp(base + adjustment, -0.5f, 2.0f);
     }
 
-    /**
-     * Layers the frozen-latitude adjustment on top of the normal seasonal
-     * biome temperature. Used for ice melt only, so that water stays frozen
-     * north of the line regardless of season.
-     */
-    private static float getSeasonalBiomeTempWithLatitude(ServerLevel level, GotSeason season,
+    private static float getSeasonalBiomeTempWithLatitude(ServerLevel level, Season season,
                                                           Biome biome, BlockPos pos) {
         float base = biome.getTemperature(pos, level.getSeaLevel());
         float latitudeAdj = LatitudeClimate.temperatureAdjustment(pos.getX(), pos.getZ());

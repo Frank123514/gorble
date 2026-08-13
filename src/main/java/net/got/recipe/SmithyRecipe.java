@@ -3,8 +3,8 @@ package net.got.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.got.init.GotModRecipeSerializers;
-import net.got.init.GotModRecipeTypes;
+import net.got.init.ModRecipeSerializers;
+import net.got.init.ModRecipeTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -13,19 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-/**
- * SmithyRecipe — single-ingredient recipe processed by the Smithy block.
- *
- * JSON format (type "got:smithy") — mirrors stonecutter recipe format:
- * <pre>
- * {
- *   "type": "got:smithy",
- *   "ingredient": { "item": "got:bronze_ingot" },
- *   "result": { "id": "got:bronze_longsword_crossguard_pommel", "count": 1 },
- *   "cookingtime": 200
- * }
- * </pre>
- */
 public class SmithyRecipe implements Recipe<SingleRecipeInput> {
 
     private final Ingredient ingredient;
@@ -38,13 +25,9 @@ public class SmithyRecipe implements Recipe<SingleRecipeInput> {
         this.cookingTime = cookingTime;
     }
 
-    // ── Getters ───────────────────────────────────────────────────────────────
-
     public Ingredient getIngredient() { return ingredient; }
     public ItemStack  getResult()     { return result; }
     public int        getCookingTime(){ return cookingTime; }
-
-    // ── Recipe<SingleRecipeInput> ─────────────────────────────────────────────
 
     @Override
     public boolean matches(SingleRecipeInput input, Level level) {
@@ -69,15 +52,13 @@ public class SmithyRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public RecipeSerializer<SmithyRecipe> getSerializer() {
-        return GotModRecipeSerializers.SMITHY_RECIPE.get();
+        return ModRecipeSerializers.SMITHY_RECIPE.get();
     }
 
     @Override
     public RecipeType<SmithyRecipe> getType() {
-        return GotModRecipeTypes.SMITHY.get();
+        return ModRecipeTypes.SMITHY.get();
     }
-
-    // ── Serializer ────────────────────────────────────────────────────────────
 
     public static class Serializer implements RecipeSerializer<SmithyRecipe> {
 

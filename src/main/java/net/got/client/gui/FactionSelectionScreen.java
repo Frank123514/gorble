@@ -1,8 +1,8 @@
 package net.got.client.gui;
 
-import net.got.client.gui.widget.GotMapWidget;
-import net.got.faction.GotFactionData;
-import net.got.faction.GotFactions;
+import net.got.client.gui.widget.MapWidget;
+import net.got.faction.FactionData;
+import net.got.faction.Factions;
 import net.got.faction.WaypointData;
 import net.got.faction.WaypointRegistry;
 import net.got.network.SelectFactionPayload;
@@ -16,134 +16,82 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-/**
- * Faction selection screen.
- *
- * <p>Layout:
- * <pre>
- *  ┌────────────────────────────────────────────────────────────────┐
- *  │               — CHOOSE YOUR ALLEGIANCE —                       │
- *  │           [<]       Westeros       [>]   ← continent           │
- *  │           [<]      The North       [>]   ← region              │
- *  │                                                                │
- *  │  ┌─────────────────┐   ┌──────────────────────────────────┐   │
- *  │  │  Full scrollable│   │ House Stark                      │   │
- *  │  │  zoomable map   │   │ "Winter is Coming"               │   │
- *  │  │  widget         │   │ Seat:     Winterfell             │   │
- *  │  └─────────────────┘   │ Fealty:   The Iron Throne        │   │
- *  │  [<] Winterfell [>]    │ Faith:    The Old Gods           │   │
- *  │                        │ Economy:  Martial                │   │
- *  │                        │ Military: Heavy Infantry         │   │
- *  │                        │ <lore>                           │   │
- *  │                        └──────────────────────────────────┘   │
- *  │                    [  Confirm Selection  ]                      │
- *  └────────────────────────────────────────────────────────────────┘
- * </pre>
- */
 public final class FactionSelectionScreen extends Screen {
 
-    // ── Map texture ───────────────────────────────────────────────────────────
     private static final Identifier MAP_TEXTURE =
             Identifier.fromNamespaceAndPath("got", "textures/gui/map/known_world.png");
     private static final int MAP_PIXEL_W = 4207;
     private static final int MAP_PIXEL_H = 3277;
 
-    // ── Layout (fixed pixel sizes, Middle-earth style) ──────────────────────────
-    // No per-GUI-scale preset table and no runtime clamping/rescaling math.
-    // Just hand-picked constant sizes in GUI-scaled pixels. Minecraft's GUI
-    // scale option already scales the coordinate space uniformly (this
-    // screen's `width`/`height` fields are the *scaled* window dimensions),
-    // so a fixed-size panel centered against width/height renders correctly
-    // at every GUI scale on its own - same approach used by the Middle-earth
-    // mod's FactionSelectionScreen.
     private static final int PANEL_W = 314;
     private static final int PANEL_H = 246;
 
-    // ── Nav rows (stacked above the map, aligned to the map's column) ──────────
     private static final int NAV_ARROW_W  = 14;
     private static final int NAV_ARROW_H  = 12;
     private static final int NAV_LABEL_W  = 94;
     private static final int NAV_CONT_Y   = 22;
     private static final int NAV_REGION_Y = NAV_CONT_Y + NAV_ARROW_H + 5;
-    // Space reserved below the region label for the "x / y" page indicator line.
+    
     private static final int PAGE_ROW_H   = 9;
 
-    // ── Map canvas (left column, square-ish) ───────────────────────────────────
-    // Sits below the continent/region nav instead of overlapping it, so the
-    // map's own overlay text (e.g. "Zoom: 8.0x") never collides with the labels.
     private static final int MAP_X_OFF = 8;
     private static final int MAP_Y_OFF = NAV_REGION_Y + NAV_ARROW_H + PAGE_ROW_H + 6;
     private static final int MAP_W     = 122;
     private static final int MAP_H     = 88;
 
-    // ── Location nav (below map canvas) ───────────────────────────────────────
     private static final int LOC_NAV_H     = 12;
     private static final int LOC_NAV_Y_OFF = MAP_Y_OFF + MAP_H + 6;
 
-    // ── Info panel (right column) ───────────────────────────────────────────────
-    // Starts right under the title (not pinned to the map's Y offset), so it
-    // stays tall even though the nav+map column above it is taller now.
     private static final int INFO_X_OFF = MAP_X_OFF + MAP_W + 8;
     private static final int INFO_Y_OFF = NAV_CONT_Y;
     private static final int INFO_W     = PANEL_W - INFO_X_OFF - 8;
     private static final int INFO_H     = PANEL_H - INFO_Y_OFF - 38;
 
-    // ── Confirm button ────────────────────────────────────────────────────────
     private static final int CONFIRM_W = 130;
     private static final int CONFIRM_H = 18;
     private static final int CONFIRM_B = 8;
 
-    // ── Default colours (overridden per-faction with primaryColour) ───────────
     private static final int COL_TITLE   = 0xFFE8C060;
-    private static final int COL_WORDS   = 0xFFDDCC88; // house words / motto
+    private static final int COL_WORDS   = 0xFFDDCC88;
     private static final int COL_LABEL   = 0xFFCCCCAA;
     private static final int COL_LORE    = 0xFFAAAAAA;
     private static final int COL_BORDER  = 0xFF887733;
 
-    // ── State ─────────────────────────────────────────────────────────────────
     private final List<String> continentKeys;
     private int continentIndex = 0;
     private int regionIndex    = 0;
     private int locationIndex  = 0;
 
-    /** The live scrollable/zoomable map widget. Persisted across rebuildWidgets. */
-    private GotMapWidget mapWidget;
+    private MapWidget mapWidget;
 
-    /** Current scroll offset (in lines) for the lore text in the info panel.
-     *  Reset to 0 whenever the selected faction changes. */
     private int loreScrollOffset = 0;
-    /** Cached max scroll for the currently-rendered lore, updated each frame
-     *  so mouseScrolled can clamp against it without recomputing wrapping. */
+    
     private int loreMaxScroll = 0;
 
-    // Width/height the cached layout was last computed for, so a window resize
-    // (which can change the effective GUI scale) triggers a relayout.
     private int lastLayoutWidth = -1;
     private int lastLayoutHeight = -1;
 
     public FactionSelectionScreen() {
         super(Component.literal("Choose Your Allegiance"));
-        continentKeys = new ArrayList<>(GotFactions.CONTINENTS.keySet());
+        continentKeys = new ArrayList<>(Factions.CONTINENTS.keySet());
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private String currentContinent() {
         return continentKeys.isEmpty() ? "" : continentKeys.get(continentIndex);
     }
 
-    private List<GotFactionData> currentFactions() {
-        return GotFactions.forContinent(currentContinent());
+    private List<FactionData> currentFactions() {
+        return Factions.forContinent(currentContinent());
     }
 
-    private GotFactionData currentFaction() {
-        List<GotFactionData> f = currentFactions();
+    private FactionData currentFaction() {
+        List<FactionData> f = currentFactions();
         if (f.isEmpty() || regionIndex >= f.size()) return null;
         return f.get(regionIndex);
     }
 
     private List<WaypointData> currentWaypoints() {
-        GotFactionData f = currentFaction();
+        FactionData f = currentFaction();
         if (f == null) return List.of();
         return WaypointRegistry.BY_FACTION.getOrDefault(f.id(), List.of());
     }
@@ -170,8 +118,6 @@ public final class FactionSelectionScreen extends Screen {
         }
     }
 
-    // ── Widget construction ───────────────────────────────────────────────────
-
     private void buildWidgets() {
         int px = (width  - PANEL_W) / 2;
         int py = (height - PANEL_H) / 2;
@@ -179,7 +125,7 @@ public final class FactionSelectionScreen extends Screen {
         int mx = px + MAP_X_OFF;
         int my = py + MAP_Y_OFF;
         if (mapWidget == null) {
-            mapWidget = new GotMapWidget(mx, my, MAP_W, MAP_H,
+            mapWidget = new MapWidget(mx, my, MAP_W, MAP_H,
                     MAP_TEXTURE, MAP_PIXEL_W, MAP_PIXEL_H);
         } else {
             mapWidget.setX(mx);
@@ -268,7 +214,7 @@ public final class FactionSelectionScreen extends Screen {
     }
 
     private void buildConfirmButton(int px, int py) {
-        GotFactionData faction = currentFaction();
+        FactionData faction = currentFaction();
         boolean ok = faction != null && !faction.id().contains("coming_soon");
         Button btn = Button.builder(
                 Component.literal(ok ? "Confirm Selection" : "Select a Faction"),
@@ -281,13 +227,11 @@ public final class FactionSelectionScreen extends Screen {
     }
 
     private void confirmSelection() {
-        GotFactionData f = currentFaction();
+        FactionData f = currentFaction();
         if (f == null || f.id().contains("coming_soon")) return;
         ClientPacketDistributor.sendToServer(new SelectFactionPayload(f.id()));
         onClose();
     }
-
-    // ── Rendering ─────────────────────────────────────────────────────────────
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
@@ -307,23 +251,20 @@ public final class FactionSelectionScreen extends Screen {
 
         renderInfoPanel(gfx, px, py);
 
-        // Title
         String title = "— Choose Your Allegiance —";
         gfx.drawString(font, title,
                 (width - font.width(title)) / 2, py + 8, COL_TITLE, false);
 
-        // Continent label (stacked above the map, in its column)
-        String cont = GotFactions.CONTINENTS.getOrDefault(currentContinent(), "");
+        String cont = Factions.CONTINENTS.getOrDefault(currentContinent(), "");
         int mapMid = px + MAP_X_OFF + MAP_W / 2;
         gfx.drawString(font, cont,
                 mapMid - font.width(cont) / 2, py + NAV_CONT_Y + 3, COL_TITLE, false);
 
-        // Region label + page indicator (also stacked above the map)
-        GotFactionData f = currentFaction();
+        FactionData f = currentFaction();
         String region = f != null ? f.displayName() : "";
         gfx.drawString(font, region,
                 mapMid - font.width(region) / 2, py + NAV_REGION_Y + 3, 0xFFEEEEEE, false);
-        List<GotFactionData> facs = currentFactions();
+        List<FactionData> facs = currentFactions();
         if (!facs.isEmpty()) {
             String page = (regionIndex + 1) + " / " + facs.size();
             gfx.drawString(font, page,
@@ -350,8 +291,6 @@ public final class FactionSelectionScreen extends Screen {
                 0xFFEEEEEE, false);
     }
 
-    // ── Panel border ──────────────────────────────────────────────────────────
-
     private void renderPanelBorder(GuiGraphics gfx, int px, int py) {
         gfx.hLine(px,               px + PANEL_W - 1, py,               COL_BORDER);
         gfx.hLine(px,               px + PANEL_W - 1, py + PANEL_H - 1, COL_BORDER);
@@ -363,15 +302,12 @@ public final class FactionSelectionScreen extends Screen {
         gfx.vLine(px + PANEL_W - 2, py + 1,           py + PANEL_H - 2, 0xFFCCAA44);
     }
 
-    // ── Info panel ────────────────────────────────────────────────────────────
-
     private void renderInfoPanel(GuiGraphics gfx, int px, int py) {
-        GotFactionData f = currentFaction();
+        FactionData f = currentFaction();
 
         int infoX = px + INFO_X_OFF;
         int infoY = py + INFO_Y_OFF;
 
-        // Subtle tint + border (use faction's primary colour if available)
         int borderCol = (f != null) ? f.primaryColour() : COL_BORDER;
         gfx.fill(infoX, infoY, infoX + INFO_W, infoY + INFO_H, 0x44000000);
         gfx.hLine(infoX, infoX + INFO_W - 1, infoY,              borderCol);
@@ -387,26 +323,17 @@ public final class FactionSelectionScreen extends Screen {
 
         gfx.enableScissor(infoX, infoY, infoX + INFO_W, infoY + INFO_H);
 
-        // House name (tinted with faction's primary colour)
         gfx.drawString(font, f.greatHouse(), tx, cy, f.primaryColour(), false); cy += lh + 1;
 
-        // House words in italics-esque colour
         gfx.drawString(font, "\"" + f.words() + "\"", tx, cy, COL_WORDS, false); cy += lh + 3;
 
-        // Separator
         gfx.hLine(tx, infoX + INFO_W - 6, cy, 0xFF554422); cy += 4;
 
-        // Key facts (word-wrapped so long values, e.g. faith/fealty names, are
-        // never sliced off by the info panel's edge - they wrap onto a second
-        // line instead, same spirit as the Middle-earth screen's lore block).
         cy = drawWrappedFact(gfx, "Seat:     " + f.seat(), tx, cy, INFO_W - 10, lh);
         cy = drawWrappedFact(gfx, "Fealty:   " + f.fealtyTo(), tx, cy, INFO_W - 10, lh);
         cy = drawWrappedFact(gfx, "Faith:    " + f.religion().displayName, tx, cy, INFO_W - 10, lh);
         cy += 4;
 
-        // Lore text (word-wrapped, scrollable). Wrap the full lore first so we
-        // know the total line count, then only draw the slice that fits in the
-        // remaining vertical space, offset by loreScrollOffset lines.
         List<net.minecraft.util.FormattedCharSequence> loreLines =
                 font.split(Component.literal(f.lore()), INFO_W - 10);
 
@@ -421,8 +348,6 @@ public final class FactionSelectionScreen extends Screen {
             cy += lh;
         }
 
-        // Scrollbar: a thin track + thumb along the panel's right inner edge,
-        // only drawn when there's actually more lore than fits.
         if (loreMaxScroll > 0) {
             int barX = infoX + INFO_W - 4;
             int barTop = loreTop;
@@ -434,8 +359,6 @@ public final class FactionSelectionScreen extends Screen {
             int thumbY = barTop + (barH - thumbH) * loreScrollOffset / loreMaxScroll;
             gfx.fill(barX, thumbY, barX + 2, thumbY + thumbH, 0xFFCCAA44);
 
-            // Small hint arrows so it's obvious the text scrolls, even before
-            // the player has touched the scroll wheel.
             if (loreScrollOffset < loreMaxScroll) {
                 gfx.drawString(font, "v", infoX + INFO_W - 10, loreBottom - 6, 0xFFCCAA44, false);
             }
@@ -444,10 +367,6 @@ public final class FactionSelectionScreen extends Screen {
         gfx.disableScissor();
     }
 
-    /** Handles mouse-wheel scrolling of the lore text when the cursor is over
-     *  the info panel. One notch scrolls a single line, so even short lore
-     *  blocks with only a couple of overflow lines get smooth, granular
-     *  scrolling instead of jumping straight to the bottom. */
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         int px = (width  - PANEL_W) / 2;
@@ -464,9 +383,6 @@ public final class FactionSelectionScreen extends Screen {
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
-    /** Draws a "Label: value" fact line, wrapping onto extra lines if it's too
-     *  wide for the info panel instead of letting the scissor box slice it off.
-     *  Returns the cursor Y position to continue drawing from. */
     private int drawWrappedFact(GuiGraphics gfx, String text, int tx, int cy, int maxWidth, int lh) {
         if (font.width(text) <= maxWidth) {
             gfx.drawString(font, text, tx, cy, COL_LABEL, false);
@@ -480,8 +396,6 @@ public final class FactionSelectionScreen extends Screen {
         return cy + 1;
     }
 
-    // ── Screen lifecycle ──────────────────────────────────────────────────────
-
     @Override
     protected void init() {
         super.init();
@@ -493,13 +407,6 @@ public final class FactionSelectionScreen extends Screen {
     @Override public boolean shouldCloseOnEsc() { return false; }
     @Override public boolean isPauseScreen()    { return true;  }
 
-    // isPauseScreen() being true makes the vanilla renderer apply its own
-    // blurred-background pass automatically. Screen only allows one blur
-    // pass per frame (GuiRenderState.blurBeforeThisStratum), so we must not
-    // also blur manually here or the game crashes with
-    // "IllegalStateException: Can only blur once per frame" the first time
-    // this screen renders. This panel draws its own border/background via
-    // renderPanelBorder(), so no-op the built-in background instead.
     @Override
     public void renderBackground(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {}
 }

@@ -10,23 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-/**
- * Floating interaction menu shown when the player right-clicks an NPC.
- *
- * <p><b>Civilians</b> (smallfolk with jobs) show:
- * <pre>
- *   "Jory, Mason"        ← header
- *   [Trade]  [Mason]
- *   [Exchange Coins]
- * </pre>
- *
- * <p><b>Military NPCs</b> (levies, soldiers, knights) show:
- * <pre>
- *   "Arnolf, Soldier"    ← header
- *   [Exchange Coins]
- * </pre>
- * No Trade button, no job button — fighters don't have civilian occupations.
- */
 public class NpcInteractScreen extends Screen {
 
     private static final int BTN_W = 70;
@@ -37,7 +20,7 @@ public class NpcInteractScreen extends Screen {
     private final int     entityId;
     private final String  occupationId;
     private final String  npcName;
-    private final String  militaryTitle;  // empty = civilian
+    private final String  militaryTitle;
 
     private NpcInteractScreen(int entityId, String occupationId,
                                String npcName, String militaryTitle) {
@@ -48,7 +31,6 @@ public class NpcInteractScreen extends Screen {
         this.militaryTitle = militaryTitle == null ? "" : militaryTitle;
     }
 
-    /** Called from GotNetwork when OpenInteractScreenPayload arrives. */
     public static void open(int entityId, String occupationId,
                             String npcName, String militaryTitle) {
         Minecraft mc = Minecraft.getInstance();
@@ -72,8 +54,7 @@ public class NpcInteractScreen extends Screen {
         int exBtnX = px + PAD;
 
         if (isCivilian()) {
-            // ── Civilian layout ─────────────────────────────────────────────
-            // Row 1: [Trade]  [<Job>]
+            
             int row1y = py + PAD;
             int col1  = px + PAD;
             int col2  = col1 + BTN_W + GAP;
@@ -89,7 +70,6 @@ public class NpcInteractScreen extends Screen {
                     btn -> { ClientPacketDistributor.sendToServer(new RequestTradeMenuPayload(entityId)); onClose(); }
             ).bounds(col2, row1y, BTN_W, BTN_H).build());
 
-            // Row 2: [Exchange Coins]
             int row2y = row1y + BTN_H + GAP;
             addRenderableWidget(Button.builder(
                     Component.literal("Exchange Coins"),
@@ -97,9 +77,8 @@ public class NpcInteractScreen extends Screen {
             ).bounds(exBtnX, row2y, exBtnW, BTN_H).build());
 
         } else {
-            // ── Military layout ─────────────────────────────────────────────
-            // Single row: [Exchange Coins] centred
-            int row1y = py + PAD + (BTN_H + GAP) / 2; // vertically centred in the same panel area
+            
+            int row1y = py + PAD + (BTN_H + GAP) / 2;
             addRenderableWidget(Button.builder(
                     Component.literal("Exchange Coins"),
                     btn -> Minecraft.getInstance().setScreen(new NpcCoinExchangeScreen(entityId))
@@ -114,7 +93,6 @@ public class NpcInteractScreen extends Screen {
         int px = (width  - panelW) / 2;
         int py = (height - panelH) / 2 + 60;
 
-        // Header: "Jory, Mason" for civilians — "Arnolf, Soldier" for military
         String label;
         if (isCivilian()) {
             String occ = occupationId.equals("none") ? "Unemployed" : capitalize(occupationId);

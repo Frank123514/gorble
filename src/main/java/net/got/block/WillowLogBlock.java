@@ -1,6 +1,6 @@
 package net.got.block;
 
-public class WillowLogBlock extends GotFlammableRotatedPillarBlock {
+public class WillowLogBlock extends FlammableRotatedPillarBlock {
 
     public WillowLogBlock  (Properties properties) {
         super(properties);

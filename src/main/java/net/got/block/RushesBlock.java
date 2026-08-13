@@ -24,12 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 
 import javax.annotation.Nullable;
 
-/**
- * RushesBlock — a 2-block-tall waterloggable reed, based on {@link ShortReedsBlock}
- * but restricted to open water only: unlike short reeds, rushes cannot be
- * placed on the shore next to water — both halves must be fully submerged
- * (waterlogged) or the plant breaks.
- */
 public class RushesBlock extends DoublePlantBlock implements SimpleWaterloggedBlock {
 
     public static final MapCodec<DoublePlantBlock> CODEC =
@@ -47,11 +41,9 @@ public class RushesBlock extends DoublePlantBlock implements SimpleWaterloggedBl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder); // adds HALF
+        super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
-
-    // ── Ground / water checks ─────────────────────────────────────────────────
 
     @Override
     protected boolean mayPlaceOn(BlockState ground, BlockGetter level, BlockPos groundPos) {
@@ -68,15 +60,11 @@ public class RushesBlock extends DoublePlantBlock implements SimpleWaterloggedBl
             BlockState below = level.getBlockState(pos.below());
             return below.is(this) && below.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
-        // Lower half: valid ground below AND must be fully submerged (waterlogged).
-        // Unlike ShortReedsBlock, rushes cannot be placed on the shore next to
-        // water — only directly in water.
+        
         BlockPos groundPos = pos.below();
         if (!mayPlaceOn(level.getBlockState(groundPos), level, groundPos)) return false;
         return state.getValue(WATERLOGGED);
     }
-
-    // ── Waterlogging ──────────────────────────────────────────────────────────
 
     @Override
     @Nullable

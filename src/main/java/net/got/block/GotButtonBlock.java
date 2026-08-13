@@ -9,7 +9,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
-/** Generic wooden button for all GOT wood types. */
 public class GotButtonBlock extends ButtonBlock {
     public GotButtonBlock(BlockSetType blockSetType, Properties p) {
         super(blockSetType, 30, p.sound(SoundType.WOOD).strength(0.5f).pushReaction(PushReaction.DESTROY));

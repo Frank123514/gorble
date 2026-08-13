@@ -1,27 +1,13 @@
 package net.got.mixin;
 
-import net.got.client.animation.player.GotAnimatedPlayerState;
-import net.got.client.animation.player.GotSwingStyle;
+import net.got.client.animation.player.AnimatedPlayerState;
+import net.got.client.animation.player.SwingStyle;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-/**
- * Merges {@link GotAnimatedPlayerState} onto {@code AvatarRenderState},
- * storing the extra data our custom player animations need that vanilla
- * doesn't already extract (climbing/airborne progress, swing style).
- *
- * <p>Render state instances are reused per-player frame to frame by
- * {@code LivingEntityRenderer}, so these {@code @Unique} fields persist
- * across frames the same way vanilla's own smoothed fields (e.g.
- * {@code swimAmount}) do, which is what lets {@code climbProgress} /
- * {@code airborneProgress} ease in and out instead of snapping.
- *
- * <p>remap=false: named/Parchment mappings used directly, see other mixins
- * in this package for why.
- */
 @Mixin(value = AvatarRenderState.class, remap = false)
-public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
+public abstract class PlayerRenderStateMixin implements AnimatedPlayerState {
 
     @Unique
     private float got$climbProgress = 0.0F;
@@ -33,7 +19,7 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     private float got$sprintProgress = 0.0F;
 
     @Unique
-    private GotSwingStyle got$swingStyle = GotSwingStyle.PUNCH;
+    private SwingStyle got$swingStyle = SwingStyle.PUNCH;
 
     @Unique
     private int got$comboIndex = 0;
@@ -87,12 +73,12 @@ public abstract class PlayerRenderStateMixin implements GotAnimatedPlayerState {
     }
 
     @Override
-    public GotSwingStyle got$getSwingStyle() {
+    public SwingStyle got$getSwingStyle() {
         return got$swingStyle;
     }
 
     @Override
-    public void got$setSwingStyle(GotSwingStyle style) {
+    public void got$setSwingStyle(SwingStyle style) {
         this.got$swingStyle = style;
     }
 

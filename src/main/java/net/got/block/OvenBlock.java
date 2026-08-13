@@ -1,7 +1,7 @@
 package net.got.block;
 
 import com.mojang.serialization.MapCodec;
-import net.got.init.GotModBlockEntities;
+import net.got.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -26,10 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-/**
- * OvenBlock — ported from OFAW (1.16.5) to NeoForge 1.21.4.
- * Provides a 3×3 shaped-cooking block with a fuel slot.
- */
 public class OvenBlock extends BaseEntityBlock {
 
     public static final MapCodec<OvenBlock> CODEC = simpleCodec(OvenBlock::new);
@@ -75,9 +71,6 @@ public class OvenBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    // Inventory contents are now dropped automatically via
-    // BlockEntity#preRemoveSideEffects since OvenBlockEntity is a Container.
-
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hitResult) {
@@ -102,7 +95,7 @@ public class OvenBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                    BlockEntityType<T> type) {
         if (level.isClientSide()) return null;
-        return createTickerHelper(type, GotModBlockEntities.OVEN.get(),
+        return createTickerHelper(type, ModBlockEntities.OVEN.get(),
                 OvenBlockEntity::serverTick);
     }
 

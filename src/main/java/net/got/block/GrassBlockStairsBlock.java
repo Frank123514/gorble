@@ -11,15 +11,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Stairs cut from {@link Blocks#GRASS_BLOCK}. See {@link GrassBlockSlabBlock} for
- * how the biome tint and shovel-flatten behaviour are wired up — this is the
- * stairs equivalent.
- *
- * <p>Ported from the "Grass Slabs" mod's {@code GrassStairsBlock}, adapted to
- * this mod's 1.21.4 NeoForge APIs ({@link ItemAbility} replaces the old
- * {@code ToolAction}).
- */
 public class GrassBlockStairsBlock extends StairBlock {
     private final DeferredBlock<Block> flattenedBlock;
 

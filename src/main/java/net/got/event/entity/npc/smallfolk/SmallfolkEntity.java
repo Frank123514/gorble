@@ -1,13 +1,13 @@
 package net.got.event.entity.npc.smallfolk;
 
-import net.got.event.entity.npc.GotNpcSpeechBank;
-import net.got.event.entity.npc.GotNpcTalkAnimations;
+import net.got.event.entity.npc.NpcSpeechBank;
+import net.got.event.entity.npc.NpcTalkAnimations;
 import net.got.event.entity.npc.NpcGender;
 import net.got.event.entity.npc.NpcInventory;
-import net.got.event.entity.npc.data.GotGenderProvider;
-import net.got.event.entity.npc.data.GotNpcOccupation;
-import net.got.event.entity.npc.data.GotNpcPersonality;
-import net.got.event.entity.npc.data.name.GotNameGenerator;
+import net.got.event.entity.npc.data.GenderProvider;
+import net.got.event.entity.npc.data.NpcOccupation;
+import net.got.event.entity.npc.data.NpcPersonality;
+import net.got.event.entity.npc.data.name.NameGenerator;
 import net.got.network.OpenInteractScreenPayload;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
@@ -33,22 +33,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 
-
-/**
- * Abstract base for ALL Smallfolk-hierarchy NPC entities (Tiers 1, 2 and 3).
- *
- * <p>Inspired by LOTR's {@code NPCEntity} architecture:
- * <ul>
- *   <li><b>Gender</b> — decided at spawn via {@link GotGenderProvider}, synced to clients.</li>
- *   <li><b>Name</b> — generated at spawn via {@link GotNameGenerator}, shown in the nameplate.</li>
- *   <li><b>Personality</b> — a {@link GotNpcPersonality} trait saved to NBT.</li>
- *   <li><b>Talk animations</b> — head nod / gesture floats synced via {@link GotNpcTalkAnimations}.</li>
- *   <li><b>Variant</b> — texture variant index, split by gender for skin variety.</li>
- * </ul>
- */
 public abstract class SmallfolkEntity extends PathfinderMob {
-
-    // ── Synced data ───────────────────────────────────────────────────────────
 
     protected static final EntityDataAccessor<Byte>    DATA_GENDER   =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.BYTE);
@@ -58,60 +43,38 @@ public abstract class SmallfolkEntity extends PathfinderMob {
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
     protected static final EntityDataAccessor<Boolean> DATA_TALKING  =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.BOOLEAN);
-    // Talk-animation floats (see GotNpcTalkAnimations)
+    
     protected static final EntityDataAccessor<Float>   DATA_TALK_HEAD_YAW   =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float>   DATA_TALK_HEAD_PITCH =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float>   DATA_TALK_GESTURE    =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.FLOAT);
-    // The dialogue line currently being shown above this NPC. Empty when silent.
+    
     protected static final EntityDataAccessor<String>  DATA_DIALOGUE_LINE   =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
-    // Current occupation, synced so clients can show it in the nameplate.
+    
     protected static final EntityDataAccessor<String>  DATA_OCCUPATION      =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
 
-    // ── Fields ────────────────────────────────────────────────────────────────
-
-    private GotNpcPersonality personality = GotNpcPersonality.FRIENDLY;
-    private final GotNpcTalkAnimations talkAnimations = new GotNpcTalkAnimations(this);
-    /** Ticks until this NPC can speak to a player again. */
+    private NpcPersonality personality = NpcPersonality.FRIENDLY;
+    private final NpcTalkAnimations talkAnimations = new NpcTalkAnimations(this);
+    
     private int speechCooldown;
     private static final int SPEECH_INTERVAL = 40;
 
-    /**
-     * Countdown timer for how long this NPC stays in the talking state.
-     * Set to TALK_DURATION when talking starts; decrements each tick;
-     * talking stops when it reaches zero.
-     */
     protected int talkTimer;
-    private static final int TALK_DURATION = 80; // 4 seconds
+    private static final int TALK_DURATION = 80;
 
-    /**
-     * The player this NPC is currently talking to.
-     * Used server-side to track them with getLookControl().
-     * Cleared when talking stops.
-     */
     private @Nullable Player talkingPlayer;
 
-    // ── Occupation & personal inventory ───────────────────────────────────────
+    private NpcOccupation occupation = NpcOccupation.NONE;
 
-    private GotNpcOccupation occupation = GotNpcOccupation.NONE;
-
-    /**
-     * The NPC's personal 9-slot stash. Persisted in NBT.
-     * Exposed to players via the NpcTradeMenu when the NPC is employed.
-     */
     private final NpcInventory npcInventory = new NpcInventory();
-
-    // ── Constructor ───────────────────────────────────────────────────────────
 
     protected SmallfolkEntity(EntityType<? extends SmallfolkEntity> type, Level level) {
         super(type, level);
     }
-
-    // ── Attributes ────────────────────────────────────────────────────────────
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
@@ -122,30 +85,22 @@ public abstract class SmallfolkEntity extends PathfinderMob {
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
-    // ── Spawn rules ───────────────────────────────────────────────────────────
-
-    /** 5-arg SpawnPredicate used by RegisterSpawnPlacementsEvent. */
     public static <T extends SmallfolkEntity> boolean checkSpawnRules(
             EntityType<T> type, ServerLevelAccessor level,
             EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         return Mob.checkMobSpawnRules(type, level, reason, pos, random);
     }
 
-    /** Named alias kept for GotHorseEntity compatibility. */
     public static boolean defaultSpawnRules(
             EntityType<? extends Mob> type, ServerLevelAccessor level,
             EntitySpawnReason reason, BlockPos pos, RandomSource random) {
         return Mob.checkMobSpawnRules(type, level, reason, pos, random);
     }
 
-    // ── Required by LivingEntity ──────────────────────────────────────────────
-
     @Override
     public HumanoidArm getMainArm() {
         return HumanoidArm.RIGHT;
     }
-
-    // ── Synced data lifecycle ─────────────────────────────────────────────────
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -158,17 +113,11 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         builder.define(DATA_TALK_HEAD_PITCH, 0f);
         builder.define(DATA_TALK_GESTURE,    0f);
         builder.define(DATA_DIALOGUE_LINE,   "");
-        builder.define(DATA_OCCUPATION,      GotNpcOccupation.NONE.id);
+        builder.define(DATA_OCCUPATION,      NpcOccupation.NONE.id);
     }
 
-    // ── Gender ────────────────────────────────────────────────────────────────
-
-    /**
-     * Override to control the gender distribution for this culture.
-     * E.g. levy / fighter entities return {@link GotGenderProvider#MALE}.
-     */
-    protected GotGenderProvider getGenderProvider() {
-        return GotGenderProvider.MALE_OR_FEMALE;
+    protected GenderProvider getGenderProvider() {
+        return GenderProvider.MALE_OR_FEMALE;
     }
 
     public NpcGender getGender() {
@@ -182,14 +131,10 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         entityData.set(DATA_GENDER, g.toByte());
     }
 
-    // ── Name ─────────────────────────────────────────────────────────────────
-
-    /** Override to provide a culture-specific name generator. */
-    protected GotNameGenerator getNameGenerator() {
-        return GotNameGenerator.NAMELESS;
+    protected NameGenerator getNameGenerator() {
+        return NameGenerator.NAMELESS;
     }
 
-    /** The NPC's personal name string (empty = no personal name). */
     public String getNpcName() { return entityData.get(DATA_NPC_NAME); }
 
     protected void setNpcName(String name) { entityData.set(DATA_NPC_NAME, name); }
@@ -199,7 +144,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         String personal = getNpcName();
         if (personal == null || personal.isEmpty()) return null;
 
-        // Military NPCs (levies, soldiers, knights) show "Brandon, Levy"
         if (!isCivilian()) {
             String title = getMilitaryTitle();
             if (title != null && !title.isEmpty()) {
@@ -209,8 +153,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
             }
         }
 
-        // Civilian smallfolk show occupation when employed, plain name otherwise.
-        GotNpcOccupation occ = getOccupation();
+        NpcOccupation occ = getOccupation();
         if (occ.isEmployed()) {
             return Component.translatable("entity.got.npc.named_with_occupation",
                     Component.literal(occ.label),
@@ -222,10 +165,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
                 Component.translatable(getType().getDescriptionId()));
     }
 
-    /**
-     * Returns the short military rank label shown after the NPC's name.
-     * Returns null by default (civilians never call this).
-     */
     public @Nullable String getMilitaryTitle() { return null; }
 
     @Override
@@ -234,13 +173,9 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         return personal != null && !personal.isEmpty();
     }
 
-    // ── Personality ───────────────────────────────────────────────────────────
+    public NpcPersonality getPersonality() { return personality; }
 
-    public GotNpcPersonality getPersonality() { return personality; }
-
-    // ── Talk animations ───────────────────────────────────────────────────────
-
-    public GotNpcTalkAnimations getTalkAnimations() { return talkAnimations; }
+    public NpcTalkAnimations getTalkAnimations() { return talkAnimations; }
 
     public boolean isTalking() { return entityData.get(DATA_TALKING); }
 
@@ -277,23 +212,19 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         }
     }
 
-    // ── Dialogue ──────────────────────────────────────────────────────────────
-
-    protected GotNpcSpeechBank getSpeechBank() {
-        return GotNpcSpeechBank.SMALLFOLK_CIVILIAN;
+    protected NpcSpeechBank getSpeechBank() {
+        return NpcSpeechBank.SMALLFOLK_CIVILIAN;
     }
 
     public String getCurrentDialogueLine() {
         return entityData.get(DATA_DIALOGUE_LINE);
     }
 
-    // ── Occupation ────────────────────────────────────────────────────────────
-
-    public GotNpcOccupation getOccupation() {
-        return GotNpcOccupation.fromString(entityData.get(DATA_OCCUPATION));
+    public NpcOccupation getOccupation() {
+        return NpcOccupation.fromString(entityData.get(DATA_OCCUPATION));
     }
 
-    public void setOccupation(GotNpcOccupation o) {
+    public void setOccupation(NpcOccupation o) {
         occupation = o;
         entityData.set(DATA_OCCUPATION, o.id);
     }
@@ -302,15 +233,11 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         return npcInventory;
     }
 
-    // ── Variant (skin variety) ────────────────────────────────────────────────
-
     public int getVariantsPerGender() { return 1; }
 
     public int getVariant() { return entityData.get(DATA_VARIANT); }
 
     protected void setVariant(int v) { entityData.set(DATA_VARIANT, v); }
-
-    // ── Civilian check ────────────────────────────────────────────────────────
 
     public boolean isCivilian() { return true; }
 
@@ -325,19 +252,17 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         setVariant(variant);
 
         setNpcName(getNameGenerator().generateName(rand, male));
-        personality = GotNpcPersonality.random(rand);
+        personality = NpcPersonality.random(rand);
 
         if (shouldHaveOccupation()) {
-            GotNpcOccupation[] pool = male
-                    ? GotNpcOccupation.HIREABLE
-                    : GotNpcOccupation.HIREABLE_FEMALE;
+            NpcOccupation[] pool = male
+                    ? NpcOccupation.HIREABLE
+                    : NpcOccupation.HIREABLE_FEMALE;
             setOccupation(pool[rand.nextInt(pool.length)]);
         } else {
-            setOccupation(GotNpcOccupation.NONE);
+            setOccupation(NpcOccupation.NONE);
         }
     }
-
-    // ── Spawn ─────────────────────────────────────────────────────────────────
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
@@ -346,8 +271,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         assignIdentityFromRandom(random);
         return result;
     }
-
-    // ── Tick ──────────────────────────────────────────────────────────────────
 
     @Override
     public void tick() {
@@ -376,8 +299,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
 
     protected void markSpoken() { speechCooldown = 0; }
 
-    // ── NBT ───────────────────────────────────────────────────────────────────
-
     @Override
     public void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
@@ -385,7 +306,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         output.putInt("Variant", getVariant());
         output.putString("NpcName", getNpcName());
         output.putString("Personality", personality.id);
-        output.putString(GotNpcOccupation.NBT_KEY, occupation.id);
+        output.putString(NpcOccupation.NBT_KEY, occupation.id);
         npcInventory.save(output);
     }
 
@@ -395,16 +316,14 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         setGender(NpcGender.fromByte(input.getByteOr(NpcGender.NBT_KEY, (byte) 0)));
         setVariant(input.getIntOr("Variant", 0));
         setNpcName(input.getStringOr("NpcName", ""));
-        personality = GotNpcPersonality.fromString(input.getStringOr("Personality", ""));
+        personality = NpcPersonality.fromString(input.getStringOr("Personality", ""));
         if (isCivilian()) {
-            setOccupation(GotNpcOccupation.fromString(input.getStringOr(GotNpcOccupation.NBT_KEY, "")));
+            setOccupation(NpcOccupation.fromString(input.getStringOr(NpcOccupation.NBT_KEY, "")));
         } else {
-            setOccupation(GotNpcOccupation.NONE);
+            setOccupation(NpcOccupation.NONE);
         }
         npcInventory.load(input);
     }
-
-    // ── Default AI ────────────────────────────────────────────────────────────
 
     @Override
     protected void registerGoals() {
@@ -416,8 +335,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, SmallfolkEntity.class, 5.0f, 0.02f));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
-
-    // ── Player interaction ────────────────────────────────────────────────────
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -437,8 +354,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         }
         return InteractionResult.SUCCESS;
     }
-
-    // ── Equipment slot helpers ────────────────────────────────────────────────
 
     protected void setMainhandItem(ItemStack stack) {
         setItemSlot(EquipmentSlot.MAINHAND, stack);
@@ -460,8 +375,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         setItemSlot(EquipmentSlot.FEET, stack);
     }
 
-    // ── Talk-animation data accessors ─────────────────────────────────────────
-
     public void setTalkData(float headYaw, float headPitch, float gesture) {
         entityData.set(DATA_TALK_HEAD_YAW,   headYaw);
         entityData.set(DATA_TALK_HEAD_PITCH, headPitch);
@@ -471,8 +384,6 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     public float getTalkHeadYaw()   { return entityData.get(DATA_TALK_HEAD_YAW); }
     public float getTalkHeadPitch() { return entityData.get(DATA_TALK_HEAD_PITCH); }
     public float getTalkGesture()   { return entityData.get(DATA_TALK_GESTURE); }
-
-    // ── Animation trigger ─────────────────────────────────────────────────────
 
     public void triggerAnim(String controllerName, String animName) {
         this.swing(InteractionHand.MAIN_HAND);

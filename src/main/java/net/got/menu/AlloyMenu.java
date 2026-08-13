@@ -1,8 +1,8 @@
 package net.got.menu;
 
 import net.got.block.ForgeBlockEntity;
-import net.got.init.GotModMenus;
-import net.got.init.GotModRecipeTypes;
+import net.got.init.ModMenus;
+import net.got.init.ModRecipeTypes;
 import net.got.recipe.AlloyRecipe;
 import net.got.recipe.AlloyRecipeInput;
 import net.minecraft.world.Container;
@@ -18,18 +18,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * AlloyMenu — container menu for the Forge's alloying mode.
- *
- * Uses SLOT_ALLOY_A/B/C/D (slots 2-5) and SLOT_OUTPUT (slot 1) — completely
- * separate from heat treating's SLOT_HEAT_A/B/C/D (slots 6-9).
- * Only SLOT_FUEL (slot 0) is shared.
- *
- * Slot pixel positions from forge.png:
- *   Input A-D : (20,17) (38,17) (56,17) (74,17)
- *   Fuel      : (48,53)
- *   Output    : (134,18)
- */
 public class AlloyMenu extends AbstractContainerMenu {
 
     public static final int INPUT_A_X = 20;  public static final int INPUT_A_Y = 17;
@@ -60,7 +48,7 @@ public class AlloyMenu extends AbstractContainerMenu {
 
     public AlloyMenu(int windowId, Inventory playerInv,
                       Container container, ContainerData data) {
-        super(GotModMenus.ALLOY.get(), windowId);
+        super(ModMenus.ALLOY.get(), windowId);
         this.container = container;
         this.data      = data;
         this.level     = playerInv.player.level();
@@ -69,17 +57,14 @@ public class AlloyMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // Player inventory
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
                         8 + col * 18, 84 + row * 18));
 
-        // Hotbar
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // Block entity slots — alloy inputs, fuel, output
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_A, INPUT_A_X, INPUT_A_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_B, INPUT_B_X, INPUT_B_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_ALLOY_C, INPUT_C_X, INPUT_C_Y));
@@ -89,8 +74,6 @@ public class AlloyMenu extends AbstractContainerMenu {
 
         this.addDataSlots(data);
     }
-
-    // ── Progress helpers ──────────────────────────────────────────────────────
 
     public boolean isCrafting() {
         return data.get(ForgeBlockEntity.DATA_COOKING_PROGRESS) > 0;
@@ -118,8 +101,6 @@ public class AlloyMenu extends AbstractContainerMenu {
     public ItemStack getInputD() { return container.getItem(ForgeBlockEntity.SLOT_ALLOY_D); }
 
     public Container getContainer() { return container; }
-
-    // ── Shift-click ───────────────────────────────────────────────────────────
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
@@ -157,8 +138,6 @@ public class AlloyMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    // ── Inner slot types ──────────────────────────────────────────────────────
-
     private static class SingleItemSlot extends Slot {
         SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public int getMaxStackSize() { return 1; }
@@ -173,7 +152,7 @@ public class AlloyMenu extends AbstractContainerMenu {
         }
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return stack.getBurnTime(GotModRecipeTypes.SMITHY.get(),
+            return stack.getBurnTime(ModRecipeTypes.SMITHY.get(),
                     level.fuelValues()) > 0;
         }
     }

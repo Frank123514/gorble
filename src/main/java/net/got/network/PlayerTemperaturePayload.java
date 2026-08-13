@@ -5,14 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent <b>server → client</b> once per second to keep the client's displayed
- * temperature in sync with the authoritative server value.
- *
- * <p>The payload carries a single {@code float} in [0.0, 1.0] where 1.0 is
- * fully warm and 0.0 is completely frozen, matching the scale defined in
- * {@link net.got.climate.PlayerTemperatureSystem}.
- */
 public record PlayerTemperaturePayload(float temperature) implements CustomPacketPayload {
 
     public static final Identifier ID =

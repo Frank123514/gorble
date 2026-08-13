@@ -1,8 +1,8 @@
 package net.got.menu;
 
 import net.got.block.ForgeBlockEntity;
-import net.got.init.GotModMenus;
-import net.got.init.GotModRecipeTypes;
+import net.got.init.ModMenus;
+import net.got.init.ModRecipeTypes;
 import net.got.recipe.SmithyRecipe;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -18,60 +18,34 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * SmithyMenu — container menu for the Smithy block.
- *
- * Slot layout in the menu (indices used by AbstractContainerMenu.slots):
- *   0–26 — player main inventory
- *   27–35 — player hotbar
- *   36    — smithy input  (container slot 0)
- *   37    — smithy fuel   (container slot 1)
- *   38    — smithy output (container slot 2)
- *
- * GUI positions (relative to window top-left) — match the vanilla stonecutter texture:
- *   Input  : (20, 35)  — stonecutter's input slot position
- *   Fuel   : (20, 55)  — directly below input (same column, +20px; not in stonecutter PNG)
- *   Output : (143, 35) — stonecutter's output slot position
- */
 public class SmithyMenu extends AbstractContainerMenu {
 
-    // GUI pixel positions of the three smithy slots.
-    // INPUT and OUTPUT match the vanilla stonecutter.png slot positions exactly.
-    // FUEL sits directly below INPUT — it's drawn on top of the stonecutter texture.
-    // GUI pixel positions — INPUT and OUTPUT match the vanilla stonecutter.png slot
-    // positions exactly. FUEL sits below INPUT (not in the stonecutter PNG).
-    // Input sits at the top, above the flame (y=14).
-    // Flame occupies y=33-47 (14px). Fuel slot below flame at y=53.
-    // Output is right of the recipe panel; arrow goes below it at y=53.
     public static final int INPUT_X  = 20;
-    public static final int INPUT_Y  = 19;   // above the flame
+    public static final int INPUT_Y  = 19;
     public static final int FUEL_X   = 20;
-    public static final int FUEL_Y   = 53;   // below the flame
+    public static final int FUEL_Y   = 53;
     public static final int OUTPUT_X = 143;
-    public static final int OUTPUT_Y = 33;   // vertically centred in the panel
+    public static final int OUTPUT_Y = 33;
 
     private final Container   container;
     private final ContainerData data;
     private final Level         level;
 
-    // ── Slot index ranges in this.slots ──────────────────────────────────────
     private static final int PLAYER_INV_START  = 0;
-    private static final int PLAYER_INV_END    = 36;   // exclusive
+    private static final int PLAYER_INV_END    = 36;
     private static final int TE_INPUT_IDX      = 36;
     private static final int TE_FUEL_IDX       = 37;
     private static final int TE_OUTPUT_IDX     = 38;
 
-    /** Client-side constructor (called by MenuType factory). */
     public SmithyMenu(int windowId, Inventory playerInv) {
         this(windowId, playerInv,
                 new SimpleContainer(ForgeBlockEntity.NUM_SLOTS),
                 new SimpleContainerData(ForgeBlockEntity.NUM_DATA));
     }
 
-    /** Server-side constructor (called by ForgeBlockEntity). */
     public SmithyMenu(int windowId, Inventory playerInv,
                       Container container, ContainerData data) {
-        super(GotModMenus.SMITHY.get(), windowId);
+        super(ModMenus.SMITHY.get(), windowId);
         this.container = container;
         this.data      = data;
         this.level     = playerInv.player.level();
@@ -80,32 +54,24 @@ public class SmithyMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // ── Player main inventory (rows 0–2) ──────────────────────────────────
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
                         8 + col * 18, 84 + row * 18));
 
-        // ── Hotbar ────────────────────────────────────────────────────────────
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // ── Smithy slots ──────────────────────────────────────────────────────
-        // Input (slot 0)
         this.addSlot(new Slot(container, ForgeBlockEntity.SLOT_HEAT_A, INPUT_X, INPUT_Y));
 
-        // Fuel (slot 1)
         this.addSlot(new FuelSlot(container, ForgeBlockEntity.SLOT_FUEL,
                 FUEL_X, FUEL_Y, level));
 
-        // Output (slot 2) — take-only
         this.addSlot(new ResultSlot(playerInv.player, container,
                 ForgeBlockEntity.SLOT_OUTPUT, OUTPUT_X, OUTPUT_Y));
 
         this.addDataSlots(data);
     }
-
-    // ── Progress helpers (used by SmithyScreen) ───────────────────────────────
 
     public boolean isCrafting() {
         return data.get(ForgeBlockEntity.DATA_COOKING_PROGRESS) > 0;
@@ -115,21 +81,18 @@ public class SmithyMenu extends AbstractContainerMenu {
         return data.get(ForgeBlockEntity.DATA_LIT_TIME) > 0;
     }
 
-    /** Arrow progress scaled to [0, 24]. */
     public int getArrowProgress() {
         int progress = data.get(ForgeBlockEntity.DATA_COOKING_PROGRESS);
         int total    = data.get(ForgeBlockEntity.DATA_COOKING_TOTAL);
         return (total != 0 && progress != 0) ? progress * 24 / total : 0;
     }
 
-    /** Flame height scaled to [0, 13]. */
     public int getFlameProgress() {
         int duration = data.get(ForgeBlockEntity.DATA_LIT_DURATION);
         if (duration == 0) duration = 200;
         return data.get(ForgeBlockEntity.DATA_LIT_TIME) * 13 / duration;
     }
 
-    /** Index of the selected recipe (-1 = none). */
     public int getSelectedRecipeIndex() {
         return data.get(ForgeBlockEntity.DATA_SELECTED_RECIPE);
     }
@@ -138,25 +101,12 @@ public class SmithyMenu extends AbstractContainerMenu {
         return container.getItem(ForgeBlockEntity.SLOT_HEAT_A);
     }
 
-    /** Exposes the backing container so the network handler can reach the block entity. */
     public Container getContainer() { return container; }
 
-    // ── Client-side recipe list ───────────────────────────────────────────────
-
-    /**
-     * Returns all SmithyRecipes that match the current input item,
-     * sorted by their Identifier so ordering is stable on both sides.
-     *
-     * Works on both the server (ServerLevel) and the client (ClientLevel),
-     * because recipeAccess() is available on the base Level class and recipes
-     * are synced to the client by vanilla.
-     */
     public List<RecipeHolder<SmithyRecipe>> getMatchingRecipes() {
         ItemStack input = getInputItem();
         if (input.isEmpty()) return List.of();
-        // In NeoForge 1.21.4 custom recipes are NOT auto-synced to the client.
-        // We use SmithyClientRecipes (populated by SmithyRecipeSyncClient on
-        // RecipesReceivedEvent) instead of querying the local RecipeManager.
+        
         SingleRecipeInput ri = new SingleRecipeInput(input);
         return net.got.client.SmithyClientRecipes.get()
                 .stream()
@@ -164,8 +114,6 @@ public class SmithyMenu extends AbstractContainerMenu {
                 .sorted(Comparator.comparing(h -> h.id().toString()))
                 .collect(Collectors.toList());
     }
-
-    // ── Shift-click ───────────────────────────────────────────────────────────
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
@@ -176,13 +124,13 @@ public class SmithyMenu extends AbstractContainerMenu {
         ItemStack copy  = stack.copy();
 
         if (index >= PLAYER_INV_START && index < PLAYER_INV_END) {
-            // Player → smithy: try fuel, then input
+            
             if (!this.moveItemStackTo(stack, TE_FUEL_IDX, TE_FUEL_IDX + 1, false)) {
                 if (!this.moveItemStackTo(stack, TE_INPUT_IDX, TE_INPUT_IDX + 1, false))
                     return ItemStack.EMPTY;
             }
         } else {
-            // Smithy → player inventory
+            
             if (!this.moveItemStackTo(stack, PLAYER_INV_START, PLAYER_INV_END, false))
                 return ItemStack.EMPTY;
         }
@@ -203,8 +151,6 @@ public class SmithyMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    // ── Inner slot types ──────────────────────────────────────────────────────
-
     private static class FuelSlot extends Slot {
         private final Level level;
         FuelSlot(Container c, int slot, int x, int y, Level level) {
@@ -213,7 +159,7 @@ public class SmithyMenu extends AbstractContainerMenu {
         }
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return stack.getBurnTime(GotModRecipeTypes.SMITHY.get(),
+            return stack.getBurnTime(ModRecipeTypes.SMITHY.get(),
                     level.fuelValues()) > 0;
         }
     }

@@ -1,7 +1,7 @@
 package net.got.block;
 
 import com.mojang.serialization.MapCodec;
-import net.got.init.GotModBlockEntities;
+import net.got.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -31,10 +31,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * BellowsBlock — a directional block with a pressing/pumping animation.
- * Right-clicking activates the animation via a BlockEntity.
- */
 public class BellowsBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
     public static final MapCodec<BellowsBlock> CODEC = simpleCodec(BellowsBlock::new);
@@ -54,8 +50,6 @@ public class BellowsBlock extends BaseEntityBlock implements SimpleWaterloggedBl
     @Override
     public MapCodec<BellowsBlock> codec() { return CODEC; }
 
-    // ── Block entity ─────────────────────────────────────────────────────────
-
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BellowsBlockEntity(pos, state);
@@ -65,15 +59,13 @@ public class BellowsBlock extends BaseEntityBlock implements SimpleWaterloggedBl
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(
             Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide()) {
-            return createTickerHelper(type, GotModBlockEntities.BELLOWS.get(),
+            return createTickerHelper(type, ModBlockEntities.BELLOWS.get(),
                     BellowsBlockEntity::clientTick);
         } else {
-            return createTickerHelper(type, GotModBlockEntities.BELLOWS.get(),
+            return createTickerHelper(type, ModBlockEntities.BELLOWS.get(),
                     BellowsBlockEntity::serverTick);
         }
     }
-
-    // ── Interaction ──────────────────────────────────────────────────────────
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level,
@@ -84,8 +76,6 @@ public class BellowsBlock extends BaseEntityBlock implements SimpleWaterloggedBl
         }
         return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
-
-    // ── Placement ────────────────────────────────────────────────────────────
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
@@ -106,8 +96,6 @@ public class BellowsBlock extends BaseEntityBlock implements SimpleWaterloggedBl
         return state;
     }
 
-    // ── Visuals ──────────────────────────────────────────────────────────────
-
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.INVISIBLE;
@@ -123,8 +111,6 @@ public class BellowsBlock extends BaseEntityBlock implements SimpleWaterloggedBl
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
-
-    // ── State ─────────────────────────────────────────────────────────────────
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<net.minecraft.world.level.block.Block, BlockState> builder) {

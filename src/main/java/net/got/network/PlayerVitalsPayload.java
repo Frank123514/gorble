@@ -5,10 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent server → client once per second carrying both body temperature and thirst.
- * Replaces the old PlayerTemperaturePayload.
- */
 public record PlayerVitalsPayload(float bodyTemp, float thirst) implements CustomPacketPayload {
 
     public static final Identifier ID_LOC =

@@ -1,7 +1,7 @@
 package net.got.block;
 
 import com.mojang.serialization.MapCodec;
-import net.got.init.GotModBlockEntities;
+import net.got.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -26,13 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-/**
- * ForgeBlock — a furnace-like block with a recipe-selection interface.
- * <p>
- * Fuel slot (bottom-left) heats the ingot placed in the input slot (top-left).
- * The GUI's right panel lists all SmithyRecipes that match the current ingot;
- * the player clicks one to commit, and the forge processes it. The forge also supports an alloying mode (see ForgeBlockEntity) for combining metals.
- */
 public class ForgeBlock extends BaseEntityBlock {
 
     public static final MapCodec<ForgeBlock> CODEC = simpleCodec(ForgeBlock::new);
@@ -73,11 +66,6 @@ public class ForgeBlock extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
 
-    // NOTE (1.21.5): onRemove was split into BlockEntity#preRemoveSideEffects and
-    // BlockBehaviour#affectNeighborsAfterRemoval. ForgeBlockEntity is a Container
-    // (WorldlyContainer), so vanilla now automatically drops its contents on removal
-    // via the default preRemoveSideEffects — no manual override needed here.
-
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hitResult) {
@@ -100,7 +88,7 @@ public class ForgeBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
         if (level.isClientSide()) return null;
-        return createTickerHelper(type, GotModBlockEntities.FORGE.get(),
+        return createTickerHelper(type, ModBlockEntities.FORGE.get(),
                 ForgeBlockEntity::serverTick);
     }
 

@@ -1,9 +1,9 @@
 package net.got.event.entity.npc.levy.arryn;
 
-import net.got.event.entity.npc.GotSpawnEquipment;
-import net.got.event.entity.npc.data.GotGenderProvider;
-import net.got.event.entity.npc.data.name.GotNameGenerator;
-import net.got.event.entity.npc.data.name.GotNpcNames;
+import net.got.event.entity.npc.SpawnEquipment;
+import net.got.event.entity.npc.data.GenderProvider;
+import net.got.event.entity.npc.data.name.NameGenerator;
+import net.got.event.entity.npc.data.name.NpcNames;
 import net.got.event.entity.npc.levy.LevyEntity;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.DifficultyInstance;
@@ -15,10 +15,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
-/** Tier-2 Levy conscript of House Arryn (Vale). */
 public class ArrynLevyEntity extends LevyEntity {
 
-    private static final GotSpawnEquipment WEAPONS = GotSpawnEquipment.of(Items.IRON_SWORD, Items.STONE_SWORD);
+    private static final SpawnEquipment WEAPONS = SpawnEquipment.of(Items.IRON_SWORD, Items.STONE_SWORD);
 
     private static Identifier[] textures(boolean female) {
         String prefix = female ? "female" : "male";
@@ -37,8 +36,8 @@ public class ArrynLevyEntity extends LevyEntity {
         super(type, level);
     }
 
-    @Override protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE; }
-    @Override protected GotNameGenerator getNameGenerator() { return GotNpcNames.ARRYN_LEVY; }
+    @Override protected GenderProvider getGenderProvider() { return GenderProvider.MALE; }
+    @Override protected NameGenerator getNameGenerator() { return NpcNames.ARRYN_LEVY; }
     @Override public int getVariantsPerGender() { return 16; }
 
     @Override

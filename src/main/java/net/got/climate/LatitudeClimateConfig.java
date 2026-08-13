@@ -10,31 +10,14 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Single source of truth for every latitude-dependent climate setting: the
- * frozen-latitude ice/temperature line used by {@link LatitudeClimate} and
- * {@link LatitudeIceHandler}/{@link LatitudeIcebergHandler}, and the
- * dead-grass line used by
- * {@code net.got.client.color.SeasonFoliageColorProvider}.
- *
- * <p>All of it now lives in one bundled JSON resource,
- * {@code /net/got/climate/latitude_climate.json}, the same way LOTR Mod
- * keeps its {@code water_latitude.json} as a single settings file instead of
- * scattering magic numbers across multiple classes. The ice line is a single
- * flat world Z coordinate ({@code freeze_line_z}) rather than a per-worldX
- * spine, since a straight line with a gradual fade north of it is plenty for
- * the frozen-latitude effect.
- */
 public final class LatitudeClimateConfig {
 
     private static final String RESOURCE = "/net/got/climate/latitude_climate.json";
 
-    // ── Ice / temperature line ──────────────────────────────────────────────
     private final int iceFreezeLineZ;
     private final float iceFadeDistance;
     private final float iceMaxAdjustment;
 
-    // ── Dead-grass line ──────────────────────────────────────────────────────
     private final int deadGrassMapX0;
     private final int deadGrassRowX0;
     private final int deadGrassMapX1;
@@ -98,7 +81,6 @@ public final class LatitudeClimateConfig {
         }
     }
 
-    /** Accepts either a JSON number or a "0xRRGGBB"/"#RRGGBB" string. */
     private static int parseColor(JsonElement element) {
         if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isNumber()) {
             return element.getAsInt();
@@ -111,8 +93,6 @@ public final class LatitudeClimateConfig {
         }
         return Integer.parseInt(text, 16);
     }
-
-    // ── Accessors ────────────────────────────────────────────────────────────
 
     public int iceFreezeLineZ() {
         return iceFreezeLineZ;

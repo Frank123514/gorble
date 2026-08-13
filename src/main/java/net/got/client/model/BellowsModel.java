@@ -12,17 +12,6 @@ import net.minecraft.util.Unit;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Bellows block-entity model.
- * Extends {@link Model} directly (same as the original) so we avoid the
- * 1.21.4 {@code EntityModel<T extends EntityRenderState>} type constraint.
- * Animations are driven by {@link AnimationDefinition#bake} + {@link KeyframeAnimation#apply},
- * which is the 1.21.6+ approach used for keyframe animation.
- *
- * {@code Model} is generic as of 1.21.9+ ({@code Model<T>}); block entity
- * models that don't need a dedicated render state use {@link Unit}, the
- * same pattern vanilla uses for e.g. {@code ShieldModel}.
- */
 public class BellowsModel extends Model<Unit> {
 
     private final ModelPart root;
@@ -35,13 +24,6 @@ public class BellowsModel extends Model<Unit> {
         this.topBoard = this.root.getChild("top_board");
     }
 
-    /**
-     * Apply a Blockbench-exported {@link AnimationDefinition} to this model.
-     *
-     * @param definition  the animation to play
-     * @param ageInTicks  animation time in ticks ({@code animationProgress + partialTick})
-     * @param weight      blend weight, normally {@code 1.0F}
-     */
     public void applyAnimation(AnimationDefinition definition, float ageInTicks, float weight) {
         topBoard.resetPose();
         bakedAnimations.computeIfAbsent(definition, d -> d.bake(this.root)).apply((long) (ageInTicks * 50F), weight);

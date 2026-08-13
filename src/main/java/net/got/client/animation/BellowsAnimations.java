@@ -5,10 +5,6 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-/**
- * Bellows block-entity animations exported from Blockbench 5.1.4.
- * Minecraft 1.21.4 / Mojang mappings.
- */
 public class BellowsAnimations {
 
     public static final AnimationDefinition PUMPING = AnimationDefinition.Builder.withLength(1.5F)

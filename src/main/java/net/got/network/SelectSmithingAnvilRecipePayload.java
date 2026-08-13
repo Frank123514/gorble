@@ -5,9 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/**
- * Sent client→server when the player clicks a recipe in the Smithing Anvil GUI.
- */
 public record SelectSmithingAnvilRecipePayload(int recipeIndex) implements CustomPacketPayload {
 
     public static final Type<SelectSmithingAnvilRecipePayload> TYPE =

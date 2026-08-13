@@ -26,65 +26,62 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
     private static final int FLAME_X = 81;
     private static final int FLAME_Y = 36;
 
-    // Exact pixel spans of the grey flame silhouette in heating.png, row by row.
-    // Index 0 = y=14 (tip), last = y=68 (base). Each int[] is {left_x, right_x} inclusive.
-    // Multiple spans per row where the shape has gaps.
     private static final int[][][] SILHOUETTE = {
-            {{18,19}},  // y=14
-            {{18,20}},  // y=15
-            {{18,21}},  // y=16
-            {{19,22}},  // y=17
-            {{19,23}},  // y=18
-            {{19,24}},  // y=19
-            {{19,24}},  // y=20
-            {{20,25}},  // y=21
-            {{20,25}},  // y=22
-            {{20,25}},  // y=23
-            {{20,26}},  // y=24
-            {{20,26}},  // y=25
-            {{19,26}},  // y=26
-            {{19,26}},  // y=27
-            {{19,26}},  // y=28
-            {{18,26}},  // y=29
-            {{18,26}},  // y=30
-            {{17,26}},  // y=31
-            {{16,25}},  // y=32
-            {{16,25}},  // y=33
-            {{15,24}},  // y=34
-            {{10,10}, {15,24}},  // y=35
-            {{ 9,10}, {14,23}},  // y=36
-            {{ 8, 9}, {14,23}, {32,33}},  // y=37
-            {{ 8, 9}, {13,23}, {30,32}},  // y=38
-            {{ 7,10}, {13,22}, {28,31}},  // y=39
-            {{ 7,10}, {13,22}, {27,30}},  // y=40
-            {{ 7, 9}, {13,22}, {26,29}},  // y=41
-            {{ 6, 9}, {14,23}, {25,29}},  // y=42
-            {{ 6,10}, {14,28}},  // y=43
-            {{ 6,11}, {15,27}},  // y=44
-            {{ 7,13}, {15,27}},  // y=45
-            {{ 7,27}},  // y=46
-            {{ 8,26}},  // y=47
-            {{ 8,26}, {30,30}},  // y=48
-            {{ 9,26}, {30,31}},  // y=49
-            {{10,26}, {30,32}},  // y=50
-            {{11,26}, {30,32}},  // y=51
-            {{12,27}, {29,33}},  // y=52
-            {{13,27}, {29,33}},  // y=53
-            {{13,33}},  // y=54
-            {{14,33}},  // y=55
-            {{11,11}, {14,33}},  // y=56
-            {{11,12}, {15,33}},  // y=57
-            {{10,12}, {15,33}},  // y=58
-            {{10,13}, {16,32}},  // y=59
-            {{10,32}},  // y=60
-            {{11,32}},  // y=61
-            {{11,31}},  // y=62
-            {{12,31}},  // y=63
-            {{13,30}},  // y=64
-            {{14,30}},  // y=65
-            {{16,29}},  // y=66
-            {{17,27}},  // y=67
-            {{20,25}},  // y=68
+            {{18,19}},
+            {{18,20}},
+            {{18,21}},
+            {{19,22}},
+            {{19,23}},
+            {{19,24}},
+            {{19,24}},
+            {{20,25}},
+            {{20,25}},
+            {{20,25}},
+            {{20,26}},
+            {{20,26}},
+            {{19,26}},
+            {{19,26}},
+            {{19,26}},
+            {{18,26}},
+            {{18,26}},
+            {{17,26}},
+            {{16,25}},
+            {{16,25}},
+            {{15,24}},
+            {{10,10}, {15,24}},
+            {{ 9,10}, {14,23}},
+            {{ 8, 9}, {14,23}, {32,33}},
+            {{ 8, 9}, {13,23}, {30,32}},
+            {{ 7,10}, {13,22}, {28,31}},
+            {{ 7,10}, {13,22}, {27,30}},
+            {{ 7, 9}, {13,22}, {26,29}},
+            {{ 6, 9}, {14,23}, {25,29}},
+            {{ 6,10}, {14,28}},
+            {{ 6,11}, {15,27}},
+            {{ 7,13}, {15,27}},
+            {{ 7,27}},
+            {{ 8,26}},
+            {{ 8,26}, {30,30}},
+            {{ 9,26}, {30,31}},
+            {{10,26}, {30,32}},
+            {{11,26}, {30,32}},
+            {{12,27}, {29,33}},
+            {{13,27}, {29,33}},
+            {{13,33}},
+            {{14,33}},
+            {{11,11}, {14,33}},
+            {{11,12}, {15,33}},
+            {{10,12}, {15,33}},
+            {{10,13}, {16,32}},
+            {{10,32}},
+            {{11,32}},
+            {{11,31}},
+            {{12,31}},
+            {{13,30}},
+            {{14,30}},
+            {{16,29}},
+            {{17,27}},
+            {{20,25}},
     };
 
     private static final int SILHOUETTE_TOP_Y = 14;
@@ -140,22 +137,16 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
         }
     }
 
-    /**
-     * Fills the baked grey flame silhouette bottom-up by painting exactly the
-     * grey pixels row by row. Only the actual silhouette spans are coloured —
-     * gaps in the shape stay as background.
-     */
     private void renderFlameFill(GuiGraphics g, int panelX, int panelY, float fraction) {
         if (fraction <= 0f) return;
         int filled = Math.round(SILHOUETTE_H * Math.max(0f, Math.min(1f, fraction)));
         if (filled == 0) return;
 
-        // filled rows from the bottom; SILHOUETTE[0]=tip, SILHOUETTE[last]=base
         int startRow = SILHOUETTE_H - filled;
 
         for (int i = startRow; i < SILHOUETTE_H; i++) {
             int screenY = panelY + SILHOUETTE_TOP_Y + i;
-            // heightFrac: 0.0 at base, 1.0 at tip
+            
             float heightFrac = (float)(SILHOUETTE_H - 1 - i) / (float)(filled - 1 + 1);
             int color = flameColor(heightFrac);
 
@@ -165,7 +156,6 @@ public class HeatTreatingScreen extends AbstractContainerScreen<HeatTreatingMenu
         }
     }
 
-    /** dark red (base) → orange → yellow → near-white (tip) */
     private int flameColor(float t) {
         t = Math.max(0f, Math.min(1f, t));
         int r, gr, b;

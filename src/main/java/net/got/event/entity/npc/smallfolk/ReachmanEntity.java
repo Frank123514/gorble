@@ -1,23 +1,21 @@
 package net.got.event.entity.npc.smallfolk;
 
-import net.got.event.entity.npc.data.GotGenderProvider;
-import net.got.event.entity.npc.data.name.GotNameGenerator;
-import net.got.event.entity.npc.data.name.GotNpcNames;
+import net.got.event.entity.npc.data.GenderProvider;
+import net.got.event.entity.npc.data.name.NameGenerator;
+import net.got.event.entity.npc.data.name.NpcNames;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
-/** Tier-1 civilian NPC — ReachmanEntity. */
 public class ReachmanEntity extends SmallfolkEntity {
 
-    /** Number of generated skin variants per gender (12 variants from skin generator). */
     public static final int MALE_VARIANT_COUNT   = 12;
-    /** Number of female skin variants. */
+    
     public static final int FEMALE_VARIANT_COUNT = 12;
-    /** Male texture variants — reachman/generated/male_01.png ... male_12.png */
+    
     public static final Identifier[] MALE_TEXTURES   = textures("reachman", false, MALE_VARIANT_COUNT);
-    /** Female texture variants — reachman/generated/female_01.png ... female_12.png */
+    
     public static final Identifier[] FEMALE_TEXTURES = textures("reachman", true,  FEMALE_VARIANT_COUNT);
 
     private static Identifier[] textures(String id, boolean female, int count) {
@@ -35,10 +33,10 @@ public class ReachmanEntity extends SmallfolkEntity {
     }
 
     @Override
-    protected GotGenderProvider getGenderProvider() { return GotGenderProvider.MALE_OR_FEMALE; }
+    protected GenderProvider getGenderProvider() { return GenderProvider.MALE_OR_FEMALE; }
 
     @Override
-    protected GotNameGenerator getNameGenerator() { return GotNpcNames.REACHMAN; }
+    protected NameGenerator getNameGenerator() { return NpcNames.REACHMAN; }
 
     @Override
     public int getVariantsPerGender() { return MALE_VARIANT_COUNT; }

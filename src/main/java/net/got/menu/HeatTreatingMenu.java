@@ -1,9 +1,9 @@
 package net.got.menu;
 
 import net.got.block.ForgeBlockEntity;
-import net.got.init.GotModMenus;
-import net.got.init.GotModRecipeTypes;
-import net.got.init.GotModItems;
+import net.got.init.ModMenus;
+import net.got.init.ModRecipeTypes;
+import net.got.init.ModItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,16 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-/**
- * HeatTreatingMenu — container menu for the Forge's heat-treating mode.
- *
- * Uses SLOT_HEAT_A/B/C/D (slots 6-9) — completely separate from alloying's
- * SLOT_ALLOY_A/B/C/D (slots 2-5). Only SLOT_FUEL (slot 0) is shared.
- *
- * Slot pixel positions from heating.png:
- *   Heat A-D : (53,17) (71,17) (89,17) (107,17)
- *   Fuel     : (80,53)
- */
 public class HeatTreatingMenu extends AbstractContainerMenu {
 
     public static final int HEAT_A_X = 53; public static final int HEAT_A_Y = 17;
@@ -51,7 +41,7 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
 
     public HeatTreatingMenu(int windowId, Inventory playerInv,
                             Container container, ContainerData data) {
-        super(GotModMenus.HEAT_TREATING.get(), windowId);
+        super(ModMenus.HEAT_TREATING.get(), windowId);
         this.container = container;
         this.data      = data;
         this.level     = playerInv.player.level();
@@ -60,17 +50,14 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         checkContainerDataCount(data, ForgeBlockEntity.NUM_DATA);
         container.startOpen(playerInv.player);
 
-        // Player main inventory
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 9; col++)
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9,
                         8 + col * 18, 84 + row * 18));
 
-        // Hotbar
         for (int col = 0; col < 9; col++)
             this.addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
 
-        // Four independent heat slots
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_A, HEAT_A_X, HEAT_A_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_B, HEAT_B_X, HEAT_B_Y));
         this.addSlot(new SingleItemSlot(container, ForgeBlockEntity.SLOT_HEAT_C, HEAT_C_X, HEAT_C_Y));
@@ -79,8 +66,6 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
 
         this.addDataSlots(data);
     }
-
-    // ── Progress helpers ──────────────────────────────────────────────────────
 
     public boolean isFlaming() {
         return data.get(ForgeBlockEntity.DATA_LIT_TIME) > 0;
@@ -112,8 +97,6 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
     }
 
     public Container getContainer() { return container; }
-
-    // ── Shift-click ───────────────────────────────────────────────────────────
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
@@ -148,8 +131,6 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    // ── Inner slot types ──────────────────────────────────────────────────────
-
     private static class SingleItemSlot extends Slot {
         SingleItemSlot(Container c, int slot, int x, int y) { super(c, slot, x, y); }
         @Override public int getMaxStackSize() { return 1; }
@@ -157,8 +138,8 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         @Override
         public boolean mayPlace(ItemStack stack) {
             return stack.is(Items.IRON_INGOT)
-                || stack.is(GotModItems.BRONZE_INGOT.get())
-                || stack.is(GotModItems.STEEL_INGOT.get());
+                || stack.is(ModItems.BRONZE_INGOT.get())
+                || stack.is(ModItems.STEEL_INGOT.get());
         }
     }
 
@@ -170,7 +151,7 @@ public class HeatTreatingMenu extends AbstractContainerMenu {
         }
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return stack.getBurnTime(GotModRecipeTypes.SMITHY.get(),
+            return stack.getBurnTime(ModRecipeTypes.SMITHY.get(),
                     level.fuelValues()) > 0;
         }
     }

@@ -28,13 +28,13 @@ public final class SeasonManager extends SavedData {
     private static final int BASE_LONG_DAYS  = 28;
     private static final int MAX_LONG_DAYS   = 70;
 
-    private static volatile GotSeason CURRENT_SEASON = GotSeason.SUMMER;
+    private static volatile Season CURRENT_SEASON = Season.SUMMER;
 
-    public static GotSeason getCurrentSeason() {
+    public static Season getCurrentSeason() {
         return CURRENT_SEASON;
     }
 
-    private GotSeason currentSeason  = GotSeason.SUMMER;
+    private Season currentSeason  = Season.SUMMER;
     private long      ticksRemaining = daysToTicks(BASE_LONG_DAYS);
 
     public static final SavedDataType<SeasonManager> TYPE = new SavedDataType<>(
@@ -56,9 +56,9 @@ public final class SeasonManager extends SavedData {
 
     private SeasonManager(String seasonName, long ticksRemaining) {
         try {
-            this.currentSeason = GotSeason.valueOf(seasonName);
+            this.currentSeason = Season.valueOf(seasonName);
         } catch (IllegalArgumentException ignored) {
-            this.currentSeason = GotSeason.SUMMER;
+            this.currentSeason = Season.SUMMER;
         }
         this.ticksRemaining = ticksRemaining;
         CURRENT_SEASON = this.currentSeason;
@@ -79,7 +79,7 @@ public final class SeasonManager extends SavedData {
     }
 
     private void advanceSeason(ServerLevel level) {
-        GotSeason previous = currentSeason;
+        Season previous = currentSeason;
         currentSeason  = currentSeason.next();
         CURRENT_SEASON = currentSeason;
         SeasonCache.set(currentSeason);
@@ -104,7 +104,7 @@ public final class SeasonManager extends SavedData {
                 ticksRemaining / TICKS_PER_DAY);
     }
 
-    private static String buildTransitionMessage(GotSeason to) {
+    private static String buildTransitionMessage(Season to) {
         return switch (to) {
             case SPRING -> "§aThe snows begin to melt. Spring has come to Westeros.";
             case SUMMER -> "§eThe days grow long and warm. Summer is upon the realm.";
@@ -139,10 +139,10 @@ public final class SeasonManager extends SavedData {
         mgr.setDirty();
     }
 
-    public static void setSeason(GotSeason season, ServerLevel level) {
+    public static void setSeason(Season season, ServerLevel level) {
         ServerLevel overworld = level.getServer().overworld();
         SeasonManager mgr = get(overworld);
-        GotSeason previous = mgr.currentSeason;
+        Season previous = mgr.currentSeason;
         mgr.currentSeason  = season;
         CURRENT_SEASON     = season;
         SeasonCache.set(season);
@@ -171,7 +171,7 @@ public final class SeasonManager extends SavedData {
         return String.format("Season: %s (%d days remaining)",
                 currentSeason.displayName, ticksRemaining / TICKS_PER_DAY);
     }
-    /** Sets snowAccumulationHeight to 8 on server start so snow builds up fully. */
+    
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         ServerLevel overworld = event.getServer().overworld();
@@ -180,8 +180,6 @@ public final class SeasonManager extends SavedData {
         GotMod.LOGGER.info("[GoT Seasons] snowAccumulationHeight set to 8");
     }
 
-
-    /** Syncs the current season to a player when they first join. */
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;

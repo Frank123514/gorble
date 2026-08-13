@@ -11,22 +11,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entry point for granting use-based skill XP. Every gameplay hook (mining a
- * block, landing a hit, pulling food from the oven, ...) should call
- * {@link #grantXp} rather than touching {@link PlayerSkillState} directly, so
- * level-up messages, perk-point notifications and client sync all stay
- * consistent in one place.
- */
 public final class SkillXpService {
 
-    /**
-     * Grants XP to a skill, applying that skill's own XP_GAIN_MULT perks
-     * first, then handles any level-ups (chat message, sound, sync).
-     *
-     * @param baseAmount the un-modified XP amount for this action.
-     */
-    public static void grantXp(ServerPlayer player, GotSkill skill, int baseAmount) {
+    public static void grantXp(ServerPlayer player, Skill skill, int baseAmount) {
         if (baseAmount <= 0) return;
 
         int oldLevel = PlayerSkillState.getLevel(player, skill);
@@ -39,19 +26,18 @@ public final class SkillXpService {
         }
     }
 
-    private static void onLevelUp(ServerPlayer player, GotSkill skill, int oldLevel, int newLevel) {
+    private static void onLevelUp(ServerPlayer player, Skill skill, int oldLevel, int newLevel) {
         player.displayClientMessage(Component.literal("")
                         .append(Component.literal("Skill increased! ").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD))
                         .append(Component.literal(skill.displayName + " ").withStyle(ChatFormatting.YELLOW))
                         .append(Component.literal("is now level " + newLevel + ".").withStyle(ChatFormatting.YELLOW)),
-                true); // action bar
+                true);
 
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.4f, 1.6f);
 
-        // Mention any perks that just became unlockable so the player knows to check the tree.
         List<SkillPerk> newlyAvailable = new ArrayList<>();
-        for (SkillPerk perk : GotSkillPerks.forSkill(skill)) {
+        for (SkillPerk perk : SkillPerks.forSkill(skill)) {
             if (!PlayerSkillState.hasPerk(player, perk.id())
                     && perk.levelRequirement() > oldLevel
                     && perk.levelRequirement() <= newLevel) {
@@ -68,10 +54,9 @@ public final class SkillXpService {
         syncToClient(player);
     }
 
-    /** Pushes the player's full skill state to their client. Call after any XP/perk change. */
     public static void syncToClient(ServerPlayer player) {
-        int[] xp = new int[GotSkill.values().length];
-        for (GotSkill skill : GotSkill.values()) {
+        int[] xp = new int[Skill.values().length];
+        for (Skill skill : Skill.values()) {
             xp[skill.ordinal()] = PlayerSkillState.getXp(player, skill);
         }
         PacketDistributor.sendToPlayer(player,

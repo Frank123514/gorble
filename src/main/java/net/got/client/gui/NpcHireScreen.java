@@ -1,6 +1,6 @@
 package net.got.client.gui;
 
-import net.got.event.entity.npc.data.GotNpcOccupation;
+import net.got.event.entity.npc.data.NpcOccupation;
 import net.got.network.HireNpcPayload;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -8,20 +8,8 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-/**
- * A simple job-picker screen opened by sneak + right-clicking an unemployed NPC.
- *
- * <p>Shows all hireable occupations as a scrollable grid of buttons. Clicking
- * one sends a {@link HireNpcPayload} to the server and closes the screen.
- * No inventory slots — just a chooser.
- */
 public class NpcHireScreen extends Screen {
 
-    /**
-     * Called from {@link net.got.network.GotNetwork} when
-     * {@link net.got.network.OpenHireScreenPayload} is received.
-     * Keeps the {@code Minecraft} reference inside the client-only class.
-     */
     public static void open(int entityId) {
         net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
         if (mc != null) mc.setScreen(new NpcHireScreen(entityId));
@@ -46,12 +34,11 @@ public class NpcHireScreen extends Screen {
     private final int entityId;
     private int scrollOffset = 0;
 
-    private static final GotNpcOccupation[] JOBS = GotNpcOccupation.HIREABLE;
+    private static final NpcOccupation[] JOBS = NpcOccupation.HIREABLE;
 
-    /** Visible rows of buttons that fit in the panel. */
     private static final int ROWS_VISIBLE;
     static {
-        int panelH = GUI_H - 28; // below title/padding
+        int panelH = GUI_H - 28;
         ROWS_VISIBLE = panelH / (BTN_H + GAP);
     }
 
@@ -65,22 +52,19 @@ public class NpcHireScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float delta) {
-        // Dim background
+        
         renderBackground(g, mx, my, delta);
 
         int x = (width  - GUI_W) / 2;
         int y = (height - GUI_H) / 2;
 
-        // Window chrome
         g.fill(x, y, x + GUI_W, y + GUI_H, COL_BG);
         g.fill(x + 1, y + 1, x + GUI_W - 1, y + GUI_H - 1, COL_PANEL);
 
-        // Title
         g.drawString(font, "Choose a Job",
                 x + (GUI_W - font.width("Choose a Job")) / 2, y + 6,
                 COL_TITLE, false);
 
-        // Job buttons
         int startRow = scrollOffset;
         int totalRows = (int) Math.ceil((double) JOBS.length / COLS);
 
@@ -91,7 +75,7 @@ public class NpcHireScreen extends Screen {
                 int idx = jobRow * COLS + col;
                 if (idx >= JOBS.length) break;
 
-                GotNpcOccupation occ = JOBS[idx];
+                NpcOccupation occ = JOBS[idx];
                 int bx = x + PAD_X + col * (BTN_W + GAP);
                 int by = y + 22    + row * (BTN_H + GAP);
 
@@ -106,7 +90,6 @@ public class NpcHireScreen extends Screen {
             }
         }
 
-        // Scroll hints
         if (scrollOffset > 0) {
             g.drawString(font, "▲", x + GUI_W - 16, y + 22, COL_TITLE, false);
         }
@@ -157,7 +140,7 @@ public class NpcHireScreen extends Screen {
 
     @Override
     public boolean keyPressed(net.minecraft.client.input.KeyEvent __event){
-        // Escape closes
+        
         if (__event.key() == 256) { onClose(); return true; }
         return super.keyPressed(__event);
     }

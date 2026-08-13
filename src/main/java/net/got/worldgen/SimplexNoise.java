@@ -1,9 +1,5 @@
 package net.got.worldgen;
 
-/**
- * 2D Simplex noise — Stefan Gustavson's public-domain implementation,
- * upgraded with a 12-direction gradient set and seeded instances.
- */
 public final class SimplexNoise {
 
     private static final double[][] GRAD3 = {
@@ -59,7 +55,6 @@ public final class SimplexNoise {
         return new SimplexNoise(seed, true);
     }
 
-    /** 2D simplex noise, output approximately [-1, 1]. */
     public double eval(double xin, double yin) {
         double s  = (xin + yin) * F2;
         int i     = fastfloor(xin + s);
@@ -87,7 +82,6 @@ public final class SimplexNoise {
         return 70.0 * (n0 + n1 + n2);
     }
 
-    /** Static convenience — uses the default (non-seeded) instance. */
     public static double noise(double x, double y) {
         return DEFAULT.eval(x, y);
     }

@@ -1,6 +1,6 @@
 package net.got.block;
 
-public class CinnamonLogBlock extends GotFlammableRotatedPillarBlock {
+public class CinnamonLogBlock extends FlammableRotatedPillarBlock {
 
     public CinnamonLogBlock  (Properties properties) {
         super(properties);
