@@ -7,7 +7,7 @@
         "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
-      "weight": 2
+      "weight": 1
     },
     {
       "element": {
@@ -52,40 +52,13 @@
         "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
-      "weight": 3
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/houses/westerlands_barn_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 5
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/houses/westerlands_blacksmith_house_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 5
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/houses/westerlands_alehouse_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 5
+      "weight": 6
     },
     {
       "element": {
         "element_type": "minecraft:empty_pool_element"
       },
-      "weight": 3
+      "weight": 1
     }
   ],
   "fallback": "got:westerlands_village/terminators"
