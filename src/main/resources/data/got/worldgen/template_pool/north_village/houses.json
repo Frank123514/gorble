@@ -4,7 +4,7 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/houses/north_small_house_2",
-        "processors": { "processors": [] },
+        "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
       "weight": 2
@@ -13,7 +13,7 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/houses/north_small_house_3",
-        "processors": { "processors": [] },
+        "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
       "weight": 2
@@ -22,7 +22,7 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/houses/north_small_house_4",
-        "processors": { "processors": [] },
+        "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
       "weight": 2
@@ -31,7 +31,7 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/houses/north_small_house_5",
-        "processors": { "processors": [] },
+        "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
       "weight": 2
@@ -40,20 +40,26 @@
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/houses/north_small_house_6",
-        "processors": { "processors": [] },
+        "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
-      "weight": 2
+      "weight": 1
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/houses/north_small_house_8",
-        "processors": { "processors": [] },
+        "processors": "got:mossify_10_percent",
         "projection": "rigid"
       },
-      "weight": 2
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      },
+      "weight": 4
     }
   ],
-  "fallback": "minecraft:empty"
+  "fallback": "got:north_village/terminators"
 }
