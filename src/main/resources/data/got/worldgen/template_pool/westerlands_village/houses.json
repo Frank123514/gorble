@@ -83,39 +83,6 @@
     },
     {
       "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/fields/westerlands_rye_field_1",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/fields/westerlands_oat_field_1",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/fields/westerlands_barley_field_1",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
         "element_type": "minecraft:empty_pool_element"
       },
       "weight": 3

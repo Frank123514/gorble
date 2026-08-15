@@ -1,0 +1,32 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:riverlands_village/fields/riverlands_rye_field_1",
+        "processors": "got:street_riverlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:riverlands_village/fields/riverlands_oat_field_1",
+        "processors": "got:street_riverlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:riverlands_village/fields/riverlands_barley_field_1",
+        "processors": "got:street_riverlands",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

@@ -7,12 +7,6 @@
       "priority": 0
     },
     {
-      "subbiome": "got:subbiome/wheat_field",
-      "noise_scale": 240.0,
-      "threshold": 0.85,
-      "priority": 0
-    },
-    {
       "subbiome": "got:north_hills",
       "noise_scale": 230.0,
       "threshold": 1.0,
@@ -31,12 +25,6 @@
   ],
 
   "got:barrowlands": [
-    {
-      "subbiome": "got:subbiome/wheat_field",
-      "noise_scale": 240.0,
-      "threshold": 0.90,
-      "priority": 0
-    }
   ],
 
   "got:wolfswood": [

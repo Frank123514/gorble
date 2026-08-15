@@ -83,39 +83,6 @@
     },
     {
       "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/fields/reach_rye_field_1",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/fields/reach_oat_field_1",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/fields/reach_barley_field_1",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
         "element_type": "minecraft:empty_pool_element"
       },
       "weight": 3
