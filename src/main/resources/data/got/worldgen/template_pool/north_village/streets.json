@@ -84,6 +84,15 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:north_village/streets/street_6",
+        "processors": "got:street_north",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/streets/crossroad_01",
         "processors": "got:street_north",
         "projection": "terrain_matching"

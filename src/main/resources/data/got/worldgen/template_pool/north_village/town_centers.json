@@ -3,11 +3,11 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:north_village/town_centers/segment_0",
+        "location": "got:north_village/town_centers/well",
         "processors": {
           "processors": []
         },
-        "projection": "rigid"
+        "projection": "terrain_matching"
       },
       "weight": 1
     }
