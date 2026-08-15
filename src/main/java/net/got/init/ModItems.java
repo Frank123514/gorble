@@ -694,6 +694,43 @@ public class ModItems {
     public static final DeferredItem<BlockItem> BAMBOO_ROOFING_WALL =
             REGISTRY.registerSimpleBlockItem("bamboo_roofing_wall", ModBlocks.BAMBOO_ROOFING_WALL);
 
+    public static final DeferredItem<BlockItem> DAUB =
+            REGISTRY.registerSimpleBlockItem("daub", ModBlocks.DAUB);
+    public static final DeferredItem<BlockItem> DAUB_SLAB =
+            REGISTRY.registerSimpleBlockItem("daub_slab", ModBlocks.DAUB_SLAB);
+    public static final DeferredItem<BlockItem> DAUB_STAIRS =
+            REGISTRY.registerSimpleBlockItem("daub_stairs", ModBlocks.DAUB_STAIRS);
+    public static final DeferredItem<BlockItem> DAUB_WALL =
+            REGISTRY.registerSimpleBlockItem("daub_wall", ModBlocks.DAUB_WALL);
+    public static final DeferredItem<BlockItem> DAUB_VERTICAL_SLAB =
+            REGISTRY.registerSimpleBlockItem("daub_vertical_slab", ModBlocks.DAUB_VERTICAL_SLAB);
+
+    public static final DeferredItem<BlockItem> WATTLE =
+            REGISTRY.registerSimpleBlockItem("wattle", ModBlocks.WATTLE);
+    public static final DeferredItem<BlockItem> WATTLE_SLAB =
+            REGISTRY.registerSimpleBlockItem("wattle_slab", ModBlocks.WATTLE_SLAB);
+    public static final DeferredItem<BlockItem> WATTLE_STAIRS =
+            REGISTRY.registerSimpleBlockItem("wattle_stairs", ModBlocks.WATTLE_STAIRS);
+    public static final DeferredItem<BlockItem> WATTLE_WALL =
+            REGISTRY.registerSimpleBlockItem("wattle_wall", ModBlocks.WATTLE_WALL);
+    public static final DeferredItem<BlockItem> WATTLE_VERTICAL_SLAB =
+            REGISTRY.registerSimpleBlockItem("wattle_vertical_slab", ModBlocks.WATTLE_VERTICAL_SLAB);
+    public static final DeferredItem<BlockItem> WATTLE_FENCE =
+            REGISTRY.registerSimpleBlockItem("wattle_fence", ModBlocks.WATTLE_FENCE);
+    public static final DeferredItem<BlockItem> WATTLE_FENCE_GATE =
+            REGISTRY.registerSimpleBlockItem("wattle_fence_gate", ModBlocks.WATTLE_FENCE_GATE);
+
+    public static final DeferredItem<BlockItem> WATTLE_AND_DAUB =
+            REGISTRY.registerSimpleBlockItem("wattle_and_daub", ModBlocks.WATTLE_AND_DAUB);
+    public static final DeferredItem<BlockItem> WATTLE_AND_DAUB_SLAB =
+            REGISTRY.registerSimpleBlockItem("wattle_and_daub_slab", ModBlocks.WATTLE_AND_DAUB_SLAB);
+    public static final DeferredItem<BlockItem> WATTLE_AND_DAUB_STAIRS =
+            REGISTRY.registerSimpleBlockItem("wattle_and_daub_stairs", ModBlocks.WATTLE_AND_DAUB_STAIRS);
+    public static final DeferredItem<BlockItem> WATTLE_AND_DAUB_WALL =
+            REGISTRY.registerSimpleBlockItem("wattle_and_daub_wall", ModBlocks.WATTLE_AND_DAUB_WALL);
+    public static final DeferredItem<BlockItem> WATTLE_AND_DAUB_VERTICAL_SLAB =
+            REGISTRY.registerSimpleBlockItem("wattle_and_daub_vertical_slab", ModBlocks.WATTLE_AND_DAUB_VERTICAL_SLAB);
+
     public static final DeferredItem<Item> BASALT_BRICK = block(ModBlocks.BASALT_BRICK);
     public static final DeferredItem<Item> CRACKED_BASALT_BRICK = block(ModBlocks.CRACKED_BASALT_BRICK);
     public static final DeferredItem<Item> MOSSY_BASALT_BRICK = block(ModBlocks.MOSSY_BASALT_BRICK);
@@ -996,14 +1033,14 @@ public class ModItems {
     public static final DeferredItem<Item> SMOOTH_MARBLE_ROCK_STAIRS = block(ModBlocks.SMOOTH_MARBLE_ROCK_STAIRS);
     public static final DeferredItem<Item> SMOOTH_MARBLE_ROCK_WALL = block(ModBlocks.SMOOTH_MARBLE_ROCK_WALL);
 
-    public static final DeferredItem<Item> LIGHT_THATCH        = block(ModBlocks.LIGHT_THATCH);
-    public static final DeferredItem<Item> LIGHT_THATCH_SLAB   = block(ModBlocks.LIGHT_THATCH_SLAB);
-    public static final DeferredItem<Item> LIGHT_THATCH_STAIRS = block(ModBlocks.LIGHT_THATCH_STAIRS);
-    public static final DeferredItem<Item> LIGHT_THATCH_WALL   = block(ModBlocks.LIGHT_THATCH_WALL);
-    public static final DeferredItem<Item> DARK_THATCH         = block(ModBlocks.DARK_THATCH);
-    public static final DeferredItem<Item> DARK_THATCH_SLAB    = block(ModBlocks.DARK_THATCH_SLAB);
-    public static final DeferredItem<Item> DARK_THATCH_STAIRS  = block(ModBlocks.DARK_THATCH_STAIRS);
-    public static final DeferredItem<Item> DARK_THATCH_WALL    = block(ModBlocks.DARK_THATCH_WALL);
+    public static final DeferredItem<Item> THATCH        = block(ModBlocks.THATCH);
+    public static final DeferredItem<Item> THATCH_SLAB   = block(ModBlocks.THATCH_SLAB);
+    public static final DeferredItem<Item> THATCH_STAIRS = block(ModBlocks.THATCH_STAIRS);
+    public static final DeferredItem<Item> THATCH_WALL   = block(ModBlocks.THATCH_WALL);
+    public static final DeferredItem<Item> WEATHERED_THATCH         = block(ModBlocks.WEATHERED_THATCH);
+    public static final DeferredItem<Item> WEATHERED_THATCH_SLAB    = block(ModBlocks.WEATHERED_THATCH_SLAB);
+    public static final DeferredItem<Item> WEATHERED_THATCH_STAIRS  = block(ModBlocks.WEATHERED_THATCH_STAIRS);
+    public static final DeferredItem<Item> WEATHERED_THATCH_WALL    = block(ModBlocks.WEATHERED_THATCH_WALL);
 
     public static final DeferredItem<Item> DRAGONGLASS_ORE    = block(ModBlocks.DRAGONGLASS_ORE);
     public static final DeferredItem<Item> OPAL_ORE           = block(ModBlocks.OPAL_ORE);
@@ -2999,7 +3036,7 @@ public class ModItems {
     public static final DeferredItem<Item> CYAN_WOOL_VERTICAL_SLAB = block(ModBlocks.CYAN_WOOL_VERTICAL_SLAB);
     public static final DeferredItem<Item> DARK_OAK_ROOFING_VERTICAL_SLAB = block(ModBlocks.DARK_OAK_ROOFING_VERTICAL_SLAB);
     public static final DeferredItem<Item> DARK_OAK_WOOD_VERTICAL_SLAB = block(ModBlocks.DARK_OAK_WOOD_VERTICAL_SLAB);
-    public static final DeferredItem<Item> DARK_THATCH_VERTICAL_SLAB = block(ModBlocks.DARK_THATCH_VERTICAL_SLAB);
+    public static final DeferredItem<Item> WEATHERED_THATCH_VERTICAL_SLAB = block(ModBlocks.WEATHERED_THATCH_VERTICAL_SLAB);
     public static final DeferredItem<Item> DATE_PALM_ROOFING_VERTICAL_SLAB = block(ModBlocks.DATE_PALM_ROOFING_VERTICAL_SLAB);
     public static final DeferredItem<Item> DATE_PALM_VERTICAL_SLAB = block(ModBlocks.DATE_PALM_VERTICAL_SLAB);
     public static final DeferredItem<Item> DATE_PALM_WOOD_VERTICAL_SLAB = block(ModBlocks.DATE_PALM_WOOD_VERTICAL_SLAB);
@@ -3048,7 +3085,7 @@ public class ModItems {
     public static final DeferredItem<Item> LEMON_WOOD_VERTICAL_SLAB = block(ModBlocks.LEMON_WOOD_VERTICAL_SLAB);
     public static final DeferredItem<Item> LIGHT_BLUE_WOOL_VERTICAL_SLAB = block(ModBlocks.LIGHT_BLUE_WOOL_VERTICAL_SLAB);
     public static final DeferredItem<Item> LIGHT_GRAY_WOOL_VERTICAL_SLAB = block(ModBlocks.LIGHT_GRAY_WOOL_VERTICAL_SLAB);
-    public static final DeferredItem<Item> LIGHT_THATCH_VERTICAL_SLAB = block(ModBlocks.LIGHT_THATCH_VERTICAL_SLAB);
+    public static final DeferredItem<Item> THATCH_VERTICAL_SLAB = block(ModBlocks.THATCH_VERTICAL_SLAB);
     public static final DeferredItem<Item> LIME_ROOFING_VERTICAL_SLAB = block(ModBlocks.LIME_ROOFING_VERTICAL_SLAB);
     public static final DeferredItem<Item> LIME_VERTICAL_SLAB = block(ModBlocks.LIME_VERTICAL_SLAB);
     public static final DeferredItem<Item> LIME_WOOD_VERTICAL_SLAB = block(ModBlocks.LIME_WOOD_VERTICAL_SLAB);

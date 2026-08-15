@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "got:block/weathered_thatch",
+    "top": "got:block/weathered_thatch",
+    "side": "got:block/weathered_thatch",
+    "wall": "got:block/weathered_thatch",
+    "particle": "got:block/weathered_thatch"
+  }
+}

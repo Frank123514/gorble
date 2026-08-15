@@ -1442,6 +1442,90 @@ public class ModBlocks {
             REGISTRY.registerBlock("bamboo_roofing_wall", p -> new WallBlock(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE_WALL));
 
+    public static final DeferredBlock<Block> DAUB =
+            REGISTRY.registerBlock("daub", p -> new Block(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1.5f, 3f)
+                            .sound(SoundType.MUD_BRICKS));
+    public static final DeferredBlock<Block> DAUB_SLAB =
+            REGISTRY.registerBlock("daub_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1.5f, 3f)
+                            .sound(SoundType.MUD_BRICKS));
+    public static final DeferredBlock<Block> DAUB_STAIRS =
+            REGISTRY.registerBlock("daub_stairs",
+                    p -> new StairBlock(DAUB.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1.5f, 3f)
+                            .sound(SoundType.MUD_BRICKS));
+    public static final DeferredBlock<Block> DAUB_WALL =
+            REGISTRY.registerBlock("daub_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1.5f, 3f)
+                            .sound(SoundType.MUD_BRICKS));
+
+    public static final DeferredBlock<Block> WATTLE =
+            REGISTRY.registerBlock("wattle", p -> new Block(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1f, 3f)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava());
+    public static final DeferredBlock<Block> WATTLE_SLAB =
+            REGISTRY.registerBlock("wattle_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1f, 3f)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava());
+    public static final DeferredBlock<Block> WATTLE_STAIRS =
+            REGISTRY.registerBlock("wattle_stairs",
+                    p -> new StairBlock(WATTLE.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1f, 3f)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava());
+    public static final DeferredBlock<Block> WATTLE_WALL =
+            REGISTRY.registerBlock("wattle_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1f, 3f)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava());
+    public static final DeferredBlock<Block> WATTLE_FENCE =
+            REGISTRY.registerBlock("wattle_fence", p -> new FenceBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1f, 3f)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava()
+                            .forceSolidOn());
+    public static final DeferredBlock<Block> WATTLE_FENCE_GATE =
+            REGISTRY.registerBlock("wattle_fence_gate", p -> new GotFenceGateBlock(WoodTypes.WATTLE, p),
+                    BlockBehaviour.Properties.of()
+                            .strength(1f, 3f)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava()
+                            .forceSolidOn());
+
+    public static final DeferredBlock<Block> WATTLE_AND_DAUB =
+            REGISTRY.registerBlock("wattle_and_daub", p -> new Block(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(2f, 4f)
+                            .sound(SoundType.WOOD));
+    public static final DeferredBlock<Block> WATTLE_AND_DAUB_SLAB =
+            REGISTRY.registerBlock("wattle_and_daub_slab", p -> new SlabBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(2f, 4f)
+                            .sound(SoundType.WOOD));
+    public static final DeferredBlock<Block> WATTLE_AND_DAUB_STAIRS =
+            REGISTRY.registerBlock("wattle_and_daub_stairs",
+                    p -> new StairBlock(WATTLE_AND_DAUB.get().defaultBlockState(), p),
+                    BlockBehaviour.Properties.of()
+                            .strength(2f, 4f)
+                            .sound(SoundType.WOOD));
+    public static final DeferredBlock<Block> WATTLE_AND_DAUB_WALL =
+            REGISTRY.registerBlock("wattle_and_daub_wall", p -> new WallBlock(p),
+                    BlockBehaviour.Properties.of()
+                            .strength(2f, 4f)
+                            .sound(SoundType.WOOD));
+
     public static final DeferredBlock<Block> BELLFLOWER         = flowerBlock("bellflower");
     public static final DeferredBlock<Block> BLACK_LOTUS        = flowerBlock("black_lotus");
     public static final DeferredBlock<Block> BLOOD_BLOOM        = flowerBlock("blood_bloom");
@@ -2307,32 +2391,32 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_STAIRS = registerMarble("smooth_marble_rock_stairs", RegionalRockStairsBlock::new);
     public static final DeferredBlock<Block> SMOOTH_MARBLE_ROCK_WALL = registerMarble("smooth_marble_rock_wall", RegionalRockWallBlock::new);
 
-    public static final DeferredBlock<Block> LIGHT_THATCH =
-            REGISTRY.registerBlock("light_thatch", p -> new Block(p),
+    public static final DeferredBlock<Block> THATCH =
+            REGISTRY.registerBlock("thatch", p -> new Block(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
-    public static final DeferredBlock<Block> LIGHT_THATCH_SLAB =
-            REGISTRY.registerBlock("light_thatch_slab", p -> new SlabBlock(p),
+    public static final DeferredBlock<Block> THATCH_SLAB =
+            REGISTRY.registerBlock("thatch_slab", p -> new SlabBlock(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
-    public static final DeferredBlock<Block> LIGHT_THATCH_STAIRS =
-            REGISTRY.registerBlock("light_thatch_stairs",
-                    p -> new StairBlock(LIGHT_THATCH.get().defaultBlockState(), p),
+    public static final DeferredBlock<Block> THATCH_STAIRS =
+            REGISTRY.registerBlock("thatch_stairs",
+                    p -> new StairBlock(THATCH.get().defaultBlockState(), p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
-    public static final DeferredBlock<Block> LIGHT_THATCH_WALL =
-            REGISTRY.registerBlock("light_thatch_wall", p -> new WallBlock(p),
+    public static final DeferredBlock<Block> THATCH_WALL =
+            REGISTRY.registerBlock("thatch_wall", p -> new WallBlock(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
 
-    public static final DeferredBlock<Block> DARK_THATCH =
-            REGISTRY.registerBlock("dark_thatch", p -> new Block(p),
+    public static final DeferredBlock<Block> WEATHERED_THATCH =
+            REGISTRY.registerBlock("weathered_thatch", p -> new Block(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
-    public static final DeferredBlock<Block> DARK_THATCH_SLAB =
-            REGISTRY.registerBlock("dark_thatch_slab", p -> new SlabBlock(p),
+    public static final DeferredBlock<Block> WEATHERED_THATCH_SLAB =
+            REGISTRY.registerBlock("weathered_thatch_slab", p -> new SlabBlock(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
-    public static final DeferredBlock<Block> DARK_THATCH_STAIRS =
-            REGISTRY.registerBlock("dark_thatch_stairs",
-                    p -> new StairBlock(DARK_THATCH.get().defaultBlockState(), p),
+    public static final DeferredBlock<Block> WEATHERED_THATCH_STAIRS =
+            REGISTRY.registerBlock("weathered_thatch_stairs",
+                    p -> new StairBlock(WEATHERED_THATCH.get().defaultBlockState(), p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
-    public static final DeferredBlock<Block> DARK_THATCH_WALL =
-            REGISTRY.registerBlock("dark_thatch_wall", p -> new WallBlock(p),
+    public static final DeferredBlock<Block> WEATHERED_THATCH_WALL =
+            REGISTRY.registerBlock("weathered_thatch_wall", p -> new WallBlock(p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(0.5f, 0.5f));
 
     private static <B extends Block> DeferredBlock<B> woodBlock(String name, Function<BlockBehaviour.Properties, ? extends B> supplier) {
@@ -3428,7 +3512,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CYAN_WOOL_VERTICAL_SLAB = verticalSlab("cyan_wool_vertical_slab", ModBlocks.CYAN_WOOL_SLAB);
     public static final DeferredBlock<Block> DARK_OAK_ROOFING_VERTICAL_SLAB = verticalSlab("dark_oak_roofing_vertical_slab", ModBlocks.DARK_OAK_ROOFING_SLAB);
     public static final DeferredBlock<Block> DARK_OAK_WOOD_VERTICAL_SLAB = verticalSlab("dark_oak_wood_vertical_slab", ModBlocks.DARK_OAK_WOOD_SLAB);
-    public static final DeferredBlock<Block> DARK_THATCH_VERTICAL_SLAB = verticalSlab("dark_thatch_vertical_slab", ModBlocks.DARK_THATCH_SLAB);
+    public static final DeferredBlock<Block> WEATHERED_THATCH_VERTICAL_SLAB = verticalSlab("weathered_thatch_vertical_slab", ModBlocks.WEATHERED_THATCH_SLAB);
     public static final DeferredBlock<Block> DATE_PALM_ROOFING_VERTICAL_SLAB = verticalSlab("date_palm_roofing_vertical_slab", ModBlocks.DATE_PALM_ROOFING_SLAB);
     public static final DeferredBlock<Block> DATE_PALM_VERTICAL_SLAB = verticalSlab("date_palm_vertical_slab", ModBlocks.DATE_PALM_SLAB);
     public static final DeferredBlock<Block> DATE_PALM_WOOD_VERTICAL_SLAB = verticalSlab("date_palm_wood_vertical_slab", ModBlocks.DATE_PALM_WOOD_SLAB);
@@ -3477,7 +3561,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> LEMON_WOOD_VERTICAL_SLAB = verticalSlab("lemon_wood_vertical_slab", ModBlocks.LEMON_WOOD_SLAB);
     public static final DeferredBlock<Block> LIGHT_BLUE_WOOL_VERTICAL_SLAB = verticalSlab("light_blue_wool_vertical_slab", ModBlocks.LIGHT_BLUE_WOOL_SLAB);
     public static final DeferredBlock<Block> LIGHT_GRAY_WOOL_VERTICAL_SLAB = verticalSlab("light_gray_wool_vertical_slab", ModBlocks.LIGHT_GRAY_WOOL_SLAB);
-    public static final DeferredBlock<Block> LIGHT_THATCH_VERTICAL_SLAB = verticalSlab("light_thatch_vertical_slab", ModBlocks.LIGHT_THATCH_SLAB);
+    public static final DeferredBlock<Block> THATCH_VERTICAL_SLAB = verticalSlab("thatch_vertical_slab", ModBlocks.THATCH_SLAB);
     public static final DeferredBlock<Block> LIME_ROOFING_VERTICAL_SLAB = verticalSlab("lime_roofing_vertical_slab", ModBlocks.LIME_ROOFING_SLAB);
     public static final DeferredBlock<Block> LIME_VERTICAL_SLAB = verticalSlab("lime_vertical_slab", ModBlocks.LIME_SLAB);
     public static final DeferredBlock<Block> LIME_WOOD_VERTICAL_SLAB = verticalSlab("lime_wood_vertical_slab", ModBlocks.LIME_WOOD_SLAB);
@@ -3747,6 +3831,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CUT_RED_SANDSTONE_VERTICAL_SLAB = verticalSlab("cut_red_sandstone_vertical_slab", Blocks.CUT_RED_SANDSTONE_SLAB);
     public static final DeferredBlock<Block> QUARTZ_VERTICAL_SLAB = verticalSlab("quartz_vertical_slab", Blocks.QUARTZ_SLAB);
     public static final DeferredBlock<Block> SMOOTH_QUARTZ_VERTICAL_SLAB = verticalSlab("smooth_quartz_vertical_slab", Blocks.SMOOTH_QUARTZ_SLAB);
+    public static final DeferredBlock<Block> DAUB_VERTICAL_SLAB = verticalSlab("daub_vertical_slab", ModBlocks.DAUB_SLAB);
+    public static final DeferredBlock<Block> WATTLE_VERTICAL_SLAB = verticalSlab("wattle_vertical_slab", ModBlocks.WATTLE_SLAB);
+    public static final DeferredBlock<Block> WATTLE_AND_DAUB_VERTICAL_SLAB = verticalSlab("wattle_and_daub_vertical_slab", ModBlocks.WATTLE_AND_DAUB_SLAB);
 
     static {
         LOGS.put("weirwood",         WEIRWOOD_LOG);

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "got:block/wattle",
+    "top": "got:block/wattle",
+    "side": "got:block/wattle",
+    "wall": "got:block/wattle",
+    "particle": "got:block/wattle"
+  }
+}

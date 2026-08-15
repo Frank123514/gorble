@@ -170,14 +170,14 @@ public class ModTabs {
                         safeAccept(output, ModItems.ASPEN_BOAT.get());
                         safeAccept(output, ModItems.ASPEN_CHEST_BOAT.get());
 
-                        safeAccept(output, ModBlocks.LIGHT_THATCH.get());
-                        safeAccept(output, ModBlocks.LIGHT_THATCH_SLAB.get());
-                        safeAccept(output, ModBlocks.LIGHT_THATCH_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIGHT_THATCH_WALL.get());
-                        safeAccept(output, ModBlocks.DARK_THATCH.get());
-                        safeAccept(output, ModBlocks.DARK_THATCH_SLAB.get());
-                        safeAccept(output, ModBlocks.DARK_THATCH_STAIRS.get());
-                        safeAccept(output, ModBlocks.DARK_THATCH_WALL.get());
+                        safeAccept(output, ModBlocks.THATCH.get());
+                        safeAccept(output, ModBlocks.THATCH_SLAB.get());
+                        safeAccept(output, ModBlocks.THATCH_STAIRS.get());
+                        safeAccept(output, ModBlocks.THATCH_WALL.get());
+                        safeAccept(output, ModBlocks.WEATHERED_THATCH.get());
+                        safeAccept(output, ModBlocks.WEATHERED_THATCH_SLAB.get());
+                        safeAccept(output, ModBlocks.WEATHERED_THATCH_STAIRS.get());
+                        safeAccept(output, ModBlocks.WEATHERED_THATCH_WALL.get());
 
                         safeAccept(output, ModBlocks.BAMBOO_ROOFING.get());
                         safeAccept(output, ModBlocks.BAMBOO_ROOFING_SLAB.get());
@@ -2126,6 +2126,21 @@ public class ModTabs {
                         safeAccept(output, ModBlocks.FIELDSTONE_BUTTON.get());
                         safeAccept(output, ModBlocks.FIELDSTONE_PRESSURE_PLATE.get());
 
+                        safeAccept(output, ModBlocks.DAUB.get());
+                        safeAccept(output, ModBlocks.DAUB_SLAB.get());
+                        safeAccept(output, ModBlocks.DAUB_STAIRS.get());
+                        safeAccept(output, ModBlocks.DAUB_WALL.get());
+                        safeAccept(output, ModBlocks.WATTLE.get());
+                        safeAccept(output, ModBlocks.WATTLE_SLAB.get());
+                        safeAccept(output, ModBlocks.WATTLE_STAIRS.get());
+                        safeAccept(output, ModBlocks.WATTLE_WALL.get());
+                        safeAccept(output, ModBlocks.WATTLE_FENCE.get());
+                        safeAccept(output, ModBlocks.WATTLE_FENCE_GATE.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_SLAB.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_STAIRS.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_WALL.get());
+
                     })
                     .build());
 
@@ -2902,7 +2917,7 @@ public class ModTabs {
                         safeAccept(output, ModBlocks.CYAN_WOOL_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.DARK_OAK_ROOFING_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.DARK_OAK_WOOD_VERTICAL_SLAB.get());
-                        safeAccept(output, ModBlocks.DARK_THATCH_VERTICAL_SLAB.get());
+                        safeAccept(output, ModBlocks.WEATHERED_THATCH_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.DATE_PALM_ROOFING_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.DATE_PALM_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.DATE_PALM_WOOD_VERTICAL_SLAB.get());
@@ -2951,7 +2966,7 @@ public class ModTabs {
                         safeAccept(output, ModBlocks.LEMON_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.LIGHT_BLUE_WOOL_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.LIGHT_GRAY_WOOL_VERTICAL_SLAB.get());
-                        safeAccept(output, ModBlocks.LIGHT_THATCH_VERTICAL_SLAB.get());
+                        safeAccept(output, ModBlocks.THATCH_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.LIME_ROOFING_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.LIME_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.LIME_WOOD_VERTICAL_SLAB.get());
@@ -3221,6 +3236,9 @@ public class ModTabs {
                         safeAccept(output, ModBlocks.CUT_RED_SANDSTONE_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.QUARTZ_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.SMOOTH_QUARTZ_VERTICAL_SLAB.get());
+                        safeAccept(output, ModBlocks.DAUB_VERTICAL_SLAB.get());
+                        safeAccept(output, ModBlocks.WATTLE_VERTICAL_SLAB.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_VERTICAL_SLAB.get());
 
                     })
                     .build());

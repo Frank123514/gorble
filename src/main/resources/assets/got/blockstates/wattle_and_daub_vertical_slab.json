@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=north,type=single": {
+      "model": "got:block/wattle_and_daub_vertical_slab"
+    },
+    "facing=east,type=single": {
+      "model": "got:block/wattle_and_daub_vertical_slab",
+      "y": 90
+    },
+    "facing=south,type=single": {
+      "model": "got:block/wattle_and_daub_vertical_slab",
+      "y": 180
+    },
+    "facing=west,type=single": {
+      "model": "got:block/wattle_and_daub_vertical_slab",
+      "y": 270
+    },
+    "facing=north,type=double": {
+      "model": "got:block/wattle_and_daub"
+    },
+    "facing=east,type=double": {
+      "model": "got:block/wattle_and_daub"
+    },
+    "facing=south,type=double": {
+      "model": "got:block/wattle_and_daub"
+    },
+    "facing=west,type=double": {
+      "model": "got:block/wattle_and_daub"
+    }
+  }
+}

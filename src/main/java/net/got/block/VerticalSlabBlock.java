@@ -90,12 +90,12 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         Direction facing;
 
         if (clickedFace.getAxis().isHorizontal()) {
-            
+
             BlockPos neighborPos = pos.relative(clickedFace.getOpposite());
             BlockState neighbor = ctx.getLevel().getBlockState(neighborPos);
             facing = (neighbor.is(this) && neighbor.getValue(TYPE) == Type.SINGLE)
                     ? neighbor.getValue(FACING)
-                    : clickedFace;
+                    : clickedFace.getOpposite();
         } else {
             facing = ctx.getHorizontalDirection();
         }
@@ -117,11 +117,11 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
         }
         Direction clickedFace = ctx.getClickedFace();
         if (!clickedFace.getAxis().isHorizontal()) {
-            
+
             return false;
         }
         Direction existingFacing = state.getValue(FACING);
-        
+
         return clickedFace == existingFacing.getOpposite();
     }
 

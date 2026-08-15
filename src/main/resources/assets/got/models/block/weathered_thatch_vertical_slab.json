@@ -1,0 +1,9 @@
+{
+  "parent": "got:block/template_vertical_slab",
+  "textures": {
+    "particle": "got:block/weathered_thatch",
+    "top": "got:block/weathered_thatch",
+    "bottom": "got:block/weathered_thatch",
+    "side": "got:block/weathered_thatch"
+  }
+}

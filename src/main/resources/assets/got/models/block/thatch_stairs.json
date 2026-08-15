@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "got:block/thatch",
+    "top": "got:block/thatch",
+    "side": "got:block/thatch",
+    "wall": "got:block/thatch",
+    "particle": "got:block/thatch"
+  }
+}

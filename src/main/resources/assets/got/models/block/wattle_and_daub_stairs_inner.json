@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "got:block/wattle_and_daub",
+    "top": "got:block/wattle_and_daub",
+    "side": "got:block/wattle_and_daub",
+    "wall": "got:block/wattle_and_daub",
+    "particle": "got:block/wattle_and_daub"
+  }
+}

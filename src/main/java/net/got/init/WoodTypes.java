@@ -67,6 +67,7 @@ public static final WoodType NIGHTWOOD            = WoodType.register(new WoodTy
     public static final WoodType ALMOND               = WoodType.register(new WoodType(GotMod.MODID + ":almond",  BlockSetType.OAK));
     public static final WoodType NUTMEG               = WoodType.register(new WoodType(GotMod.MODID + ":nutmeg",  BlockSetType.OAK));
     public static final WoodType HEMLOCK              = WoodType.register(new WoodType(GotMod.MODID + ":hemlock",  BlockSetType.OAK));
+    public static final WoodType WATTLE                = WoodType.register(new WoodType(GotMod.MODID + ":wattle",   BlockSetType.OAK));
     
     public static void init() {}
 }
