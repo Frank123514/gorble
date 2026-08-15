@@ -1,0 +1,26 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 8823478,
+    "separation": 12,
+    "spacing": 48
+  },
+  "structures": [
+    {
+      "structure": "got:north_village",
+      "weight": 1
+    },
+    {
+      "structure": "got:reach_village",
+      "weight": 1
+    },
+    {
+      "structure": "got:riverlands_village",
+      "weight": 1
+    },
+    {
+      "structure": "got:westerlands_village",
+      "weight": 1
+    }
+  ]
+}
