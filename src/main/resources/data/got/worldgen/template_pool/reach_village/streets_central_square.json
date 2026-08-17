@@ -7,7 +7,7 @@
         "processors": "got:street_reach",
         "projection": "terrain_matching"
       },
-      "weight": 1
+      "weight": 5
     },
     {
       "element": {
@@ -16,7 +16,7 @@
         "processors": "got:street_reach",
         "projection": "terrain_matching"
       },
-      "weight": 1
+      "weight": 5
     },
     {
       "element": {
@@ -25,7 +25,7 @@
         "processors": "got:street_reach",
         "projection": "terrain_matching"
       },
-      "weight": 1
+      "weight": 5
     },
     {
       "element": {
@@ -34,34 +34,7 @@
         "processors": "got:street_reach",
         "projection": "terrain_matching"
       },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/streets/straight_06",
-        "processors": "got:street_reach",
-        "projection": "terrain_matching"
-      },
-      "weight": 4
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/streets/straight_03",
-        "processors": "got:street_reach",
-        "projection": "terrain_matching"
-      },
-      "weight": 2
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/streets/straight_05",
-        "processors": "got:street_reach",
-        "projection": "terrain_matching"
-      },
-      "weight": 2
+      "weight": 5
     },
     {
       "element": {
@@ -75,7 +48,16 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/streets/corner_01",
+        "location": "got:reach_village/streets/crossroad_03",
+        "processors": "got:street_reach",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:reach_village/streets/straight_02",
         "processors": "got:street_reach",
         "projection": "terrain_matching"
       },
@@ -84,7 +66,7 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/streets/corner_02",
+        "location": "got:reach_village/streets/straight_04",
         "processors": "got:street_reach",
         "projection": "terrain_matching"
       },

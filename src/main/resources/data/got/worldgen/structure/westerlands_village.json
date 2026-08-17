@@ -4,7 +4,7 @@
   "step": "surface_structures",
   "spawn_overrides": {},
   "terrain_adaptation": "beard_box",
-  "start_pool": "got:westerlands_village/village_layout",
+  "start_pool": "got:westerlands_village/town_centers",
   "size": 12,
   "start_height": {
     "absolute": 0

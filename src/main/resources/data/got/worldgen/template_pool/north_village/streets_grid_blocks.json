@@ -3,20 +3,20 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:north_village/streets/crossroad_01",
+        "location": "got:north_village/streets/straight_01",
         "processors": "got:street_north",
         "projection": "terrain_matching"
       },
-      "weight": 4
+      "weight": 2
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:north_village/streets/straight_06",
+        "location": "got:north_village/streets/straight_02",
         "processors": "got:street_north",
         "projection": "terrain_matching"
       },
-      "weight": 5
+      "weight": 2
     },
     {
       "element": {
@@ -30,11 +30,29 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:north_village/streets/straight_04",
+        "processors": "got:street_north",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:north_village/streets/straight_05",
         "processors": "got:street_north",
         "projection": "terrain_matching"
       },
-      "weight": 2
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:north_village/streets/straight_06",
+        "processors": "got:street_north",
+        "projection": "terrain_matching"
+      },
+      "weight": 5
     },
     {
       "element": {
@@ -43,7 +61,7 @@
         "processors": "got:street_north",
         "projection": "terrain_matching"
       },
-      "weight": 1
+      "weight": 3
     },
     {
       "element": {
@@ -52,7 +70,34 @@
         "processors": "got:street_north",
         "projection": "terrain_matching"
       },
-      "weight": 1
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:north_village/streets/corner_03",
+        "processors": "got:street_north",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:north_village/streets/crossroad_01",
+        "processors": "got:street_north",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "got:north_village/streets/crossroad_03",
+        "processors": "got:street_north",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
     }
   ],
   "fallback": "got:north_village/terminators"
