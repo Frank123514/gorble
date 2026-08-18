@@ -53,39 +53,6 @@
         "projection": "rigid"
       },
       "weight": 3
-    },
-    {
-      "element": {
-        "element_type": "minecraft:empty_pool_element"
-      },
-      "weight": 5
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/houses/reach_barn_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/houses/reach_alehouse_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:reach_village/houses/reach_blacksmith_house_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 1
     }
   ],
   "fallback": "got:reach_village/terminators"

@@ -3,28 +3,6 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/town_centers/well_high_street",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/town_centers/well_grid_blocks",
-        "processors": {
-          "processors": []
-        },
-        "projection": "terrain_matching"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
         "location": "got:westerlands_village/town_centers/well_central_square",
         "processors": {
           "processors": []

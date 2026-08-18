@@ -8,33 +8,6 @@
         "projection": "terrain_matching"
       },
       "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:riverlands_village/terminators/terminator_02",
-        "processors": "got:street_riverlands",
-        "projection": "terrain_matching"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:riverlands_village/terminators/terminator_03",
-        "processors": "got:street_riverlands",
-        "projection": "terrain_matching"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:riverlands_village/terminators/terminator_04",
-        "processors": "got:street_riverlands",
-        "projection": "terrain_matching"
-      },
-      "weight": 1
     }
   ],
   "fallback": "minecraft:empty"

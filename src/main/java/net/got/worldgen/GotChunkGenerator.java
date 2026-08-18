@@ -45,11 +45,15 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     private static final double  BASE_NOISE_SCALE_X = 280.0;
     private static final double  BASE_NOISE_SCALE_Z = 240.0;
-    private static final int     NOISE_OCTAVES      = 5;
-    private static final double  NOISE_LACUNARITY    = 2.0;
-    private static final double  NOISE_PERSISTENCE   = 0.5;
 
-    private static volatile short[][] noiseOctavePerms = buildOctavePerms(0L);
+    // Detail layer — smaller ridges blended on top of the base shape
+    private static final double  DETAIL_SCALE_X = 80.0;
+    private static final double  DETAIL_SCALE_Z = 80.0;
+    private static final double  DETAIL_WEIGHT   = 0.35; // how much detail contributes vs base
+
+    // Two independent perm tables so base and detail don't share the same pattern
+    private static volatile short[] noisePerm       = buildPerm(0L);
+    private static volatile short[] noisePermDetail = buildPerm(0x9E3779B97F4A7C15L);
 
     private static final double HEIGHT_BLEND_CURVE = 5.0;
 
@@ -107,7 +111,8 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     public static void initNoise(long worldSeed) {
-        noiseOctavePerms = buildOctavePerms(worldSeed);
+        noisePerm       = buildPerm(worldSeed);
+        noisePermDetail = buildPerm(worldSeed ^ 0x9E3779B97F4A7C15L);
         noiseOffX = ((worldSeed       & 0xFFFFL) / 65536.0) * 1000.0;
         noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
@@ -489,34 +494,16 @@ public final class GotChunkGenerator extends ChunkGenerator {
     }
 
     public static double computeTerrainNoise(double x, double z) {
-        short[][] perms = noiseOctavePerms;
-        double frequency = 1.0;
-        double amplitude = 1.0;
-        double sum        = 0.0;
-        double maxAmplitude = 0.0;
+        // Base shape — large smooth hills
+        double base   = simplexEval(noisePerm,       x / BASE_NOISE_SCALE_X, z / BASE_NOISE_SCALE_Z);
+        // Detail layer — smaller rolling ridges, weighted down
+        double detail = simplexEval(noisePermDetail, x / DETAIL_SCALE_X,     z / DETAIL_SCALE_Z);
 
-        for (int o = 0; o < NOISE_OCTAVES; o++) {
-            double nx = x / BASE_NOISE_SCALE_X * frequency;
-            double nz = z / BASE_NOISE_SCALE_Z * frequency;
-            sum += simplexEval(perms[o], nx, nz) * amplitude;
-            maxAmplitude += amplitude;
-            amplitude *= NOISE_PERSISTENCE;
-            frequency *= NOISE_LACUNARITY;
-        }
-
-        return sum / maxAmplitude;
+        return (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
     }
 
     public static double computeTerrainNoiseAtWorldPos(double worldX, double worldZ) {
         return computeTerrainNoise(noiseOffX + worldX, noiseOffZ + worldZ);
-    }
-
-    private static short[][] buildOctavePerms(long worldSeed) {
-        short[][] perms = new short[NOISE_OCTAVES][];
-        for (int o = 0; o < NOISE_OCTAVES; o++) {
-            perms[o] = buildPerm(worldSeed ^ (0x9E3779B97F4A7C15L * (o + 1)));
-        }
-        return perms;
     }
 
     private static short[] buildPerm(long seed) {

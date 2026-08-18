@@ -53,39 +53,6 @@
         "projection": "rigid"
       },
       "weight": 6
-    },
-    {
-      "element": {
-        "element_type": "minecraft:empty_pool_element"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/houses/westerlands_barn_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/houses/westerlands_alehouse_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "got:westerlands_village/houses/westerlands_blacksmith_house_1",
-        "processors": "got:mossify_10_percent",
-        "projection": "rigid"
-      },
-      "weight": 1
     }
   ],
   "fallback": "got:westerlands_village/terminators"
