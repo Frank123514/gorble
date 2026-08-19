@@ -53,6 +53,7 @@ public final class GotMod {
         assert modBus != null;
         modBus.addListener(this::commonSetup);
         modBus.addListener(this::registerNetworking);
+        modBus.addListener(net.got.data.ModDataGenerators::gatherData);
 
         WoodTypes.init();
         ModMenus.REGISTRY.register(modBus);
