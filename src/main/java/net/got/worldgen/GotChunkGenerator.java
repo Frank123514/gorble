@@ -51,9 +51,15 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static final double  DETAIL_SCALE_Z = 80.0;
     private static final double  DETAIL_WEIGHT   = 0.35; // how much detail contributes vs base
 
-    // Two independent perm tables so base and detail don't share the same pattern
-    private static volatile short[] noisePerm       = buildPerm(0L);
-    private static volatile short[] noisePermDetail = buildPerm(0x9E3779B97F4A7C15L);
+    // Fine detail layer — tight, subtle texture on top of base + detail
+    private static final double  FINE_DETAIL_SCALE_X = 28.0;
+    private static final double  FINE_DETAIL_SCALE_Z = 28.0;
+    private static final double  FINE_DETAIL_WEIGHT   = 0.15; // kept low so it reads as texture, not another hill layer
+
+    // Three independent perm tables so each layer doesn't echo the others' pattern
+    private static volatile short[] noisePerm           = buildPerm(0L);
+    private static volatile short[] noisePermDetail      = buildPerm(0x9E3779B97F4A7C15L);
+    private static volatile short[] noisePermFineDetail  = buildPerm(0x9E3779B97F4A7C15L ^ 0x632BE59BD9B4E019L);
 
     private static final double HEIGHT_BLEND_CURVE = 5.0;
 
@@ -111,8 +117,9 @@ public final class GotChunkGenerator extends ChunkGenerator {
     public static int getConfiguredSpawnPixelZ() { return configuredSpawnPixelZ; }
 
     public static void initNoise(long worldSeed) {
-        noisePerm       = buildPerm(worldSeed);
-        noisePermDetail = buildPerm(worldSeed ^ 0x9E3779B97F4A7C15L);
+        noisePerm          = buildPerm(worldSeed);
+        noisePermDetail    = buildPerm(worldSeed ^ 0x9E3779B97F4A7C15L);
+        noisePermFineDetail = buildPerm(worldSeed ^ 0x9E3779B97F4A7C15L ^ 0x632BE59BD9B4E019L);
         noiseOffX = ((worldSeed       & 0xFFFFL) / 65536.0) * 1000.0;
         noiseOffZ = ((worldSeed >> 16 & 0xFFFFL) / 65536.0) * 1000.0;
         SubbiomeResolver.initSeed(worldSeed);
@@ -172,8 +179,6 @@ public final class GotChunkGenerator extends ChunkGenerator {
         }
 
         vanilla.buildSurface(region, structures, random, chunk);
-        RoadWorldGen.buildRoadsInChunk(chunk);
-        RoadWorldGen.clearVegetationFromRoads(chunk);
         WallWorldGen.buildWallInChunk(chunk);
         SlopeSurfaceResolver.applySlopeBlocks(chunk, region);
     }
@@ -495,11 +500,14 @@ public final class GotChunkGenerator extends ChunkGenerator {
 
     public static double computeTerrainNoise(double x, double z) {
         // Base shape — large smooth hills
-        double base   = simplexEval(noisePerm,       x / BASE_NOISE_SCALE_X, z / BASE_NOISE_SCALE_Z);
+        double base       = simplexEval(noisePerm,           x / BASE_NOISE_SCALE_X,       z / BASE_NOISE_SCALE_Z);
         // Detail layer — smaller rolling ridges, weighted down
-        double detail = simplexEval(noisePermDetail, x / DETAIL_SCALE_X,     z / DETAIL_SCALE_Z);
+        double detail      = simplexEval(noisePermDetail,     x / DETAIL_SCALE_X,           z / DETAIL_SCALE_Z);
+        // Fine detail layer — tight surface texture, weighted down further
+        double fineDetail  = simplexEval(noisePermFineDetail, x / FINE_DETAIL_SCALE_X,      z / FINE_DETAIL_SCALE_Z);
 
-        return (base + detail * DETAIL_WEIGHT) / (1.0 + DETAIL_WEIGHT);
+        double sum = base + detail * DETAIL_WEIGHT + fineDetail * FINE_DETAIL_WEIGHT;
+        return sum / (1.0 + DETAIL_WEIGHT + FINE_DETAIL_WEIGHT);
     }
 
     public static double computeTerrainNoiseAtWorldPos(double worldX, double worldZ) {
