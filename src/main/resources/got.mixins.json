@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.got.mixin",
+  "package": "net.francis.got.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "BiomeMixin",
