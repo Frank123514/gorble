@@ -1,25 +1,29 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.francis.got.mixin",
+  "package": "net.got.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "BiomeMixin",
     "LevelMixin",
-    "ServerLevelMixin"
+    "ServerLevelMixin",
+    "ServerPropertiesMixin",
+    "ServerPropertiesMixin$WorldGenPropertiesMixin",
+    "WorldPresetsMixin"
   ],
   "client": [
     "BiomeColorsMixin",
-    "LiquidBlockRendererMixin",
-    "WeatherEffectRendererMixin",
-    "PlayerRenderStateMixin",
-    "PlayerRendererMixin",
-    "PlayerModelMixin",
-    "LevelRendererMixin",
     "CameraMixin",
+    "client.CreateWorldScreenMixin",
     "EntityPositionAccessor",
     "ItemInHandRendererMixin",
-    "SwingDurationMixin"
+    "LevelRendererMixin",
+    "LiquidBlockRendererMixin",
+    "PlayerModelMixin",
+    "PlayerRendererMixin",
+    "PlayerRenderStateMixin",
+    "SwingDurationMixin",
+    "WeatherEffectRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

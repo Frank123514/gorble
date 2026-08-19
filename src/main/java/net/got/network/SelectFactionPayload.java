@@ -1,0 +1,23 @@
+package net.got.network;
+
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
+
+public record SelectFactionPayload(String factionId) implements CustomPacketPayload {
+
+    public static final Identifier ID =
+            Identifier.fromNamespaceAndPath("got", "select_faction");
+
+    public static final Type<SelectFactionPayload> TYPE = new Type<>(ID);
+
+    public static final StreamCodec<FriendlyByteBuf, SelectFactionPayload> STREAM_CODEC =
+            StreamCodec.of(
+                    (buf, pkt) -> buf.writeUtf(pkt.factionId),
+                    buf -> new SelectFactionPayload(buf.readUtf())
+            );
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() { return TYPE; }
+}
