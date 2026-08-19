@@ -1,6 +1,6 @@
-package net.got.network;
+package net.francis.got.network;
 
-import net.got.climate.Season;
+import net.francis.got.climate.Season;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

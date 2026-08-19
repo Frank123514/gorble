@@ -1,10 +1,10 @@
-package net.got.network;
+package net.francis.got.network;
 
-import net.got.event.entity.npc.data.NpcTrades;
-import net.got.event.entity.npc.smallfolk.SmallfolkEntity;
-import net.got.event.PlayerEvents;
-import net.got.faction.Factions;
-import net.got.item.Coin;
+import net.francis.got.event.entity.npc.data.NpcTrades;
+import net.francis.got.event.entity.npc.smallfolk.SmallfolkEntity;
+import net.francis.got.event.PlayerEvents;
+import net.francis.got.faction.Factions;
+import net.francis.got.item.Coin;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -36,8 +36,8 @@ public final class Network {
 
                     int y;
                     if (level.getChunkSource().getGenerator()
-                            instanceof net.got.worldgen.GotChunkGenerator) {
-                        y = net.got.worldgen.GotChunkGenerator.computeSurfaceY(x, z);
+                            instanceof net.francis.got.worldgen.GotChunkGenerator) {
+                        y = net.francis.got.worldgen.GotChunkGenerator.computeSurfaceY(x, z);
                     } else {
                         level.getChunk(x >> 4, z >> 4);
                         y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
@@ -50,7 +50,7 @@ public final class Network {
         r.playToClient(OpenInteractScreenPayload.TYPE, OpenInteractScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.client.gui.NpcInteractScreen.open(
+                        net.francis.got.client.gui.NpcInteractScreen.open(
                                 payload.entityId(), payload.occupationId(), payload.npcName(), payload.militaryTitle());
                     }
                 }));
@@ -87,7 +87,7 @@ public final class Network {
         r.playToClient(OpenTradeScreenPayload.TYPE, OpenTradeScreenPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.client.gui.NpcTradeScreen.open(
+                        net.francis.got.client.gui.NpcTradeScreen.open(
                                 payload.entityId(), payload.occupationId(), payload.npcName());
                     }
                 }));
@@ -156,7 +156,7 @@ public final class Network {
         r.playToClient(FactionSyncPayload.TYPE, FactionSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.client.ClientFactionCache.onSyncReceived(payload);
+                        net.francis.got.client.ClientFactionCache.onSyncReceived(payload);
                     }
                 }));
 
@@ -164,7 +164,7 @@ public final class Network {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
-                        if (mc != null) mc.setScreen(new net.got.client.gui.FactionSelectionScreen());
+                        if (mc != null) mc.setScreen(new net.francis.got.client.gui.FactionSelectionScreen());
                     }
                 }));
 
@@ -182,8 +182,8 @@ public final class Network {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    if (player.containerMenu instanceof net.got.menu.SmithyMenu menu &&
-                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity be) {
+                    if (player.containerMenu instanceof net.francis.got.menu.SmithyMenu menu &&
+                            menu.getContainer() instanceof net.francis.got.block.ForgeBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
                     }
                 }));
@@ -192,8 +192,8 @@ public final class Network {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    if (player.containerMenu instanceof net.got.menu.SmithingAnvilMenu menu &&
-                            menu.getContainer() instanceof net.got.block.SmithingAnvilBlockEntity be) {
+                    if (player.containerMenu instanceof net.francis.got.menu.SmithingAnvilMenu menu &&
+                            menu.getContainer() instanceof net.francis.got.block.SmithingAnvilBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
                         
                         if (payload.recipeIndex() >= 0) {
@@ -206,8 +206,8 @@ public final class Network {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    if (player.containerMenu instanceof net.got.menu.AlloyMenu menu &&
-                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity be) {
+                    if (player.containerMenu instanceof net.francis.got.menu.AlloyMenu menu &&
+                            menu.getContainer() instanceof net.francis.got.block.ForgeBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
                     }
                 }));
@@ -216,12 +216,12 @@ public final class Network {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    net.got.block.ForgeBlockEntity be = null;
-                    if (player.containerMenu instanceof net.got.menu.HeatTreatingMenu menu &&
-                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity fbe) {
+                    net.francis.got.block.ForgeBlockEntity be = null;
+                    if (player.containerMenu instanceof net.francis.got.menu.HeatTreatingMenu menu &&
+                            menu.getContainer() instanceof net.francis.got.block.ForgeBlockEntity fbe) {
                         be = fbe;
-                    } else if (player.containerMenu instanceof net.got.menu.AlloyMenu menu &&
-                            menu.getContainer() instanceof net.got.block.ForgeBlockEntity fbe) {
+                    } else if (player.containerMenu instanceof net.francis.got.menu.AlloyMenu menu &&
+                            menu.getContainer() instanceof net.francis.got.block.ForgeBlockEntity fbe) {
                         be = fbe;
                     }
                     if (be != null) {
@@ -233,8 +233,8 @@ public final class Network {
         r.playToClient(SeasonSyncPayload.TYPE, SeasonSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.climate.Season prev = net.got.climate.SeasonCache.get();
-                        net.got.climate.SeasonCache.set(payload.season());
+                        net.francis.got.climate.Season prev = net.francis.got.climate.SeasonCache.get();
+                        net.francis.got.climate.SeasonCache.set(payload.season());
                         
                         if (payload.season() != prev) {
                             net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
@@ -248,7 +248,7 @@ public final class Network {
         r.playToClient(PlayerVitalsPayload.TYPE, PlayerVitalsPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.client.gui.overlay.TemperatureHudOverlay
+                        net.francis.got.client.gui.overlay.TemperatureHudOverlay
                                 .setClientVitals(payload.bodyTemp(), payload.thirst());
                     }
                 }));
@@ -256,14 +256,14 @@ public final class Network {
         r.playToClient(SmithingAnvilStatePayload.TYPE, SmithingAnvilStatePayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.client.gui.overlay.SmithingAnvilHudOverlay.onStatePacket(payload);
+                        net.francis.got.client.gui.overlay.SmithingAnvilHudOverlay.onStatePacket(payload);
                     }
                 }));
 
         r.playToClient(SkillSyncPayload.TYPE, SkillSyncPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
-                        net.got.client.ClientSkillCache.onSyncReceived(payload);
+                        net.francis.got.client.ClientSkillCache.onSyncReceived(payload);
                     }
                 }));
 
@@ -272,12 +272,12 @@ public final class Network {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
 
-                    net.got.skill.SkillPerk perk = net.got.skill.SkillPerks.byId(payload.perkId());
+                    net.francis.got.skill.SkillPerk perk = net.francis.got.skill.SkillPerks.byId(payload.perkId());
                     if (perk == null) return;
 
-                    if (net.got.skill.PlayerSkillState.unlockPerk(player, perk)) {
-                        net.got.skill.SkillPerkEffects.applyAttributeModifiers(player);
-                        net.got.skill.SkillXpService.syncToClient(player);
+                    if (net.francis.got.skill.PlayerSkillState.unlockPerk(player, perk)) {
+                        net.francis.got.skill.SkillPerkEffects.applyAttributeModifiers(player);
+                        net.francis.got.skill.SkillXpService.syncToClient(player);
                     }
                 }));
     }

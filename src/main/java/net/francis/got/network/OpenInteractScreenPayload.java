@@ -1,4 +1,4 @@
-package net.got.network;
+package net.francis.got.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
