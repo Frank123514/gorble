@@ -205,15 +205,19 @@ public final class Network {
                     net.got.intro.IntroState.setCharacterName(player, name);
                 }));
 
-        // No dimension change (the player has been standing in the knownworld
-        // the whole time), but this is the moment we move them to the exact
-        // waypoint they dialed in on the faction screen's location nav.
+        // This is the actual trigger for leaving the vanilla overworld and
+        // entering the knownworld dimension for the first time, landing at
+        // the exact waypoint the player dialed in on the faction screen's
+        // location nav.
         r.playToServer(CompleteIntroPayload.TYPE, CompleteIntroPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
 
-                    ServerLevel level = (ServerLevel) player.level();
+                    ServerLevel level = ((ServerLevel) player.level())
+                            .getServer().getLevel(net.got.worldgen.ModDimensions.KNOWNWORLD_LEVEL_KEY);
+                    if (level == null) return;
+
                     String factionId = net.got.faction.PlayerFactionState.getFactionId(player);
                     String waypointName = net.got.intro.IntroState.getPendingWaypoint(player);
 

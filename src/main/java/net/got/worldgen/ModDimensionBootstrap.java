@@ -8,16 +8,14 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.presets.WorldPreset;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * Code-driven definition of the "knownworld" dimension and world preset.
- * Registered against a RegistrySetBuilder in
- * net.got.data.GotWorldgenDatapackProvider, which turns this into the
- * actual datapack JSON at datagen time (./gradlew runClientData).
+ * Code-driven definition of the "knownworld" dimension. Registered against
+ * a RegistrySetBuilder in net.got.data.ModWorldgenDatapackProvider, which
+ * turns this into the actual datapack JSON at datagen time
+ * (./gradlew runClientData).
  */
 public final class ModDimensionBootstrap {
 
@@ -42,16 +40,6 @@ public final class ModDimensionBootstrap {
         );
 
         context.register(ModDimensions.KNOWNWORLD_LEVEL_STEM, new LevelStem(dimensionType, generator));
-    }
-
-    public static void bootstrapWorldPreset(BootstrapContext<WorldPreset> context) {
-        HolderGetter<LevelStem> levelStems = context.lookup(Registries.LEVEL_STEM);
-        LevelStem knownworld = levelStems.getOrThrow(ModDimensions.KNOWNWORLD_LEVEL_STEM).value();
-
-        context.register(
-                ModDimensions.KNOWNWORLD_WORLD_PRESET,
-                new WorldPreset(Map.of(LevelStem.OVERWORLD, knownworld))
-        );
     }
 
     private ModDimensionBootstrap() {}

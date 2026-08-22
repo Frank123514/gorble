@@ -7,7 +7,6 @@ import net.got.climate.SeasonManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -71,7 +70,7 @@ public final class Calendar extends SavedData {
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
-        if (!level.dimension().equals(Level.OVERWORLD)) return;
+        if (!level.dimension().equals(net.got.worldgen.ModDimensions.KNOWNWORLD_LEVEL_KEY)) return;
 
         Calendar cal = get(level);
         long currentMcDay = level.getDayTime() / TICKS_PER_DAY;

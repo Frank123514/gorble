@@ -13,9 +13,9 @@ import net.minecraft.server.level.ServerPlayer;
  * in which case we resume them at the final line on next login instead of
  * replaying the whole sequence.
  *
- * This only ever comes into play on a world actually generated with the
- * knownworld preset — see PlayerEvents.isKnownWorld. A normal vanilla world
- * with this mod installed never touches this state.
+ * The player starts in the normal vanilla overworld; finishing this intro
+ * (see PlayerEvents.maybeResumeIntro) is what teleports them into the
+ * knownworld dimension for the first time.
  */
 public final class IntroState {
 

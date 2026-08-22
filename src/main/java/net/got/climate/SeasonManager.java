@@ -6,7 +6,6 @@ import net.got.GotMod;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.got.network.SeasonSyncPayload;
@@ -68,7 +67,7 @@ public final class SeasonManager extends SavedData {
     @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
-        if (!level.dimension().equals(Level.OVERWORLD)) return;
+        if (!level.dimension().equals(net.got.worldgen.ModDimensions.KNOWNWORLD_LEVEL_KEY)) return;
         get(level).tick(level);
     }
 

@@ -24,7 +24,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
@@ -297,7 +296,7 @@ public final class GotMod {
     @SubscribeEvent
     public void onLevelLoad(LevelEvent.Load event) {
         if (event.getLevel() instanceof ServerLevel level
-                && level.dimension() == Level.OVERWORLD) {
+                && level.dimension() == net.got.worldgen.ModDimensions.KNOWNWORLD_LEVEL_KEY) {
             GotChunkGenerator.initNoise(level.getSeed());
         }
     }

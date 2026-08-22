@@ -6,15 +6,11 @@
   "mixins": [
     "BiomeMixin",
     "LevelMixin",
-    "ServerLevelMixin",
-    "ServerPropertiesMixin",
-    "ServerPropertiesMixin$WorldGenPropertiesMixin",
-    "WorldPresetsMixin"
+    "ServerLevelMixin"
   ],
   "client": [
     "BiomeColorsMixin",
     "CameraMixin",
-    "client.CreateWorldScreenMixin",
     "EntityPositionAccessor",
     "ItemInHandRendererMixin",
     "LevelRendererMixin",

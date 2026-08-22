@@ -4,7 +4,6 @@ import net.got.GotMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +25,7 @@ public final class LatitudeIceHandler {
         LevelAccessor levelAccessor = event.getLevel();
         if (levelAccessor.isClientSide()) return;
         if (!(levelAccessor instanceof ServerLevel level)) return;
-        if (!level.dimension().equals(Level.OVERWORLD)) return;
+        if (!level.dimension().equals(net.got.worldgen.ModDimensions.KNOWNWORLD_LEVEL_KEY)) return;
 
         ChunkAccess chunk = event.getChunk();
         ChunkPos chunkPos = chunk.getPos();

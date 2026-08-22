@@ -38,25 +38,19 @@ public final class PlayerEvents {
 
     /**
      * Drives the black-screen intro from login instead of jumping straight
-     * to the faction screen. Only fires on a world actually generated with
-     * the knownworld preset (chunk generator check) — a normal vanilla
-     * world with this mod installed is left alone entirely. A player who's
+     * to the faction screen. The player starts out in the normal vanilla
+     * overworld; this intro is what picks their faction/name/waypoint and
+     * then teleports them into the knownworld dimension. A player who's
      * already finished character creation never sees it again; one who
      * picked a faction but never clicked through the closing line resumes
      * there instead of replaying character creation.
      */
     private static void maybeResumeIntro(ServerPlayer player) {
-        if (!isKnownWorld(player)) return;
         if (net.got.intro.IntroState.hasEnteredKnownWorld(player)) return;
 
         boolean resumeAtFinalLine = PlayerFactionState.hasFaction(player);
         GotMod.queueServerWork(5, () ->
                 PacketDistributor.sendToPlayer(player, new PlayIntroSequencePayload(resumeAtFinalLine)));
-    }
-
-    private static boolean isKnownWorld(ServerPlayer player) {
-        return player.level().getChunkSource().getGenerator()
-                instanceof net.got.worldgen.GotChunkGenerator;
     }
 
     @SubscribeEvent

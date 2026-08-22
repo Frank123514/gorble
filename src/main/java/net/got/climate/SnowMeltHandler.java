@@ -6,7 +6,6 @@ import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IceBlock;
@@ -35,7 +34,7 @@ public final class SnowMeltHandler {
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel().isClientSide()) return;
         if (!(event.getLevel() instanceof ServerLevel level)) return;
-        if (!level.dimension().equals(Level.OVERWORLD)) return;
+        if (!level.dimension().equals(net.got.worldgen.ModDimensions.KNOWNWORLD_LEVEL_KEY)) return;
 
         Season season = SeasonCache.get();
         float chance = meltChance(season);

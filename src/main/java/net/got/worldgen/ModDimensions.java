@@ -8,16 +8,19 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.presets.WorldPreset;
 
 import java.util.List;
 
 /**
- * Central registry keys for the "knownworld" dimension / world preset.
- * This is the single source of truth used by {@link GotDimensionBootstrap}
- * to generate data/got/dimension/knownworld.json and
- * data/got/worldgen/world_preset/knownworld.json via datagen
- * (see net.got.data.GotWorldgenDatapackProvider).
+ * Central registry keys for the "knownworld" dimension. This is the single
+ * source of truth used by {@link ModDimensionBootstrap} to generate
+ * data/got/dimension/knownworld.json via datagen
+ * (see net.got.data.ModWorldgenDatapackProvider).
+ *
+ * knownworld is a standalone non-default dimension — it is never the
+ * overworld. Players start in the normal vanilla overworld and are
+ * teleported into knownworld once they finish the faction-selection intro
+ * (see PlayerEvents / Network#CompleteIntroPayload).
  *
  * The dimension_type itself (data/got/dimension_type/knownworld.json) is left
  * as hand-written JSON since it's plain static data with no logic behind it.
@@ -33,9 +36,6 @@ public final class ModDimensions {
     /** Runtime lookup key for the actual running ServerLevel (server.getLevel(...)) - separate registry from LEVEL_STEM. */
     public static final ResourceKey<Level> KNOWNWORLD_LEVEL_KEY =
             ResourceKey.create(Registries.DIMENSION, GotMod.id("knownworld"));
-
-    public static final ResourceKey<WorldPreset> KNOWNWORLD_WORLD_PRESET =
-            ResourceKey.create(Registries.WORLD_PRESET, GotMod.id("knownworld"));
 
     public static final ResourceKey<NoiseGeneratorSettings> KNOWNWORLD_NOISE_SETTINGS =
             ResourceKey.create(Registries.NOISE_SETTINGS, GotMod.id("overworld"));
