@@ -51,10 +51,11 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static final double  DETAIL_SCALE_Z = 80.0;
     private static final double  DETAIL_WEIGHT   = 0.35; // how much detail contributes vs base
 
-    // Fine detail layer — tight, subtle texture on top of base + detail
-    private static final double  FINE_DETAIL_SCALE_X = 28.0;
-    private static final double  FINE_DETAIL_SCALE_Z = 28.0;
-    private static final double  FINE_DETAIL_WEIGHT   = 0.15; // kept low so it reads as texture, not another hill layer
+    // Third hill layer — smaller rolling hills than the detail layer, blended in at
+    // real weight so it reads as terrain shaping, not surface texture
+    private static final double  FINE_DETAIL_SCALE_X = 50.0;
+    private static final double  FINE_DETAIL_SCALE_Z = 50.0;
+    private static final double  FINE_DETAIL_WEIGHT   = 0.30;
 
     // Three independent perm tables so each layer doesn't echo the others' pattern
     private static volatile short[] noisePerm           = buildPerm(0L);
@@ -503,7 +504,7 @@ public final class GotChunkGenerator extends ChunkGenerator {
         double base       = simplexEval(noisePerm,           x / BASE_NOISE_SCALE_X,       z / BASE_NOISE_SCALE_Z);
         // Detail layer — smaller rolling ridges, weighted down
         double detail      = simplexEval(noisePermDetail,     x / DETAIL_SCALE_X,           z / DETAIL_SCALE_Z);
-        // Fine detail layer — tight surface texture, weighted down further
+        // Third hill layer — even smaller rolling hills, blended in as real shape
         double fineDetail  = simplexEval(noisePermFineDetail, x / FINE_DETAIL_SCALE_X,      z / FINE_DETAIL_SCALE_Z);
 
         double sum = base + detail * DETAIL_WEIGHT + fineDetail * FINE_DETAIL_WEIGHT;

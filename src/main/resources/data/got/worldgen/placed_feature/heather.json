@@ -1,5 +1,5 @@
 {
-  "feature": "got:patch_pipers_grass",
+  "feature": "got:heather",
   "placement": [
     {
       "type": "minecraft:count",
@@ -10,8 +10,11 @@
       "chance": 32
     },
     {
+      "type": "minecraft:in_square"
+    },
+    {
       "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "heightmap": "MOTION_BLOCKING"
     },
     {
       "type": "minecraft:biome"

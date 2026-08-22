@@ -1961,6 +1961,7 @@ public class ModItems {
     public static final DeferredItem<Item> GHOSTSKIN          = block(ModBlocks.GHOSTSKIN);
     public static final DeferredItem<Item> GRAPE_VINE         = block(ModBlocks.GRAPE_VINE);
     public static final DeferredItem<Item> HARPYS_GOLD        = block(ModBlocks.HARPYS_GOLD);
+    public static final DeferredItem<Item> HEATHER            = block(ModBlocks.HEATHER);
     public static final DeferredItem<Item> WILD_HEMP          = block(ModBlocks.WILD_HEMP);
     public static final DeferredItem<Item> HEMP               = REGISTRY.registerItem("hemp",          p -> new Item(p));
     public static final DeferredItem<Item> HORNWORT           = block(ModBlocks.HORNWORT);

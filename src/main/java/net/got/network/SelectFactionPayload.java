@@ -5,7 +5,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-public record SelectFactionPayload(String factionId) implements CustomPacketPayload {
+/**
+ * waypointName is whichever WaypointData the player had dialed in on the
+ * location nav when they hit Confirm (may be empty if the faction has no
+ * waypoints, e.g. the Night's Watch) - it's what the closing CompleteIntroPayload
+ * teleport target is resolved from.
+ */
+public record SelectFactionPayload(String factionId, String waypointName) implements CustomPacketPayload {
 
     public static final Identifier ID =
             Identifier.fromNamespaceAndPath("got", "select_faction");
@@ -14,8 +20,8 @@ public record SelectFactionPayload(String factionId) implements CustomPacketPayl
 
     public static final StreamCodec<FriendlyByteBuf, SelectFactionPayload> STREAM_CODEC =
             StreamCodec.of(
-                    (buf, pkt) -> buf.writeUtf(pkt.factionId),
-                    buf -> new SelectFactionPayload(buf.readUtf())
+                    (buf, pkt) -> { buf.writeUtf(pkt.factionId); buf.writeUtf(pkt.waypointName); },
+                    buf -> new SelectFactionPayload(buf.readUtf(), buf.readUtf())
             );
 
     @Override

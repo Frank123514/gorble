@@ -40,9 +40,30 @@ public final class ModDimensions {
     public static final ResourceKey<NoiseGeneratorSettings> KNOWNWORLD_NOISE_SETTINGS =
             ResourceKey.create(Registries.NOISE_SETTINGS, GotMod.id("overworld"));
 
-    /** Spawn point, in biome-map pixel coordinates (see GotChunkGenerator). */
+    /** Spawn point, in the mod's shared map-pixel coordinate space (known_world.png /
+     *  biomemap.png, both 4207x3277) — same space WaypointData pixel coords use. */
     public static final int SPAWN_PIXEL_X = 1500;
     public static final int SPAWN_PIXEL_Z = 677;
+
+    /**
+     * Fixed conversion from that map-pixel space to world block coordinates.
+     * Mirrors MapWidget's BLOCKS_PER_PIXEL / WORLD_WIDTH_BLOCKS / WORLD_HEIGHT_BLOCKS
+     * exactly (189315 = 4207 * 45, 147465 = 3277 * 45) — kept as fixed constants
+     * rather than reading BiomemapLoader's runtime-loaded width/height, since that
+     * resource may not have finished loading yet the moment a brand new player logs
+     * in for the very first time (which is exactly when this conversion is needed).
+     */
+    public static final float BLOCKS_PER_MAP_PIXEL   = 45.0f;
+    public static final float MAP_WORLD_WIDTH_BLOCKS  = 189315f;
+    public static final float MAP_WORLD_HEIGHT_BLOCKS = 147465f;
+
+    public static int mapPixelToWorldX(int pixelX) {
+        return (int) (pixelX * BLOCKS_PER_MAP_PIXEL - MAP_WORLD_WIDTH_BLOCKS / 2.0);
+    }
+
+    public static int mapPixelToWorldZ(int pixelZ) {
+        return (int) (pixelZ * BLOCKS_PER_MAP_PIXEL - MAP_WORLD_HEIGHT_BLOCKS / 2.0);
+    }
 
     public static final List<ResourceKey<Biome>> KNOWNWORLD_BIOMES = List.of(
             biome("north"), biome("barrowlands"), biome("stony_shore"), biome("north_hills"),

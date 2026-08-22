@@ -194,10 +194,8 @@ public final class Factions {
                         List.of("karstark", "umber", "manderly",
                                 "mormont", "glover", "reed"),
                         westernLadder("Stark", "the North"),
-                        "The Starks of Winterfell have ruled the North for eight thousand years, " +
-                                "since Bran the Builder raised the Wall. Honour, duty, and the Old Gods " +
-                                "define a hard people forged by hard winters. A Stark does not lie and " +
-                                "does not forget a debt — the North remembers, always."
+                        "Ruled by House Stark since the Age of Heroes. Honour, duty and hard winters " +
+                                "forged a people who never forget — the North remembers."
                 ),
 
                 new FactionData(
@@ -218,10 +216,8 @@ public final class Factions {
                         List.of("royce", "waynwood", "hunter",
                                 "corbray", "grafton", "hersy"),
                         westernLadder("Arryn", "the Vale"),
-                        "Nestled among the Mountains of the Moon, the Vale is the most defensible " +
-                                "region in Westeros — the Eyrie has never fallen by force. House Arryn's " +
-                                "knights are among the finest in the realm, disciplined and armoured in " +
-                                "gleaming plate. As High as Honour is not merely a motto — it is their way of life."
+                        "The Eyrie has never fallen by force, making the Vale the most defensible " +
+                                "realm in Westeros. Its knights are among the finest in the land."
                 ),
 
                 new FactionData(
@@ -242,10 +238,8 @@ public final class Factions {
                         List.of("frey", "mallister", "blackwood",
                                 "bracken", "mooton", "whent"),
                         westernLadder("Tully", "the Riverlands"),
-                        "Sitting at the crossroads of Westeros, the Riverlands are fought over by " +
-                                "every army marching south, burning and plundering as they go. House Tully " +
-                                "endures through honour and kinship rather than wealth or terror — family " +
-                                "first, duty second, honour last, in that order, always."
+                        "Fought over by every army marching south. House Tully endures through " +
+                                "family and honour rather than wealth or fear."
                 ),
 
                 new FactionData(
@@ -266,10 +260,8 @@ public final class Factions {
                         List.of("clegane", "swyft", "westerling",
                                 "marbrand", "lefford", "payne"),
                         westernLadder("Lannister", "the Westerlands"),
-                        "Built atop the richest gold mines in the known world, Casterly Rock has made " +
-                                "House Lannister the wealthiest family in Westeros — a mountain hollowed out " +
-                                "and made impregnable over a thousand years of Lannister tenure. A Lannister " +
-                                "always pays their debts, for better or worse, and never forgets an insult."
+                        "Home to the richest gold mines in Westeros. House Lannister rules from " +
+                                "Casterly Rock, wealthy and proud — and always pays its debts."
                 ),
 
                 new FactionData(
@@ -290,10 +282,8 @@ public final class Factions {
                         List.of("hightower", "redwyne", "tarly",
                                 "florent", "fossoway", "oakheart"),
                         westernLadder("Tyrell", "the Reach"),
-                        "The most fertile land in Westeros, the Reach feeds the realm and fields its " +
-                                "largest armies. Highgarden is a place of beauty where roses and chivalry " +
-                                "flourish, and House Tyrell turned political cunning into an art, rising " +
-                                "to power by choosing the right side at the right moment."
+                        "The most fertile land in Westeros, feeding the realm and fielding its " +
+                                "largest armies. Highgarden thrives on beauty and political cunning."
                 ),
 
                 new FactionData(
@@ -314,10 +304,8 @@ public final class Factions {
                         List.of("selmy", "dondarrion", "swann",
                                 "connington", "morrigen", "caeron"),
                         westernLadder("Baratheon", "the Stormlands"),
-                        "Storm's End has never fallen to siege, built by Bran the Builder to withstand " +
-                                "the eternal storms of the Narrow Sea. House Baratheon was born in battle when " +
-                                "Orys Baratheon slew Argilac the Arrogant and claimed his lands and seat. " +
-                                "Stormlanders are among the fiercest warriors in Westeros — their fury is no idle boast."
+                        "Storm's End has never fallen to siege. Stormlanders are among the fiercest " +
+                                "warriors in Westeros — their fury is no idle boast."
                 ),
 
                 new FactionData(
@@ -339,10 +327,8 @@ public final class Factions {
                         List.of("harlaw", "botley", "stonehouse",
                                 "goodbrother", "merlyn", "farwynd"),
                         ironbornLadder(),
-                        "The Ironborn take what they want by axe and oar — the Iron Price, under the " +
-                                "ancient Old Way that demands all wealth be seized by strength. The Drowned " +
-                                "God waits beneath the waves and calls his faithful home: what is dead may " +
-                                "never die, but rises again, harder and stronger."
+                        "The Ironborn take what they want by axe and oar, under the Old Way of the " +
+                                "Iron Price. What is dead may never die, but rises again, harder and stronger."
                 ),
 
                 new FactionData(
@@ -363,10 +349,8 @@ public final class Factions {
                         List.of("yronwood", "uller", "qorgyle",
                                 "dayne", "allyrion", "jordayne"),
                         dornishLadder(),
-                        "Dorne was never conquered by force, joining the realm only through a marriage " +
-                                "pact and keeping unique rights no other kingdom holds. Proud and passionate, " +
-                                "shaped by a blazing sun and a refusal to bow, the Dornish favour swift " +
-                                "poisoned blades over heavy armour. Unbowed, Unbent, Unbroken."
+                        "Never conquered by force, joining the realm only by marriage. Proud, sun-scorched " +
+                                "and unbowed — Unbowed, Unbent, Unbroken."
                 ),
 
                 new FactionData(
@@ -386,10 +370,8 @@ public final class Factions {
                         List.of(),
                         List.of("shadow_tower", "eastwatch"),
                         nightsWatchLadder(),
-                        "Older than the Seven Kingdoms, the Night's Watch stands the Wall so the realm " +
-                                "may sleep. A man who takes the black gives up name, land, titles and family, " +
-                                "keeping only his oath. Their numbers have dwindled as the threat beyond the " +
-                                "Wall was dismissed as legend — but the cold grows deeper, and the dead walk again."
+                        "Older than the Seven Kingdoms, the Watch guards the Wall so the realm may " +
+                                "sleep. A man who takes the black gives up name and family, keeping only his oath."
                 )
         );
 

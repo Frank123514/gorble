@@ -5,7 +5,7 @@ import net.got.climate.PlayerTemperatureSystem;
 import net.got.climate.PlayerThirstSystem;
 import net.got.faction.PlayerFactionState;
 import net.got.network.FactionSyncPayload;
-import net.got.network.OpenFactionScreenPayload;
+import net.got.network.PlayIntroSequencePayload;
 import net.got.network.PlayerVitalsPayload;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,17 +27,36 @@ public final class PlayerEvents {
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
-        if (!PlayerFactionState.hasFaction(player)) {
-            
-            GotMod.queueServerWork(5, () ->
-                    PacketDistributor.sendToPlayer(player, new OpenFactionScreenPayload()));
-        } else {
-            
+        maybeResumeIntro(player);
+        if (PlayerFactionState.hasFaction(player)) {
             syncFactionToClient(player);
         }
 
         net.got.skill.SkillPerkEffects.applyAttributeModifiers(player);
         net.got.skill.SkillXpService.syncToClient(player);
+    }
+
+    /**
+     * Drives the black-screen intro from login instead of jumping straight
+     * to the faction screen. Only fires on a world actually generated with
+     * the knownworld preset (chunk generator check) — a normal vanilla
+     * world with this mod installed is left alone entirely. A player who's
+     * already finished character creation never sees it again; one who
+     * picked a faction but never clicked through the closing line resumes
+     * there instead of replaying character creation.
+     */
+    private static void maybeResumeIntro(ServerPlayer player) {
+        if (!isKnownWorld(player)) return;
+        if (net.got.intro.IntroState.hasEnteredKnownWorld(player)) return;
+
+        boolean resumeAtFinalLine = PlayerFactionState.hasFaction(player);
+        GotMod.queueServerWork(5, () ->
+                PacketDistributor.sendToPlayer(player, new PlayIntroSequencePayload(resumeAtFinalLine)));
+    }
+
+    private static boolean isKnownWorld(ServerPlayer player) {
+        return player.level().getChunkSource().getGenerator()
+                instanceof net.got.worldgen.GotChunkGenerator;
     }
 
     @SubscribeEvent
@@ -67,11 +86,24 @@ public final class PlayerEvents {
                     PlayerFactionState.KEY_TITLE,
                     oldData.getStringOr(PlayerFactionState.KEY_TITLE, ""));
         }
+        if (oldData.contains(net.got.intro.IntroState.KEY_ENTERED_KNOWN_WORLD)) {
+            player.getPersistentData().putBoolean(
+                    net.got.intro.IntroState.KEY_ENTERED_KNOWN_WORLD,
+                    oldData.getBooleanOr(net.got.intro.IntroState.KEY_ENTERED_KNOWN_WORLD, false));
+        }
+        if (oldData.contains(net.got.intro.IntroState.KEY_CHARACTER_NAME)) {
+            player.getPersistentData().putString(
+                    net.got.intro.IntroState.KEY_CHARACTER_NAME,
+                    oldData.getStringOr(net.got.intro.IntroState.KEY_CHARACTER_NAME, ""));
+        }
+        if (oldData.contains(net.got.intro.IntroState.KEY_PENDING_WAYPOINT)) {
+            player.getPersistentData().putString(
+                    net.got.intro.IntroState.KEY_PENDING_WAYPOINT,
+                    oldData.getStringOr(net.got.intro.IntroState.KEY_PENDING_WAYPOINT, ""));
+        }
 
-        if (!PlayerFactionState.hasFaction(player)) {
-            GotMod.queueServerWork(5, () ->
-                    PacketDistributor.sendToPlayer(player, new OpenFactionScreenPayload()));
-        } else {
+        maybeResumeIntro(player);
+        if (PlayerFactionState.hasFaction(player)) {
             syncFactionToClient(player);
         }
 

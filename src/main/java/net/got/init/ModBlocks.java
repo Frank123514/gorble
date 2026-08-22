@@ -1633,6 +1633,7 @@ public class ModBlocks {
             GhostskinBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.PALE_HANGING_MOSS));
     public static final DeferredBlock<Block> HARPYS_GOLD       = flowerBlock("harpys_gold");
+    public static final DeferredBlock<Block> HEATHER           = flowerBlock("heather");
     public static final DeferredBlock<Block> WILD_HEMP         = tallFlowerBlock("wild_hemp");
     public static final DeferredBlock<Block> HORNWORT          = flowerBlock("hornwort");
     public static final DeferredBlock<Block> IVY               =
@@ -1666,6 +1667,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> POTTED_GHOSTSKIN      = pottedBlock("potted_ghostskin",      () -> GHOSTSKIN);
     public static final DeferredBlock<Block> POTTED_GRAPE_VINE     = pottedBlock("potted_grape_vine",     () -> GRAPE_VINE);
     public static final DeferredBlock<Block> POTTED_HARPYS_GOLD    = pottedBlock("potted_harpys_gold",    () -> HARPYS_GOLD);
+    public static final DeferredBlock<Block> POTTED_HEATHER        = pottedBlock("potted_heather",        () -> HEATHER);
     public static final DeferredBlock<Block> POTTED_HORNWORT       = pottedBlock("potted_hornwort",       () -> HORNWORT);
     public static final DeferredBlock<Block> POTTED_IVY            = pottedBlock("potted_ivy",            () -> IVY);
     public static final DeferredBlock<Block> POTTED_KINGSCOPPER    = pottedBlock("potted_kingscopper",    () -> KINGSCOPPER);

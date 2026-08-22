@@ -25,8 +25,8 @@ public record FactionData(
 ) {
 
     public enum Religion {
-        FAITH_OF_THE_SEVEN("The Faith of the Seven"),
-        OLD_GODS("The Old Gods of the Forest"),
+        FAITH_OF_THE_SEVEN("The Seven"),
+        OLD_GODS("The Old Gods"),
         DROWNED_GOD("The Drowned God"),
         RED_GOD("R'hllor, the Lord of Light"),
         MANY_FACED_GOD("The Many-Faced God"),

@@ -2322,6 +2322,7 @@ public class ModTabs {
                         safeAccept(output, ModBlocks.GHOSTSKIN.get());
                         safeAccept(output, ModBlocks.GRAPE_VINE.get());
                         safeAccept(output, ModBlocks.HARPYS_GOLD.get());
+                        safeAccept(output, ModBlocks.HEATHER.get());
                         safeAccept(output, ModBlocks.WILD_HEMP.get());
                         safeAccept(output, ModBlocks.HORNWORT.get());
                         safeAccept(output, ModBlocks.IVY.get());

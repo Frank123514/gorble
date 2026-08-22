@@ -55,7 +55,6 @@ public final class FactionSelectionScreen extends Screen {
     private static final int COL_WORDS   = 0xFFDDCC88;
     private static final int COL_LABEL   = 0xFFCCCCAA;
     private static final int COL_LORE    = 0xFFAAAAAA;
-    private static final int COL_BORDER  = 0xFF887733;
 
     private final List<String> continentKeys;
     private int continentIndex = 0;
@@ -229,8 +228,9 @@ public final class FactionSelectionScreen extends Screen {
     private void confirmSelection() {
         FactionData f = currentFaction();
         if (f == null || f.id().contains("coming_soon")) return;
-        ClientPacketDistributor.sendToServer(new SelectFactionPayload(f.id()));
-        onClose();
+        ClientPacketDistributor.sendToServer(new SelectFactionPayload(f.id(), currentLocationName()));
+        net.minecraft.client.Minecraft.getInstance()
+                .setScreen(new IntroScreen(IntroScreen.Mode.FINAL_ONLY));
     }
 
     @Override
@@ -245,7 +245,7 @@ public final class FactionSelectionScreen extends Screen {
         int px = (width  - PANEL_W) / 2;
         int py = (height - PANEL_H) / 2;
 
-        renderPanelBorder(gfx, px, py);
+        gfx.fill(0, 0, width, height, 0xFF000000);
 
         super.render(gfx, mouseX, mouseY, partialTick);
 
@@ -291,29 +291,13 @@ public final class FactionSelectionScreen extends Screen {
                 0xFFEEEEEE, false);
     }
 
-    private void renderPanelBorder(GuiGraphics gfx, int px, int py) {
-        gfx.hLine(px,               px + PANEL_W - 1, py,               COL_BORDER);
-        gfx.hLine(px,               px + PANEL_W - 1, py + PANEL_H - 1, COL_BORDER);
-        gfx.vLine(px,               py,               py + PANEL_H - 1, COL_BORDER);
-        gfx.vLine(px + PANEL_W - 1, py,               py + PANEL_H - 1, COL_BORDER);
-        gfx.hLine(px + 1,           px + PANEL_W - 2, py + 1,           0xFFCCAA44);
-        gfx.hLine(px + 1,           px + PANEL_W - 2, py + PANEL_H - 2, 0xFFCCAA44);
-        gfx.vLine(px + 1,           py + 1,           py + PANEL_H - 2, 0xFFCCAA44);
-        gfx.vLine(px + PANEL_W - 2, py + 1,           py + PANEL_H - 2, 0xFFCCAA44);
-    }
-
     private void renderInfoPanel(GuiGraphics gfx, int px, int py) {
         FactionData f = currentFaction();
 
         int infoX = px + INFO_X_OFF;
         int infoY = py + INFO_Y_OFF;
 
-        int borderCol = (f != null) ? f.primaryColour() : COL_BORDER;
         gfx.fill(infoX, infoY, infoX + INFO_W, infoY + INFO_H, 0x44000000);
-        gfx.hLine(infoX, infoX + INFO_W - 1, infoY,              borderCol);
-        gfx.hLine(infoX, infoX + INFO_W - 1, infoY + INFO_H - 1, borderCol);
-        gfx.vLine(infoX, infoY, infoY + INFO_H - 1,               borderCol);
-        gfx.vLine(infoX + INFO_W - 1, infoY, infoY + INFO_H - 1,  borderCol);
 
         if (f == null) return;
 

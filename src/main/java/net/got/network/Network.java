@@ -27,7 +27,7 @@ public final class Network {
         r.playToServer(MapTeleportPayload.TYPE, MapTeleportPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
-                    
+
                     if (player == null
                             || !player.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER))
                         return;
@@ -78,7 +78,7 @@ public final class Network {
                     String npcName = npc.getNpcName().isEmpty()
                             ? npc.getType().getDescription().getString()
                             : npc.getNpcName();
-                    
+
                     net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(player,
                             new OpenTradeScreenPayload(payload.entityId(),
                                     npc.getOccupation().id, npcName));
@@ -172,10 +172,78 @@ public final class Network {
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
                     if (player == null) return;
-                    
+
                     if (Factions.BY_ID.containsKey(payload.factionId())) {
                         PlayerEvents.setFactionId(player, payload.factionId());
+                        net.got.intro.IntroState.setPendingWaypoint(player, payload.waypointName());
                     }
+                }));
+
+        // Opens the black-screen intro on login for anyone on a knownworld-preset
+        // save who hasn't finished character creation yet. resumeAtFinalLine
+        // skips straight to "Very well." for players who picked a faction but
+        // disconnected before clicking through the closing line.
+        r.playToClient(PlayIntroSequencePayload.TYPE, PlayIntroSequencePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (FMLEnvironment.getDist() == Dist.CLIENT) {
+                        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                        if (mc == null) return;
+                        mc.setScreen(new net.got.client.gui.IntroScreen(
+                                payload.resumeAtFinalLine()
+                                        ? net.got.client.gui.IntroScreen.Mode.FINAL_ONLY
+                                        : net.got.client.gui.IntroScreen.Mode.FULL));
+                    }
+                }));
+
+        r.playToServer(SetCharacterNamePayload.TYPE, SetCharacterNamePayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+                    String name = payload.name() == null ? "" : payload.name().trim();
+                    if (name.isEmpty()) return;
+                    if (name.length() > 24) name = name.substring(0, 24);
+                    net.got.intro.IntroState.setCharacterName(player, name);
+                }));
+
+        // No dimension change (the player has been standing in the knownworld
+        // the whole time), but this is the moment we move them to the exact
+        // waypoint they dialed in on the faction screen's location nav.
+        r.playToServer(CompleteIntroPayload.TYPE, CompleteIntroPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null) return;
+
+                    ServerLevel level = (ServerLevel) player.level();
+                    String factionId = net.got.faction.PlayerFactionState.getFactionId(player);
+                    String waypointName = net.got.intro.IntroState.getPendingWaypoint(player);
+
+                    Integer pixelX = null, pixelY = null;
+                    if (factionId != null && !waypointName.isEmpty()) {
+                        for (net.got.faction.WaypointData wp :
+                                net.got.faction.WaypointRegistry.BY_FACTION.getOrDefault(factionId, List.of())) {
+                            if (wp.name().equals(waypointName)) {
+                                pixelX = wp.pixelX();
+                                pixelY = wp.pixelY();
+                                break;
+                            }
+                        }
+                    }
+                    if (pixelX == null) {
+                        // faction with no waypoints defined (e.g. the Night's Watch),
+                        // or nothing was ever selected - fall back to the default spawn
+                        pixelX = net.got.worldgen.ModDimensions.SPAWN_PIXEL_X;
+                        pixelY = net.got.worldgen.ModDimensions.SPAWN_PIXEL_Z;
+                    }
+
+                    int worldX = net.got.worldgen.ModDimensions.mapPixelToWorldX(pixelX);
+                    int worldZ = net.got.worldgen.ModDimensions.mapPixelToWorldZ(pixelY);
+                    int y = net.got.worldgen.GotChunkGenerator.computeSurfaceY(worldX, worldZ);
+                    if (y < level.getMinY()) y = level.getMinY();
+
+                    player.teleportTo(level, worldX + 0.5, y + 1, worldZ + 0.5,
+                            Set.of(), player.getYRot(), player.getXRot(), false);
+
+                    net.got.intro.IntroState.markEnteredKnownWorld(player);
                 }));
 
         r.playToServer(SelectSmithyRecipePayload.TYPE, SelectSmithyRecipePayload.STREAM_CODEC,
@@ -195,7 +263,7 @@ public final class Network {
                     if (player.containerMenu instanceof net.got.menu.SmithingAnvilMenu menu &&
                             menu.getContainer() instanceof net.got.block.SmithingAnvilBlockEntity be) {
                         be.setSelectedRecipeIndex(payload.recipeIndex());
-                        
+
                         if (payload.recipeIndex() >= 0) {
                             player.closeContainer();
                         }
@@ -235,7 +303,7 @@ public final class Network {
                     if (FMLEnvironment.getDist() == Dist.CLIENT) {
                         net.got.climate.Season prev = net.got.climate.SeasonCache.get();
                         net.got.climate.SeasonCache.set(payload.season());
-                        
+
                         if (payload.season() != prev) {
                             net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
                             if (mc != null && mc.levelRenderer != null) {
