@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 public class ValemanEntity extends SmallfolkEntity {
 
-    public static final int MALE_VARIANT_COUNT   = 12;
+    public static final int MALE_VARIANT_COUNT   = 9;
     
     public static final int FEMALE_VARIANT_COUNT = 12;
     

@@ -8,20 +8,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Biome.class)
 public class BiomeMixin {
 
     private static final float WINTER_TEMP_ADJUSTMENT = -0.8f;
-
-    @Inject(method = "shouldSnow", at = @At("HEAD"), cancellable = true, remap = false)
-    public void gotSeason_shouldSnow(LevelReader level, BlockPos pos,
-                                     CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(false);
-    }
 
     @Redirect(
             method = "shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Z)Z",
@@ -37,7 +29,7 @@ public class BiomeMixin {
 
         boolean hotBiome = biome.getBaseTemperature() > 0.8f;
         if (hotBiome) {
-            
+
             return biome.warmEnoughToRain(pos, seaLevel);
         }
 
