@@ -2552,6 +2552,15 @@ public class ModTabs {
 
                         output.accept(ModItems.LONGBOW.get());
 
+                        output.accept(ModItems.HEATER_BOARD.get());
+                        output.accept(ModItems.KITE_BOARD.get());
+                        output.accept(ModItems.ROUND_BOARD.get());
+                        output.accept(ModItems.SHIELD_SKIN.get());
+                        output.accept(ModItems.SHIELD_BORDER.get());
+                        output.accept(ModItems.HEATER_SHIELD.get());
+                        output.accept(ModItems.KITE_SHIELD.get());
+                        output.accept(ModItems.ROUND_SHIELD.get());
+
                         output.accept(ModItems.BRONZE_HELMET.get());
                         output.accept(ModItems.BRONZE_CHESTPLATE.get());
                         output.accept(ModItems.BRONZE_LEGGINGS.get());

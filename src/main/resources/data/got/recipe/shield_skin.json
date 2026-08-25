@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:leather",
+    "#minecraft:dyes"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:shield_skin"
+  }
+}

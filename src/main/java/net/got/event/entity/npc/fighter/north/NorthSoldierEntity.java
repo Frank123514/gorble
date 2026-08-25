@@ -1,6 +1,7 @@
 package net.got.event.entity.npc.fighter.north;
 
 import net.got.event.entity.npc.SpawnEquipment;
+import net.got.event.entity.npc.data.GenderProvider;
 import net.got.event.entity.npc.smallfolk.NorthmanEntity;
 import net.got.event.entity.npc.data.name.NameGenerator;
 import net.got.event.entity.npc.data.name.NpcNames;
@@ -24,11 +25,13 @@ public class NorthSoldierEntity extends SkilledFighterEntity {
             SpawnEquipment.of(Items.IRON_SWORD, Items.IRON_SWORD, Items.STONE_SWORD);
 
     public static final Identifier[] MALE_TEXTURES   = NorthmanEntity.MALE_TEXTURES;
-    public static final Identifier[] FEMALE_TEXTURES = NorthmanEntity.MALE_TEXTURES;
+    public static final Identifier[] FEMALE_TEXTURES = NorthmanEntity.FEMALE_TEXTURES;
 
     public NorthSoldierEntity(EntityType<? extends NorthSoldierEntity> type, Level level) {
         super(type, level);
     }
+
+    @Override protected GenderProvider getGenderProvider() { return GenderProvider.MALE_OR_FEMALE; }
 
     @Override public float getHorseSpawnChance() { return 0.15f; }
 

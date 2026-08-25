@@ -1,6 +1,7 @@
 package net.got.event.entity.npc.fighter.vale;
 
 import net.got.event.entity.npc.SpawnEquipment;
+import net.got.event.entity.npc.data.GenderProvider;
 import net.got.event.entity.npc.smallfolk.ValemanEntity;
 import net.got.event.entity.npc.data.name.NameGenerator;
 import net.got.event.entity.npc.data.name.NpcNames;
@@ -24,11 +25,13 @@ public class ValeKnightEntity extends SkilledFighterEntity {
             SpawnEquipment.of(Items.IRON_SWORD, Items.IRON_SWORD, Items.IRON_AXE);
 
     public static final Identifier[] MALE_TEXTURES   = ValemanEntity.MALE_TEXTURES;
-    public static final Identifier[] FEMALE_TEXTURES = ValemanEntity.MALE_TEXTURES;
+    public static final Identifier[] FEMALE_TEXTURES = ValemanEntity.FEMALE_TEXTURES;
 
     public ValeKnightEntity(EntityType<? extends ValeKnightEntity> type, Level level) {
         super(type, level);
     }
+
+    @Override protected GenderProvider getGenderProvider() { return GenderProvider.MALE_OR_FEMALE; }
 
     @Override public float getHorseSpawnChance() { return 0.50f; }
 

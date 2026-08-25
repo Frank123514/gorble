@@ -2062,6 +2062,27 @@ public class ModItems {
     public static final DeferredItem<Item> SLOPED_CROSSGUARD   = simple("sloped_crossguard");
     public static final DeferredItem<Item> BRONZE_ARMOR_PLATE         = simple("bronze_armor_plate");
 
+    // --- Shields ---
+    public static final DeferredItem<Item> SHIELD_SKIN   = simple("shield_skin");
+    public static final DeferredItem<Item> SHIELD_BORDER = simple("shield_border");
+
+    // Raw, unfinished shield boards - crafting components, not usable in combat yet.
+    public static final DeferredItem<Item> HEATER_BOARD = simple("heater_board");
+    public static final DeferredItem<Item> KITE_BOARD   = simple("kite_board");
+    public static final DeferredItem<Item> ROUND_BOARD  = simple("round_board");
+
+    // Finished shields - board + skin + border combined into a real, usable shield.
+    // Uses normal vanilla shield blocking (component copied straight from Items.SHIELD).
+    public static final DeferredItem<Item> HEATER_SHIELD = REGISTRY.registerItem("heater_shield",
+            p -> new ShieldItem(p.durability(336)
+                    .component(DataComponents.BLOCKS_ATTACKS, Items.SHIELD.components().get(DataComponents.BLOCKS_ATTACKS))));
+    public static final DeferredItem<Item> KITE_SHIELD = REGISTRY.registerItem("kite_shield",
+            p -> new ShieldItem(p.durability(336)
+                    .component(DataComponents.BLOCKS_ATTACKS, Items.SHIELD.components().get(DataComponents.BLOCKS_ATTACKS))));
+    public static final DeferredItem<Item> ROUND_SHIELD = REGISTRY.registerItem("round_shield",
+            p -> new ShieldItem(p.durability(336)
+                    .component(DataComponents.BLOCKS_ATTACKS, Items.SHIELD.components().get(DataComponents.BLOCKS_ATTACKS))));
+
     public static final DeferredItem<Item> STEEL_SPEAR_HEAD          = simple("steel_spear_head");
     public static final DeferredItem<Item> STEEL_ARROWHEAD           = simple("steel_arrowhead");
     public static final DeferredItem<Item> STEEL_SHORT_AXE_HEAD      = simple("steel_short_axe_head");

@@ -21,7 +21,7 @@ public class GreyjoyLevyEntity extends LevyEntity {
 
     private static Identifier[] textures(boolean female) {
         String prefix = female ? "female" : "male";
-        Identifier[] arr = new Identifier[16];
+        Identifier[] arr = new Identifier[9];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = Identifier.fromNamespaceAndPath("got",
                     "textures/entity/npc/smallfolk/ironborn/generated/" + prefix + "_" + String.format("%02d", i + 1) + ".png");
@@ -38,7 +38,7 @@ public class GreyjoyLevyEntity extends LevyEntity {
 
     @Override protected GenderProvider getGenderProvider() { return GenderProvider.MALE; }
     @Override protected NameGenerator  getNameGenerator()  { return NpcNames.GREYJOY_LEVY; }
-    @Override public int getVariantsPerGender() { return 16; }
+    @Override public int getVariantsPerGender() { return 9; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
