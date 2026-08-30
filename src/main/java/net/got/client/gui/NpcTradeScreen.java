@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NpcTradeScreen extends Screen {
 
@@ -83,14 +85,14 @@ public class NpcTradeScreen extends Screen {
     }
 
     private void drawPanel(GuiGraphics g, int px, int py) {
-        
+
         g.fill(px - 1, py - 1, px + GUI_W + 1, py + GUI_H + 1, C_BORDER);
-        
+
         g.fill(px, py, px + GUI_W, py + GUI_H, C_BG);
-        
+
         g.fill(px, py, px + GUI_W, py + 1, C_HILITE);
         g.fill(px, py, px + 1, py + GUI_H, C_HILITE);
-        
+
         g.fill(px, py + GUI_H - 1, px + GUI_W, py + GUI_H, C_SHADOW);
         g.fill(px + GUI_W - 1, py, px + GUI_W, py + GUI_H, C_SHADOW);
 
@@ -204,7 +206,10 @@ public class NpcTradeScreen extends Screen {
                     tooltip.add(Component.literal(can ? "§aLeft-click to sell" : "§cNot enough items"));
                 }
 
-                g.setTooltipForNextFrame(font, (Component) tooltip, mx, my);
+                List<FormattedCharSequence> tooltipLines = tooltip.stream()
+                        .map(Component::getVisualOrderText)
+                        .collect(Collectors.toList());
+                g.setTooltipForNextFrame(font, tooltipLines, mx, my);
                 return;
             }
         }

@@ -46,11 +46,11 @@ public final class PlayerAnimator {
         }
 
         AnimatedPlayerState anim = (AnimatedPlayerState) state;
-        
+
         boolean firstPerson = anim.got$isLocalFirstPerson();
 
         if (state.isPassenger) {
-            
+
             if (anim.got$isRidingHorse()) {
                 body.resetPose();
                 head.resetPose();
@@ -73,14 +73,16 @@ public final class PlayerAnimator {
 
         float walkPos = state.walkAnimationPos;
         float walkSpeed = Mth.clamp(state.walkAnimationSpeed, 0.0F, 1.0F);
-        
+
         float runBlend = anim.got$getSprintProgress();
         float moveIntensity = walkSpeed;
 
         boolean sneaking = climb <= 0.01F && state.isCrouching;
+        boolean blocking = state.rightArmPose == HumanoidModel.ArmPose.BLOCK
+                || state.leftArmPose == HumanoidModel.ArmPose.BLOCK;
 
-        if (!sneaking) {
-            
+        if (!sneaking && !blocking) {
+
             body.resetPose();
             head.resetPose();
             rightArm.resetPose();
@@ -89,7 +91,7 @@ public final class PlayerAnimator {
             leftLeg.resetPose();
 
             if (climb > 0.01F) {
-                
+
                 float armR = Mth.lerp(climb, 0.0F, AnimMath.climbArmReach(age, true));
                 float armL = Mth.lerp(climb, 0.0F, AnimMath.climbArmReach(age, false));
                 float legR = Mth.lerp(climb, 0.0F, AnimMath.climbLegPush(age, true));
@@ -100,7 +102,7 @@ public final class PlayerAnimator {
                 rightLeg.xRot = legR;
                 leftLeg.xRot = legL;
             } else {
-                
+
                 long walkMs = (long) (walkPos * 50F);
                 baked(PlayerAnimations.WALKING, model.root()).apply(walkMs, (1.0F - runBlend) * moveIntensity);
                 baked(PlayerAnimations.RUNNING, model.root()).apply(walkMs, runBlend * moveIntensity);
@@ -127,7 +129,7 @@ public final class PlayerAnimator {
             }
 
             if (airborne > 0.01F) {
-                
+
                 attachRotationToBody(rightArm, body);
                 attachRotationToBody(leftArm, body);
                 attachRotationToBody(head, body);
@@ -140,7 +142,7 @@ public final class PlayerAnimator {
         float swing;
         boolean swingActive;
         if (style == SwingStyle.AXE && anim.got$isMiningWithAxe()) {
-            
+
             float miningDuration = swingDuration / MINING_LOOP_SPEED;
             swing = (age % miningDuration) / miningDuration;
             swingActive = true;
@@ -156,9 +158,6 @@ public final class PlayerAnimator {
                 applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, head, swing, swingingRight, style, comboIndex, firstPerson);
             }
         }
-
-        applyBlockIfNeeded(model, state.rightArmPose, body, head, rightArm, leftArm, rightLeg, leftLeg, true);
-        applyBlockIfNeeded(model, state.leftArmPose, body, head, rightArm, leftArm, rightLeg, leftLeg, false);
 
         boolean drawingBow = state.rightArmPose == HumanoidModel.ArmPose.BOW_AND_ARROW
                 || state.leftArmPose == HumanoidModel.ArmPose.BOW_AND_ARROW;
@@ -209,7 +208,7 @@ public final class PlayerAnimator {
                 pitch = AnimMath.punchPitch(t);
                 yaw = AnimMath.punchYaw(t, rightSide);
             }
-            
+
             default -> pitch = AnimMath.genericSwingPitch(t);
         }
         swingArm.xRot += pitch;
@@ -315,38 +314,6 @@ public final class PlayerAnimator {
 
         a.xRot = bxr; a.yRot = -byr; a.zRot = -bzr; a.x = -bx; a.y = by; a.z = bz;
         b.xRot = axr; b.yRot = -ayr; b.zRot = -azr; b.x = -ax; b.y = ay; b.z = az;
-    }
-
-    private static void applyBlockIfNeeded(
-            Model model, HumanoidModel.ArmPose pose,
-            ModelPart body, ModelPart head,
-            ModelPart rightArm, ModelPart leftArm,
-            ModelPart rightLeg, ModelPart leftLeg,
-            boolean rightSide) {
-        if (pose != HumanoidModel.ArmPose.BLOCK) {
-            return;
-        }
-
-        body.resetPose();
-        head.resetPose();
-        rightArm.resetPose();
-        leftArm.resetPose();
-        rightLeg.resetPose();
-        leftLeg.resetPose();
-
-        long ms = (long) (PlayerAnimations.SWORD_BLOCK.lengthInSeconds() * 1000.0F);
-        baked(PlayerAnimations.SWORD_BLOCK, model.root()).apply(ms, 1.0F);
-
-        attachToBody(rightArm, body);
-        attachToBody(leftArm, body);
-        attachToBody(head, body);
-
-        if (rightSide) {
-            swapMirrored(rightArm, leftArm);
-            swapMirrored(rightLeg, leftLeg);
-            mirrorInPlace(body);
-            mirrorInPlace(head);
-        }
     }
 
     private static void applyBowArm(ModelPart arm, boolean rightSide) {

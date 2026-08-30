@@ -34,7 +34,7 @@ public final class AnimMath {
 
     public static float idleArmSway(float ageInTicks) {
         float primary = rad(2.2F) * Mth.sin(ageInTicks * IDLE_FREQUENCY);
-        
+
         float secondary = rad(0.6F) * Mth.sin(ageInTicks * IDLE_FREQUENCY * 2.7F + 1.3F);
         return primary + secondary;
     }
@@ -55,7 +55,7 @@ public final class AnimMath {
     }
 
     public static float climbLegPush(float ageInTicks, boolean rightSide) {
-        
+
         float phase = rightSide ? (float) Math.PI : 0.0F;
         return rad(35.0F) * Mth.sin(ageInTicks * 0.5F + phase);
     }
@@ -66,7 +66,7 @@ public final class AnimMath {
 
     private static float easedSwing(float t) {
         t = Mth.clamp(t, 0.0F, 1.0F);
-        
+
         if (t < 0.35F) {
             float u = t / 0.35F;
             return Mth.sin(u * (Mth.PI / 2.0F));
@@ -124,19 +124,6 @@ public final class AnimMath {
     public static float swingLegWeightShift(float t, boolean rightSide) {
         float sign = rightSide ? -1.0F : 1.0F;
         return sign * rad(10.0F) * easedSwing(t);
-    }
-
-    public static float blockArmPitch(float progress) {
-        return -rad(75.0F) * progress;
-    }
-
-    public static float blockArmYawAcrossChest(float progress, boolean rightSide) {
-        float sign = rightSide ? 1.0F : -1.0F;
-        return sign * rad(28.0F) * progress;
-    }
-
-    public static float blockBodyLean(float progress) {
-        return rad(5.0F) * progress;
     }
 
     public static float bowArmPitch() {
