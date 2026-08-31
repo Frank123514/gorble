@@ -76,4 +76,45 @@ public class ModArmorMaterials {
                     equipmentKey("bronze")  // ← ResourceKey<EquipmentAsset>, not Identifier
             )
     );
+
+    /**
+     * Helmet-only materials for the distinct headwear types from the AWOIAF
+     * Armament#Headwear page. Each gets its own equipment asset so it renders
+     * with its own texture; durability/defense follow the wiki's rough
+     * protection tiers (padded/mail lightest, greathelms heaviest).
+     */
+    private static Holder<ArmorMaterial> helmetOnly(String name, int durability, int defense,
+                                                      int enchantability, float toughness) {
+        return Holder.direct(
+                new ArmorMaterial(
+                        durability,
+                        Map.of(ArmorType.HELMET, defense),
+                        enchantability,
+                        SoundEvents.ARMOR_EQUIP_IRON,
+                        toughness,
+                        0.0f,
+                        repairTag("repairs_steel_armor"),
+                        equipmentKey(name)
+                )
+        );
+    }
+
+    public static final Holder<ArmorMaterial> SKULL_CAP =
+            helmetOnly("skull_cap", 130, 1, 9, 0.0f);
+    public static final Holder<ArmorMaterial> CONICAL_CAP =
+            helmetOnly("conical_cap", 145, 2, 9, 0.0f);
+    public static final Holder<ArmorMaterial> KETTLE_HELM =
+            helmetOnly("kettle_helm", 160, 2, 9, 0.0f);
+    public static final Holder<ArmorMaterial> PADDED_COIF =
+            helmetOnly("padded_coif", 70, 1, 9, 0.0f);
+    public static final Holder<ArmorMaterial> MAIL_COIF =
+            helmetOnly("mail_coif", 120, 2, 10, 0.5f);
+    public static final Holder<ArmorMaterial> HALFHELM =
+            helmetOnly("halfhelm", 170, 2, 10, 0.5f);
+    public static final Holder<ArmorMaterial> BASCINET =
+            helmetOnly("bascinet", 200, 3, 10, 1.0f);
+    public static final Holder<ArmorMaterial> GREATHELM_FLAT =
+            helmetOnly("greathelm_flat", 230, 3, 10, 1.0f);
+    public static final Holder<ArmorMaterial> GREATHELM_ROUNDED =
+            helmetOnly("greathelm_rounded", 250, 4, 10, 1.5f);
 }

@@ -2571,6 +2571,16 @@ public class ModTabs {
                         output.accept(ModItems.STEEL_LEGGINGS.get());
                         output.accept(ModItems.STEEL_BOOTS.get());
 
+                        output.accept(ModItems.SKULL_CAP.get());
+                        output.accept(ModItems.CONICAL_CAP.get());
+                        output.accept(ModItems.KETTLE_HELM.get());
+                        output.accept(ModItems.PADDED_COIF.get());
+                        output.accept(ModItems.MAIL_COIF.get());
+                        output.accept(ModItems.HALFHELM.get());
+                        output.accept(ModItems.BASCINET.get());
+                        output.accept(ModItems.GREATHELM_FLAT.get());
+                        output.accept(ModItems.GREATHELM_ROUNDED.get());
+
                         output.accept(ModItems.IRON_SPEAR_HEAD.get());
                         output.accept(ModItems.IRON_ARROWHEAD.get());
                         output.accept(ModItems.IRON_SHORT_AXE_HEAD.get());

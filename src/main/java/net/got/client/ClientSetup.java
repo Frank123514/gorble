@@ -57,6 +57,9 @@ import net.got.client.renderer.BellowsBlockEntityRenderer;
 import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
+import net.got.client.armor.GotHelmModels;
+import net.got.client.armor.GotHelmClientExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.minecraft.world.level.block.Blocks;
 
 @EventBusSubscriber(
@@ -97,6 +100,16 @@ public final class ClientSetup {
         event.registerLayerDefinition(ModelLayers.GOT_BROWN_BEAR, BrownBearModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.GOT_GIANT,      GiantModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.BELLOWS,          BellowsBlockEntityRenderer::createBodyLayer);
+
+        event.registerLayerDefinition(GotHelmModels.SKULL_CAP,         GotHelmModels::createSkullCapLayer);
+        event.registerLayerDefinition(GotHelmModels.CONICAL_CAP,       GotHelmModels::createConicalCapLayer);
+        event.registerLayerDefinition(GotHelmModels.KETTLE_HELM,       GotHelmModels::createKettleHelmLayer);
+        event.registerLayerDefinition(GotHelmModels.PADDED_COIF,       GotHelmModels::createPaddedCoifLayer);
+        event.registerLayerDefinition(GotHelmModels.MAIL_COIF,         GotHelmModels::createMailCoifLayer);
+        event.registerLayerDefinition(GotHelmModels.HALFHELM,          GotHelmModels::createHalfhelmLayer);
+        event.registerLayerDefinition(GotHelmModels.BASCINET,          GotHelmModels::createBascinetLayer);
+        event.registerLayerDefinition(GotHelmModels.GREATHELM_FLAT,    GotHelmModels::createGreathelmFlatLayer);
+        event.registerLayerDefinition(GotHelmModels.GREATHELM_ROUNDED, GotHelmModels::createGreathelmRoundedLayer);
     }
 
     @SubscribeEvent
