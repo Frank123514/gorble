@@ -2,30 +2,21 @@ package net.got.client.armor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 /**
- * Supplies the custom baked head model for one helm type at render time.
- * One instance per helm, registered against its item via
- * RegisterClientExtensionsEvent in ClientSetup.
- *
- * Signature verified against NeoForge 1.21.10/1.21.11's actual
- * IClientItemExtensions: getHumanoidArmorModel now takes
- * (ItemStack, EquipmentClientInfo.LayerType, Model) and returns Model --
- * no more LivingEntity/EquipmentSlot/HumanoidModel<?> like older versions.
+ * Supplies the shared head-anchor model at render time and hands it the
+ * itemstack being worn, so {@link GotHelmModel} renders the helm's own
+ * Blockbench item model instead of vanilla's flat re-skinned head box.
+ * One instance per helm item, registered via RegisterClientExtensionsEvent
+ * in ClientSetup.
  */
 public class GotHelmClientExtensions implements IClientItemExtensions {
 
-    private final ModelLayerLocation layerLocation;
     private GotHelmModel cachedModel;
-
-    public GotHelmClientExtensions(ModelLayerLocation layerLocation) {
-        this.layerLocation = layerLocation;
-    }
 
     @Override
     public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
@@ -33,9 +24,10 @@ public class GotHelmClientExtensions implements IClientItemExtensions {
             return original;
         }
         if (cachedModel == null) {
-            ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation);
+            ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(GotHelmModels.HEAD_ANCHOR);
             cachedModel = new GotHelmModel(root);
         }
+        cachedModel.setStack(itemStack);
         return cachedModel;
     }
 }

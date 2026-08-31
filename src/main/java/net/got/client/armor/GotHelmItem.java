@@ -1,29 +1,17 @@
 package net.got.client.armor;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.world.item.Item;
 
 /**
- * A helmet item that renders with a fully custom head model instead of
- * vanilla's flat re-skinned head box. Used for every helm type from the
- * AWOIAF Armament#Headwear pass (skull cap, conical cap, kettle helm, padded
- * coif, mail coif, halfhelm, bascinet, and both greathelm variants).
- *
- * The actual client-side render hookup happens in {@link GotHelmClientExtensions},
- * registered per-item via RegisterClientExtensionsEvent in ClientSetup -- this
- * class just carries the ModelLayerLocation that identifies which baked
- * geometry belongs to this specific helm.
+ * Marker helmet item that renders via its own Blockbench item model
+ * (models/item/*.json with a "head" display entry) when worn, instead of
+ * vanilla's flat re-skinned head box. Client render hookup happens in
+ * {@link GotHelmClientExtensions}, registered per-item via
+ * RegisterClientExtensionsEvent in ClientSetup.
  */
 public class GotHelmItem extends Item {
 
-    private final ModelLayerLocation layerLocation;
-
-    public GotHelmItem(Properties properties, ModelLayerLocation layerLocation) {
+    public GotHelmItem(Properties properties) {
         super(properties);
-        this.layerLocation = layerLocation;
-    }
-
-    public ModelLayerLocation getLayerLocation() {
-        return layerLocation;
     }
 }

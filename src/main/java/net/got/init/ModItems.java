@@ -11,7 +11,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.got.item.GotBoatItem;
 import net.got.client.armor.GotHelmItem;
-import net.got.client.armor.GotHelmModels;
 import net.minecraft.core.component.DataComponents;
 
 import java.util.function.Function;
@@ -2038,40 +2037,31 @@ public class ModItems {
     // with its own custom model via GotHelmItem instead of vanilla's flat head box.
     public static final DeferredItem<Item> SKULL_CAP = REGISTRY.registerItem("skull_cap",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.SKULL_CAP.value(), ArmorType.HELMET),
-                    GotHelmModels.SKULL_CAP));
+                    p.humanoidArmor(ModArmorMaterials.SKULL_CAP.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> CONICAL_CAP = REGISTRY.registerItem("conical_cap",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.CONICAL_CAP.value(), ArmorType.HELMET),
-                    GotHelmModels.CONICAL_CAP));
+                    p.humanoidArmor(ModArmorMaterials.CONICAL_CAP.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> KETTLE_HELM = REGISTRY.registerItem("kettle_helm",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.KETTLE_HELM.value(), ArmorType.HELMET),
-                    GotHelmModels.KETTLE_HELM));
+                    p.humanoidArmor(ModArmorMaterials.KETTLE_HELM.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> PADDED_COIF = REGISTRY.registerItem("padded_coif",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.PADDED_COIF.value(), ArmorType.HELMET),
-                    GotHelmModels.PADDED_COIF));
+                    p.humanoidArmor(ModArmorMaterials.PADDED_COIF.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> MAIL_COIF = REGISTRY.registerItem("mail_coif",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.MAIL_COIF.value(), ArmorType.HELMET),
-                    GotHelmModels.MAIL_COIF));
+                    p.humanoidArmor(ModArmorMaterials.MAIL_COIF.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> HALFHELM = REGISTRY.registerItem("halfhelm",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.HALFHELM.value(), ArmorType.HELMET),
-                    GotHelmModels.HALFHELM));
+                    p.humanoidArmor(ModArmorMaterials.HALFHELM.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> BASCINET = REGISTRY.registerItem("bascinet",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.BASCINET.value(), ArmorType.HELMET),
-                    GotHelmModels.BASCINET));
+                    p.humanoidArmor(ModArmorMaterials.BASCINET.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> GREATHELM_FLAT = REGISTRY.registerItem("greathelm_flat",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.GREATHELM_FLAT.value(), ArmorType.HELMET),
-                    GotHelmModels.GREATHELM_FLAT));
+                    p.humanoidArmor(ModArmorMaterials.GREATHELM_FLAT.value(), ArmorType.HELMET)));
     public static final DeferredItem<Item> GREATHELM_ROUNDED = REGISTRY.registerItem("greathelm_rounded",
             p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.GREATHELM_ROUNDED.value(), ArmorType.HELMET),
-                    GotHelmModels.GREATHELM_ROUNDED));
+                    p.humanoidArmor(ModArmorMaterials.GREATHELM_ROUNDED.value(), ArmorType.HELMET)));
 
     public static final DeferredItem<Item> IRON_SPEAR_HEAD          = simple("iron_spear_head");
     public static final DeferredItem<Item> IRON_ARROWHEAD           = simple("iron_arrowhead");
