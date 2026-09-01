@@ -58,7 +58,7 @@ import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
 import net.got.client.armor.GotHelmModels;
-import net.got.client.armor.GotHelmClientExtensions;
+import net.got.client.armor.HelmClientExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 @EventBusSubscriber(
@@ -105,7 +105,7 @@ public final class ClientSetup {
 
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerItem(new GotHelmClientExtensions(),
+        event.registerItem(new HelmClientExtensions(),
                 ModItems.SKULL_CAP.get(),
                 ModItems.CONICAL_CAP.get(),
                 ModItems.KETTLE_HELM.get(),

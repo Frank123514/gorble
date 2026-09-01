@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
  * One instance per helm item, registered via RegisterClientExtensionsEvent
  * in ClientSetup.
  */
-public class GotHelmClientExtensions implements IClientItemExtensions {
+public class HelmClientExtensions implements IClientItemExtensions {
 
     private GotHelmModel cachedModel;
 
@@ -27,7 +27,6 @@ public class GotHelmClientExtensions implements IClientItemExtensions {
             ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(GotHelmModels.HEAD_ANCHOR);
             cachedModel = new GotHelmModel(root);
         }
-        cachedModel.setStack(itemStack);
         return cachedModel;
     }
 }
