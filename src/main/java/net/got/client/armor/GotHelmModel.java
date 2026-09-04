@@ -5,16 +5,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
 /**
- * A cubeless HumanoidModel returned in place of a helm's vanilla armor
- * model. Since 1.21.9, Minecraft's armor layer walks a Model's ModelParts
- * and submits their cubes with one shared equipment texture -- there's no
- * per-item hook there anymore to substitute a different render (like an
- * item model). Because every part here has zero cubes, that walk submits
- * nothing, so vanilla's flat head box never appears.
- * <p>
- * The actual rendering of the helm's own Blockbench item model happens
- * separately, in {@link GotHelmLayer}, which is added alongside (not
- * through) the vanilla armor layer.
+ * A minimal HumanoidModel wrapping one of the custom-baked helm ModelParts
+ * from {@link GotHelmModels}. Only .head is ever visible -- body/arms/legs
+ * exist solely because HumanoidModel's constructor requires those named
+ * children to be present, and are zero-size / hidden.
  */
 public class GotHelmModel extends HumanoidModel<HumanoidRenderState> {
 
