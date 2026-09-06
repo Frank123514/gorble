@@ -2052,7 +2052,7 @@ public class ModItems {
             p -> new GotHelmItem(
                     p.humanoidArmor(ModArmorMaterials.CONICAL_CAP.value(), ArmorType.HELMET),
                     ConicalCapModel.LAYER_LOCATION));
-    public static final DeferredItem<Item> KETTLE_HELM = REGISTRY.registerItem("KettleHelmModel",
+    public static final DeferredItem<Item> KETTLE_HELM = REGISTRY.registerItem("kettle_helm",
             p -> new GotHelmItem(
                     p.humanoidArmor(ModArmorMaterials.KETTLE_HELM.value(), ArmorType.HELMET),
                     KettleHelmModel.LAYER_LOCATION));

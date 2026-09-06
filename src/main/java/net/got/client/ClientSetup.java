@@ -1,5 +1,6 @@
 package net.got.client;
 
+import net.got.client.armor.*;
 import net.got.client.input.Keybinds;
 import net.got.client.particle.WeirwoodLeafParticle;
 import net.got.client.renderer.BoatRenderer;
@@ -57,18 +58,6 @@ import net.got.client.renderer.BellowsBlockEntityRenderer;
 import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
-import net.got.client.armor.GotHelmClientExtensions;
-import net.got.client.armor.HalfhelmModel;
-import net.got.client.armor.BascinetModel;
-import net.got.client.armor.SkullCapModel;
-import net.got.client.armor.KettleHelmModel;
-import net.got.client.armor.ConicalCapModel;
-import net.got.client.armor.PaddedCoifModel;
-import net.got.client.armor.GreathelmFlatModel;
-import net.got.client.armor.MailCoifModel;
-import net.got.client.armor.GreathelmRoundedModel;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.minecraft.world.level.block.Blocks;
 
 @EventBusSubscriber(
         modid = "got",

@@ -1,14 +1,12 @@
 package net.got.client.armor;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 // Made with Blockbench 5.1.6
 // Exported for Minecraft version 1.17 or later with Mojang mappings
@@ -16,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 // compile, and the exported field names with spaces (illegal Java identifiers -- "Right Arm" etc)
 // were collapsed to camelCase (rightArm etc). No geometry/logic was touched.
 
-public class SkullCapModel<T extends Entity> extends EntityModel<T> {
+public class SkullCapModel extends EntityModel<EntityRenderState> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath("got", "skull_cap"), "main");
 	private final ModelPart bone;
 	private final ModelPart Waist;
@@ -28,6 +26,7 @@ public class SkullCapModel<T extends Entity> extends EntityModel<T> {
 	private final ModelPart leftLeg;
 
 	public SkullCapModel(ModelPart root) {
+		super(root);
 		this.bone = root.getChild("bone");
 		this.Waist = root.getChild("Waist");
 		this.Head = root.getChild("Head");
@@ -43,8 +42,8 @@ public class SkullCapModel<T extends Entity> extends EntityModel<T> {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 0).addBox(-12.5F, -16.5F, 4.5F, 8.0F, 3.0F, 8.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 11).addBox(-11.5F, -17.5F, 5.5F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 18).addBox(-10.5F, -18.5F, 6.5F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
+				.texOffs(0, 11).addBox(-11.5F, -17.5F, 5.5F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 18).addBox(-10.5F, -18.5F, 6.5F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
 
 		PartDefinition Waist = partdefinition.addOrReplaceChild("Waist", CubeListBuilder.create(), PartPose.offset(0.0F, 12.0F, 0.0F));
 
@@ -64,19 +63,8 @@ public class SkullCapModel<T extends Entity> extends EntityModel<T> {
 	}
 
 	@Override
-	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityRenderState renderState) {
 
 	}
 
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		bone.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		Waist.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		Head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		Body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		rightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		leftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-	}
 }
