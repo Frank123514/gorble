@@ -58,6 +58,7 @@ import net.got.client.renderer.BellowsBlockEntityRenderer;
 import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 @EventBusSubscriber(
         modid = "got",
@@ -107,6 +108,24 @@ public final class ClientSetup {
         event.registerLayerDefinition(BascinetModel.LAYER_LOCATION,   BascinetModel::createBodyLayer);
         event.registerLayerDefinition(GreathelmFlatModel.LAYER_LOCATION,   GreathelmFlatModel::createBodyLayer);
         event.registerLayerDefinition(GreathelmRoundedModel.LAYER_LOCATION, GreathelmRoundedModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        registerHelm(event, ModItems.SKULL_CAP.get(), SkullCapModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.CONICAL_CAP.get(), ConicalCapModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.KETTLE_HELM.get(), KettleHelmModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.PADDED_COIF.get(), PaddedCoifModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.MAIL_COIF.get(), MailCoifModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.HALFHELM.get(), HalfhelmModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.BASCINET.get(), BascinetModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.GREATHELM_FLAT.get(), GreathelmFlatModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.GREATHELM_ROUNDED.get(), GreathelmRoundedModel.LAYER_LOCATION);
+    }
+
+    private static void registerHelm(RegisterClientExtensionsEvent event, net.minecraft.world.item.Item item,
+                                     net.minecraft.client.model.geom.ModelLayerLocation layerLocation) {
+        event.registerItem(new GotHelmClientExtensions(layerLocation, GotHelmModel::new), item);
     }
 
     @SubscribeEvent

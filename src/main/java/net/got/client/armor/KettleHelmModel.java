@@ -1,41 +1,40 @@
 package net.got.client.armor;
 
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.Identifier;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
-// Made with Blockbench 5.1.6
-// Exported for Minecraft version 1.17 or later with Mojang mappings
-// Pasted as-is into net.got.client.armor; only modid/ResourceLocation->Identifier were fixed to compile.
+// Geometry-only, wrapped in GotHelmModel at render time -- see BascinetModel.
+// Original had the same floating "bone" at PartPose.offset(8, 24, -8) as
+// Bascinet/Halfhelm. Rebuilt head-centered, keeping the same 4 boxes/UVs and
+// the same relative shape idea: a low dome, a wide flat brim ring (the
+// original's 14x14, zero-height box -- the signature kettle-hat silhouette),
+// then two small crown rings at the peak.
+public class KettleHelmModel {
 
-public class KettleHelmModel extends EntityModel<EntityRenderState> {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Identifier.fromNamespaceAndPath("got", "kettle_helm"), "main");
-	private final ModelPart bone;
-
-	public KettleHelmModel(ModelPart root) {
-		super(root);
-		this.bone = root.getChild("bone");
-	}
+	public static final ModelLayerLocation LAYER_LOCATION =
+			new ModelLayerLocation(Identifier.fromNamespaceAndPath("got", "kettle_helm"), "main");
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 14).addBox(-12.5F, -16.5F, 4.5F, 8.0F, 3.0F, 8.0F, new CubeDeformation(0.0F))
-				.texOffs(0, 0).addBox(-15.5F, -13.5F, 1.5F, 14.0F, 0.0F, 14.0F, new CubeDeformation(0.0F))
-				.texOffs(0, 25).addBox(-11.5F, -17.5F, 5.5F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
-				.texOffs(24, 25).addBox(-10.5F, -18.5F, 6.5F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
+		partdefinition.addOrReplaceChild("head",
+				CubeListBuilder.create()
+						.texOffs(0, 14).addBox(-4.2F, -9.0F, -4.2F, 8.4F, 5.0F, 8.4F, new CubeDeformation(0.0F))
+						.texOffs(0, 0).addBox(-7.0F, -4.5F, -7.0F, 14.0F, 0.0F, 14.0F, new CubeDeformation(0.0F))
+						.texOffs(0, 25).addBox(-3.0F, -10.0F, -3.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
+						.texOffs(24, 25).addBox(-2.0F, -11.0F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.offset(-5.0F, 2.0F, 0.0F));
+		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.offset(5.0F, 2.0F, 0.0F));
+		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.offset(-1.9F, 12.0F, 0.0F));
+		partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.offset(1.9F, 12.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
-
-	@Override
-	public void setupAnim(EntityRenderState renderState) {
-
-	}
-
 }
