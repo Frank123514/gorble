@@ -1,5 +1,7 @@
 package net.got.client.armor;
 
+import java.util.function.Function;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -13,18 +15,20 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
  * One instance per helm, registered against its item via
  * RegisterClientExtensionsEvent in ClientSetup.
  *
- * Signature verified against NeoForge 1.21.10/1.21.11's actual
- * IClientItemExtensions: getHumanoidArmorModel now takes
- * (ItemStack, EquipmentClientInfo.LayerType, Model) and returns Model --
- * no more LivingEntity/EquipmentSlot/HumanoidModel<?> like older versions.
+ * Each helm model is now its own bone-only EntityModel (see
+ * HalfhelmModel, BascinetModel, SkullCapModel, KettleHelmModel, and co.) instead of the old HumanoidModel-wrapped GotHelmModel, so this
+ * takes a constructor reference (e.g. HalfhelmModel::new) rather than
+ * assuming a fixed model type.
  */
 public class GotHelmClientExtensions implements IClientItemExtensions {
 
     private final ModelLayerLocation layerLocation;
-    private GotHelmModel cachedModel;
+    private final Function<ModelPart, ? extends Model> modelFactory;
+    private Model cachedModel;
 
-    public GotHelmClientExtensions(ModelLayerLocation layerLocation) {
+    public GotHelmClientExtensions(ModelLayerLocation layerLocation, Function<ModelPart, ? extends Model> modelFactory) {
         this.layerLocation = layerLocation;
+        this.modelFactory = modelFactory;
     }
 
     @Override
@@ -34,7 +38,7 @@ public class GotHelmClientExtensions implements IClientItemExtensions {
         }
         if (cachedModel == null) {
             ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation);
-            cachedModel = new GotHelmModel(root);
+            cachedModel = modelFactory.apply(root);
         }
         return cachedModel;
     }

@@ -57,8 +57,16 @@ import net.got.client.renderer.BellowsBlockEntityRenderer;
 import net.got.client.renderer.SmithingAnvilBlockEntityRenderer;
 import net.got.client.gui.SmithingAnvilScreen;
 import net.got.client.gui.HeatTreatingScreen;
-import net.got.client.armor.GotHelmModels;
 import net.got.client.armor.GotHelmClientExtensions;
+import net.got.client.armor.HalfhelmModel;
+import net.got.client.armor.BascinetModel;
+import net.got.client.armor.SkullCapModel;
+import net.got.client.armor.KettleHelmModel;
+import net.got.client.armor.ConicalCapModel;
+import net.got.client.armor.PaddedCoifModel;
+import net.got.client.armor.GreathelmFlatModel;
+import net.got.client.armor.MailCoifModel;
+import net.got.client.armor.GreathelmRoundedModel;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.minecraft.world.level.block.Blocks;
 
@@ -101,15 +109,15 @@ public final class ClientSetup {
         event.registerLayerDefinition(ModelLayers.GOT_GIANT,      GiantModel::createBodyLayer);
         event.registerLayerDefinition(ModelLayers.BELLOWS,          BellowsBlockEntityRenderer::createBodyLayer);
 
-        event.registerLayerDefinition(GotHelmModels.SKULL_CAP,         GotHelmModels::createSkullCapLayer);
-        event.registerLayerDefinition(GotHelmModels.CONICAL_CAP,       GotHelmModels::createConicalCapLayer);
-        event.registerLayerDefinition(GotHelmModels.KETTLE_HELM,       GotHelmModels::createKettleHelmLayer);
-        event.registerLayerDefinition(GotHelmModels.PADDED_COIF,       GotHelmModels::createPaddedCoifLayer);
-        event.registerLayerDefinition(GotHelmModels.MAIL_COIF,         GotHelmModels::createMailCoifLayer);
-        event.registerLayerDefinition(GotHelmModels.HALFHELM,          GotHelmModels::createHalfhelmLayer);
-        event.registerLayerDefinition(GotHelmModels.BASCINET,          GotHelmModels::createBascinetLayer);
-        event.registerLayerDefinition(GotHelmModels.GREATHELM_FLAT,    GotHelmModels::createGreathelmFlatLayer);
-        event.registerLayerDefinition(GotHelmModels.GREATHELM_ROUNDED, GotHelmModels::createGreathelmRoundedLayer);
+        event.registerLayerDefinition(SkullCapModel.LAYER_LOCATION,   SkullCapModel::createBodyLayer);
+        event.registerLayerDefinition(ConicalCapModel.LAYER_LOCATION,      ConicalCapModel::createBodyLayer);
+        event.registerLayerDefinition(KettleHelmModel.LAYER_LOCATION,          KettleHelmModel::createBodyLayer);
+        event.registerLayerDefinition(PaddedCoifModel.LAYER_LOCATION,      PaddedCoifModel::createBodyLayer);
+        event.registerLayerDefinition(MailCoifModel.LAYER_LOCATION,        MailCoifModel::createBodyLayer);
+        event.registerLayerDefinition(HalfhelmModel.LAYER_LOCATION,   HalfhelmModel::createBodyLayer);
+        event.registerLayerDefinition(BascinetModel.LAYER_LOCATION,   BascinetModel::createBodyLayer);
+        event.registerLayerDefinition(GreathelmFlatModel.LAYER_LOCATION,   GreathelmFlatModel::createBodyLayer);
+        event.registerLayerDefinition(GreathelmRoundedModel.LAYER_LOCATION, GreathelmRoundedModel::createBodyLayer);
     }
 
     @SubscribeEvent
