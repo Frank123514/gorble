@@ -41,6 +41,15 @@ public final class PlayerAnimator {
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg) {
 
+        // The head is intentionally left untouched by this animator: vanilla
+        // HumanoidModel.setupAnim() already points it at the player's actual
+        // look direction (headYaw/headPitch) before this runs, and we want
+        // that default camera-follow behavior preserved as-is. Snapshot it
+        // here and restore it before every return so nothing below (baked
+        // clips, resetPose, attach/mirror helpers) can override it.
+        float headX = head.x, headY = head.y, headZ = head.z;
+        float headXRot = head.xRot, headYRot = head.yRot, headZRot = head.zRot;
+
         if (state.isFallFlying) {
             return;
         }
@@ -53,7 +62,6 @@ public final class PlayerAnimator {
 
             if (anim.got$isRidingHorse()) {
                 body.resetPose();
-                head.resetPose();
                 rightArm.resetPose();
                 leftArm.resetPose();
                 rightLeg.resetPose();
@@ -64,6 +72,8 @@ public final class PlayerAnimator {
                 baked(PlayerAnimations.HORSE_IDLE, model.root()).apply(ms, 1.0F - horseRun);
                 baked(PlayerAnimations.HORSE_RUNNING, model.root()).apply(ms, horseRun);
             }
+            head.x = headX; head.y = headY; head.z = headZ;
+            head.xRot = headXRot; head.yRot = headYRot; head.zRot = headZRot;
             return;
         }
 
@@ -84,7 +94,6 @@ public final class PlayerAnimator {
         if (!sneaking && !blocking) {
 
             body.resetPose();
-            head.resetPose();
             rightArm.resetPose();
             leftArm.resetPose();
             rightLeg.resetPose();
@@ -132,7 +141,6 @@ public final class PlayerAnimator {
 
                 attachRotationToBody(rightArm, body);
                 attachRotationToBody(leftArm, body);
-                attachRotationToBody(head, body);
             }
         }
 
@@ -155,7 +163,7 @@ public final class PlayerAnimator {
             boolean swingingRight = state.attackArm != HumanoidArm.LEFT;
             HumanoidModel.ArmPose swingingPose = swingingRight ? state.rightArmPose : state.leftArmPose;
             if (shouldOverrideArm(swingingPose)) {
-                applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, head, swing, swingingRight, style, comboIndex, firstPerson);
+                applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, swing, swingingRight, style, comboIndex, firstPerson);
             }
         }
 
@@ -166,6 +174,8 @@ public final class PlayerAnimator {
             applyBowArm(leftArm, false);
         }
 
+        head.x = headX; head.y = headY; head.z = headZ;
+        head.xRot = headXRot; head.yRot = headYRot; head.zRot = headZRot;
     }
 
     private static boolean shouldOverrideArm(HumanoidModel.ArmPose pose) {
@@ -185,12 +195,12 @@ public final class PlayerAnimator {
             Model model,
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg,
-            ModelPart body, ModelPart head,
+            ModelPart body,
             float t, boolean rightSide, SwingStyle style, int comboIndex,
             boolean firstPerson) {
 
         if (style == SwingStyle.SWORD || style == SwingStyle.GREATSWORD || style == SwingStyle.AXE) {
-            applyKeyframeSwing(model, body, head, rightArm, leftArm, rightLeg, leftLeg, t, rightSide, style, comboIndex, firstPerson);
+            applyKeyframeSwing(model, body, rightArm, leftArm, rightLeg, leftLeg, t, rightSide, style, comboIndex, firstPerson);
             return;
         }
 
@@ -227,7 +237,7 @@ public final class PlayerAnimator {
 
     private static void applyKeyframeSwing(
             Model model,
-            ModelPart body, ModelPart head,
+            ModelPart body,
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg,
             float t, boolean rightSide, SwingStyle style, int comboIndex,
@@ -240,12 +250,16 @@ public final class PlayerAnimator {
         };
 
         body.resetPose();
-        head.resetPose();
         rightArm.resetPose();
         leftArm.resetPose();
         rightLeg.resetPose();
         leftLeg.resetPose();
 
+        // NOTE: this clip's baked keyframes also include a "head" channel,
+        // but we never pass head's ModelPart in here anymore, and apply()
+        // restores head's pose to the vanilla camera-follow value right
+        // after this returns -- so any head keyframes in the clip end up
+        // fully discarded, as intended.
         long ms = (long) (t * clip.lengthInSeconds() * 1000.0F);
         baked(clip, model.root()).apply(ms, 1.0F);
 
@@ -260,13 +274,11 @@ public final class PlayerAnimator {
 
         attachToBody(rightArm, body);
         attachToBody(leftArm, body);
-        attachToBody(head, body);
 
         if (!rightSide) {
             swapMirrored(rightArm, leftArm);
             swapMirrored(rightLeg, leftLeg);
             mirrorInPlace(body);
-            mirrorInPlace(head);
         }
     }
 

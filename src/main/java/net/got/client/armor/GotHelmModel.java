@@ -22,4 +22,13 @@ public class GotHelmModel extends HumanoidModel<HumanoidRenderState> {
         this.leftLeg.visible = false;
         this.head.visible = true;
     }
+
+    @Override
+    public void setupAnim(HumanoidRenderState state) {
+        super.setupAnim(state);
+        // The helm geometry was authored with the bbmodel group rotated -90° Y.
+        // HumanoidArmorLayer overwrites head.yRot every frame, so PartPose rotation
+        // is ineffective. Add the correction here, after the player look rotation lands.
+        this.head.yRot += (float)(Math.PI / 2);
+    }
 }

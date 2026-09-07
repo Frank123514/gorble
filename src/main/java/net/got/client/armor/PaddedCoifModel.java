@@ -18,13 +18,14 @@ public class PaddedCoifModel {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("head",
+		PartDefinition head = partdefinition.addOrReplaceChild("head",
 				CubeListBuilder.create()
 						.texOffs(0, 0).addBox(-4.3F, -8.3F, -4.3F, 8.6F, 8.6F, 8.6F, new CubeDeformation(0.0F))
 						.texOffs(36, 0).addBox(-1.5F, -9.0F, -4.5F, 3.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)),
 				PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create().addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F), PartPose.offset(0.0F, 0.0F, 0.0F));
+		// "hat" must hang off "head" (HumanoidModel does head.getChild("hat")), not off root.
+		head.addOrReplaceChild("hat", CubeListBuilder.create().addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F), PartPose.offset(0.0F, 0.0F, 0.0F));
 		partdefinition.addOrReplaceChild("body", CubeListBuilder.create().addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F), PartPose.offset(0.0F, 0.0F, 0.0F));
 		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F), PartPose.offset(-5.0F, 2.0F, 0.0F));
 		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F), PartPose.offset(5.0F, 2.0F, 0.0F));

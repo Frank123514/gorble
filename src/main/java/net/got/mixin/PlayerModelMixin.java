@@ -22,7 +22,7 @@ public abstract class PlayerModelMixin extends HumanoidModel<AvatarRenderState> 
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)V",
             at = @At("RETURN"), remap = false)
     private void got_overridePose(AvatarRenderState state, CallbackInfo ci) {
-        
+
         PlayerAnimator.apply(
                 this,
                 state,
@@ -34,9 +34,9 @@ public abstract class PlayerModelMixin extends HumanoidModel<AvatarRenderState> 
         head.visible = !hideHead;
         hat.visible = !hideHead;
         if (hideHead) {
-            
+
             HeadBobState.setHeadBob(head.x, head.y);
         }
-        
+
     }
 }

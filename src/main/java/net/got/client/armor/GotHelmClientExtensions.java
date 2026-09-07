@@ -50,6 +50,10 @@ public class GotHelmClientExtensions implements IClientItemExtensions {
 
     @Override
     public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+        // TEMP DEBUG -- confirms whether this hook is actually being
+        // consulted by the renderer at all. Remove once confirmed.
+        LOGGER.info("DEBUG getHumanoidArmorModel called: layer={} itemStack={} layerType={}", layerLocation, itemStack, layerType);
+
         if (layerType != EquipmentClientInfo.LayerType.HUMANOID) {
             return original;
         }
@@ -60,6 +64,7 @@ public class GotHelmClientExtensions implements IClientItemExtensions {
                 ModelPart root = currentModelSet.bakeLayer(layerLocation);
                 cachedModel = modelFactory.apply(root);
                 cachedModelSet = currentModelSet;
+                LOGGER.info("DEBUG baked+cached model for layer {} -> {}", layerLocation, cachedModel);
             } catch (RuntimeException e) {
                 if (!loggedFailure) {
                     LOGGER.error("Failed to bake helm model for layer {}, falling back to vanilla armor model", layerLocation, e);
