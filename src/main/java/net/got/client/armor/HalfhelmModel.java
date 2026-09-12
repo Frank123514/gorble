@@ -16,7 +16,7 @@ import net.minecraft.resources.Identifier;
 //   part_2 (dome,       inflate=1.0):    BB unrotated x[-4,4]  y[24,32]         z[-4,4]
 //   part_3 (lower ring, inflate=0.765):  BB unrotated x[-3,3]  y[32.425,33.425] z[-3,3]
 //   part_4 (top ring,   inflate=0.523):  BB unrotated x[-2,2]  y[33.975,34.975] z[-2,2]
-public class HalfhelmModel {
+public class  HalfhelmModel {
 
 	public static final ModelLayerLocation LAYER_LOCATION =
 			new ModelLayerLocation(Identifier.fromNamespaceAndPath("got", "halfhelm"), "main");
@@ -30,7 +30,7 @@ public class HalfhelmModel {
 						.texOffs(0, 0) .addBox(-4.0F, -8.0F,    -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F))
 						.texOffs(0, 16).addBox(-3.0F, -9.425F,  -3.0F, 6.0F, 1.0F, 6.0F, new CubeDeformation(0.765F))
 						.texOffs(0, 23).addBox(-2.0F, -10.975F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.52315F)),
-				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -(float)(Math.PI / 2), 0.0F));
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		// "hat" must hang off "head" (HumanoidModel does head.getChild("hat")), not off root.
 		head.addOrReplaceChild("hat", CubeListBuilder.create().addBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F), PartPose.offset(0.0F, 0.0F, 0.0F));

@@ -1,7 +1,5 @@
 package net.got.mixin;
 
-import net.got.client.animation.player.AnimatedPlayerState;
-import net.got.client.animation.player.HeadBobState;
 import net.got.client.animation.player.PlayerAnimator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.player.PlayerModel;
@@ -29,14 +27,5 @@ public abstract class PlayerModelMixin extends HumanoidModel<AvatarRenderState> 
                 body, head,
                 rightArm, leftArm,
                 rightLeg, leftLeg);
-
-        boolean hideHead = ((AnimatedPlayerState) state).got$isLocalFirstPerson();
-        head.visible = !hideHead;
-        hat.visible = !hideHead;
-        if (hideHead) {
-
-            HeadBobState.setHeadBob(head.x, head.y);
-        }
-
     }
 }

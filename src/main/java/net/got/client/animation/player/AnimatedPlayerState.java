@@ -41,8 +41,4 @@ public interface AnimatedPlayerState {
     float got$getHorseRunBlend();
 
     void got$setHorseRunBlend(float value);
-
-    boolean got$isLocalFirstPerson();
-
-    void got$setLocalFirstPerson(boolean value);
 }

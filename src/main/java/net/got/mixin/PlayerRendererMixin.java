@@ -2,9 +2,7 @@ package net.got.mixin;
 
 import net.got.client.animation.player.AnimMath;
 import net.got.client.animation.player.AnimatedPlayerState;
-import net.got.client.animation.player.FirstPersonRenderState;
 import net.got.client.animation.player.SwingStyle;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -49,11 +47,6 @@ public abstract class PlayerRendererMixin {
                 && SwingStyle.fromItem(player.getMainHandItem()) == SwingStyle.AXE;
         anim.got$setMiningWithAxe(miningWithAxe);
 
-        anim.got$setLocalFirstPerson(
-                mc.player == player
-                        && mc.options.getCameraType() == CameraType.FIRST_PERSON
-                        && FirstPersonRenderState.isRenderingLocalBody());
-
         Entity vehicle = player.getVehicle();
         boolean ridingHorse = vehicle instanceof AbstractHorse;
         anim.got$setRidingHorse(ridingHorse);
@@ -65,13 +58,13 @@ public abstract class PlayerRendererMixin {
         float swingNow = Mth.clamp(state.attackTime, 0.0F, 1.0F);
         if (!miningWithAxe && anim.got$getPrevSwing() < 0.02F && swingNow >= 0.02F) {
             anim.got$setComboIndex((anim.got$getComboIndex() + 1) % 2);
-            
+
             anim.got$setSwingStartAge(state.ageInTicks);
         }
         anim.got$setPrevSwing(swingNow);
 
         if (miningWithAxe) {
-            
+
             anim.got$setSwingStartAge(state.ageInTicks - 1.0E6F);
         }
     }

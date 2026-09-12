@@ -10,10 +10,6 @@
   ],
   "client": [
     "BiomeColorsMixin",
-    "CameraMixin",
-    "EntityPositionAccessor",
-    "ItemInHandRendererMixin",
-    "LevelRendererMixin",
     "LiquidBlockRendererMixin",
     "PlayerModelMixin",
     "PlayerRendererMixin",

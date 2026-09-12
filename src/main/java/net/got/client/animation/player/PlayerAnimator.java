@@ -32,8 +32,6 @@ public final class PlayerAnimator {
 
     private static final float MINING_LOOP_SPEED = 3.0F;
 
-    private static final float FIRST_PERSON_BODY_SWAY_DAMPEN = 0.4F;
-
     public static void apply(
             Model model,
             AvatarRenderState state,
@@ -55,8 +53,6 @@ public final class PlayerAnimator {
         }
 
         AnimatedPlayerState anim = (AnimatedPlayerState) state;
-
-        boolean firstPerson = anim.got$isLocalFirstPerson();
 
         if (state.isPassenger) {
 
@@ -128,15 +124,6 @@ public final class PlayerAnimator {
                 baked(PlayerAnimations.JUMP, model.root()).apply((long) (age * 50F), airborne);
             }
 
-            if (firstPerson) {
-                body.xRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-                body.yRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-                body.zRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-                body.x *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-                body.y *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-                body.z *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-            }
-
             if (airborne > 0.01F) {
 
                 attachRotationToBody(rightArm, body);
@@ -163,7 +150,7 @@ public final class PlayerAnimator {
             boolean swingingRight = state.attackArm != HumanoidArm.LEFT;
             HumanoidModel.ArmPose swingingPose = swingingRight ? state.rightArmPose : state.leftArmPose;
             if (shouldOverrideArm(swingingPose)) {
-                applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, swing, swingingRight, style, comboIndex, firstPerson);
+                applySwing(model, rightArm, leftArm, rightLeg, leftLeg, body, swing, swingingRight, style, comboIndex);
             }
         }
 
@@ -196,11 +183,10 @@ public final class PlayerAnimator {
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg,
             ModelPart body,
-            float t, boolean rightSide, SwingStyle style, int comboIndex,
-            boolean firstPerson) {
+            float t, boolean rightSide, SwingStyle style, int comboIndex) {
 
         if (style == SwingStyle.SWORD || style == SwingStyle.GREATSWORD || style == SwingStyle.AXE) {
-            applyKeyframeSwing(model, body, rightArm, leftArm, rightLeg, leftLeg, t, rightSide, style, comboIndex, firstPerson);
+            applyKeyframeSwing(model, body, rightArm, leftArm, rightLeg, leftLeg, t, rightSide, style, comboIndex);
             return;
         }
 
@@ -227,9 +213,8 @@ public final class PlayerAnimator {
         offArm.xRot -= AnimMath.offArmCounterPitch(t);
         offArm.zRot += AnimMath.offArmCounterRoll(t, !rightSide);
 
-        float torsoScale = firstPerson ? FIRST_PERSON_BODY_SWAY_DAMPEN : 1.0F;
-        body.yRot += AnimMath.swingBodyFollow(t, rightSide) * torsoScale;
-        body.xRot += AnimMath.swingBodyPitchSnap(t) * torsoScale;
+        body.yRot += AnimMath.swingBodyFollow(t, rightSide);
+        body.xRot += AnimMath.swingBodyPitchSnap(t);
 
         swingLeg.xRot += AnimMath.swingLegWeightShift(t, rightSide);
         offLeg.xRot -= AnimMath.swingLegWeightShift(t, rightSide);
@@ -240,8 +225,7 @@ public final class PlayerAnimator {
             ModelPart body,
             ModelPart rightArm, ModelPart leftArm,
             ModelPart rightLeg, ModelPart leftLeg,
-            float t, boolean rightSide, SwingStyle style, int comboIndex,
-            boolean firstPerson) {
+            float t, boolean rightSide, SwingStyle style, int comboIndex) {
 
         AnimationDefinition clip = switch (style) {
             case GREATSWORD -> PlayerAnimations.GREATSWORD_ATTACK;
@@ -262,15 +246,6 @@ public final class PlayerAnimator {
         // fully discarded, as intended.
         long ms = (long) (t * clip.lengthInSeconds() * 1000.0F);
         baked(clip, model.root()).apply(ms, 1.0F);
-
-        if (firstPerson) {
-            body.xRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-            body.yRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-            body.zRot *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-            body.x *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-            body.y *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-            body.z *= FIRST_PERSON_BODY_SWAY_DAMPEN;
-        }
 
         attachToBody(rightArm, body);
         attachToBody(leftArm, body);

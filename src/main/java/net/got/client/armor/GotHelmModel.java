@@ -26,9 +26,13 @@ public class GotHelmModel extends HumanoidModel<HumanoidRenderState> {
     @Override
     public void setupAnim(HumanoidRenderState state) {
         super.setupAnim(state);
-        // The helm geometry was authored with the bbmodel group rotated -90° Y.
-        // HumanoidArmorLayer overwrites head.yRot every frame, so PartPose rotation
-        // is ineffective. Add the correction here, after the player look rotation lands.
-        this.head.yRot += (float)(Math.PI / 2);
+        // No extra rotation here. This class is shared by every helm type
+        // (see ClientSetup#registerHelm -- they all use GotHelmModel::new),
+        // so anything added to head.yRot here stacks on top of every helm's
+        // live look-based pitch/yaw, every frame. A constant yaw baked into
+        // that field fights the pitch rotation applied after it, which is
+        // what caused helmets to swing/orbit instead of sitting still on
+        // camera movement. Any per-helm facing correction belongs in that
+        // helm's own geometry (see HalfhelmModel), not here.
     }
 }
