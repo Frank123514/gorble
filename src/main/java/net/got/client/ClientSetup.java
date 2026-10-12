@@ -116,7 +116,7 @@ public final class ClientSetup {
         registerHelm(event, ModItems.CONICAL_CAP.get(), ConicalCapModel.LAYER_LOCATION);
         registerHelm(event, ModItems.KETTLE_HELM.get(), KettleHelmModel.LAYER_LOCATION);
         registerHelm(event, ModItems.PADDED_COIF.get(), PaddedCoifModel.LAYER_LOCATION);
-        registerHelm(event, ModItems.MAIL_COIF.get(), MailCoifModel.LAYER_LOCATION);
+        registerHelm(event, ModItems.MAIL_COIF.get(), MailCoifModel.LAYER_LOCATION, GotHelmBodyModel::new);
         registerHelm(event, ModItems.HALFHELM.get(), HalfhelmModel.LAYER_LOCATION);
         registerHelm(event, ModItems.BASCINET.get(), BascinetModel.LAYER_LOCATION);
         registerHelm(event, ModItems.GREATHELM_FLAT.get(), GreathelmFlatModel.LAYER_LOCATION);
@@ -125,7 +125,13 @@ public final class ClientSetup {
 
     private static void registerHelm(RegisterClientExtensionsEvent event, net.minecraft.world.item.Item item,
                                      net.minecraft.client.model.geom.ModelLayerLocation layerLocation) {
-        event.registerItem(new GotHelmClientExtensions(layerLocation, GotHelmModel::new), item);
+        registerHelm(event, item, layerLocation, GotHelmModel::new);
+    }
+
+    private static void registerHelm(RegisterClientExtensionsEvent event, net.minecraft.world.item.Item item,
+                                     net.minecraft.client.model.geom.ModelLayerLocation layerLocation,
+                                     java.util.function.Function<net.minecraft.client.model.geom.ModelPart, ? extends net.minecraft.client.model.Model> modelFactory) {
+        event.registerItem(new GotHelmClientExtensions(layerLocation, modelFactory), item);
     }
 
     @SubscribeEvent
