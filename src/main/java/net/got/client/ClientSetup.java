@@ -108,6 +108,10 @@ public final class ClientSetup {
         event.registerLayerDefinition(BascinetModel.LAYER_LOCATION,   BascinetModel::createBodyLayer);
         event.registerLayerDefinition(GreathelmFlatModel.LAYER_LOCATION,   GreathelmFlatModel::createBodyLayer);
         event.registerLayerDefinition(GreathelmRoundedModel.LAYER_LOCATION, GreathelmRoundedModel::createBodyLayer);
+
+        event.registerLayerDefinition(GambesonModel.LAYER_LOCATION,   GambesonModel::createBodyLayer);
+        event.registerLayerDefinition(BrigandineModel.LAYER_LOCATION, BrigandineModel::createBodyLayer);
+        event.registerLayerDefinition(HauberkModel.LAYER_LOCATION,    HauberkModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -121,6 +125,11 @@ public final class ClientSetup {
         registerHelm(event, ModItems.BASCINET.get(), BascinetModel.LAYER_LOCATION);
         registerHelm(event, ModItems.GREATHELM_FLAT.get(), GreathelmFlatModel.LAYER_LOCATION);
         registerHelm(event, ModItems.GREATHELM_ROUNDED.get(), GreathelmRoundedModel.LAYER_LOCATION);
+
+        // Chest-slot body armor (torso + arms + the pants cubes on the legs).
+        registerHelm(event, ModItems.GAMBESON.get(),   GambesonModel.LAYER_LOCATION,   root -> new GotBodyArmorModel(root, true));
+        registerHelm(event, ModItems.BRIGANDINE.get(), BrigandineModel.LAYER_LOCATION, root -> new GotBodyArmorModel(root, true));
+        registerHelm(event, ModItems.HAUBERK.get(),    HauberkModel.LAYER_LOCATION,    root -> new GotBodyArmorModel(root, true));
     }
 
     private static void registerHelm(RegisterClientExtensionsEvent event, net.minecraft.world.item.Item item,

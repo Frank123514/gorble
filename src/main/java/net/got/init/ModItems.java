@@ -2081,6 +2081,17 @@ public class ModItems {
                     p.humanoidArmor(ModArmorMaterials.GREATHELM_ROUNDED.value(), ArmorType.HELMET),
                     GreathelmRoundedModel.LAYER_LOCATION));
 
+    // Body armor from the AWOIAF Armament page. All three occupy the chest slot and render with
+    // their own custom models (GambesonModel / BrigandineModel / HauberkModel) through
+    // GotBodyArmorModel -- the client hookup is in ClientSetup. The hauberk's model also covers
+    // the upper legs, but it is still a chest-slot item.
+    public static final DeferredItem<Item> GAMBESON = REGISTRY.registerItem("gambeson",
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.GAMBESON.value(), ArmorType.CHESTPLATE)));
+    public static final DeferredItem<Item> BRIGANDINE = REGISTRY.registerItem("brigandine",
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.BRIGANDINE.value(), ArmorType.CHESTPLATE)));
+    public static final DeferredItem<Item> HAUBERK = REGISTRY.registerItem("hauberk",
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.HAUBERK.value(), ArmorType.CHESTPLATE)));
+
     public static final DeferredItem<Item> IRON_SPEAR_HEAD          = simple("iron_spear_head");
     public static final DeferredItem<Item> IRON_ARROWHEAD           = simple("iron_arrowhead");
     public static final DeferredItem<Item> IRON_SHORT_AXE_HEAD      = simple("iron_short_axe_head");

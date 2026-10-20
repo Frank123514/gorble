@@ -2581,6 +2581,10 @@ public class ModTabs {
                         output.accept(ModItems.GREATHELM_FLAT.get());
                         output.accept(ModItems.GREATHELM_ROUNDED.get());
 
+                        output.accept(ModItems.GAMBESON.get());
+                        output.accept(ModItems.HAUBERK.get());
+                        output.accept(ModItems.BRIGANDINE.get());
+
                         output.accept(ModItems.IRON_SPEAR_HEAD.get());
                         output.accept(ModItems.IRON_ARROWHEAD.get());
                         output.accept(ModItems.IRON_SHORT_AXE_HEAD.get());

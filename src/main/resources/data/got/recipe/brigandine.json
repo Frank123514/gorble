@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "P": "got:iron_armor_plate",
+    "L": "minecraft:leather",
+    "G": "got:gambeson"
+  },
+  "pattern": [
+    "PLP",
+    "PGP",
+    "PLP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:brigandine"
+  }
+}

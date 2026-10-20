@@ -5,6 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -117,4 +118,41 @@ public class ModArmorMaterials {
             helmetOnly("greathelm_flat", 230, 3, 10, 1.0f);
     public static final Holder<ArmorMaterial> GREATHELM_ROUNDED =
             helmetOnly("greathelm_rounded", 250, 4, 10, 1.5f);
+
+    /**
+     * Chest-slot-only materials for the gambeson, brigandine and hauberk from the
+     * AWOIAF Armament page. Durability is the ArmorMaterial base value (multiplied
+     * by 16 for the chest slot, so 8 -> 128, 18 -> 288, 22 -> 352 uses). Each material
+     * has its own equipment asset and its own repair tag (data/got/tags/item/).
+     */
+    private static TagKey<Item> gotRepairTag(String path) {
+        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(GotMod.MODID, path));
+    }
+
+    private static Holder<ArmorMaterial> chestOnly(String name, int durability, int defense,
+                                                     int enchantability, float toughness,
+                                                     Holder<SoundEvent> equipSound) {
+        return Holder.direct(
+                new ArmorMaterial(
+                        durability,
+                        Map.of(ArmorType.CHESTPLATE, defense),
+                        enchantability,
+                        equipSound,
+                        toughness,
+                        0.0f,
+                        gotRepairTag("repairs_" + name),
+                        equipmentKey(name)
+                )
+        );
+    }
+
+    /** Padded cloth: lightest and cheapest body armor (leather-tier protection). */
+    public static final Holder<ArmorMaterial> GAMBESON =
+            chestOnly("gambeson", 8, 3, 12, 0.0f, SoundEvents.ARMOR_EQUIP_LEATHER);
+    /** Mail shirt: between gambeson and brigandine. */
+    public static final Holder<ArmorMaterial> HAUBERK =
+            chestOnly("hauberk", 18, 5, 10, 0.5f, SoundEvents.ARMOR_EQUIP_CHAIN);
+    /** Plates riveted between cloth/leather layers: best of the three. */
+    public static final Holder<ArmorMaterial> BRIGANDINE =
+            chestOnly("brigandine", 22, 6, 9, 0.5f, SoundEvents.ARMOR_EQUIP_IRON);
 }
