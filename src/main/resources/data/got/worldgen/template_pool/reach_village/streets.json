@@ -1,5 +1,5 @@
 {
-  "fallback": "minecraft:empty",
+  "fallback": "got:reach_village/terminators",
   "elements": [
     {
       "weight": 1,
