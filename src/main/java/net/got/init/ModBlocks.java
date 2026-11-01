@@ -1532,11 +1532,11 @@ public class ModBlocks {
     public static final DeferredBlock<Block> COLDSNAPS          = flowerBlock("coldsnaps");
     public static final DeferredBlock<Block> DRAGONS_BREATH     = flowerBlock("dragons_breath");
     public static final DeferredBlock<Block> EVENING_STAR       = flowerBlock("evening_star");
-    public static final DeferredBlock<Block> FORGET_ME_NOT      = flowerBlock("forget_me_not");
+    public static final DeferredBlock<Block> FORGET_ME_NOT      = wildflowerBlock("forget_me_not");
     public static final DeferredBlock<Block> FROSTFIRES         = flowerBlock("frostfires");
     public static final DeferredBlock<Block> GILLYFLOWER        = flowerBlock("gillyflower");
     public static final DeferredBlock<Block> GINGER             = flowerBlock("ginger");
-    public static final DeferredBlock<Block> GOATHEAD           = flowerBlock("goathead");
+    public static final DeferredBlock<Block> GOATHEAD           = wildflowerBlock("goathead");
     public static final DeferredBlock<Block> GOLDENCUP          = flowerBlock("goldencup");
     public static final DeferredBlock<Block> GOLDENROD          = flowerBlock("goldenrod");
     public static final DeferredBlock<Block> GORSE              = flowerBlock("gorse");
@@ -1649,7 +1649,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SANDWILLOW        = flowerBlock("sandwillow");
     public static final DeferredBlock<Block> SMOKEBERRY_BUSH   = berryBushBlock("smokeberry_bush",   () -> ModItems.SMOKEBERRIES.get());
     public static final DeferredBlock<Block> SOURLEAF          = flowerBlock("sourleaf");
-    public static final DeferredBlock<Block> STING_ME_NOT      = flowerBlock("sting_me_not");
+    public static final DeferredBlock<Block> STING_ME_NOT      = wildflowerBlock("sting_me_not");
     public static final DeferredBlock<Block> WASPWILLOW        = flowerBlock("waspwillow");
 
     public static final DeferredBlock<Block> POTTED_WILD_BEAN           = pottedBlock("potted_wild_bean",       () -> WILD_BEAN);
@@ -2444,6 +2444,13 @@ public class ModBlocks {
         return REGISTRY.registerBlock(name,
                 ShortGrassBlock::new,
                 BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION));
+    }
+
+    /** Vanilla "wildflowers"-style bed: 1-4 stackable segments, 4 facings (FlowerBedBlock). */
+    private static DeferredBlock<Block> wildflowerBlock(String name) {
+        return REGISTRY.registerBlock(name,
+                net.minecraft.world.level.block.FlowerBedBlock::new,
+                BlockBehaviour.Properties.ofFullCopy(Blocks.WILDFLOWERS));
     }
 
     private static DeferredBlock<Block> tallFlowerBlock(String name) {

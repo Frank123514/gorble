@@ -47,14 +47,14 @@ public final class GotChunkGenerator extends ChunkGenerator {
     private static final double  BASE_NOISE_SCALE_Z = 240.0;
 
     // Detail layer — smaller ridges blended on top of the base shape
-    private static final double  DETAIL_SCALE_X = 80.0;
-    private static final double  DETAIL_SCALE_Z = 80.0;
+    private static final double  DETAIL_SCALE_X = 100.0;
+    private static final double  DETAIL_SCALE_Z = 100.0;
     private static final double  DETAIL_WEIGHT   = 0.35; // how much detail contributes vs base
 
     // Third hill layer — smaller rolling hills than the detail layer, blended in at
     // real weight so it reads as terrain shaping, not surface texture
-    private static final double  FINE_DETAIL_SCALE_X = 50.0;
-    private static final double  FINE_DETAIL_SCALE_Z = 50.0;
+    private static final double  FINE_DETAIL_SCALE_X = 64.0;
+    private static final double  FINE_DETAIL_SCALE_Z = 64.0;
     private static final double  FINE_DETAIL_WEIGHT   = 0.30;
 
     // Three independent perm tables so each layer doesn't echo the others' pattern

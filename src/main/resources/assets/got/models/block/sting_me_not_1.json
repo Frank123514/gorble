@@ -1,0 +1,97 @@
+{
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "flowerbed": "got:block/sting_me_not",
+    "stem": "got:block/sting_me_not_stem",
+    "particle": "got:block/sting_me_not"
+  },
+  "elements": [
+    {
+      "from": [
+        8,
+        3,
+        8
+      ],
+      "to": [
+        16,
+        3,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            8,
+            8,
+            16,
+            16
+          ],
+          "texture": "#flowerbed"
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            16,
+            16
+          ],
+          "texture": "#flowerbed"
+        }
+      }
+    },
+    {
+      "from": [
+        11.5,
+        0,
+        11.5
+      ],
+      "to": [
+        12.5,
+        3,
+        12.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            4,
+            1,
+            7
+          ],
+          "texture": "#stem",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            4,
+            1,
+            7
+          ],
+          "texture": "#stem",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            1,
+            7
+          ],
+          "texture": "#stem",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            4,
+            1,
+            7
+          ],
+          "texture": "#stem",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

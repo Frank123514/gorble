@@ -175,7 +175,10 @@ public final class SeasonFoliageColorProvider {
                 ModBlocks.DEVILGRASS.get(),
                 ModBlocks.WHEATGRASS.get(),
                 ModBlocks.IVY.get(),
-                ModBlocks.NETTLE.get()
+                ModBlocks.NETTLE.get(),
+                ModBlocks.FORGET_ME_NOT.get(),
+                ModBlocks.GOATHEAD.get(),
+                ModBlocks.STING_ME_NOT.get()
         );
     }
 
