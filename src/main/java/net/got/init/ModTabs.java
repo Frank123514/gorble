@@ -40,9 +40,355 @@ public class ModTabs {
         }
     }
 
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MASONRY =
+            REGISTRY.register("got_masonry", () -> CreativeModeTab.builder()
+                    .withTabsBefore(net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS.identifier())
+                    .title(Component.translatable("itemGroup.got.got_masonry"))
+                    .icon(() -> new ItemStack(ModBlocks.LIMESTONE_BRICK.get()))
+                    .displayItems((params, output) -> {
+
+                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.BASALT_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK.get());
+                        safeAccept(output, ModBlocks.BASALT_PILLAR.get());
+                        safeAccept(output, ModBlocks.BASALT_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.BASALT_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.BASALT_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.BASALT_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.BASALT_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_BASALT_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_BASALT_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_BASALT_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.BASALT_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.BASALT_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.BASALT_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.FLINT_ROCK.get());
+                        safeAccept(output, ModBlocks.FLINT_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK.get());
+                        safeAccept(output, ModBlocks.FLINT_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.FLINT_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.FLINT_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.FLINT_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.FLINT_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.FLINT_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.FLINT_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK.get());
+                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_PILLAR.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK.get());
+                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_PILLAR.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.LIMESTONE_ROCK.get());
+                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_PILLAR.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.LIMESTONE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.MARBLE_ROCK.get());
+                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK.get());
+                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MARBLE_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK.get());
+                        safeAccept(output, ModBlocks.MARBLE_PILLAR.get());
+                        safeAccept(output, ModBlocks.MARBLE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.MARBLE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MARBLE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.MARBLE_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.MARBLE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MARBLE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MARBLE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MARBLE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK.get());
+                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_PILLAR.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_PILLAR.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_RED_SANDSTONE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_PILLAR.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_SANDSTONE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.SLATE_ROCK.get());
+                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK.get());
+                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE.get());
+                        safeAccept(output, ModBlocks.SLATE_BRICK.get());
+                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK.get());
+                        safeAccept(output, ModBlocks.SLATE_PILLAR.get());
+                        safeAccept(output, ModBlocks.SLATE_SHINGLES.get());
+                        safeAccept(output, ModBlocks.SLATE_SHINGLES_SLAB.get());
+                        safeAccept(output, ModBlocks.SLATE_SHINGLES_STAIRS.get());
+                        safeAccept(output, ModBlocks.SLATE_SHINGLES_WALL.get());
+                        safeAccept(output, ModBlocks.SLATE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SLATE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SLATE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.SLATE_ROCK_BUTTON.get());
+                        safeAccept(output, ModBlocks.SLATE_ROCK_PRESSURE_PLATE.get());
+                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK_SLAB.get());
+                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK_WALL.get());
+                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE_WALL.get());
+                        safeAccept(output, ModBlocks.SLATE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.SLATE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.SLATE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK_WALL.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK_SLAB.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK_STAIRS.get());
+                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK_WALL.get());
+
+                        safeAccept(output, ModBlocks.PATH_BLOCK.get());
+                        safeAccept(output, ModBlocks.COBBLED_PATH_BLOCK.get());
+
+                        safeAccept(output, ModBlocks.DIRT_SLAB.get());
+                        safeAccept(output, ModBlocks.DIRT_STAIRS.get());
+                        safeAccept(output, ModBlocks.MUD_SLAB.get());
+                        safeAccept(output, ModBlocks.MUD_STAIRS.get());
+                        safeAccept(output, ModBlocks.DIRT_PATH_SLAB.get());
+                        safeAccept(output, ModBlocks.DIRT_PATH_STAIRS.get());
+                        safeAccept(output, ModBlocks.COARSE_DIRT_SLAB.get());
+                        safeAccept(output, ModBlocks.COARSE_DIRT_STAIRS.get());
+                        safeAccept(output, ModBlocks.ROOTED_DIRT_SLAB.get());
+                        safeAccept(output, ModBlocks.ROOTED_DIRT_STAIRS.get());
+                        safeAccept(output, ModBlocks.PODZOL_SLAB.get());
+                        safeAccept(output, ModBlocks.PODZOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.GRASS_BLOCK_SLAB.get());
+                        safeAccept(output, ModBlocks.GRASS_BLOCK_STAIRS.get());
+
+                        safeAccept(output, ModBlocks.FIELDSTONE.get());
+                        safeAccept(output, ModBlocks.FIELDSTONE_SLAB.get());
+                        safeAccept(output, ModBlocks.FIELDSTONE_STAIRS.get());
+                        safeAccept(output, ModBlocks.FIELDSTONE_WALL.get());
+                        safeAccept(output, ModBlocks.FIELDSTONE_BUTTON.get());
+                        safeAccept(output, ModBlocks.FIELDSTONE_PRESSURE_PLATE.get());
+
+                        safeAccept(output, ModBlocks.DAUB.get());
+                        safeAccept(output, ModBlocks.DAUB_SLAB.get());
+                        safeAccept(output, ModBlocks.DAUB_STAIRS.get());
+                        safeAccept(output, ModBlocks.DAUB_WALL.get());
+                        safeAccept(output, ModBlocks.WATTLE.get());
+                        safeAccept(output, ModBlocks.WATTLE_SLAB.get());
+                        safeAccept(output, ModBlocks.WATTLE_STAIRS.get());
+                        safeAccept(output, ModBlocks.WATTLE_WALL.get());
+                        safeAccept(output, ModBlocks.WATTLE_FENCE.get());
+                        safeAccept(output, ModBlocks.WATTLE_FENCE_GATE.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_SLAB.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_STAIRS.get());
+                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_WALL.get());
+
+                    })
+                    .build());
+
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_CARPENTRY =
             REGISTRY.register("got_carpentry", () -> CreativeModeTab.builder()
-                    .withTabsBefore(net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS.identifier())
+                    .withTabsBefore(GOT_MASONRY.getId())
                     .title(Component.translatable("itemGroup.got.got_carpentry"))
                     .icon(() -> new ItemStack(ModBlocks.WEIRWOOD_PLANKS.get()))
                     .displayItems((params, output) -> {
@@ -1799,607 +2145,125 @@ public class ModTabs {
                     })
                     .build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MASONRY =
-            REGISTRY.register("got_masonry", () -> CreativeModeTab.builder()
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_ARMORY =
+            REGISTRY.register("got_armory", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_CARPENTRY.getId())
-                    .title(Component.translatable("itemGroup.got.got_masonry"))
-                    .icon(() -> new ItemStack(ModBlocks.LIMESTONE_BRICK.get()))
+                    .title(Component.translatable("itemGroup.got.got_armory"))
+                    .icon(() -> new ItemStack(ModItems.BRONZE_LONGSWORD_CROSSGUARD_POMMEL.get()))
                     .displayItems((params, output) -> {
 
-                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.BASALT_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK.get());
-                        safeAccept(output, ModBlocks.BASALT_PILLAR.get());
-                        safeAccept(output, ModBlocks.BASALT_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.BASALT_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.BASALT_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.BASALT_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.BASALT_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_BASALT_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_BASALT_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_BASALT_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.BASALT_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.BASALT_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.BASALT_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.BASALT_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_BASALT_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_BASALT_BRICK_WALL.get());
+                        output.accept(ModItems.BRONZE_AXE.get());
+                        output.accept(ModItems.BRONZE_PICKAXE.get());
+                        output.accept(ModItems.BRONZE_SHOVEL.get());
+                        output.accept(ModItems.BRONZE_HOE.get());
 
-                        safeAccept(output, ModBlocks.FLINT_ROCK.get());
-                        safeAccept(output, ModBlocks.FLINT_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK.get());
-                        safeAccept(output, ModBlocks.FLINT_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.FLINT_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.FLINT_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.FLINT_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.FLINT_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.FLINT_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.FLINT_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.FLINT_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_FLINT_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_FLINT_BRICK_WALL.get());
+                        output.accept(ModItems.STEEL_AXE.get());
+                        output.accept(ModItems.STEEL_PICKAXE.get());
+                        output.accept(ModItems.STEEL_SHOVEL.get());
+                        output.accept(ModItems.STEEL_HOE.get());
 
-                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK.get());
-                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_PILLAR.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_FUSED_BLACK_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.FUSED_BLACK_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_FUSED_BLACK_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_FUSED_BLACK_BRICK_WALL.get());
+                        output.accept(ModItems.LONGBOW.get());
 
-                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK.get());
-                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_PILLAR.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_GREY_GRANITE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.GREY_GRANITE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_GREY_GRANITE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_GREY_GRANITE_BRICK_WALL.get());
+                        output.accept(ModItems.HEATER_BOARD.get());
+                        output.accept(ModItems.KITE_BOARD.get());
+                        output.accept(ModItems.ROUND_BOARD.get());
+                        output.accept(ModItems.SHIELD_SKIN.get());
+                        output.accept(ModItems.SHIELD_BORDER.get());
+                        output.accept(ModItems.HEATER_SHIELD.get());
+                        output.accept(ModItems.KITE_SHIELD.get());
+                        output.accept(ModItems.ROUND_SHIELD.get());
 
-                        safeAccept(output, ModBlocks.LIMESTONE_ROCK.get());
-                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_PILLAR.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_LIMESTONE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIMESTONE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_LIMESTONE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_LIMESTONE_BRICK_WALL.get());
+                        output.accept(ModItems.BRONZE_HELMET.get());
+                        output.accept(ModItems.BRONZE_CHESTPLATE.get());
+                        output.accept(ModItems.BRONZE_LEGGINGS.get());
+                        output.accept(ModItems.BRONZE_BOOTS.get());
 
-                        safeAccept(output, ModBlocks.MARBLE_ROCK.get());
-                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK.get());
-                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MARBLE_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK.get());
-                        safeAccept(output, ModBlocks.MARBLE_PILLAR.get());
-                        safeAccept(output, ModBlocks.MARBLE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.MARBLE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MARBLE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.MARBLE_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.MARBLE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_MARBLE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MARBLE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MARBLE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MARBLE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MARBLE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_MARBLE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_MARBLE_BRICK_WALL.get());
+                        output.accept(ModItems.STEEL_HELMET.get());
+                        output.accept(ModItems.STEEL_CHESTPLATE.get());
+                        output.accept(ModItems.STEEL_LEGGINGS.get());
+                        output.accept(ModItems.STEEL_BOOTS.get());
 
-                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK.get());
-                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_PILLAR.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_OILY_BLACK_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.OILY_BLACK_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_OILY_BLACK_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_OILY_BLACK_BRICK_WALL.get());
+                        output.accept(ModItems.SKULL_CAP.get());
+                        output.accept(ModItems.CONICAL_CAP.get());
+                        output.accept(ModItems.KETTLE_HELM.get());
+                        output.accept(ModItems.PADDED_COIF.get());
+                        output.accept(ModItems.MAIL_COIF.get());
+                        output.accept(ModItems.HALFHELM.get());
+                        output.accept(ModItems.BASCINET.get());
+                        output.accept(ModItems.GREATHELM_FLAT.get());
+                        output.accept(ModItems.GREATHELM_ROUNDED.get());
 
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_PILLAR.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_RED_SANDSTONE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.RED_SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_RED_SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_RED_SANDSTONE_BRICK_WALL.get());
+                        output.accept(ModItems.GAMBESON.get());
+                        output.accept(ModItems.HAUBERK.get());
+                        output.accept(ModItems.BRIGANDINE.get());
 
-                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_PILLAR.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_SANDSTONE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_SANDSTONE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_SANDSTONE_BRICK_WALL.get());
+                        output.accept(ModItems.IRON_SPEAR_HEAD.get());
+                        output.accept(ModItems.IRON_ARROWHEAD.get());
+                        output.accept(ModItems.IRON_SHORT_AXE_HEAD.get());
+                        output.accept(ModItems.IRON_LONG_AXE_HEAD.get());
+                        output.accept(ModItems.IRON_LONGSWORD_BLADE.get());
+                        output.accept(ModItems.IRON_BASTARD_SWORD_BLADE.get());
+                        output.accept(ModItems.IRON_SHORTSWORD_BLADE.get());
+                        output.accept(ModItems.IRON_FALCHION_BLADE.get());
+                        output.accept(ModItems.IRON_GREATSWORD_BLADE.get());
+                        output.accept(ModItems.POMMEL.get());
+                        output.accept(ModItems.HILT.get());
+                        output.accept(ModItems.LONG_HILT.get());
+                        output.accept(ModItems.CROSSGUARD.get());
+                        output.accept(ModItems.SLOPED_CROSSGUARD.get());
+                        output.accept(ModItems.IRON_ARMOR_PLATE.get());
 
-                        safeAccept(output, ModBlocks.SLATE_ROCK.get());
-                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK.get());
-                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE.get());
-                        safeAccept(output, ModBlocks.SLATE_BRICK.get());
-                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK.get());
-                        safeAccept(output, ModBlocks.SLATE_PILLAR.get());
-                        safeAccept(output, ModBlocks.SLATE_SHINGLES.get());
-                        safeAccept(output, ModBlocks.SLATE_SHINGLES_SLAB.get());
-                        safeAccept(output, ModBlocks.SLATE_SHINGLES_STAIRS.get());
-                        safeAccept(output, ModBlocks.SLATE_SHINGLES_WALL.get());
-                        safeAccept(output, ModBlocks.SLATE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SLATE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SLATE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.SLATE_ROCK_BUTTON.get());
-                        safeAccept(output, ModBlocks.SLATE_ROCK_PRESSURE_PLATE.get());
-                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK_SLAB.get());
-                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SMOOTH_SLATE_ROCK_WALL.get());
-                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.SLATE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_COBBLESTONE_WALL.get());
-                        safeAccept(output, ModBlocks.SLATE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.SLATE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.SLATE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.CRACKED_SLATE_BRICK_WALL.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK_SLAB.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK_STAIRS.get());
-                        safeAccept(output, ModBlocks.MOSSY_SLATE_BRICK_WALL.get());
+                        output.accept(ModItems.BRONZE_SPEAR_HEAD.get());
+                        output.accept(ModItems.BRONZE_ARROWHEAD.get());
+                        output.accept(ModItems.BRONZE_SHORT_AXE_HEAD.get());
+                        output.accept(ModItems.BRONZE_LONG_AXE_HEAD.get());
+                        output.accept(ModItems.BRONZE_LONGSWORD_BLADE.get());
+                        output.accept(ModItems.BRONZE_BASTARD_SWORD_BLADE.get());
+                        output.accept(ModItems.BRONZE_SHORTSWORD_BLADE.get());
+                        output.accept(ModItems.BRONZE_FALCHION_BLADE.get());
+                        output.accept(ModItems.BRONZE_GREATSWORD_BLADE.get());
+                        output.accept(ModItems.BRONZE_ARMOR_PLATE.get());
 
-                        safeAccept(output, ModBlocks.PATH_BLOCK.get());
-                        safeAccept(output, ModBlocks.COBBLED_PATH_BLOCK.get());
+                        output.accept(ModItems.STEEL_SPEAR_HEAD.get());
+                        output.accept(ModItems.STEEL_ARROWHEAD.get());
+                        output.accept(ModItems.STEEL_SHORT_AXE_HEAD.get());
+                        output.accept(ModItems.STEEL_LONG_AXE_HEAD.get());
+                        output.accept(ModItems.STEEL_LONGSWORD_BLADE.get());
+                        output.accept(ModItems.STEEL_BASTARD_SWORD_BLADE.get());
+                        output.accept(ModItems.STEEL_SHORTSWORD_BLADE.get());
+                        output.accept(ModItems.STEEL_FALCHION_BLADE.get());
+                        output.accept(ModItems.STEEL_GREATSWORD_BLADE.get());
+                        output.accept(ModItems.STEEL_ARMOR_PLATE.get());
 
-                        safeAccept(output, ModBlocks.DIRT_SLAB.get());
-                        safeAccept(output, ModBlocks.DIRT_STAIRS.get());
-                        safeAccept(output, ModBlocks.MUD_SLAB.get());
-                        safeAccept(output, ModBlocks.MUD_STAIRS.get());
-                        safeAccept(output, ModBlocks.DIRT_PATH_SLAB.get());
-                        safeAccept(output, ModBlocks.DIRT_PATH_STAIRS.get());
-                        safeAccept(output, ModBlocks.COARSE_DIRT_SLAB.get());
-                        safeAccept(output, ModBlocks.COARSE_DIRT_STAIRS.get());
-                        safeAccept(output, ModBlocks.ROOTED_DIRT_SLAB.get());
-                        safeAccept(output, ModBlocks.ROOTED_DIRT_STAIRS.get());
-                        safeAccept(output, ModBlocks.PODZOL_SLAB.get());
-                        safeAccept(output, ModBlocks.PODZOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.GRASS_BLOCK_SLAB.get());
-                        safeAccept(output, ModBlocks.GRASS_BLOCK_STAIRS.get());
+                        output.accept(ModItems.IRON_SHORTSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.IRON_FALCHION_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.IRON_LONGSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.IRON_BASTARD_SWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.IRON_GREATSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.IRON_CLAYMORE_SLOPED_CROSSGUARD_POMMEL.get());
 
-                        safeAccept(output, ModBlocks.FIELDSTONE.get());
-                        safeAccept(output, ModBlocks.FIELDSTONE_SLAB.get());
-                        safeAccept(output, ModBlocks.FIELDSTONE_STAIRS.get());
-                        safeAccept(output, ModBlocks.FIELDSTONE_WALL.get());
-                        safeAccept(output, ModBlocks.FIELDSTONE_BUTTON.get());
-                        safeAccept(output, ModBlocks.FIELDSTONE_PRESSURE_PLATE.get());
+                        output.accept(ModItems.BRONZE_SHORTSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.BRONZE_FALCHION_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.BRONZE_LONGSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.BRONZE_GREATSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL.get());
 
-                        safeAccept(output, ModBlocks.DAUB.get());
-                        safeAccept(output, ModBlocks.DAUB_SLAB.get());
-                        safeAccept(output, ModBlocks.DAUB_STAIRS.get());
-                        safeAccept(output, ModBlocks.DAUB_WALL.get());
-                        safeAccept(output, ModBlocks.WATTLE.get());
-                        safeAccept(output, ModBlocks.WATTLE_SLAB.get());
-                        safeAccept(output, ModBlocks.WATTLE_STAIRS.get());
-                        safeAccept(output, ModBlocks.WATTLE_WALL.get());
-                        safeAccept(output, ModBlocks.WATTLE_FENCE.get());
-                        safeAccept(output, ModBlocks.WATTLE_FENCE_GATE.get());
-                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB.get());
-                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_SLAB.get());
-                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_STAIRS.get());
-                        safeAccept(output, ModBlocks.WATTLE_AND_DAUB_WALL.get());
+                        output.accept(ModItems.STEEL_SHORTSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.STEEL_FALCHION_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.STEEL_LONGSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.STEEL_GREATSWORD_CROSSGUARD_POMMEL.get());
+                        output.accept(ModItems.STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL.get());
 
                     })
                     .build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_DECORATIVE =
-            REGISTRY.register("got_decorative", () -> CreativeModeTab.builder()
-                    .withTabsBefore(GOT_MASONRY.getId())
-                    .title(Component.translatable("itemGroup.got.got_decorative"))
-                    .icon(() -> new ItemStack(ModBlocks.WEIRWOOD_LEAVES.get()))
-                    .displayItems((params, output) -> {
-
-                        safeAccept(output, ModBlocks.WEIRWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.ASPEN_LEAVES.get());
-                        safeAccept(output, ModBlocks.ALDER_LEAVES.get());
-                        safeAccept(output, ModBlocks.PINE_LEAVES.get());
-                        safeAccept(output, ModBlocks.FIR_LEAVES.get());
-                        safeAccept(output, ModBlocks.SENTINAL_LEAVES.get());
-                        safeAccept(output, ModBlocks.IRONWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.BEECH_LEAVES.get());
-                        safeAccept(output, ModBlocks.SOLDIER_PINE_LEAVES.get());
-                        safeAccept(output, ModBlocks.ASH_LEAVES.get());
-                        safeAccept(output, ModBlocks.HAWTHORN_LEAVES.get());
-                        safeAccept(output, ModBlocks.BLACKBARK_LEAVES.get());
-                        safeAccept(output, ModBlocks.BLOODWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.BLUE_MAHOE_LEAVES.get());
-                        safeAccept(output, ModBlocks.COTTONWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.BLACK_COTTONWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.CINNAMON_LEAVES.get());
-                        safeAccept(output, ModBlocks.CLOVE_LEAVES.get());
-                        safeAccept(output, ModBlocks.EBONY_LEAVES.get());
-                        safeAccept(output, ModBlocks.ELM_LEAVES.get());
-                        safeAccept(output, ModBlocks.CEDAR_LEAVES.get());
-                        safeAccept(output, ModBlocks.APPLE_LEAVES.get());
-                        safeAccept(output, ModBlocks.GOLDENHEART_LEAVES.get());
-                        safeAccept(output, ModBlocks.LINDEN_LEAVES.get());
-                        safeAccept(output, ModBlocks.MAHOGANY_LEAVES.get());
-                        safeAccept(output, ModBlocks.MAPLE_LEAVES.get());
-                        safeAccept(output, ModBlocks.MYRRH_LEAVES.get());
-                        safeAccept(output, ModBlocks.REDWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.CHESTNUT_LEAVES.get());
-                        safeAccept(output, ModBlocks.WILLOW_LEAVES.get());
-                        safeAccept(output, ModBlocks.WORMTREE_LEAVES.get());
-                        safeAccept(output, ModBlocks.NIGHTWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.PURPLEHEART_LEAVES.get());
-                        safeAccept(output, ModBlocks.TIGERWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.SANDALWOOD_LEAVES.get());
-                        safeAccept(output, ModBlocks.SANDBEGGAR_LEAVES.get());
-                        safeAccept(output, ModBlocks.APRICOT_LEAVES.get());
-                        safeAccept(output, ModBlocks.BLACKTHORN_LEAVES.get());
-                        safeAccept(output, ModBlocks.RED_CHERRY_LEAVES.get());
-                        safeAccept(output, ModBlocks.BLACK_CHERRY_LEAVES.get());
-                        safeAccept(output, ModBlocks.WHITE_CHERRY_LEAVES.get());
-                        safeAccept(output, ModBlocks.CRABAPPLE_LEAVES.get());
-                        safeAccept(output, ModBlocks.DATE_PALM_LEAVES.get());
-                        safeAccept(output, ModBlocks.FIG_LEAVES.get());
-                        safeAccept(output, ModBlocks.LEMON_LEAVES.get());
-                        safeAccept(output, ModBlocks.LIME_LEAVES.get());
-                        safeAccept(output, ModBlocks.OLIVE_LEAVES.get());
-                        safeAccept(output, ModBlocks.ORANGE_LEAVES.get());
-                        safeAccept(output, ModBlocks.PEACH_LEAVES.get());
-                        safeAccept(output, ModBlocks.PEAR_LEAVES.get());
-                        safeAccept(output, ModBlocks.PERSIMMON_LEAVES.get());
-                        safeAccept(output, ModBlocks.PINK_IVORY_LEAVES.get());
-                        safeAccept(output, ModBlocks.PLUM_LEAVES.get());
-                        safeAccept(output, ModBlocks.POMEGRANATE_LEAVES.get());
-                        safeAccept(output, ModBlocks.PRUNE_LEAVES.get());
-                        safeAccept(output, ModBlocks.ALMOND_LEAVES.get());
-                        safeAccept(output, ModBlocks.NUTMEG_LEAVES.get());
-                        safeAccept(output, ModBlocks.HEMLOCK_LEAVES.get());
-
-                        safeAccept(output, ModBlocks.WEIRWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.ASPEN_SAPLING.get());
-                        safeAccept(output, ModBlocks.ALDER_SAPLING.get());
-                        safeAccept(output, ModBlocks.PINE_SAPLING.get());
-                        safeAccept(output, ModBlocks.FIR_SAPLING.get());
-                        safeAccept(output, ModBlocks.SENTINAL_SAPLING.get());
-                        safeAccept(output, ModBlocks.IRONWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.BEECH_SAPLING.get());
-                        safeAccept(output, ModBlocks.SOLDIER_PINE_SAPLING.get());
-                        safeAccept(output, ModBlocks.ASH_SAPLING.get());
-                        safeAccept(output, ModBlocks.HAWTHORN_SAPLING.get());
-                        safeAccept(output, ModBlocks.BLACKBARK_SAPLING.get());
-                        safeAccept(output, ModBlocks.BLOODWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.BLUE_MAHOE_SAPLING.get());
-                        safeAccept(output, ModBlocks.COTTONWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.BLACK_COTTONWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.CINNAMON_SAPLING.get());
-                        safeAccept(output, ModBlocks.CLOVE_SAPLING.get());
-                        safeAccept(output, ModBlocks.EBONY_SAPLING.get());
-                        safeAccept(output, ModBlocks.ELM_SAPLING.get());
-                        safeAccept(output, ModBlocks.CEDAR_SAPLING.get());
-                        safeAccept(output, ModBlocks.APPLE_SAPLING.get());
-                        safeAccept(output, ModBlocks.GOLDENHEART_SAPLING.get());
-                        safeAccept(output, ModBlocks.LINDEN_SAPLING.get());
-                        safeAccept(output, ModBlocks.MAHOGANY_SAPLING.get());
-                        safeAccept(output, ModBlocks.MAPLE_SAPLING.get());
-                        safeAccept(output, ModBlocks.MYRRH_SAPLING.get());
-                        safeAccept(output, ModBlocks.REDWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.CHESTNUT_SAPLING.get());
-                        safeAccept(output, ModBlocks.WILLOW_SAPLING.get());
-                        safeAccept(output, ModBlocks.WORMTREE_SAPLING.get());
-                        safeAccept(output, ModBlocks.NIGHTWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.PURPLEHEART_SAPLING.get());
-                        safeAccept(output, ModBlocks.TIGERWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.SANDALWOOD_SAPLING.get());
-                        safeAccept(output, ModBlocks.SANDBEGGAR_SAPLING.get());
-                        safeAccept(output, ModBlocks.APRICOT_SAPLING.get());
-                        safeAccept(output, ModBlocks.BLACKTHORN_SAPLING.get());
-                        safeAccept(output, ModBlocks.RED_CHERRY_SAPLING.get());
-                        safeAccept(output, ModBlocks.BLACK_CHERRY_SAPLING.get());
-                        safeAccept(output, ModBlocks.WHITE_CHERRY_SAPLING.get());
-                        safeAccept(output, ModBlocks.CRABAPPLE_SAPLING.get());
-                        safeAccept(output, ModBlocks.DATE_PALM_SAPLING.get());
-                        safeAccept(output, ModBlocks.FIG_SAPLING.get());
-                        safeAccept(output, ModBlocks.LEMON_SAPLING.get());
-                        safeAccept(output, ModBlocks.LIME_SAPLING.get());
-                        safeAccept(output, ModBlocks.OLIVE_SAPLING.get());
-                        safeAccept(output, ModBlocks.ORANGE_SAPLING.get());
-                        safeAccept(output, ModBlocks.PEACH_SAPLING.get());
-                        safeAccept(output, ModBlocks.PEAR_SAPLING.get());
-                        safeAccept(output, ModBlocks.PERSIMMON_SAPLING.get());
-                        safeAccept(output, ModBlocks.PINK_IVORY_SAPLING.get());
-                        safeAccept(output, ModBlocks.PLUM_SAPLING.get());
-                        safeAccept(output, ModBlocks.POMEGRANATE_SAPLING.get());
-                        safeAccept(output, ModBlocks.PRUNE_SAPLING.get());
-                        safeAccept(output, ModBlocks.ALMOND_SAPLING.get());
-                        safeAccept(output, ModBlocks.NUTMEG_SAPLING.get());
-                        safeAccept(output, ModBlocks.HEMLOCK_SAPLING.get());
-
-                        safeAccept(output, ModBlocks.BELLFLOWER.get());
-                        safeAccept(output, ModBlocks.BLACK_LOTUS.get());
-                        safeAccept(output, ModBlocks.BLOOD_BLOOM.get());
-                        safeAccept(output, ModBlocks.COLDSNAPS.get());
-                        safeAccept(output, ModBlocks.DRAGONS_BREATH.get());
-                        safeAccept(output, ModBlocks.EVENING_STAR.get());
-                        safeAccept(output, ModBlocks.FORGET_ME_NOT.get());
-                        safeAccept(output, ModBlocks.FROSTFIRES.get());
-                        safeAccept(output, ModBlocks.GILLYFLOWER.get());
-                        safeAccept(output, ModBlocks.GINGER.get());
-                        safeAccept(output, ModBlocks.GOATHEAD.get());
-                        safeAccept(output, ModBlocks.GOLDENCUP.get());
-                        safeAccept(output, ModBlocks.GOLDENROD.get());
-                        safeAccept(output, ModBlocks.GOLDEN_ROSE.get());
-                        safeAccept(output, ModBlocks.GOLDEN_ROSE_BUSH.get());
-                        safeAccept(output, ModBlocks.GORSE.get());
-                        safeAccept(output, ModBlocks.RED_ROSE.get());
-                        safeAccept(output, ModBlocks.RED_ROSE_BUSH.get());
-                        safeAccept(output, ModBlocks.WHITE_ROSE.get());
-                        safeAccept(output, ModBlocks.WHITE_ROSE_BUSH.get());
-                        safeAccept(output, ModBlocks.WINTER_ROSE.get());
-                        safeAccept(output, ModBlocks.WINTER_ROSE_BUSH.get());
-                        safeAccept(output, ModBlocks.LADYS_LACE.get());
-                        safeAccept(output, ModBlocks.LAVENDER.get());
-                        safeAccept(output, ModBlocks.LIVERWORT.get());
-                        safeAccept(output, ModBlocks.LUNGWORT.get());
-                        safeAccept(output, ModBlocks.MOONBLOOM.get());
-                        safeAccept(output, ModBlocks.NIGHTSHADE.get());
-                        safeAccept(output, ModBlocks.OPIUM_POPPY.get());
-                        safeAccept(output, ModBlocks.PENNYROYAL.get());
-                        safeAccept(output, ModBlocks.POISON_KISSES.get());
-                        safeAccept(output, ModBlocks.SAFFRON_CROCUS.get());
-                        safeAccept(output, ModBlocks.SEDGE.get());
-                        safeAccept(output, ModBlocks.SPICEFLOWER.get());
-                        safeAccept(output, ModBlocks.TANSY.get());
-                        safeAccept(output, ModBlocks.THISTLE.get());
-                        safeAccept(output, ModBlocks.THORNBUSH.get());
-                        safeAccept(output, ModBlocks.WILD_RADISH.get());
-
-                        safeAccept(output, ModBlocks.WILD_BEAN.get());
-
-                        safeAccept(output, ModBlocks.BRACKEN.get());
-                        safeAccept(output, ModBlocks.BRIAR.get());
-                        safeAccept(output, ModBlocks.BROOM.get());
-                        safeAccept(output, ModBlocks.WILD_CARDAMOM.get());
-                        safeAccept(output, ModBlocks.WILD_CHICKPEA.get());
-
-                        safeAccept(output, ModBlocks.WILD_CUCUMBER.get());
-                        safeAccept(output, ModBlocks.DAGGERLEAF.get());
-                        safeAccept(output, ModBlocks.FIREPOD.get());
-                        safeAccept(output, ModBlocks.GHOSTSKIN.get());
-                        safeAccept(output, ModBlocks.GRAPE_VINE.get());
-                        safeAccept(output, ModBlocks.HARPYS_GOLD.get());
-                        safeAccept(output, ModBlocks.HEATHER.get());
-                        safeAccept(output, ModBlocks.WILD_HEMP.get());
-                        safeAccept(output, ModBlocks.HORNWORT.get());
-                        safeAccept(output, ModBlocks.IVY.get());
-                        safeAccept(output, ModBlocks.KINGSCOPPER.get());
-                        safeAccept(output, ModBlocks.WILD_LICORICE.get());
-                        safeAccept(output, ModBlocks.MISTLETOE.get());
-                        safeAccept(output, ModBlocks.WILD_MUSTARD_PLANT.get());
-                        safeAccept(output, ModBlocks.NETTLE.get());
-                        safeAccept(output, ModBlocks.WILD_PEPPER_PLANT.get());
-                        safeAccept(output, ModBlocks.PINCHFIRE.get());
-                        safeAccept(output, ModBlocks.PRICKLY_BEN.get());
-                        safeAccept(output, ModBlocks.SANDWILLOW.get());
-                        safeAccept(output, ModBlocks.SMOKEBERRY_BUSH.get());
-                        safeAccept(output, ModBlocks.SOURLEAF.get());
-                        safeAccept(output, ModBlocks.STING_ME_NOT.get());
-                        safeAccept(output, ModBlocks.WASPWILLOW.get());
-
-                        safeAccept(output, ModBlocks.DEVILGRASS.get());
-                        safeAccept(output, ModBlocks.GHOST_GRASS.get());
-                        safeAccept(output, ModBlocks.HRANNA.get());
-                        safeAccept(output, ModBlocks.PIPERS_GRASS.get());
-                        safeAccept(output, ModBlocks.WHEATGRASS.get());
-                        safeAccept(output, ModBlocks.REEDS.get());
-                        safeAccept(output, ModBlocks.SHORT_REEDS.get());
-                        safeAccept(output, ModBlocks.RUSHES.get());
-                        safeAccept(output, ModBlocks.QUAGMIRE.get());
-
-                        safeAccept(output, ModBlocks.WHITE_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.WHITE_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.ORANGE_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.ORANGE_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.MAGENTA_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.MAGENTA_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIGHT_BLUE_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.LIGHT_BLUE_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.YELLOW_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.YELLOW_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIME_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.LIME_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.PINK_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.PINK_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.GRAY_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.GRAY_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.LIGHT_GRAY_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.LIGHT_GRAY_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.CYAN_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.CYAN_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.PURPLE_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.PURPLE_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.BLUE_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.BLUE_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.BROWN_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.BROWN_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.GREEN_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.GREEN_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.RED_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.RED_WOOL_STAIRS.get());
-                        safeAccept(output, ModBlocks.BLACK_WOOL_SLAB.get());
-                        safeAccept(output, ModBlocks.BLACK_WOOL_STAIRS.get());
-
-                        output.accept(ModItems.STARK_BANNER_PATTERN.get());
-                        output.accept(ModItems.LANNISTER_BANNER_PATTERN.get());
-                        output.accept(ModItems.TARGARYEN_BANNER_PATTERN.get());
-                        output.accept(ModItems.BARATHEON_BANNER_PATTERN.get());
-                        output.accept(ModItems.GREYJOY_BANNER_PATTERN.get());
-                        output.accept(ModItems.TYRELL_BANNER_PATTERN.get());
-                        output.accept(ModItems.MARTELL_BANNER_PATTERN.get());
-                        output.accept(ModItems.TULLY_BANNER_PATTERN.get());
-                        output.accept(ModItems.ARRYN_BANNER_PATTERN.get());
-                        output.accept(ModItems.BOLTON_BANNER_PATTERN.get());
-
-                    })
-                    .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_FOOD =
             REGISTRY.register("got_food", () -> CreativeModeTab.builder()
-                    .withTabsBefore(GOT_DECORATIVE.getId())
+                    .withTabsBefore(GOT_ARMORY.getId())
                     .title(Component.translatable("itemGroup.got.got_food"))
                     .icon(() -> new ItemStack(net.minecraft.world.item.Items.BREAD))
                     .displayItems((params, output) -> {
@@ -2533,123 +2397,10 @@ public class ModTabs {
                     })
                     .build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_ARMORY =
-            REGISTRY.register("got_armory", () -> CreativeModeTab.builder()
-                    .withTabsBefore(GOT_FOOD.getId())
-                    .title(Component.translatable("itemGroup.got.got_armory"))
-                    .icon(() -> new ItemStack(ModItems.BRONZE_LONGSWORD_CROSSGUARD_POMMEL.get()))
-                    .displayItems((params, output) -> {
-
-                        output.accept(ModItems.BRONZE_AXE.get());
-                        output.accept(ModItems.BRONZE_PICKAXE.get());
-                        output.accept(ModItems.BRONZE_SHOVEL.get());
-                        output.accept(ModItems.BRONZE_HOE.get());
-
-                        output.accept(ModItems.STEEL_AXE.get());
-                        output.accept(ModItems.STEEL_PICKAXE.get());
-                        output.accept(ModItems.STEEL_SHOVEL.get());
-                        output.accept(ModItems.STEEL_HOE.get());
-
-                        output.accept(ModItems.LONGBOW.get());
-
-                        output.accept(ModItems.HEATER_BOARD.get());
-                        output.accept(ModItems.KITE_BOARD.get());
-                        output.accept(ModItems.ROUND_BOARD.get());
-                        output.accept(ModItems.SHIELD_SKIN.get());
-                        output.accept(ModItems.SHIELD_BORDER.get());
-                        output.accept(ModItems.HEATER_SHIELD.get());
-                        output.accept(ModItems.KITE_SHIELD.get());
-                        output.accept(ModItems.ROUND_SHIELD.get());
-
-                        output.accept(ModItems.BRONZE_HELMET.get());
-                        output.accept(ModItems.BRONZE_CHESTPLATE.get());
-                        output.accept(ModItems.BRONZE_LEGGINGS.get());
-                        output.accept(ModItems.BRONZE_BOOTS.get());
-
-                        output.accept(ModItems.STEEL_HELMET.get());
-                        output.accept(ModItems.STEEL_CHESTPLATE.get());
-                        output.accept(ModItems.STEEL_LEGGINGS.get());
-                        output.accept(ModItems.STEEL_BOOTS.get());
-
-                        output.accept(ModItems.SKULL_CAP.get());
-                        output.accept(ModItems.CONICAL_CAP.get());
-                        output.accept(ModItems.KETTLE_HELM.get());
-                        output.accept(ModItems.PADDED_COIF.get());
-                        output.accept(ModItems.MAIL_COIF.get());
-                        output.accept(ModItems.HALFHELM.get());
-                        output.accept(ModItems.BASCINET.get());
-                        output.accept(ModItems.GREATHELM_FLAT.get());
-                        output.accept(ModItems.GREATHELM_ROUNDED.get());
-
-                        output.accept(ModItems.GAMBESON.get());
-                        output.accept(ModItems.HAUBERK.get());
-                        output.accept(ModItems.BRIGANDINE.get());
-
-                        output.accept(ModItems.IRON_SPEAR_HEAD.get());
-                        output.accept(ModItems.IRON_ARROWHEAD.get());
-                        output.accept(ModItems.IRON_SHORT_AXE_HEAD.get());
-                        output.accept(ModItems.IRON_LONG_AXE_HEAD.get());
-                        output.accept(ModItems.IRON_LONGSWORD_BLADE.get());
-                        output.accept(ModItems.IRON_BASTARD_SWORD_BLADE.get());
-                        output.accept(ModItems.IRON_SHORTSWORD_BLADE.get());
-                        output.accept(ModItems.IRON_FALCHION_BLADE.get());
-                        output.accept(ModItems.IRON_GREATSWORD_BLADE.get());
-                        output.accept(ModItems.POMMEL.get());
-                        output.accept(ModItems.HILT.get());
-                        output.accept(ModItems.LONG_HILT.get());
-                        output.accept(ModItems.CROSSGUARD.get());
-                        output.accept(ModItems.SLOPED_CROSSGUARD.get());
-                        output.accept(ModItems.IRON_ARMOR_PLATE.get());
-
-                        output.accept(ModItems.BRONZE_SPEAR_HEAD.get());
-                        output.accept(ModItems.BRONZE_ARROWHEAD.get());
-                        output.accept(ModItems.BRONZE_SHORT_AXE_HEAD.get());
-                        output.accept(ModItems.BRONZE_LONG_AXE_HEAD.get());
-                        output.accept(ModItems.BRONZE_LONGSWORD_BLADE.get());
-                        output.accept(ModItems.BRONZE_BASTARD_SWORD_BLADE.get());
-                        output.accept(ModItems.BRONZE_SHORTSWORD_BLADE.get());
-                        output.accept(ModItems.BRONZE_FALCHION_BLADE.get());
-                        output.accept(ModItems.BRONZE_GREATSWORD_BLADE.get());
-                        output.accept(ModItems.BRONZE_ARMOR_PLATE.get());
-
-                        output.accept(ModItems.STEEL_SPEAR_HEAD.get());
-                        output.accept(ModItems.STEEL_ARROWHEAD.get());
-                        output.accept(ModItems.STEEL_SHORT_AXE_HEAD.get());
-                        output.accept(ModItems.STEEL_LONG_AXE_HEAD.get());
-                        output.accept(ModItems.STEEL_LONGSWORD_BLADE.get());
-                        output.accept(ModItems.STEEL_BASTARD_SWORD_BLADE.get());
-                        output.accept(ModItems.STEEL_SHORTSWORD_BLADE.get());
-                        output.accept(ModItems.STEEL_FALCHION_BLADE.get());
-                        output.accept(ModItems.STEEL_GREATSWORD_BLADE.get());
-                        output.accept(ModItems.STEEL_ARMOR_PLATE.get());
-
-                        output.accept(ModItems.IRON_SHORTSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.IRON_FALCHION_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.IRON_LONGSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.IRON_BASTARD_SWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.IRON_GREATSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.IRON_CLAYMORE_SLOPED_CROSSGUARD_POMMEL.get());
-
-                        output.accept(ModItems.BRONZE_SHORTSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.BRONZE_FALCHION_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.BRONZE_LONGSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.BRONZE_BASTARD_SWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.BRONZE_GREATSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.BRONZE_CLAYMORE_SLOPED_CROSSGUARD_POMMEL.get());
-
-                        output.accept(ModItems.STEEL_SHORTSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.STEEL_FALCHION_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.STEEL_LONGSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.STEEL_GREATSWORD_CROSSGUARD_POMMEL.get());
-                        output.accept(ModItems.STEEL_CLAYMORE_SLOPED_CROSSGUARD_POMMEL.get());
-
-                    })
-                    .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_INGREDIENTS =
             REGISTRY.register("got_ingredients", () -> CreativeModeTab.builder()
-                    .withTabsBefore(GOT_ARMORY.getId())
+                    .withTabsBefore(GOT_FOOD.getId())
                     .title(Component.translatable("itemGroup.got.got_ingredients"))
                     .icon(() -> new ItemStack(ModItems.COIN_DRAGON.get()))
                     .displayItems((params, output) -> {
@@ -2686,72 +2437,8 @@ public class ModTabs {
                         output.accept(ModItems.TOPAZ.get());
                         output.accept(ModItems.TOURMALINE.get());
 
-                        output.accept(ModItems.BERYL_BLOCK.get());
-                        output.accept(ModItems.BLOODSTONE_BLOCK.get());
-                        output.accept(ModItems.CARNELIAN_BLOCK.get());
-                        output.accept(ModItems.CHALCEDONY_BLOCK.get());
-                        output.accept(ModItems.GARNET_BLOCK.get());
-                        output.accept(ModItems.JADE_BLOCK.get());
-                        output.accept(ModItems.JASPER_BLOCK.get());
-                        output.accept(ModItems.MALACHITE_BLOCK.get());
-                        output.accept(ModItems.MOONSTONE_BLOCK.get());
-                        output.accept(ModItems.ONYX_BLOCK.get());
-                        output.accept(ModItems.OPAL_BLOCK.get());
-                        output.accept(ModItems.RUBY_BLOCK.get());
-                        output.accept(ModItems.SAPPHIRE_BLOCK.get());
-                        output.accept(ModItems.TIGERS_EYE_BLOCK.get());
-                        output.accept(ModItems.TOPAZ_BLOCK.get());
-                        output.accept(ModItems.TOURMALINE_BLOCK.get());
 
-                        output.accept(ModItems.BERYL_ORE.get());
-                        output.accept(ModItems.BLOODSTONE_ORE.get());
-                        output.accept(ModItems.CARNELIAN_ORE.get());
-                        output.accept(ModItems.CHALCEDONY_ORE.get());
-                        output.accept(ModItems.DRAGONGLASS_ORE.get());
-                        output.accept(ModItems.GARNET_ORE.get());
-                        output.accept(ModItems.JADE_ORE.get());
-                        output.accept(ModItems.JASPER_ORE.get());
-                        output.accept(ModItems.MALACHITE_ORE.get());
-                        output.accept(ModItems.MOONSTONE_ORE.get());
-                        output.accept(ModItems.ONYX_ORE.get());
-                        output.accept(ModItems.OPAL_ORE.get());
-                        output.accept(ModItems.RUBY_ORE.get());
-                        output.accept(ModItems.SAPPHIRE_ORE.get());
-                        output.accept(ModItems.SILVER_ORE.get());
-                        output.accept(ModItems.AMETHYST_ORE.get());
-                        output.accept(ModItems.TIGERS_EYE_ORE.get());
-                        output.accept(ModItems.TIN_ORE.get());
-                        output.accept(ModItems.TOPAZ_ORE.get());
-                        output.accept(ModItems.TOURMALINE_ORE.get());
-                        output.accept(ModItems.VALYRIAN_STEEL_ORE.get());
-                        output.accept(ModItems.COBALT_ORE.get());
-                        output.accept(ModItems.LEAD_ORE.get());
-                        output.accept(ModItems.PLATINUM_ORE.get());
-                        output.accept(ModItems.ZINC_ORE.get());
 
-                        output.accept(ModItems.DEEPSLATE_BERYL_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_BLOODSTONE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_CARNELIAN_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_CHALCEDONY_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_GARNET_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_JADE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_JASPER_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_MALACHITE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_MOONSTONE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_ONYX_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_OPAL_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_RUBY_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_SAPPHIRE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_SILVER_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_AMETHYST_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_TIGERS_EYE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_TIN_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_TOPAZ_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_TOURMALINE_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_COBALT_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_LEAD_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_PLATINUM_ORE.get());
-                        output.accept(ModItems.DEEPSLATE_ZINC_ORE.get());
 
                         output.accept(ModItems.RAW_SILVER.get());
                         output.accept(ModItems.RAW_TIN.get());
@@ -2761,12 +2448,6 @@ public class ModTabs {
                         output.accept(ModItems.RAW_PLATINUM.get());
                         output.accept(ModItems.RAW_ZINC.get());
 
-                        output.accept(ModItems.RAW_SILVER_BLOCK.get());
-                        output.accept(ModItems.RAW_TIN_BLOCK.get());
-                        output.accept(ModItems.RAW_COBALT_BLOCK.get());
-                        output.accept(ModItems.RAW_LEAD_BLOCK.get());
-                        output.accept(ModItems.RAW_PLATINUM_BLOCK.get());
-                        output.accept(ModItems.RAW_ZINC_BLOCK.get());
 
                         output.accept(ModItems.SILVER_INGOT.get());
                         output.accept(ModItems.TIN_INGOT.get());
@@ -2808,55 +2489,90 @@ public class ModTabs {
                         output.accept(ModItems.BARLEY_FLOUR.get());
                         output.accept(ModItems.BARLEY_DOUGH.get());
 
+                        // banner patterns
+                        output.accept(ModItems.STARK_BANNER_PATTERN.get());
+                        output.accept(ModItems.LANNISTER_BANNER_PATTERN.get());
+                        output.accept(ModItems.TARGARYEN_BANNER_PATTERN.get());
+                        output.accept(ModItems.BARATHEON_BANNER_PATTERN.get());
+                        output.accept(ModItems.GREYJOY_BANNER_PATTERN.get());
+                        output.accept(ModItems.TYRELL_BANNER_PATTERN.get());
+                        output.accept(ModItems.MARTELL_BANNER_PATTERN.get());
+                        output.accept(ModItems.TULLY_BANNER_PATTERN.get());
+                        output.accept(ModItems.ARRYN_BANNER_PATTERN.get());
+                        output.accept(ModItems.BOLTON_BANNER_PATTERN.get());
+
                     })
                     .build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_SPAWN_EGGS =
-            REGISTRY.register("got_spawn_eggs", () -> CreativeModeTab.builder()
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MISC =
+            REGISTRY.register("got_misc", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_INGREDIENTS.getId())
-                    .title(Component.translatable("itemGroup.got.got_spawn_eggs"))
-                    .icon(() -> new ItemStack(ModItems.NORTHMAN_SPAWN_EGG.get()))
-                    .displayItems((params, output) -> {
-
-                        output.accept(ModItems.NORTHMAN_SPAWN_EGG.get());
-                        output.accept(ModItems.RIVERLANDER_SPAWN_EGG.get());
-                        output.accept(ModItems.VALEMAN_SPAWN_EGG.get());
-                        output.accept(ModItems.WESTERMAN_SPAWN_EGG.get());
-                        output.accept(ModItems.STORMLORDER_SPAWN_EGG.get());
-                        output.accept(ModItems.IRONBORN_SPAWN_EGG.get());
-                        output.accept(ModItems.DORNISHMAN_SPAWN_EGG.get());
-                        output.accept(ModItems.REACHMAN_SPAWN_EGG.get());
-
-                        output.accept(ModItems.STARK_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.TULLY_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.LANNISTER_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.BARATHEON_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.GREYJOY_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.MARTELL_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.TYRELL_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.ARRYN_LEVY_SPAWN_EGG.get());
-
-                        output.accept(ModItems.NORTH_SOLDIER_SPAWN_EGG.get());
-                        output.accept(ModItems.VALE_KNIGHT_SPAWN_EGG.get());
-
-                        output.accept(ModItems.GOT_STAG_SPAWN_EGG.get());
-                        output.accept(ModItems.GOT_HERON_SPAWN_EGG.get());
-                        output.accept(ModItems.GOT_DIREWOLF_SPAWN_EGG.get());
-                        output.accept(ModItems.GOT_CROW_SPAWN_EGG.get());
-                        output.accept(ModItems.GOT_MAMMOTH_SPAWN_EGG.get());
-                        output.accept(ModItems.GOT_BROWN_BEAR_SPAWN_EGG.get());
-                        output.accept(ModItems.GOT_GIANT_SPAWN_EGG.get());
-
-                    })
-                    .build());
-
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_VERTICAL_SLABS =
-            REGISTRY.register("got_vertical_slabs", () -> CreativeModeTab.builder()
-                    .withTabsBefore(GOT_SPAWN_EGGS.getId())
-                    .title(Component.translatable("itemGroup.got.got_vertical_slabs"))
+                    .title(Component.translatable("itemGroup.got.got_misc"))
                     .icon(() -> new ItemStack(ModBlocks.OAK_VERTICAL_SLAB.get()))
                     .displayItems((params, output) -> {
 
+                        // gemstone blocks
+                        output.accept(ModItems.BERYL_BLOCK.get());
+                        output.accept(ModItems.BLOODSTONE_BLOCK.get());
+                        output.accept(ModItems.CARNELIAN_BLOCK.get());
+                        output.accept(ModItems.CHALCEDONY_BLOCK.get());
+                        output.accept(ModItems.GARNET_BLOCK.get());
+                        output.accept(ModItems.JADE_BLOCK.get());
+                        output.accept(ModItems.JASPER_BLOCK.get());
+                        output.accept(ModItems.MALACHITE_BLOCK.get());
+                        output.accept(ModItems.MOONSTONE_BLOCK.get());
+                        output.accept(ModItems.ONYX_BLOCK.get());
+                        output.accept(ModItems.OPAL_BLOCK.get());
+                        output.accept(ModItems.RUBY_BLOCK.get());
+                        output.accept(ModItems.SAPPHIRE_BLOCK.get());
+                        output.accept(ModItems.TIGERS_EYE_BLOCK.get());
+                        output.accept(ModItems.TOPAZ_BLOCK.get());
+                        output.accept(ModItems.TOURMALINE_BLOCK.get());
+
+                        // raw ore blocks
+                        output.accept(ModItems.RAW_SILVER_BLOCK.get());
+                        output.accept(ModItems.RAW_TIN_BLOCK.get());
+                        output.accept(ModItems.RAW_COBALT_BLOCK.get());
+                        output.accept(ModItems.RAW_LEAD_BLOCK.get());
+                        output.accept(ModItems.RAW_PLATINUM_BLOCK.get());
+                        output.accept(ModItems.RAW_ZINC_BLOCK.get());
+
+                        // wool slabs & stairs
+                        safeAccept(output, ModBlocks.WHITE_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.WHITE_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.ORANGE_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.ORANGE_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.MAGENTA_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.MAGENTA_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.LIGHT_BLUE_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.LIGHT_BLUE_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.YELLOW_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.YELLOW_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.LIME_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.LIME_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.PINK_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.PINK_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.GRAY_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.GRAY_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.LIGHT_GRAY_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.LIGHT_GRAY_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.CYAN_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.CYAN_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.PURPLE_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.PURPLE_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.BLUE_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.BLUE_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.BROWN_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.BROWN_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.GREEN_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.GREEN_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.RED_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.RED_WOOL_STAIRS.get());
+                        safeAccept(output, ModBlocks.BLACK_WOOL_SLAB.get());
+                        safeAccept(output, ModBlocks.BLACK_WOOL_STAIRS.get());
+
+                        // vertical slabs
                         safeAccept(output, ModBlocks.ACACIA_ROOFING_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.ACACIA_WOOD_VERTICAL_SLAB.get());
                         safeAccept(output, ModBlocks.ALDER_ROOFING_VERTICAL_SLAB.get());
@@ -3266,6 +2982,306 @@ public class ModTabs {
 
                     })
                     .build());
+
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_SPAWN_EGGS =
+            REGISTRY.register("got_spawn_eggs", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_MISC.getId())
+                    .title(Component.translatable("itemGroup.got.got_spawn_eggs"))
+                    .icon(() -> new ItemStack(ModItems.NORTHMAN_SPAWN_EGG.get()))
+                    .displayItems((params, output) -> {
+
+                        output.accept(ModItems.NORTHMAN_SPAWN_EGG.get());
+                        output.accept(ModItems.RIVERLANDER_SPAWN_EGG.get());
+                        output.accept(ModItems.VALEMAN_SPAWN_EGG.get());
+                        output.accept(ModItems.WESTERMAN_SPAWN_EGG.get());
+                        output.accept(ModItems.STORMLORDER_SPAWN_EGG.get());
+                        output.accept(ModItems.IRONBORN_SPAWN_EGG.get());
+                        output.accept(ModItems.DORNISHMAN_SPAWN_EGG.get());
+                        output.accept(ModItems.REACHMAN_SPAWN_EGG.get());
+
+                        output.accept(ModItems.STARK_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.TULLY_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.LANNISTER_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.BARATHEON_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.GREYJOY_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.MARTELL_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.TYRELL_LEVY_SPAWN_EGG.get());
+                        output.accept(ModItems.ARRYN_LEVY_SPAWN_EGG.get());
+
+                        output.accept(ModItems.NORTH_SOLDIER_SPAWN_EGG.get());
+                        output.accept(ModItems.VALE_KNIGHT_SPAWN_EGG.get());
+
+                        output.accept(ModItems.GOT_STAG_SPAWN_EGG.get());
+                        output.accept(ModItems.GOT_HERON_SPAWN_EGG.get());
+                        output.accept(ModItems.GOT_DIREWOLF_SPAWN_EGG.get());
+                        output.accept(ModItems.GOT_CROW_SPAWN_EGG.get());
+                        output.accept(ModItems.GOT_MAMMOTH_SPAWN_EGG.get());
+                        output.accept(ModItems.GOT_BROWN_BEAR_SPAWN_EGG.get());
+                        output.accept(ModItems.GOT_GIANT_SPAWN_EGG.get());
+
+                    })
+                    .build());
+
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_NATURE =
+            REGISTRY.register("got_nature", () -> CreativeModeTab.builder()
+                    .withTabsBefore(GOT_SPAWN_EGGS.getId())
+                    .title(Component.translatable("itemGroup.got.got_nature"))
+                    .icon(() -> new ItemStack(ModBlocks.WEIRWOOD_LEAVES.get()))
+                    .displayItems((params, output) -> {
+
+                        safeAccept(output, ModBlocks.WEIRWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.WEIRWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.ASPEN_LEAVES.get());
+                        safeAccept(output, ModBlocks.ASPEN_SAPLING.get());
+                        safeAccept(output, ModBlocks.ALDER_LEAVES.get());
+                        safeAccept(output, ModBlocks.ALDER_SAPLING.get());
+                        safeAccept(output, ModBlocks.PINE_LEAVES.get());
+                        safeAccept(output, ModBlocks.PINE_SAPLING.get());
+                        safeAccept(output, ModBlocks.FIR_LEAVES.get());
+                        safeAccept(output, ModBlocks.FIR_SAPLING.get());
+                        safeAccept(output, ModBlocks.SENTINAL_LEAVES.get());
+                        safeAccept(output, ModBlocks.SENTINAL_SAPLING.get());
+                        safeAccept(output, ModBlocks.IRONWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.IRONWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.BEECH_LEAVES.get());
+                        safeAccept(output, ModBlocks.BEECH_SAPLING.get());
+                        safeAccept(output, ModBlocks.SOLDIER_PINE_LEAVES.get());
+                        safeAccept(output, ModBlocks.SOLDIER_PINE_SAPLING.get());
+                        safeAccept(output, ModBlocks.ASH_LEAVES.get());
+                        safeAccept(output, ModBlocks.ASH_SAPLING.get());
+                        safeAccept(output, ModBlocks.HAWTHORN_LEAVES.get());
+                        safeAccept(output, ModBlocks.HAWTHORN_SAPLING.get());
+                        safeAccept(output, ModBlocks.BLACKBARK_LEAVES.get());
+                        safeAccept(output, ModBlocks.BLACKBARK_SAPLING.get());
+                        safeAccept(output, ModBlocks.BLOODWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.BLOODWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.BLUE_MAHOE_LEAVES.get());
+                        safeAccept(output, ModBlocks.BLUE_MAHOE_SAPLING.get());
+                        safeAccept(output, ModBlocks.COTTONWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.COTTONWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.BLACK_COTTONWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.BLACK_COTTONWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.CINNAMON_LEAVES.get());
+                        safeAccept(output, ModBlocks.CINNAMON_SAPLING.get());
+                        safeAccept(output, ModBlocks.CLOVE_LEAVES.get());
+                        safeAccept(output, ModBlocks.CLOVE_SAPLING.get());
+                        safeAccept(output, ModBlocks.EBONY_LEAVES.get());
+                        safeAccept(output, ModBlocks.EBONY_SAPLING.get());
+                        safeAccept(output, ModBlocks.ELM_LEAVES.get());
+                        safeAccept(output, ModBlocks.ELM_SAPLING.get());
+                        safeAccept(output, ModBlocks.CEDAR_LEAVES.get());
+                        safeAccept(output, ModBlocks.CEDAR_SAPLING.get());
+                        safeAccept(output, ModBlocks.APPLE_LEAVES.get());
+                        safeAccept(output, ModBlocks.APPLE_SAPLING.get());
+                        safeAccept(output, ModBlocks.GOLDENHEART_LEAVES.get());
+                        safeAccept(output, ModBlocks.GOLDENHEART_SAPLING.get());
+                        safeAccept(output, ModBlocks.LINDEN_LEAVES.get());
+                        safeAccept(output, ModBlocks.LINDEN_SAPLING.get());
+                        safeAccept(output, ModBlocks.MAHOGANY_LEAVES.get());
+                        safeAccept(output, ModBlocks.MAHOGANY_SAPLING.get());
+                        safeAccept(output, ModBlocks.MAPLE_LEAVES.get());
+                        safeAccept(output, ModBlocks.MAPLE_SAPLING.get());
+                        safeAccept(output, ModBlocks.MYRRH_LEAVES.get());
+                        safeAccept(output, ModBlocks.MYRRH_SAPLING.get());
+                        safeAccept(output, ModBlocks.REDWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.REDWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.CHESTNUT_LEAVES.get());
+                        safeAccept(output, ModBlocks.CHESTNUT_SAPLING.get());
+                        safeAccept(output, ModBlocks.WILLOW_LEAVES.get());
+                        safeAccept(output, ModBlocks.WILLOW_SAPLING.get());
+                        safeAccept(output, ModBlocks.WORMTREE_LEAVES.get());
+                        safeAccept(output, ModBlocks.WORMTREE_SAPLING.get());
+                        safeAccept(output, ModBlocks.NIGHTWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.NIGHTWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.PURPLEHEART_LEAVES.get());
+                        safeAccept(output, ModBlocks.PURPLEHEART_SAPLING.get());
+                        safeAccept(output, ModBlocks.TIGERWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.TIGERWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.SANDALWOOD_LEAVES.get());
+                        safeAccept(output, ModBlocks.SANDALWOOD_SAPLING.get());
+                        safeAccept(output, ModBlocks.SANDBEGGAR_LEAVES.get());
+                        safeAccept(output, ModBlocks.SANDBEGGAR_SAPLING.get());
+                        safeAccept(output, ModBlocks.APRICOT_LEAVES.get());
+                        safeAccept(output, ModBlocks.APRICOT_SAPLING.get());
+                        safeAccept(output, ModBlocks.BLACKTHORN_LEAVES.get());
+                        safeAccept(output, ModBlocks.BLACKTHORN_SAPLING.get());
+                        safeAccept(output, ModBlocks.RED_CHERRY_LEAVES.get());
+                        safeAccept(output, ModBlocks.RED_CHERRY_SAPLING.get());
+                        safeAccept(output, ModBlocks.BLACK_CHERRY_LEAVES.get());
+                        safeAccept(output, ModBlocks.BLACK_CHERRY_SAPLING.get());
+                        safeAccept(output, ModBlocks.WHITE_CHERRY_LEAVES.get());
+                        safeAccept(output, ModBlocks.WHITE_CHERRY_SAPLING.get());
+                        safeAccept(output, ModBlocks.CRABAPPLE_LEAVES.get());
+                        safeAccept(output, ModBlocks.CRABAPPLE_SAPLING.get());
+                        safeAccept(output, ModBlocks.DATE_PALM_LEAVES.get());
+                        safeAccept(output, ModBlocks.DATE_PALM_SAPLING.get());
+                        safeAccept(output, ModBlocks.FIG_LEAVES.get());
+                        safeAccept(output, ModBlocks.FIG_SAPLING.get());
+                        safeAccept(output, ModBlocks.LEMON_LEAVES.get());
+                        safeAccept(output, ModBlocks.LEMON_SAPLING.get());
+                        safeAccept(output, ModBlocks.LIME_LEAVES.get());
+                        safeAccept(output, ModBlocks.LIME_SAPLING.get());
+                        safeAccept(output, ModBlocks.OLIVE_LEAVES.get());
+                        safeAccept(output, ModBlocks.OLIVE_SAPLING.get());
+                        safeAccept(output, ModBlocks.ORANGE_LEAVES.get());
+                        safeAccept(output, ModBlocks.ORANGE_SAPLING.get());
+                        safeAccept(output, ModBlocks.PEACH_LEAVES.get());
+                        safeAccept(output, ModBlocks.PEACH_SAPLING.get());
+                        safeAccept(output, ModBlocks.PEAR_LEAVES.get());
+                        safeAccept(output, ModBlocks.PEAR_SAPLING.get());
+                        safeAccept(output, ModBlocks.PERSIMMON_LEAVES.get());
+                        safeAccept(output, ModBlocks.PERSIMMON_SAPLING.get());
+                        safeAccept(output, ModBlocks.PINK_IVORY_LEAVES.get());
+                        safeAccept(output, ModBlocks.PINK_IVORY_SAPLING.get());
+                        safeAccept(output, ModBlocks.PLUM_LEAVES.get());
+                        safeAccept(output, ModBlocks.PLUM_SAPLING.get());
+                        safeAccept(output, ModBlocks.POMEGRANATE_LEAVES.get());
+                        safeAccept(output, ModBlocks.POMEGRANATE_SAPLING.get());
+                        safeAccept(output, ModBlocks.PRUNE_LEAVES.get());
+                        safeAccept(output, ModBlocks.PRUNE_SAPLING.get());
+                        safeAccept(output, ModBlocks.ALMOND_LEAVES.get());
+                        safeAccept(output, ModBlocks.ALMOND_SAPLING.get());
+                        safeAccept(output, ModBlocks.NUTMEG_LEAVES.get());
+                        safeAccept(output, ModBlocks.NUTMEG_SAPLING.get());
+                        safeAccept(output, ModBlocks.HEMLOCK_LEAVES.get());
+                        safeAccept(output, ModBlocks.HEMLOCK_SAPLING.get());
+
+                        safeAccept(output, ModBlocks.BELLFLOWER.get());
+                        safeAccept(output, ModBlocks.BLACK_LOTUS.get());
+                        safeAccept(output, ModBlocks.BLOOD_BLOOM.get());
+                        safeAccept(output, ModBlocks.COLDSNAPS.get());
+                        safeAccept(output, ModBlocks.DRAGONS_BREATH.get());
+                        safeAccept(output, ModBlocks.EVENING_STAR.get());
+                        safeAccept(output, ModBlocks.FORGET_ME_NOT.get());
+                        safeAccept(output, ModBlocks.FROSTFIRES.get());
+                        safeAccept(output, ModBlocks.GILLYFLOWER.get());
+                        safeAccept(output, ModBlocks.GINGER.get());
+                        safeAccept(output, ModBlocks.GOATHEAD.get());
+                        safeAccept(output, ModBlocks.GOLDENCUP.get());
+                        safeAccept(output, ModBlocks.GOLDENROD.get());
+                        safeAccept(output, ModBlocks.GOLDEN_ROSE.get());
+                        safeAccept(output, ModBlocks.GOLDEN_ROSE_BUSH.get());
+                        safeAccept(output, ModBlocks.GORSE.get());
+                        safeAccept(output, ModBlocks.RED_ROSE.get());
+                        safeAccept(output, ModBlocks.RED_ROSE_BUSH.get());
+                        safeAccept(output, ModBlocks.WHITE_ROSE.get());
+                        safeAccept(output, ModBlocks.WHITE_ROSE_BUSH.get());
+                        safeAccept(output, ModBlocks.WINTER_ROSE.get());
+                        safeAccept(output, ModBlocks.WINTER_ROSE_BUSH.get());
+                        safeAccept(output, ModBlocks.LADYS_LACE.get());
+                        safeAccept(output, ModBlocks.LAVENDER.get());
+                        safeAccept(output, ModBlocks.LIVERWORT.get());
+                        safeAccept(output, ModBlocks.LUNGWORT.get());
+                        safeAccept(output, ModBlocks.MOONBLOOM.get());
+                        safeAccept(output, ModBlocks.NIGHTSHADE.get());
+                        safeAccept(output, ModBlocks.OPIUM_POPPY.get());
+                        safeAccept(output, ModBlocks.PENNYROYAL.get());
+                        safeAccept(output, ModBlocks.POISON_KISSES.get());
+                        safeAccept(output, ModBlocks.SAFFRON_CROCUS.get());
+                        safeAccept(output, ModBlocks.SEDGE.get());
+                        safeAccept(output, ModBlocks.SPICEFLOWER.get());
+                        safeAccept(output, ModBlocks.TANSY.get());
+                        safeAccept(output, ModBlocks.THISTLE.get());
+                        safeAccept(output, ModBlocks.THORNBUSH.get());
+                        safeAccept(output, ModBlocks.WILD_RADISH.get());
+
+                        safeAccept(output, ModBlocks.WILD_BEAN.get());
+
+                        safeAccept(output, ModBlocks.BRACKEN.get());
+                        safeAccept(output, ModBlocks.BRIAR.get());
+                        safeAccept(output, ModBlocks.BROOM.get());
+                        safeAccept(output, ModBlocks.WILD_CARDAMOM.get());
+                        safeAccept(output, ModBlocks.WILD_CHICKPEA.get());
+
+                        safeAccept(output, ModBlocks.WILD_CUCUMBER.get());
+                        safeAccept(output, ModBlocks.DAGGERLEAF.get());
+                        safeAccept(output, ModBlocks.FIREPOD.get());
+                        safeAccept(output, ModBlocks.GHOSTSKIN.get());
+                        safeAccept(output, ModBlocks.GRAPE_VINE.get());
+                        safeAccept(output, ModBlocks.HARPYS_GOLD.get());
+                        safeAccept(output, ModBlocks.HEATHER.get());
+                        safeAccept(output, ModBlocks.WILD_HEMP.get());
+                        safeAccept(output, ModBlocks.HORNWORT.get());
+                        safeAccept(output, ModBlocks.IVY.get());
+                        safeAccept(output, ModBlocks.KINGSCOPPER.get());
+                        safeAccept(output, ModBlocks.WILD_LICORICE.get());
+                        safeAccept(output, ModBlocks.MISTLETOE.get());
+                        safeAccept(output, ModBlocks.WILD_MUSTARD_PLANT.get());
+                        safeAccept(output, ModBlocks.NETTLE.get());
+                        safeAccept(output, ModBlocks.WILD_PEPPER_PLANT.get());
+                        safeAccept(output, ModBlocks.PINCHFIRE.get());
+                        safeAccept(output, ModBlocks.PRICKLY_BEN.get());
+                        safeAccept(output, ModBlocks.SANDWILLOW.get());
+                        safeAccept(output, ModBlocks.SMOKEBERRY_BUSH.get());
+                        safeAccept(output, ModBlocks.SOURLEAF.get());
+                        safeAccept(output, ModBlocks.STING_ME_NOT.get());
+                        safeAccept(output, ModBlocks.WASPWILLOW.get());
+
+                        safeAccept(output, ModBlocks.DEVILGRASS.get());
+                        safeAccept(output, ModBlocks.GHOST_GRASS.get());
+                        safeAccept(output, ModBlocks.HRANNA.get());
+                        safeAccept(output, ModBlocks.PIPERS_GRASS.get());
+                        safeAccept(output, ModBlocks.WHEATGRASS.get());
+                        safeAccept(output, ModBlocks.REEDS.get());
+                        safeAccept(output, ModBlocks.SHORT_REEDS.get());
+                        safeAccept(output, ModBlocks.RUSHES.get());
+                        safeAccept(output, ModBlocks.QUAGMIRE.get());
+
+                        // ores
+                        output.accept(ModItems.BERYL_ORE.get());
+                        output.accept(ModItems.BLOODSTONE_ORE.get());
+                        output.accept(ModItems.CARNELIAN_ORE.get());
+                        output.accept(ModItems.CHALCEDONY_ORE.get());
+                        output.accept(ModItems.DRAGONGLASS_ORE.get());
+                        output.accept(ModItems.GARNET_ORE.get());
+                        output.accept(ModItems.JADE_ORE.get());
+                        output.accept(ModItems.JASPER_ORE.get());
+                        output.accept(ModItems.MALACHITE_ORE.get());
+                        output.accept(ModItems.MOONSTONE_ORE.get());
+                        output.accept(ModItems.ONYX_ORE.get());
+                        output.accept(ModItems.OPAL_ORE.get());
+                        output.accept(ModItems.RUBY_ORE.get());
+                        output.accept(ModItems.SAPPHIRE_ORE.get());
+                        output.accept(ModItems.SILVER_ORE.get());
+                        output.accept(ModItems.AMETHYST_ORE.get());
+                        output.accept(ModItems.TIGERS_EYE_ORE.get());
+                        output.accept(ModItems.TIN_ORE.get());
+                        output.accept(ModItems.TOPAZ_ORE.get());
+                        output.accept(ModItems.TOURMALINE_ORE.get());
+                        output.accept(ModItems.VALYRIAN_STEEL_ORE.get());
+                        output.accept(ModItems.COBALT_ORE.get());
+                        output.accept(ModItems.LEAD_ORE.get());
+                        output.accept(ModItems.PLATINUM_ORE.get());
+                        output.accept(ModItems.ZINC_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_BERYL_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_BLOODSTONE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_CARNELIAN_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_CHALCEDONY_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_GARNET_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_JADE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_JASPER_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_MALACHITE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_MOONSTONE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_ONYX_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_OPAL_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_RUBY_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_SAPPHIRE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_SILVER_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_AMETHYST_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_TIGERS_EYE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_TIN_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_TOPAZ_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_TOURMALINE_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_COBALT_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_LEAD_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_PLATINUM_ORE.get());
+                        output.accept(ModItems.DEEPSLATE_ZINC_ORE.get());
+
+                    })
+                    .build());
+
 
     public static void register(IEventBus eventBus) {
         REGISTRY.register(eventBus);
