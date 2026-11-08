@@ -12,7 +12,7 @@ public class DornishmanEntity extends SmallfolkEntity {
 
     public static final int MALE_VARIANT_COUNT   = 9;
     
-    public static final int FEMALE_VARIANT_COUNT = 9;
+    public static final int FEMALE_VARIANT_COUNT = 16;
     
     public static final Identifier[] MALE_TEXTURES   = textures("dornishman", false, MALE_VARIANT_COUNT);
     
@@ -40,6 +40,9 @@ public class DornishmanEntity extends SmallfolkEntity {
 
     @Override
     public int getVariantsPerGender() { return MALE_VARIANT_COUNT; }
+
+    @Override
+    public int getFemaleVariantsPerGender() { return FEMALE_VARIANT_COUNT; }
 
     @Override
     public boolean isCivilian() { return true; }

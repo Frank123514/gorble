@@ -5,6 +5,7 @@ import net.got.event.entity.npc.data.GenderProvider;
 import net.got.event.entity.npc.data.name.NameGenerator;
 import net.got.event.entity.npc.data.name.NpcNames;
 import net.got.event.entity.npc.levy.LevyEntity;
+import net.got.event.entity.npc.smallfolk.NorthmanEntity;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -30,7 +31,7 @@ public class StarkLevyEntity extends LevyEntity {
     }
 
     public static final Identifier[] MALE_TEXTURES   = textures(false);
-    public static final Identifier[] FEMALE_TEXTURES = textures(true);
+    public static final Identifier[] FEMALE_TEXTURES = NorthmanEntity.FEMALE_TEXTURES;
 
     public StarkLevyEntity(EntityType<? extends StarkLevyEntity> type, Level level) {
         super(type, level);
@@ -39,6 +40,7 @@ public class StarkLevyEntity extends LevyEntity {
     @Override protected GenderProvider getGenderProvider() { return GenderProvider.MALE; }
     @Override protected NameGenerator  getNameGenerator()  { return NpcNames.STARK_LEVY; }
     @Override public int getVariantsPerGender() { return 9; }
+    @Override public int getFemaleVariantsPerGender() { return NorthmanEntity.FEMALE_VARIANT_COUNT; }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
