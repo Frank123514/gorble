@@ -41,6 +41,7 @@ public class NorthSoldierEntity extends SkilledFighterEntity {
     }
 
     @Override public int   getVariantsPerGender() { return NorthmanEntity.MALE_VARIANT_COUNT; }
+    @Override public int   getFemaleVariantsPerGender() { return NorthmanEntity.FEMALE_VARIANT_COUNT; }
     @Override protected NameGenerator getNameGenerator() { return NpcNames.NORTH_SOLDIER; }
 
     @Override

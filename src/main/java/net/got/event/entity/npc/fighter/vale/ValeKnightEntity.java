@@ -41,6 +41,7 @@ public class ValeKnightEntity extends SkilledFighterEntity {
     }
 
     @Override public int   getVariantsPerGender() { return ValemanEntity.MALE_VARIANT_COUNT; }
+    @Override public int   getFemaleVariantsPerGender() { return ValemanEntity.FEMALE_VARIANT_COUNT; }
     @Override protected NameGenerator getNameGenerator() { return NpcNames.VALE_KNIGHT; }
 
     @Override

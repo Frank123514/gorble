@@ -235,6 +235,9 @@ public abstract class SmallfolkEntity extends PathfinderMob {
 
     public int getVariantsPerGender() { return 1; }
 
+    /** How many female skins this NPC type has; defaults to the male count. */
+    public int getFemaleVariantsPerGender() { return getVariantsPerGender(); }
+
     public int getVariant() { return entityData.get(DATA_VARIANT); }
 
     protected void setVariant(int v) { entityData.set(DATA_VARIANT, v); }
@@ -248,7 +251,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         int vpg = getVariantsPerGender();
         int variant = male
                 ? rand.nextInt(Math.max(1, vpg))
-                : vpg + rand.nextInt(Math.max(1, vpg));
+                : vpg + rand.nextInt(Math.max(1, getFemaleVariantsPerGender()));
         setVariant(variant);
 
         setNpcName(getNameGenerator().generateName(rand, male));
