@@ -13,17 +13,6 @@ import net.got.event.entity.npc.smallfolk.IronbornEntity;
 import net.got.event.entity.npc.smallfolk.DornishmanEntity;
 import net.got.event.entity.npc.smallfolk.ReachmanEntity;
 
-import net.got.event.entity.npc.levy.stark.StarkLevyEntity;
-import net.got.event.entity.npc.levy.tully.TullyLevyEntity;
-import net.got.event.entity.npc.levy.lannister.LannisterLevyEntity;
-import net.got.event.entity.npc.levy.baratheon.BaratheonLevyEntity;
-import net.got.event.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
-import net.got.event.entity.npc.levy.martell.MartellLevyEntity;
-import net.got.event.entity.npc.levy.tyrell.TyrellLevyEntity;
-import net.got.event.entity.npc.levy.arryn.ArrynLevyEntity;
-
-import net.got.event.entity.npc.fighter.north.NorthSoldierEntity;
-import net.got.event.entity.npc.fighter.vale.ValeKnightEntity;
 import net.got.event.entity.direwolf.DirewolfEntity;
 import net.got.event.entity.crow.CrowEntity;
 import net.got.event.entity.mammoth.MammothEntity;
@@ -49,18 +38,6 @@ public class EntityEvents {
         event.put(ModEntities.IRONBORN.get(),    IronbornEntity.createAttributes().build());
         event.put(ModEntities.DORNISHMAN.get(),  DornishmanEntity.createAttributes().build());
         event.put(ModEntities.REACHMAN.get(),    ReachmanEntity.createAttributes().build());
-
-        event.put(ModEntities.STARK_LEVY.get(),     StarkLevyEntity.createAttributes().build());
-        event.put(ModEntities.TULLY_LEVY.get(),     TullyLevyEntity.createAttributes().build());
-        event.put(ModEntities.LANNISTER_LEVY.get(), LannisterLevyEntity.createAttributes().build());
-        event.put(ModEntities.BARATHEON_LEVY.get(), BaratheonLevyEntity.createAttributes().build());
-        event.put(ModEntities.GREYJOY_LEVY.get(),   GreyjoyLevyEntity.createAttributes().build());
-        event.put(ModEntities.MARTELL_LEVY.get(),   MartellLevyEntity.createAttributes().build());
-        event.put(ModEntities.TYRELL_LEVY.get(),    TyrellLevyEntity.createAttributes().build());
-        event.put(ModEntities.ARRYN_LEVY.get(),     ArrynLevyEntity.createAttributes().build());
-
-        event.put(ModEntities.NORTH_SOLDIER.get(), NorthSoldierEntity.createAttributes().build());
-        event.put(ModEntities.VALE_KNIGHT.get(),   ValeKnightEntity.createAttributes().build());
 
         event.put(ModEntities.GOT_STAG.get(), StagEntity.createAttributes().build());
 
@@ -88,18 +65,6 @@ public class EntityEvents {
         event.register(ModEntities.IRONBORN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, IronbornEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.DORNISHMAN.get(),  SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DornishmanEntity::checkSpawnRules,  RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.REACHMAN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ReachmanEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-
-        event.register(ModEntities.STARK_LEVY.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StarkLevyEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.TULLY_LEVY.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TullyLevyEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.LANNISTER_LEVY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LannisterLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.BARATHEON_LEVY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaratheonLevyEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.GREYJOY_LEVY.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GreyjoyLevyEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.MARTELL_LEVY.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MartellLevyEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.TYRELL_LEVY.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TyrellLevyEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.ARRYN_LEVY.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ArrynLevyEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
-
-        event.register(ModEntities.NORTH_SOLDIER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NorthSoldierEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.VALE_KNIGHT.get(),   SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ValeKnightEntity::checkSpawnRules,   RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         event.register(ModEntities.GOT_STAG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StagEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 

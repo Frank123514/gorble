@@ -13,6 +13,9 @@ import net.minecraft.resources.Identifier;
 // Texture sheet is 64x64 (textures/entity/equipment/humanoid/hauberk.png).
 public class HauberkModel {
 
+	/** Outer layer: larger than the gambeson (0.25) so the two stack without clipping. */
+	private static final float HAUBERK_DEFORM = 0.5F;
+
 	public static final ModelLayerLocation LAYER_LOCATION =
 			new ModelLayerLocation(Identifier.fromNamespaceAndPath("got", "hauberk"), "main");
 
@@ -28,31 +31,31 @@ public class HauberkModel {
 		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 		body.addOrReplaceChild("jacket",
 				CubeListBuilder.create()
-						.texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
+						.texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(HAUBERK_DEFORM)),
 				PartPose.ZERO);
 
 		PartDefinition rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.offset(-5.0F, 2.0F, 0.0F));
 		rightArm.addOrReplaceChild("right_sleeve",
 				CubeListBuilder.create()
-						.texOffs(40, 32).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
+						.texOffs(40, 32).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(HAUBERK_DEFORM)),
 				PartPose.ZERO);
 
 		PartDefinition leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.offset(5.0F, 2.0F, 0.0F));
 		leftArm.addOrReplaceChild("left_sleeve",
 				CubeListBuilder.create()
-						.texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
+						.texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(HAUBERK_DEFORM)),
 				PartPose.ZERO);
 
 		PartDefinition rightLeg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.offset(-1.9F, 12.0F, 0.0F));
 		rightLeg.addOrReplaceChild("right_pants",
 				CubeListBuilder.create()
-						.texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
+						.texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(HAUBERK_DEFORM)),
 				PartPose.ZERO);
 
 		PartDefinition leftLeg = partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.offset(1.9F, 12.0F, 0.0F));
 		leftLeg.addOrReplaceChild("left_pants",
 				CubeListBuilder.create()
-						.texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)),
+						.texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(HAUBERK_DEFORM)),
 				PartPose.ZERO);
 
 		return LayerDefinition.create(meshdefinition, 64, 64);

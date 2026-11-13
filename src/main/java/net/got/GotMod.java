@@ -67,6 +67,7 @@ public final class GotMod {
         TreePlacers.register(modBus);
         ModParticles.register(modBus);
         ModDataComponents.register(modBus);
+        net.got.gambeson.GambesonAttachments.register(modBus);
 
         ModEntities.REGISTRY.register(modBus);
 

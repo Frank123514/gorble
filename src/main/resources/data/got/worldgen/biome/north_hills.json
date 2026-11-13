@@ -64,21 +64,9 @@
     "creature": [
       {
         "type": "got:northman",
-        "weight": 8,
+        "weight": 16,
         "minCount": 2,
         "maxCount": 4
-      },
-      {
-        "type": "got:stark_levy",
-        "weight": 5,
-        "minCount": 1,
-        "maxCount": 3
-      },
-      {
-        "type": "got:north_soldier",
-        "weight": 3,
-        "minCount": 1,
-        "maxCount": 2
       }
     ],
     "misc": [],

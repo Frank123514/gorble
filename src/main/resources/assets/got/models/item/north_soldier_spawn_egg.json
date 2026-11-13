@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "got:item/north_soldier_spawn_egg"
-  }
-}

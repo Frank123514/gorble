@@ -7,7 +7,11 @@ import net.got.event.entity.npc.NpcInventory;
 import net.got.event.entity.npc.data.GenderProvider;
 import net.got.event.entity.npc.data.NpcOccupation;
 import net.got.event.entity.npc.data.NpcPersonality;
+import net.got.event.entity.npc.data.NpcRank;
 import net.got.event.entity.npc.data.name.NameGenerator;
+import net.got.event.entity.npc.goal.GotHurtByTargetGoal;
+import net.got.event.entity.npc.goal.GotMeleeAttackGoal;
+import net.got.event.entity.npc.goal.NearestTargetGoal;
 import net.got.network.OpenInteractScreenPayload;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
@@ -15,12 +19,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.equine.Horse;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -57,6 +66,10 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     protected static final EntityDataAccessor<String>  DATA_OCCUPATION      =
             SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
 
+    /** Rank / station (peasant, levy, man-at-arms, cavalryman, knight). See {@link NpcRank}. */
+    protected static final EntityDataAccessor<String>  DATA_RANK            =
+            SynchedEntityData.defineId(SmallfolkEntity.class, EntityDataSerializers.STRING);
+
     private NpcPersonality personality = NpcPersonality.FRIENDLY;
     private final NpcTalkAnimations talkAnimations = new NpcTalkAnimations(this);
     
@@ -71,6 +84,9 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     private NpcOccupation occupation = NpcOccupation.NONE;
 
     private final NpcInventory npcInventory = new NpcInventory();
+
+    /** True when the rank came from saved data / a spawn egg's entity_data, so spawning must not re-roll it. */
+    private boolean rankFromData;
 
     protected SmallfolkEntity(EntityType<? extends SmallfolkEntity> type, Level level) {
         super(type, level);
@@ -114,6 +130,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         builder.define(DATA_TALK_GESTURE,    0f);
         builder.define(DATA_DIALOGUE_LINE,   "");
         builder.define(DATA_OCCUPATION,      NpcOccupation.NONE.id);
+        builder.define(DATA_RANK,            NpcRank.PEASANT.id);
     }
 
     protected GenderProvider getGenderProvider() {
@@ -145,12 +162,15 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         if (personal == null || personal.isEmpty()) return null;
 
         if (!isCivilian()) {
-            String title = getMilitaryTitle();
-            if (title != null && !title.isEmpty()) {
-                return Component.translatable("entity.got.npc.named_military",
-                        Component.literal(personal),
-                        Component.literal(title));
+            NpcRank rank = getRank();
+            if (rank.isPrefixTitle()) {
+                return Component.translatable("entity.got.npc.named_knight",
+                        Component.literal(rank.title),
+                        Component.literal(personal));
             }
+            return Component.translatable("entity.got.npc.named_military",
+                    Component.literal(personal),
+                    Component.literal(rank.title));
         }
 
         NpcOccupation occ = getOccupation();
@@ -165,7 +185,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
                 Component.translatable(getType().getDescriptionId()));
     }
 
-    public @Nullable String getMilitaryTitle() { return null; }
+    public @Nullable String getMilitaryTitle() { return isCivilian() ? null : getRank().title; }
 
     @Override
     public boolean isCustomNameVisible() {
@@ -242,10 +262,81 @@ public abstract class SmallfolkEntity extends PathfinderMob {
 
     protected void setVariant(int v) { entityData.set(DATA_VARIANT, v); }
 
-    public boolean isCivilian() { return true; }
+    public boolean isCivilian() { return getRank().civilian; }
+
+    // ── Rank ──────────────────────────────────────────────────────────────────
+
+    public NpcRank getRank() { return NpcRank.fromString(entityData.get(DATA_RANK)); }
+
+    /** Rank to give a freshly spawned NPC of this region. Regions may override to shift the mix. */
+    protected NpcRank rollRank(RandomSource rand) { return NpcRank.roll(rand); }
+
+    /**
+     * Changes rank: title, stats and behaviour follow. Does not touch gear or occupation
+     * (spawning handles those), so it is safe to call when loading saved data.
+     */
+    public void setRank(NpcRank rank) {
+        NpcRank previous = getRank();
+        entityData.set(DATA_RANK, rank.id);
+        if (level().isClientSide()) return;
+
+        applyRankAttributes(rank);
+        if (getHealth() > getMaxHealth()) setHealth(getMaxHealth());
+
+        if (previous != rank) {
+            goalSelector.removeAllGoals(g -> true);
+            targetSelector.removeAllGoals(g -> true);
+            registerGoals();
+        }
+    }
+
+    private void applyRankAttributes(NpcRank rank) {
+        setBase(Attributes.MAX_HEALTH,     rank.maxHealth);
+        setBase(Attributes.ATTACK_DAMAGE,  rank.attackDamage);
+        setBase(Attributes.ARMOR,          rank.armor);
+        setBase(Attributes.MOVEMENT_SPEED, rank.speed);
+    }
+
+    private void setBase(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attr, double value) {
+        AttributeInstance inst = getAttribute(attr);
+        if (inst != null) inst.setBaseValue(value);
+    }
+
+    /** Weapon + armor for the current rank. Called once, at spawn. */
+    protected void equipForRank(NpcRank rank) {
+        Item[] weapons = rank.weapons();
+        if (weapons.length > 0) {
+            setMainhandItem(new ItemStack(weapons[random.nextInt(weapons.length)]));
+        }
+        Item[] armor = rank.armorSet();
+        EquipmentSlot[] slots = { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET };
+        for (int i = 0; i < slots.length; i++) {
+            if (armor[i] != null && random.nextFloat() < rank.armorChance()) {
+                setItemSlot(slots[i], new ItemStack(armor[i]));
+            }
+        }
+        // Padded undergarment in the gambeson slot, layered beneath any chest armor.
+        if (random.nextFloat() < rank.gambesonChance()) {
+            net.got.gambeson.GambesonSlotData.set(this,
+                    new ItemStack(net.got.init.ModItems.GAMBESON.get()));
+        }
+    }
+
+    private void trySpawnMounted(ServerLevel serverLevel) {
+        Horse horse = EntityType.HORSE.create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
+        if (horse == null) return;
+        horse.snapTo(getX(), getY(), getZ(), getYRot(), 0f);
+        horse.setTamed(true);
+        horse.setOwner(this);
+        horse.setItemSlot(EquipmentSlot.SADDLE, new ItemStack(net.minecraft.world.item.Items.SADDLE));
+        if (serverLevel.tryAddFreshEntityWithPassengers(horse)) startRiding(horse, true, true);
+    }
 
     protected void assignIdentityFromRandom(RandomSource rand) {
-        boolean male = getGenderProvider().isMale(rand);
+        NpcRank rank = getRank();
+        boolean male = rank.femaleChance >= 0f
+                ? rand.nextFloat() >= rank.femaleChance
+                : getGenderProvider().isMale(rand);
         setGender(male ? NpcGender.MALE : NpcGender.FEMALE);
 
         int vpg = getVariantsPerGender();
@@ -271,7 +362,20 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, groupData);
+
+        // Rank first: gender, occupation, stats and gear all depend on it.
+        if (!rankFromData) setRank(rollRank(random));
+        NpcRank rank = getRank();
+
         assignIdentityFromRandom(random);
+        setHealth(getMaxHealth());
+        equipForRank(rank);
+
+        if (level instanceof ServerLevel serverLevel
+                && rank.horseChance > 0f
+                && random.nextFloat() < rank.horseChance) {
+            trySpawnMounted(serverLevel);
+        }
         return result;
     }
 
@@ -310,6 +414,7 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         output.putString("NpcName", getNpcName());
         output.putString("Personality", personality.id);
         output.putString(NpcOccupation.NBT_KEY, occupation.id);
+        output.putString(NpcRank.NBT_KEY, getRank().id);
         npcInventory.save(output);
     }
 
@@ -320,6 +425,11 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         setVariant(input.getIntOr("Variant", 0));
         setNpcName(input.getStringOr("NpcName", ""));
         personality = NpcPersonality.fromString(input.getStringOr("Personality", ""));
+        String savedRank = input.getStringOr(NpcRank.NBT_KEY, "");
+        if (NpcRank.isValid(savedRank)) {
+            rankFromData = true;
+            setRank(NpcRank.fromString(savedRank));
+        }
         if (isCivilian()) {
             setOccupation(NpcOccupation.fromString(input.getStringOr(NpcOccupation.NBT_KEY, "")));
         } else {
@@ -328,15 +438,33 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         npcInventory.load(input);
     }
 
+    /**
+     * Goals depend on rank: peasants flee and wander, combat ranks fight back and hunt monsters.
+     * Rebuilt by {@link #setRank} when the rank changes.
+     */
     @Override
     protected void registerGoals() {
+        NpcRank rank = getRank();
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new PanicGoal(this, 1.25));
+
+        if (rank.civilian) {
+            goalSelector.addGoal(1, new PanicGoal(this, 1.25));
+            goalSelector.addGoal(4, new OpenDoorGoal(this, true));
+            goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
+            goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f, 0.02f));
+            goalSelector.addGoal(6, new LookAtPlayerGoal(this, SmallfolkEntity.class, 5.0f, 0.02f));
+            goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+            return;
+        }
+
+        goalSelector.addGoal(2, new GotMeleeAttackGoal(this, rank == NpcRank.LEVY ? 1.3 : 1.4));
         goalSelector.addGoal(4, new OpenDoorGoal(this, true));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f, 0.02f));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, SmallfolkEntity.class, 5.0f, 0.02f));
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, rank == NpcRank.LEVY ? 1.0 : 0.9));
+        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+
+        targetSelector.addGoal(1, new GotHurtByTargetGoal(this));
+        targetSelector.addGoal(2, new NearestTargetGoal<>(this, Monster.class, true));
     }
 
     @Override

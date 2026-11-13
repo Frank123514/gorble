@@ -25,6 +25,9 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
                 PLAYER_SCALE);
         this.maleTextures   = maleTextures;
         this.femaleTextures = femaleTextures;
+        addLayer(new net.got.client.armor.GambesonLayer<>(this,
+                new net.got.client.armor.GotBodyArmorModel(
+                        ctx.bakeLayer(net.got.client.armor.GambesonModel.LAYER_LOCATION), true)));
     }
 
     @Override

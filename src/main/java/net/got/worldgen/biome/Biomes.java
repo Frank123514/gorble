@@ -218,9 +218,7 @@ public class Biomes {
         spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(EntityType.COW, 4, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(EntityType.HORSE, 2, 6));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 1, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 5));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 7, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 3, new MobSpawnSettings.SpawnerData(ModEntities.NORTH_SOLDIER.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 20, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 5));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),
@@ -409,8 +407,7 @@ public class Biomes {
 
     private static Biome ironHills(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 6, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),
@@ -563,9 +560,7 @@ public class Biomes {
 
     private static Biome north(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 6, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 3, new MobSpawnSettings.SpawnerData(ModEntities.NORTH_SOLDIER.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 19, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 3));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 4, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(EntityType.PIG, 4, 4));
@@ -609,9 +604,7 @@ public class Biomes {
 
     private static Biome northHills(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 3, new MobSpawnSettings.SpawnerData(ModEntities.NORTH_SOLDIER.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 16, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),
@@ -645,8 +638,7 @@ public class Biomes {
 
     private static Biome northMountains(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 1, 3));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),
@@ -676,9 +668,7 @@ public class Biomes {
 
     private static Biome northPineGrove(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 2, new MobSpawnSettings.SpawnerData(ModEntities.NORTH_SOLDIER.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 14, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 1, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 3, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(EntityType.FOX, 2, 4));
@@ -717,8 +707,7 @@ public class Biomes {
 
     private static Biome northHighland(BootstrapContext<Biome> context) {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 7, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 3));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 11, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 4, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(EntityType.HORSE, 2, 5));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 3));
@@ -815,9 +804,7 @@ public class Biomes {
         spawnBuilder.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(EntityType.SHEEP, 4, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(EntityType.HORSE, 2, 6));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 1, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 6, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(ModEntities.NORTH_SOLDIER.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 19, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 2, 4));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),
@@ -881,8 +868,7 @@ public class Biomes {
         spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 4, 4));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 4, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 2, 3));
         spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(EntityType.FOX, 2, 4));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 1, 3));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, 3, new MobSpawnSettings.SpawnerData(ModEntities.STARK_LEVY.get(), 1, 2));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 8, new MobSpawnSettings.SpawnerData(ModEntities.NORTHMAN.get(), 1, 3));
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),

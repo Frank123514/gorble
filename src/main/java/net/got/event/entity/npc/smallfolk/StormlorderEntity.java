@@ -44,8 +44,6 @@ public class StormlorderEntity extends SmallfolkEntity {
     @Override
     public int getFemaleVariantsPerGender() { return FEMALE_VARIANT_COUNT; }
 
-    @Override
-    public boolean isCivilian() { return true; }
 
     public static AttributeSupplier.Builder createAttributes() {
         return SmallfolkEntity.createAttributes();

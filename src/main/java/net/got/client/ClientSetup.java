@@ -29,15 +29,6 @@ import net.got.event.entity.npc.smallfolk.StormlorderEntity;
 import net.got.event.entity.npc.smallfolk.IronbornEntity;
 import net.got.event.entity.npc.smallfolk.DornishmanEntity;
 import net.got.event.entity.npc.smallfolk.ReachmanEntity;
-import net.got.event.entity.npc.levy.stark.StarkLevyEntity;
-import net.got.event.entity.npc.levy.tully.TullyLevyEntity;
-import net.got.event.entity.npc.levy.lannister.LannisterLevyEntity;
-import net.got.event.entity.npc.levy.baratheon.BaratheonLevyEntity;
-import net.got.event.entity.npc.levy.greyjoy.GreyjoyLevyEntity;
-import net.got.event.entity.npc.levy.martell.MartellLevyEntity;
-import net.got.event.entity.npc.levy.tyrell.TyrellLevyEntity;
-import net.got.event.entity.npc.fighter.north.NorthSoldierEntity;
-import net.got.event.entity.npc.fighter.vale.ValeKnightEntity;
 
 import net.got.event.entity.client.stag.StagRenderer;
 import net.got.init.*;
@@ -290,17 +281,6 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.IRONBORN.get(),    ctx -> new SmallfolkRenderer<>(ctx, IronbornEntity.MALE_TEXTURES,    IronbornEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.DORNISHMAN.get(),  ctx -> new SmallfolkRenderer<>(ctx, DornishmanEntity.MALE_TEXTURES,  DornishmanEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.REACHMAN.get(),    ctx -> new SmallfolkRenderer<>(ctx, ReachmanEntity.MALE_TEXTURES,    ReachmanEntity.FEMALE_TEXTURES));
-
-        event.registerEntityRenderer(ModEntities.STARK_LEVY.get(),     ctx -> new SmallfolkRenderer<>(ctx, StarkLevyEntity.MALE_TEXTURES,     StarkLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.TULLY_LEVY.get(),     ctx -> new SmallfolkRenderer<>(ctx, TullyLevyEntity.MALE_TEXTURES,     TullyLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.LANNISTER_LEVY.get(), ctx -> new SmallfolkRenderer<>(ctx, LannisterLevyEntity.MALE_TEXTURES, LannisterLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.BARATHEON_LEVY.get(), ctx -> new SmallfolkRenderer<>(ctx, BaratheonLevyEntity.MALE_TEXTURES, BaratheonLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.GREYJOY_LEVY.get(),   ctx -> new SmallfolkRenderer<>(ctx, GreyjoyLevyEntity.MALE_TEXTURES,   GreyjoyLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.MARTELL_LEVY.get(),   ctx -> new SmallfolkRenderer<>(ctx, MartellLevyEntity.MALE_TEXTURES,   MartellLevyEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.TYRELL_LEVY.get(),    ctx -> new SmallfolkRenderer<>(ctx, TyrellLevyEntity.MALE_TEXTURES,    TyrellLevyEntity.FEMALE_TEXTURES));
-
-        event.registerEntityRenderer(ModEntities.NORTH_SOLDIER.get(), ctx -> new SmallfolkRenderer<>(ctx, NorthSoldierEntity.MALE_TEXTURES, NorthSoldierEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.VALE_KNIGHT.get(),   ctx -> new SmallfolkRenderer<>(ctx, ValeKnightEntity.MALE_TEXTURES,   ValeKnightEntity.FEMALE_TEXTURES));
 
         event.registerEntityRenderer(ModEntities.GOT_STAG.get(),     StagRenderer::new);
         event.registerEntityRenderer(ModEntities.GOT_HERON.get(),    HeronRenderer::new);

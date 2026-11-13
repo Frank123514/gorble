@@ -385,7 +385,6 @@ public class ModTabs {
                     })
                     .build());
 
-
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_CARPENTRY =
             REGISTRY.register("got_carpentry", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_MASONRY.getId())
@@ -2145,7 +2144,6 @@ public class ModTabs {
                     })
                     .build());
 
-
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_ARMORY =
             REGISTRY.register("got_armory", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_CARPENTRY.getId())
@@ -2259,7 +2257,6 @@ public class ModTabs {
 
                     })
                     .build());
-
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_FOOD =
             REGISTRY.register("got_food", () -> CreativeModeTab.builder()
@@ -2397,7 +2394,6 @@ public class ModTabs {
                     })
                     .build());
 
-
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_INGREDIENTS =
             REGISTRY.register("got_ingredients", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_FOOD.getId())
@@ -2437,9 +2433,6 @@ public class ModTabs {
                         output.accept(ModItems.TOPAZ.get());
                         output.accept(ModItems.TOURMALINE.get());
 
-
-
-
                         output.accept(ModItems.RAW_SILVER.get());
                         output.accept(ModItems.RAW_TIN.get());
                         output.accept(ModItems.RAW_VALYRIAN_STEEL.get());
@@ -2447,7 +2440,6 @@ public class ModTabs {
                         output.accept(ModItems.RAW_LEAD.get());
                         output.accept(ModItems.RAW_PLATINUM.get());
                         output.accept(ModItems.RAW_ZINC.get());
-
 
                         output.accept(ModItems.SILVER_INGOT.get());
                         output.accept(ModItems.TIN_INGOT.get());
@@ -2503,7 +2495,6 @@ public class ModTabs {
 
                     })
                     .build());
-
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_MISC =
             REGISTRY.register("got_misc", () -> CreativeModeTab.builder()
@@ -2983,7 +2974,6 @@ public class ModTabs {
                     })
                     .build());
 
-
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_SPAWN_EGGS =
             REGISTRY.register("got_spawn_eggs", () -> CreativeModeTab.builder()
                     .withTabsBefore(GOT_MISC.getId())
@@ -3000,18 +2990,6 @@ public class ModTabs {
                         output.accept(ModItems.DORNISHMAN_SPAWN_EGG.get());
                         output.accept(ModItems.REACHMAN_SPAWN_EGG.get());
 
-                        output.accept(ModItems.STARK_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.TULLY_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.LANNISTER_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.BARATHEON_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.GREYJOY_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.MARTELL_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.TYRELL_LEVY_SPAWN_EGG.get());
-                        output.accept(ModItems.ARRYN_LEVY_SPAWN_EGG.get());
-
-                        output.accept(ModItems.NORTH_SOLDIER_SPAWN_EGG.get());
-                        output.accept(ModItems.VALE_KNIGHT_SPAWN_EGG.get());
-
                         output.accept(ModItems.GOT_STAG_SPAWN_EGG.get());
                         output.accept(ModItems.GOT_HERON_SPAWN_EGG.get());
                         output.accept(ModItems.GOT_DIREWOLF_SPAWN_EGG.get());
@@ -3022,7 +3000,6 @@ public class ModTabs {
 
                     })
                     .build());
-
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> GOT_NATURE =
             REGISTRY.register("got_nature", () -> CreativeModeTab.builder()
@@ -3281,7 +3258,6 @@ public class ModTabs {
 
                     })
                     .build());
-
 
     public static void register(IEventBus eventBus) {
         REGISTRY.register(eventBus);

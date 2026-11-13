@@ -25,15 +25,4 @@ public final class NpcNames {
     public static final NameGenerator DORNISHMAN  = gendered("dornishman");
     public static final NameGenerator REACHMAN    = gendered("reachman");
 
-    public static final NameGenerator STARK_LEVY     = gendered("northman");
-    public static final NameGenerator TULLY_LEVY     = gendered("riverlander");
-    public static final NameGenerator LANNISTER_LEVY = gendered("westerman");
-    public static final NameGenerator BARATHEON_LEVY = gendered("stormlorder");
-    public static final NameGenerator GREYJOY_LEVY   = gendered("ironborn");
-    public static final NameGenerator MARTELL_LEVY   = gendered("dornishman");
-    public static final NameGenerator TYRELL_LEVY    = gendered("reachman");
-    public static final NameGenerator ARRYN_LEVY     = gendered("valeman");
-
-    public static final NameGenerator NORTH_SOLDIER = gendered("northman");
-    public static final NameGenerator VALE_KNIGHT   = gendered("valeman");
 }

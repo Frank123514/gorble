@@ -2085,8 +2085,10 @@ public class ModItems {
     // their own custom models (GambesonModel / BrigandineModel / HauberkModel) through
     // GotBodyArmorModel -- the client hookup is in ClientSetup. The hauberk's model also covers
     // the upper legs, but it is still a chest-slot item.
+    // The gambeson is worn in its own slot (under the chestplate slot) so it layers beneath a hauberk;
+    // see net.got.gambeson. It keeps the chest-armor stats/durability but can't go in the chest slot.
     public static final DeferredItem<Item> GAMBESON = REGISTRY.registerItem("gambeson",
-            p -> new Item(p.humanoidArmor(ModArmorMaterials.GAMBESON.value(), ArmorType.CHESTPLATE)));
+            p -> new net.got.gambeson.GambesonItem(p.humanoidArmor(ModArmorMaterials.GAMBESON.value(), ArmorType.CHESTPLATE)));
     public static final DeferredItem<Item> BRIGANDINE = REGISTRY.registerItem("brigandine",
             p -> new Item(p.humanoidArmor(ModArmorMaterials.BRIGANDINE.value(), ArmorType.CHESTPLATE)));
     public static final DeferredItem<Item> HAUBERK = REGISTRY.registerItem("hauberk",
@@ -2195,28 +2197,6 @@ public class ModItems {
             "stormlorder_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.STORMLORDER.get())));
     public static final DeferredItem<SpawnEggItem> DORNISHMAN_SPAWN_EGG = REGISTRY.registerItem(
             "dornishman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.DORNISHMAN.get())));
-
-    public static final DeferredItem<SpawnEggItem> STARK_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "stark_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.STARK_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> TULLY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "tully_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.TULLY_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> LANNISTER_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "lannister_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.LANNISTER_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> BARATHEON_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "baratheon_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.BARATHEON_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> GREYJOY_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "greyjoy_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GREYJOY_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> MARTELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "martell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MARTELL_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> TYRELL_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "tyrell_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.TYRELL_LEVY.get())));
-    public static final DeferredItem<SpawnEggItem> ARRYN_LEVY_SPAWN_EGG = REGISTRY.registerItem(
-            "arryn_levy_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.ARRYN_LEVY.get())));
-
-    public static final DeferredItem<SpawnEggItem> NORTH_SOLDIER_SPAWN_EGG = REGISTRY.registerItem(
-            "north_soldier_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.NORTH_SOLDIER.get())));
-    public static final DeferredItem<SpawnEggItem> VALE_KNIGHT_SPAWN_EGG = REGISTRY.registerItem(
-            "vale_knight_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.VALE_KNIGHT.get())));
 
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
             "got_stag_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_STAG.get())));
