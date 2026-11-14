@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.got.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BiomeMixin",
+    "InventoryMenuBrigandineMixin",
+    "InventoryMenuMixin",
+    "LevelMixin",
+    "ServerLevelMixin",
+    "SlotAccessor",
+    "SlotPositionAccessor"
+  ],
+  "client": [
+    "BiomeColorsMixin",
+    "CreativeModeInventoryScreenMixin",
+    "CreativeSlotWrapperAccessor",
+    "LiquidBlockRendererMixin",
+    "WeatherEffectRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

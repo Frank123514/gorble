@@ -1,0 +1,48 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="Not specified"
+
+[[mods]]
+modId="got"
+version="1.0.0"
+displayName="got"
+displayURL="https://mcreator.net"
+credits="Created using mod maker MCreator - https://mcreator.net/about"
+authors="MCreator"
+
+# Start of user code block mod configuration
+# End of user code block mod configuration
+
+
+# Start of user code block custom mixins
+[[mixins]]
+config = "got.mixins.json"
+
+[[mixins]]
+config = "got_brigandine.mixins.json"
+# End of user code block custom mixins
+
+[[dependencies.got]]
+modId="neoforge"
+type="required"
+versionRange="[21.11,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.got]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.11]"
+ordering="AFTER"
+side="BOTH"
+
+
+
+# Start of user code block dependencies configuration
+[[dependencies.got]]
+modId="jei"
+type="optional"
+versionRange="[20.0.0,)"
+ordering="NONE"
+side="CLIENT"
+# End of user code block dependencies configuration

@@ -2087,10 +2087,17 @@ public class ModItems {
     // the upper legs, but it is still a chest-slot item.
     // The gambeson is worn in its own slot (under the chestplate slot) so it layers beneath a hauberk;
     // see net.got.gambeson. It keeps the chest-armor stats/durability but can't go in the chest slot.
+    // The brigandine is worn in its own slot too (net.got.brigandine), over both the gambeson slot and
+    // the chestplate slot, so it layers on top of a hauberk.
     public static final DeferredItem<Item> GAMBESON = REGISTRY.registerItem("gambeson",
             p -> new net.got.gambeson.GambesonItem(p.humanoidArmor(ModArmorMaterials.GAMBESON.value(), ArmorType.CHESTPLATE)));
     public static final DeferredItem<Item> BRIGANDINE = REGISTRY.registerItem("brigandine",
-            p -> new Item(p.humanoidArmor(ModArmorMaterials.BRIGANDINE.value(), ArmorType.CHESTPLATE)));
+            p -> new net.got.brigandine.BrigandineItem(p.humanoidArmor(ModArmorMaterials.BRIGANDINE.value(), ArmorType.CHESTPLATE),
+                    6.0, 0.5, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON));
+    // Northern-style quilted boiled leather. Worn in the same outer-layer slot as the brigandine.
+    public static final DeferredItem<Item> BOILED_LEATHER_JERKIN = REGISTRY.registerItem("boiled_leather_jerkin",
+            p -> new net.got.brigandine.BrigandineItem(p.humanoidArmor(ModArmorMaterials.BOILED_LEATHER_JERKIN.value(), ArmorType.CHESTPLATE),
+                    4.0, 0.0, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER));
     public static final DeferredItem<Item> HAUBERK = REGISTRY.registerItem("hauberk",
             p -> new Item(p.humanoidArmor(ModArmorMaterials.HAUBERK.value(), ArmorType.CHESTPLATE)));
 

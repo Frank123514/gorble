@@ -155,4 +155,7 @@ public class ModArmorMaterials {
     /** Plates riveted between cloth/leather layers: best of the three. */
     public static final Holder<ArmorMaterial> BRIGANDINE =
             chestOnly("brigandine", 22, 6, 9, 0.5f, SoundEvents.ARMOR_EQUIP_IRON);
+    /** Quilted boiled leather (northern style): between the gambeson and the hauberk. */
+    public static final Holder<ArmorMaterial> BOILED_LEATHER_JERKIN =
+            chestOnly("boiled_leather_jerkin", 14, 4, 12, 0.0f, SoundEvents.ARMOR_EQUIP_LEATHER);
 }
