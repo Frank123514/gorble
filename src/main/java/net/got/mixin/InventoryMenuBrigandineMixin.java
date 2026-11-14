@@ -16,8 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Adds the brigandine slot to the player's inventory menu. High priority so it runs after the
- * gambeson slot mixin, letting us place our slot next to the gambeson slot without overlapping anything.
+ * Adds the brigandine slot to the player's inventory menu. Placed directly to the right of the vanilla boots slot.
  */
 @Mixin(value = InventoryMenu.class, priority = 1500)
 public abstract class InventoryMenuBrigandineMixin extends AbstractContainerMenu {
@@ -28,24 +27,8 @@ public abstract class InventoryMenuBrigandineMixin extends AbstractContainerMenu
 
     @Inject(method = "<init>", at = @At("RETURN"), remap = false)
     private void got$addBrigandineSlot(Inventory inventory, boolean active, Player owner, CallbackInfo ci) {
-        int[] pos = got$findFreeSpot();
-        this.addSlot(new BrigandineSlot(owner, pos[0], pos[1]));
-    }
-
-    /**
-     * Puts the slot right next to the vanilla armor slots (armor column is x=8, y=8..62), taking the
-     * topmost spot that doesn't overlap any other slot (the gambeson slot may already be there).
-     */
-    private int[] got$findFreeSpot() {
-        int[][] candidates = { {26, 8}, {26, 26}, {26, 44}, {26, 62}, {77, 44}, {77, 26}, {77, 8} };
-        for (int[] c : candidates) {
-            boolean free = true;
-            for (Slot s : this.slots) {
-                if (Math.abs(s.x - c[0]) < 18 && Math.abs(s.y - c[1]) < 18) { free = false; break; }
-            }
-            if (free) return c;
-        }
-        return candidates[candidates.length - 1];
+        // Vanilla armor column is x=8, y=8..62 (boots at y=62): put the slot right of the boots slot.
+        this.addSlot(new BrigandineSlot(owner, 26, 62));
     }
 
     /** Shift-click: brigandine -> brigandine slot; brigandine slot -> inventory. Everything else is untouched. */

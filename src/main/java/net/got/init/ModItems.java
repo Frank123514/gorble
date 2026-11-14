@@ -2060,10 +2060,10 @@ public class ModItems {
             p -> new GotHelmItem(
                     p.humanoidArmor(ModArmorMaterials.PADDED_COIF.value(), ArmorType.HELMET),
                     PaddedCoifModel.LAYER_LOCATION));
+    // The mail coif is worn in its own slot (under the helmet slot), see net.got.coif.
     public static final DeferredItem<Item> MAIL_COIF = REGISTRY.registerItem("mail_coif",
-            p -> new GotHelmItem(
-                    p.humanoidArmor(ModArmorMaterials.MAIL_COIF.value(), ArmorType.HELMET),
-                    MailCoifModel.LAYER_LOCATION));
+            p -> new net.got.coif.CoifItem(p.humanoidArmor(ModArmorMaterials.MAIL_COIF.value(), ArmorType.HELMET),
+                    2.0, 0.5, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_CHAIN));
     public static final DeferredItem<Item> HALFHELM = REGISTRY.registerItem("halfhelm",
             p -> new GotHelmItem(
                     p.humanoidArmor(ModArmorMaterials.HALFHELM.value(), ArmorType.HELMET),

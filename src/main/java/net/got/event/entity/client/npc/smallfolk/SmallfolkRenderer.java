@@ -29,6 +29,9 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
                 new net.got.client.armor.GotBodyArmorModel(
                         ctx.bakeLayer(net.got.client.armor.GambesonModel.LAYER_LOCATION), true)));
         addLayer(net.got.client.armor.BrigandineLayer.create(this, ctx::bakeLayer));
+        addLayer(new net.got.client.armor.CoifLayer<>(this,
+                new net.got.client.armor.GotHelmBodyModel(
+                        ctx.bakeLayer(net.got.client.armor.MailCoifModel.LAYER_LOCATION))));
     }
 
     @Override

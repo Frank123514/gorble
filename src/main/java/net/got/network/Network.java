@@ -132,6 +132,21 @@ public final class Network {
                     inv.setChanged();
                 }));
 
+        r.playToServer(CustomArmorSlotsPayload.TYPE, CustomArmorSlotsPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null || !player.isCreative()) return;   // survival uses normal container clicks
+                    net.minecraft.world.item.ItemStack g = payload.gambeson();
+                    net.minecraft.world.item.ItemStack b = payload.brigandine();
+                    if (g.isEmpty() || (g.getItem() instanceof net.got.gambeson.GambesonItem && g.getCount() == 1))
+                        net.got.gambeson.GambesonSlotData.set(player, g);
+                    if (b.isEmpty() || (b.getItem() instanceof net.got.brigandine.BrigandineItem && b.getCount() == 1))
+                        net.got.brigandine.BrigandineSlotData.set(player, b);
+                    net.minecraft.world.item.ItemStack c = payload.coif();
+                    if (c.isEmpty() || (c.getItem() instanceof net.got.coif.CoifItem && c.getCount() == 1))
+                        net.got.coif.CoifSlotData.set(player, c);
+                }));
+
         r.playToServer(CoinExchangePayload.TYPE, CoinExchangePayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();
