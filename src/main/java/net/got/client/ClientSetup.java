@@ -121,7 +121,6 @@ public final class ClientSetup {
         // Chest-slot body armor (torso + arms + the pants cubes on the legs).
         registerHelm(event, ModItems.GAMBESON.get(),   GambesonModel.LAYER_LOCATION,   root -> new GotBodyArmorModel(root, true));
         registerHelm(event, ModItems.BRIGANDINE.get(), BrigandineModel.LAYER_LOCATION, root -> new GotBodyArmorModel(root, true));
-        registerHelm(event, ModItems.HAUBERK.get(),    HauberkModel.LAYER_LOCATION,    root -> new GotBodyArmorModel(root, true));
     }
 
     private static void registerHelm(RegisterClientExtensionsEvent event, net.minecraft.world.item.Item item,

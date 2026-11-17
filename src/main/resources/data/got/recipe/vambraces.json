@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "P": "got:steel_armor_plate",
+    "L": "minecraft:leather"
+  },
+  "pattern": [
+    "PLP",
+    "P P"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:vambraces"
+  }
+}

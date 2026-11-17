@@ -2098,8 +2098,27 @@ public class ModItems {
     public static final DeferredItem<Item> BOILED_LEATHER_JERKIN = REGISTRY.registerItem("boiled_leather_jerkin",
             p -> new net.got.brigandine.BrigandineItem(p.humanoidArmor(ModArmorMaterials.BOILED_LEATHER_JERKIN.value(), ArmorType.CHESTPLATE),
                     4.0, 0.0, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER));
+    // The hauberk is worn in its own slot too (net.got.hauberk), between the gambeson slot and the brigandine slot.
     public static final DeferredItem<Item> HAUBERK = REGISTRY.registerItem("hauberk",
-            p -> new Item(p.humanoidArmor(ModArmorMaterials.HAUBERK.value(), ArmorType.CHESTPLATE)));
+            p -> new net.got.hauberk.HauberkItem(p.humanoidArmor(ModArmorMaterials.HAUBERK.value(), ArmorType.CHESTPLATE)));
+
+    // Modular plate armor: each piece has its own extra slot (net.got.plate) and a texture-based model
+    // (PlateModel), so all five can be worn together over the gambeson / hauberk / brigandine layers.
+    public static final DeferredItem<Item> GORGET = REGISTRY.registerItem("gorget",
+            p -> new net.got.plate.PlateItem(p.humanoidArmor(ModArmorMaterials.GORGET.value(), ArmorType.CHESTPLATE),
+                    net.got.plate.PlatePiece.GORGET));
+    public static final DeferredItem<Item> SPAULDERS = REGISTRY.registerItem("spaulders",
+            p -> new net.got.plate.PlateItem(p.humanoidArmor(ModArmorMaterials.SPAULDERS.value(), ArmorType.CHESTPLATE),
+                    net.got.plate.PlatePiece.SPAULDERS));
+    public static final DeferredItem<Item> VAMBRACES = REGISTRY.registerItem("vambraces",
+            p -> new net.got.plate.PlateItem(p.humanoidArmor(ModArmorMaterials.VAMBRACES.value(), ArmorType.CHESTPLATE),
+                    net.got.plate.PlatePiece.VAMBRACES));
+    public static final DeferredItem<Item> BREASTPLATE = REGISTRY.registerItem("breastplate",
+            p -> new net.got.plate.PlateItem(p.humanoidArmor(ModArmorMaterials.BREASTPLATE.value(), ArmorType.CHESTPLATE),
+                    net.got.plate.PlatePiece.BREASTPLATE));
+    public static final DeferredItem<Item> CUISSES = REGISTRY.registerItem("cuisses",
+            p -> new net.got.plate.PlateItem(p.humanoidArmor(ModArmorMaterials.CUISSES.value(), ArmorType.CHESTPLATE),
+                    net.got.plate.PlatePiece.CUISSES));
 
     public static final DeferredItem<Item> IRON_SPEAR_HEAD          = simple("iron_spear_head");
     public static final DeferredItem<Item> IRON_ARROWHEAD           = simple("iron_arrowhead");

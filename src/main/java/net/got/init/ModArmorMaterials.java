@@ -158,4 +158,16 @@ public class ModArmorMaterials {
     /** Quilted boiled leather (northern style): between the gambeson and the hauberk. */
     public static final Holder<ArmorMaterial> BOILED_LEATHER_JERKIN =
             chestOnly("boiled_leather_jerkin", 14, 4, 12, 0.0f, SoundEvents.ARMOR_EQUIP_LEATHER);
+
+    /** Modular plate pieces (net.got.plate), each worn in its own slot. Durability is the base value x16. */
+    public static final Holder<ArmorMaterial> GORGET =
+            chestOnly("gorget", 14, 1, 9, 0.0f, SoundEvents.ARMOR_EQUIP_IRON);
+    public static final Holder<ArmorMaterial> SPAULDERS =
+            chestOnly("spaulders", 18, 2, 9, 0.0f, SoundEvents.ARMOR_EQUIP_IRON);
+    public static final Holder<ArmorMaterial> VAMBRACES =
+            chestOnly("vambraces", 16, 1, 9, 0.0f, SoundEvents.ARMOR_EQUIP_IRON);
+    public static final Holder<ArmorMaterial> BREASTPLATE =
+            chestOnly("breastplate", 30, 5, 9, 0.5f, SoundEvents.ARMOR_EQUIP_IRON);
+    public static final Holder<ArmorMaterial> CUISSES =
+            chestOnly("cuisses", 22, 3, 9, 0.0f, SoundEvents.ARMOR_EQUIP_IRON);
 }

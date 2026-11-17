@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "P": "got:steel_armor_plate",
+    "L": "minecraft:leather"
+  },
+  "pattern": [
+    "PPP",
+    "L L",
+    "P P"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:cuisses"
+  }
+}

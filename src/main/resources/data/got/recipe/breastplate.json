@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "P": "got:steel_armor_plate",
+    "L": "minecraft:leather"
+  },
+  "pattern": [
+    "PLP",
+    "PPP",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:breastplate"
+  }
+}

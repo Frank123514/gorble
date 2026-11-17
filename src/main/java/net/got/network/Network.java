@@ -145,6 +145,22 @@ public final class Network {
                     net.minecraft.world.item.ItemStack c = payload.coif();
                     if (c.isEmpty() || (c.getItem() instanceof net.got.coif.CoifItem && c.getCount() == 1))
                         net.got.coif.CoifSlotData.set(player, c);
+                    net.minecraft.world.item.ItemStack h = payload.hauberk();
+                    if (h.isEmpty() || (h.getItem() instanceof net.got.hauberk.HauberkItem && h.getCount() == 1))
+                        net.got.hauberk.HauberkSlotData.set(player, h);
+                }));
+
+        r.playToServer(PlateSlotsPayload.TYPE, PlateSlotsPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null || !player.isCreative()) return;   // survival uses normal container clicks
+                    net.got.plate.PlatePiece[] pieces = net.got.plate.PlatePiece.values();
+                    for (int i = 0; i < pieces.length && i < payload.stacks().size(); i++) {
+                        net.minecraft.world.item.ItemStack s = payload.stacks().get(i);
+                        if (s.isEmpty() || (s.getItem() instanceof net.got.plate.PlateItem item
+                                && item.getPiece() == pieces[i] && s.getCount() == 1))
+                            net.got.plate.PlateSlotData.set(player, pieces[i], s);
+                    }
                 }));
 
         r.playToServer(CoinExchangePayload.TYPE, CoinExchangePayload.STREAM_CODEC,

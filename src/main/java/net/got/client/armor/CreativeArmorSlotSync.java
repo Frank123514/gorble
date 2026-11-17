@@ -4,7 +4,13 @@ import net.got.GotMod;
 import net.got.brigandine.BrigandineSlotData;
 import net.got.coif.CoifSlotData;
 import net.got.gambeson.GambesonSlotData;
+import net.got.hauberk.HauberkSlotData;
+import java.util.ArrayList;
+import java.util.List;
 import net.got.network.CustomArmorSlotsPayload;
+import net.got.network.PlateSlotsPayload;
+import net.got.plate.PlatePiece;
+import net.got.plate.PlateSlotData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +32,20 @@ public final class CreativeArmorSlotSync {
     private static ItemStack lastGambeson = ItemStack.EMPTY;
     private static ItemStack lastBrigandine = ItemStack.EMPTY;
     private static ItemStack lastCoif = ItemStack.EMPTY;
+    private static ItemStack lastHauberk = ItemStack.EMPTY;
+    private static List<ItemStack> lastPlate = new ArrayList<>();
+
+    private static List<ItemStack> readPlate(net.minecraft.world.entity.LivingEntity entity) {
+        List<ItemStack> list = new ArrayList<>();
+        for (PlatePiece piece : PlatePiece.values()) list.add(PlateSlotData.get(entity, piece).copy());
+        return list;
+    }
+
+    private static boolean samePlate(List<ItemStack> a, List<ItemStack> b) {
+        if (a.size() != b.size()) return false;
+        for (int i = 0; i < a.size(); i++) if (!ItemStack.matches(a.get(i), b.get(i))) return false;
+        return true;
+    }
 
     @SubscribeEvent
     public static void onRender(ScreenEvent.Render.Background event) {
@@ -39,21 +59,31 @@ public final class CreativeArmorSlotSync {
         ItemStack gambeson = GambesonSlotData.get(player);
         ItemStack brigandine = BrigandineSlotData.get(player);
         ItemStack coif = CoifSlotData.get(player);
+        ItemStack hauberk = HauberkSlotData.get(player);
+        List<ItemStack> plate = readPlate(player);
 
         if (screen != lastScreen) {            // screen just opened: remember what the server already has
             lastScreen = screen;
             lastGambeson = gambeson.copy();
             lastBrigandine = brigandine.copy();
             lastCoif = coif.copy();
+            lastHauberk = hauberk.copy();
+            lastPlate = plate;
             return;
         }
 
+        if (!samePlate(plate, lastPlate)) {
+            lastPlate = plate;
+            ClientPacketDistributor.sendToServer(new PlateSlotsPayload(readPlate(player)));
+        }
+
         if (!ItemStack.matches(gambeson, lastGambeson) || !ItemStack.matches(brigandine, lastBrigandine)
-                || !ItemStack.matches(coif, lastCoif)) {
+                || !ItemStack.matches(coif, lastCoif) || !ItemStack.matches(hauberk, lastHauberk)) {
             lastGambeson = gambeson.copy();
             lastBrigandine = brigandine.copy();
             lastCoif = coif.copy();
-            ClientPacketDistributor.sendToServer(new CustomArmorSlotsPayload(gambeson.copy(), brigandine.copy(), coif.copy()));
+            lastHauberk = hauberk.copy();
+            ClientPacketDistributor.sendToServer(new CustomArmorSlotsPayload(gambeson.copy(), brigandine.copy(), coif.copy(), hauberk.copy()));
         }
     }
 

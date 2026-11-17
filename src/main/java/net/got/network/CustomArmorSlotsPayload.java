@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
  * Creative inventory only: the creative screen edits slots on the client and tells the server by vanilla slot
  * number (1..45), which never covers the gambeson / brigandine slots. The client sends their contents here instead.
  */
-public record CustomArmorSlotsPayload(ItemStack gambeson, ItemStack brigandine, ItemStack coif) implements CustomPacketPayload {
+public record CustomArmorSlotsPayload(ItemStack gambeson, ItemStack brigandine, ItemStack coif, ItemStack hauberk) implements CustomPacketPayload {
 
     public static final Identifier ID = Identifier.fromNamespaceAndPath("got", "custom_armor_slots");
 
@@ -21,6 +21,7 @@ public record CustomArmorSlotsPayload(ItemStack gambeson, ItemStack brigandine, 
                     ItemStack.OPTIONAL_STREAM_CODEC, CustomArmorSlotsPayload::gambeson,
                     ItemStack.OPTIONAL_STREAM_CODEC, CustomArmorSlotsPayload::brigandine,
                     ItemStack.OPTIONAL_STREAM_CODEC, CustomArmorSlotsPayload::coif,
+                    ItemStack.OPTIONAL_STREAM_CODEC, CustomArmorSlotsPayload::hauberk,
                     CustomArmorSlotsPayload::new);
 
     @Override

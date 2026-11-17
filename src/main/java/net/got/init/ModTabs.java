@@ -2196,6 +2196,11 @@ public class ModTabs {
                         output.accept(ModItems.HAUBERK.get());
                         output.accept(ModItems.BRIGANDINE.get());
                         output.accept(ModItems.BOILED_LEATHER_JERKIN.get());
+                        output.accept(ModItems.GORGET.get());
+                        output.accept(ModItems.SPAULDERS.get());
+                        output.accept(ModItems.VAMBRACES.get());
+                        output.accept(ModItems.BREASTPLATE.get());
+                        output.accept(ModItems.CUISSES.get());
 
                         output.accept(ModItems.IRON_SPEAR_HEAD.get());
                         output.accept(ModItems.IRON_ARROWHEAD.get());
