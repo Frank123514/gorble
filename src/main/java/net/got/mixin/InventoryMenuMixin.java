@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class InventoryMenuMixin extends AbstractContainerMenu {
 
     // Position in the survival inventory: just above the offhand slot, right of the player preview.
-    private static final int GAMBESON_X = 77;
-    private static final int GAMBESON_Y = 44;
+    private static final int GAMBESON_X = net.got.armorpanel.ArmorPanelLayout.GAMBESON_X;
+    private static final int GAMBESON_Y = net.got.armorpanel.ArmorPanelLayout.GAMBESON_Y;
 
     protected InventoryMenuMixin(MenuType<?> menuType, int containerId) {
         super(menuType, containerId);

@@ -30,4 +30,10 @@ public class HauberkSlot extends Slot {
     public int getMaxStackSize() {
         return 1;
     }
+
+    /** Hidden together with the armor panel (e.g. while the recipe book is open). */
+    @Override
+    public boolean isActive() {
+        return !net.got.armorpanel.ArmorPanelLayout.hidden;
+    }
 }

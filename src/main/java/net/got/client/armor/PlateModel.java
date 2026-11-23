@@ -16,8 +16,9 @@ import net.minecraft.resources.Identifier;
 // mc_y = 24 - bb_yMax and x/z are relative to each group's pivot, not x-flipped (same as BrigandineModel).
 // Texture UV origins (from the bbmodels):
 //   body / breastplate / gorget : (0,0) and (0,16)
-//   right arm / right leg       : (0,0) and (0,16), mirrored
-//   left  arm / left  leg       : (16,0) and (16,16), mirrored
+//   right arm / right leg       : (0,0) and (0,16)
+//   left  arm / left  leg       : (16,0) and (16,16)
+// Arm/leg cubes are NOT mirrored: each side has its own texture region, and mirror(true) flipped them.
 public final class PlateModel {
 
     /** Gap between the inner and outer texture layer (the bbmodels use inflate 0 and 0.25). */
@@ -56,28 +57,39 @@ public final class PlateModel {
                             .texOffs(0, 0).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, inner)
                             .texOffs(0, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, outer),
                     PartPose.ZERO);
-            case SPAULDERS, VAMBRACES -> {
+            // Vambraces: single layer only (first texture layer, no second shell). Kept at the outer
+            // inflate so it stays brigandine-sized instead of shrinking.
+            case VAMBRACES -> {
                 rightArm.addOrReplaceChild("right_plate",
-                        CubeListBuilder.create().mirror(true)
+                        CubeListBuilder.create()
+                                .texOffs(0, 0).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
+                        PartPose.ZERO);
+                leftArm.addOrReplaceChild("left_plate",
+                        CubeListBuilder.create()
+                                .texOffs(16, 0).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
+                        PartPose.ZERO);
+            }
+            case SPAULDERS -> {
+                rightArm.addOrReplaceChild("right_plate",
+                        CubeListBuilder.create()
                                 .texOffs(0, 0).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, inner)
                                 .texOffs(0, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
                         PartPose.ZERO);
                 leftArm.addOrReplaceChild("left_plate",
-                        CubeListBuilder.create().mirror(true)
+                        CubeListBuilder.create()
                                 .texOffs(16, 0).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, inner)
                                 .texOffs(16, 16).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
                         PartPose.ZERO);
             }
+            // Cuisses: single layer only (first texture layer), kept at the outer inflate so it stays brigandine-sized.
             case CUISSES -> {
                 rightLeg.addOrReplaceChild("right_plate",
-                        CubeListBuilder.create().mirror(true)
-                                .texOffs(0, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, inner)
-                                .texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
+                        CubeListBuilder.create()
+                                .texOffs(0, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
                         PartPose.ZERO);
                 leftLeg.addOrReplaceChild("left_plate",
-                        CubeListBuilder.create().mirror(true)
-                                .texOffs(16, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, inner)
-                                .texOffs(16, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
+                        CubeListBuilder.create()
+                                .texOffs(16, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, outer),
                         PartPose.ZERO);
             }
         }

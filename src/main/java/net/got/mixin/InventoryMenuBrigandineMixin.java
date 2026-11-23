@@ -28,7 +28,7 @@ public abstract class InventoryMenuBrigandineMixin extends AbstractContainerMenu
     @Inject(method = "<init>", at = @At("RETURN"), remap = false)
     private void got$addBrigandineSlot(Inventory inventory, boolean active, Player owner, CallbackInfo ci) {
         // Vanilla armor column is x=8, y=8..62 (boots at y=62): put the slot right of the boots slot.
-        this.addSlot(new BrigandineSlot(owner, 26, 62));
+        this.addSlot(new BrigandineSlot(owner, net.got.armorpanel.ArmorPanelLayout.BRIGANDINE_X, net.got.armorpanel.ArmorPanelLayout.BRIGANDINE_Y));
     }
 
     /** Shift-click: brigandine -> brigandine slot; brigandine slot -> inventory. Everything else is untouched. */

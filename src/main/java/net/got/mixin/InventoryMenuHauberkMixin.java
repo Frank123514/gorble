@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class InventoryMenuHauberkMixin extends AbstractContainerMenu {
 
     // Position in the survival inventory: directly above the gambeson slot, right of the player preview.
-    private static final int HAUBERK_X = 77;
-    private static final int HAUBERK_Y = 26;
+    private static final int HAUBERK_X = net.got.armorpanel.ArmorPanelLayout.HAUBERK_X;
+    private static final int HAUBERK_Y = net.got.armorpanel.ArmorPanelLayout.HAUBERK_Y;
 
     protected InventoryMenuHauberkMixin(MenuType<?> menuType, int containerId) {
         super(menuType, containerId);

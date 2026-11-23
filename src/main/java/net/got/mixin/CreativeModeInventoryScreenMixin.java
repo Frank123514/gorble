@@ -1,9 +1,11 @@
 package net.got.mixin;
 
+import net.got.armorpanel.ArmorPanelLayout;
 import net.got.brigandine.BrigandineSlot;
 import net.got.coif.CoifSlot;
 import net.got.gambeson.GambesonSlot;
-import net.minecraft.world.entity.player.Inventory;
+import net.got.hauberk.HauberkSlot;
+import net.got.plate.PlateSlot;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.inventory.Slot;
@@ -15,45 +17,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * The creative "survival inventory" tab re-lays-out every slot of the player's InventoryMenu and puts
- * any slot it doesn't know on top of a hotbar slot. Move our gambeson slot to its own spot.
+ * any slot it doesn't know on top of a hotbar slot. Move all our custom armor slots into the armor panel
+ * (see {@link ArmorPanelLayout}) on the left of the GUI.
  */
 @Mixin(CreativeModeInventoryScreen.class)
 public abstract class CreativeModeInventoryScreenMixin {
 
     @Inject(method = "selectTab", at = @At("TAIL"), remap = false)
-    private void got$placeGambesonSlot(CreativeModeTab tab, CallbackInfo ci) {
+    private void got$placeArmorPanelSlots(CreativeModeTab tab, CallbackInfo ci) {
         AbstractContainerScreen<?> self = (AbstractContainerScreen<?>) (Object) this;
-        // Find the vanilla boots slot (Inventory container slot 36) so the brigandine slot can sit to its right (and the helmet slot for the coif slot).
-        Slot boots = null;
-        Slot helmet = null;
         for (Slot slot : self.getMenu().slots) {
-            if (slot instanceof CreativeSlotWrapperAccessor w
-                    && w.got$getTarget().container instanceof Inventory
-                    && w.got$getTarget().getContainerSlot() == 36) {
-                boots = slot;
+            if (!(slot instanceof CreativeSlotWrapperAccessor wrapper)) continue;
+            Slot target = wrapper.got$getTarget();
+            int x;
+            int y;
+            if (target instanceof CoifSlot) {
+                x = ArmorPanelLayout.COIF_X;       y = ArmorPanelLayout.COIF_Y;
+            } else if (target instanceof GambesonSlot) {
+                x = ArmorPanelLayout.GAMBESON_X;   y = ArmorPanelLayout.GAMBESON_Y;
+            } else if (target instanceof HauberkSlot) {
+                x = ArmorPanelLayout.HAUBERK_X;    y = ArmorPanelLayout.HAUBERK_Y;
+            } else if (target instanceof BrigandineSlot) {
+                x = ArmorPanelLayout.BRIGANDINE_X; y = ArmorPanelLayout.BRIGANDINE_Y;
+            } else if (target instanceof PlateSlot plate) {
+                x = ArmorPanelLayout.plateX(plate.getPiece());
+                y = ArmorPanelLayout.plateY(plate.getPiece());
+            } else {
+                continue;
             }
-            if (slot instanceof CreativeSlotWrapperAccessor w
-                    && w.got$getTarget().container instanceof Inventory
-                    && w.got$getTarget().getContainerSlot() == 39) {
-                helmet = slot;
-            }
-        }
-        for (Slot slot : self.getMenu().slots) {
-            if (boots != null && slot instanceof CreativeSlotWrapperAccessor wrapper
-                    && wrapper.got$getTarget() instanceof BrigandineSlot) {
-                ((SlotAccessor) slot).got$setX(boots.x + 18);
-                ((SlotAccessor) slot).got$setY(boots.y);
-            }
-            if (helmet != null && slot instanceof CreativeSlotWrapperAccessor wrapper
-                    && wrapper.got$getTarget() instanceof CoifSlot) {
-                ((SlotAccessor) slot).got$setX(helmet.x + 18);
-                ((SlotAccessor) slot).got$setY(helmet.y);
-            }
-            if (slot instanceof CreativeSlotWrapperAccessor wrapper
-                    && wrapper.got$getTarget() instanceof GambesonSlot) {
-                ((SlotAccessor) slot).got$setX(35);
-                ((SlotAccessor) slot).got$setY(42);
-            }
+            ((SlotAccessor) slot).got$setX(x);
+            ((SlotAccessor) slot).got$setY(y);
         }
     }
 }

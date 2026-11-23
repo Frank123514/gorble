@@ -16,6 +16,7 @@
     "SlotPositionAccessor"
   ],
   "client": [
+    "ArmorPanelClickMixin",
     "BiomeColorsMixin",
     "CreativeModeInventoryScreenMixin",
     "CreativeSlotWrapperAccessor",

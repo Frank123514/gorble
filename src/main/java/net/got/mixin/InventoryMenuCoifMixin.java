@@ -28,7 +28,7 @@ public abstract class InventoryMenuCoifMixin extends AbstractContainerMenu {
     @Inject(method = "<init>", at = @At("RETURN"), remap = false)
     private void got$addCoifSlot(Inventory inventory, boolean active, Player owner, CallbackInfo ci) {
         // Vanilla armor column is x=8, y=8..62 (helmet at y=8): put the slot right of the helmet slot.
-        this.addSlot(new CoifSlot(owner, 26, 8));
+        this.addSlot(new CoifSlot(owner, net.got.armorpanel.ArmorPanelLayout.COIF_X, net.got.armorpanel.ArmorPanelLayout.COIF_Y));
     }
 
     /** Shift-click: coif -> coif slot; coif slot -> inventory. Everything else is untouched. */

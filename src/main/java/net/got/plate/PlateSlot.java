@@ -16,7 +16,7 @@ public class PlateSlot extends Slot {
     private final PlatePiece piece;
 
     public PlateSlot(LivingEntity owner, PlatePiece piece) {
-        super(new PlateContainer(owner, piece), 0, piece.slotX, piece.slotY);
+        super(new PlateContainer(owner, piece), 0, net.got.armorpanel.ArmorPanelLayout.plateX(piece), net.got.armorpanel.ArmorPanelLayout.plateY(piece));
         this.piece = piece;
         this.setBackground(piece.emptyIcon());
     }
@@ -31,5 +31,11 @@ public class PlateSlot extends Slot {
     @Override
     public int getMaxStackSize() {
         return 1;
+    }
+
+    /** Hidden together with the armor panel (e.g. while the recipe book is open). */
+    @Override
+    public boolean isActive() {
+        return !net.got.armorpanel.ArmorPanelLayout.hidden;
     }
 }
