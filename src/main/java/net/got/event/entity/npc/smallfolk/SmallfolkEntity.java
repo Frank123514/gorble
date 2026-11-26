@@ -269,7 +269,13 @@ public abstract class SmallfolkEntity extends PathfinderMob {
     public NpcRank getRank() { return NpcRank.fromString(entityData.get(DATA_RANK)); }
 
     /** Rank to give a freshly spawned NPC of this region. Regions may override to shift the mix. */
-    protected NpcRank rollRank(RandomSource rand) { return NpcRank.roll(rand); }
+    protected NpcRank rollRank(RandomSource rand) { return NpcRank.roll(rand, skilledRank()); }
+
+    /** The skilled-fighter flavour of this region (knight, heavy cavalry, reaver...). Regions override this. */
+    protected NpcRank skilledRank() { return NpcRank.KNIGHT; }
+
+    /** Region id used to pick the armor loadout, e.g. {@code "north"}. Regions override this. */
+    public String getRegionId() { return ""; }
 
     /**
      * Changes rank: title, stats and behaviour follow. Does not touch gear or occupation
@@ -302,24 +308,13 @@ public abstract class SmallfolkEntity extends PathfinderMob {
         if (inst != null) inst.setBaseValue(value);
     }
 
-    /** Weapon + armor for the current rank. Called once, at spawn. */
+    /** Weapon + armor for the current rank and region. Called once, at spawn. */
     protected void equipForRank(NpcRank rank) {
         Item[] weapons = rank.weapons();
         if (weapons.length > 0) {
             setMainhandItem(new ItemStack(weapons[random.nextInt(weapons.length)]));
         }
-        Item[] armor = rank.armorSet();
-        EquipmentSlot[] slots = { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET };
-        for (int i = 0; i < slots.length; i++) {
-            if (armor[i] != null && random.nextFloat() < rank.armorChance()) {
-                setItemSlot(slots[i], new ItemStack(armor[i]));
-            }
-        }
-        // Padded undergarment in the gambeson slot, layered beneath any chest armor.
-        if (random.nextFloat() < rank.gambesonChance()) {
-            net.got.gambeson.GambesonSlotData.set(this,
-                    new ItemStack(net.got.init.ModItems.GAMBESON.get()));
-        }
+        net.got.event.entity.npc.data.NpcLoadout.apply(this, rank, getRegionId(), random);
     }
 
     private void trySpawnMounted(ServerLevel serverLevel) {

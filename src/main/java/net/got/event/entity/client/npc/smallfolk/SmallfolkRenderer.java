@@ -25,6 +25,15 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
                 PLAYER_SCALE);
         this.maleTextures   = maleTextures;
         this.femaleTextures = femaleTextures;
+        // Vanilla armor slots (helmet/bascinet, padded coif, wool breeches, boots, bronze/steel pieces).
+        // HumanoidMobRenderer doesn't add this layer itself, so without it nothing in the HEAD/CHEST/LEGS/FEET
+        // slots is drawn. Fully qualified because net.got.event.entity.client.model.ModelLayers is imported here.
+        addLayer(new net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer<>(this,
+                // ArmorModelSet is a record of the four per-slot values, so .map() bakes each layer without
+                // having to name the class (its package differs between Minecraft versions).
+                net.minecraft.client.model.geom.ModelLayers.PLAYER_ARMOR.map(
+                        layer -> new HumanoidModel<SmallfolkRenderState>(ctx.bakeLayer(layer))),
+                ctx.getEquipmentRenderer()));
         addLayer(new net.got.client.armor.GambesonLayer<>(this,
                 new net.got.client.armor.GotBodyArmorModel(
                         ctx.bakeLayer(net.got.client.armor.GambesonModel.LAYER_LOCATION), true)));

@@ -159,6 +159,34 @@ public class ModArmorMaterials {
     public static final Holder<ArmorMaterial> BOILED_LEATHER_JERKIN =
             chestOnly("boiled_leather_jerkin", 14, 4, 12, 0.0f, SoundEvents.ARMOR_EQUIP_LEATHER);
 
+    /**
+     * Single-piece materials for the leggings / boots slots (wool breeches, leather boots). Durability is the
+     * base value multiplied by the slot's vanilla factor (leggings x15, boots x13).
+     */
+    private static Holder<ArmorMaterial> singlePiece(String name, int durability, ArmorType type, int defense,
+                                                       int enchantability, float toughness,
+                                                       Holder<SoundEvent> equipSound) {
+        return Holder.direct(
+                new ArmorMaterial(
+                        durability,
+                        Map.of(type, defense),
+                        enchantability,
+                        equipSound,
+                        toughness,
+                        0.0f,
+                        gotRepairTag("repairs_" + name),
+                        equipmentKey(name)
+                )
+        );
+    }
+
+    /** Plain woven wool legwear: very light protection, cheap. Worn in the leggings slot. */
+    public static final Holder<ArmorMaterial> WOOL_BREECHES =
+            singlePiece("wool_breeches", 10, ArmorType.LEGGINGS, 1, 12, 0.0f, SoundEvents.ARMOR_EQUIP_LEATHER);
+    /** Plain leather boots. Worn in the boots slot. */
+    public static final Holder<ArmorMaterial> LEATHER_BOOTS =
+            singlePiece("leather_boots", 8, ArmorType.BOOTS, 1, 12, 0.0f, SoundEvents.ARMOR_EQUIP_LEATHER);
+
     /** Modular plate pieces (net.got.plate), each worn in its own slot. Durability is the base value x16. */
     public static final Holder<ArmorMaterial> GORGET =
             chestOnly("gorget", 14, 1, 9, 0.0f, SoundEvents.ARMOR_EQUIP_IRON);

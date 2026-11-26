@@ -18,7 +18,6 @@ import net.got.client.armor.KettleHelmModel;
 import net.got.client.armor.ConicalCapModel;
 import net.got.client.armor.PaddedCoifModel;
 import net.got.client.armor.GreathelmFlatModel;
-import net.got.client.armor.MailCoifModel;
 import net.got.client.armor.GreathelmRoundedModel;
 import net.minecraft.core.component.DataComponents;
 
@@ -2098,6 +2097,12 @@ public class ModItems {
     public static final DeferredItem<Item> BOILED_LEATHER_JERKIN = REGISTRY.registerItem("boiled_leather_jerkin",
             p -> new net.got.brigandine.BrigandineItem(p.humanoidArmor(ModArmorMaterials.BOILED_LEATHER_JERKIN.value(), ArmorType.CHESTPLATE),
                     4.0, 0.0, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER));
+    // Wool breeches and leather boots: plain peasant legwear. They use the vanilla leggings / boots slots
+    // but render with their own custom models (WoolBreechesModel / LeatherBootsModel), hooked up in ClientSetup.
+    public static final DeferredItem<Item> WOOL_BREECHES = REGISTRY.registerItem("wool_breeches",
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.WOOL_BREECHES.value(), ArmorType.LEGGINGS)));
+    public static final DeferredItem<Item> LEATHER_BOOTS = REGISTRY.registerItem("leather_boots",
+            p -> new Item(p.humanoidArmor(ModArmorMaterials.LEATHER_BOOTS.value(), ArmorType.BOOTS)));
     // The hauberk is worn in its own slot too (net.got.hauberk), between the gambeson slot and the brigandine slot.
     public static final DeferredItem<Item> HAUBERK = REGISTRY.registerItem("hauberk",
             p -> new net.got.hauberk.HauberkItem(p.humanoidArmor(ModArmorMaterials.HAUBERK.value(), ArmorType.CHESTPLATE)));

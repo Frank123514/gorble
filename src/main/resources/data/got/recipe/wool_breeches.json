@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "W": "#minecraft:wool",
+    "S": "minecraft:string"
+  },
+  "pattern": [
+    "WWW",
+    "WSW",
+    "W W"
+  ],
+  "result": {
+    "count": 1,
+    "id": "got:wool_breeches"
+  }
+}

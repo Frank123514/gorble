@@ -104,6 +104,8 @@ public final class ClientSetup {
         event.registerLayerDefinition(BrigandineModel.LAYER_LOCATION, BrigandineModel::createBodyLayer);
         event.registerLayerDefinition(HauberkModel.LAYER_LOCATION,    HauberkModel::createBodyLayer);
         event.registerLayerDefinition(BoiledLeatherJerkinModel.LAYER_LOCATION, BoiledLeatherJerkinModel::createBodyLayer);
+        event.registerLayerDefinition(WoolBreechesModel.LAYER_LOCATION, WoolBreechesModel::createBodyLayer);
+        event.registerLayerDefinition(LeatherBootsModel.LAYER_LOCATION, LeatherBootsModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -121,6 +123,12 @@ public final class ClientSetup {
         // Chest-slot body armor (torso + arms + the pants cubes on the legs).
         registerHelm(event, ModItems.GAMBESON.get(),   GambesonModel.LAYER_LOCATION,   root -> new GotBodyArmorModel(root, true));
         registerHelm(event, ModItems.BRIGANDINE.get(), BrigandineModel.LAYER_LOCATION, root -> new GotBodyArmorModel(root, true));
+
+        // Leg-slot and feet-slot armor with custom models (vanilla leggings / boots slots).
+        event.registerItem(new GotLegwearClientExtensions(WoolBreechesModel.LAYER_LOCATION,
+                net.minecraft.client.resources.model.EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS), ModItems.WOOL_BREECHES.get());
+        event.registerItem(new GotLegwearClientExtensions(LeatherBootsModel.LAYER_LOCATION,
+                net.minecraft.client.resources.model.EquipmentClientInfo.LayerType.HUMANOID), ModItems.LEATHER_BOOTS.get());
     }
 
     private static void registerHelm(RegisterClientExtensionsEvent event, net.minecraft.world.item.Item item,

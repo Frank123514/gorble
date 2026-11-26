@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 public class IronbornEntity extends SmallfolkEntity {
 
-    public static final int MALE_VARIANT_COUNT   = 9;
+    public static final int MALE_VARIANT_COUNT   = 28;
     
     public static final int FEMALE_VARIANT_COUNT = 16;
     
@@ -44,6 +44,14 @@ public class IronbornEntity extends SmallfolkEntity {
     @Override
     public int getFemaleVariantsPerGender() { return FEMALE_VARIANT_COUNT; }
 
+
+    @Override
+    public String getRegionId() { return "iron_islands"; }
+
+    @Override
+    protected net.got.event.entity.npc.data.NpcRank skilledRank() {
+        return net.got.event.entity.npc.data.NpcRank.REAVER;
+    }
 
     public static AttributeSupplier.Builder createAttributes() {
         return SmallfolkEntity.createAttributes();
