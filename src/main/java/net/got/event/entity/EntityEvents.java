@@ -22,7 +22,6 @@ import net.got.event.entity.npc.smallfolk.freefolk.NightrunnerEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.SkagossiEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.CaveDwellerEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.SpearwifeEntity;
-import net.got.event.entity.npc.smallfolk.freefolk.WildlingRaiderEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.HauntedForestClanEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.MilkwaterClanEntity;
 import net.got.event.entity.direwolf.DirewolfEntity;
@@ -60,7 +59,6 @@ public class EntityEvents {
         event.put(ModEntities.SKAGOSSI.get(), SkagossiEntity.createAttributes().build());
         event.put(ModEntities.CAVE_DWELLER.get(), CaveDwellerEntity.createAttributes().build());
         event.put(ModEntities.SPEARWIFE.get(), SpearwifeEntity.createAttributes().build());
-        event.put(ModEntities.WILDLING_RAIDER.get(), WildlingRaiderEntity.createAttributes().build());
         event.put(ModEntities.HAUNTED_FOREST_CLAN.get(), HauntedForestClanEntity.createAttributes().build());
         event.put(ModEntities.MILKWATER_CLAN.get(), MilkwaterClanEntity.createAttributes().build());
 
@@ -100,7 +98,6 @@ public class EntityEvents {
         event.register(ModEntities.SKAGOSSI.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SkagossiEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.CAVE_DWELLER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CaveDwellerEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.SPEARWIFE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpearwifeEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.WILDLING_RAIDER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WildlingRaiderEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.HAUNTED_FOREST_CLAN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HauntedForestClanEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.MILKWATER_CLAN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MilkwaterClanEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 

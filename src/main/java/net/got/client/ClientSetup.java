@@ -30,7 +30,6 @@ import net.got.event.entity.npc.smallfolk.freefolk.NightrunnerEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.SkagossiEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.CaveDwellerEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.SpearwifeEntity;
-import net.got.event.entity.npc.smallfolk.freefolk.WildlingRaiderEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.HauntedForestClanEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.MilkwaterClanEntity;
 import net.got.event.entity.npc.smallfolk.NorthmanEntity;
@@ -311,7 +310,6 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.SKAGOSSI.get(), ctx -> new SmallfolkRenderer<>(ctx, SkagossiEntity.MALE_TEXTURES, SkagossiEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.CAVE_DWELLER.get(), ctx -> new SmallfolkRenderer<>(ctx, CaveDwellerEntity.MALE_TEXTURES, CaveDwellerEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.SPEARWIFE.get(), ctx -> new SmallfolkRenderer<>(ctx, SpearwifeEntity.MALE_TEXTURES, SpearwifeEntity.FEMALE_TEXTURES));
-        event.registerEntityRenderer(ModEntities.WILDLING_RAIDER.get(), ctx -> new SmallfolkRenderer<>(ctx, WildlingRaiderEntity.MALE_TEXTURES, WildlingRaiderEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.HAUNTED_FOREST_CLAN.get(), ctx -> new SmallfolkRenderer<>(ctx, HauntedForestClanEntity.MALE_TEXTURES, HauntedForestClanEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.MILKWATER_CLAN.get(), ctx -> new SmallfolkRenderer<>(ctx, MilkwaterClanEntity.MALE_TEXTURES, MilkwaterClanEntity.FEMALE_TEXTURES));
 

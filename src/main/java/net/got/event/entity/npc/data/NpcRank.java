@@ -31,9 +31,9 @@ public enum NpcRank {
     REAVER       ("reaver",        "Reaver",            Tier.SKILLED, false, 36.0, 7.0, 0.0, 0.16,  0.05F, 0.0F),
     // ---- Free Folk skilled tiers ----
     /** A hardened wilderness fighter of the Free Folk — the standard skilled rank for most tribes. */
-    RAIDER       ("raider",        "Raider",            Tier.SKILLED, false, 36.0, 7.0, 0.0, 0.17,  0.10F, 0.0F),
+    RAIDER       ("raider",        "Raider",            Tier.SKILLED, false, 36.0, 7.0, 0.0, 0.17, -1.0F, 0.0F),
     /** A disciplined Thenn warrior in bronze armour — the elite of the most organised wildling clan. */
-    THENN_WARRIOR("thenn_warrior", "Thenn Warrior",     Tier.SKILLED, false, 42.0, 8.0, 2.0, 0.15,  0.10F, 0.0F),
+    THENN_WARRIOR("thenn_warrior", "Thenn Warrior",     Tier.SKILLED, false, 42.0, 8.0, 2.0, 0.15, -1.0F, 0.0F),
     // ---- Crownlands skilled tier ----
     /** A Gold Cloak — a City Watch soldier of King's Landing. Well-equipped but not as heavily armoured as a knight. */
     GOLD_CLOAK   ("gold_cloak",    "Gold Cloak",        Tier.SKILLED, false, 38.0, 7.0, 0.0, 0.15,  0.10F, 0.0F);

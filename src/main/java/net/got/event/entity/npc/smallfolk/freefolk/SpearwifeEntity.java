@@ -1,7 +1,6 @@
 package net.got.event.entity.npc.smallfolk.freefolk;
 
 import net.got.event.entity.npc.data.GenderProvider;
-import net.got.event.entity.npc.data.NpcRank;
 import net.got.event.entity.npc.data.name.NpcNames;
 import net.got.event.entity.npc.data.name.NameGenerator;
 import net.got.event.entity.npc.smallfolk.FreefolkEntity;
@@ -37,15 +36,6 @@ public class SpearwifeEntity extends FreefolkEntity {
     @Override
     protected GenderProvider getGenderProvider() { return GenderProvider.FEMALE; }
 
-    /** Always spawns as a levy or higher — spear-wives are warriors, not civilians. */
-    @Override
-    protected NpcRank rollRank(net.minecraft.util.RandomSource rand) {
-        float r = rand.nextFloat();
-        if (r < 0.60F) return NpcRank.LEVY;
-        if (r < 0.90F) return NpcRank.MAN_AT_ARMS;
-        return NpcRank.RAIDER;
-    }
-
     @Override
     public int getVariantsPerGender()       { return MALE_VARIANT_COUNT; }
     @Override
@@ -53,6 +43,12 @@ public class SpearwifeEntity extends FreefolkEntity {
 
     @Override
     protected NameGenerator getNameGenerator() { return NpcNames.FREEFOLK_FEMALE; }
+
+    /** "Name the Spearwife" (not "Spearwife Raider"). */
+    @Override
+    protected net.minecraft.network.chat.Component freefolkTitle() {
+        return net.minecraft.network.chat.Component.translatable(getType().getDescriptionId());
+    }
 
     public static AttributeSupplier.Builder createAttributes() {
         return FreefolkEntity.createAttributes();

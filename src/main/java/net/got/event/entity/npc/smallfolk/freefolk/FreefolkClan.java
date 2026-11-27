@@ -28,9 +28,7 @@ public enum FreefolkClan {
     SKAGOSSI("skagossi", NpcNames.SKAGOSSI, Stance.WARY,
             "Islanders of Skagos, apart from both the Free Folk and the kneelers."),
     SPEARWIFE("spearwife", NpcNames.FREEFOLK_FEMALE, Stance.NEUTRAL,
-            "Women who fight, hunt and raid alongside the men; they are not kneelers' wives and answer to no lord."),
-    RAIDER("wildling_raider", NpcNames.FREEFOLK_GENERIC, Stance.RAIDING,
-            "Mixed bands who cross the Wall or sail the shore to raid.");
+            "Women who fight, hunt and raid alongside the men; they are not kneelers' wives and answer to no lord.");
 
     public enum Stance { NEUTRAL, WARY, RAIDING, HOSTILE }
 

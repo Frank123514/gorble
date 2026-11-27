@@ -2248,8 +2248,6 @@ public class ModItems {
             "cave_dweller_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.CAVE_DWELLER.get())));
     public static final DeferredItem<SpawnEggItem> SPEARWIFE_SPAWN_EGG = REGISTRY.registerItem(
             "spearwife_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.SPEARWIFE.get())));
-    public static final DeferredItem<SpawnEggItem> WILDLING_RAIDER_SPAWN_EGG = REGISTRY.registerItem(
-            "wildling_raider_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.WILDLING_RAIDER.get())));
     public static final DeferredItem<SpawnEggItem> HAUNTED_FOREST_CLAN_SPAWN_EGG = REGISTRY.registerItem(
             "haunted_forest_clan_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.HAUNTED_FOREST_CLAN.get())));
     public static final DeferredItem<SpawnEggItem> MILKWATER_CLAN_SPAWN_EGG = REGISTRY.registerItem(

@@ -46,6 +46,12 @@ public class ThennEntity extends FreefolkEntity {
     @Override
     public String getRegionId() { return "thenn"; }
 
+    /** "Thenn Warrior" already names the clan, so don't print "Thenn Thenn Warrior". */
+    @Override
+    protected net.minecraft.network.chat.Component freefolkTitle() {
+        return net.minecraft.network.chat.Component.literal(getRank().title);
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return FreefolkEntity.createAttributes();
     }

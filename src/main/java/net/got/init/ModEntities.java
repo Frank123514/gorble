@@ -23,7 +23,6 @@ import net.got.event.entity.npc.smallfolk.freefolk.NightrunnerEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.SkagossiEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.CaveDwellerEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.SpearwifeEntity;
-import net.got.event.entity.npc.smallfolk.freefolk.WildlingRaiderEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.HauntedForestClanEntity;
 import net.got.event.entity.npc.smallfolk.freefolk.MilkwaterClanEntity;
 import net.got.event.entity.direwolf.DirewolfEntity;
@@ -90,8 +89,6 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<CaveDwellerEntity>>      CAVE_DWELLER       = smallfolk("cave_dweller",         CaveDwellerEntity::new);
     /** Spear-Wife — a Free Folk woman warrior, found across all tribes. Always a fighter. */
     public static final DeferredHolder<EntityType<?>, EntityType<SpearwifeEntity>>        SPEARWIFE          = smallfolk("spearwife",            SpearwifeEntity::new);
-    /** Wildling Raider — a mixed-clan freefolk warrior gathered under a King-Beyond-the-Wall. */
-    public static final DeferredHolder<EntityType<?>, EntityType<WildlingRaiderEntity>>   WILDLING_RAIDER    = smallfolk("wildling_raider",      WildlingRaiderEntity::new);
     /** Haunted Forest Clan — bark-and-fur clad hunters of the ancient Haunted Forest. */
     public static final DeferredHolder<EntityType<?>, EntityType<HauntedForestClanEntity>> HAUNTED_FOREST_CLAN = smallfolk("haunted_forest_clan", HauntedForestClanEntity::new);
     /** Milkwater Clan — river-dwelling freefolk along the great pale river Milkwater. */

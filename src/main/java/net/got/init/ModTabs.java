@@ -3007,7 +3007,6 @@ public class ModTabs {
                         output.accept(ModItems.SKAGOSSI_SPAWN_EGG.get());
                         output.accept(ModItems.CAVE_DWELLER_SPAWN_EGG.get());
                         output.accept(ModItems.SPEARWIFE_SPAWN_EGG.get());
-                        output.accept(ModItems.WILDLING_RAIDER_SPAWN_EGG.get());
                         output.accept(ModItems.HAUNTED_FOREST_CLAN_SPAWN_EGG.get());
                         output.accept(ModItems.MILKWATER_CLAN_SPAWN_EGG.get());
 
