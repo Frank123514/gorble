@@ -26,9 +26,17 @@ public enum NpcRank {
     MAN_AT_ARMS("man_at_arms", "Man-at-Arms",      Tier.MAN_AT_ARMS, false,  30.0, 5.0, 0.0, 0.15,  0.05F,      0.0F),
 
     // ---- skilled tier: regional flavours (add more as regions get theirs) ----
-    KNIGHT    ("knight",       "Ser",              Tier.SKILLED,     true,   40.0, 7.0, 0.0, 0.15,  0.02F,      0.25F),
-    HEAVY_CAVALRY("heavy_cavalry", "Heavy Cavalryman", Tier.SKILLED, false,  40.0, 7.0, 0.0, 0.15,  0.02F,      0.40F),
-    REAVER    ("reaver",       "Reaver",           Tier.SKILLED,     false,  36.0, 7.0, 0.0, 0.16,  0.05F,      0.0F);
+    KNIGHT       ("knight",        "Ser",               Tier.SKILLED, true,  40.0, 7.0, 0.0, 0.15,  0.02F, 0.25F),
+    HEAVY_CAVALRY("heavy_cavalry", "Heavy Cavalryman",  Tier.SKILLED, false, 40.0, 7.0, 0.0, 0.15,  0.02F, 0.40F),
+    REAVER       ("reaver",        "Reaver",            Tier.SKILLED, false, 36.0, 7.0, 0.0, 0.16,  0.05F, 0.0F),
+    // ---- Free Folk skilled tiers ----
+    /** A hardened wilderness fighter of the Free Folk — the standard skilled rank for most tribes. */
+    RAIDER       ("raider",        "Raider",            Tier.SKILLED, false, 36.0, 7.0, 0.0, 0.17,  0.10F, 0.0F),
+    /** A disciplined Thenn warrior in bronze armour — the elite of the most organised wildling clan. */
+    THENN_WARRIOR("thenn_warrior", "Thenn Warrior",     Tier.SKILLED, false, 42.0, 8.0, 2.0, 0.15,  0.10F, 0.0F),
+    // ---- Crownlands skilled tier ----
+    /** A Gold Cloak — a City Watch soldier of King's Landing. Well-equipped but not as heavily armoured as a knight. */
+    GOLD_CLOAK   ("gold_cloak",    "Gold Cloak",        Tier.SKILLED, false, 38.0, 7.0, 0.0, 0.15,  0.10F, 0.0F);
 
     public enum Tier { CIVILIAN, LEVY, MAN_AT_ARMS, SKILLED }
 
@@ -79,6 +87,13 @@ public enum NpcRank {
             case KNIGHT, HEAVY_CAVALRY -> new Item[] { ModItems.STEEL_LONGSWORD_CROSSGUARD_POMMEL.get(),
                                                        ModItems.STEEL_BASTARD_SWORD_CROSSGUARD_POMMEL.get() };
             case REAVER       -> new Item[] { Items.IRON_AXE, ModItems.STEEL_SHORTSWORD_CROSSGUARD_POMMEL.get() };
+            // Free Folk: bone, obsidian, stone weapons — raw and brutal
+            case RAIDER       -> new Item[] { Items.STONE_AXE, Items.STONE_SWORD };
+            // Thenns wield bronze — use iron-tier items as stand-in until bronze is a separate item
+            case THENN_WARRIOR-> new Item[] { Items.IRON_AXE, ModItems.IRON_SHORTSWORD_CROSSGUARD_POMMEL.get() };
+            // Gold Cloaks: trained city guards — shortswords and spears
+            case GOLD_CLOAK   -> new Item[] { ModItems.IRON_SHORTSWORD_CROSSGUARD_POMMEL.get(),
+                                              ModItems.IRON_LONGSWORD_CROSSGUARD_POMMEL.get() };
         };
     }
 

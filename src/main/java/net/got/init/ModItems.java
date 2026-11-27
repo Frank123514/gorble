@@ -2228,6 +2228,33 @@ public class ModItems {
             "stormlorder_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.STORMLORDER.get())));
     public static final DeferredItem<SpawnEggItem> DORNISHMAN_SPAWN_EGG = REGISTRY.registerItem(
             "dornishman_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.DORNISHMAN.get())));
+    public static final DeferredItem<SpawnEggItem> CROWNLANDER_SPAWN_EGG = REGISTRY.registerItem(
+            "crownlander_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.CROWNLANDER.get())));
+
+    // ── Free Folk Spawn Eggs ──────────────────────────────────────────────────
+    public static final DeferredItem<SpawnEggItem> THENN_SPAWN_EGG = REGISTRY.registerItem(
+            "thenn_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.THENN.get())));
+    public static final DeferredItem<SpawnEggItem> HORNFOOT_SPAWN_EGG = REGISTRY.registerItem(
+            "hornfoot_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.HORNFOOT.get())));
+    public static final DeferredItem<SpawnEggItem> ICE_RIVER_CLAN_SPAWN_EGG = REGISTRY.registerItem(
+            "ice_river_clan_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.ICE_RIVER_CLAN.get())));
+    public static final DeferredItem<SpawnEggItem> FROZEN_SHORE_SPAWN_EGG = REGISTRY.registerItem(
+            "frozen_shore_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.FROZEN_SHORE.get())));
+    public static final DeferredItem<SpawnEggItem> NIGHTRUNNER_SPAWN_EGG = REGISTRY.registerItem(
+            "nightrunner_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.NIGHTRUNNER.get())));
+    public static final DeferredItem<SpawnEggItem> SKAGOSSI_SPAWN_EGG = REGISTRY.registerItem(
+            "skagossi_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.SKAGOSSI.get())));
+    public static final DeferredItem<SpawnEggItem> CAVE_DWELLER_SPAWN_EGG = REGISTRY.registerItem(
+            "cave_dweller_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.CAVE_DWELLER.get())));
+    public static final DeferredItem<SpawnEggItem> SPEARWIFE_SPAWN_EGG = REGISTRY.registerItem(
+            "spearwife_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.SPEARWIFE.get())));
+    public static final DeferredItem<SpawnEggItem> WILDLING_RAIDER_SPAWN_EGG = REGISTRY.registerItem(
+            "wildling_raider_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.WILDLING_RAIDER.get())));
+    public static final DeferredItem<SpawnEggItem> HAUNTED_FOREST_CLAN_SPAWN_EGG = REGISTRY.registerItem(
+            "haunted_forest_clan_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.HAUNTED_FOREST_CLAN.get())));
+    public static final DeferredItem<SpawnEggItem> MILKWATER_CLAN_SPAWN_EGG = REGISTRY.registerItem(
+            "milkwater_clan_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MILKWATER_CLAN.get())));
+
 
     public static final DeferredItem<SpawnEggItem> GOT_STAG_SPAWN_EGG = REGISTRY.registerItem(
             "got_stag_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOT_STAG.get())));

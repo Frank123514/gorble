@@ -13,6 +13,19 @@ import net.got.event.entity.npc.smallfolk.StormlorderEntity;
 import net.got.event.entity.npc.smallfolk.IronbornEntity;
 import net.got.event.entity.npc.smallfolk.DornishmanEntity;
 import net.got.event.entity.npc.smallfolk.ReachmanEntity;
+import net.got.event.entity.npc.smallfolk.CrownlanderEntity;
+// ── Free Folk tribe imports ────────────────────────────────────────────────────
+import net.got.event.entity.npc.smallfolk.freefolk.ThennEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.HornfootEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.IceRiverClanEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.FrozenShoreEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.NightrunnerEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.SkagossiEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.CaveDwellerEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.SpearwifeEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.WildlingRaiderEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.HauntedForestClanEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.MilkwaterClanEntity;
 import net.got.event.entity.direwolf.DirewolfEntity;
 import net.got.event.entity.crow.CrowEntity;
 import net.got.event.entity.mammoth.MammothEntity;
@@ -57,6 +70,32 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<IronbornEntity>>    IRONBORN    = smallfolk("ironborn",    IronbornEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<DornishmanEntity>>  DORNISHMAN  = smallfolk("dornishman",  DornishmanEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<ReachmanEntity>>    REACHMAN    = smallfolk("reachman",    ReachmanEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<CrownlanderEntity>> CROWNLANDER = smallfolk("crownlander", CrownlanderEntity::new);
+
+    // ── Free Folk Tribes ──────────────────────────────────────────────────────
+
+    /** Thenns — the most organised and disciplined of the Free Folk. Wear bronze armour. */
+    public static final DeferredHolder<EntityType<?>, EntityType<ThennEntity>>            THENN              = smallfolk("thenn",               ThennEntity::new);
+    /** Hornfoot Men — a large clan that go barefoot on ice and snow. */
+    public static final DeferredHolder<EntityType<?>, EntityType<HornfootEntity>>         HORNFOOT           = smallfolk("hornfoot",             HornfootEntity::new);
+    /** Ice River Clan — cannibal nomads of the deep frozen north. */
+    public static final DeferredHolder<EntityType<?>, EntityType<IceRiverClanEntity>>     ICE_RIVER_CLAN     = smallfolk("ice_river_clan",       IceRiverClanEntity::new);
+    /** Frozen Shore — coastal hunters of the icy shoreline, stocky and sealskin-clad. */
+    public static final DeferredHolder<EntityType<?>, EntityType<FrozenShoreEntity>>      FROZEN_SHORE       = smallfolk("frozen_shore",         FrozenShoreEntity::new);
+    /** Nightrunners — shadowy raiders who strike under cover of darkness. */
+    public static final DeferredHolder<EntityType<?>, EntityType<NightrunnerEntity>>      NIGHTRUNNER        = smallfolk("nightrunner",          NightrunnerEntity::new);
+    /** Skagossi (Stoneborn) — fierce islanders of Skagos, rumoured to ride unicorns. */
+    public static final DeferredHolder<EntityType<?>, EntityType<SkagossiEntity>>         SKAGOSSI           = smallfolk("skagossi",             SkagossiEntity::new);
+    /** Cave Dwellers — the most primitive of the Free Folk, living in deep warrens. */
+    public static final DeferredHolder<EntityType<?>, EntityType<CaveDwellerEntity>>      CAVE_DWELLER       = smallfolk("cave_dweller",         CaveDwellerEntity::new);
+    /** Spear-Wife — a Free Folk woman warrior, found across all tribes. Always a fighter. */
+    public static final DeferredHolder<EntityType<?>, EntityType<SpearwifeEntity>>        SPEARWIFE          = smallfolk("spearwife",            SpearwifeEntity::new);
+    /** Wildling Raider — a mixed-clan freefolk warrior gathered under a King-Beyond-the-Wall. */
+    public static final DeferredHolder<EntityType<?>, EntityType<WildlingRaiderEntity>>   WILDLING_RAIDER    = smallfolk("wildling_raider",      WildlingRaiderEntity::new);
+    /** Haunted Forest Clan — bark-and-fur clad hunters of the ancient Haunted Forest. */
+    public static final DeferredHolder<EntityType<?>, EntityType<HauntedForestClanEntity>> HAUNTED_FOREST_CLAN = smallfolk("haunted_forest_clan", HauntedForestClanEntity::new);
+    /** Milkwater Clan — river-dwelling freefolk along the great pale river Milkwater. */
+    public static final DeferredHolder<EntityType<?>, EntityType<MilkwaterClanEntity>>    MILKWATER_CLAN     = smallfolk("milkwater_clan",       MilkwaterClanEntity::new);
 
     /** GOT Stag — a wild red deer stag found in the forests of Westeros. */
     public static final DeferredHolder<EntityType<?>, EntityType<StagEntity>> GOT_STAG =

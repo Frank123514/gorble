@@ -36,9 +36,17 @@ public final class Factions {
     private static final int COL_MARTELL_YELLOW = 0xFFFFD700;
     private static final int COL_NIGHTS_WATCH   = 0xFF1A1A1A;
     private static final int COL_NIGHTS_BLACK   = 0xFF0D0D0D;
+    private static final int COL_CROWNLANDS_RED = 0xFF8B0000;
+    private static final int COL_CROWNLANDS_GOLD= 0xFFDAA520;
+    // Free Folk — no uniform colours; each tribe has natural tones
+    private static final int COL_FREEFOLK_FUR   = 0xFF5C4033;
+    private static final int COL_FREEFOLK_BONE  = 0xFFD2B48C;
+    private static final int COL_THENN_BRONZE   = 0xFF8B6914;
+    private static final int COL_THENN_GREY     = 0xFF607060;
+    private static final int COL_SKAGOS_STONE   = 0xFF8B8682;
+    private static final int COL_SKAGOS_DARK    = 0xFF3A3330;
 
-    private static List<RankTitle> westernLadder(String houseName, String cultureSuffix) {
-        return List.of(
+    private static List<RankTitle> westernLadder(String houseName, String cultureSuffix) {        return List.of(
                 new RankTitle(    0, "Refugee of " + cultureSuffix,
                         "No privileges. Hostility from guards and soldiers."),
                 new RankTitle(  200, "Smallfolk of " + cultureSuffix,
@@ -165,6 +173,120 @@ public final class Factions {
                 new RankTitle(10000, "Prince/Princess of Dorne",
                         "Rules Dorne. Sunspear stronghold access, full Dornish power. " +
                                 "Unbowed, Unbent, Unbroken.")
+        );
+    }
+
+    // ── Crownlands rank ladder ────────────────────────────────────────────────
+
+    private static List<RankTitle> crownlandsLadder() {
+        return List.of(
+                new RankTitle(    0, "Stranger to the City",
+                        "Unknown in the capital. City Watch may move you on."),
+                new RankTitle(  200, "Common Citizen",
+                        "Permitted in the lower city. Access to Flea Bottom markets."),
+                new RankTitle(  600, "Freeman of King's Landing",
+                        "Established resident. Craftsmen guilds and trade unlocked."),
+                new RankTitle( 1200, "Retainer of the Crown",
+                        "Sworn in to crown service. Access to Red Keep outskirts."),
+                new RankTitle( 2000, "Gold Cloak Auxiliary",
+                        "Patrols the city. City Watch equipment unlocked."),
+                new RankTitle( 3200, "Gold Cloak Sergeant",
+                        "Commands a patrol. Chain armour and spear unlocked."),
+                new RankTitle( 4800, "Gold Cloak Captain",
+                        "Commands a district watch-house. Full Gold Cloak plate unlocked."),
+                new RankTitle( 6500, "Knight of the Crown",
+                        "Knighted in service to the Iron Throne. Heavy cavalry unlocked."),
+                new RankTitle( 8000, "Lord of the Crownlands",
+                        "Holds a title in the lands around King's Landing."),
+                new RankTitle( 9200, "Hand's Guard Captain",
+                        "Commands the personal guard of a Great Lord of the city."),
+                new RankTitle(10000, "Lord Commander of the City Watch",
+                        "Commands all Gold Cloaks and the defence of King's Landing.")
+        );
+    }
+
+    // ── Free Folk rank ladders ────────────────────────────────────────────────
+
+    private static List<RankTitle> freefolkLadder() {
+        return List.of(
+                new RankTitle(    0, "Kneeler",
+                        "Despised. The Free Folk will not deal with one who bends the knee."),
+                new RankTitle(  200, "Stranger Beyond the Wall",
+                        "Not yet trusted but tolerated. May trade basic goods."),
+                new RankTitle(  600, "Free Person",
+                        "Acknowledged as a free soul. May camp in Free Folk territory."),
+                new RankTitle( 1200, "Warrior of the North Wind",
+                        "Proven fighter. Fur and bone armour unlocked. Free Folk trust you."),
+                new RankTitle( 2000, "Raider",
+                        "Has raided south of the Wall. Obsidian weapons unlocked."),
+                new RankTitle( 3200, "Veteran Raider",
+                        "Battle-hardened. Free Folk soldiers will follow your lead."),
+                new RankTitle( 4800, "Champion of the Free Folk",
+                        "Named fighter. Can challenge for leadership of a warband."),
+                new RankTitle( 6500, "Clan Elder",
+                        "Leads a clan or tribe. Can call a moot of nearby Free Folk."),
+                new RankTitle( 8000, "Warchief",
+                        "Commands many clans in the field. Full raider armour roster."),
+                new RankTitle( 9200, "Lord of Bones",
+                        "Great champion. The bones of your victories mark your status."),
+                new RankTitle(10000, "King-Beyond-the-Wall",
+                        "Chosen by the Free Folk — not by blood but by might and will. " +
+                                "Commands the great ranging. The Wall itself must fall.")
+        );
+    }
+
+    private static List<RankTitle> thennLadder() {
+        return List.of(
+                new RankTitle(    0, "Outsider",
+                        "Not of Thenn. Treated with cold hostility."),
+                new RankTitle(  200, "Tolerated Outsider",
+                        "Allowed passage through Thenn territory."),
+                new RankTitle(  600, "Marked Warrior",
+                        "Has proven worth in combat. Thenn fighters acknowledge you."),
+                new RankTitle( 1200, "Bronze Shield",
+                        "Issued a bronze shield — sign of Thenn brotherhood."),
+                new RankTitle( 2000, "Thenn Warrior",
+                        "Full warrior of the Thenns. Bronze axe and armour unlocked."),
+                new RankTitle( 3200, "Thenn Elite",
+                        "Chosen fighter of the Magnar's household."),
+                new RankTitle( 4800, "Shield of the Magnar",
+                        "Personal champion of the Thenn lord. Full bronze plate unlocked."),
+                new RankTitle( 6500, "Thenn War-leader",
+                        "Commands a column of Thenn warriors."),
+                new RankTitle( 8000, "Voice of Thenn",
+                        "Speaks for the Magnar in the field."),
+                new RankTitle( 9200, "First Warrior",
+                        "Greatest fighter in Thenn. Revered by all clans."),
+                new RankTitle(10000, "Magnar of Thenn",
+                        "Lord of Thenn. The only Free Folk lord by blood. " +
+                                "Commands the most disciplined army beyond the Wall.")
+        );
+    }
+
+    private static List<RankTitle> skagosLadder() {
+        return List.of(
+                new RankTitle(    0, "Mainlander",
+                        "Mistrusted mainlander. The Stoneborn give you no welcome."),
+                new RankTitle(  200, "Tolerated",
+                        "Allowed to land on Skagos. Do not stray from the shore."),
+                new RankTitle(  600, "Stone-friend",
+                        "Basic trust. Can trade stone tools and amber."),
+                new RankTitle( 1200, "Skagos Rider",
+                        "Has ridden among the Stoneborn. Stone weapons unlocked."),
+                new RankTitle( 2000, "Warrior of the Stone",
+                        "Proven fighter. Stoneborn armour and obsidian weapons unlocked."),
+                new RankTitle( 3200, "Unicorn Rider",
+                        "Has earned the right to ride a Skagosi unicorn in battle."),
+                new RankTitle( 4800, "Stoneborn Champion",
+                        "Named fighter of the isle. Leads a warband."),
+                new RankTitle( 6500, "Clan Chieftain",
+                        "Leads a Skagosi clan. Can call the clans to council."),
+                new RankTitle( 8000, "High Chieftain",
+                        "Commands the greatest clans of Skagos."),
+                new RankTitle( 9200, "Lord of Skagos (Contested)",
+                        "Near-supreme. Skagos has not bowed to Stark in generations."),
+                new RankTitle(10000, "King of Skagos",
+                        "Rules the isle entirely. All Stoneborn kneel — a feat never achieved.")
         );
     }
 
@@ -372,6 +494,103 @@ public final class Factions {
                         nightsWatchLadder(),
                         "Older than the Seven Kingdoms, the Watch guards the Wall so the realm may " +
                                 "sleep. A man who takes the black gives up name and family, keeping only his oath."
+                ),
+
+                // ── Crownlands ────────────────────────────────────────────────
+                new FactionData(
+                        "crownlands", WESTEROS,
+                        "The Crownlands",
+                        "The Iron Throne",
+                        "Fire and Blood",
+                        "King's Landing",
+                        "The Iron Throne",
+                        "A gold crown on a crimson field",
+                        COL_CROWNLANDS_RED, COL_CROWNLANDS_GOLD,
+                        "crownlander",
+                        Religion.FAITH_OF_THE_SEVEN,
+                        Economy.TRADE,
+                        MilitaryStyle.HEAVY_INFANTRY,
+                        List.of("north", "riverlands", "vale"),
+                        List.of("iron_islands"),
+                        List.of("stokeworth", "rosby", "hayford",
+                                "massey", "staunton", "velaryon"),
+                        crownlandsLadder(),
+                        "The Crownlands surround King's Landing and serve the Iron Throne directly. " +
+                                "Their soldiers are the Gold Cloaks of the City Watch — disciplined, " +
+                                "well-paid, and loyal to whoever sits the throne."
+                ),
+
+                // ── Free Folk (Beyond the Wall) ───────────────────────────────
+                // The main \"Free Folk\" faction covers all tribes collectively.
+                new FactionData(
+                        "freefolk", WESTEROS,
+                        "The Free Folk",
+                        "The Free Folk",
+                        "We Do Not Kneel",
+                        "Hardhome / Frostfangs",
+                        "No One",
+                        "No banner — the Free Folk kneel to no king",
+                        COL_FREEFOLK_FUR, COL_FREEFOLK_BONE,
+                        "freefolk",
+                        Religion.OLD_GODS,
+                        Economy.MILITARY,
+                        MilitaryStyle.SKIRMISHER,
+                        List.of(),
+                        List.of("north", "nights_watch"),
+                        List.of("thenn", "hornfoot", "frozen_shore",
+                                "ice_river_clan", "nightrunners", "cave_dwellers"),
+                        freefolkLadder(),
+                        "The Free Folk are not savages — they are free. They bow to no lord, pay no " +
+                                "taxes, and know no king. Dozens of clans, from the Thenns to the Frozen Shore, " +
+                                "roam the lands Beyond the Wall, bound only by survival and the will of a " +
+                                "King-Beyond-the-Wall when one arises."
+                ),
+
+                // ── Thenns (sub-faction) ──────────────────────────────────────
+                new FactionData(
+                        "thenn", WESTEROS,
+                        "The Thenns",
+                        "The Magnar of Thenn",
+                        "We Are the Thenns",
+                        "The Valley of Thenn",
+                        "No One",
+                        "No banner — a bronze axe marks the Thenns",
+                        COL_THENN_BRONZE, COL_THENN_GREY,
+                        "thenn",
+                        Religion.OLD_GODS,
+                        Economy.MILITARY,
+                        MilitaryStyle.HEAVY_INFANTRY,
+                        List.of("freefolk"),
+                        List.of("north", "nights_watch"),
+                        List.of(),
+                        thennLadder(),
+                        "The Thenns of the deep valley of Thenn are the most organised and disciplined " +
+                                "of the Free Folk. They wear bronze armour, follow a Magnar as lord, and are " +
+                                "feared even by other wildlings. Some say they eat the flesh of those they kill."
+                ),
+
+                // ── Skagos (sub-faction) ──────────────────────────────────────
+                new FactionData(
+                        "skagos", WESTEROS,
+                        "Skagos",
+                        "The Stoneborn",
+                        "We Stand in Stone",
+                        "Skagos",
+                        "No One",
+                        "No banner — the Stoneborn carve their allegiance in rock",
+                        COL_SKAGOS_STONE, COL_SKAGOS_DARK,
+                        "skagossi",
+                        Religion.OLD_GODS,
+                        Economy.MILITARY,
+                        MilitaryStyle.HEAVY_INFANTRY,
+                        List.of("freefolk"),
+                        List.of("north"),
+                        List.of(),
+                        skagosLadder(),
+                        "The Stoneborn of Skagos are fierce and proud islanders who have never truly " +
+                                "yielded to the Starks. Rumoured to ride great shaggy unicorns in battle and " +
+                                "to feast on the bodies of fallen enemies, they are among the most feared " +
+                                "peoples in the known world."
                 )
         );
 
