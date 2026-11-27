@@ -13,6 +13,18 @@ import net.got.event.entity.npc.smallfolk.IronbornEntity;
 import net.got.event.entity.npc.smallfolk.DornishmanEntity;
 import net.got.event.entity.npc.smallfolk.ReachmanEntity;
 
+import net.got.event.entity.npc.smallfolk.CrownlanderEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.ThennEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.HornfootEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.IceRiverClanEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.FrozenShoreEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.NightrunnerEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.SkagossiEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.CaveDwellerEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.SpearwifeEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.WildlingRaiderEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.HauntedForestClanEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.MilkwaterClanEntity;
 import net.got.event.entity.direwolf.DirewolfEntity;
 import net.got.event.entity.crow.CrowEntity;
 import net.got.event.entity.mammoth.MammothEntity;
@@ -29,7 +41,7 @@ public class EntityEvents {
 
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        
+
         event.put(ModEntities.NORTHMAN.get(),    NorthmanEntity.createAttributes().build());
         event.put(ModEntities.RIVERLANDER.get(), RiverlanderEntity.createAttributes().build());
         event.put(ModEntities.VALEMAN.get(),     ValemanEntity.createAttributes().build());
@@ -38,6 +50,19 @@ public class EntityEvents {
         event.put(ModEntities.IRONBORN.get(),    IronbornEntity.createAttributes().build());
         event.put(ModEntities.DORNISHMAN.get(),  DornishmanEntity.createAttributes().build());
         event.put(ModEntities.REACHMAN.get(),    ReachmanEntity.createAttributes().build());
+
+        event.put(ModEntities.CROWNLANDER.get(), CrownlanderEntity.createAttributes().build());
+        event.put(ModEntities.THENN.get(), ThennEntity.createAttributes().build());
+        event.put(ModEntities.HORNFOOT.get(), HornfootEntity.createAttributes().build());
+        event.put(ModEntities.ICE_RIVER_CLAN.get(), IceRiverClanEntity.createAttributes().build());
+        event.put(ModEntities.FROZEN_SHORE.get(), FrozenShoreEntity.createAttributes().build());
+        event.put(ModEntities.NIGHTRUNNER.get(), NightrunnerEntity.createAttributes().build());
+        event.put(ModEntities.SKAGOSSI.get(), SkagossiEntity.createAttributes().build());
+        event.put(ModEntities.CAVE_DWELLER.get(), CaveDwellerEntity.createAttributes().build());
+        event.put(ModEntities.SPEARWIFE.get(), SpearwifeEntity.createAttributes().build());
+        event.put(ModEntities.WILDLING_RAIDER.get(), WildlingRaiderEntity.createAttributes().build());
+        event.put(ModEntities.HAUNTED_FOREST_CLAN.get(), HauntedForestClanEntity.createAttributes().build());
+        event.put(ModEntities.MILKWATER_CLAN.get(), MilkwaterClanEntity.createAttributes().build());
 
         event.put(ModEntities.GOT_STAG.get(), StagEntity.createAttributes().build());
 
@@ -56,7 +81,7 @@ public class EntityEvents {
 
     @SubscribeEvent
     public static void onSpawnPlacements(RegisterSpawnPlacementsEvent event) {
-        
+
         event.register(ModEntities.NORTHMAN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NorthmanEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.RIVERLANDER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, RiverlanderEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.VALEMAN.get(),     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ValemanEntity::checkSpawnRules,     RegisterSpawnPlacementsEvent.Operation.REPLACE);
@@ -65,6 +90,19 @@ public class EntityEvents {
         event.register(ModEntities.IRONBORN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, IronbornEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.DORNISHMAN.get(),  SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DornishmanEntity::checkSpawnRules,  RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.REACHMAN.get(),    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ReachmanEntity::checkSpawnRules,    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(ModEntities.CROWNLANDER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CrownlanderEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.THENN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ThennEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.HORNFOOT.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HornfootEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.ICE_RIVER_CLAN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, IceRiverClanEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.FROZEN_SHORE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FrozenShoreEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.NIGHTRUNNER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NightrunnerEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.SKAGOSSI.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SkagossiEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.CAVE_DWELLER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CaveDwellerEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.SPEARWIFE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpearwifeEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.WILDLING_RAIDER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WildlingRaiderEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.HAUNTED_FOREST_CLAN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HauntedForestClanEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.MILKWATER_CLAN.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MilkwaterClanEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         event.register(ModEntities.GOT_STAG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, StagEntity::checkSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 

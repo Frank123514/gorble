@@ -24,7 +24,7 @@ public class ModTabs {
                 output.accept(stack);
             }
         } catch (Exception ignored) {
-            
+
         }
     }
 
@@ -36,7 +36,7 @@ public class ModTabs {
                 output.accept(stack);
             }
         } catch (Exception ignored) {
-            
+
         }
     }
 
@@ -2997,6 +2997,19 @@ public class ModTabs {
                         output.accept(ModItems.IRONBORN_SPAWN_EGG.get());
                         output.accept(ModItems.DORNISHMAN_SPAWN_EGG.get());
                         output.accept(ModItems.REACHMAN_SPAWN_EGG.get());
+                        output.accept(ModItems.CROWNLANDER_SPAWN_EGG.get());
+
+                        output.accept(ModItems.THENN_SPAWN_EGG.get());
+                        output.accept(ModItems.HORNFOOT_SPAWN_EGG.get());
+                        output.accept(ModItems.ICE_RIVER_CLAN_SPAWN_EGG.get());
+                        output.accept(ModItems.FROZEN_SHORE_SPAWN_EGG.get());
+                        output.accept(ModItems.NIGHTRUNNER_SPAWN_EGG.get());
+                        output.accept(ModItems.SKAGOSSI_SPAWN_EGG.get());
+                        output.accept(ModItems.CAVE_DWELLER_SPAWN_EGG.get());
+                        output.accept(ModItems.SPEARWIFE_SPAWN_EGG.get());
+                        output.accept(ModItems.WILDLING_RAIDER_SPAWN_EGG.get());
+                        output.accept(ModItems.HAUNTED_FOREST_CLAN_SPAWN_EGG.get());
+                        output.accept(ModItems.MILKWATER_CLAN_SPAWN_EGG.get());
 
                         output.accept(ModItems.GOT_STAG_SPAWN_EGG.get());
                         output.accept(ModItems.GOT_HERON_SPAWN_EGG.get());

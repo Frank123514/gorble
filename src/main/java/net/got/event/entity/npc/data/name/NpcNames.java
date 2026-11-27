@@ -25,4 +25,15 @@ public final class NpcNames {
     public static final NameGenerator DORNISHMAN  = gendered("dornishman");
     public static final NameGenerator REACHMAN    = gendered("reachman");
 
+    // Crownlands
+    public static final NameGenerator CROWNLANDER = gendered("crownlander");
+
+    // Free Folk (beyond the Wall). One generic bank plus distinct banks for peoples with their own naming.
+    public static final NameGenerator FREEFOLK_GENERIC = gendered("freefolk");
+    /** Female-only bank (spearwives); used for either gender flag so it never yields a male name. */
+    public static final NameGenerator FREEFOLK_FEMALE  = new SimpleGenderedNameGenerator(
+            rl("freefolk_female"), rl("freefolk_female"));
+    public static final NameGenerator SKAGOSSI = gendered("skagossi");
+    public static final NameGenerator THENN    = gendered("thenn");
+
 }

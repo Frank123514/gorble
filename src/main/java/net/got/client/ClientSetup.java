@@ -21,6 +21,18 @@ import net.got.event.entity.client.mammoth.MammothModel;
 import net.got.event.entity.client.mammoth.MammothRenderer;
 import net.got.event.entity.client.npc.smallfolk.SmallfolkRenderer;
 
+import net.got.event.entity.npc.smallfolk.CrownlanderEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.ThennEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.HornfootEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.IceRiverClanEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.FrozenShoreEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.NightrunnerEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.SkagossiEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.CaveDwellerEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.SpearwifeEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.WildlingRaiderEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.HauntedForestClanEntity;
+import net.got.event.entity.npc.smallfolk.freefolk.MilkwaterClanEntity;
 import net.got.event.entity.npc.smallfolk.NorthmanEntity;
 import net.got.event.entity.npc.smallfolk.RiverlanderEntity;
 import net.got.event.entity.npc.smallfolk.ValemanEntity;
@@ -289,6 +301,19 @@ public final class ClientSetup {
         event.registerEntityRenderer(ModEntities.IRONBORN.get(),    ctx -> new SmallfolkRenderer<>(ctx, IronbornEntity.MALE_TEXTURES,    IronbornEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.DORNISHMAN.get(),  ctx -> new SmallfolkRenderer<>(ctx, DornishmanEntity.MALE_TEXTURES,  DornishmanEntity.FEMALE_TEXTURES));
         event.registerEntityRenderer(ModEntities.REACHMAN.get(),    ctx -> new SmallfolkRenderer<>(ctx, ReachmanEntity.MALE_TEXTURES,    ReachmanEntity.FEMALE_TEXTURES));
+
+        event.registerEntityRenderer(ModEntities.CROWNLANDER.get(), ctx -> new SmallfolkRenderer<>(ctx, CrownlanderEntity.MALE_TEXTURES, CrownlanderEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.THENN.get(), ctx -> new SmallfolkRenderer<>(ctx, ThennEntity.MALE_TEXTURES, ThennEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.HORNFOOT.get(), ctx -> new SmallfolkRenderer<>(ctx, HornfootEntity.MALE_TEXTURES, HornfootEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.ICE_RIVER_CLAN.get(), ctx -> new SmallfolkRenderer<>(ctx, IceRiverClanEntity.MALE_TEXTURES, IceRiverClanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.FROZEN_SHORE.get(), ctx -> new SmallfolkRenderer<>(ctx, FrozenShoreEntity.MALE_TEXTURES, FrozenShoreEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.NIGHTRUNNER.get(), ctx -> new SmallfolkRenderer<>(ctx, NightrunnerEntity.MALE_TEXTURES, NightrunnerEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.SKAGOSSI.get(), ctx -> new SmallfolkRenderer<>(ctx, SkagossiEntity.MALE_TEXTURES, SkagossiEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.CAVE_DWELLER.get(), ctx -> new SmallfolkRenderer<>(ctx, CaveDwellerEntity.MALE_TEXTURES, CaveDwellerEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.SPEARWIFE.get(), ctx -> new SmallfolkRenderer<>(ctx, SpearwifeEntity.MALE_TEXTURES, SpearwifeEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.WILDLING_RAIDER.get(), ctx -> new SmallfolkRenderer<>(ctx, WildlingRaiderEntity.MALE_TEXTURES, WildlingRaiderEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.HAUNTED_FOREST_CLAN.get(), ctx -> new SmallfolkRenderer<>(ctx, HauntedForestClanEntity.MALE_TEXTURES, HauntedForestClanEntity.FEMALE_TEXTURES));
+        event.registerEntityRenderer(ModEntities.MILKWATER_CLAN.get(), ctx -> new SmallfolkRenderer<>(ctx, MilkwaterClanEntity.MALE_TEXTURES, MilkwaterClanEntity.FEMALE_TEXTURES));
 
         event.registerEntityRenderer(ModEntities.GOT_STAG.get(),     StagRenderer::new);
         event.registerEntityRenderer(ModEntities.GOT_HERON.get(),    HeronRenderer::new);
