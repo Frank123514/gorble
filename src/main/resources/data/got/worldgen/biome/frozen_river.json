@@ -38,7 +38,26 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "got:ice_river_clan",
+        "weight": 6,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:milkwater_clan",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:frozen_shore",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
     "misc": [],
     "monster": [],
     "underground_water_creature": [],

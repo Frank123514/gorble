@@ -43,7 +43,38 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "got:hornfoot",
+        "weight": 4,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:cave_dweller",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "got:thenn",
+        "weight": 2,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:nightrunner",
+        "weight": 2,
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "got:spearwife",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
     "misc": [],
     "monster": [],
     "underground_water_creature": [],

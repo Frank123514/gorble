@@ -75,6 +75,36 @@
         "maxCount": 4,
         "minCount": 2,
         "weight": 8
+      },
+      {
+        "type": "got:haunted_forest_clan",
+        "weight": 6,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:milkwater_clan",
+        "weight": 3,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "got:nightrunner",
+        "weight": 2,
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "got:spearwife",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "got:hornfoot",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
       }
     ],
     "misc": [],

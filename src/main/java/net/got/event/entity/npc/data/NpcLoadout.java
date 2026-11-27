@@ -23,13 +23,29 @@ import net.minecraft.world.item.ItemStack;
  *       North heavy cavalry also gets spaulders, vambraces and a gorget on top of that.</li>
  *   <li>Man-at-arms and skilled in any other region: placeholder (gambeson only) until that region's
  *       loadout is written.</li>
+ *   <li>Free Folk (every clan): NO gambeson and no body armour at all, their fur and hides are in the skin.
+ *       Only the odd conical cap / skull cap / half helm, or the odd pair of spaulders; both together is rare.</li>
  * </ul>
  */
 public final class NpcLoadout {
 
     public static final String NORTH = "north";
 
+    // ---- Free Folk gear odds (one roll per NPC; each slice is exclusive, the rest wear nothing) ----
+    private static final float FREEFOLK_HELM_ONLY      = 0.17F;   // cap / skull cap / half helm
+    private static final float FREEFOLK_SPAULDERS_ONLY = 0.12F;   // spaulders
+    private static final float FREEFOLK_BOTH           = 0.03F;   // rare: helmet AND spaulders
+
+    /** Every freefolk clan: the generic freefolk region plus the clans that use their own region id. */
+    private static boolean isFreefolk(String region) {
+        return "freefolk".equals(region) || "thenn".equals(region) || "skagos".equals(region);
+    }
+
     public static void apply(LivingEntity e, NpcRank rank, String region, RandomSource rand) {
+        if (isFreefolk(region)) {          // before the tier switch so they never get the gambeson placeholder
+            freefolk(e, rand);
+            return;
+        }
         switch (rank.tier) {
             case CIVILIAN -> { }
             case LEVY -> {
@@ -68,6 +84,26 @@ public final class NpcLoadout {
             PlateSlotData.set(e, PlatePiece.SPAULDERS, new ItemStack(ModItems.SPAULDERS.get()));
             PlateSlotData.set(e, PlatePiece.VAMBRACES, new ItemStack(ModItems.VAMBRACES.get()));
             PlateSlotData.set(e, PlatePiece.GORGET,    new ItemStack(ModItems.GORGET.get()));
+        }
+    }
+
+    /** No gambeson, no body armour. Occasionally a light helmet and/or spaulders, both together only rarely. */
+    private static void freefolk(LivingEntity e, RandomSource rand) {
+        float r = rand.nextFloat();
+        boolean helm      = r < FREEFOLK_HELM_ONLY
+                         || (r >= FREEFOLK_HELM_ONLY + FREEFOLK_SPAULDERS_ONLY
+                             && r < FREEFOLK_HELM_ONLY + FREEFOLK_SPAULDERS_ONLY + FREEFOLK_BOTH);
+        boolean spaulders = (r >= FREEFOLK_HELM_ONLY && r < FREEFOLK_HELM_ONLY + FREEFOLK_SPAULDERS_ONLY + FREEFOLK_BOTH);
+
+        if (helm) {
+            float h = rand.nextFloat();
+            var item = h < 0.40F ? ModItems.CONICAL_CAP.get()
+                     : h < 0.75F ? ModItems.SKULL_CAP.get()
+                     :             ModItems.HALFHELM.get();
+            e.setItemSlot(EquipmentSlot.HEAD, new ItemStack(item));
+        }
+        if (spaulders) {
+            PlateSlotData.set(e, PlatePiece.SPAULDERS, new ItemStack(ModItems.SPAULDERS.get()));
         }
     }
 
