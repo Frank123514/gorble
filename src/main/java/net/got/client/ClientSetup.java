@@ -114,6 +114,8 @@ public final class ClientSetup {
         event.registerLayerDefinition(GambesonModel.LAYER_LOCATION,   GambesonModel::createBodyLayer);
         event.registerLayerDefinition(BrigandineModel.LAYER_LOCATION, BrigandineModel::createBodyLayer);
         event.registerLayerDefinition(HauberkModel.LAYER_LOCATION,    HauberkModel::createBodyLayer);
+        event.registerLayerDefinition(CapeModel.LAYER_LOCATION,       CapeModel::createBodyLayer);
+        event.registerLayerDefinition(FurCloakModel.LAYER_LOCATION,   FurCloakModel::createBodyLayer);
         event.registerLayerDefinition(BoiledLeatherJerkinModel.LAYER_LOCATION, BoiledLeatherJerkinModel::createBodyLayer);
         event.registerLayerDefinition(WoolBreechesModel.LAYER_LOCATION, WoolBreechesModel::createBodyLayer);
         event.registerLayerDefinition(LeatherBootsModel.LAYER_LOCATION, LeatherBootsModel::createBodyLayer);

@@ -7,7 +7,7 @@ import net.got.plate.PlatePiece;
  * inventory GUI (survival and the creative inventory tab). Coordinates are relative to the GUI's top-left
  * corner, so they are negative (outside the normal 176-wide inventory).
  *
- * Two columns:  "under" layers (coif, gambeson, hauberk, brigandine)  |  plate (gorget ... cuisses).
+ * Two columns:  "under" layers (coif, gambeson, hauberk, brigandine, cloak)  |  plate (gorget ... cuisses).
  */
 public final class ArmorPanelLayout {
 
@@ -33,6 +33,7 @@ public final class ArmorPanelLayout {
     public static final int GAMBESON_X = COL_UNDER,   GAMBESON_Y = ROW_1;
     public static final int HAUBERK_X = COL_UNDER,    HAUBERK_Y = ROW_2;
     public static final int BRIGANDINE_X = COL_UNDER, BRIGANDINE_Y = ROW_3;
+    public static final int CLOAK_X = COL_UNDER,      CLOAK_Y = ROW_4;
 
     /**
      * Client-side flags set by the panel's render code. {@code hidden}: the panel is tucked away (the

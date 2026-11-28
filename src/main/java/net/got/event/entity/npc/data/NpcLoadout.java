@@ -1,6 +1,7 @@
 package net.got.event.entity.npc.data;
 
 import net.got.brigandine.BrigandineSlotData;
+import net.got.cloak.CloakSlotData;
 import net.got.coif.CoifSlotData;
 import net.got.gambeson.GambesonSlotData;
 import net.got.hauberk.HauberkSlotData;
@@ -24,7 +25,8 @@ import net.minecraft.world.item.ItemStack;
  *   <li>Man-at-arms and skilled in any other region: placeholder (gambeson only) until that region's
  *       loadout is written.</li>
  *   <li>Free Folk (every clan): NO gambeson and no body armour at all, their fur and hides are in the skin.
- *       Only the odd conical cap / skull cap / half helm, or the odd pair of spaulders; both together is rare.</li>
+ *       They wear the fur cloak (cloak slot). On top of that, only the odd conical cap / skull cap / half helm,
+ *       or the odd pair of spaulders; both together is rare.</li>
  * </ul>
  */
 public final class NpcLoadout {
@@ -35,6 +37,8 @@ public final class NpcLoadout {
     private static final float FREEFOLK_HELM_ONLY      = 0.17F;   // cap / skull cap / half helm
     private static final float FREEFOLK_SPAULDERS_ONLY = 0.12F;   // spaulders
     private static final float FREEFOLK_BOTH           = 0.03F;   // rare: helmet AND spaulders
+    /** Chance a freefolk wears the fur cloak. Rolled separately from the helmet / spaulders; 1.0 = every one of them. */
+    private static final float FREEFOLK_FUR_CLOAK      = 1.0F;
 
     /** Every freefolk clan: the generic freefolk region plus the clans that use their own region id. */
     private static boolean isFreefolk(String region) {
@@ -87,8 +91,11 @@ public final class NpcLoadout {
         }
     }
 
-    /** No gambeson, no body armour. Occasionally a light helmet and/or spaulders, both together only rarely. */
+    /** No gambeson, no body armour. The fur cloak, and occasionally a light helmet and/or spaulders, both together only rarely. */
     private static void freefolk(LivingEntity e, RandomSource rand) {
+        if (rand.nextFloat() < FREEFOLK_FUR_CLOAK) {
+            CloakSlotData.set(e, new ItemStack(ModItems.FUR_CLOAK.get()));
+        }
         float r = rand.nextFloat();
         boolean helm      = r < FREEFOLK_HELM_ONLY
                          || (r >= FREEFOLK_HELM_ONLY + FREEFOLK_SPAULDERS_ONLY

@@ -2,11 +2,13 @@ package net.got.client.armor;
 
 import net.got.GotMod;
 import net.got.brigandine.BrigandineSlotData;
+import net.got.cloak.CloakSlotData;
 import net.got.coif.CoifSlotData;
 import net.got.gambeson.GambesonSlotData;
 import net.got.hauberk.HauberkSlotData;
 import java.util.ArrayList;
 import java.util.List;
+import net.got.network.CloakSlotPayload;
 import net.got.network.CustomArmorSlotsPayload;
 import net.got.network.PlateSlotsPayload;
 import net.got.plate.PlatePiece;
@@ -33,6 +35,7 @@ public final class CreativeArmorSlotSync {
     private static ItemStack lastBrigandine = ItemStack.EMPTY;
     private static ItemStack lastCoif = ItemStack.EMPTY;
     private static ItemStack lastHauberk = ItemStack.EMPTY;
+    private static ItemStack lastCloak = ItemStack.EMPTY;
     private static List<ItemStack> lastPlate = new ArrayList<>();
 
     private static List<ItemStack> readPlate(net.minecraft.world.entity.LivingEntity entity) {
@@ -60,6 +63,7 @@ public final class CreativeArmorSlotSync {
         ItemStack brigandine = BrigandineSlotData.get(player);
         ItemStack coif = CoifSlotData.get(player);
         ItemStack hauberk = HauberkSlotData.get(player);
+        ItemStack cloak = CloakSlotData.get(player);
         List<ItemStack> plate = readPlate(player);
 
         if (screen != lastScreen) {            // screen just opened: remember what the server already has
@@ -68,6 +72,7 @@ public final class CreativeArmorSlotSync {
             lastBrigandine = brigandine.copy();
             lastCoif = coif.copy();
             lastHauberk = hauberk.copy();
+            lastCloak = cloak.copy();
             lastPlate = plate;
             return;
         }
@@ -75,6 +80,11 @@ public final class CreativeArmorSlotSync {
         if (!samePlate(plate, lastPlate)) {
             lastPlate = plate;
             ClientPacketDistributor.sendToServer(new PlateSlotsPayload(readPlate(player)));
+        }
+
+        if (!ItemStack.matches(cloak, lastCloak)) {
+            lastCloak = cloak.copy();
+            ClientPacketDistributor.sendToServer(new CloakSlotPayload(cloak.copy()));
         }
 
         if (!ItemStack.matches(gambeson, lastGambeson) || !ItemStack.matches(brigandine, lastBrigandine)

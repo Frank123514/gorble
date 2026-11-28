@@ -3,6 +3,7 @@ package net.got.client.armor;
 import net.got.GotMod;
 import net.got.armorpanel.ArmorPanelLayout;
 import net.got.brigandine.BrigandineSlot;
+import net.got.cloak.CloakSlot;
 import net.got.coif.CoifSlot;
 import net.got.gambeson.GambesonSlot;
 import net.got.hauberk.HauberkSlot;
@@ -34,7 +35,7 @@ public final class ArmorPanelClientEvents {
         Slot s = slot;
         if (slot instanceof CreativeSlotWrapperAccessor w) s = w.got$getTarget();
         return s instanceof GambesonSlot || s instanceof HauberkSlot || s instanceof BrigandineSlot
-                || s instanceof CoifSlot || s instanceof PlateSlot;
+                || s instanceof CoifSlot || s instanceof PlateSlot || s instanceof CloakSlot;
     }
 
     private static boolean recipeBookOpen() {

@@ -150,6 +150,15 @@ public final class Network {
                         net.got.hauberk.HauberkSlotData.set(player, h);
                 }));
 
+        r.playToServer(CloakSlotPayload.TYPE, CloakSlotPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    ServerPlayer player = (ServerPlayer) ctx.player();
+                    if (player == null || !player.isCreative()) return;   // survival uses normal container clicks
+                    net.minecraft.world.item.ItemStack c = payload.cloak();
+                    if (c.isEmpty() || (c.getItem() instanceof net.got.cloak.CloakItem && c.getCount() == 1))
+                        net.got.cloak.CloakSlotData.set(player, c);
+                }));
+
         r.playToServer(PlateSlotsPayload.TYPE, PlateSlotsPayload.STREAM_CODEC,
                 (payload, ctx) -> ctx.enqueueWork(() -> {
                     ServerPlayer player = (ServerPlayer) ctx.player();

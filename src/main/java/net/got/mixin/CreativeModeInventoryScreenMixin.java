@@ -2,6 +2,7 @@ package net.got.mixin;
 
 import net.got.armorpanel.ArmorPanelLayout;
 import net.got.brigandine.BrigandineSlot;
+import net.got.cloak.CloakSlot;
 import net.got.coif.CoifSlot;
 import net.got.gambeson.GambesonSlot;
 import net.got.hauberk.HauberkSlot;
@@ -39,6 +40,8 @@ public abstract class CreativeModeInventoryScreenMixin {
                 x = ArmorPanelLayout.HAUBERK_X;    y = ArmorPanelLayout.HAUBERK_Y;
             } else if (target instanceof BrigandineSlot) {
                 x = ArmorPanelLayout.BRIGANDINE_X; y = ArmorPanelLayout.BRIGANDINE_Y;
+            } else if (target instanceof CloakSlot) {
+                x = ArmorPanelLayout.CLOAK_X;      y = ArmorPanelLayout.CLOAK_Y;
             } else if (target instanceof PlateSlot plate) {
                 x = ArmorPanelLayout.plateX(plate.getPiece());
                 y = ArmorPanelLayout.plateY(plate.getPiece());

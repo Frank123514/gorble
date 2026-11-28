@@ -69,6 +69,7 @@ public final class GotMod {
         ModDataComponents.register(modBus);
         net.got.gambeson.GambesonAttachments.register(modBus);
         net.got.hauberk.HauberkAttachments.register(modBus);
+        net.got.cloak.CloakAttachments.register(modBus);
         net.got.brigandine.BrigandineAttachments.register(modBus);
         net.got.coif.CoifAttachments.register(modBus);
         net.got.plate.PlateAttachments.register(modBus);

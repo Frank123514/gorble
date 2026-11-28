@@ -42,6 +42,7 @@ public final class SmallfolkRenderer<T extends SmallfolkEntity>
                         ctx.bakeLayer(net.got.client.armor.HauberkModel.LAYER_LOCATION), true)));
         addLayer(net.got.client.armor.BrigandineLayer.create(this, ctx::bakeLayer));
         addLayer(net.got.client.armor.PlateLayer.create(this, ctx::bakeLayer));
+        addLayer(net.got.client.armor.CloakLayer.create(this, ctx::bakeLayer));
         addLayer(new net.got.client.armor.CoifLayer<>(this,
                 new net.got.client.armor.GotHelmBodyModel(
                         ctx.bakeLayer(net.got.client.armor.MailCoifModel.LAYER_LOCATION))));

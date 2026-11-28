@@ -2107,6 +2107,13 @@ public class ModItems {
     public static final DeferredItem<Item> HAUBERK = REGISTRY.registerItem("hauberk",
             p -> new net.got.hauberk.HauberkItem(p.humanoidArmor(ModArmorMaterials.HAUBERK.value(), ArmorType.CHESTPLATE)));
 
+    // Cloaks: cosmetic outer garments worn in their own slot (net.got.cloak), over every armor layer.
+    // Each has its own model + texture (CapeModel / FurCloakModel), drawn by CloakLayer.
+    public static final DeferredItem<Item> CAPE = REGISTRY.registerItem("cape",
+            p -> new net.got.cloak.CloakItem(p.stacksTo(1), net.got.cloak.CloakItem.Kind.CAPE));
+    public static final DeferredItem<Item> FUR_CLOAK = REGISTRY.registerItem("fur_cloak",
+            p -> new net.got.cloak.CloakItem(p.stacksTo(1), net.got.cloak.CloakItem.Kind.FUR_CLOAK));
+
     // Modular plate armor: each piece has its own extra slot (net.got.plate) and a texture-based model
     // (PlateModel), so all five can be worn together over the gambeson / hauberk / brigandine layers.
     public static final DeferredItem<Item> GORGET = REGISTRY.registerItem("gorget",

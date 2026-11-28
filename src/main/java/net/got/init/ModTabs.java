@@ -2198,6 +2198,8 @@ public class ModTabs {
                         output.accept(ModItems.BOILED_LEATHER_JERKIN.get());
                         output.accept(ModItems.WOOL_BREECHES.get());
                         output.accept(ModItems.LEATHER_BOOTS.get());
+                        output.accept(ModItems.CAPE.get());
+                        output.accept(ModItems.FUR_CLOAK.get());
                         output.accept(ModItems.GORGET.get());
                         output.accept(ModItems.SPAULDERS.get());
                         output.accept(ModItems.VAMBRACES.get());
