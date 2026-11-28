@@ -21,14 +21,18 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Draws whatever is worn in the extra cloak slot (cape, fur cloak). It is the outermost layer: it runs after
  * the gambeson, hauberk, brigandine and plate layers and hangs behind / over the shoulders of all of them.
- * Each kind of cloak has its own model + texture. The worn stack reaches the layer through render-state data.
+ * Each kind of cloak has its own model + texture (greyscale, tinted by the item's dye). The worn stack reaches the layer through render-state data.
  */
 public class CloakLayer<S extends HumanoidRenderState, M extends HumanoidModel<S>> extends RenderLayer<S, M> {
 
     public static final ContextKey<ItemStack> WORN_KEY =
             new ContextKey<>(Identifier.fromNamespaceAndPath(GotMod.MODID, "worn_cloak"));
 
-    private record Entry(GotBodyArmorModel model, Identifier texture) {}
+    /** Movement snapshot (see CloakMotion) so the back panel can swing; set next to WORN_KEY. */
+    public static final ContextKey<CloakMotion> MOTION_KEY =
+            new ContextKey<>(Identifier.fromNamespaceAndPath(GotMod.MODID, "cloak_motion"));
+
+    private record Entry(CloakBodyModel model, Identifier texture) {}
 
     private final Map<CloakItem.Kind, Entry> entries;
 
@@ -48,7 +52,7 @@ public class CloakLayer<S extends HumanoidRenderState, M extends HumanoidModel<S
 
     private static Entry entry(Function<ModelLayerLocation, ModelPart> baker, ModelLayerLocation layer, String name) {
         // Torso + arms only: the cloaks have no leg geometry.
-        return new Entry(new GotBodyArmorModel(baker.apply(layer), false),
+        return new Entry(new CloakBodyModel(baker.apply(layer)),
                 Identifier.fromNamespaceAndPath(GotMod.MODID, "textures/entity/equipment/humanoid/" + name + ".png"));
     }
 
@@ -61,8 +65,11 @@ public class CloakLayer<S extends HumanoidRenderState, M extends HumanoidModel<S
         Entry entry = entries.get(cloak.getKind());
         if (entry == null) return;
 
-        // 7th argument is the entity OUTLINE colour (not a tint); non-zero draws a solid silhouette. 0 = none.
+        // The textures are greyscale, so the dye colour (or the default) is applied as a multiplicative tint.
+        int tint = 0xFF000000 | CloakItem.getColor(worn, cloak.getKind());
+
+        // Args 7-10: tint, sprite (none: plain texture), entity OUTLINE colour (not a tint; 0 = none), crumbling overlay.
         collector.order(3).submitModel(entry.model(), state, poseStack, entry.model().renderType(entry.texture()),
-                light, OverlayTexture.NO_OVERLAY, 0, null);
+                light, OverlayTexture.NO_OVERLAY, tint, null, 0, null);
     }
 }

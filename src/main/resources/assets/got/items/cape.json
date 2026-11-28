@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/cape"
+    "model": "got:item/cape",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -11575947
+      }
+    ]
   }
 }

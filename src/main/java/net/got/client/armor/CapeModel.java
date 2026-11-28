@@ -7,8 +7,8 @@ import net.minecraft.resources.Identifier;
 
 // Wrapped in GotBodyArmorModel(root, false) at render time: torso + arms visible (no head, no legs).
 // Converted from cape.bbmodel. mc_y = 24 - bb_yMax, x/z are taken relative to each group's pivot and
-// NOT x-flipped -- Blockbench's own Java export mirrors X on asymmetric parts, which would put the
-// shoulder pieces inside the torso. Only the three custom cubes (back panel + two shoulder pieces) are
+// NOT x-flipped. Shoulder pads: right arm spans x = -3..1 and left arm x = -1..3 (arm-local), so the pads sit on the
+// OUTER 3px of each arm (right -3..0, left 0..3). They used to hug the inner side, i.e. were mirrored. Only the three custom cubes (back panel + two shoulder pieces) are
 // exported; the head / body / arm / leg cubes in the .bbmodel are just the player reference.
 // Texture sheet is 128x128 (textures/entity/equipment/humanoid/cape.png).
 public class CapeModel {
@@ -30,21 +30,23 @@ public class CapeModel {
 		// Body / arms / legs carry no cubes of their own -- the real geometry is on the children.
 		PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 		// Back panel: 14 wide, 18 tall, 3 thick, behind the torso from the shoulders to about knee height.
-		body.addOrReplaceChild("cape_back",
+		// Hinged at the top of the torso's back plane (z = 2) so CloakBodyModel can swing it backwards while
+		// moving. The cube sits at z = -1..2 relative to that hinge, i.e. exactly where it used to be (z = 1..4).
+		body.addOrReplaceChild(CloakBodyModel.BACK_PART,
 				CubeListBuilder.create()
-						.texOffs(0, 0).addBox(-7.0F, 0.0F, 1.0F, 14.0F, 18.0F, 3.0F, new CubeDeformation(CAPE_DEFORM)),
-				PartPose.ZERO);
+						.texOffs(0, 0).addBox(-7.0F, 0.0F, -1.0F, 14.0F, 18.0F, 3.0F, new CubeDeformation(CAPE_DEFORM)),
+				PartPose.offset(0.0F, 0.0F, 2.0F));
 
 		PartDefinition rightArm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.offset(-5.0F, 2.0F, 0.0F));
 		rightArm.addOrReplaceChild("right_pad",
 				CubeListBuilder.create()
-						.texOffs(64, 22).addBox(-2.0F, -3.0F, -2.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(CAPE_DEFORM)),
+						.texOffs(64, 22).addBox(-3.0F, -3.0F, -2.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(CAPE_DEFORM)),
 				PartPose.ZERO);
 
 		PartDefinition leftArm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.offset(5.0F, 2.0F, 0.0F));
 		leftArm.addOrReplaceChild("left_pad",
 				CubeListBuilder.create()
-						.texOffs(64, 16).addBox(-1.0F, -3.0F, -2.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(CAPE_DEFORM)),
+						.texOffs(64, 16).addBox(0.0F, -3.0F, -2.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(CAPE_DEFORM)),
 				PartPose.ZERO);
 
 		// HumanoidModel's constructor needs the leg parts to exist; they carry no cubes and are hidden.

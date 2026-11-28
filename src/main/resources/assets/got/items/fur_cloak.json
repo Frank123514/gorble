@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "got:item/fur_cloak"
+    "model": "got:item/fur_cloak",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -6458028
+      }
+    ]
   }
 }

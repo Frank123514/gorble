@@ -34,7 +34,9 @@ public final class CloakClientEvents {
                     new TypeToken<LivingEntityRenderer<? extends LivingEntity, LivingEntityRenderState, ?>>() {},
                     (entity, renderState) -> {
                         ItemStack worn = CloakSlotData.get(entity);
-                        if (!worn.isEmpty()) renderState.setRenderData(CloakLayer.WORN_KEY, worn.copy());
+                        if (worn.isEmpty()) return;
+                        renderState.setRenderData(CloakLayer.WORN_KEY, worn.copy());
+                        renderState.setRenderData(CloakLayer.MOTION_KEY, CloakMotion.of(entity));
                     });
         }
 
